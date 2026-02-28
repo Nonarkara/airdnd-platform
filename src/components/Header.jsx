@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Header({ language, setLanguage, t }) {
+function Header({ language, setLanguage, t, onLogout }) {
     return (
         <header className="header">
             <div className="logo">
@@ -24,7 +24,11 @@ function Header({ language, setLanguage, t }) {
                     <option value="zh">ZH</option>
                     <option value="ko">KO</option>
                 </select>
-                <button className="btn-premium">{t.nav.premium}</button>
+                {onLogout && (
+                    <button className="btn-premium" onClick={onLogout} style={{ background: '#ef4444', color: 'white' }}>
+                        Logout
+                    </button>
+                )}
             </div>
         </header>
     );

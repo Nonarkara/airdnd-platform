@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
@@ -9,31 +8,65 @@ import CompanionModal from './components/CompanionModal';
 import MapSection from './components/MapSection';
 import HowItWorks from './components/HowItWorks';
 import Footer from './components/Footer';
+import Login from './components/Login';
 import { supabase } from './lib/supabase';
+import { translations } from './translations';
 
 function App() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [sortBy, setSortBy] = useState('Recommended');
+  const [session, setSession] = useState(null);
+  const [locations, setLocations] = useState([]);
+  const [activities, setActivities] = useState([]);
+  const [allCompanions, setAllCompanions] = useState([]);
+  const [filteredCompanions, setFilteredCompanions] = useState([]); // This state is declared but not used in the provided snippet's logic
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeLocation, setActiveLocation] = useState('All');
+  const [activeActivity, setActiveActivity] = useState('All');
+  const [sortBy, setSortBy] = useState('recommended');
   const [selectedCompanion, setSelectedCompanion] = useState(null);
-  const [companions, setCompanions] = useState([]);
   const [language, setLanguage] = useState('en');
 
   const t = translations[language];
 
+  // Auth & Data fetching
   useEffect(() => {
     let isMounted = true;
 
+    // Check active session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (isMounted) setSession(session);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (isMounted) setSession(session);
+    });
+
+    // Only fetch data if authenticated
     const fetchCompanions = async () => {
+      if (!session) return; // Only fetch if a session exists
       try {
         const { data, error } = await supabase
           .from('companions')
           .select('*')
-          .order('id', { ascending: false }); // Native DB sorting newest first
+          .order('id', { ascending: false });
 
         if (error) throw error;
 
         if (isMounted && data) {
-          setCompanions(data);
+          setAllCompanions(data);
+          setFilteredCompanions(data); // Initialize filteredCompanions with all data
+
+          const uniqueLocs = [...new Set(data.map(c => c.location))];
+          setLocations(uniqueLocs);
+
+          const allTags = data.reduce((acc, c) => {
+            if (c.tags) return [...acc, ...c.tags];
+            return acc;
+          }, []);
+          const uniqueTags = [...new Set(allTags)];
+          setActivities(uniqueTags.slice(0, 10));
         }
       } catch (error) {
         console.error('Error fetching from Supabase:', error.message);
@@ -42,24 +75,26 @@ function App() {
 
     fetchCompanions();
 
-    // Listen for real-time inserts if we set up websockets later
-    // For now, poll exactly like before just pointing to DB
+    // Data polling for the private hub
     const interval = setInterval(fetchCompanions, 5000);
 
     return () => {
       isMounted = false;
+      if (subscription) { // Ensure subscription exists before unsubscribing
+        subscription.unsubscribe();
+      }
       clearInterval(interval);
     };
-  }, []);
+  }, [session]); // Re-run fetch if session changes
 
   // Filter logic
-  let filteredCompanions = companions.filter(c => {
-    if (activeCategory === 'All') return true;
-    return c.tags && c.tags.includes(activeCategory);
+  let activeFilteredCompanions = allCompanions.filter(c => {
+    if (activeActivity === 'All') return true;
+    return c.tags && c.tags.includes(activeActivity);
   });
 
   // Sort logic
-  filteredCompanions.sort((a, b) => {
+  activeFilteredCompanions.sort((a, b) => {
     if (sortBy === 'Price (Low to High)') {
       const pA = parseInt((a.price || '').replace(/[^\\d]/g, '')) || 0;
       const pB = parseInt((b.price || '').replace(/[^\\d]/g, '')) || 0;
@@ -80,9 +115,19 @@ function App() {
     return b.id - a.id;
   });
 
+  // Main Render Guardian
+  if (!session) {
+    return <Login setSession={setSession} language={language} setLanguage={setLanguage} />;
+  }
+
   return (
     <div className="app-container">
-      <Header language={language} setLanguage={setLanguage} t={t} />
+      <Header
+        language={language}
+        setLanguage={setLanguage}
+        t={t}
+        onLogout={() => supabase.auth.signOut()}
+      />
 
       <main className="main-content">
         <HeroSection t={t} />
@@ -97,15 +142,15 @@ function App() {
         </div>
 
         <FilterBar
-          activeCategory={activeCategory}
-          setActiveCategory={setActiveCategory}
+          activeCategory={activeActivity}
+          setActiveCategory={setActiveActivity}
           sortBy={sortBy}
           setSortBy={setSortBy}
           t={t}
         />
 
         <CompanionGrid
-          companions={filteredCompanions}
+          companions={activeFilteredCompanions}
           onCardClick={setSelectedCompanion}
           t={t}
         />
