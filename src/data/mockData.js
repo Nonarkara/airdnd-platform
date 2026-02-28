@@ -1,0 +1,80 @@
+export const companions = [
+    {
+        id: 1,
+        name: 'Wawa',
+        age: 25,
+        location: 'Bangkok, TH',
+        price: '฿1,200',
+        metrics: { height: '163cm', weight: '48kg' },
+        rating: 4.9,
+        reviews: 124,
+        tags: ['Massage', 'Dinner'],
+        imageUrl: '/mockups/109748.jpg',
+        description: 'Elegant companion perfect for fine dining and sophisticated conversation. Experienced in high-end venues across Bangkok.'
+    },
+    {
+        id: 2,
+        name: 'Miew',
+        age: 24,
+        location: 'Chiang Mai, TH',
+        price: '฿1,000',
+        metrics: { height: '160cm', weight: '45kg' },
+        rating: 4.8,
+        reviews: 89,
+        tags: ['Massage', 'Relax', 'Wellness'],
+        imageUrl: '/mockups/109749.jpg',
+        description: 'Certified massage therapist with a focus on holistic wellness. Offers a serene and relaxing experience in the heart of Chiang Mai.'
+    },
+    {
+        id: 3,
+        name: 'Jay',
+        age: 22,
+        location: 'Pattaya, TH',
+        price: '฿1,500',
+        metrics: { height: '168cm', weight: '50kg' },
+        rating: 4.7,
+        reviews: 210,
+        tags: ['Travel', 'Massage', 'Conversation'],
+        imageUrl: '/mockups/109750.jpg',
+        description: 'Your perfect island guide. Bilingual and deeply knowledgeable about Thai culture and hidden gems in Pattaya.'
+    },
+    {
+        id: 4,
+        name: 'View',
+        age: 23,
+        location: 'Bangkok, TH',
+        price: '฿1,100',
+        metrics: { height: '162cm', weight: '47kg' },
+        rating: 4.9,
+        reviews: 56,
+        tags: ['Massage', 'Dinner'],
+        imageUrl: '/mockups/109751.jpg',
+        description: 'A gentle soul who loves art and nature. Great for a relaxing afternoon massage followed by a quiet tea session.'
+    },
+    {
+        id: 5,
+        name: 'Moh Bew',
+        age: 27,
+        location: 'Koh Samui, TH',
+        price: '฿1,400',
+        metrics: { height: '167cm', weight: '52kg' },
+        rating: 4.9,
+        reviews: 178,
+        tags: ['Dinner', 'Massage', 'Classy'],
+        imageUrl: '/mockups/601120769212678275.jpg',
+        description: 'Classically trained musician who enjoys upscale dinners and live jazz. A very classy and charming date.'
+    },
+    {
+        id: 6,
+        name: 'Moh Natcha',
+        age: 25,
+        location: 'Phuket, TH',
+        price: '฿900',
+        metrics: { height: '170cm', weight: '49kg' },
+        rating: 4.7,
+        reviews: 42,
+        tags: ['Massage', 'Dinner', 'Fun'],
+        imageUrl: '/mockups/601268917146747479.jpg',
+        description: 'Energetic and fun-loving. Ready for a great massage session to unwind, followed by a casual and fun dinner.'
+    }
+];

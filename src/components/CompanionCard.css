@@ -1,0 +1,133 @@
+.companion-card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+    cursor: pointer;
+    border: 1px solid var(--color-border);
+}
+
+.companion-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.companion-card:hover .card-image {
+    transform: scale(1.05);
+}
+
+.btn-favorite {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--color-text-main);
+}
+
+.btn-favorite:hover {
+    background-color: white;
+    color: #ff3b30;
+    transform: scale(1.1);
+}
+
+.card-content {
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.card-name {
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--color-text-main);
+}
+
+.card-age {
+    font-weight: 400;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+}
+
+.card-price {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.card-tags {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-sm);
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--spacing-sm);
+}
+
+.card-provider {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.provider-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--color-tag-bg);
+}
+
+.provider-price {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-favorite-bottom {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--color-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+}
+
+.btn-favorite-bottom:hover {
+    background-color: #ff3b30;
+    color: white;
+}
