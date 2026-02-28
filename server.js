@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Any request that doesn't match a static file gets routed back to React's index.html
-app.get('*', (req, res) => {
+app.use((req, res) => {
     const indexHtml = path.join(__dirname, 'dist', 'index.html');
     if (fs.existsSync(indexHtml)) {
         res.sendFile(indexHtml);
