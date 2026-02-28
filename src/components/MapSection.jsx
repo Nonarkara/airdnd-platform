@@ -66,7 +66,7 @@ function MapSection() {
                 )}
 
                 <iframe
-                    src="https://www.google.com/maps/d/u/0/embed?mid=1EvIekONUwOWeJUnOzXDsV7Wp3k5LaiA"
+                    src="https://www.google.com/maps/d/embed?mid=1EvIekONUwOWeJUnOzXDsV7Wp3k5LaiA"
                     width="100%"
                     height="600"
                     style={{ border: 0 }}

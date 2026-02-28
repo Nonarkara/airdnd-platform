@@ -5,11 +5,6 @@ import './CompanionGrid.css';
 function CompanionGrid({ companions, onCardClick }) {
     const [visibleCount, setVisibleCount] = useState(20);
 
-    // Reset pagination when the underlying array heavily changes
-    useEffect(() => {
-        setVisibleCount(20);
-    }, [companions]);
-
     const visibleCompanions = companions.slice(0, visibleCount);
     const hasMore = visibleCount < companions.length;
 
