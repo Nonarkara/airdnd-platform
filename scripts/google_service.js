@@ -11,23 +11,41 @@ const credentialsPath = path.join(__dirname, '../credentials.json');
 const tokenPath = path.join(__dirname, '../token.json');
 
 // Initialize Google OAuth2 Client
-const credentialsData = JSON.parse(fs.readFileSync(credentialsPath, 'utf8'));
-const tokenData = JSON.parse(fs.readFileSync(tokenPath, 'utf8'));
-const { client_secret, client_id, redirect_uris } = credentialsData.installed;
-const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
+let oAuth2Client = null;
+let drive = null;
+let sheets = null;
 
-oAuth2Client.setCredentials({
-    access_token: tokenData.token, // Handles python oauthlib's token storage format
-    refresh_token: tokenData.refresh_token,
-    scope: typeof tokenData.scopes === 'object' ? tokenData.scopes.join(' ') : tokenData.scopes,
-    token_type: 'Bearer',
-    expiry_date: new Date(tokenData.expiry).getTime()
-});
+try {
+    if (fs.existsSync(credentialsPath) && fs.existsSync(tokenPath)) {
+        const credentialsData = JSON.parse(fs.readFileSync(credentialsPath, 'utf8'));
+        const tokenData = JSON.parse(fs.readFileSync(tokenPath, 'utf8'));
 
-const drive = google.drive({ version: 'v3', auth: oAuth2Client });
-const sheets = google.sheets({ version: 'v4', auth: oAuth2Client });
+        const { client_secret, client_id, redirect_uris } = credentialsData.installed || credentialsData.web || {};
+
+        if (client_id && client_secret) {
+            oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris ? redirect_uris[0] : 'urn:ietf:wg:oauth:2.0:oob');
+
+            oAuth2Client.setCredentials({
+                access_token: tokenData.token || tokenData.access_token, // Handles different token storage formats
+                refresh_token: tokenData.refresh_token,
+                scope: typeof tokenData.scopes === 'object' ? tokenData.scopes.join(' ') : tokenData.scopes,
+                token_type: 'Bearer',
+                expiry_date: tokenData.expiry ? new Date(tokenData.expiry).getTime() : tokenData.expiry_date
+            });
+
+            drive = google.drive({ version: 'v3', auth: oAuth2Client });
+            sheets = google.sheets({ version: 'v4', auth: oAuth2Client });
+            console.log("✅ Google Workspace API successfully initialized.");
+        }
+    } else {
+        console.warn("⚠️ Google Workspace credentials.json or token.json missing. Google API integration will be disabled.");
+    }
+} catch (error) {
+    console.error("❌ Failed to initialize Google Workspace API:", error.message);
+}
 
 export async function getOrCreateFolder(folderName) {
+    if (!drive) return null;
     const res = await drive.files.list({
         q: `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and trashed=false`,
         fields: 'files(id, name)',
@@ -43,6 +61,7 @@ export async function getOrCreateFolder(folderName) {
 }
 
 export async function uploadPhoto(filePath, folderId, fileName) {
+    if (!drive) return null;
     const media = { mimeType: 'image/jpeg', body: fs.createReadStream(filePath) };
     const file = await drive.files.create({
         requestBody: { name: fileName, parents: [folderId] },
@@ -53,6 +72,7 @@ export async function uploadPhoto(filePath, folderId, fileName) {
 }
 
 export async function getOrCreateSheet(sheetName) {
+    if (!sheets) return null;
     const res = await drive.files.list({
         q: `mimeType='application/vnd.google-apps.spreadsheet' and name='${sheetName}' and trashed=false`,
         fields: 'files(id, name)',
@@ -77,6 +97,7 @@ export async function getOrCreateSheet(sheetName) {
 }
 
 export async function appendToSheet(spreadsheetId, dataRow) {
+    if (!sheets) return;
     await sheets.spreadsheets.values.append({
         spreadsheetId,
         range: 'Sheet1',
