@@ -14,12 +14,16 @@ function Header({ language, setLanguage, t }) {
                 <a href="#" className="nav-link">{t.nav.profile}</a>
             </nav>
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <button
-                    onClick={() => setLanguage(language === 'en' ? 'th' : 'en')}
-                    style={{ background: 'none', border: '1px solid #e2e8f0', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                <select
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                    style={{ background: 'none', border: '1px solid #e2e8f0', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', outline: 'none' }}
                 >
-                    {language === 'en' ? 'TH' : 'EN'}
-                </button>
+                    <option value="en">EN</option>
+                    <option value="th">TH</option>
+                    <option value="zh">ZH</option>
+                    <option value="ko">KO</option>
+                </select>
                 <button className="btn-premium">{t.nav.premium}</button>
             </div>
         </header>
