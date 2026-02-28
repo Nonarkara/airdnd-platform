@@ -9,7 +9,7 @@ import CompanionModal from './components/CompanionModal';
 import MapSection from './components/MapSection';
 import HowItWorks from './components/HowItWorks';
 import Footer from './components/Footer';
-import { translations } from './translations';
+import { supabase } from './lib/supabase';
 
 function App() {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -21,39 +21,53 @@ function App() {
   const t = translations[language];
 
   useEffect(() => {
-    const fetchData = () => {
-      fetch('/data.json?' + new Date().getTime()) // Prevent caching
-        .then(res => res.json())
-        .then(data => setCompanions(data))
-        .catch(err => console.error("Failed to fetch live data:", err));
+    let isMounted = true;
+
+    const fetchCompanions = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('companions')
+          .select('*')
+          .order('id', { ascending: false }); // Native DB sorting newest first
+
+        if (error) throw error;
+
+        if (isMounted && data) {
+          setCompanions(data);
+        }
+      } catch (error) {
+        console.error('Error fetching from Supabase:', error.message);
+      }
     };
 
-    // Initial fetch
-    fetchData();
+    fetchCompanions();
 
-    // Poll for new data every 5 seconds
-    const interval = setInterval(fetchData, 5000);
+    // Listen for real-time inserts if we set up websockets later
+    // For now, poll exactly like before just pointing to DB
+    const interval = setInterval(fetchCompanions, 5000);
 
-    // Cleanup on unmount
-    return () => clearInterval(interval);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   // Filter logic
   let filteredCompanions = companions.filter(c => {
     if (activeCategory === 'All') return true;
-    return c.tags.includes(activeCategory);
+    return c.tags && c.tags.includes(activeCategory);
   });
 
   // Sort logic
   filteredCompanions.sort((a, b) => {
     if (sortBy === 'Price (Low to High)') {
-      const pA = parseInt(a.price.replace(/[^\\d]/g, '')) || 0;
-      const pB = parseInt(b.price.replace(/[^\\d]/g, '')) || 0;
+      const pA = parseInt((a.price || '').replace(/[^\\d]/g, '')) || 0;
+      const pB = parseInt((b.price || '').replace(/[^\\d]/g, '')) || 0;
       return pA - pB;
     }
     if (sortBy === 'Price (High to Low)') {
-      const pA = parseInt(a.price.replace(/[^\\d]/g, '')) || 0;
-      const pB = parseInt(b.price.replace(/[^\\d]/g, '')) || 0;
+      const pA = parseInt((a.price || '').replace(/[^\\d]/g, '')) || 0;
+      const pB = parseInt((b.price || '').replace(/[^\\d]/g, '')) || 0;
       return pB - pA;
     }
     if (sortBy === 'Rating') {
