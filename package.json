@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "scrape": "node scripts/scraper.js",
     "scrape:live": "node scripts/telegram_scraper.js",
-    "bot": "node scripts/telegram_bot.js",
+    "bot": "node scripts/userbot.js",
     "start": "node server.js"
   },
   "dependencies": {
