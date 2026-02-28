@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './MapSection.css';
 
-function MapSection() {
+function MapSection({ t }) {
     const [showAqi, setShowAqi] = useState(false);
     const [aqiData, setAqiData] = useState(null);
     const [loadingAqi, setLoadingAqi] = useState(false);
@@ -33,12 +33,12 @@ function MapSection() {
     return (
         <section className="map-section">
             <div className="map-header">
-                <h2>Bangkok Massage Directories</h2>
-                <p>Explore all the recommended parlors across the city. Book directly or let us arrange the perfect companion for your visit.</p>
+                <h2>{t.map.title}</h2>
+                <p>{t.map.subtitle}</p>
             </div>
             <div className="map-container relative-container">
                 <button className={`aqi-toggle-btn ${showAqi ? 'active' : ''}`} onClick={toggleAqi}>
-                    {showAqi ? 'Hide Air Quality' : 'Check Air Quality'}
+                    {showAqi ? t.map.hideAqi : t.map.checkAqi}
                 </button>
 
                 {showAqi && (

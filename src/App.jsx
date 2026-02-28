@@ -9,12 +9,16 @@ import CompanionModal from './components/CompanionModal';
 import MapSection from './components/MapSection';
 import HowItWorks from './components/HowItWorks';
 import Footer from './components/Footer';
+import { translations } from './translations';
 
 function App() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('Recommended');
   const [selectedCompanion, setSelectedCompanion] = useState(null);
   const [companions, setCompanions] = useState([]);
+  const [language, setLanguage] = useState('en');
+
+  const t = translations[language];
 
   useEffect(() => {
     const fetchData = () => {
@@ -64,18 +68,18 @@ function App() {
 
   return (
     <div className="app-container">
-      <Header />
+      <Header language={language} setLanguage={setLanguage} t={t} />
 
       <main className="main-content">
-        <HeroSection />
+        <HeroSection t={t} />
 
-        <MapSection />
+        <MapSection t={t} />
 
-        <HowItWorks />
+        <HowItWorks t={t} />
 
         <div className="section-header">
-          <h2>Featured Companions</h2>
-          <p>Discover our highly-rated professionals ready to elevate your experience.</p>
+          <h2>{t.featured.title}</h2>
+          <p>{t.featured.subtitle}</p>
         </div>
 
         <FilterBar
@@ -83,20 +87,23 @@ function App() {
           setActiveCategory={setActiveCategory}
           sortBy={sortBy}
           setSortBy={setSortBy}
+          t={t}
         />
 
         <CompanionGrid
           companions={filteredCompanions}
           onCardClick={setSelectedCompanion}
+          t={t}
         />
       </main>
 
-      <Footer />
+      <Footer t={t} />
 
       {selectedCompanion && (
         <CompanionModal
           companion={selectedCompanion}
           onClose={() => setSelectedCompanion(null)}
+          t={t}
         />
       )}
     </div>

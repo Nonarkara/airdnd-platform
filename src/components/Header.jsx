@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Header() {
+function Header({ language, setLanguage, t }) {
     return (
         <header className="header">
             <div className="logo">
@@ -8,12 +8,20 @@ function Header() {
                 AirDnD
             </div>
             <nav className="nav-links">
-                <a href="#" className="nav-link active">Discover</a>
-                <a href="#" className="nav-link">Bookings</a>
-                <a href="#" className="nav-link">Messages</a>
-                <a href="#" className="nav-link">Profile</a>
+                <a href="#" className="nav-link active">{t.nav.discover}</a>
+                <a href="#" className="nav-link">{t.nav.bookings}</a>
+                <a href="#" className="nav-link">{t.nav.messages}</a>
+                <a href="#" className="nav-link">{t.nav.profile}</a>
             </nav>
-            <button className="btn-premium">Premium</button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <button
+                    onClick={() => setLanguage(language === 'en' ? 'th' : 'en')}
+                    style={{ background: 'none', border: '1px solid #e2e8f0', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                    {language === 'en' ? 'TH' : 'EN'}
+                </button>
+                <button className="btn-premium">{t.nav.premium}</button>
+            </div>
         </header>
     );
 }

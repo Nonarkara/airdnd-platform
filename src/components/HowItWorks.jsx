@@ -1,28 +1,27 @@
 import React from 'react';
 import './HowItWorks.css';
 
-function HowItWorks() {
+function HowItWorks({ t }) {
     return (
         <section className="how-it-works">
             <div className="hiw-header">
-                <h2>How Air DnD Works</h2>
-                <p>Book a premium companion for dinner, a date, or massage in 3 simple steps.</p>
+                <h2>{t.howItWorks.title}</h2>
             </div>
             <div className="hiw-steps">
                 <div className="hiw-step">
                     <div className="step-icon">🔍</div>
-                    <h3>1. Discover</h3>
-                    <p>Browse our curated selection of verified companions. View their photos, rates, and availability in real-time.</p>
+                    <h3>{t.howItWorks.step1Title}</h3>
+                    <p>{t.howItWorks.step1Desc}</p>
                 </div>
                 <div className="hiw-step">
                     <div className="step-icon">💬</div>
-                    <h3>2. Connect</h3>
-                    <p>Select your favorite and our intelligent bot will handle the matchmaking and introduction instantly.</p>
+                    <h3>{t.howItWorks.step2Title}</h3>
+                    <p>{t.howItWorks.step2Desc}</p>
                 </div>
                 <div className="hiw-step">
                     <div className="step-icon">🥂</div>
-                    <h3>3. Enjoy</h3>
-                    <p>Meet up for a professional massage, a sophisticated dinner, or a memorable date.</p>
+                    <h3>{t.howItWorks.step3Title}</h3>
+                    <p>{t.howItWorks.step3Desc}</p>
                 </div>
             </div>
         </section>

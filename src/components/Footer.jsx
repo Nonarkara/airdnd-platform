@@ -1,7 +1,7 @@
 import React from 'react';
 import './Footer.css';
 
-function Footer() {
+function Footer({ t }) {
     return (
         <footer className="airdnd-footer">
             <div className="footer-content">
@@ -17,21 +17,16 @@ function Footer() {
                 </div>
 
                 <div className="footer-disclaimer">
-                    <h4>Legal & Ethical Disclaimer</h4>
-                    <p>
-                        AirDnD is strictly a platform for arranging dinners, dates, and professional companionship services. We have a zero-tolerance policy for illegal activities. We operate in strict adherence to local laws and respect human rights as outlined by the UN Charter on Human Rights.
-                    </p>
-                    <p>
-                        Our mission is to empower our companions. We ensure a safe, respectful environment and guarantee that the majority of benefits and profits go directly back to the individuals providing these professional services.
-                    </p>
+                    <h4>{t.footer.disclaimerTitle}</h4>
+                    <p>{t.footer.disclaimerText}</p>
                 </div>
             </div>
             <div className="footer-bottom">
-                <p>&copy; {new Date().getFullYear()} AirDnD Platform. All rights reserved.</p>
+                <p>{t.footer.rights}</p>
                 <div className="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Safety Guidelines</a>
+                    <a href="#">{t.footer.privacy}</a>
+                    <a href="#">{t.footer.terms}</a>
+                    <a href="#">{t.footer.safety}</a>
                 </div>
             </div>
         </footer>

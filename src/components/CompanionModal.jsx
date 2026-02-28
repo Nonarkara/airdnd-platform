@@ -1,7 +1,7 @@
 import React from 'react';
 import './CompanionModal.css';
 
-function CompanionModal({ companion, onClose }) {
+function CompanionModal({ companion, onClose, t }) {
     if (!companion) return null;
 
     return (
@@ -17,25 +17,26 @@ function CompanionModal({ companion, onClose }) {
                     <div className="modal-info-section">
                         <h2 className="modal-name">{companion.name} <span className="modal-age">({companion.age})</span></h2>
                         <div className="modal-location">
-                            <span className="icon-pin">📍</span> {companion.location} • ⭐ {companion.rating} ({companion.reviews})
+                            <span className="icon-pin">📍</span> {companion.location} • ⭐ {companion.rating} ({companion.reviews} {t.modal.reviews})
                         </div>
 
                         <div className="metrics-grid">
                             <div className="metric-box">
-                                <span className="metric-value">{companion.metrics.height}</span>
-                                <span className="metric-label">Height</span>
+                                <span className="metric-value">{companion.metrics?.height || '-'}</span>
+                                <span className="metric-label">{t.modal.height}</span>
                             </div>
                             <div className="metric-box">
-                                <span className="metric-value">{companion.metrics.weight}</span>
-                                <span className="metric-label">Weight</span>
+                                <span className="metric-value">{companion.metrics?.weight || '-'}</span>
+                                <span className="metric-label">{t.modal.weight}</span>
                             </div>
                             <div className="metric-box">
                                 <span className="metric-value">{companion.age}</span>
-                                <span className="metric-label">Age</span>
+                                <span className="metric-label">{t.modal.age}</span>
                             </div>
                         </div>
 
                         <div className="modal-description">
+                            <h3>{t.modal.about}</h3>
                             <p>{companion.description}</p>
                         </div>
 
@@ -48,9 +49,9 @@ function CompanionModal({ companion, onClose }) {
                         <div className="modal-footer">
                             <div className="modal-price-range">
                                 <span className="price-label">Price</span>
-                                <span className="price-value">{companion.price}/hr</span>
+                                <span className="price-value">{companion.price}</span>
                             </div>
-                            <button className="btn-book">Book Now</button>
+                            <button className="btn-book">{t.modal.bookNow}</button>
                         </div>
                     </div>
                 </div>
