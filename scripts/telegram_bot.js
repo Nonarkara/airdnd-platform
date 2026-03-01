@@ -1,4 +1,3 @@
-/* global process */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -6,6 +5,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import { uploadPhoto, appendToSheet } from './google_service.js';
+import { createClient } from '@supabase/supabase-js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,6 +15,10 @@ const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 const driveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 const sheetId = process.env.GOOGLE_SHEET_ID;
+
+const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://fehdtfncbutesgadjsxp.supabase.co';
+const supabaseKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 if (!botToken || !geminiApiKey) {
     console.error('⚠️ Missing TELEGRAM_BOT_TOKEN or GEMINI_API_KEY. Telegram Bot sync functionality will be disabled.');
@@ -107,18 +111,6 @@ if (!botToken || !geminiApiKey) {
                 return bot.sendMessage(chatId, "⚠️ Could not identify any companion profiles in that message.");
             }
 
-            // Read current data
-            let currentData = [];
-            if (fs.existsSync(dataPath)) {
-                currentData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-            }
-
-            // Find highest ID
-            let maxId = 0;
-            if (currentData.length > 0) {
-                maxId = Math.max(...currentData.map(c => c.id || 0));
-            }
-
             const timestamp = new Date().toISOString();
 
             // The photos from this media group arrive concurrently. Wait slightly to ensure all photos pool before assigning.
@@ -130,23 +122,40 @@ if (!botToken || !geminiApiKey) {
             // Append new records
             for (let i = 0; i < newCompanions.length; i++) {
                 let companion = newCompanions[i];
-                maxId++;
-                companion.id = maxId;
 
                 // Assign pooled image if one was fetched in the media group, otherwise fallback sequentially
                 if (assignedPhotos[i]) {
-                    companion.imageUrl = `/mockups/${assignedPhotos[i]}`;
+                    companion.image_url = `/mockups/${assignedPhotos[i]}`;
                 } else {
-                    const seqIndex = (currentData.length + i) % availableImages.length;
-                    companion.imageUrl = `/mockups/${availableImages[seqIndex]}`;
+                    const seqIndex = Math.floor(Math.random() * availableImages.length);
+                    companion.image_url = `/mockups/${availableImages[seqIndex]}`;
                 }
 
-                currentData.push(companion);
+                // Insert into Supabase
+                const { error } = await supabase.from('companions').insert([{
+                    name: companion.name,
+                    age: parseInt(companion.age) || null,
+                    location: companion.location,
+                    price: companion.price,
+                    description: companion.description,
+                    image_url: companion.image_url,
+                    rating: companion.rating || 0.0,
+                    reviews: companion.reviews || 0,
+                    availability: companion.availability,
+                    tags: companion.tags || [],
+                    metrics: companion.metrics || {}
+                }]);
+
+                if (error) {
+                    console.error('Supabase Insert Error:', error.message);
+                } else {
+                    console.log(`[Supabase] Inserted ${companion.name}`);
+                }
 
                 // Sync to Google Sheets
                 if (sheetId) {
                     try {
-                        const row = [timestamp, companion.name, companion.age, companion.location, companion.price, companion.rating, companion.tags.join(', ')];
+                        const row = [timestamp, companion.name, companion.age, companion.location, companion.price, companion.rating, (companion.tags || []).join(', ')];
                         await appendToSheet(sheetId, row);
                         console.log(`[Google Sheets] Appended row for ${companion.name}`);
                     } catch (err) {
@@ -154,9 +163,6 @@ if (!botToken || !geminiApiKey) {
                     }
                 }
             }
-
-            // Save locale file
-            fs.writeFileSync(dataPath, JSON.stringify(currentData, null, 2));
 
             const names = newCompanions.map(c => c.name).join(', ');
             bot.sendMessage(chatId, `✅ Successfully processed ${newCompanions.length} profile(s): ${names}. Added to Website, Photos saved to Drive, Data logged in Analytics Sheet!`);

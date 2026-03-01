@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "scrape": "node scripts/scraper.js",
     "scrape:live": "node scripts/telegram_scraper.js",
-    "bot": "node scripts/userbot.js",
+    "bot": "node scripts/telegram_bot.js",
+    "userbot": "node scripts/userbot.js",
+    "userbot:daemon": "chmod +x scripts/daemon.sh && ./scripts/daemon.sh",
     "start": "node server.js"
   },
   "dependencies": {
