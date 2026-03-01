@@ -11,12 +11,14 @@ function CompanionCard({ companion, onClick }) {
 
             <div className="card-content">
                 <div className="card-header">
-                    <h3 className="card-name">{companion.name} <span className="card-age">({companion.age})</span></h3>
-                    <span className="card-price">{companion.price}/hr</span>
+                    <h3 className="card-name">
+                        {companion.name} <span className="card-age">({companion.age || 'N/A'})</span>
+                    </h3>
+                    <span className="card-price">{companion.price || 'TBA'}</span>
                 </div>
 
                 <div className="card-tags">
-                    {companion.tags.map(tag => (
+                    {(companion.tags || []).map(tag => (
                         <span key={tag} className="pill-tag">{tag}</span>
                     ))}
                 </div>
@@ -24,7 +26,7 @@ function CompanionCard({ companion, onClick }) {
                 <div className="card-footer">
                     <div className="card-provider">
                         <div className="provider-avatar"></div>
-                        <span className="provider-price">{companion.price}/hr</span>
+                        <span className="provider-price">{companion.price || 'TBA'}</span>
                     </div>
                     <button className="btn-favorite-bottom">♡</button>
                 </div>
