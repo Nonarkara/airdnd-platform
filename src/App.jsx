@@ -43,9 +43,9 @@ function App() {
       if (isMounted) setSession(session);
     });
 
-    // Only fetch data if authenticated
+    // Fetch data regardless of auth state for easy demoing
     const fetchCompanions = async () => {
-      if (!session) return; // Only fetch if a session exists
+      // if (!session) return; // Temporarily bypassed early return
       try {
         const { data, error } = await supabase
           .from('companions')
@@ -116,9 +116,10 @@ function App() {
   });
 
   // Main Render Guardian
-  if (!session) {
-    return <Login setSession={setSession} language={language} setLanguage={setLanguage} />;
-  }
+  // TEMPORARILY DISABLED: Allow guests to view the site without logging in.
+  // if (!session) {
+  //   return <Login setSession={setSession} language={language} setLanguage={setLanguage} />;
+  // }
 
   return (
     <div className="app-container">
@@ -126,7 +127,7 @@ function App() {
         language={language}
         setLanguage={setLanguage}
         t={t}
-        onLogout={() => supabase.auth.signOut()}
+        onLogout={session ? () => supabase.auth.signOut() : null}
       />
 
       <main className="main-content">
