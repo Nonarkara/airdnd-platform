@@ -27,25 +27,31 @@ function App() {
 
   const t = translations[language];
 
-  // Auth & Data fetching
+  // Auth fetching
   useEffect(() => {
     let isMounted = true;
 
-    // Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (isMounted) setSession(session);
     });
 
-    // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       if (isMounted) setSession(session);
     });
 
-    // Fetch data regardless of auth state for easy demoing
+    return () => {
+      isMounted = false;
+      if (subscription) subscription.unsubscribe();
+    };
+  }, []);
+
+  // Data fetching
+  useEffect(() => {
+    let isMounted = true;
+
     const fetchCompanions = async () => {
-      // if (!session) return; // Temporarily bypassed early return
       try {
         const { data, error } = await supabase
           .from('companions')
@@ -56,7 +62,7 @@ function App() {
 
         if (isMounted && data) {
           setAllCompanions(data);
-          setFilteredCompanions(data); // Initialize filteredCompanions with all data
+          setFilteredCompanions(data);
 
           const uniqueLocs = [...new Set(data.map(c => c.location))];
           setLocations(uniqueLocs);
@@ -74,18 +80,13 @@ function App() {
     };
 
     fetchCompanions();
-
-    // Data polling for the private hub
     const interval = setInterval(fetchCompanions, 5000);
 
     return () => {
       isMounted = false;
-      if (subscription) { // Ensure subscription exists before unsubscribing
-        subscription.unsubscribe();
-      }
       clearInterval(interval);
     };
-  }, [session]); // Re-run fetch if session changes
+  }, []); // Run unconditionally without dependency on session
 
   // Filter logic
   let activeFilteredCompanions = allCompanions.filter(c => {
