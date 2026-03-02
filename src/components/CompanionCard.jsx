@@ -5,7 +5,7 @@ function CompanionCard({ companion, onClick }) {
     return (
         <div className="companion-card" onClick={() => onClick(companion)}>
             <div className="card-image-wrapper">
-                <img src={companion.imageUrl} alt={companion.name} className="card-image" />
+                <img src={companion.image_url || companion.imageUrl} alt={companion.name} className="card-image" />
                 <button className="btn-favorite">♡</button>
             </div>
 

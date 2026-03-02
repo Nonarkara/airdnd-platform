@@ -46,13 +46,19 @@ if (!apiId || !apiHash) {
 
     // Add event listener for new messages
     client.addEventHandler(async (event) => {
+        // GramJS fires events for many things (typing, read access, etc).
+        // We must ensure this event actually contains a text message.
+        if (!event.message) return;
+
         const message = event.message;
         const text = message.message || message.text;
 
+        if (!text) return;
+
         // Ensure you only process messages from specific groups or channels
-        // For testing, we will process messages that match a certain pattern or from 'me'
-        if (text && text.includes('Price:') && text.includes('Age:')) {
-            console.log('Detected potential profile in userbot stream!');
+        // For testing, we will process messages that match a certain pattern
+        if (text.includes('Price:') && text.includes('Age:')) {
+            console.log('\n[Bot] Detected potential companion profile in userbot stream!');
 
             try {
                 const prompt = `
@@ -81,13 +87,13 @@ if (!apiId || !apiHash) {
 
                     const { data, error } = await supabase.from('companions').insert([companion]);
                     if (error) {
-                        console.error('Supabase Insert Error:', error.message);
+                        console.error('[Bot] Supabase Insert Error:', error.message);
                     } else {
                         console.log(`✅ Automatically scraped and inserted ${companion.name} into Database!`);
                     }
                 }
             } catch (err) {
-                console.error('Error processing zero-touch message:', err.message);
+                console.error('[Bot] Error processing zero-touch message:', err.message);
             }
         }
     });

@@ -90,7 +90,7 @@ function App() {
   // Filter logic
   let activeFilteredCompanions = allCompanions.filter(c => {
     if (activeActivity === 'All') return true;
-    return c.tags && c.tags.includes(activeActivity);
+    return Array.isArray(c.tags) && c.tags.includes(activeActivity);
   });
 
   // Sort logic
