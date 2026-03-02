@@ -17,7 +17,7 @@ const driveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 const sheetId = process.env.GOOGLE_SHEET_ID;
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://fehdtfncbutesgadjsxp.supabase.co';
-const supabaseKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+const supabaseKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_mf3Wmwk6mMO-EoYaDxMUvA_CihTsTBF';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 if (!botToken || !geminiApiKey) {
