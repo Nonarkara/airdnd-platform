@@ -28,20 +28,21 @@ if (!geminiApiKey) {
 }
 
 const ai = new GoogleGenAI({ apiKey: geminiApiKey });
-const stringSession = new StringSession('');
+const stringSession = new StringSession(process.env.TELEGRAM_SESSION || '');
 
 async function main() {
-    console.log('Starting Bot-Authenticated Telegram Scraper (GramJS)...');
+    console.log('Starting User-Authenticated Telegram Scraper (GramJS)...');
 
     const client = new TelegramClient(stringSession, apiId, apiHash, {
         connectionRetries: 5,
     });
 
-    await client.start({
-        botAuthToken: botToken,
-    });
+    if (!process.env.TELEGRAM_SESSION) {
+        throw new Error('TELEGRAM_SESSION not found in .env. Please run userbot.js to login first.');
+    }
+    await client.connect();
 
-    console.log('\\n✅ Connected to Telegram as a Bot!');
+    console.log('\\n✅ Connected to Telegram as a User!');
 
     const channelUsername = 'nutyes';
     console.log(`Fetching messages from @${channelUsername}...`);

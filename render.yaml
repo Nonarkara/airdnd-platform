@@ -21,3 +21,5 @@ services:
         sync: false
       - key: VITE_SUPABASE_SERVICE_ROLE_KEY
         sync: false
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=400"
