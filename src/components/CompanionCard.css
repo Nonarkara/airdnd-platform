@@ -66,6 +66,39 @@
   text-transform: uppercase;
 }
 
+.card-captured {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.14rem;
+  min-width: 11.75rem;
+  max-width: min(68%, 14rem);
+  padding: 0.6rem 0.75rem;
+  border-radius: 1rem 1.5rem 1rem 1.4rem;
+  background: rgba(16, 24, 38, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+  color: #ffffff;
+  text-align: right;
+}
+
+.card-captured-label {
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.card-captured-value {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
 .card-content {
   position: relative;
   z-index: 1;
@@ -203,6 +236,11 @@
 @media (max-width: 480px) {
   .companion-card {
     min-height: 24rem;
+  }
+
+  .card-captured {
+    min-width: 0;
+    max-width: calc(100% - 7rem);
   }
 
   .card-topline,

@@ -1,4 +1,8 @@
-import { SOURCE_LABELS, formatRelativeTimestamp } from '../lib/listings';
+import {
+  SOURCE_LABELS,
+  formatPreciseTimestamp,
+  formatRelativeTimestamp,
+} from '../lib/listings';
 import './CompanionModal.css';
 
 function CompanionModal({ companion, onClose, t }) {
@@ -9,6 +13,7 @@ function CompanionModal({ companion, onClose, t }) {
   const ratingLine = companion.rating
     ? `${companion.rating.toFixed(1)}★`
     : t.card.unrated;
+  const preciseTimestamp = formatPreciseTimestamp(companion.updatedAt) || t.modal.timestampPending;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -26,6 +31,10 @@ function CompanionModal({ companion, onClose, t }) {
         <div className="modal-body">
           <div className="modal-image-section">
             <img src={companion.imageUrl} alt={companion.name} className="modal-main-image" />
+            <div className="modal-image-stamp">
+              <span className="modal-image-stamp-label">{t.modal.capturedAt}</span>
+              <strong>{preciseTimestamp}</strong>
+            </div>
           </div>
 
           <div className="modal-info-section">

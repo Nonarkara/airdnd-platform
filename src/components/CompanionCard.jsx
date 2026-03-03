@@ -1,16 +1,25 @@
-import { SOURCE_LABELS, formatRelativeTimestamp } from '../lib/listings';
+import {
+  SOURCE_LABELS,
+  formatPreciseTimestamp,
+  formatRelativeTimestamp,
+} from '../lib/listings';
 import './CompanionCard.css';
 
 function CompanionCard({ companion, onClick, t }) {
   const secondaryLine = companion.reviews
     ? `${companion.reviews} ${t.card.reviewsLabel}`
     : SOURCE_LABELS[companion.dataSource];
+  const preciseTimestamp = formatPreciseTimestamp(companion.updatedAt) || t.card.timestampPending;
 
   return (
     <article className="companion-card" onClick={() => onClick(companion)}>
       <div className="card-image-wrapper">
         <img src={companion.imageUrl} alt={companion.name} className="card-image" />
         <span className="card-city">{companion.city}</span>
+        <span className="card-captured">
+          <span className="card-captured-label">{t.card.capturedLabel}</span>
+          <span className="card-captured-value">{preciseTimestamp}</span>
+        </span>
       </div>
 
       <div className="card-content">

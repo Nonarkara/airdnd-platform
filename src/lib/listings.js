@@ -125,6 +125,19 @@ export function normalizeListing(rawListing, options = {}) {
   };
 }
 
+function parseTimestamp(value) {
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return date;
+}
+
 export function normalizeListings(listings, options = {}) {
   if (!Array.isArray(listings)) {
     return [];
@@ -161,12 +174,8 @@ export function createMetrics(listings) {
 }
 
 export function formatRelativeTimestamp(value) {
-  if (!value) {
-    return 'No timestamp';
-  }
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
+  const date = parseTimestamp(value);
+  if (!date) {
     return 'No timestamp';
   }
 
@@ -175,5 +184,20 @@ export function formatRelativeTimestamp(value) {
     day: 'numeric',
     hour: 'numeric',
     minute: '2-digit',
+  }).format(date);
+}
+
+export function formatPreciseTimestamp(value) {
+  const date = parseTimestamp(value);
+  if (!date) {
+    return null;
+  }
+
+  return new Intl.DateTimeFormat('en', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
   }).format(date);
 }

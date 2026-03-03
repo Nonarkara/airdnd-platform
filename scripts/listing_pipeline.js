@@ -6,6 +6,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const snapshotPath = path.join(__dirname, '../public/data.json');
 
+function createCaptureTimestamp(date = new Date()) {
+  return date.toISOString().replace(/\.\d{3}Z$/, 'Z');
+}
+
 function normalizeText(value, fallback = '') {
   if (typeof value !== 'string') {
     return fallback;
@@ -104,7 +108,7 @@ export function parseModelJson(text) {
 
 export function normalizeExtractedListings(rawListings, options = {}) {
   const source = options.source || 'snapshot';
-  const timestamp = options.timestamp || new Date().toISOString();
+  const timestamp = options.timestamp || createCaptureTimestamp();
   const defaultImage = options.defaultImage || '/mockups/109748.jpg';
 
   const normalized = (Array.isArray(rawListings) ? rawListings : [])

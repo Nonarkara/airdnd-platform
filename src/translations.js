@@ -94,6 +94,8 @@ const shared = {
     reviewsLabel: 'reviews',
     pendingTag: 'Verification pending',
     unrated: 'Unrated',
+    capturedLabel: 'Captured',
+    timestampPending: 'Capture pending',
     viewDetails: 'View details',
   },
   footer: {
@@ -110,6 +112,8 @@ const shared = {
   modal: {
     close: 'Close details',
     reviews: 'reviews',
+    capturedAt: 'Captured at',
+    timestampPending: 'Capture pending',
     height: 'Height',
     weight: 'Weight',
     rate: 'Rate',
