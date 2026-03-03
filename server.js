@@ -3,9 +3,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 
-// This will boot up your Telegram bot in the background of the Express server
-import './scripts/telegram_bot.js';
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

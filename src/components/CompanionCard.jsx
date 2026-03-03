@@ -1,38 +1,65 @@
-import React from 'react';
+import { SOURCE_LABELS, formatRelativeTimestamp } from '../lib/listings';
 import './CompanionCard.css';
 
-function CompanionCard({ companion, onClick }) {
-    return (
-        <div className="companion-card" onClick={() => onClick(companion)}>
-            <div className="card-image-wrapper">
-                <img src={companion.image_url || companion.imageUrl} alt={companion.name} className="card-image" />
-                <button className="btn-favorite">♡</button>
-            </div>
+function CompanionCard({ companion, onClick, t }) {
+  const secondaryLine = companion.reviews
+    ? `${companion.reviews} ${t.card.reviewsLabel}`
+    : SOURCE_LABELS[companion.dataSource];
 
-            <div className="card-content">
-                <div className="card-header">
-                    <h3 className="card-name">
-                        {companion.name} <span className="card-age">({companion.age || 'N/A'})</span>
-                    </h3>
-                    <span className="card-price">{companion.price || 'TBA'}</span>
-                </div>
+  return (
+    <article className="companion-card" onClick={() => onClick(companion)}>
+      <div className="card-image-wrapper">
+        <img src={companion.imageUrl} alt={companion.name} className="card-image" />
+        <span className="card-city">{companion.city}</span>
+      </div>
 
-                <div className="card-tags">
-                    {(companion.tags || []).map(tag => (
-                        <span key={tag} className="pill-tag">{tag}</span>
-                    ))}
-                </div>
-
-                <div className="card-footer">
-                    <div className="card-provider">
-                        <div className="provider-avatar"></div>
-                        <span className="provider-price">{companion.price || 'TBA'}</span>
-                    </div>
-                    <button className="btn-favorite-bottom">♡</button>
-                </div>
-            </div>
+      <div className="card-content">
+        <div className="card-topline">
+          <span className="card-source">{SOURCE_LABELS[companion.dataSource]}</span>
+          <span className="card-updated">{formatRelativeTimestamp(companion.updatedAt)}</span>
         </div>
-    );
+
+        <div className="card-header">
+          <div>
+            <h3 className="card-name">{companion.name}</h3>
+            <p className="card-location">{companion.location}</p>
+          </div>
+          <span className="card-price">{companion.priceLabel}</span>
+        </div>
+
+        <p className="card-description">{companion.description}</p>
+
+        <div className="card-tags">
+          {companion.tags.length > 0 ? (
+            companion.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="pill-tag">
+                {tag}
+              </span>
+            ))
+          ) : (
+            <span className="pill-tag muted-tag">{t.card.pendingTag}</span>
+          )}
+        </div>
+
+        <div className="card-footer">
+          <div className="card-signal">
+            <strong>{companion.rating ? `${companion.rating.toFixed(1)}★` : t.card.unrated}</strong>
+            <span>{secondaryLine}</span>
+          </div>
+          <button
+            type="button"
+            className="btn-card-action"
+            onClick={(event) => {
+              event.stopPropagation();
+              onClick(companion);
+            }}
+          >
+            {t.card.viewDetails}
+          </button>
+        </div>
+      </div>
+    </article>
+  );
 }
 
 export default CompanionCard;

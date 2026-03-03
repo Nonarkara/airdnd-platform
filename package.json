@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "scrape": "node scripts/scraper.js",
     "scrape:live": "node scripts/telegram_scraper.js",
+    "verify:snapshot": "node scripts/verify_snapshot.js",
     "bot": "node scripts/telegram_bot.js",
     "userbot": "node scripts/userbot.js",
     "userbot:daemon": "chmod +x scripts/daemon.sh && ./scripts/daemon.sh",

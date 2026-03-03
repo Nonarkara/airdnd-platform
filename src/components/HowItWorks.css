@@ -1,66 +1,82 @@
 .how-it-works {
-    background-color: var(--color-surface);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-2xl);
-    margin-bottom: var(--spacing-2xl);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--color-border);
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.hiw-header {
+  display: grid;
+  gap: var(--spacing-sm);
+  justify-items: center;
+  text-align: center;
 }
 
 .hiw-header h2 {
-    font-size: 2rem;
-    color: var(--color-text-main);
-    margin-bottom: var(--spacing-sm);
+  font-size: clamp(2.4rem, 5vw, 5.4rem);
+  max-width: 8ch;
 }
 
 .hiw-header p {
-    color: var(--color-text-muted);
-    font-size: 1.1rem;
-    margin-bottom: var(--spacing-2xl);
+  max-width: 48ch;
+  color: var(--color-ink-soft);
+  line-height: 1.8;
 }
 
 .hiw-steps {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xl);
-}
-
-@media (min-width: 768px) {
-    .hiw-steps {
-        flex-direction: row;
-        justify-content: space-between;
-    }
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: start;
 }
 
 .hiw-step {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-md);
+  display: grid;
+  gap: 0.55rem;
+  justify-items: center;
+  text-align: center;
+  padding-top: 0.5rem;
+}
+
+.hiw-step:nth-child(2) {
+  margin-top: 1.8rem;
+}
+
+.hiw-step:nth-child(3) {
+  margin-top: 0.8rem;
 }
 
 .step-icon {
-    font-size: 3rem;
-    background-color: var(--color-background);
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: 1px solid var(--color-border);
+  position: static;
+  width: auto;
+  height: auto;
+  border: 0;
+  background: transparent;
+  color: rgba(214, 106, 38, 0.22);
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1;
 }
 
 .hiw-step h3 {
-    font-size: 1.25rem;
-    color: var(--color-text-main);
+  font-size: clamp(1.35rem, 2vw, 2rem);
+  max-width: 15ch;
 }
 
 .hiw-step p {
-    color: var(--color-text-muted);
-    line-height: 1.5;
-    font-size: 0.95rem;
-    max-width: 250px;
+  max-width: 28ch;
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 1024px) {
+  .hiw-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .hiw-step:nth-child(2),
+  .hiw-step:nth-child(3) {
+    margin-top: 0;
+  }
 }

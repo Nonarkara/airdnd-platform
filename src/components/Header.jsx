@@ -1,37 +1,62 @@
-import React from 'react';
+function Header({
+  language,
+  setLanguage,
+  t,
+  onLogout,
+  onRefresh,
+  isRefreshing,
+  sourceLabel,
+}) {
+  return (
+    <header className="header" id="overview">
+      <a className="brand-block" href="#overview" aria-label="Air DnD">
+        <span className="brand-mark">Air</span>
+        <span className="brand-copy">
+          <strong>Air DnD</strong>
+          <small>{t.header.tagline}</small>
+        </span>
+      </a>
 
-function Header({ language, setLanguage, t, onLogout }) {
-    return (
-        <header className="header">
-            <div className="logo">
-                <span className="logo-icon">✨</span>
-                AirDnD
-            </div>
-            <nav className="nav-links">
-                <a href="#" className="nav-link active">{t.nav.discover}</a>
-                <a href="#" className="nav-link">{t.nav.bookings}</a>
-                <a href="#" className="nav-link">{t.nav.messages}</a>
-                <a href="#" className="nav-link">{t.nav.profile}</a>
-            </nav>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <select
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
-                    style={{ background: 'none', border: '1px solid #e2e8f0', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', outline: 'none' }}
-                >
-                    <option value="en">EN</option>
-                    <option value="th">TH</option>
-                    <option value="zh">ZH</option>
-                    <option value="ko">KO</option>
-                </select>
-                {onLogout && (
-                    <button className="btn-premium" onClick={onLogout} style={{ background: '#ef4444', color: 'white' }}>
-                        Logout
-                    </button>
-                )}
-            </div>
-        </header>
-    );
+      <nav className="nav-links" aria-label="Primary">
+        <a href="#map">{t.nav.map}</a>
+        <a href="#workflow">{t.nav.workflow}</a>
+        <a href="#live-listings">{t.nav.listings}</a>
+      </nav>
+
+      <div className="header-actions">
+        <span className="status-pill header-status">{sourceLabel}</span>
+
+        <button
+          type="button"
+          className="btn-refresh"
+          onClick={onRefresh}
+          disabled={isRefreshing}
+        >
+          {isRefreshing ? t.common.refreshing : t.common.refresh}
+        </button>
+
+        <label className="language-picker">
+          <span>{t.common.language}</span>
+          <select
+            value={language}
+            onChange={(event) => setLanguage(event.target.value)}
+            aria-label={t.common.language}
+          >
+            <option value="en">EN</option>
+            <option value="th">TH</option>
+            <option value="zh">ZH</option>
+            <option value="ko">KO</option>
+          </select>
+        </label>
+
+        {onLogout && (
+          <button type="button" className="btn-ghost" onClick={onLogout}>
+            {t.common.logout}
+          </button>
+        )}
+      </div>
+    </header>
+  );
 }
 
 export default Header;

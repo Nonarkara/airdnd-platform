@@ -1,16 +1,40 @@
-# React + Vite
+# Air DnD Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Air DnD is a React + Vite dashboard for Bangkok-first listing intelligence. The app prefers live Supabase data, falls back to `public/data.json` when live data is unavailable, and finally uses bundled backup records if both live and snapshot inputs fail.
 
-Currently, two official plugins are available:
+## Runtime modes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- `npm run dev`: local Vite development server
+- `npm run build`: production build
+- `npm run start`: serves the built frontend and static assets only
+- `npm run bot`: runs the Telegram bot separately
 
-## React Compiler
+The web server is intentionally decoupled from the Telegram bot so the UI can stay stable even if Telegram polling or Gemini extraction fails.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Data pipeline
 
-## Expanding the ESLint configuration
+- `npm run scrape`: parse `scripts/sample_data.txt`, normalize listings, write a fresh snapshot, and sync Supabase when the service role key is available
+- `npm run scrape:live`: pull recent Telegram messages from `TELEGRAM_SOURCE_CHANNEL`, normalize listings, write a fresh snapshot, and sync Supabase when possible
+- `npm run verify:snapshot`: confirm `public/data.json` exists and contains at least one listing
+- `node scripts/seed_supabase.js`: backfill the current snapshot into Supabase without duplicating existing rows
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Supported optional environment variables for the live scraper:
+
+- `TELEGRAM_SOURCE_CHANNEL`
+- `TELEGRAM_FETCH_LIMIT`
+
+## Launch checklist
+
+1. Run `npm run scrape:live` to refresh the Telegram snapshot. If parsing fails, the previous snapshot is preserved.
+2. Run `npm run verify:snapshot` to confirm the saved fallback dataset is non-empty.
+3. If you want the dashboard to prefer current Supabase data, run `node scripts/seed_supabase.js`.
+4. Run `npm run build`.
+5. Run `npm run start` for the production web server.
+6. Open the dashboard and confirm the source badge shows `Live`, `Verified snapshot`, or `Verified backup`, and that listings render in the grid.
+
+## Reliability rules
+
+- The frontend checks Supabase first.
+- If Supabase errors, times out, or returns no rows, the frontend loads `public/data.json`.
+- If the snapshot is unavailable or empty, the frontend loads the bundled backup dataset.
+- The scraper only overwrites `public/data.json` when at least one valid listing was extracted.

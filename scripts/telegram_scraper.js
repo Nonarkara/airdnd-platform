@@ -1,130 +1,152 @@
-
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { TelegramClient } from 'telegram';
 import { StringSession } from 'telegram/sessions/index.js';
 import { GoogleGenAI } from '@google/genai';
+import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import {
+  insertListingsIfPossible,
+  normalizeExtractedListings,
+  parseModelJson,
+  writeSnapshotListings,
+} from './listing_pipeline.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-const botToken = process.env.TELEGRAM_BOT_TOKEN;
-const apiId = parseInt(process.env.TELEGRAM_API_ID);
+const apiId = Number.parseInt(process.env.TELEGRAM_API_ID, 10);
 const apiHash = process.env.TELEGRAM_API_HASH;
 const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+const channelUsername = process.env.TELEGRAM_SOURCE_CHANNEL || 'nutyes';
+const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '30', 10);
 
-if (!botToken || !apiId || !apiHash) {
-    console.error('⚠️ Missing TELEGRAM_BOT_TOKEN, TELEGRAM_API_ID or TELEGRAM_API_HASH in .env');
-    console.error('Please add them to your .env file to run the scraper.');
-    process.exit(1);
+if (!apiId || !apiHash) {
+  console.error('Missing TELEGRAM_API_ID or TELEGRAM_API_HASH in .env');
+  process.exit(1);
+}
+
+if (!process.env.TELEGRAM_SESSION) {
+  console.error('Missing TELEGRAM_SESSION in .env. Run userbot.js first.');
+  process.exit(1);
 }
 
 if (!geminiApiKey) {
-    console.error('⚠️ Missing GEMINI_API_KEY in .env');
-    process.exit(1);
+  console.error('Missing GEMINI_API_KEY or GOOGLE_API_KEY in .env');
+  process.exit(1);
 }
 
 const ai = new GoogleGenAI({ apiKey: geminiApiKey });
-const stringSession = new StringSession(process.env.TELEGRAM_SESSION || '');
+const stringSession = new StringSession(process.env.TELEGRAM_SESSION);
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+const supabase =
+  supabaseUrl && supabaseServiceRoleKey
+    ? createClient(supabaseUrl, supabaseServiceRoleKey)
+    : null;
+
+function buildPrompt(rawText) {
+  return `
+Extract distinct listing profiles from the following Telegram messages.
+Return only a JSON array with this shape:
+[
+  {
+    "name": "Listing name",
+    "age": 27,
+    "location": "District, City",
+    "price": "฿1,200",
+    "metrics": {
+      "height": "165 cm",
+      "weight": "49 kg"
+    },
+    "tags": ["Bangkok", "Wellness"],
+    "description": "Short factual summary"
+  }
+]
+
+Rules:
+- Ignore messages that do not describe a specific profile.
+- Do not invent ratings or review counts.
+- Keep descriptions factual and concise.
+- Use null for unknown age values.
+
+Messages:
+${rawText}
+`;
+}
+
+function attachImages(listings, files) {
+  const imagePool = Array.isArray(files) && files.length > 0 ? files : ['109748.jpg'];
+
+  return listings.map((listing, index) => ({
+    ...listing,
+    imageUrl: `/mockups/${imagePool[index % imagePool.length]}`,
+  }));
+}
 
 async function main() {
-    console.log('Starting User-Authenticated Telegram Scraper (GramJS)...');
+  console.log(`Starting Telegram scraper for @${channelUsername}...`);
 
-    const client = new TelegramClient(stringSession, apiId, apiHash, {
-        connectionRetries: 5,
+  const client = new TelegramClient(stringSession, apiId, apiHash, {
+    connectionRetries: 5,
+  });
+
+  await client.connect();
+
+  try {
+    const messages = await client.getMessages(channelUsername, {
+      limit: Number.isFinite(fetchLimit) ? fetchLimit : 30,
     });
 
-    if (!process.env.TELEGRAM_SESSION) {
-        throw new Error('TELEGRAM_SESSION not found in .env. Please run userbot.js to login first.');
+    const rawText = messages
+      .map((message) => message.message)
+      .filter((message) => typeof message === 'string' && message.trim())
+      .join('\n\n---\n\n');
+
+    if (!rawText.trim()) {
+      console.log('No text messages found in the requested window. Snapshot preserved.');
+      process.exit(0);
     }
-    await client.connect();
 
-    console.log('\\n✅ Connected to Telegram as a User!');
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: buildPrompt(rawText),
+      config: {
+        responseMimeType: 'application/json',
+      },
+    });
 
-    const channelUsername = 'nutyes';
-    console.log(`Fetching messages from @${channelUsername}...`);
+    const parsedListings = parseModelJson(response.text);
+    const normalizedListings = normalizeExtractedListings(parsedListings, {
+      source: 'snapshot',
+    });
 
-    try {
-        const messages = await client.getMessages(channelUsername, {
-            limit: 15, // Get last 15 messages
-        });
+    const mockupsDir = path.join(__dirname, '../public/mockups');
+    const files = fs
+      .readdirSync(mockupsDir)
+      .filter((file) => file.endsWith('.jpg') || file.endsWith('.png'));
 
-        let rawText = '';
-        for (const msg of messages) {
-            if (msg.message && msg.message.trim().length > 0) {
-                rawText += msg.message + '\\n\\n---\\n\\n';
-            }
-        }
+    const listingsWithImages = attachImages(normalizedListings, files);
+    const wroteSnapshot = writeSnapshotListings(listingsWithImages);
 
-        if (!rawText.trim()) {
-            console.log('No text messages found in the recent history of this channel.');
-            process.exit(0);
-        }
-
-        console.log(`Read ${messages.length} recent messages.\\nPassing to Gemini for extraction...`);
-
-        const prompt = `
-      Extract all distinct companions/masseuses from the following unstructured broadcast messages.
-      Respond ONLY with a JSON array where each object matches this format EXACTLY:
-      [{
-        "id": 1,
-        "name": "Extracted Name",
-        "age": (integer),
-        "location": "Location from text, or 'Bangkok, TH' if none",
-        "price": "Extracted rate e.g., '฿1,200/hr'",
-        "metrics": { "height": "(e.g. 160cm)", "weight": "(e.g. 45kg)" },
-        "rating": (random float between 4.5 and 5.0),
-        "reviews": (random integer between 10 and 300),
-        "tags": ["Tag1", "Tag2"],
-        "description": "Short summary from the text"
-      }]
-      
-      Ignore administrative messages or generic announcements that don't describe a specific person.
-      
-      Raw messages:
-      ${rawText}
-    `;
-
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: prompt,
-            config: {
-                responseMimeType: 'application/json'
-            }
-        });
-
-        let parsedData = [];
-        try {
-            parsedData = JSON.parse(response.text);
-        } catch (err) {
-            console.error("Failed to parse the JSON response from Gemini. It might not be formatted correctly.", err);
-            console.log(response.text);
-            process.exit(1);
-        }
-
-        const mockupsDir = path.join(__dirname, '../public/mockups');
-        const files = fs.readdirSync(mockupsDir).filter(f => f.endsWith('.jpg') || f.endsWith('.png'));
-
-        let mockIdx = 0;
-        for (let companion of parsedData) {
-            companion.imageUrl = `/mockups/${files[mockIdx % files.length]}`;
-            mockIdx++;
-        }
-
-        const outPath = path.join(__dirname, '../public/data.json');
-        fs.writeFileSync(outPath, JSON.stringify(parsedData, null, 2));
-
-        console.log(`✅ Successfully parsed ${parsedData.length} profiles from @${channelUsername} and wrote to public/data.json!`);
-
-    } catch (err) {
-        console.error('Error fetching/parsing messages:', err);
-        console.error('Note: If the channel is private, the bot MUST be added as an admin/member to the channel to read its messages.');
-    } finally {
-        await client.disconnect();
+    if (!wroteSnapshot) {
+      process.exit(0);
     }
+
+    if (supabase) {
+      const { inserted, skipped } = await insertListingsIfPossible(supabase, listingsWithImages);
+      console.log(`Supabase sync complete. Inserted: ${inserted}, skipped: ${skipped}`);
+    } else {
+      console.log('Supabase service role key not configured. Snapshot-only mode complete.');
+    }
+  } catch (error) {
+    console.error('Error fetching or parsing Telegram messages:', error.message);
+    process.exit(1);
+  } finally {
+    await client.disconnect();
+  }
 }
 
 main();

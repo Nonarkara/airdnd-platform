@@ -1,61 +1,89 @@
-import React from 'react';
 import './FilterBar.css';
 
-function FilterBar({ activeCategory, setActiveCategory, sortBy, setSortBy, t }) {
-    const categories = ['All', 'Dinner', 'Massage', 'Travel'];
+function FilterBar({
+  searchTerm,
+  setSearchTerm,
+  locationOptions,
+  activeLocation,
+  setActiveLocation,
+  activityOptions,
+  activeActivity,
+  setActiveActivity,
+  sortOptions,
+  sortBy,
+  setSortBy,
+  onRefresh,
+  isRefreshing,
+  t,
+}) {
+  return (
+    <section className="filter-bar" aria-label={t.filters.ariaLabel}>
+      <div className="filter-field filter-search">
+        <label htmlFor="search-listings">{t.filters.searchLabel}</label>
+        <input
+          id="search-listings"
+          type="search"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          placeholder={t.filters.searchPlaceholder}
+        />
+      </div>
 
-    return (
-        <div className="filter-bar">
-            <div className="filter-group">
-                <span className="filter-label">{t.filters.location}</span>
-                <select className="filter-select">
-                    <option>{t.filters.anywhere}</option>
-                    <option>Bangkok</option>
-                    <option>Chiang Mai</option>
-                    <option>Phuket</option>
-                    <option>Pattaya</option>
-                    <option>Koh Samui</option>
-                </select>
-            </div>
+      <div className="filter-field">
+        <label htmlFor="filter-location">{t.filters.location}</label>
+        <select
+          id="filter-location"
+          value={activeLocation}
+          onChange={(event) => setActiveLocation(event.target.value)}
+        >
+          {locationOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-            <div className="filter-divider" />
+      <div className="filter-field">
+        <label htmlFor="filter-activity">{t.filters.activity}</label>
+        <select
+          id="filter-activity"
+          value={activeActivity}
+          onChange={(event) => setActiveActivity(event.target.value)}
+        >
+          {activityOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-            <div className="filter-group activity-group">
-                <span className="filter-label">{t.filters.activity}</span>
-                <div className="activity-pills">
-                    {categories.map(cat => (
-                        <button
-                            key={cat}
-                            className={`pill-btn ${activeCategory === cat ? 'active' : ''}`}
-                            onClick={() => setActiveCategory(cat)}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
-            </div>
+      <div className="filter-field">
+        <label htmlFor="filter-sort">{t.filters.sortBy}</label>
+        <select
+          id="filter-sort"
+          value={sortBy}
+          onChange={(event) => setSortBy(event.target.value)}
+        >
+          {sortOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
 
-            <div className="filter-divider" />
-
-            <div className="filter-group">
-                <span className="filter-label">{t.filters.sortBy}</span>
-                <select
-                    className="filter-select"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                >
-                    {/* Sort options must match App.jsx logic for now */}
-                    <option>Recommended</option>
-                    <option>Age (Youngest)</option>
-                    <option>Price (Low to High)</option>
-                    <option>Price (High to Low)</option>
-                    <option>Rating</option>
-                </select>
-            </div>
-
-            <button className="btn-search">{t.filters.searchButton}</button>
-        </div>
-    );
+      <button
+        type="button"
+        className="filter-refresh"
+        onClick={onRefresh}
+        disabled={isRefreshing}
+      >
+        {isRefreshing ? t.common.refreshing : t.filters.refreshButton}
+      </button>
+    </section>
+  );
 }
 
 export default FilterBar;
