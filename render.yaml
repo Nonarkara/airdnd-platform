@@ -4,22 +4,13 @@ services:
     env: node
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
+    healthCheckPath: /
     envVars:
       - key: NODE_VERSION
         value: "20"
-      - key: TELEGRAM_BOT_TOKEN
-        sync: false
-      - key: GEMINI_API_KEY
-        sync: false
-      - key: GOOGLE_DRIVE_FOLDER_ID
-        sync: false
-      - key: GOOGLE_SHEET_ID
-        sync: false
       - key: VITE_SUPABASE_URL
         sync: false
       - key: VITE_SUPABASE_ANON_KEY
-        sync: false
-      - key: VITE_SUPABASE_SERVICE_ROLE_KEY
         sync: false
       - key: NODE_OPTIONS
         value: "--max-old-space-size=400"

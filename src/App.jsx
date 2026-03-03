@@ -21,6 +21,10 @@ const REFRESH_INTERVAL_MS = 60_000;
 const SUPABASE_TIMEOUT_MS = 4_000;
 const ALL_LOCATIONS_VALUE = 'all-locations';
 const ALL_TAGS_VALUE = 'all-tags';
+const normalizedBackupListings = normalizeListings(backupCompanions, {
+  source: 'backup',
+  isFallback: true,
+});
 const SORT_OPTIONS = [
   'Newest',
   'Lowest price',
@@ -28,6 +32,18 @@ const SORT_OPTIONS = [
   'Highest rating',
   'Alphabetical',
 ];
+const DATA_SOURCE_NOTES = {
+  automatic: {
+    supabase: 'Connected to live Supabase listings.',
+    snapshot: 'Live sync unavailable. Showing the last verified snapshot.',
+    backup: 'Resilient mode active. Using the verified backup set.',
+  },
+  manual: {
+    supabase: 'Live data refreshed successfully.',
+    snapshot: 'Manual refresh completed with the latest verified snapshot.',
+    backup: 'Manual refresh completed with the verified backup set.',
+  },
+};
 
 function sortListings(listings, sortBy) {
   const nextListings = [...listings];
@@ -70,11 +86,21 @@ async function fetchSupabaseListings() {
     .select('*')
     .order('created_at', { ascending: false });
 
+  let timeoutId = null;
   const timeoutPromise = new Promise((_, reject) => {
-    window.setTimeout(() => reject(new Error('Live data request timed out.')), SUPABASE_TIMEOUT_MS);
+    timeoutId = window.setTimeout(() => {
+      reject(new Error('Live data request timed out.'));
+    }, SUPABASE_TIMEOUT_MS);
   });
 
-  const response = await Promise.race([supabaseRequest, timeoutPromise]);
+  let response;
+  try {
+    response = await Promise.race([supabaseRequest, timeoutPromise]);
+  } finally {
+    if (timeoutId) {
+      window.clearTimeout(timeoutId);
+    }
+  }
 
   if (response.error) {
     throw response.error;
@@ -104,6 +130,49 @@ async function fetchSnapshotListings() {
   return normalizeListings(snapshot, { source: 'snapshot', isFallback: true });
 }
 
+async function loadListingsWithFallback(mode = 'automatic') {
+  const notes = DATA_SOURCE_NOTES[mode] || DATA_SOURCE_NOTES.automatic;
+
+  try {
+    const liveListings = await fetchSupabaseListings();
+    return {
+      listings: liveListings,
+      source: 'supabase',
+      note: notes.supabase,
+      warning: null,
+    };
+  } catch (liveError) {
+    try {
+      const snapshotListings = await fetchSnapshotListings();
+      return {
+        listings: snapshotListings,
+        source: 'snapshot',
+        note: notes.snapshot,
+        warning: liveError.message,
+      };
+    } catch (snapshotError) {
+      return {
+        listings: normalizedBackupListings,
+        source: 'backup',
+        note: notes.backup,
+        warning: snapshotError.message || liveError.message,
+      };
+    }
+  }
+}
+
+function createDataState(result) {
+  return {
+    source: result.source,
+    sourceLabel: SOURCE_LABELS[result.source],
+    note: result.note,
+    isLoading: false,
+    isRefreshing: false,
+    lastLoadedAt: new Date().toISOString(),
+    warning: result.warning,
+  };
+}
+
 function App() {
   const [session, setSession] = useState(null);
   const [allCompanions, setAllCompanions] = useState([]);
@@ -120,6 +189,7 @@ function App() {
     isLoading: true,
     isRefreshing: false,
     lastLoadedAt: null,
+    warning: null,
   });
 
   const t = translations[language] || translations.en;
@@ -156,59 +226,16 @@ function App() {
         ...current,
         isLoading: current.lastLoadedAt === null,
         isRefreshing: current.lastLoadedAt !== null,
+        warning: null,
       }));
 
-      try {
-        const liveListings = await fetchSupabaseListings();
-        if (!isActive) {
-          return;
-        }
-
-        setAllCompanions(liveListings);
-        setDataState({
-          source: 'supabase',
-          sourceLabel: SOURCE_LABELS.supabase,
-          note: 'Connected to live Supabase listings.',
-          isLoading: false,
-          isRefreshing: false,
-          lastLoadedAt: new Date().toISOString(),
-        });
+      const result = await loadListingsWithFallback();
+      if (!isActive) {
         return;
-      } catch (liveError) {
-        try {
-          const snapshotListings = await fetchSnapshotListings();
-          if (!isActive) {
-            return;
-          }
-
-          setAllCompanions(snapshotListings);
-          setDataState({
-            source: 'snapshot',
-            sourceLabel: SOURCE_LABELS.snapshot,
-            note: `Live sync unavailable. Showing the last verified snapshot.`,
-            isLoading: false,
-            isRefreshing: false,
-            lastLoadedAt: new Date().toISOString(),
-            warning: liveError.message,
-          });
-          return;
-        } catch (snapshotError) {
-          if (!isActive) {
-            return;
-          }
-
-          setAllCompanions(normalizeListings(backupCompanions, { source: 'backup', isFallback: true }));
-          setDataState({
-            source: 'backup',
-            sourceLabel: SOURCE_LABELS.backup,
-            note: 'Resilient mode active. Using the verified backup set.',
-            isLoading: false,
-            isRefreshing: false,
-            lastLoadedAt: new Date().toISOString(),
-            warning: snapshotError.message || liveError.message,
-          });
-        }
       }
+
+      setAllCompanions(result.listings);
+      setDataState(createDataState(result));
     };
 
     const refreshIfVisible = () => {
@@ -274,45 +301,12 @@ function App() {
     setDataState((current) => ({
       ...current,
       isRefreshing: true,
+      warning: null,
     }));
 
-    try {
-      const liveListings = await fetchSupabaseListings();
-      setAllCompanions(liveListings);
-      setDataState({
-        source: 'supabase',
-        sourceLabel: SOURCE_LABELS.supabase,
-        note: 'Live data refreshed successfully.',
-        isLoading: false,
-        isRefreshing: false,
-        lastLoadedAt: new Date().toISOString(),
-      });
-    } catch (liveError) {
-      try {
-        const snapshotListings = await fetchSnapshotListings();
-        setAllCompanions(snapshotListings);
-        setDataState({
-          source: 'snapshot',
-          sourceLabel: SOURCE_LABELS.snapshot,
-          note: 'Manual refresh completed with the latest verified snapshot.',
-          isLoading: false,
-          isRefreshing: false,
-          lastLoadedAt: new Date().toISOString(),
-          warning: liveError.message,
-        });
-      } catch {
-        setAllCompanions(normalizeListings(backupCompanions, { source: 'backup', isFallback: true }));
-        setDataState({
-          source: 'backup',
-          sourceLabel: SOURCE_LABELS.backup,
-          note: 'Manual refresh completed with the verified backup set.',
-          isLoading: false,
-          isRefreshing: false,
-          lastLoadedAt: new Date().toISOString(),
-          warning: liveError.message,
-        });
-      }
-    }
+    const result = await loadListingsWithFallback('manual');
+    setAllCompanions(result.listings);
+    setDataState(createDataState(result));
   };
 
   return (
