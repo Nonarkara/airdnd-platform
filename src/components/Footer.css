@@ -1,7 +1,7 @@
 .airdnd-footer {
   margin-top: clamp(2rem, 4vw, 4rem);
   padding-top: var(--spacing-lg);
-  border-top: 1px solid rgba(17, 24, 39, 0.1);
+  border-top: 1px solid var(--color-line);
 }
 
 .footer-content {
@@ -23,20 +23,20 @@
 .footer-logo strong {
   display: block;
   font-family: var(--font-heading);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
 }
 
 .footer-tagline {
-  margin-top: 0.35rem;
+  margin-top: 0.3rem;
   max-width: 22ch;
   color: var(--color-ink-soft);
-  font-size: 0.94rem;
+  font-size: 0.9rem;
   line-height: 1.6;
 }
 
 .footer-disclaimer h4,
 .footer-ops span {
-  font-size: 0.76rem;
+  font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -44,25 +44,26 @@
 }
 
 .footer-disclaimer p {
-  margin-top: 0.55rem;
-  max-width: 58ch;
+  margin-top: 0.5rem;
+  max-width: 54ch;
   color: var(--color-ink-soft);
-  font-size: 0.93rem;
+  font-size: 0.9rem;
   line-height: 1.7;
 }
 
 .footer-ops {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.3rem;
   justify-items: start;
 }
 
 .footer-ops strong {
-  font-size: 1.05rem;
+  font-size: 1rem;
 }
 
 .footer-ops small {
   color: var(--color-ink-soft);
+  font-size: 0.82rem;
 }
 
 .footer-bottom {
@@ -72,9 +73,9 @@
   gap: var(--spacing-md);
   margin-top: var(--spacing-lg);
   padding-top: var(--spacing-md);
-  border-top: 1px solid rgba(17, 24, 39, 0.08);
+  border-top: 1px solid var(--color-line);
   color: var(--color-ink-soft);
-  font-size: 0.88rem;
+  font-size: 0.84rem;
 }
 
 .footer-links {
@@ -84,7 +85,12 @@
 }
 
 .footer-links a {
-  font-weight: 800;
+  font-weight: 700;
+  transition: color 0.15s ease;
+}
+
+.footer-links a:hover {
+  color: var(--color-ink);
 }
 
 @media (max-width: 1024px) {
