@@ -45,6 +45,17 @@ const DATA_SOURCE_NOTES = {
   },
 };
 
+function getLatestListingTimestamp(listings) {
+  if (!Array.isArray(listings) || listings.length === 0) {
+    return 0;
+  }
+
+  return listings.reduce((latest, listing) => {
+    const timestamp = listing?.updatedAt ? new Date(listing.updatedAt).getTime() : 0;
+    return Number.isFinite(timestamp) ? Math.max(latest, timestamp) : latest;
+  }, 0);
+}
+
 function sortListings(listings, sortBy) {
   const nextListings = [...listings];
 
@@ -132,32 +143,56 @@ async function fetchSnapshotListings() {
 
 async function loadListingsWithFallback(mode = 'automatic') {
   const notes = DATA_SOURCE_NOTES[mode] || DATA_SOURCE_NOTES.automatic;
+  let liveResult = null;
+  let liveError = null;
 
   try {
     const liveListings = await fetchSupabaseListings();
-    return {
+    liveResult = {
       listings: liveListings,
       source: 'supabase',
       note: notes.supabase,
       warning: null,
     };
-  } catch (liveError) {
-    try {
-      const snapshotListings = await fetchSnapshotListings();
+  } catch (error) {
+    liveError = error;
+  }
+
+  try {
+    const snapshotListings = await fetchSnapshotListings();
+    const snapshotResult = {
+      listings: snapshotListings,
+      source: 'snapshot',
+      note: notes.snapshot,
+      warning: liveError?.message || null,
+    };
+
+    if (!liveResult) {
+      return snapshotResult;
+    }
+
+    const liveLatest = getLatestListingTimestamp(liveResult.listings);
+    const snapshotLatest = getLatestListingTimestamp(snapshotResult.listings);
+
+    if (snapshotLatest > liveLatest) {
       return {
-        listings: snapshotListings,
-        source: 'snapshot',
-        note: notes.snapshot,
-        warning: liveError.message,
-      };
-    } catch (snapshotError) {
-      return {
-        listings: normalizedBackupListings,
-        source: 'backup',
-        note: notes.backup,
-        warning: snapshotError.message || liveError.message,
+        ...snapshotResult,
+        note: 'Showing the newest verified snapshot while live database rows catch up.',
       };
     }
+
+    return liveResult;
+  } catch (snapshotError) {
+    if (liveResult) {
+      return liveResult;
+    }
+
+    return {
+      listings: normalizedBackupListings,
+      source: 'backup',
+      note: notes.backup,
+      warning: snapshotError.message || liveError?.message,
+    };
   }
 }
 
@@ -248,10 +283,21 @@ function App() {
     const intervalId = window.setInterval(refreshIfVisible, REFRESH_INTERVAL_MS);
     document.addEventListener('visibilitychange', refreshIfVisible);
 
+    // Real-time subscription — fires immediately when the Telegram bot inserts a new row
+    const channel = supabase
+      .channel('companions-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'companions' }, () => {
+        if (isActive) {
+          void loadListings();
+        }
+      })
+      .subscribe();
+
     return () => {
       isActive = false;
       window.clearInterval(intervalId);
       document.removeEventListener('visibilitychange', refreshIfVisible);
+      supabase.removeChannel(channel);
     };
   }, []);
 

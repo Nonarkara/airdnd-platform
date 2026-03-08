@@ -21,7 +21,7 @@ const apiId = Number.parseInt(process.env.TELEGRAM_API_ID, 10);
 const apiHash = process.env.TELEGRAM_API_HASH;
 const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 const channelUsername = process.env.TELEGRAM_SOURCE_CHANNEL || 'nutyes';
-const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '30', 10);
+const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '120', 10);
 
 if (!apiId || !apiHash) {
   console.error('Missing TELEGRAM_API_ID or TELEGRAM_API_HASH in .env');
@@ -49,28 +49,30 @@ const supabase =
 
 function buildPrompt(rawText) {
   return `
-Extract distinct listing profiles from the following Telegram messages.
+Extract distinct Thailand wellness or massage listings from the following Telegram messages.
 Return only a JSON array with this shape:
 [
   {
-    "name": "Listing name",
-    "age": 27,
-    "location": "District, City",
-    "price": "฿1,200",
-    "metrics": {
-      "height": "165 cm",
-      "weight": "49 kg"
-    },
-    "tags": ["Bangkok", "Wellness"],
-    "description": "Short factual summary"
+    "name": "Business or provider name",
+    "age": null,
+    "location": "District or area, City/Province",
+    "price": null,
+    "metrics": {},
+    "tags": ["Bangkok", "Massage"],
+    "description": "Short factual summary of the service, area, and hours"
   }
 ]
 
 Rules:
-- Ignore messages that do not describe a specific profile.
+- Extract a listing whenever a message clearly describes a massage shop, spa, or independent provider.
+- Ignore pure links, empty media posts, or messages without enough listing detail.
+- Prefer the business or provider name written in the message.
+- Use null for unknown age and price values.
+- Use an empty object for missing metrics.
+- Add 1-3 short tags based on city/province and service type.
 - Do not invent ratings or review counts.
 - Keep descriptions factual and concise.
-- Use null for unknown age values.
+- Return only valid JSON.
 
 Messages:
 ${rawText}
@@ -100,9 +102,14 @@ async function main() {
       limit: Number.isFinite(fetchLimit) ? fetchLimit : 30,
     });
 
-    const rawText = messages
+    const textMessages = messages
       .map((message) => message.message)
       .filter((message) => typeof message === 'string' && message.trim())
+      .map((message) => message.trim());
+
+    console.log(`Fetched ${messages.length} messages, ${textMessages.length} with text.`);
+
+    const rawText = textMessages
       .join('\n\n---\n\n');
 
     if (!rawText.trim()) {
@@ -119,9 +126,12 @@ async function main() {
     });
 
     const parsedListings = parseModelJson(response.text);
+    console.log(`Model returned ${parsedListings.length} listing candidate(s).`);
+
     const normalizedListings = normalizeExtractedListings(parsedListings, {
       source: 'snapshot',
     });
+    console.log(`Normalized ${normalizedListings.length} unique listing(s).`);
 
     const mockupsDir = path.join(__dirname, '../public/mockups');
     const files = fs
