@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-lg);
-  background: rgba(15, 14, 12, 0.62);
+  background: rgba(19, 34, 56, 0.42);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -16,9 +16,9 @@
   width: min(100%, 1000px);
   max-height: calc(100vh - 2rem);
   overflow: auto;
-  border-radius: var(--radius-2xl);
-  background: var(--color-background);
-  border: 1px solid var(--color-line);
+  border-radius: 1.6rem;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(19, 34, 56, 0.08);
   box-shadow: var(--shadow-lg);
 }
 
@@ -61,7 +61,7 @@
   height: 100%;
   min-height: 24rem;
   object-fit: cover;
-  border-radius: 0 0 0 var(--radius-2xl);
+  border-radius: 0 0 0 1.6rem;
 }
 
 .modal-image-stamp {
@@ -74,16 +74,16 @@
   max-width: min(70%, 14rem);
   padding: 0.58rem 0.75rem;
   border-radius: var(--radius-md);
-  background: rgba(15, 17, 23, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(19, 34, 56, 0.08);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  color: #ffffff;
+  color: var(--color-ink);
   text-align: right;
 }
 
 .modal-image-stamp-label {
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--color-ink-soft);
   font-size: 0.6rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -142,7 +142,7 @@
   padding: 0.7rem;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
+  background: var(--color-surface-muted);
 }
 
 .metric-value {
@@ -211,7 +211,7 @@
   min-height: 2.75rem;
   padding: 0.7rem 1.2rem;
   border-radius: var(--radius-lg);
-  background: var(--color-ink);
+  background: var(--color-accent);
   color: #ffffff;
   font-size: 0.86rem;
   font-weight: 700;

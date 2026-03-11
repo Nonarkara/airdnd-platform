@@ -16,22 +16,22 @@
 }
 
 .map-header h2 {
-  margin-top: 0.4rem;
-  font-size: clamp(2rem, 4vw, 4rem);
+  margin-top: 0.45rem;
+  font-size: clamp(2.1rem, 4vw, 4rem);
 }
 
 .map-header p {
-  margin-top: 0.6rem;
-  max-width: 52ch;
+  margin-top: 0.7rem;
+  max-width: 56ch;
   color: var(--color-ink-soft);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .aqi-toggle-btn {
-  min-height: 2.9rem;
-  padding: 0.72rem 1.1rem;
-  border-radius: var(--radius-lg);
-  background: rgba(217, 94, 32, 0.08);
+  min-height: 3rem;
+  padding: 0.78rem 1.15rem;
+  border-radius: 1rem;
+  background: rgba(19, 34, 56, 0.06);
   color: var(--color-ink);
   font-size: 0.84rem;
   font-weight: 700;
@@ -40,21 +40,23 @@
 }
 
 .aqi-toggle-btn:hover {
-  background: rgba(217, 94, 32, 0.13);
+  background: rgba(19, 34, 56, 0.1);
 }
 
 .map-shell {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(15rem, 17rem);
-  gap: var(--spacing-md);
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 18rem);
+  gap: 1rem;
   align-items: start;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(19, 34, 56, 0.08);
 }
 
 .map-frame {
   width: 100%;
   height: clamp(20rem, 46vw, 38rem);
   border: 0;
-  border-radius: var(--radius-2xl);
+  border-radius: 1.3rem;
   box-shadow: var(--shadow-md);
 }
 
@@ -63,10 +65,10 @@
   flex-direction: column;
   gap: var(--spacing-sm);
   padding: 1rem;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-xl);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
+  min-height: 100%;
+  border: 1px solid rgba(19, 34, 56, 0.08);
+  border-radius: 1.3rem;
+  background: var(--color-surface-muted);
 }
 
 .aqi-card-header {
@@ -82,13 +84,13 @@
 }
 
 .aqi-card-header strong {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-family: var(--font-heading);
 }
 
 .aqi-label {
   align-self: flex-start;
-  padding: 0.28rem 0.6rem;
+  padding: 0.32rem 0.66rem;
   border-radius: var(--radius-pill);
   font-size: 0.72rem;
   font-weight: 700;
@@ -105,7 +107,7 @@
   justify-content: space-between;
   gap: var(--spacing-sm);
   padding-top: var(--spacing-xs);
-  border-top: 1px solid var(--color-line);
+  border-top: 1px solid rgba(19, 34, 56, 0.08);
 }
 
 .aqi-metrics .metric span {
