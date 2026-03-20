@@ -133,7 +133,7 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         priceValue: extractPriceValue(priceLabel),
         description: normalizeText(
           listing?.description,
-          'Profile details were partially captured and still need verification.',
+          'Details for this listing are still being collected.',
         ),
         tags: Array.isArray(listing?.tags)
           ? listing.tags.map((tag) => String(tag).trim()).filter(Boolean)
@@ -176,6 +176,39 @@ export function dedupeListings(listings) {
   }
 
   return deduped;
+}
+
+function getTimestampValue(listing) {
+  const value = listing?.updatedAt || listing?.created_at;
+  const timestamp = value ? new Date(value).getTime() : 0;
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+export function sortListingsByUpdatedAt(listings) {
+  return [...(Array.isArray(listings) ? listings : [])].sort((left, right) => {
+    const timestampDelta = getTimestampValue(right) - getTimestampValue(left);
+    if (timestampDelta !== 0) {
+      return timestampDelta;
+    }
+
+    const leftId = Number.parseInt(String(left?.id ?? 0), 10);
+    const rightId = Number.parseInt(String(right?.id ?? 0), 10);
+    if (Number.isFinite(leftId) && Number.isFinite(rightId) && leftId !== rightId) {
+      return rightId - leftId;
+    }
+
+    return buildFingerprint(right).localeCompare(buildFingerprint(left));
+  });
+}
+
+export function mergeSnapshotListings(newListings, existingListings = [], options = {}) {
+  const limit = Number.isFinite(options.limit) ? options.limit : 180;
+  const merged = dedupeListings([
+    ...(Array.isArray(newListings) ? newListings : []),
+    ...(Array.isArray(existingListings) ? existingListings : []),
+  ]);
+
+  return sortListingsByUpdatedAt(merged).slice(0, limit);
 }
 
 export function readSnapshotListings() {

@@ -26,4 +26,8 @@ dist-ssr
 # Setup secrets
 .env
 credentials.json
+google-credentials.json
 token.json
+
+# Scraped photos (downloaded from Telegram)
+public/photos/

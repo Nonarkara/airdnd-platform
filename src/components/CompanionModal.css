@@ -6,19 +6,18 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-lg);
-  background: rgba(19, 34, 56, 0.42);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .modal-content {
   position: relative;
-  width: min(100%, 1000px);
+  width: min(100%, 900px);
   max-height: calc(100vh - 2rem);
   overflow: auto;
-  border-radius: 1.6rem;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(19, 34, 56, 0.08);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
   box-shadow: var(--shadow-lg);
 }
 
@@ -31,198 +30,180 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  background: var(--color-surface-muted);
   color: var(--color-ink);
-  font-size: 1.35rem;
+  font-size: 1.1rem;
   z-index: 2;
-  transition: background 0.15s ease;
+  transition: background 0.12s ease;
 }
 
 .btn-close:hover {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--color-line);
 }
 
 .modal-body {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-columns: 1fr 1fr;
 }
 
 .modal-image-section {
   position: relative;
-  min-height: 100%;
 }
 
 .modal-main-image {
   width: 100%;
   height: 100%;
-  min-height: 24rem;
+  min-height: 20rem;
   object-fit: cover;
-  border-radius: 0 0 0 1.6rem;
 }
 
 .modal-image-stamp {
   position: absolute;
-  top: clamp(1rem, 2vw, 1.25rem);
-  right: clamp(1rem, 2vw, 1.25rem);
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  max-width: min(70%, 14rem);
-  padding: 0.58rem 0.75rem;
-  border-radius: var(--radius-md);
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(19, 34, 56, 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: var(--color-ink);
+  backdrop-filter: blur(6px);
+  font-size: 0.68rem;
   text-align: right;
 }
 
 .modal-image-stamp-label {
-  color: var(--color-ink-soft);
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  color: var(--color-ink-muted);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .modal-image-stamp strong {
-  font-size: 0.82rem;
-  line-height: 1.25;
+  font-size: 0.72rem;
+  font-weight: 500;
 }
 
 .modal-info-section {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  padding: clamp(1.25rem, 3vw, 2rem);
-}
-
-.modal-topline,
-.modal-location,
-.modal-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-sm);
-  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
 }
 
 .modal-topline,
 .modal-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
   color: var(--color-ink-soft);
-  font-size: 0.86rem;
+  font-size: 0.8rem;
 }
 
 .modal-name {
-  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 500;
 }
 
 .modal-age {
-  margin-left: 0.35rem;
-  color: var(--color-ink-soft);
-  font-weight: 500;
-  font-size: 0.62em;
+  color: var(--color-ink-muted);
+  font-weight: 400;
+  font-size: 0.6em;
 }
 
 .metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--spacing-sm);
+  display: flex;
+  gap: 0.5rem;
 }
 
 .metric-box {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.22rem;
-  padding: 0.7rem;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-md);
-  background: var(--color-surface-muted);
+  gap: 0.1rem;
+  padding: 0.6rem;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-sm);
 }
 
 .metric-value {
-  font-size: 0.92rem;
-  font-weight: 800;
-  color: var(--color-ink);
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
 .metric-label {
-  color: var(--color-ink-soft);
-  font-size: 0.64rem;
-  font-weight: 800;
+  color: var(--color-ink-muted);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.modal-description {
-  display: grid;
-  gap: var(--spacing-xs);
 }
 
 .modal-description h3 {
-  font-size: 1.1rem;
-  color: var(--color-ink);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
 }
 
 .modal-description p {
   color: var(--color-ink-soft);
-  font-size: 0.9rem;
-  line-height: 1.7;
+  font-size: 0.88rem;
+  line-height: 1.65;
 }
 
 .modal-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xs);
+  gap: 0.3rem;
 }
 
 .modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin-top: auto;
-  padding-top: var(--spacing-md);
-  border-top: 1px solid var(--color-line);
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-line-soft);
 }
 
 .modal-price-range {
   display: flex;
   flex-direction: column;
-  gap: 0.12rem;
 }
 
 .price-label {
-  color: var(--color-ink-soft);
-  font-size: 0.64rem;
-  font-weight: 800;
+  color: var(--color-ink-muted);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
 .price-value {
   color: var(--color-accent);
-  font-size: 1.1rem;
-  font-weight: 800;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .btn-book {
-  min-height: 2.75rem;
-  padding: 0.7rem 1.2rem;
-  border-radius: var(--radius-lg);
-  background: var(--color-accent);
-  color: #ffffff;
-  font-size: 0.86rem;
-  font-weight: 700;
-  transition: opacity 0.15s ease;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-ink);
+  color: var(--color-background);
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: background 0.12s ease;
 }
 
 .btn-book:hover {
-  opacity: 0.88;
+  background: #1a1916;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
   .modal-overlay {
     padding: 0;
   }
@@ -238,8 +219,11 @@
   }
 
   .modal-main-image {
-    min-height: 18rem;
-    border-radius: 0;
+    min-height: 14rem;
+  }
+
+  .metrics-grid {
+    flex-direction: column;
   }
 
   .modal-footer {
@@ -248,6 +232,6 @@
   }
 
   .btn-book {
-    width: 100%;
+    text-align: center;
   }
 }

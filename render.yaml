@@ -14,3 +14,33 @@ services:
         sync: false
       - key: NODE_OPTIONS
         value: "--max-old-space-size=400"
+  - type: worker
+    name: airdnd-live-intake
+    env: node
+    buildCommand: npm install --include=dev
+    startCommand: npm run scrape:watch
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: TELEGRAM_API_ID
+        sync: false
+      - key: TELEGRAM_API_HASH
+        sync: false
+      - key: TELEGRAM_SESSION
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: TELEGRAM_SOURCE_CHANNEL
+        sync: false
+      - key: TELEGRAM_FETCH_LIMIT
+        sync: false
+      - key: TELEGRAM_POLL_INTERVAL_MS
+        sync: false
+      - key: SNAPSHOT_LISTING_LIMIT
+        sync: false
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=400"

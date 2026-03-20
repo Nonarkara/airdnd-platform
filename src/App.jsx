@@ -34,14 +34,14 @@ const SORT_OPTIONS = [
 ];
 const DATA_SOURCE_NOTES = {
   automatic: {
-    supabase: 'Connected to live Supabase listings.',
-    snapshot: 'Live sync unavailable. Showing the last verified snapshot.',
-    backup: 'Resilient mode active. Using the verified backup set.',
+    supabase: 'Directory is up to date with the latest listings.',
+    snapshot: 'Showing a recent snapshot while the live connection catches up.',
+    backup: 'Showing cached listings. Live updates will resume shortly.',
   },
   manual: {
-    supabase: 'Live data refreshed successfully.',
-    snapshot: 'Manual refresh completed with the latest verified snapshot.',
-    backup: 'Manual refresh completed with the verified backup set.',
+    supabase: 'Directory refreshed with the latest listings.',
+    snapshot: 'Refreshed with the most recent snapshot.',
+    backup: 'Refreshed with cached listings.',
   },
 };
 
@@ -177,7 +177,7 @@ async function loadListingsWithFallback(mode = 'automatic') {
     if (snapshotLatest > liveLatest) {
       return {
         ...snapshotResult,
-        note: 'Showing the newest verified snapshot while live database rows catch up.',
+        note: 'Showing a recent snapshot while the live directory catches up.',
       };
     }
 
@@ -220,7 +220,7 @@ function App() {
   const [dataState, setDataState] = useState({
     source: 'backup',
     sourceLabel: SOURCE_LABELS.backup,
-    note: 'Connecting to the latest verified listings...',
+    note: 'Loading directory listings...',
     isLoading: true,
     isRefreshing: false,
     lastLoadedAt: null,
@@ -229,6 +229,7 @@ function App() {
 
   const t = translations[language] || translations.en;
   const metrics = createMetrics(allCompanions);
+  const recentListings = sortListings(allCompanions, SORT_OPTIONS[0]).slice(0, 5);
 
   useEffect(() => {
     let isMounted = true;
@@ -378,6 +379,7 @@ function App() {
           lastLoadedAt={dataState.lastLoadedAt}
           onRefresh={handleRefresh}
           isRefreshing={dataState.isRefreshing}
+          recentListings={recentListings}
         />
 
         <MapSection t={t} />

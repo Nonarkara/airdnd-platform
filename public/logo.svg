@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" fill="none">
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="50" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3d8b6e"/>
+      <stop offset="100%" stop-color="#2d6b53"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Circle mark -->
+  <circle cx="42" cy="50" r="36" fill="url(#logoGrad)"/>
+
+  <!-- Lotus petal abstraction inside circle -->
+  <path d="M 42 22 Q 52 35 42 50 Q 32 35 42 22 Z" fill="white" opacity="0.9"/>
+  <path d="M 42 22 Q 58 38 50 54 Q 46 42 42 22 Z" fill="white" opacity="0.6"/>
+  <path d="M 42 22 Q 26 38 34 54 Q 38 42 42 22 Z" fill="white" opacity="0.6"/>
+  <path d="M 42 22 Q 64 42 56 58 Q 50 44 42 22 Z" fill="white" opacity="0.35"/>
+  <path d="M 42 22 Q 20 42 28 58 Q 34 44 42 22 Z" fill="white" opacity="0.35"/>
+
+  <!-- Small dot at lotus center -->
+  <circle cx="42" cy="46" r="3" fill="white" opacity="0.5"/>
+
+  <!-- Wordmark -->
+  <text x="92" y="62" font-family="'Playfair Display', Georgia, serif" font-size="42" font-weight="500" fill="#2c2a25" letter-spacing="-0.5">
+    Sabai Sabai
+  </text>
+
+  <!-- Tagline -->
+  <text x="94" y="80" font-family="'Inter', system-ui, sans-serif" font-size="11" font-weight="500" fill="#9e9889" letter-spacing="2">
+    THAILAND MASSAGE &amp; SPA
+  </text>
+</svg>

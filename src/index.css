@@ -1,25 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --color-ink: #132238;
-  --color-ink-soft: #627086;
-  --color-line: rgba(19, 34, 56, 0.1);
-  --color-surface: rgba(255, 255, 255, 0.94);
-  --color-surface-strong: #ffffff;
-  --color-surface-muted: #f4f8fc;
-  --color-background: #edf3f8;
-  --color-panel: #10233b;
-  --color-panel-soft: #162d49;
-  --color-accent: #1d4fd7;
-  --color-accent-strong: #153a9d;
-  --color-accent-soft: rgba(29, 79, 215, 0.1);
-  --color-highlight: #7ea6ff;
-  --color-success: #27a36d;
+  --color-background: #faf9f7;
+  --color-background-soft: #f4f2ee;
+  --color-surface: #ffffff;
+  --color-surface-strong: #f0eeea;
+  --color-surface-muted: #f7f5f2;
+  --color-panel: #f4f2ee;
+  --color-panel-soft: #edeae4;
+  --color-line: #e4e0d8;
+  --color-line-soft: #ece9e3;
+  --color-ink: #2c2a25;
+  --color-ink-soft: #6b665c;
+  --color-ink-muted: #9e9889;
+  --color-accent: #3d8b6e;
+  --color-accent-strong: #2d6b53;
+  --color-accent-soft: rgba(61, 139, 110, 0.08);
+  --color-accent-bg: rgba(61, 139, 110, 0.04);
+  --color-highlight: #c4913e;
+  --color-success: #3d8b6e;
 
-  --font-body: 'Manrope', sans-serif;
-  --font-heading: 'Sora', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
 
-  --spacing-2xs: 0.25rem;
   --spacing-xs: 0.5rem;
   --spacing-sm: 0.75rem;
   --spacing-md: 1rem;
@@ -28,16 +31,16 @@
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
 
-  --radius-sm: 0.55rem;
-  --radius-md: 0.9rem;
-  --radius-lg: 1.2rem;
-  --radius-xl: 1.75rem;
-  --radius-2xl: 2rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
   --radius-pill: 999px;
 
-  --shadow-sm: 0 12px 24px rgba(19, 34, 56, 0.05);
-  --shadow-md: 0 20px 48px rgba(19, 34, 56, 0.08);
-  --shadow-lg: 0 32px 80px rgba(19, 34, 56, 0.12);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -51,35 +54,17 @@ html {
 }
 
 body {
-  position: relative;
-  font-family: var(--font-body);
-  color: var(--color-ink);
-  background:
-    radial-gradient(circle at top left, rgba(29, 79, 215, 0.08), transparent 28%),
-    linear-gradient(180deg, #f8fbfe 0%, var(--color-background) 100%);
-  line-height: 1.5;
   min-width: 320px;
   overflow-x: hidden;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  line-height: 1.6;
+  background: var(--color-background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(rgba(19, 34, 56, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(19, 34, 56, 0.035) 1px, transparent 1px);
-  background-size: 88px 88px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 82%);
-  opacity: 0.45;
-}
-
 #root {
-  position: relative;
-  z-index: 1;
   min-height: 100vh;
 }
 
@@ -88,16 +73,12 @@ img {
   max-width: 100%;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  font-weight: 700;
-  letter-spacing: -0.05em;
-  line-height: 0.98;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--color-ink);
 }
 
 a {
@@ -105,10 +86,7 @@ a {
   text-decoration: none;
 }
 
-button,
-input,
-select,
-textarea {
+button, input, select, textarea {
   font: inherit;
 }
 
@@ -117,70 +95,59 @@ button {
   cursor: pointer;
 }
 
-select,
-input {
+select, input {
   width: 100%;
-  min-height: 3rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid rgba(19, 34, 56, 0.12);
-  border-radius: var(--radius-md);
-  background: var(--color-surface-muted);
+  min-height: 2.6rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
   color: var(--color-ink);
-  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  font-size: 0.88rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-select:focus,
-input:focus {
+select:focus, input:focus {
   outline: none;
-  border-color: rgba(29, 79, 215, 0.34);
-  background: var(--color-surface-strong);
-  box-shadow: 0 0 0 4px rgba(29, 79, 215, 0.08);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+input::placeholder {
+  color: var(--color-ink-muted);
 }
 
 .section-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
   color: var(--color-accent);
-}
-
-.section-kicker::before {
-  content: '';
-  width: 0.38rem;
-  height: 0.38rem;
-  border-radius: 50%;
-  background: var(--color-accent);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .status-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.38rem 0.7rem;
+  gap: 0.3rem;
+  padding: 0.3rem 0.55rem;
   border-radius: var(--radius-pill);
-  font-size: 0.72rem;
-  font-weight: 700;
   background: var(--color-accent-soft);
-  color: var(--color-accent-strong);
+  color: var(--color-accent);
+  font-size: 0.7rem;
+  font-weight: 600;
 }
 
 .pill-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.34rem 0.68rem;
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
   border-radius: var(--radius-pill);
+  background: var(--color-surface-muted);
+  color: var(--color-ink-soft);
   font-size: 0.7rem;
-  font-weight: 700;
-  background: rgba(29, 79, 215, 0.08);
-  color: #355177;
+  font-weight: 500;
 }
 
 .muted-tag {
-  background: rgba(19, 34, 56, 0.08);
-  color: var(--color-ink-soft);
+  color: var(--color-ink-muted);
 }

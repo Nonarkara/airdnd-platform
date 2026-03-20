@@ -2,9 +2,9 @@ const DEFAULT_LOCATION = 'Bangkok, Thailand';
 const DEFAULT_IMAGE = '/mockups/109748.jpg';
 
 export const SOURCE_LABELS = {
-  supabase: 'Live',
-  snapshot: 'Verified snapshot',
-  backup: 'Verified backup',
+  supabase: 'Live directory',
+  snapshot: 'Recent snapshot',
+  backup: 'Cached listings',
 };
 
 function normalizeText(value, fallback = '') {
@@ -112,7 +112,7 @@ export function normalizeListing(rawListing, options = {}) {
     priceValue: extractPriceValue(priceLabel),
     description: normalizeText(
       rawListing?.description,
-      'Profile details are still being verified for the latest snapshot.',
+      'Details for this listing are still being collected.',
     ),
     tags,
     metrics: normalizeMetrics(rawListing?.metrics),
@@ -157,19 +157,36 @@ export function normalizeListings(listings, options = {}) {
 export function createMetrics(listings) {
   const normalizedListings = Array.isArray(listings) ? listings : [];
   const bangkokCount = normalizedListings.filter((listing) => listing.city === 'Bangkok').length;
-  const latestTimestamp = normalizedListings
-    .map((listing) => listing.updatedAt)
+  const timestamps = normalizedListings
+    .map((listing) => parseTimestamp(listing.updatedAt))
     .filter(Boolean)
-    .sort()
-    .at(-1);
+    .sort((left, right) => right.getTime() - left.getTime());
+  const latestDate = timestamps[0] || null;
+  const liveWindowCount = latestDate
+    ? normalizedListings.filter((listing) => {
+        const listingDate = parseTimestamp(listing.updatedAt);
+        if (!listingDate) {
+          return false;
+        }
+
+        return latestDate.getTime() - listingDate.getTime() <= 90 * 60 * 1000;
+      }).length
+    : 0;
+  const cityCount = new Set(
+    normalizedListings
+      .map((listing) => listing.city)
+      .filter(Boolean),
+  ).size;
 
   return {
     total: normalizedListings.length,
     bangkokCount,
+    cityCount,
     coverage: normalizedListings.length
       ? Math.round((bangkokCount / normalizedListings.length) * 100)
       : 0,
-    latestTimestamp,
+    liveWindowCount,
+    latestTimestamp: latestDate ? latestDate.toISOString() : null,
   };
 }
 

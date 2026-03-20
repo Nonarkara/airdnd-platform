@@ -9,10 +9,10 @@ function Header({
 }) {
   return (
     <header className="header" id="overview">
-      <a className="brand-block" href="#overview" aria-label="Air DnD">
-        <span className="brand-mark">Air</span>
+      <a className="brand-block" href="#overview" aria-label="Sabai Sabai">
+        <span className="brand-mark">SS</span>
         <span className="brand-copy">
-          <strong>Air DnD</strong>
+          <strong>Sabai Sabai</strong>
           <small>{t.header.tagline}</small>
         </span>
       </a>
