@@ -206,6 +206,10 @@ function getSenderId(msg) {
 }
 
 const photosDir = path.join(__dirname, '../public/photos');
+// Ensure photos directory exists before any downloads
+if (!fs.existsSync(photosDir)) {
+  fs.mkdirSync(photosDir, { recursive: true });
+}
 
 async function downloadClusterPhotos(client, cluster, maxPhotos = 4) {
   const downloaded = [];
@@ -325,14 +329,24 @@ async function runTelegramScrape(client, state = {}) {
   const parsedListings = parseModelJson(response.text);
   console.log(`Model returned ${parsedListings.length} listing candidate(s).`);
 
-  // Assign real photos to listings based on cluster_id match
+  // Assign real photos, original post time, and source channel to listings based on cluster_id
   const listingsWithPhotos = parsedListings.map((listing) => {
     const clusterId = listing.cluster_id;
+    const cluster = clusters[clusterId];
     const photos = clusterPhotos.get(clusterId);
+    const enriched = { ...listing };
+
     if (photos && photos.length > 0) {
-      return { ...listing, imageUrl: photos[0] };
+      enriched.imageUrl = photos[0];
     }
-    return listing;
+
+    // Attach original Telegram post timestamp and source channel
+    if (cluster && cluster.startDate) {
+      enriched.postedAt = new Date(cluster.startDate * 1000).toISOString();
+    }
+    enriched.sourceChannel = `@${channelUsername}`;
+
+    return enriched;
   });
 
   const normalizedListings = normalizeExtractedListings(listingsWithPhotos, {
@@ -377,7 +391,11 @@ async function runTelegramScrape(client, state = {}) {
   }
 
   // Export photos to Google Drive + listing data to Google Sheets
-  await exportToGoogle(listingsWithImages);
+  try {
+    await exportToGoogle(listingsWithImages);
+  } catch (err) {
+    console.warn('Google export failed (non-fatal):', err.message);
+  }
 
   return {
     fetchedMessages: messages.length,
