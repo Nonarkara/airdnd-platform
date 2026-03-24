@@ -11,6 +11,7 @@
     "scrape": "node scripts/scraper.js",
     "scrape:live": "node scripts/telegram_scraper.js",
     "scrape:watch": "node scripts/telegram_scraper.js --watch",
+    "repair:photos": "node scripts/repair_photo_urls.js",
     "verify:snapshot": "node scripts/verify_snapshot.js",
     "bot": "node scripts/telegram_bot.js",
     "userbot": "node scripts/userbot.js",

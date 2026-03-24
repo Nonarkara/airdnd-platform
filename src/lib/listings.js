@@ -120,6 +120,8 @@ export function normalizeListing(rawListing, options = {}) {
     rating: Number.isFinite(rating) && rating > 0 ? rating : null,
     reviews: Number.isFinite(reviews) && reviews > 0 ? reviews : null,
     updatedAt,
+    postedAt: normalizeText(rawListing?.postedAt || rawListing?.posted_at, null),
+    sourceChannel: normalizeText(rawListing?.sourceChannel || rawListing?.source_channel, null),
     dataSource: source,
     isFallback: Boolean(options.isFallback),
   };

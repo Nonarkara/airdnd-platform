@@ -143,6 +143,8 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         rating: rating && rating > 0 ? rating : null,
         reviews: reviews && reviews > 0 ? reviews : null,
         updatedAt: normalizeText(listing?.updatedAt || listing?.created_at, timestamp),
+        postedAt: normalizeText(listing?.postedAt, null),
+        sourceChannel: normalizeText(listing?.sourceChannel, null),
         dataSource: source,
         isFallback: source !== 'supabase',
       };
@@ -260,20 +262,35 @@ export async function insertListingsIfPossible(supabase, listings) {
         continue;
       }
 
-      const { error } = await supabase.from('companions').insert([
-        {
-          name: listing.name,
-          age: listing.age,
-          location: listing.location,
-          price: listing.priceLabel,
-          description: listing.description,
-          image_url: listing.imageUrl,
-          rating: listing.rating ?? 0,
-          reviews: listing.reviews ?? 0,
-          tags: listing.tags,
-          metrics: listing.metrics,
-        },
-      ]);
+      const row = {
+        name: listing.name,
+        age: listing.age,
+        location: listing.location,
+        price: listing.priceLabel,
+        description: listing.description,
+        image_url: listing.imageUrl,
+        rating: listing.rating ?? 0,
+        reviews: listing.reviews ?? 0,
+        tags: listing.tags,
+        metrics: listing.metrics,
+      };
+
+      // Try with origin metadata first, fall back without if columns don't exist
+      if (listing.postedAt) {
+        row.posted_at = listing.postedAt;
+      }
+      if (listing.sourceChannel) {
+        row.source_channel = listing.sourceChannel;
+      }
+
+      let { error } = await supabase.from('companions').insert([row]);
+
+      // If columns don't exist yet, retry without them
+      if (error && error.message?.includes('column')) {
+        delete row.posted_at;
+        delete row.source_channel;
+        ({ error } = await supabase.from('companions').insert([row]));
+      }
 
       if (error) {
         throw error;

@@ -13,7 +13,9 @@ function CompanionModal({ companion, onClose, t }) {
   const ratingLine = companion.rating
     ? `${companion.rating.toFixed(1)}★`
     : t.card.unrated;
-  const preciseTimestamp = formatPreciseTimestamp(companion.updatedAt) || t.modal.timestampPending;
+  const preciseTimestamp = formatPreciseTimestamp(companion.postedAt)
+    || formatPreciseTimestamp(companion.updatedAt)
+    || t.modal.timestampPending;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -30,7 +32,15 @@ function CompanionModal({ companion, onClose, t }) {
 
         <div className="modal-body">
           <div className="modal-image-section">
-            <img src={companion.imageUrl} alt={companion.name} className="modal-main-image" />
+            <img
+              src={companion.imageUrl}
+              alt={companion.name}
+              className="modal-main-image"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = '/mockups/109748.jpg';
+              }}
+            />
             <div className="modal-image-stamp">
               <span className="modal-image-stamp-label">{t.modal.capturedAt}</span>
               <strong>{preciseTimestamp}</strong>
@@ -39,8 +49,14 @@ function CompanionModal({ companion, onClose, t }) {
 
           <div className="modal-info-section">
             <div className="modal-topline">
-              <span className="status-pill">{SOURCE_LABELS[companion.dataSource]}</span>
-              <span>{formatRelativeTimestamp(companion.updatedAt)}</span>
+              <span className="status-pill">
+                {companion.sourceChannel || SOURCE_LABELS[companion.dataSource]}
+              </span>
+              <span>
+                {companion.postedAt
+                  ? `Posted ${formatRelativeTimestamp(companion.postedAt)}`
+                  : formatRelativeTimestamp(companion.updatedAt)}
+              </span>
             </div>
 
             <h2 className="modal-name">
@@ -85,7 +101,9 @@ function CompanionModal({ companion, onClose, t }) {
             <div className="modal-footer">
               <div className="modal-price-range">
                 <span className="price-label">{t.modal.source}</span>
-                <span className="price-value">{SOURCE_LABELS[companion.dataSource]}</span>
+                <span className="price-value">
+                  {companion.sourceChannel || SOURCE_LABELS[companion.dataSource]}
+                </span>
               </div>
               <button type="button" className="btn-book" onClick={onClose}>
                 {t.modal.closeCta}

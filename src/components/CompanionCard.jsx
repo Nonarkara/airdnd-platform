@@ -9,12 +9,22 @@ function CompanionCard({ companion, onClick, t }) {
   const secondaryLine = companion.reviews
     ? `${companion.reviews} ${t.card.reviewsLabel}`
     : SOURCE_LABELS[companion.dataSource];
-  const preciseTimestamp = formatPreciseTimestamp(companion.updatedAt) || t.card.timestampPending;
+  const preciseTimestamp = formatPreciseTimestamp(companion.postedAt)
+    || formatPreciseTimestamp(companion.updatedAt)
+    || t.card.timestampPending;
 
   return (
     <article className="companion-card" onClick={() => onClick(companion)}>
       <div className="card-image-wrapper">
-        <img src={companion.imageUrl} alt={companion.name} className="card-image" />
+        <img
+          src={companion.imageUrl}
+          alt={companion.name}
+          className="card-image"
+          onError={(event) => {
+            event.currentTarget.onerror = null;
+            event.currentTarget.src = '/mockups/109748.jpg';
+          }}
+        />
         <span className="card-city">{companion.city}</span>
         <span className="card-captured">
           <span className="card-captured-label">{t.card.capturedLabel}</span>
@@ -24,8 +34,14 @@ function CompanionCard({ companion, onClick, t }) {
 
       <div className="card-content">
         <div className="card-topline">
-          <span className="card-source">{SOURCE_LABELS[companion.dataSource]}</span>
-          <span className="card-updated">{formatRelativeTimestamp(companion.updatedAt)}</span>
+          <span className="card-source">
+            {companion.sourceChannel || SOURCE_LABELS[companion.dataSource]}
+          </span>
+          <span className="card-updated">
+            {companion.postedAt
+              ? `Posted ${formatRelativeTimestamp(companion.postedAt)}`
+              : formatRelativeTimestamp(companion.updatedAt)}
+          </span>
         </div>
 
         <div className="card-header">

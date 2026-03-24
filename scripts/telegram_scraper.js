@@ -16,6 +16,7 @@ import {
   writeSnapshotListings,
 } from './listing_pipeline.js';
 import { exportToGoogle } from './google_export.js';
+import { ensureLocalPhotosDir, uploadPhotoBuffer } from './photo_storage.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -205,11 +206,7 @@ function getSenderId(msg) {
   return 'unknown';
 }
 
-const photosDir = path.join(__dirname, '../public/photos');
-// Ensure photos directory exists before any downloads
-if (!fs.existsSync(photosDir)) {
-  fs.mkdirSync(photosDir, { recursive: true });
-}
+const photosDir = ensureLocalPhotosDir();
 
 async function downloadClusterPhotos(client, cluster, maxPhotos = 4) {
   const downloaded = [];
@@ -221,6 +218,12 @@ async function downloadClusterPhotos(client, cluster, maxPhotos = 4) {
       if (!buffer || buffer.length === 0) continue;
 
       const filename = `tg_${msg.id}_${Date.now()}.jpg`;
+      const storageUrl = await uploadPhotoBuffer(buffer, filename);
+      if (storageUrl) {
+        downloaded.push(storageUrl);
+        continue;
+      }
+
       const filepath = path.join(photosDir, filename);
       fs.writeFileSync(filepath, buffer);
       downloaded.push(`/photos/${filename}`);
