@@ -125,7 +125,7 @@ async function fetchSupabaseListings() {
 }
 
 async function fetchSnapshotListings() {
-  const response = await fetch('/data.json', {
+  const response = await fetch(`/data.json?ts=${Date.now()}`, {
     cache: 'no-store',
   });
 
