@@ -13,6 +13,7 @@ import { companions as backupCompanions } from './data/mockData';
 import { supabase } from './lib/supabase';
 import {
   SOURCE_LABELS,
+  createIntakeSummary,
   createMetrics,
   getListingTimestampValue,
   normalizeListings,
@@ -240,6 +241,7 @@ function App() {
 
   const t = translations[language] || translations.en;
   const metrics = createMetrics(allCompanions);
+  const intakeSummary = createIntakeSummary(allCompanions);
   const recentListings = sortListings(allCompanions, SORT_OPTIONS[0]).slice(0, 5);
 
   useEffect(() => {
@@ -385,6 +387,7 @@ function App() {
         <HeroSection
           t={t}
           metrics={metrics}
+          intakeSummary={intakeSummary}
           sourceLabel={dataState.sourceLabel}
           statusNote={dataState.note}
           lastLoadedAt={dataState.lastLoadedAt}
@@ -396,6 +399,7 @@ function App() {
         <LiveIntakeStrip
           t={t}
           listings={allCompanions}
+          intakeSummary={intakeSummary}
           lastLoadedAt={dataState.lastLoadedAt}
         />
 

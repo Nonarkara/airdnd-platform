@@ -101,6 +101,20 @@ function resolveDisplayName(rawName, sourceChannel, location) {
   return (area ? `Massage Listing ${area}` : 'Massage Listing').slice(0, 48);
 }
 
+function sanitizePriceLabel(rawPriceLabel) {
+  const normalized = normalizeText(rawPriceLabel, '');
+  if (!normalized) {
+    return 'Rate on request';
+  }
+
+  const value = extractPriceValue(normalized);
+  if (!Number.isFinite(value) || value < 100 || value > 20000) {
+    return 'Rate on request';
+  }
+
+  return `${value} THB`;
+}
+
 function normalizeMetrics(metrics) {
   if (!metrics || typeof metrics !== 'object') {
     return {};
@@ -179,7 +193,7 @@ export function normalizeListing(rawListing, options = {}) {
   const listingMeta = extractListingMeta(rawListing);
   const location = cleanLocationLabel(rawListing?.location || fallbackLocation);
   const name = resolveDisplayName(rawListing?.name, listingMeta.sourceChannel, location);
-  const priceLabel = normalizeText(rawListing?.priceLabel || rawListing?.price, 'Rate on request');
+  const priceLabel = sanitizePriceLabel(rawListing?.priceLabel || rawListing?.price);
   const ratingValue = rawListing?.rating;
   const reviewsValue = rawListing?.reviews;
 
@@ -309,12 +323,21 @@ export function createIntakeSummary(listings) {
   return {
     latestSourceTimestamp: latestSourceDate ? latestSourceDate.toISOString() : null,
     latestIngestTimestamp: latestIngestDate ? latestIngestDate.toISOString() : null,
+    feedCount: currentFeedListings.length,
     last15Minutes: countWithinWindow(15),
     last60Minutes: countWithinWindow(60),
+    last240Minutes: countWithinWindow(240),
+    throughputPerHour: currentFeedListings.length
+      ? Math.max(1, Math.round(currentFeedListings.length / 4))
+      : 0,
     matchedRate: currentFeedListings.length
       ? Math.round((currentFeedListings.filter((listing) => hasMatchedMedia(listing)).length / currentFeedListings.length) * 100)
       : 0,
+    matchedCount: currentFeedListings.filter((listing) => hasMatchedMedia(listing)).length,
     channelCount: channelCounts.size,
+    topChannel: [...channelCounts.entries()]
+      .sort((left, right) => right[1] - left[1])
+      .map(([channel, count]) => ({ channel, count }))[0] || null,
     channelLeaders: [...channelCounts.entries()]
       .sort((left, right) => right[1] - left[1])
       .slice(0, 4)

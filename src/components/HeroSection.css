@@ -88,6 +88,53 @@
   line-height: 1.6;
 }
 
+.hero-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.hero-signal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  padding: 0.95rem 0 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.hero-signal-card span {
+  color: var(--color-ink-muted);
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero-signal-card strong {
+  display: flex;
+  align-items: baseline;
+  gap: 0.28rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.55rem, 2.8vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.hero-signal-card small {
+  color: var(--color-accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-signal-card p {
+  color: var(--color-ink-soft);
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
 .hero-actions {
   display: flex;
   align-items: center;
@@ -297,7 +344,7 @@
 
 .hero-panel-stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
@@ -425,6 +472,7 @@
 }
 
 @media (max-width: 720px) {
+  .hero-signal-grid,
   .hero-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -450,6 +498,10 @@
   }
 
   .hero-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-signal-grid {
     grid-template-columns: 1fr;
   }
 

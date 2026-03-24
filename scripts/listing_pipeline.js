@@ -19,6 +19,105 @@ function normalizeText(value, fallback = '') {
   return trimmed || fallback;
 }
 
+function cleanDisplayText(value) {
+  return String(value || '')
+    .replace(/https?:\/\/\S+/gi, ' ')
+    .replace(/[\u200B-\u200D\uFEFF]/g, ' ')
+    .replace(/^[^\p{L}\p{N}@#]+/gu, '')
+    .replace(/[^\p{L}\p{N})]+$/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function formatSourceChannelName(sourceChannel) {
+  const raw = normalizeText(sourceChannel, '').replace(/^@/, '');
+  if (!raw) {
+    return '';
+  }
+
+  const spaced = raw
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/(massage|spa|club|rama|society|girl|dream|relax)(\d)/gi, '$1 $2')
+    .replace(/([a-z])(\d)/gi, '$1 $2')
+    .replace(/(\d)([a-z])/gi, '$1 $2')
+    .replace(/(massage|spa|club|rama|society|girl|dream|relax)/gi, ' $1 ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (/^[\p{Script=Latin}\d\s]+$/u.test(spaced)) {
+    return spaced
+      .split(' ')
+      .filter(Boolean)
+      .map((part) => {
+        if (/^\d+$/.test(part)) {
+          return part;
+        }
+
+        return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+      })
+      .join(' ');
+  }
+
+  return spaced;
+}
+
+function cleanLocationLabel(location) {
+  const cleaned = cleanDisplayText(
+    normalizeText(location, 'Bangkok, Thailand')
+      .replace(/^#/, '')
+      .replace(/^(?:พิกัด|พิกัดฐานทัพ|location|map|maps)\s*[:：]?\s*/i, '')
+      .replace(/^แผนที่ร้านนวดใกล้ฉัน\s*/i, '')
+      .replace(/\([^)]*\)/g, ' '),
+  );
+
+  return cleaned || 'Bangkok, Thailand';
+}
+
+function isBadDisplayName(name) {
+  const normalized = cleanDisplayText(name);
+  if (!normalized) {
+    return true;
+  }
+
+  return (
+    /^(group joining details|group|telegram|open|เปิด|นี้|massage|spa|สปา|line|new)$/i.test(normalized) ||
+    /group|joining|children'?s only|new group|line\s*id|telegram|เปิดให้บริการ|ได้เลยนะ|มีน้องคนไหน|ด่วนโทร|เอาใจ|แซ่บ|ส่งไรนักหนา|ประกาศภาวะฉุกเฉิน|จะดู|ครับ|ค่ะ|คะ/i.test(normalized) ||
+    /^\d[\d -]{7,}$/.test(normalized) ||
+    /^\d{1,2}[:.]\d{2}/.test(normalized) ||
+    /[:：]/.test(normalized) ||
+    normalized.length < 3
+  );
+}
+
+function resolveDisplayName(rawName, sourceChannel, location) {
+  const cleanedName = cleanDisplayText(rawName);
+  if (!isBadDisplayName(cleanedName)) {
+    return cleanedName.slice(0, 48);
+  }
+
+  const sourceName = formatSourceChannelName(sourceChannel);
+  if (sourceName && !isBadDisplayName(sourceName)) {
+    return sourceName.slice(0, 48);
+  }
+
+  const area = cleanLocationLabel(location).split(',')[0]?.trim();
+  return (area ? `Massage Listing ${area}` : 'Massage Listing').slice(0, 48);
+}
+
+function sanitizePriceLabel(rawPriceLabel) {
+  const normalized = normalizeText(rawPriceLabel, '');
+  if (!normalized) {
+    return 'Rate on request';
+  }
+
+  const value = extractPriceValue(normalized);
+  if (!Number.isFinite(value) || value < 100 || value > 20000) {
+    return 'Rate on request';
+  }
+
+  return `${value} THB`;
+}
+
 function normalizeNumber(value) {
   if (typeof value === 'number' && Number.isFinite(value)) {
     return value;
@@ -196,13 +295,14 @@ export function normalizeExtractedListings(rawListings, options = {}) {
 
   const normalized = (Array.isArray(rawListings) ? rawListings : [])
     .map((listing, index) => {
-      const name = normalizeText(listing?.name);
+      const sourceChannel = normalizeText(listing?.sourceChannel, null);
+      const location = cleanLocationLabel(listing?.location);
+      const name = resolveDisplayName(listing?.name, sourceChannel, location);
       if (!name) {
         return null;
       }
 
-      const location = normalizeText(listing?.location, 'Bangkok, Thailand');
-      const priceLabel = normalizeText(listing?.priceLabel || listing?.price, 'Rate on request');
+      const priceLabel = sanitizePriceLabel(listing?.priceLabel || listing?.price);
       const rating = normalizeNumber(listing?.rating);
       const reviews = normalizeInteger(listing?.reviews);
 
@@ -227,7 +327,7 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         reviews: reviews && reviews > 0 ? reviews : null,
         updatedAt: normalizeText(listing?.updatedAt || listing?.created_at, timestamp),
         postedAt: normalizeText(listing?.postedAt, null),
-        sourceChannel: normalizeText(listing?.sourceChannel, null),
+        sourceChannel,
         sourceTarget: normalizeText(listing?.sourceTarget, null),
         phone: normalizeText(listing?.phone, null),
         hours: normalizeText(listing?.hours, null),
@@ -344,13 +444,17 @@ export function readSnapshotListings() {
 }
 
 export function writeSnapshotListings(listings) {
-  if (!Array.isArray(listings) || listings.length === 0) {
+  const normalizedListings = normalizeExtractedListings(Array.isArray(listings) ? listings : [], {
+    source: 'snapshot',
+  });
+
+  if (normalizedListings.length === 0) {
     console.log('Skipping snapshot write because no valid listings were extracted.');
     return false;
   }
 
-  fs.writeFileSync(snapshotPath, JSON.stringify(listings, null, 2));
-  console.log(`Saved ${listings.length} listing(s) to public/data.json`);
+  fs.writeFileSync(snapshotPath, JSON.stringify(normalizedListings, null, 2));
+  console.log(`Saved ${normalizedListings.length} listing(s) to public/data.json`);
   return true;
 }
 

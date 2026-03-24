@@ -87,6 +87,43 @@
   line-height: 1.5;
 }
 
+.live-intake-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.live-intake-board-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.24rem;
+  padding: 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 1rem 0.35rem 1rem 0.35rem;
+  background: var(--color-surface-muted);
+}
+
+.live-intake-board-card span {
+  color: var(--color-ink-muted);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.live-intake-board-card strong {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.live-intake-board-card small {
+  color: var(--color-ink-soft);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
 .live-intake-marquee {
   position: relative;
   overflow: hidden;
@@ -169,16 +206,38 @@
 }
 
 .live-intake-flow-item {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(6rem, 10rem) auto;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--color-ink-soft);
+  font-size: 0.84rem;
+}
+
+.live-intake-flow-main {
   display: inline-flex;
   align-items: baseline;
   gap: 0.55rem;
-  color: var(--color-ink-soft);
-  font-size: 0.84rem;
 }
 
 .live-intake-flow-item strong {
   color: var(--color-ink);
   font-size: 0.9rem;
+}
+
+.live-intake-flow-bar {
+  position: relative;
+  height: 0.38rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-line);
+}
+
+.live-intake-flow-bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 40%, #ffffff));
 }
 
 .live-intake-flow-item em {
@@ -212,6 +271,10 @@
   .live-intake-header,
   .live-intake-stats-row {
     grid-template-columns: 1fr;
+  }
+
+  .live-intake-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .live-intake-stats-row {
@@ -251,5 +314,14 @@
 
   .live-intake-flow-list {
     justify-content: flex-start;
+  }
+
+  .live-intake-board {
+    grid-template-columns: 1fr;
+  }
+
+  .live-intake-flow-item {
+    grid-template-columns: 1fr;
+    width: 100%;
   }
 }

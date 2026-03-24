@@ -55,9 +55,9 @@ function formatElapsed(now, value) {
   return `${diffDays}d ago`;
 }
 
-function LiveIntakeStrip({ t, listings, lastLoadedAt }) {
+function LiveIntakeStrip({ t, listings, intakeSummary, lastLoadedAt }) {
   const [now, setNow] = useState(() => Date.now());
-  const intake = createIntakeSummary(listings);
+  const intake = intakeSummary || createIntakeSummary(listings);
   const syncTimestamp = intake.latestIngestTimestamp || lastLoadedAt;
   const tickerItems = intake.newestListings.length > 0
     ? [...intake.newestListings, ...intake.newestListings]
@@ -106,16 +106,41 @@ function LiveIntakeStrip({ t, listings, lastLoadedAt }) {
         </div>
 
         <div className="live-intake-stat">
+          <span>{t.intake.stats.last240}</span>
+          <strong>{intake.last240Minutes}</strong>
+          <small>{t.intake.stats.last240Note}</small>
+        </div>
+
+        <div className="live-intake-stat">
           <span>{t.intake.stats.matched}</span>
           <strong>{intake.matchedRate}%</strong>
           <small>{t.intake.stats.matchedNote}</small>
         </div>
+      </div>
 
-        <div className="live-intake-stat">
+      <div className="live-intake-board">
+        <article className="live-intake-board-card">
+          <span>{t.intake.board.feedNow}</span>
+          <strong>{intake.feedCount}</strong>
+          <small>{t.intake.board.feedNowNote}</small>
+        </article>
+        <article className="live-intake-board-card">
+          <span>{t.intake.board.throughput}</span>
+          <strong>{intake.throughputPerHour}</strong>
+          <small>{t.intake.board.throughputNote}</small>
+        </article>
+        <article className="live-intake-board-card">
           <span>{t.intake.stats.channels}</span>
           <strong>{intake.channelCount}</strong>
           <small>{t.intake.stats.channelsNote}</small>
-        </div>
+        </article>
+        <article className="live-intake-board-card">
+          <span>{t.intake.board.topChannel}</span>
+          <strong>{intake.topChannel?.channel || t.intake.board.topChannelPending}</strong>
+          <small>
+            {intake.topChannel ? `${intake.topChannel.count} ${t.intake.listingsUnit}` : t.intake.board.topChannelNote}
+          </small>
+        </article>
       </div>
 
       <div className="live-intake-marquee" aria-label={t.intake.tickerLabel}>
@@ -150,8 +175,13 @@ function LiveIntakeStrip({ t, listings, lastLoadedAt }) {
           <ul className="live-intake-flow-list">
             {intake.channelLeaders.map((channel) => (
               <li key={channel.channel} className="live-intake-flow-item">
-                <strong>{channel.channel}</strong>
-                <span>{channel.count} {t.intake.listingsUnit}</span>
+                <div className="live-intake-flow-main">
+                  <strong>{channel.channel}</strong>
+                  <span>{channel.count} {t.intake.listingsUnit}</span>
+                </div>
+                <div className="live-intake-flow-bar" aria-hidden="true">
+                  <span style={{ width: `${Math.max(channel.share, 8)}%` }} />
+                </div>
                 <em>{channel.share}%</em>
               </li>
             ))}

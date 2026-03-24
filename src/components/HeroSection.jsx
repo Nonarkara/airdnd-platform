@@ -9,6 +9,7 @@ import './HeroSection.css';
 function HeroSection({
   t,
   metrics,
+  intakeSummary,
   sourceLabel,
   statusNote,
   lastLoadedAt,
@@ -19,6 +20,7 @@ function HeroSection({
   const heroListings = Array.isArray(recentListings) ? recentListings.slice(0, 5) : [];
   const spotlightListing = heroListings[0] || null;
   const secondaryListings = heroListings.slice(1, 5);
+  const topChannel = intakeSummary?.topChannel || null;
 
   return (
     <section className="hero-section" aria-labelledby="hero-title">
@@ -39,6 +41,27 @@ function HeroSection({
               {sourceLabel}
             </span>
             <span className="hero-status-note">{statusNote}</span>
+          </div>
+
+          <div className="hero-signal-grid">
+            <div className="hero-signal-card">
+              <span>{t.hero.signals.throughput}</span>
+              <strong>
+                {intakeSummary?.throughputPerHour || 0}
+                <small>{t.hero.signals.perHour}</small>
+              </strong>
+              <p>{intakeSummary?.last240Minutes || 0} {t.hero.signals.last4Hours}</p>
+            </div>
+            <div className="hero-signal-card">
+              <span>{t.hero.signals.liveSources}</span>
+              <strong>{intakeSummary?.channelCount || metrics.sourceChannelCount || 0}</strong>
+              <p>{topChannel ? `${topChannel.channel} · ${topChannel.count}` : t.hero.signals.pending}</p>
+            </div>
+            <div className="hero-signal-card">
+              <span>{t.hero.signals.media}</span>
+              <strong>{intakeSummary?.matchedRate || 0}%</strong>
+              <p>{intakeSummary?.matchedCount || 0} {t.hero.signals.matchedListings}</p>
+            </div>
           </div>
 
           <div className="hero-actions">
@@ -117,7 +140,7 @@ function HeroSection({
                 <div className="hero-panel-copy">
                   <span>{t.hero.panelLabel}</span>
                   <strong>{t.hero.railTitle}</strong>
-                  <p>{t.hero.notes.secondary}</p>
+                  <p>{topChannel ? `${t.hero.topSourceLabel} ${topChannel.channel}` : t.hero.notes.secondary}</p>
                 </div>
 
                 <div className="hero-panel-stats">
@@ -127,11 +150,15 @@ function HeroSection({
                   </div>
                   <div>
                     <span>{t.hero.metrics.channels}</span>
-                    <strong>{metrics.sourceChannelCount || 1}</strong>
+                    <strong>{intakeSummary?.channelCount || metrics.sourceChannelCount || 1}</strong>
                   </div>
                   <div>
                     <span>{t.hero.metrics.coverage}</span>
                     <strong>{metrics.coverage}%</strong>
+                  </div>
+                  <div>
+                    <span>{t.hero.signals.throughput}</span>
+                    <strong>{intakeSummary?.last60Minutes || 0}</strong>
                   </div>
                 </div>
 
@@ -158,6 +185,7 @@ function HeroSection({
                             <span className={`hero-proof-pill${hasMatchedMedia(listing) ? ' is-matched' : ''}`}>
                               {hasMatchedMedia(listing) ? t.hero.photoMatched : t.hero.photoFallback}
                             </span>
+                            <span>{listing.sourceChannel || sourceLabel}</span>
                             <span>
                               {formatPreciseTimestamp(getListingTimestamp(listing)) || t.hero.timestampPending}
                             </span>
