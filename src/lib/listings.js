@@ -31,6 +31,30 @@ function normalizeMetrics(metrics) {
   return nextMetrics;
 }
 
+function extractListingMeta(rawListing) {
+  const rawMetrics =
+    rawListing?.metrics && typeof rawListing.metrics === 'object' ? rawListing.metrics : {};
+
+  return {
+    postedAt: normalizeText(
+      rawListing?.postedAt ||
+        rawListing?.posted_at ||
+        rawMetrics.__postedAt ||
+        rawMetrics.postedAt ||
+        rawMetrics.posted_at,
+      null,
+    ),
+    sourceChannel: normalizeText(
+      rawListing?.sourceChannel ||
+        rawListing?.source_channel ||
+        rawMetrics.__sourceChannel ||
+        rawMetrics.sourceChannel ||
+        rawMetrics.source_channel,
+      null,
+    ),
+  };
+}
+
 function extractPriceValue(priceLabel) {
   const numeric = String(priceLabel || '').replace(/[^\d]/g, '');
   if (!numeric) {
@@ -67,6 +91,7 @@ export function extractCity(location) {
 export function normalizeListing(rawListing, options = {}) {
   const source = options.source || 'backup';
   const fallbackLocation = options.fallbackLocation || DEFAULT_LOCATION;
+  const listingMeta = extractListingMeta(rawListing);
   const name = normalizeText(rawListing?.name, 'Untitled listing');
   const location = normalizeText(rawListing?.location, fallbackLocation);
   const priceLabel = normalizeText(rawListing?.priceLabel || rawListing?.price, 'Rate on request');
@@ -120,8 +145,8 @@ export function normalizeListing(rawListing, options = {}) {
     rating: Number.isFinite(rating) && rating > 0 ? rating : null,
     reviews: Number.isFinite(reviews) && reviews > 0 ? reviews : null,
     updatedAt,
-    postedAt: normalizeText(rawListing?.postedAt || rawListing?.posted_at, null),
-    sourceChannel: normalizeText(rawListing?.sourceChannel || rawListing?.source_channel, null),
+    postedAt: listingMeta.postedAt,
+    sourceChannel: listingMeta.sourceChannel,
     dataSource: source,
     isFallback: Boolean(options.isFallback),
   };

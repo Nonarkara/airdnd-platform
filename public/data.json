@@ -1,6 +1,64 @@
 [
   {
-    "id": "snapshot-1774367319601-1",
+    "id": "snapshot-1774368684924-3",
+    "name": "🛀ม่านทองคลับ",
+    "age": null,
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok",
+    "priceLabel": "Rate on request",
+    "priceValue": null,
+    "description": "🛀ม่านทองคลับ 💛 ไม่ต้องหวือหวา… แค่รู้ใจ รู้จังหวะ ก็ฟินลึกแบบเงียบ ๆ",
+    "tags": [
+      "Massage",
+      "Bangkok"
+    ],
+    "metrics": {},
+    "imageUrl": "/mockups/file_7.jpg",
+    "rating": null,
+    "reviews": null,
+    "updatedAt": "2026-03-24T16:11:24Z",
+    "postedAt": "2026-03-24T16:10:51.000Z",
+    "sourceChannel": "@relaxsociety2020",
+    "sourceTarget": "@relaxsociety2020",
+    "phone": null,
+    "hours": "10.00–22.00",
+    "lineUrl": "https://line.me/ti/p/x2y6NeK6ON",
+    "telegramUrl": "https://t.me/+da64sk-HeFg0MzY1",
+    "mapsUrl": null,
+    "dataSource": "snapshot",
+    "isFallback": true
+  },
+  {
+    "id": "snapshot-1774368688291-1",
+    "name": "นี้",
+    "age": null,
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok",
+    "priceLabel": "Rate on request",
+    "priceValue": null,
+    "description": "มีน้องคนไหนนวดกษัยได้ครับร้านนี้",
+    "tags": [
+      "Massage",
+      "Bangkok"
+    ],
+    "metrics": {},
+    "imageUrl": "/mockups/file_4.jpg",
+    "rating": null,
+    "reviews": null,
+    "updatedAt": "2026-03-24T16:11:28Z",
+    "postedAt": "2026-03-24T16:07:27.000Z",
+    "sourceChannel": "วิถีไทสปา164",
+    "sourceTarget": "dialog:2491020966",
+    "phone": null,
+    "hours": null,
+    "lineUrl": null,
+    "telegramUrl": null,
+    "mapsUrl": null,
+    "dataSource": "snapshot",
+    "isFallback": true
+  },
+  {
+    "id": "snapshot-1774368699722-1",
     "name": "Group joining details",
     "age": null,
     "location": "Bangkok, Thailand",
@@ -12,10 +70,10 @@
       "Bangkok"
     ],
     "metrics": {},
-    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_7461_1774367317916.jpg",
+    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_7461_1774368698031.jpg",
     "rating": null,
     "reviews": null,
-    "updatedAt": "2026-03-24T15:48:39Z",
+    "updatedAt": "2026-03-24T16:11:39Z",
     "postedAt": "2026-03-24T15:38:30.000Z",
     "sourceChannel": "The​ nicha​ spa",
     "sourceTarget": "dialog:3769808713",
@@ -28,7 +86,7 @@
     "isFallback": true
   },
   {
-    "id": "snapshot-1774367302887-2",
+    "id": "snapshot-1774368684924-2",
     "name": "นวด",
     "age": null,
     "location": "📍พิกัด ถนนเลียบคลองสอง",
@@ -40,10 +98,10 @@
       "Massage"
     ],
     "metrics": {},
-    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_1825847_1774367301105.jpg",
+    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_1825847_1774368683146.jpg",
     "rating": null,
     "reviews": null,
-    "updatedAt": "2026-03-24T15:48:22Z",
+    "updatedAt": "2026-03-24T16:11:24Z",
     "postedAt": "2026-03-24T15:35:04.000Z",
     "sourceChannel": "@relaxsociety2020",
     "sourceTarget": "@relaxsociety2020",
@@ -56,7 +114,7 @@
     "isFallback": true
   },
   {
-    "id": "snapshot-1774367302887-1",
+    "id": "snapshot-1774368684924-1",
     "name": "นวดระยอง",
     "age": null,
     "location": "📍👉 แผนที่ร้านนวดใกล้ฉัน ระยอง",
@@ -70,10 +128,10 @@
       "ร้านนวดระยอง"
     ],
     "metrics": {},
-    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_1825832_1774367298380.jpg",
+    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_1825832_1774368679679.jpg",
     "rating": null,
     "reviews": null,
-    "updatedAt": "2026-03-24T15:48:22Z",
+    "updatedAt": "2026-03-24T16:11:24Z",
     "postedAt": "2026-03-24T15:19:19.000Z",
     "sourceChannel": "@relaxsociety2020",
     "sourceTarget": "@relaxsociety2020",
@@ -86,7 +144,7 @@
     "isFallback": true
   },
   {
-    "id": "snapshot-1774367317686-5",
+    "id": "snapshot-1774368697847-4",
     "name": "ติดตามน้องใหม่แจ้งเข้าเรื่อยๆห้ามพลาด",
     "age": null,
     "location": "Bangkok, Thailand",
@@ -99,10 +157,10 @@
       "Bangkok"
     ],
     "metrics": {},
-    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_4773_1774367317307.jpg",
+    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_4773_1774368697455.jpg",
     "rating": null,
     "reviews": null,
-    "updatedAt": "2026-03-24T15:48:37Z",
+    "updatedAt": "2026-03-24T16:11:37Z",
     "postedAt": "2026-03-24T14:05:02.000Z",
     "sourceChannel": "@dreamgirlspav2",
     "sourceTarget": "@dreamgirlspav2",
@@ -115,7 +173,7 @@
     "isFallback": true
   },
   {
-    "id": "snapshot-1774367309301-1",
+    "id": "snapshot-1774368691274-1",
     "name": "ก็แซ่บไม่เบา แถมนวดฝีมือ เอาใจเก่งสุดๆ",
     "age": null,
     "location": "📍 พิกัดฐานทัพ: ราชพฤกษ์-ไทรม้า (ที่จอดรถเพียบ ปลอดภัยกว่าหลุมหลบภัยแน่นอน!)",
@@ -128,10 +186,10 @@
       "Massage"
     ],
     "metrics": {},
-    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_7112_1774367308540.jpg",
+    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_7112_1774368690597.jpg",
     "rating": null,
     "reviews": null,
-    "updatedAt": "2026-03-24T15:48:29Z",
+    "updatedAt": "2026-03-24T16:11:31Z",
     "postedAt": "2026-03-24T12:02:00.000Z",
     "sourceChannel": "@naarsom",
     "sourceTarget": "@naarsom",
@@ -144,7 +202,7 @@
     "isFallback": true
   },
   {
-    "id": "snapshot-1774367303971-1",
+    "id": "snapshot-1774368685919-1",
     "name": "ได้เลยนะคะ💕💕",
     "age": null,
     "location": "Bangkok, Thailand",
@@ -156,10 +214,10 @@
       "Bangkok"
     ],
     "metrics": {},
-    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_62115_1774367303110.jpg",
+    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_62115_1774368685090.jpg",
     "rating": null,
     "reviews": null,
-    "updatedAt": "2026-03-24T15:48:23Z",
+    "updatedAt": "2026-03-24T16:11:25Z",
     "postedAt": "2026-03-24T11:06:56.000Z",
     "sourceChannel": "Baannine Massage Spa",
     "sourceTarget": "dialog:2025289026",
@@ -172,7 +230,7 @@
     "isFallback": true
   },
   {
-    "id": "snapshot-1774367311596-1",
+    "id": "snapshot-1774368693131-1",
     "name": "เปิด 10.00 - 23:00น.",
     "age": null,
     "location": "👉ถ.สังคมสงเคราะห์ ซอย 15 ลาดพร้าว71",
@@ -185,10 +243,10 @@
       "Bangkok"
     ],
     "metrics": {},
-    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_10494_1774367309517.jpg",
+    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_10494_1774368691438.jpg",
     "rating": null,
     "reviews": null,
-    "updatedAt": "2026-03-24T15:48:31Z",
+    "updatedAt": "2026-03-24T16:11:33Z",
     "postedAt": "2026-03-24T03:01:29.000Z",
     "sourceChannel": "@chanelmassage",
     "sourceTarget": "@chanelmassage",
@@ -201,7 +259,7 @@
     "isFallback": true
   },
   {
-    "id": "snapshot-1774367306274-1",
+    "id": "snapshot-1774368688221-1",
     "name": "ชโนทัยนวดเพื่อสุขภาพ",
     "age": null,
     "location": "📌พิกัด: พระราม2 ซอย63",
@@ -215,10 +273,10 @@
       "Bangkok"
     ],
     "metrics": {},
-    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_6935_1774367304305.jpg",
+    "imageUrl": "https://fehdtfncbutesgadjsxp.supabase.co/storage/v1/object/public/listing-photos/telegram/tg_6935_1774368686231.jpg",
     "rating": null,
     "reviews": null,
-    "updatedAt": "2026-03-24T15:48:26Z",
+    "updatedAt": "2026-03-24T16:11:28Z",
     "postedAt": "2026-03-24T02:56:18.000Z",
     "sourceChannel": "ชโนทัย นวดเพื่อสุขภาพ พระราม2",
     "sourceTarget": "dialog:2381945815",
@@ -231,7 +289,7 @@
     "isFallback": true
   },
   {
-    "id": "snapshot-1774367308346-1",
+    "id": "snapshot-1774368690379-1",
     "name": "แท้งส่งไรนักหนาวะ",
     "age": null,
     "location": "Bangkok, Thailand",
@@ -247,7 +305,7 @@
     "imageUrl": "/mockups/602281628777579195.jpg",
     "rating": null,
     "reviews": null,
-    "updatedAt": "2026-03-24T15:48:28Z",
+    "updatedAt": "2026-03-24T16:11:30Z",
     "postedAt": "2026-03-21T03:53:15.000Z",
     "sourceChannel": "Eden spa",
     "sourceTarget": "dialog:2647876733",

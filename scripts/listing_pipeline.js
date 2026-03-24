@@ -62,6 +62,37 @@ function hasMatchedMedia(listing) {
     !normalizeText(listing?.imageUrl || listing?.image_url).startsWith('/mockups/');
 }
 
+function createDatabaseMetrics(listing, existingMetrics = null) {
+  const baseMetrics =
+    existingMetrics && typeof existingMetrics === 'object' && !Array.isArray(existingMetrics)
+      ? { ...existingMetrics }
+      : {};
+  const listingMetrics =
+    listing?.metrics && typeof listing.metrics === 'object' && !Array.isArray(listing.metrics)
+      ? listing.metrics
+      : {};
+
+  Object.assign(baseMetrics, listingMetrics);
+
+  if (listing?.postedAt) {
+    baseMetrics.__postedAt = listing.postedAt;
+  }
+
+  if (listing?.sourceChannel) {
+    baseMetrics.__sourceChannel = listing.sourceChannel;
+  }
+
+  if (listing?.sourceTarget) {
+    baseMetrics.__sourceTarget = listing.sourceTarget;
+  }
+
+  if (typeof listing?.imageUrl === 'string' && listing.imageUrl.trim()) {
+    baseMetrics.__matchedMedia = hasMatchedMedia(listing);
+  }
+
+  return baseMetrics;
+}
+
 function getFreshnessValue(listing) {
   const value = listing?.postedAt || listing?.posted_at || listing?.updatedAt || listing?.created_at;
   const timestamp = value ? new Date(value).getTime() : 0;
@@ -335,7 +366,7 @@ export async function insertListingsIfPossible(supabase, listings) {
     try {
       const { data: existingRows, error: lookupError } = await supabase
         .from('companions')
-        .select('id')
+        .select('id,image_url,metrics')
         .eq('name', listing.name)
         .eq('location', listing.location)
         .limit(1);
@@ -345,6 +376,32 @@ export async function insertListingsIfPossible(supabase, listings) {
       }
 
       if (existingRows && existingRows.length > 0) {
+        const existingRow = existingRows[0];
+        const nextMetrics = createDatabaseMetrics(listing, existingRow.metrics);
+        const nextMetricsJson = JSON.stringify(nextMetrics);
+        const existingMetricsJson = JSON.stringify(existingRow.metrics || {});
+        const existingImageUrl = normalizeText(existingRow.image_url, '');
+        const updatePayload = {};
+
+        if (nextMetricsJson !== existingMetricsJson) {
+          updatePayload.metrics = nextMetrics;
+        }
+
+        if (hasMatchedMedia(listing) && (!existingImageUrl || existingImageUrl.startsWith('/mockups/'))) {
+          updatePayload.image_url = listing.imageUrl;
+        }
+
+        if (Object.keys(updatePayload).length > 0) {
+          const { error: updateError } = await supabase
+            .from('companions')
+            .update(updatePayload)
+            .eq('id', existingRow.id);
+
+          if (updateError) {
+            throw updateError;
+          }
+        }
+
         skipped += 1;
         continue;
       }
@@ -359,7 +416,7 @@ export async function insertListingsIfPossible(supabase, listings) {
         rating: listing.rating ?? 0,
         reviews: listing.reviews ?? 0,
         tags: listing.tags,
-        metrics: listing.metrics,
+        metrics: createDatabaseMetrics(listing),
       };
 
       // Try with origin metadata first, fall back without if columns don't exist
