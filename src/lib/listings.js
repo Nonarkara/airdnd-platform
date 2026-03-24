@@ -140,6 +140,20 @@ function parseTimestamp(value) {
   return date;
 }
 
+export function getListingTimestamp(listing) {
+  return parseTimestamp(listing?.postedAt || listing?.posted_at || listing?.updatedAt || listing?.created_at);
+}
+
+export function getListingTimestampValue(listing) {
+  const date = getListingTimestamp(listing);
+  return date ? date.getTime() : 0;
+}
+
+export function hasMatchedMedia(listing) {
+  const imageUrl = normalizeText(listing?.imageUrl || listing?.image_url, '');
+  return Boolean(imageUrl) && !imageUrl.startsWith('/mockups/');
+}
+
 export function normalizeListings(listings, options = {}) {
   if (!Array.isArray(listings)) {
     return [];
@@ -160,13 +174,13 @@ export function createMetrics(listings) {
   const normalizedListings = Array.isArray(listings) ? listings : [];
   const bangkokCount = normalizedListings.filter((listing) => listing.city === 'Bangkok').length;
   const timestamps = normalizedListings
-    .map((listing) => parseTimestamp(listing.updatedAt))
+    .map((listing) => getListingTimestamp(listing))
     .filter(Boolean)
     .sort((left, right) => right.getTime() - left.getTime());
   const latestDate = timestamps[0] || null;
   const liveWindowCount = latestDate
     ? normalizedListings.filter((listing) => {
-        const listingDate = parseTimestamp(listing.updatedAt);
+        const listingDate = getListingTimestamp(listing);
         if (!listingDate) {
           return false;
         }
@@ -179,11 +193,19 @@ export function createMetrics(listings) {
       .map((listing) => listing.city)
       .filter(Boolean),
   ).size;
+  const sourceChannelCount = new Set(
+    normalizedListings
+      .map((listing) => listing.sourceChannel)
+      .filter(Boolean),
+  ).size;
+  const matchedMediaCount = normalizedListings.filter((listing) => hasMatchedMedia(listing)).length;
 
   return {
     total: normalizedListings.length,
     bangkokCount,
     cityCount,
+    sourceChannelCount,
+    matchedMediaCount,
     coverage: normalizedListings.length
       ? Math.round((bangkokCount / normalizedListings.length) * 100)
       : 0,

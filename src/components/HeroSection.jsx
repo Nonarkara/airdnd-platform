@@ -1,7 +1,8 @@
 import {
-  SOURCE_LABELS,
   formatPreciseTimestamp,
   formatRelativeTimestamp,
+  getListingTimestamp,
+  hasMatchedMedia,
 } from '../lib/listings';
 import './HeroSection.css';
 
@@ -15,12 +16,14 @@ function HeroSection({
   isRefreshing,
   recentListings,
 }) {
-  const heroListings = Array.isArray(recentListings) ? recentListings.slice(0, 4) : [];
+  const heroListings = Array.isArray(recentListings) ? recentListings.slice(0, 5) : [];
+  const spotlightListing = heroListings[0] || null;
+  const secondaryListings = heroListings.slice(1, 5);
 
   return (
     <section className="hero-section" aria-labelledby="hero-title">
-      <div className="hero-banner">
-        <div className="hero-banner-content">
+      <div className="hero-grid">
+        <div className="hero-copy">
           <p className="hero-kicker">{t.hero.kicker}</p>
 
           <h1 id="hero-title">
@@ -51,56 +54,128 @@ function HeroSection({
               {t.hero.secondaryAction}
             </a>
           </div>
+
+          <div className="hero-metrics">
+            <div className="hero-metric">
+              <strong>{metrics.total}</strong>
+              <span>{t.hero.metrics.total}</span>
+            </div>
+            <div className="hero-metric">
+              <strong>{metrics.liveWindowCount}</strong>
+              <span>{t.hero.metrics.liveWindow}</span>
+            </div>
+            <div className="hero-metric">
+              <strong>{metrics.matchedMediaCount}</strong>
+              <span>{t.hero.metrics.media}</span>
+            </div>
+            <div className="hero-metric">
+              <strong>{metrics.cityCount}</strong>
+              <span>{t.hero.metrics.cities}</span>
+            </div>
+          </div>
+
+          <div className="hero-ribbon">
+            <span>{t.hero.ribbon.primary}</span>
+            <span>{t.hero.ribbon.secondary}</span>
+            <span>{t.hero.ribbon.tertiary}</span>
+            <span>{t.hero.ribbon.quaternary}</span>
+          </div>
         </div>
 
-        <div className="hero-illustration" aria-hidden="true">
-          <img src="/hero-illustration.svg" alt="" />
-        </div>
-      </div>
+        <div className="hero-stage">
+          {spotlightListing ? (
+            <>
+              <article className="hero-spotlight">
+                <img
+                  src={spotlightListing.imageUrl}
+                  alt={spotlightListing.name}
+                  className="hero-spotlight-image"
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src = '/mockups/109748.jpg';
+                  }}
+                />
 
-      <div className="hero-stats-bar">
-        <div className="hero-metrics">
-          <div className="hero-metric">
-            <strong>{metrics.total}</strong>
-            <span>{t.hero.metrics.total}</span>
-          </div>
-          <div className="hero-metric">
-            <strong>{metrics.liveWindowCount}</strong>
-            <span>{t.hero.metrics.liveWindow}</span>
-          </div>
-          <div className="hero-metric">
-            <strong>{metrics.cityCount}</strong>
-            <span>{t.hero.metrics.cities}</span>
-          </div>
-          <div className="hero-metric">
-            <strong>{metrics.bangkokCount}</strong>
-            <span>{t.hero.metrics.bangkok}</span>
-          </div>
-        </div>
-
-        <div className="hero-recent">
-          <div className="hero-recent-header">
-            <span>{t.hero.railLabel}</span>
-            <strong>{t.hero.railTitle}</strong>
-          </div>
-
-          {heroListings.length > 0 ? (
-            <ol className="hero-live-list">
-              {heroListings.map((listing, index) => (
-                <li key={listing.id} className="hero-live-item">
-                  <span className="hero-live-rank">{String(index + 1).padStart(2, '0')}</span>
-                  <div className="hero-live-main">
-                    <div className="hero-live-mainline">
-                      <strong>{listing.name}</strong>
-                      <span>{listing.priceLabel}</span>
-                    </div>
-                    <p>{listing.location}</p>
+                <div className="hero-spotlight-overlay">
+                  <span className="hero-spotlight-label">{t.hero.spotlightLabel}</span>
+                  <div className="hero-spotlight-head">
+                    <span className={`hero-proof-pill${hasMatchedMedia(spotlightListing) ? ' is-matched' : ''}`}>
+                      {hasMatchedMedia(spotlightListing) ? t.hero.photoMatched : t.hero.photoFallback}
+                    </span>
+                    <span className="hero-spotlight-time">
+                      {formatPreciseTimestamp(getListingTimestamp(spotlightListing)) || t.hero.timestampPending}
+                    </span>
                   </div>
-                </li>
-              ))}
-            </ol>
+                  <div className="hero-spotlight-copy">
+                    <strong>{spotlightListing.name}</strong>
+                    <p>{spotlightListing.location}</p>
+                  </div>
+                </div>
+              </article>
+
+              <div className="hero-stage-panel">
+                <div className="hero-panel-copy">
+                  <span>{t.hero.panelLabel}</span>
+                  <strong>{t.hero.railTitle}</strong>
+                  <p>{t.hero.notes.secondary}</p>
+                </div>
+
+                <div className="hero-panel-stats">
+                  <div>
+                    <span>{t.hero.metrics.latest}</span>
+                    <strong>{formatRelativeTimestamp(lastLoadedAt)}</strong>
+                  </div>
+                  <div>
+                    <span>{t.hero.metrics.channels}</span>
+                    <strong>{metrics.sourceChannelCount || 1}</strong>
+                  </div>
+                  <div>
+                    <span>{t.hero.metrics.coverage}</span>
+                    <strong>{metrics.coverage}%</strong>
+                  </div>
+                </div>
+
+                {secondaryListings.length > 0 ? (
+                  <ol className="hero-live-list">
+                    {secondaryListings.map((listing) => (
+                      <li key={listing.id} className="hero-live-item">
+                        <img
+                          src={listing.imageUrl}
+                          alt={listing.name}
+                          className="hero-live-thumb"
+                          onError={(event) => {
+                            event.currentTarget.onerror = null;
+                            event.currentTarget.src = '/mockups/109748.jpg';
+                          }}
+                        />
+                        <div className="hero-live-main">
+                          <div className="hero-live-mainline">
+                            <strong>{listing.name}</strong>
+                            <span>{listing.priceLabel}</span>
+                          </div>
+                          <p>{listing.location}</p>
+                          <div className="hero-live-meta">
+                            <span className={`hero-proof-pill${hasMatchedMedia(listing) ? ' is-matched' : ''}`}>
+                              {hasMatchedMedia(listing) ? t.hero.photoMatched : t.hero.photoFallback}
+                            </span>
+                            <span>
+                              {formatPreciseTimestamp(getListingTimestamp(listing)) || t.hero.timestampPending}
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                ) : (
+                  <p className="hero-live-empty">{t.hero.emptyRail}</p>
+                )}
+              </div>
+            </>
           ) : (
-            <p className="hero-live-empty">{t.hero.emptyRail}</p>
+            <div className="hero-empty-stage">
+              <strong>{t.hero.railTitle}</strong>
+              <p>{t.hero.emptyRail}</p>
+            </div>
           )}
         </div>
       </div>

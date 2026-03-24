@@ -2,6 +2,7 @@ import {
   SOURCE_LABELS,
   formatPreciseTimestamp,
   formatRelativeTimestamp,
+  hasMatchedMedia,
 } from '../lib/listings';
 import './CompanionCard.css';
 
@@ -12,6 +13,7 @@ function CompanionCard({ companion, onClick, t }) {
   const preciseTimestamp = formatPreciseTimestamp(companion.postedAt)
     || formatPreciseTimestamp(companion.updatedAt)
     || t.card.timestampPending;
+  const photoLabel = hasMatchedMedia(companion) ? t.card.photoMatched : t.card.photoFallback;
 
   return (
     <article className="companion-card" onClick={() => onClick(companion)}>
@@ -37,6 +39,12 @@ function CompanionCard({ companion, onClick, t }) {
           <span className="card-source">
             {companion.sourceChannel || SOURCE_LABELS[companion.dataSource]}
           </span>
+          <span className={`card-proof${hasMatchedMedia(companion) ? ' is-matched' : ''}`}>
+            {photoLabel}
+          </span>
+        </div>
+
+        <div className="card-timeline">
           <span className="card-updated">
             {companion.postedAt
               ? `Posted ${formatRelativeTimestamp(companion.postedAt)}`

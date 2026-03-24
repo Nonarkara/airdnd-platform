@@ -13,6 +13,7 @@ import { supabase } from './lib/supabase';
 import {
   SOURCE_LABELS,
   createMetrics,
+  getListingTimestampValue,
   normalizeListings,
 } from './lib/listings';
 import { translations } from './translations';
@@ -51,7 +52,7 @@ function getLatestListingTimestamp(listings) {
   }
 
   return listings.reduce((latest, listing) => {
-    const timestamp = listing?.updatedAt ? new Date(listing.updatedAt).getTime() : 0;
+    const timestamp = getListingTimestampValue(listing);
     return Number.isFinite(timestamp) ? Math.max(latest, timestamp) : latest;
   }, 0);
 }
@@ -76,8 +77,8 @@ function sortListings(listings, sortBy) {
       return left.name.localeCompare(right.name);
     }
 
-    const leftTime = left.updatedAt ? new Date(left.updatedAt).getTime() : 0;
-    const rightTime = right.updatedAt ? new Date(right.updatedAt).getTime() : 0;
+    const leftTime = getListingTimestampValue(left);
+    const rightTime = getListingTimestampValue(right);
 
     if (leftTime !== rightTime) {
       return rightTime - leftTime;
