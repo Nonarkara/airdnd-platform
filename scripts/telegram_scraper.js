@@ -25,10 +25,18 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 const apiId = Number.parseInt(process.env.TELEGRAM_API_ID, 10);
 const apiHash = process.env.TELEGRAM_API_HASH;
 const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
-const channelUsername = process.env.TELEGRAM_SOURCE_CHANNEL || 'nutyes';
-const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '120', 10);
+const configuredChannels = (
+  process.env.TELEGRAM_SOURCE_CHANNELS ||
+  process.env.TELEGRAM_SOURCE_CHANNEL ||
+  'nutyes'
+)
+  .split(',')
+  .map((value) => value.trim().replace(/^@/, ''))
+  .filter(Boolean);
+const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '240', 10);
 const pollIntervalMs = Number.parseInt(process.env.TELEGRAM_POLL_INTERVAL_MS || '45000', 10);
 const snapshotLimit = Number.parseInt(process.env.SNAPSHOT_LISTING_LIMIT || '180', 10);
+const parseTimeoutMs = Number.parseInt(process.env.GEMINI_PARSE_TIMEOUT_MS || '12000', 10);
 const watchMode = process.argv.includes('--watch');
 
 if (!apiId || !apiHash) {
@@ -139,6 +147,144 @@ function normalizeClusterId(value) {
   }
 
   return null;
+}
+
+function normalizeLine(value) {
+  return String(value || '')
+    .replace(/https?:\/\/\S+/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractTagsFromText(text, location) {
+  const nextTags = [];
+  const hashtagMatches = [...text.matchAll(/#([^\s#]{2,24})/g)]
+    .map((match) => match[1]?.trim())
+    .filter(Boolean);
+
+  hashtagMatches.forEach((tag) => {
+    if (!nextTags.includes(tag)) {
+      nextTags.push(tag);
+    }
+  });
+
+  if (/massage|นวด|สปา|spa/i.test(text) && !nextTags.includes('Massage')) {
+    nextTags.push('Massage');
+  }
+
+  if (/bangkok|กรุงเทพ|สุขุมวิท|ทองหล่อ|เอกมัย|อโศก|พระราม|รัชดา|ลาดพร้าว|ห้วยขวาง|สาทร|สีลม/i.test(location || text) && !nextTags.includes('Bangkok')) {
+    nextTags.push('Bangkok');
+  }
+
+  return nextTags.slice(0, 3);
+}
+
+function buildFallbackListing(cluster, clusterId) {
+  const text = cluster.texts.join('\n').trim();
+  if (!text || text.length < 24) {
+    return null;
+  }
+
+  const listingSignal = /massage|นวด|spa|สปา|ร้าน|therap|เปิดรับ|เปิดบริการ|จอง|พิกัด|location|line|telegram|ราคา|บาท|฿/i;
+  if (!listingSignal.test(text)) {
+    return null;
+  }
+
+  const lines = text
+    .split('\n')
+    .map((line) => normalizeLine(line))
+    .filter(Boolean);
+
+  if (lines.length === 0) {
+    return null;
+  }
+
+  const explicitName =
+    text.match(/(?:ชื่อร้าน|ชื่อ|ร้าน)\s*[:：]?\s*([^\n]{2,48})/i)?.[1] ||
+    text.match(/#([^\s#]{2,28})/)?.[1] ||
+    null;
+  const candidateName = normalizeLine(
+    explicitName ||
+      lines.find((line) => {
+        const lowered = line.toLowerCase();
+        return (
+          line.length >= 4 &&
+          line.length <= 48 &&
+          !/https?:\/\//i.test(line) &&
+          !/line|telegram|maps|phone|tel|ราคา|บาท|฿|open|close|เปิด|ปิด/i.test(lowered)
+        );
+      }) ||
+      lines[0],
+  );
+
+  const locationLine =
+    lines.find((line) =>
+      /พิกัด|แถว|ย่าน|เขต|ใกล้|สาขา|สุขุมวิท|ทองหล่อ|เอกมัย|อโศก|พระราม|รัชดา|ลาดพร้าว|ห้วยขวาง|สาทร|สีลม|พัทยา|ภูเก็ต|เชียงใหม่|location/i.test(line),
+    ) || null;
+  const location = normalizeLine(
+    locationLine
+      ? locationLine.replace(/^(?:พิกัด|แถว|ย่าน|เขต|ใกล้|สาขา|location)\s*[:：]?\s*/i, '')
+      : 'Bangkok, Thailand',
+  );
+
+  const priceMatch = text.match(/(?:฿|THB\s*)?(\d{3,5})(?:\s*(?:บาท|฿|THB))?/i);
+  const description = normalizeLine(lines.slice(0, 3).join(' ')).slice(0, 220);
+
+  return {
+    cluster_id: clusterId,
+    name: candidateName.slice(0, 48) || `Listing ${clusterId + 1}`,
+    age: null,
+    location: location || 'Bangkok, Thailand',
+    price: priceMatch ? `${priceMatch[1]} THB` : null,
+    metrics: {},
+    tags: extractTagsFromText(text, location),
+    description: description || 'New listing captured from Telegram.',
+    phone: text.match(/(?:\+?66|0)\d[\d -]{7,}/)?.[0] || null,
+    hours: text.match(/\b\d{1,2}[:.]\d{2}\s*[-–]\s*\d{1,2}[:.]\d{2}\b/)?.[0] || null,
+    lineUrl: text.match(/https?:\/\/line\.me\/\S+/i)?.[0] || null,
+    telegramUrl: text.match(/https?:\/\/t\.me\/\S+/i)?.[0] || null,
+    mapsUrl: text.match(/https?:\/\/(?:maps\.app\.goo\.gl|goo\.gl\/maps|maps\.google\.com)\S+/i)?.[0] || null,
+  };
+}
+
+function buildFallbackListings(clusters) {
+  return clusters
+    .map((cluster, clusterId) => buildFallbackListing(cluster, clusterId))
+    .filter(Boolean);
+}
+
+async function parseListingsFromClusters(rawText, clusters, channelUsername) {
+  try {
+    const response = await Promise.race([
+      ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: buildPrompt(rawText),
+        config: {
+          responseMimeType: 'application/json',
+        },
+      }),
+      new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(new Error(`Gemini parsing timed out after ${parseTimeoutMs}ms.`));
+        }, parseTimeoutMs);
+      }),
+    ]);
+
+    const parsedListings = parseModelJson(response.text);
+    console.log(`@${channelUsername}: model returned ${parsedListings.length} listing candidate(s).`);
+
+    if (parsedListings.length > 0) {
+      return parsedListings;
+    }
+
+    console.warn(`@${channelUsername}: model returned no listings, falling back to heuristic parsing.`);
+  } catch (error) {
+    console.warn(`@${channelUsername}: Gemini parsing failed, using heuristic fallback. ${error.message}`);
+  }
+
+  const fallbackListings = buildFallbackListings(clusters);
+  console.log(`@${channelUsername}: fallback parser returned ${fallbackListings.length} listing candidate(s).`);
+  return fallbackListings;
 }
 
 /**
@@ -320,27 +466,31 @@ function createMessageBatch(messages, minimumMessageId = 0) {
   };
 }
 
-async function runTelegramScrape(client, state = {}) {
+async function extractListingsFromChannel(client, channelUsername, state = {}) {
   const messages = await client.getMessages(channelUsername, {
     limit: Number.isFinite(fetchLimit) ? fetchLimit : 30,
   });
 
-  const { latestMessageId, newMessages } = createMessageBatch(messages, state.lastSeenMessageId || 0);
+  if (!state.lastSeenMessageIds) {
+    state.lastSeenMessageIds = {};
+  }
 
-  console.log(
-    `Fetched ${messages.length} messages, ${newMessages.length} new message(s), latest id ${latestMessageId}.`,
+  const { latestMessageId, newMessages } = createMessageBatch(
+    messages,
+    state.lastSeenMessageIds[channelUsername] || 0,
   );
 
-  state.lastSeenMessageId = latestMessageId;
+  console.log(
+    `@${channelUsername}: fetched ${messages.length} messages, ${newMessages.length} new message(s), latest id ${latestMessageId}.`,
+  );
+
+  state.lastSeenMessageIds[channelUsername] = latestMessageId;
 
   if (newMessages.length === 0) {
     return {
+      channelUsername,
       fetchedMessages: messages.length,
-      extractedListings: 0,
-      inserted: 0,
-      skipped: 0,
-      snapshotCount: readSnapshotListings().length,
-      wroteSnapshot: false,
+      listings: [],
     };
   }
 
@@ -348,31 +498,15 @@ async function runTelegramScrape(client, state = {}) {
   const clusters = mergeAdjacentClusters(clusterMessages(newMessages));
   const clustersWithText = clusters.filter((c) => c.texts.length > 0);
   console.log(
-    `Grouped into ${clusters.length} cluster(s), ${clustersWithText.length} with text.`,
+    `@${channelUsername}: grouped into ${clusters.length} cluster(s), ${clustersWithText.length} with text.`,
   );
 
   if (clustersWithText.length === 0) {
     return {
+      channelUsername,
       fetchedMessages: messages.length,
-      extractedListings: 0,
-      inserted: 0,
-      skipped: 0,
-      snapshotCount: readSnapshotListings().length,
-      wroteSnapshot: false,
+      listings: [],
     };
-  }
-
-  // Download photos for each cluster
-  const clusterPhotos = new Map();
-  for (let i = 0; i < clusters.length; i++) {
-    const cluster = clusters[i];
-    if (cluster.mediaMessages.length > 0) {
-      const photos = await downloadClusterPhotos(client, cluster);
-      if (photos.length > 0) {
-        clusterPhotos.set(i, photos);
-        console.log(`  Cluster ${i}: downloaded ${photos.length} photo(s)`);
-      }
-    }
   }
 
   // Build prompt text with cluster IDs so Gemini can label which cluster each listing came from
@@ -383,16 +517,29 @@ async function runTelegramScrape(client, state = {}) {
     })
     .join('\n\n---\n\n');
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
-    contents: buildPrompt(rawText),
-    config: {
-      responseMimeType: 'application/json',
-    },
-  });
+  const parsedListings = await parseListingsFromClusters(rawText, clusters, channelUsername);
 
-  const parsedListings = parseModelJson(response.text);
-  console.log(`Model returned ${parsedListings.length} listing candidate(s).`);
+  const referencedClusterIds = [
+    ...new Set(
+      parsedListings
+        .map((listing) => normalizeClusterId(listing.cluster_id))
+        .filter((clusterId) => clusterId !== null),
+    ),
+  ];
+
+  const clusterPhotos = new Map();
+  for (const clusterId of referencedClusterIds) {
+    const cluster = clusters[clusterId];
+    if (!cluster || cluster.mediaMessages.length === 0) {
+      continue;
+    }
+
+    const photos = await downloadClusterPhotos(client, cluster);
+    if (photos.length > 0) {
+      clusterPhotos.set(clusterId, photos);
+      console.log(`  @${channelUsername} cluster ${clusterId}: downloaded ${photos.length} photo(s)`);
+    }
+  }
 
   // Assign real photos, original post time, and source channel to listings based on cluster_id.
   // If the model cannot point to a valid cluster, skip the candidate instead of mismatching photos.
@@ -431,22 +578,19 @@ async function runTelegramScrape(client, state = {}) {
   }
 
   if (skippedInvalidClusterCount > 0) {
-    console.warn(`Skipped ${skippedInvalidClusterCount} candidate(s) with invalid cluster_id values.`);
+    console.warn(`@${channelUsername}: skipped ${skippedInvalidClusterCount} candidate(s) with invalid cluster_id values.`);
   }
 
   const normalizedListings = normalizeExtractedListings(listingsWithPhotos, {
     source: 'snapshot',
   });
-  console.log(`Normalized ${normalizedListings.length} unique listing(s).`);
+  console.log(`@${channelUsername}: normalized ${normalizedListings.length} unique listing(s).`);
 
   if (normalizedListings.length === 0) {
     return {
+      channelUsername,
       fetchedMessages: messages.length,
-      extractedListings: 0,
-      inserted: 0,
-      skipped: 0,
-      snapshotCount: readSnapshotListings().length,
-      wroteSnapshot: false,
+      listings: [],
     };
   }
 
@@ -462,8 +606,40 @@ async function runTelegramScrape(client, state = {}) {
   ).length;
   const fallbackPhotoCount = listingsWithImages.length - matchedPhotoCount;
   console.log(
-    `Photo matching summary. Cluster-matched: ${matchedPhotoCount}, mockup fallback: ${fallbackPhotoCount}.`,
+    `@${channelUsername}: photo matching summary. Cluster-matched: ${matchedPhotoCount}, mockup fallback: ${fallbackPhotoCount}.`,
   );
+
+  return {
+    channelUsername,
+    fetchedMessages: messages.length,
+    listings: listingsWithImages,
+  };
+}
+
+async function runTelegramScrape(client, state = {}) {
+  const channelResults = [];
+  for (const channelUsername of configuredChannels) {
+    try {
+      const result = await extractListingsFromChannel(client, channelUsername, state);
+      channelResults.push(result);
+    } catch (error) {
+      console.error(`Error extracting from @${channelUsername}:`, error.message);
+    }
+  }
+
+  const fetchedMessages = channelResults.reduce((sum, result) => sum + result.fetchedMessages, 0);
+  const listingsWithImages = channelResults.flatMap((result) => result.listings || []);
+
+  if (listingsWithImages.length === 0) {
+    return {
+      fetchedMessages,
+      extractedListings: 0,
+      inserted: 0,
+      skipped: 0,
+      snapshotCount: readSnapshotListings().length,
+      wroteSnapshot: false,
+    };
+  }
 
   const mergedSnapshot = mergeSnapshotListings(listingsWithImages, readSnapshotListings(), {
     limit: snapshotLimit,
@@ -491,7 +667,7 @@ async function runTelegramScrape(client, state = {}) {
   }
 
   return {
-    fetchedMessages: messages.length,
+    fetchedMessages,
     extractedListings: listingsWithImages.length,
     inserted,
     skipped,
@@ -502,7 +678,7 @@ async function runTelegramScrape(client, state = {}) {
 
 async function main() {
   console.log(
-    `Starting Telegram scraper for @${channelUsername}${watchMode ? ` in watch mode (${pollIntervalMs}ms)` : '...'}`,
+    `Starting Telegram scraper for ${configuredChannels.map((channel) => `@${channel}`).join(', ')}${watchMode ? ` in watch mode (${pollIntervalMs}ms)` : '...'}`,
   );
 
   const client = new TelegramClient(stringSession, apiId, apiHash, {
@@ -510,7 +686,7 @@ async function main() {
   });
 
   const state = {
-    lastSeenMessageId: 0,
+    lastSeenMessageIds: {},
     shouldStop: false,
   };
 

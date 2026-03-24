@@ -140,6 +140,10 @@ function parseTimestamp(value) {
   return date;
 }
 
+export function getIngestTimestamp(listing) {
+  return parseTimestamp(listing?.updatedAt || listing?.created_at);
+}
+
 export function getListingTimestamp(listing) {
   return parseTimestamp(listing?.postedAt || listing?.posted_at || listing?.updatedAt || listing?.created_at);
 }
@@ -152,6 +156,64 @@ export function getListingTimestampValue(listing) {
 export function hasMatchedMedia(listing) {
   const imageUrl = normalizeText(listing?.imageUrl || listing?.image_url, '');
   return Boolean(imageUrl) && !imageUrl.startsWith('/mockups/');
+}
+
+export function createIntakeSummary(listings) {
+  const normalizedListings = Array.isArray(listings) ? listings : [];
+  const newestListings = [...normalizedListings].sort(
+    (left, right) => getListingTimestampValue(right) - getListingTimestampValue(left),
+  );
+  const latestSourceDate = newestListings.length > 0 ? getListingTimestamp(newestListings[0]) : null;
+  const latestIngestDate = normalizedListings
+    .map((listing) => getIngestTimestamp(listing))
+    .filter(Boolean)
+    .sort((left, right) => right.getTime() - left.getTime())[0] || null;
+  const referenceDate = latestSourceDate || latestIngestDate;
+  const countWithinWindow = (windowMinutes) => {
+    if (!referenceDate) {
+      return 0;
+    }
+
+    return normalizedListings.filter((listing) => {
+      const listingDate = getListingTimestamp(listing) || getIngestTimestamp(listing);
+      if (!listingDate) {
+        return false;
+      }
+
+      const distance = referenceDate.getTime() - listingDate.getTime();
+      return distance >= 0 && distance <= windowMinutes * 60 * 1000;
+    }).length;
+  };
+
+  const channelCounts = new Map();
+  normalizedListings.forEach((listing) => {
+    const channel = normalizeText(listing?.sourceChannel, null);
+    if (!channel) {
+      return;
+    }
+
+    channelCounts.set(channel, (channelCounts.get(channel) || 0) + 1);
+  });
+
+  return {
+    latestSourceTimestamp: latestSourceDate ? latestSourceDate.toISOString() : null,
+    latestIngestTimestamp: latestIngestDate ? latestIngestDate.toISOString() : null,
+    last15Minutes: countWithinWindow(15),
+    last60Minutes: countWithinWindow(60),
+    matchedRate: normalizedListings.length
+      ? Math.round((normalizedListings.filter((listing) => hasMatchedMedia(listing)).length / normalizedListings.length) * 100)
+      : 0,
+    channelCount: channelCounts.size,
+    channelLeaders: [...channelCounts.entries()]
+      .sort((left, right) => right[1] - left[1])
+      .slice(0, 4)
+      .map(([channel, count]) => ({
+        channel,
+        count,
+        share: normalizedListings.length ? Math.round((count / normalizedListings.length) * 100) : 0,
+      })),
+    newestListings: newestListings.slice(0, 8),
+  };
 }
 
 export function normalizeListings(listings, options = {}) {

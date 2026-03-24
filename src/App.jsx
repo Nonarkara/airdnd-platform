@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
+import LiveIntakeStrip from './components/LiveIntakeStrip';
 import FilterBar from './components/FilterBar';
 import CompanionGrid from './components/CompanionGrid';
 import CompanionModal from './components/CompanionModal';
@@ -381,6 +382,12 @@ function App() {
           onRefresh={handleRefresh}
           isRefreshing={dataState.isRefreshing}
           recentListings={recentListings}
+        />
+
+        <LiveIntakeStrip
+          t={t}
+          listings={allCompanions}
+          lastLoadedAt={dataState.lastLoadedAt}
         />
 
         <MapSection t={t} />
