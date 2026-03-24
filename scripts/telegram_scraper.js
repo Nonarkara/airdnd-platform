@@ -120,6 +120,27 @@ function attachImages(listings, files) {
   });
 }
 
+function isTextOnlyCluster(cluster) {
+  return cluster.texts.length > 0 && cluster.mediaMessages.length === 0;
+}
+
+function isMediaOnlyCluster(cluster) {
+  return cluster.mediaMessages.length > 0 && cluster.texts.length === 0;
+}
+
+function normalizeClusterId(value) {
+  if (typeof value === 'number' && Number.isInteger(value)) {
+    return value;
+  }
+
+  if (typeof value === 'string' && value.trim()) {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isInteger(parsed) ? parsed : null;
+  }
+
+  return null;
+}
+
 /**
  * Cluster Telegram messages by groupedId (albums) or by sender + time proximity.
  * Each cluster has: { texts: string[], mediaMessages: Message[], senderId, startDate }
@@ -151,7 +172,13 @@ function clusterMessages(messages, timeWindowSec = 120) {
       .filter((t) => typeof t === 'string' && t.trim())
       .map((t) => t.trim());
     const mediaMessages = sorted.filter((m) => m.media && m.media.photo);
-    clusters.push({ texts, mediaMessages, senderId, startDate: sorted[0]?.date || 0 });
+    clusters.push({
+      texts,
+      mediaMessages,
+      senderId,
+      startDate: sorted[0]?.date || 0,
+      lastDate: sorted.at(-1)?.date || sorted[0]?.date || 0,
+    });
   }
 
   // Cluster ungrouped messages by sender + time proximity
@@ -194,6 +221,41 @@ function clusterMessages(messages, timeWindowSec = 120) {
   }
 
   return clusters;
+}
+
+function mergeAdjacentClusters(clusters, mergeWindowSec = 300) {
+  const sortedClusters = [...clusters].sort((left, right) => (left.startDate || 0) - (right.startDate || 0));
+  const merged = [];
+
+  for (const cluster of sortedClusters) {
+    const lastCluster = merged.at(-1);
+    const withinWindow =
+      lastCluster &&
+      lastCluster.senderId === cluster.senderId &&
+      Math.abs((cluster.startDate || 0) - (lastCluster.lastDate || lastCluster.startDate || 0)) <= mergeWindowSec;
+    const complementaryMedia =
+      withinWindow &&
+      (
+        (isTextOnlyCluster(lastCluster) && isMediaOnlyCluster(cluster)) ||
+        (isMediaOnlyCluster(lastCluster) && isTextOnlyCluster(cluster))
+      );
+
+    if (complementaryMedia) {
+      lastCluster.texts.push(...cluster.texts);
+      lastCluster.mediaMessages.push(...cluster.mediaMessages);
+      lastCluster.startDate = Math.min(lastCluster.startDate || 0, cluster.startDate || 0);
+      lastCluster.lastDate = Math.max(lastCluster.lastDate || 0, cluster.lastDate || cluster.startDate || 0);
+      continue;
+    }
+
+    merged.push({
+      ...cluster,
+      texts: [...cluster.texts],
+      mediaMessages: [...cluster.mediaMessages],
+    });
+  }
+
+  return merged;
 }
 
 function getSenderId(msg) {
@@ -283,7 +345,7 @@ async function runTelegramScrape(client, state = {}) {
   }
 
   // Cluster messages by sender + time proximity or groupedId (albums)
-  const clusters = clusterMessages(newMessages);
+  const clusters = mergeAdjacentClusters(clusterMessages(newMessages));
   const clustersWithText = clusters.filter((c) => c.texts.length > 0);
   console.log(
     `Grouped into ${clusters.length} cluster(s), ${clustersWithText.length} with text.`,
@@ -332,25 +394,45 @@ async function runTelegramScrape(client, state = {}) {
   const parsedListings = parseModelJson(response.text);
   console.log(`Model returned ${parsedListings.length} listing candidate(s).`);
 
-  // Assign real photos, original post time, and source channel to listings based on cluster_id
-  const listingsWithPhotos = parsedListings.map((listing) => {
-    const clusterId = listing.cluster_id;
-    const cluster = clusters[clusterId];
-    const photos = clusterPhotos.get(clusterId);
-    const enriched = { ...listing };
+  // Assign real photos, original post time, and source channel to listings based on cluster_id.
+  // If the model cannot point to a valid cluster, skip the candidate instead of mismatching photos.
+  const clusterAssignmentCounts = new Map();
+  const listingsWithPhotos = [];
+  let skippedInvalidClusterCount = 0;
 
-    if (photos && photos.length > 0) {
-      enriched.imageUrl = photos[0];
+  for (const listing of parsedListings) {
+    const clusterId = normalizeClusterId(listing.cluster_id);
+    const cluster = clusterId !== null ? clusters[clusterId] : null;
+
+    if (!cluster) {
+      skippedInvalidClusterCount += 1;
+      continue;
     }
 
-    // Attach original Telegram post timestamp and source channel
-    if (cluster && cluster.startDate) {
+    const photos = clusterPhotos.get(clusterId) || [];
+    const assignmentIndex = clusterAssignmentCounts.get(clusterId) || 0;
+    clusterAssignmentCounts.set(clusterId, assignmentIndex + 1);
+
+    const enriched = {
+      ...listing,
+      cluster_id: clusterId,
+      sourceChannel: `@${channelUsername}`,
+    };
+
+    if (photos.length > 0) {
+      enriched.imageUrl = photos[assignmentIndex % photos.length];
+    }
+
+    if (cluster.startDate) {
       enriched.postedAt = new Date(cluster.startDate * 1000).toISOString();
     }
-    enriched.sourceChannel = `@${channelUsername}`;
 
-    return enriched;
-  });
+    listingsWithPhotos.push(enriched);
+  }
+
+  if (skippedInvalidClusterCount > 0) {
+    console.warn(`Skipped ${skippedInvalidClusterCount} candidate(s) with invalid cluster_id values.`);
+  }
 
   const normalizedListings = normalizeExtractedListings(listingsWithPhotos, {
     source: 'snapshot',
@@ -375,6 +457,14 @@ async function runTelegramScrape(client, state = {}) {
     .filter((file) => file.endsWith('.jpg') || file.endsWith('.png'));
 
   const listingsWithImages = attachImages(normalizedListings, files);
+  const matchedPhotoCount = listingsWithImages.filter(
+    (listing) => listing.imageUrl && !listing.imageUrl.startsWith('/mockups/'),
+  ).length;
+  const fallbackPhotoCount = listingsWithImages.length - matchedPhotoCount;
+  console.log(
+    `Photo matching summary. Cluster-matched: ${matchedPhotoCount}, mockup fallback: ${fallbackPhotoCount}.`,
+  );
+
   const mergedSnapshot = mergeSnapshotListings(listingsWithImages, readSnapshotListings(), {
     limit: snapshotLimit,
   });
