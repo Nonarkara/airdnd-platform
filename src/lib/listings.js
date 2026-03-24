@@ -16,6 +16,91 @@ function normalizeText(value, fallback = '') {
   return trimmed || fallback;
 }
 
+function cleanDisplayText(value) {
+  return String(value || '')
+    .replace(/https?:\/\/\S+/gi, ' ')
+    .replace(/[\u200B-\u200D\uFEFF]/g, ' ')
+    .replace(/^[^\p{L}\p{N}@#]+/gu, '')
+    .replace(/[^\p{L}\p{N})]+$/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function formatSourceChannelName(sourceChannel) {
+  const raw = normalizeText(sourceChannel, '').replace(/^@/, '');
+  if (!raw) {
+    return '';
+  }
+
+  const spaced = raw
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/(massage|spa|club|rama|society|girl|dream|relax)(\d)/gi, '$1 $2')
+    .replace(/([a-z])(\d)/gi, '$1 $2')
+    .replace(/(\d)([a-z])/gi, '$1 $2')
+    .replace(/(massage|spa|club|rama|society|girl|dream|relax)/gi, ' $1 ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (/^[\p{Script=Latin}\d\s]+$/u.test(spaced)) {
+    return spaced
+      .split(' ')
+      .filter(Boolean)
+      .map((part) => {
+        if (/^\d+$/.test(part)) {
+          return part;
+        }
+
+        return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+      })
+      .join(' ');
+  }
+
+  return spaced;
+}
+
+function cleanLocationLabel(location) {
+  const cleaned = cleanDisplayText(
+    normalizeText(location, DEFAULT_LOCATION)
+      .replace(/^#/, '')
+      .replace(/^(?:พิกัด|พิกัดฐานทัพ|location|map|maps)\s*[:：]?\s*/i, '')
+      .replace(/^แผนที่ร้านนวดใกล้ฉัน\s*/i, '')
+      .replace(/\([^)]*\)/g, ' '),
+  );
+
+  return cleaned || DEFAULT_LOCATION;
+}
+
+function isBadDisplayName(name) {
+  const normalized = cleanDisplayText(name);
+  if (!normalized) {
+    return true;
+  }
+
+  return (
+    /^(group joining details|group|telegram|open|เปิด|นี้|massage|spa|สปา|line|new)$/i.test(normalized) ||
+    /group|joining|children'?s only|new group|line\s*id|telegram|เปิดให้บริการ|ได้เลยนะ|มีน้องคนไหน|ด่วนโทร|เอาใจ|แซ่บ|ส่งไรนักหนา|ประกาศภาวะฉุกเฉิน|จะดู|ครับ|ค่ะ|คะ/i.test(normalized) ||
+    /^\d[\d -]{7,}$/.test(normalized) ||
+    /^\d{1,2}[:.]\d{2}/.test(normalized) ||
+    /[:：]/.test(normalized) ||
+    normalized.length < 3
+  );
+}
+
+function resolveDisplayName(rawName, sourceChannel, location) {
+  const cleanedName = cleanDisplayText(rawName);
+  if (!isBadDisplayName(cleanedName)) {
+    return cleanedName.slice(0, 48);
+  }
+
+  const sourceName = formatSourceChannelName(sourceChannel);
+  if (sourceName && !isBadDisplayName(sourceName)) {
+    return sourceName.slice(0, 48);
+  }
+
+  const area = cleanLocationLabel(location).split(',')[0]?.trim();
+  return (area ? `Massage Listing ${area}` : 'Massage Listing').slice(0, 48);
+}
+
 function normalizeMetrics(metrics) {
   if (!metrics || typeof metrics !== 'object') {
     return {};
@@ -92,8 +177,8 @@ export function normalizeListing(rawListing, options = {}) {
   const source = options.source || 'backup';
   const fallbackLocation = options.fallbackLocation || DEFAULT_LOCATION;
   const listingMeta = extractListingMeta(rawListing);
-  const name = normalizeText(rawListing?.name, 'Untitled listing');
-  const location = normalizeText(rawListing?.location, fallbackLocation);
+  const location = cleanLocationLabel(rawListing?.location || fallbackLocation);
+  const name = resolveDisplayName(rawListing?.name, listingMeta.sourceChannel, location);
   const priceLabel = normalizeText(rawListing?.priceLabel || rawListing?.price, 'Rate on request');
   const ratingValue = rawListing?.rating;
   const reviewsValue = rawListing?.reviews;
@@ -247,7 +332,7 @@ export function normalizeListings(listings, options = {}) {
     return [];
   }
 
-  return listings.map((listing, index) =>
+  const normalized = listings.map((listing, index) =>
     normalizeListing(
       {
         ...listing,
@@ -256,6 +341,40 @@ export function normalizeListings(listings, options = {}) {
       options,
     ),
   );
+
+  const deduped = new Map();
+  normalized.forEach((listing) => {
+    const dedupeKey = listing.sourceChannel && listing.postedAt
+      ? `${listing.sourceChannel}|${listing.postedAt}|${listing.location}`
+      : `${listing.name}|${listing.location}|${listing.updatedAt || listing.id}`;
+    const existing = deduped.get(dedupeKey);
+
+    if (!existing) {
+      deduped.set(dedupeKey, listing);
+      return;
+    }
+
+    const existingBadName = isBadDisplayName(existing.name);
+    const nextBadName = isBadDisplayName(listing.name);
+    const existingMatchedMedia = hasMatchedMedia(existing);
+    const nextMatchedMedia = hasMatchedMedia(listing);
+
+    if (existingBadName && !nextBadName) {
+      deduped.set(dedupeKey, listing);
+      return;
+    }
+
+    if (existingMatchedMedia !== nextMatchedMedia) {
+      deduped.set(dedupeKey, nextMatchedMedia ? listing : existing);
+      return;
+    }
+
+    if ((getListingTimestampValue(listing) || 0) > (getListingTimestampValue(existing) || 0)) {
+      deduped.set(dedupeKey, listing);
+    }
+  });
+
+  return [...deduped.values()];
 }
 
 export function createMetrics(listings) {

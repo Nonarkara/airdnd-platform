@@ -294,6 +294,236 @@ function normalizeLink(value) {
   return trimmed || null;
 }
 
+function cleanDisplayText(value) {
+  return String(value || '')
+    .replace(/https?:\/\/\S+/gi, ' ')
+    .replace(/[\u200B-\u200D\uFEFF]/g, ' ')
+    .replace(/^[^\p{L}\p{N}@#]+/gu, '')
+    .replace(/[^\p{L}\p{N})]+$/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function formatSourceLabelName(sourceLabel) {
+  const raw = normalizeLine(sourceLabel).replace(/^@/, '');
+  if (!raw) {
+    return '';
+  }
+
+  const spaced = raw
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/(massage|spa|club|rama|society|girl|dream|relax)(\d)/gi, '$1 $2')
+    .replace(/([a-z])(\d)/gi, '$1 $2')
+    .replace(/(\d)([a-z])/gi, '$1 $2')
+    .replace(/(massage|spa|club|rama|society|girl|dream|relax)/gi, ' $1 ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (/^[\p{Script=Latin}\d\s]+$/u.test(spaced)) {
+    return spaced
+      .split(' ')
+      .filter(Boolean)
+      .map((part) => {
+        if (/^\d+$/.test(part)) {
+          return part;
+        }
+
+        return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+      })
+      .join(' ');
+  }
+
+  return spaced;
+}
+
+function isReusableSourceLabel(sourceLabel) {
+  const normalized = normalizeLine(sourceLabel);
+  if (!normalized) {
+    return false;
+  }
+
+  if (!normalized.startsWith('@')) {
+    return true;
+  }
+
+  return /massage|spa|สปา|นวด|club|คลับ/i.test(normalized) && !/society/i.test(normalized) && !/\d{3,}/.test(normalized);
+}
+
+function isNoiseLine(line) {
+  const normalized = cleanDisplayText(line);
+  if (!normalized) {
+    return true;
+  }
+
+  const lowered = normalized.toLowerCase();
+  return (
+    normalized.length < 2 ||
+    /^group joining details$/i.test(normalized) ||
+    /https?:\/\/|line\.me|t\.me|maps\.app|google\.com\/maps/i.test(lowered) ||
+    /(?:โทร|tel|phone|line(?:\s*id)?|telegram|maps|map|พิกัด|location)\s*[:：]/i.test(normalized) ||
+    /\b\d{1,2}[:.]\d{2}\s*[-–]\s*\d{1,2}[:.]\d{2}\b/.test(normalized) ||
+    /(?:ราคา|เรท|rate|บาท|฿|thb)\s*[:：]?\s*\d/i.test(normalized) ||
+    /(?:ติดตาม|ห้ามพลาด|ทัก|แอดไลน์|ส่งไร|group joining|new group|join now|click|booking|จองเลย|เปิดให้บริการ|มีน้อง|ได้เลย|จะดู|เอาใจ|แซ่บ)/i.test(normalized)
+  );
+}
+
+function isValidListingName(name) {
+  const normalized = cleanDisplayText(name);
+  if (!normalized) {
+    return false;
+  }
+
+  const lowered = normalized.toLowerCase();
+  if (
+    /^(group joining details|นี้|นวด|massage|spa|สปา|เปิด|open)$/i.test(normalized) ||
+    /(?:group joining details|new group|line\s*id|เปิดให้บริการ|ติดตามน้องใหม่|ห้ามพลาด|ได้เลยนะ|ส่งไรนักหนา|ทักมา|แอดไลน์|มีน้องคนไหน|จะดู|เอาใจ|แซ่บ)/i.test(lowered) ||
+    /(?:ครับ|ค่ะ|คะ|จ้า|นะคะ|นะครับ|ไหม|มั้ย)/i.test(normalized) ||
+    /^[a-z\s.]+group[a-z\s.]*$/i.test(normalized) ||
+    /[:：]/.test(normalized) ||
+    /^(?:เปิด|line|group|new|ได้|มี|จะ|ติดตาม|โทร|พิกัด)\b/i.test(normalized) ||
+    /^\d+$/.test(normalized) ||
+    normalized.length < 3
+  ) {
+    return false;
+  }
+
+  const wordCount = normalized.split(/\s+/).filter(Boolean).length;
+  if (wordCount >= 5 && !/massage|spa|สปา|นวด|คลับ|club/i.test(normalized)) {
+    return false;
+  }
+
+  return true;
+}
+
+function scoreNameLine(line) {
+  const normalized = cleanDisplayText(line);
+  if (!isValidListingName(normalized)) {
+    return -100;
+  }
+
+  let score = 0;
+
+  if (normalized.length >= 5 && normalized.length <= 40) {
+    score += 8;
+  }
+
+  if (/[#@]/.test(line)) {
+    score += 3;
+  }
+
+  if (/massage|spa|สปา|นวด|คลับ|club|house|massage/i.test(normalized) && normalized.length > 6) {
+    score += 6;
+  }
+
+  if (/^[\p{L}\p{N}\s.@#&()'-]+$/u.test(normalized)) {
+    score += 4;
+  }
+
+  if (/^[^\d]{4,}$/u.test(normalized)) {
+    score += 2;
+  }
+
+  if (isNoiseLine(line)) {
+    score -= 30;
+  }
+
+  if (/(?:สวย|เด็ด|แซ่บ|เอาใจ|น่ารัก|ฟิน|งานดี|น้องใหม่|ติดตาม|ได้เลย|มีน้อง|จะดู)/i.test(normalized)) {
+    score -= 20;
+  }
+
+  if (/\b\d{1,2}[:.]\d{2}\b|\d{3,5}\s*(?:บาท|฿|THB)/i.test(normalized)) {
+    score -= 20;
+  }
+
+  return score;
+}
+
+function extractLocationFromText(text, lines) {
+  const locationLine =
+    lines.find((line) =>
+      /พิกัด|แถว|ย่าน|เขต|ใกล้|สาขา|สุขุมวิท|ทองหล่อ|เอกมัย|อโศก|พระราม|รัชดา|ลาดพร้าว|ห้วยขวาง|สาทร|สีลม|พัทยา|ภูเก็ต|เชียงใหม่|ระยอง|นนทบุรี|location/i.test(line),
+    ) || null;
+
+  const cleaned = cleanDisplayText(
+    locationLine
+      ? locationLine
+          .replace(/^(?:พิกัด|พิกัดฐานทัพ|แถว|ย่าน|เขต|ใกล้|สาขา|location|map|maps)\s*[:：]?\s*/i, '')
+          .replace(/^แผนที่ร้านนวดใกล้ฉัน\s*/i, '')
+          .replace(/^\s*(?:ถ\.|ถนน)?\s*/i, (match) => match.trim())
+          .replace(/\([^)]*\)/g, ' ')
+      : '',
+  );
+
+  if (cleaned) {
+    return cleaned.slice(0, 72);
+  }
+
+  if (/bangkok|กรุงเทพ/i.test(text)) {
+    return 'Bangkok, Thailand';
+  }
+
+  return 'Bangkok, Thailand';
+}
+
+function extractPriceFromText(text, lines) {
+  const candidatePatterns = [
+    /(?:ราคา|เรท|rate|ค่าตัว|โปร(?:โมชั่น)?|เริ่ม(?:ต้น|ที่)?|promotion)\s*[:：]?\s*(\d{2,5})/i,
+    /(\d{2,5})\s*(?:บาท|฿|THB)\b/i,
+  ];
+
+  for (const line of lines) {
+    const normalizedLine = normalizeLine(line);
+    if (!normalizedLine || /(?:โทร|phone|tel|line|telegram)/i.test(normalizedLine)) {
+      continue;
+    }
+
+    for (const pattern of candidatePatterns) {
+      const match = normalizedLine.match(pattern);
+      const amount = Number.parseInt(match?.[1] || '', 10);
+      if (Number.isFinite(amount) && amount >= 100 && amount <= 20000) {
+        return `${amount} THB`;
+      }
+    }
+  }
+
+  const textMatches = [...text.matchAll(/(\d{2,5})\s*(?:บาท|฿|THB)\b/gi)];
+  for (const match of textMatches) {
+    const amount = Number.parseInt(match?.[1] || '', 10);
+    if (Number.isFinite(amount) && amount >= 100 && amount <= 20000) {
+      return `${amount} THB`;
+    }
+  }
+
+  return null;
+}
+
+function buildFallbackName(lines, explicitName, sourceLabel, location, clusterId) {
+  const cleanedExplicitName = cleanDisplayText(explicitName);
+  if (isValidListingName(cleanedExplicitName)) {
+    return cleanedExplicitName.slice(0, 48);
+  }
+
+  const scoredCandidates = lines
+    .map((line) => ({
+      line: cleanDisplayText(line),
+      score: scoreNameLine(line),
+    }))
+    .filter((candidate) => candidate.line)
+    .sort((left, right) => right.score - left.score);
+
+  if (scoredCandidates[0]?.score >= 6) {
+    return scoredCandidates[0].line.slice(0, 48);
+  }
+
+  const sourceName = formatSourceLabelName(sourceLabel);
+  if (isReusableSourceLabel(sourceLabel) && isValidListingName(sourceName)) {
+    return sourceName.slice(0, 48);
+  }
+
+  const area = cleanDisplayText(location).split(',')[0]?.slice(0, 24);
+  return `Massage Listing ${area || clusterId + 1}`.slice(0, 48);
+}
+
 function extractTagsFromText(text, location) {
   const nextTags = [];
   const hashtagMatches = [...text.matchAll(/#([^\s#]{2,24})/g)]
@@ -317,7 +547,7 @@ function extractTagsFromText(text, location) {
   return nextTags.slice(0, 3);
 }
 
-function buildFallbackListing(cluster, clusterId) {
+function buildFallbackListing(cluster, clusterId, sourceLabel) {
   const text = cluster.texts.join('\n').trim();
   if (!text || text.length < 24) {
     return null;
@@ -339,33 +569,13 @@ function buildFallbackListing(cluster, clusterId) {
 
   const explicitName =
     text.match(/(?:ชื่อร้าน|ชื่อ|ร้าน)\s*[:：]?\s*([^\n]{2,48})/i)?.[1] ||
-    text.match(/#([^\s#]{2,28})/)?.[1] ||
+    [...text.matchAll(/#([^\s#]{2,28})/g)]
+      .map((match) => cleanDisplayText(match[1]))
+      .find((tag) => isValidListingName(tag)) ||
     null;
-  const candidateName = normalizeLine(
-    explicitName ||
-      lines.find((line) => {
-        const lowered = line.toLowerCase();
-        return (
-          line.length >= 4 &&
-          line.length <= 48 &&
-          !/https?:\/\//i.test(line) &&
-          !/line|telegram|maps|phone|tel|ราคา|บาท|฿|open|close|เปิด|ปิด/i.test(lowered)
-        );
-      }) ||
-      lines[0],
-  );
-
-  const locationLine =
-    lines.find((line) =>
-      /พิกัด|แถว|ย่าน|เขต|ใกล้|สาขา|สุขุมวิท|ทองหล่อ|เอกมัย|อโศก|พระราม|รัชดา|ลาดพร้าว|ห้วยขวาง|สาทร|สีลม|พัทยา|ภูเก็ต|เชียงใหม่|location/i.test(line),
-    ) || null;
-  const location = normalizeLine(
-    locationLine
-      ? locationLine.replace(/^(?:พิกัด|แถว|ย่าน|เขต|ใกล้|สาขา|location)\s*[:：]?\s*/i, '')
-      : 'Bangkok, Thailand',
-  );
-
-  const priceMatch = text.match(/(?:฿|THB\s*)?(\d{3,5})(?:\s*(?:บาท|฿|THB))?/i);
+  const location = extractLocationFromText(text, lines);
+  const candidateName = buildFallbackName(lines, explicitName, sourceLabel, location, clusterId);
+  const price = extractPriceFromText(text, lines);
   const description = normalizeLine(lines.slice(0, 3).join(' ')).slice(0, 220);
 
   return {
@@ -373,7 +583,7 @@ function buildFallbackListing(cluster, clusterId) {
     name: candidateName.slice(0, 48) || `Listing ${clusterId + 1}`,
     age: null,
     location: location || 'Bangkok, Thailand',
-    price: priceMatch ? `${priceMatch[1]} THB` : null,
+    price,
     metrics: {},
     tags: extractTagsFromText(text, location),
     description: description || 'New listing captured from Telegram.',
@@ -385,9 +595,9 @@ function buildFallbackListing(cluster, clusterId) {
   };
 }
 
-function buildFallbackListings(clusters) {
+function buildFallbackListings(clusters, sourceLabel) {
   return clusters
-    .map((cluster, clusterId) => buildFallbackListing(cluster, clusterId))
+    .map((cluster, clusterId) => buildFallbackListing(cluster, clusterId, sourceLabel))
     .filter(Boolean);
 }
 
@@ -411,9 +621,14 @@ function mergeEnrichment(listing, enrichment) {
     return listing;
   }
 
+  const enrichedName = cleanDisplayText(enrichment.name || '');
+  const nextName = isValidListingName(enrichedName)
+    ? enrichedName.slice(0, 48)
+    : listing.name;
+
   return {
     ...listing,
-    name: normalizeLine(enrichment.name || listing.name).slice(0, 48) || listing.name,
+    name: nextName,
     location: normalizeLine(enrichment.location || listing.location) || listing.location,
     price: normalizeLine(enrichment.price || listing.price) || listing.price,
     description: normalizeLine(enrichment.description || listing.description) || listing.description,
@@ -726,7 +941,7 @@ async function extractListingsFromTarget(client, target, state = {}) {
     };
   }
 
-  const deterministicListings = buildFallbackListings(clusters);
+  const deterministicListings = buildFallbackListings(clusters, target.displayLabel);
   console.log(`${target.displayLabel}: deterministic parser returned ${deterministicListings.length} listing candidate(s).`);
 
   if (deterministicListings.length === 0) {
