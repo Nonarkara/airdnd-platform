@@ -62,6 +62,15 @@ function sortListings(listings, sortBy) {
   const nextListings = [...listings];
 
   nextListings.sort((left, right) => {
+    if (sortBy === 'Newest') {
+      const leftBangkokPriority = left.city === 'Bangkok' ? 0 : 1;
+      const rightBangkokPriority = right.city === 'Bangkok' ? 0 : 1;
+
+      if (leftBangkokPriority !== rightBangkokPriority) {
+        return leftBangkokPriority - rightBangkokPriority;
+      }
+    }
+
     if (sortBy === 'Lowest price') {
       return (left.priceValue ?? Number.MAX_SAFE_INTEGER) - (right.priceValue ?? Number.MAX_SAFE_INTEGER);
     }

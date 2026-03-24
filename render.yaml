@@ -34,13 +34,17 @@ services:
         sync: false
       - key: VITE_SUPABASE_SERVICE_ROLE_KEY
         sync: false
-      - key: TELEGRAM_SOURCE_CHANNEL
-        sync: false
+      - key: TELEGRAM_SOURCE_TARGETS
+        value: "@relaxsociety2020,dialog:2025289026,@keawjaojormmassage,dialog:2381945815,dialog:2491020966,@relaxsocietymassage,dialog:2647876733,@naarsom,@chanelmassage,@dreamgirlspav2,dialog:3769808713,@newmassagerama5"
       - key: TELEGRAM_FETCH_LIMIT
-        sync: false
+        value: "80"
       - key: TELEGRAM_POLL_INTERVAL_MS
-        sync: false
+        value: "30000"
       - key: SNAPSHOT_LISTING_LIMIT
-        sync: false
+        value: "400"
+      - key: GEMINI_PARSE_TIMEOUT_MS
+        value: "8000"
+      - key: AI_ENRICHMENT_PER_CYCLE
+        value: "5"
       - key: NODE_OPTIONS
         value: "--max-old-space-size=400"

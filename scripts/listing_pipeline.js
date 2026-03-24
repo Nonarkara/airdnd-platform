@@ -45,6 +45,58 @@ function normalizeInteger(value) {
   return null;
 }
 
+function normalizeComparable(value) {
+  return normalizeText(value)
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normalizePhone(value) {
+  const digits = String(value || '').replace(/\D/g, '');
+  return digits.length >= 8 ? digits : '';
+}
+
+function hasMatchedMedia(listing) {
+  return Boolean(normalizeText(listing?.imageUrl || listing?.image_url)) &&
+    !normalizeText(listing?.imageUrl || listing?.image_url).startsWith('/mockups/');
+}
+
+function getFreshnessValue(listing) {
+  const value = listing?.postedAt || listing?.posted_at || listing?.updatedAt || listing?.created_at;
+  const timestamp = value ? new Date(value).getTime() : 0;
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+function buildIdentifierKey(listing) {
+  const phone = normalizePhone(listing?.phone);
+  if (phone) {
+    return `phone:${phone}`;
+  }
+
+  const mapsUrl = normalizeComparable(listing?.mapsUrl);
+  if (mapsUrl) {
+    return `maps:${mapsUrl}`;
+  }
+
+  const lineUrl = normalizeComparable(listing?.lineUrl);
+  if (lineUrl) {
+    return `line:${lineUrl}`;
+  }
+
+  return '';
+}
+
+function buildNameLocationKey(listing) {
+  const name = normalizeComparable(listing?.name);
+  const location = normalizeComparable(listing?.location);
+  if (!name || !location) {
+    return '';
+  }
+
+  return `${name}|${location}`;
+}
+
 function extractCity(location) {
   const normalizedLocation = normalizeText(location, 'Bangkok, Thailand');
   const segments = normalizedLocation
@@ -145,6 +197,12 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         updatedAt: normalizeText(listing?.updatedAt || listing?.created_at, timestamp),
         postedAt: normalizeText(listing?.postedAt, null),
         sourceChannel: normalizeText(listing?.sourceChannel, null),
+        sourceTarget: normalizeText(listing?.sourceTarget, null),
+        phone: normalizeText(listing?.phone, null),
+        hours: normalizeText(listing?.hours, null),
+        lineUrl: normalizeText(listing?.lineUrl, null),
+        telegramUrl: normalizeText(listing?.telegramUrl, null),
+        mapsUrl: normalizeText(listing?.mapsUrl, null),
         dataSource: source,
         isFallback: source !== 'supabase',
       };
@@ -164,26 +222,57 @@ export function buildFingerprint(listing) {
 }
 
 export function dedupeListings(listings) {
-  const seen = new Set();
+  const seenIdentifiers = new Set();
+  const seenNameLocations = new Set();
+  const seenFingerprints = new Set();
   const deduped = [];
 
-  for (const listing of listings) {
+  const prioritizedListings = [...(Array.isArray(listings) ? listings : [])].sort((left, right) => {
+    const matchedDelta = Number(hasMatchedMedia(right)) - Number(hasMatchedMedia(left));
+    if (matchedDelta !== 0) {
+      return matchedDelta;
+    }
+
+    const freshnessDelta = getFreshnessValue(right) - getFreshnessValue(left);
+    if (freshnessDelta !== 0) {
+      return freshnessDelta;
+    }
+
+    return normalizeText(right?.description).length - normalizeText(left?.description).length;
+  });
+
+  for (const listing of prioritizedListings) {
+    const identifierKey = buildIdentifierKey(listing);
+    const nameLocationKey = buildNameLocationKey(listing);
     const fingerprint = buildFingerprint(listing);
-    if (!fingerprint || seen.has(fingerprint)) {
+
+    if (identifierKey && seenIdentifiers.has(identifierKey)) {
       continue;
     }
 
-    seen.add(fingerprint);
+    if (nameLocationKey && seenNameLocations.has(nameLocationKey)) {
+      continue;
+    }
+
+    if (!fingerprint || seenFingerprints.has(fingerprint)) {
+      continue;
+    }
+
+    if (identifierKey) {
+      seenIdentifiers.add(identifierKey);
+    }
+    if (nameLocationKey) {
+      seenNameLocations.add(nameLocationKey);
+    }
+    seenFingerprints.add(fingerprint);
     deduped.push(listing);
   }
 
-  return deduped;
+  return sortListingsByUpdatedAt(deduped);
 }
 
 function getTimestampValue(listing) {
-  const value = listing?.updatedAt || listing?.created_at;
-  const timestamp = value ? new Date(value).getTime() : 0;
-  return Number.isFinite(timestamp) ? timestamp : 0;
+  return getFreshnessValue(listing);
 }
 
 export function sortListingsByUpdatedAt(listings) {
@@ -249,8 +338,6 @@ export async function insertListingsIfPossible(supabase, listings) {
         .select('id')
         .eq('name', listing.name)
         .eq('location', listing.location)
-        .eq('price', listing.priceLabel)
-        .eq('description', listing.description)
         .limit(1);
 
       if (lookupError) {

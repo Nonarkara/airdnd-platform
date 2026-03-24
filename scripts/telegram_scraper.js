@@ -25,19 +25,43 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 const apiId = Number.parseInt(process.env.TELEGRAM_API_ID, 10);
 const apiHash = process.env.TELEGRAM_API_HASH;
 const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
-const configuredChannels = (
+const DEFAULT_SOURCE_TARGETS = [
+  '@relaxsociety2020',
+  'dialog:2025289026',
+  '@keawjaojormmassage',
+  'dialog:2381945815',
+  'dialog:2491020966',
+  '@relaxsocietymassage',
+  'dialog:2647876733',
+  '@naarsom',
+  '@chanelmassage',
+  '@dreamgirlspav2',
+  'dialog:3769808713',
+  '@newmassagerama5',
+];
+const configuredTargetTokens = (
+  process.env.TELEGRAM_SOURCE_TARGETS ||
   process.env.TELEGRAM_SOURCE_CHANNELS ||
   process.env.TELEGRAM_SOURCE_CHANNEL ||
-  'nutyes'
+  DEFAULT_SOURCE_TARGETS.join(',')
 )
   .split(',')
-  .map((value) => value.trim().replace(/^@/, ''))
+  .map((value) => value.trim())
   .filter(Boolean);
-const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '240', 10);
-const pollIntervalMs = Number.parseInt(process.env.TELEGRAM_POLL_INTERVAL_MS || '45000', 10);
-const snapshotLimit = Number.parseInt(process.env.SNAPSHOT_LISTING_LIMIT || '180', 10);
-const parseTimeoutMs = Number.parseInt(process.env.GEMINI_PARSE_TIMEOUT_MS || '12000', 10);
+const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '80', 10);
+const pollIntervalMs = Number.parseInt(process.env.TELEGRAM_POLL_INTERVAL_MS || '30000', 10);
+const snapshotLimit = Number.parseInt(process.env.SNAPSHOT_LISTING_LIMIT || '400', 10);
+const parseTimeoutMs = Number.parseInt(process.env.GEMINI_PARSE_TIMEOUT_MS || '8000', 10);
+const aiEnrichmentPerCycle = Number.parseInt(process.env.AI_ENRICHMENT_PER_CYCLE || '5', 10);
 const watchMode = process.argv.includes('--watch');
+
+process.on('unhandledRejection', (error) => {
+  if (String(error?.message || error).includes('TIMEOUT')) {
+    return;
+  }
+
+  console.error(error);
+});
 
 if (!apiId || !apiHash) {
   console.error('Missing TELEGRAM_API_ID or TELEGRAM_API_HASH in .env');
@@ -49,12 +73,7 @@ if (!process.env.TELEGRAM_SESSION) {
   process.exit(1);
 }
 
-if (!geminiApiKey) {
-  console.error('Missing GEMINI_API_KEY or GOOGLE_API_KEY in .env');
-  process.exit(1);
-}
-
-const ai = new GoogleGenAI({ apiKey: geminiApiKey });
+const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
 const stringSession = new StringSession(process.env.TELEGRAM_SESSION);
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
@@ -63,21 +82,20 @@ const supabase =
     ? createClient(supabaseUrl, supabaseServiceRoleKey)
     : null;
 
-function buildPrompt(rawText) {
+function buildEnrichmentPrompt(rawText) {
   return `
-Extract distinct Thailand wellness, massage, or spa listings from the following Telegram messages.
-Each message group is labelled with a [CLUSTER <id>] tag — include that cluster_id in your output so we can match photos.
+Enrich the following already-detected Thailand wellness, massage, or spa listings.
+Each message group is labelled with a [CLUSTER <id>] tag. Return only data that is clearly present in that cluster.
 Return only a JSON array with this shape:
 [
   {
     "cluster_id": 0,
-    "name": "Business or provider name",
-    "age": null,
-    "location": "District or area, City/Province",
+    "name": "Business or provider name or null",
+    "location": "District or area, City/Province or null",
     "price": null,
     "metrics": {},
     "tags": ["Bangkok", "Massage"],
-    "description": "Short factual summary of the service, area, hours, or availability",
+    "description": "Short factual summary of the service, area, hours, or availability or null",
     "phone": "0XX-XXX-XXXX or null",
     "hours": "10:00-23:00 or null",
     "lineUrl": "https://line.me/... or null",
@@ -87,21 +105,136 @@ Return only a JSON array with this shape:
 ]
 
 Rules:
-- Extract a listing whenever a message clearly describes a massage shop, spa, therapist, or wellness provider.
-- Ignore pure links, empty media posts, price tables without context, or messages without usable listing detail.
-- Keep one listing per distinct business or provider mention.
-- cluster_id must match the [CLUSTER <id>] from which the listing was extracted.
-- Extract phone numbers, operating hours, LINE links, Telegram links, and Google Maps links when present.
-- Use null for unknown age, price, phone, hours, or link values.
+- Return at most one object per cluster.
+- cluster_id must match the [CLUSTER <id>] from which the listing was enriched.
+- Extract phone numbers, operating hours, LINE links, Telegram links, Google Maps links, location, price, and a short factual description when present.
+- Use null for unknown name, location, price, phone, hours, or link values.
 - Use an empty object for missing metrics.
 - Add 1-3 short tags based on city/province, district, and service type.
-- Do not invent ratings or review counts.
+- Do not invent ratings, reviews, or fields not clearly visible in the text.
 - Keep descriptions factual and concise.
 - Return only valid JSON.
 
 Messages:
 ${rawText}
 `;
+}
+
+function sanitizeTargetToken(value) {
+  const trimmed = String(value || '').trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  if (trimmed.startsWith('dialog:')) {
+    const dialogId = trimmed.slice('dialog:'.length).trim();
+    return dialogId ? `dialog:${dialogId}` : null;
+  }
+
+  const username = trimmed.replace(/^@/, '');
+  return username ? `@${username}` : null;
+}
+
+function isChannelEntity(entity) {
+  return Boolean(entity?.broadcast || entity?.megagroup);
+}
+
+function getEntityId(entity) {
+  return String(entity?.id || entity?.channelId || entity?.chatId || '');
+}
+
+function getEntityTitle(entity) {
+  return entity?.title || [entity?.firstName, entity?.lastName].filter(Boolean).join(' ') || '';
+}
+
+function getSourceLabel(target, entity) {
+  if (target.type === 'username' && target.lookupValue) {
+    return `@${target.lookupValue}`;
+  }
+
+  const username = entity?.username ? `@${entity.username}` : '';
+  return username || getEntityTitle(entity) || target.token;
+}
+
+async function resolveSourceTargets(client) {
+  const dialogs = await client.getDialogs({ limit: 500 });
+  const channelDialogs = dialogs
+    .map((dialog) => ({
+      dialog,
+      entity: dialog.entity,
+      id: getEntityId(dialog.entity),
+      username: dialog.entity?.username ? `@${dialog.entity.username}` : '',
+    }))
+    .filter((row) => isChannelEntity(row.entity));
+  const dialogsById = new Map(
+    channelDialogs
+      .filter((row) => row.id)
+      .map((row) => [row.id, row]),
+  );
+  const dialogsByUsername = new Map(
+    channelDialogs
+      .filter((row) => row.username)
+      .map((row) => [row.username.toLowerCase(), row]),
+  );
+  const resolvedTargets = [];
+
+  for (const rawToken of configuredTargetTokens) {
+    const token = sanitizeTargetToken(rawToken);
+    if (!token) {
+      continue;
+    }
+
+    if (token.startsWith('dialog:')) {
+      const dialogId = token.slice('dialog:'.length);
+      const dialogRow = dialogsById.get(dialogId);
+      if (!dialogRow) {
+        console.warn(`Skipping ${token}: dialog not found in the current Telegram session.`);
+        continue;
+      }
+
+      resolvedTargets.push({
+        token,
+        type: 'dialog',
+        lookupValue: dialogId,
+        fetchRef: dialogRow.entity,
+        displayLabel: getSourceLabel({ token, type: 'dialog' }, dialogRow.entity),
+      });
+      continue;
+    }
+
+    const usernameKey = token.toLowerCase();
+    const dialogRow = dialogsByUsername.get(usernameKey);
+    if (dialogRow) {
+      resolvedTargets.push({
+        token,
+        type: 'username',
+        lookupValue: token.replace(/^@/, ''),
+        fetchRef: dialogRow.entity,
+        displayLabel: getSourceLabel({ token, type: 'username', lookupValue: token.replace(/^@/, '') }, dialogRow.entity),
+      });
+      continue;
+    }
+
+    try {
+      const entity = await client.getEntity(token);
+      if (!isChannelEntity(entity)) {
+        console.warn(`Skipping ${token}: resolved entity is not a channel or group.`);
+        continue;
+      }
+
+      resolvedTargets.push({
+        token,
+        type: 'username',
+        lookupValue: token.replace(/^@/, ''),
+        fetchRef: entity,
+        displayLabel: getSourceLabel({ token, type: 'username', lookupValue: token.replace(/^@/, '') }, entity),
+      });
+    } catch (error) {
+      console.warn(`Skipping ${token}: ${error.message}`);
+    }
+  }
+
+  return resolvedTargets;
 }
 
 function hashString(value) {
@@ -154,6 +287,11 @@ function normalizeLine(value) {
     .replace(/https?:\/\/\S+/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function normalizeLink(value) {
+  const trimmed = String(value || '').trim();
+  return trimmed || null;
 }
 
 function extractTagsFromText(text, location) {
@@ -253,12 +391,85 @@ function buildFallbackListings(clusters) {
     .filter(Boolean);
 }
 
-async function parseListingsFromClusters(rawText, clusters, channelUsername) {
+function needsEnrichment(listing) {
+  if (!listing) {
+    return false;
+  }
+
+  return (
+    !listing.price ||
+    !listing.location ||
+    listing.location === 'Bangkok, Thailand' ||
+    !listing.phone && !listing.lineUrl && !listing.telegramUrl && !listing.mapsUrl ||
+    !listing.description ||
+    listing.description === 'New listing captured from Telegram.'
+  );
+}
+
+function mergeEnrichment(listing, enrichment) {
+  if (!enrichment) {
+    return listing;
+  }
+
+  return {
+    ...listing,
+    name: normalizeLine(enrichment.name || listing.name).slice(0, 48) || listing.name,
+    location: normalizeLine(enrichment.location || listing.location) || listing.location,
+    price: normalizeLine(enrichment.price || listing.price) || listing.price,
+    description: normalizeLine(enrichment.description || listing.description) || listing.description,
+    phone: normalizeLine(enrichment.phone || listing.phone) || listing.phone,
+    hours: normalizeLine(enrichment.hours || listing.hours) || listing.hours,
+    lineUrl: normalizeLink(enrichment.lineUrl || listing.lineUrl) || listing.lineUrl,
+    telegramUrl: normalizeLink(enrichment.telegramUrl || listing.telegramUrl) || listing.telegramUrl,
+    mapsUrl: normalizeLink(enrichment.mapsUrl || listing.mapsUrl) || listing.mapsUrl,
+    tags: [...new Set([...(Array.isArray(listing.tags) ? listing.tags : []), ...(Array.isArray(enrichment.tags) ? enrichment.tags : [])])]
+      .filter(Boolean)
+      .slice(0, 4),
+    metrics: {
+      ...(listing.metrics || {}),
+      ...((enrichment.metrics && typeof enrichment.metrics === 'object') ? enrichment.metrics : {}),
+    },
+  };
+}
+
+async function enrichListingsWithAi(listings, clusters, sourceLabel) {
+  if (!ai || !Array.isArray(listings) || listings.length === 0 || aiEnrichmentPerCycle <= 0) {
+    if (!ai) {
+      console.log(`${sourceLabel}: Gemini not configured. Deterministic-only mode active.`);
+    }
+
+    return listings;
+  }
+
+  const candidates = listings
+    .filter((listing) => needsEnrichment(listing))
+    .slice(0, aiEnrichmentPerCycle);
+
+  if (candidates.length === 0) {
+    return listings;
+  }
+
+  const candidateClusterIds = new Set(
+    candidates
+      .map((listing) => normalizeClusterId(listing.cluster_id))
+      .filter((clusterId) => clusterId !== null),
+  );
+
+  const rawText = clusters
+    .map((cluster, clusterId) => ({ cluster, clusterId }))
+    .filter(({ clusterId }) => candidateClusterIds.has(clusterId))
+    .map(({ cluster, clusterId }) => `[CLUSTER ${clusterId}]\n${cluster.texts.join('\n')}`)
+    .join('\n\n---\n\n');
+
+  if (!rawText) {
+    return listings;
+  }
+
   try {
     const response = await Promise.race([
       ai.models.generateContent({
         model: 'gemini-2.5-flash',
-        contents: buildPrompt(rawText),
+        contents: buildEnrichmentPrompt(rawText),
         config: {
           responseMimeType: 'application/json',
         },
@@ -270,21 +481,27 @@ async function parseListingsFromClusters(rawText, clusters, channelUsername) {
       }),
     ]);
 
-    const parsedListings = parseModelJson(response.text);
-    console.log(`@${channelUsername}: model returned ${parsedListings.length} listing candidate(s).`);
+    const enrichedListings = parseModelJson(response.text);
+    console.log(`${sourceLabel}: Gemini enriched ${enrichedListings.length} listing candidate(s).`);
 
-    if (parsedListings.length > 0) {
-      return parsedListings;
+    if (enrichedListings.length === 0) {
+      return listings;
     }
 
-    console.warn(`@${channelUsername}: model returned no listings, falling back to heuristic parsing.`);
-  } catch (error) {
-    console.warn(`@${channelUsername}: Gemini parsing failed, using heuristic fallback. ${error.message}`);
-  }
+    const enrichmentByCluster = new Map(
+      enrichedListings
+        .map((listing) => [normalizeClusterId(listing.cluster_id), listing])
+        .filter(([clusterId]) => clusterId !== null),
+    );
 
-  const fallbackListings = buildFallbackListings(clusters);
-  console.log(`@${channelUsername}: fallback parser returned ${fallbackListings.length} listing candidate(s).`);
-  return fallbackListings;
+    return listings.map((listing) => {
+      const clusterId = normalizeClusterId(listing.cluster_id);
+      return mergeEnrichment(listing, enrichmentByCluster.get(clusterId));
+    });
+  } catch (error) {
+    console.warn(`${sourceLabel}: Gemini enrichment skipped. ${error.message}`);
+    return listings;
+  }
 }
 
 /**
@@ -466,8 +683,8 @@ function createMessageBatch(messages, minimumMessageId = 0) {
   };
 }
 
-async function extractListingsFromChannel(client, channelUsername, state = {}) {
-  const messages = await client.getMessages(channelUsername, {
+async function extractListingsFromTarget(client, target, state = {}) {
+  const messages = await client.getMessages(target.fetchRef, {
     limit: Number.isFinite(fetchLimit) ? fetchLimit : 30,
   });
 
@@ -477,18 +694,18 @@ async function extractListingsFromChannel(client, channelUsername, state = {}) {
 
   const { latestMessageId, newMessages } = createMessageBatch(
     messages,
-    state.lastSeenMessageIds[channelUsername] || 0,
+    state.lastSeenMessageIds[target.token] || 0,
   );
 
   console.log(
-    `@${channelUsername}: fetched ${messages.length} messages, ${newMessages.length} new message(s), latest id ${latestMessageId}.`,
+    `${target.displayLabel}: fetched ${messages.length} messages, ${newMessages.length} new message(s), latest id ${latestMessageId}.`,
   );
 
-  state.lastSeenMessageIds[channelUsername] = latestMessageId;
+  state.lastSeenMessageIds[target.token] = latestMessageId;
 
   if (newMessages.length === 0) {
     return {
-      channelUsername,
+      sourceLabel: target.displayLabel,
       fetchedMessages: messages.length,
       listings: [],
     };
@@ -498,30 +715,33 @@ async function extractListingsFromChannel(client, channelUsername, state = {}) {
   const clusters = mergeAdjacentClusters(clusterMessages(newMessages));
   const clustersWithText = clusters.filter((c) => c.texts.length > 0);
   console.log(
-    `@${channelUsername}: grouped into ${clusters.length} cluster(s), ${clustersWithText.length} with text.`,
+    `${target.displayLabel}: grouped into ${clusters.length} cluster(s), ${clustersWithText.length} with text.`,
   );
 
   if (clustersWithText.length === 0) {
     return {
-      channelUsername,
+      sourceLabel: target.displayLabel,
       fetchedMessages: messages.length,
       listings: [],
     };
   }
 
-  // Build prompt text with cluster IDs so Gemini can label which cluster each listing came from
-  const rawText = clustersWithText
-    .map((cluster, idx) => {
-      const clusterIdx = clusters.indexOf(cluster);
-      return `[CLUSTER ${clusterIdx}]\n${cluster.texts.join('\n')}`;
-    })
-    .join('\n\n---\n\n');
+  const deterministicListings = buildFallbackListings(clusters);
+  console.log(`${target.displayLabel}: deterministic parser returned ${deterministicListings.length} listing candidate(s).`);
 
-  const parsedListings = await parseListingsFromClusters(rawText, clusters, channelUsername);
+  if (deterministicListings.length === 0) {
+    return {
+      sourceLabel: target.displayLabel,
+      fetchedMessages: messages.length,
+      listings: [],
+    };
+  }
+
+  const enrichedListings = await enrichListingsWithAi(deterministicListings, clusters, target.displayLabel);
 
   const referencedClusterIds = [
     ...new Set(
-      parsedListings
+      enrichedListings
         .map((listing) => normalizeClusterId(listing.cluster_id))
         .filter((clusterId) => clusterId !== null),
     ),
@@ -537,7 +757,7 @@ async function extractListingsFromChannel(client, channelUsername, state = {}) {
     const photos = await downloadClusterPhotos(client, cluster);
     if (photos.length > 0) {
       clusterPhotos.set(clusterId, photos);
-      console.log(`  @${channelUsername} cluster ${clusterId}: downloaded ${photos.length} photo(s)`);
+      console.log(`  ${target.displayLabel} cluster ${clusterId}: downloaded ${photos.length} photo(s)`);
     }
   }
 
@@ -547,7 +767,7 @@ async function extractListingsFromChannel(client, channelUsername, state = {}) {
   const listingsWithPhotos = [];
   let skippedInvalidClusterCount = 0;
 
-  for (const listing of parsedListings) {
+  for (const listing of enrichedListings) {
     const clusterId = normalizeClusterId(listing.cluster_id);
     const cluster = clusterId !== null ? clusters[clusterId] : null;
 
@@ -563,7 +783,8 @@ async function extractListingsFromChannel(client, channelUsername, state = {}) {
     const enriched = {
       ...listing,
       cluster_id: clusterId,
-      sourceChannel: `@${channelUsername}`,
+      sourceChannel: target.displayLabel,
+      sourceTarget: target.token,
     };
 
     if (photos.length > 0) {
@@ -578,17 +799,17 @@ async function extractListingsFromChannel(client, channelUsername, state = {}) {
   }
 
   if (skippedInvalidClusterCount > 0) {
-    console.warn(`@${channelUsername}: skipped ${skippedInvalidClusterCount} candidate(s) with invalid cluster_id values.`);
+    console.warn(`${target.displayLabel}: skipped ${skippedInvalidClusterCount} candidate(s) with invalid cluster_id values.`);
   }
 
   const normalizedListings = normalizeExtractedListings(listingsWithPhotos, {
     source: 'snapshot',
   });
-  console.log(`@${channelUsername}: normalized ${normalizedListings.length} unique listing(s).`);
+  console.log(`${target.displayLabel}: normalized ${normalizedListings.length} unique listing(s).`);
 
   if (normalizedListings.length === 0) {
     return {
-      channelUsername,
+      sourceLabel: target.displayLabel,
       fetchedMessages: messages.length,
       listings: [],
     };
@@ -606,24 +827,24 @@ async function extractListingsFromChannel(client, channelUsername, state = {}) {
   ).length;
   const fallbackPhotoCount = listingsWithImages.length - matchedPhotoCount;
   console.log(
-    `@${channelUsername}: photo matching summary. Cluster-matched: ${matchedPhotoCount}, mockup fallback: ${fallbackPhotoCount}.`,
+    `${target.displayLabel}: photo matching summary. Cluster-matched: ${matchedPhotoCount}, mockup fallback: ${fallbackPhotoCount}.`,
   );
 
   return {
-    channelUsername,
+    sourceLabel: target.displayLabel,
     fetchedMessages: messages.length,
     listings: listingsWithImages,
   };
 }
 
-async function runTelegramScrape(client, state = {}) {
+async function runTelegramScrape(client, targets, state = {}) {
   const channelResults = [];
-  for (const channelUsername of configuredChannels) {
+  for (const target of targets) {
     try {
-      const result = await extractListingsFromChannel(client, channelUsername, state);
+      const result = await extractListingsFromTarget(client, target, state);
       channelResults.push(result);
     } catch (error) {
-      console.error(`Error extracting from @${channelUsername}:`, error.message);
+      console.error(`Error extracting from ${target.displayLabel}:`, error.message);
     }
   }
 
@@ -641,7 +862,12 @@ async function runTelegramScrape(client, state = {}) {
     };
   }
 
-  const mergedSnapshot = mergeSnapshotListings(listingsWithImages, readSnapshotListings(), {
+  const allowedSourceChannels = new Set(targets.map((target) => target.displayLabel));
+  const curatedExistingSnapshot = readSnapshotListings().filter((listing) =>
+    allowedSourceChannels.has(listing?.sourceChannel),
+  );
+
+  const mergedSnapshot = mergeSnapshotListings(listingsWithImages, curatedExistingSnapshot, {
     limit: snapshotLimit,
   });
   const wroteSnapshot = writeSnapshotListings(mergedSnapshot);
@@ -677,10 +903,6 @@ async function runTelegramScrape(client, state = {}) {
 }
 
 async function main() {
-  console.log(
-    `Starting Telegram scraper for ${configuredChannels.map((channel) => `@${channel}`).join(', ')}${watchMode ? ` in watch mode (${pollIntervalMs}ms)` : '...'}`,
-  );
-
   const client = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
   });
@@ -699,13 +921,23 @@ async function main() {
   });
 
   await client.connect();
+  const resolvedTargets = await resolveSourceTargets(client);
+
+  if (resolvedTargets.length === 0) {
+    console.error('No Telegram source targets could be resolved. Check TELEGRAM_SOURCE_TARGETS.');
+    process.exit(1);
+  }
+
+  console.log(
+    `Starting Telegram scraper for ${resolvedTargets.map((target) => target.displayLabel).join(', ')}${watchMode ? ` in watch mode (${pollIntervalMs}ms)` : '...'}`,
+  );
 
   try {
     do {
       const startedAt = Date.now();
 
       try {
-        const result = await runTelegramScrape(client, state);
+        const result = await runTelegramScrape(client, resolvedTargets, state);
         console.log(
           `Scrape cycle complete. Extracted: ${result.extractedListings}, snapshot size: ${result.snapshotCount}.`,
         );

@@ -163,8 +163,9 @@ export function createIntakeSummary(listings) {
   const newestListings = [...normalizedListings].sort(
     (left, right) => getListingTimestampValue(right) - getListingTimestampValue(left),
   );
+  const currentFeedListings = newestListings.slice(0, 60);
   const latestSourceDate = newestListings.length > 0 ? getListingTimestamp(newestListings[0]) : null;
-  const latestIngestDate = normalizedListings
+  const latestIngestDate = currentFeedListings
     .map((listing) => getIngestTimestamp(listing))
     .filter(Boolean)
     .sort((left, right) => right.getTime() - left.getTime())[0] || null;
@@ -174,7 +175,7 @@ export function createIntakeSummary(listings) {
       return 0;
     }
 
-    return normalizedListings.filter((listing) => {
+    return currentFeedListings.filter((listing) => {
       const listingDate = getListingTimestamp(listing) || getIngestTimestamp(listing);
       if (!listingDate) {
         return false;
@@ -186,7 +187,7 @@ export function createIntakeSummary(listings) {
   };
 
   const channelCounts = new Map();
-  normalizedListings.forEach((listing) => {
+  currentFeedListings.forEach((listing) => {
     const channel = normalizeText(listing?.sourceChannel, null);
     if (!channel) {
       return;
@@ -200,8 +201,8 @@ export function createIntakeSummary(listings) {
     latestIngestTimestamp: latestIngestDate ? latestIngestDate.toISOString() : null,
     last15Minutes: countWithinWindow(15),
     last60Minutes: countWithinWindow(60),
-    matchedRate: normalizedListings.length
-      ? Math.round((normalizedListings.filter((listing) => hasMatchedMedia(listing)).length / normalizedListings.length) * 100)
+    matchedRate: currentFeedListings.length
+      ? Math.round((currentFeedListings.filter((listing) => hasMatchedMedia(listing)).length / currentFeedListings.length) * 100)
       : 0,
     channelCount: channelCounts.size,
     channelLeaders: [...channelCounts.entries()]
@@ -210,7 +211,7 @@ export function createIntakeSummary(listings) {
       .map(([channel, count]) => ({
         channel,
         count,
-        share: normalizedListings.length ? Math.round((count / normalizedListings.length) * 100) : 0,
+        share: currentFeedListings.length ? Math.round((count / currentFeedListings.length) * 100) : 0,
       })),
     newestListings: newestListings.slice(0, 8),
   };
