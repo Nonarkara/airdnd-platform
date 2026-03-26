@@ -13,25 +13,26 @@ function CompanionCard({ companion, onClick, t }) {
   const preciseTimestamp = formatPreciseTimestamp(companion.postedAt)
     || formatPreciseTimestamp(companion.updatedAt)
     || t.card.timestampPending;
-  const photoLabel = hasMatchedMedia(companion) ? t.card.photoMatched : t.card.photoFallback;
+  const isMatched = hasMatchedMedia(companion);
 
   return (
     <article className="companion-card" onClick={() => onClick(companion)}>
       <div className="card-image-wrapper">
-        <img
-          src={companion.imageUrl}
-          alt={companion.name}
-          className="card-image"
-          onError={(event) => {
-            event.currentTarget.onerror = null;
-            event.currentTarget.src = '/mockups/109748.jpg';
-          }}
-        />
+        {isMatched ? (
+          <img
+            src={companion.imageUrl}
+            alt={companion.name}
+            className="card-image"
+            onError={(event) => {
+              event.currentTarget.style.display = 'none';
+              event.currentTarget.nextElementSibling.style.display = 'grid';
+            }}
+          />
+        ) : null}
+        <div className="card-placeholder" style={isMatched ? { display: 'none' } : undefined} aria-hidden="true">
+          <span className="card-placeholder-letter">{(companion.city || companion.name || 'S')[0]}</span>
+        </div>
         <span className="card-city">{companion.city}</span>
-        <span className="card-captured">
-          <span className="card-captured-label">{t.card.capturedLabel}</span>
-          <span className="card-captured-value">{preciseTimestamp}</span>
-        </span>
       </div>
 
       <div className="card-content">
@@ -39,17 +40,7 @@ function CompanionCard({ companion, onClick, t }) {
           <span className="card-source">
             {companion.sourceChannel || SOURCE_LABELS[companion.dataSource]}
           </span>
-          <span className={`card-proof${hasMatchedMedia(companion) ? ' is-matched' : ''}`}>
-            {photoLabel}
-          </span>
-        </div>
-
-        <div className="card-timeline">
-          <span className="card-updated">
-            {companion.postedAt
-              ? `Posted ${formatRelativeTimestamp(companion.postedAt)}`
-              : formatRelativeTimestamp(companion.updatedAt)}
-          </span>
+          <span className="card-timestamp">{preciseTimestamp}</span>
         </div>
 
         <div className="card-header">
@@ -61,6 +52,21 @@ function CompanionCard({ companion, onClick, t }) {
         </div>
 
         <p className="card-description">{companion.description}</p>
+
+        <div className="card-details">
+          {companion.phone && (
+            <span className="card-detail">
+              <span className="card-detail-label">Tel</span>
+              <span className="card-detail-value">{companion.phone}</span>
+            </span>
+          )}
+          {companion.hours && (
+            <span className="card-detail">
+              <span className="card-detail-label">Hours</span>
+              <span className="card-detail-value">{companion.hours}</span>
+            </span>
+          )}
+        </div>
 
         <div className="card-tags">
           {companion.tags.length > 0 ? (

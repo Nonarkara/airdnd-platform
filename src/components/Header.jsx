@@ -10,10 +10,12 @@ function Header({
   return (
     <header className="header" id="overview">
       <a className="brand-block" href="#overview" aria-label="Sabai Sabai">
-        <span className="brand-mark">SS</span>
+        <span className="brand-mark">
+          <span className="brand-circle" aria-hidden="true" />
+        </span>
         <span className="brand-copy">
           <strong>Sabai Sabai</strong>
-          <small>{t.header.tagline}</small>
+          <small>v2.0 — {t.header.tagline}</small>
         </span>
       </a>
 
@@ -24,8 +26,6 @@ function Header({
       </nav>
 
       <div className="header-actions">
-        <span className="status-pill header-status">{sourceLabel}</span>
-
         <button
           type="button"
           className="btn-refresh"

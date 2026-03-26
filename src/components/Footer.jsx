@@ -7,7 +7,7 @@ function Footer({ t, lastLoadedAt, sourceLabel }) {
       <div className="footer-content">
         <div className="footer-brand">
           <div className="footer-logo">
-            <span className="brand-mark">SS</span>
+            <span className="brand-mark"><span className="brand-circle" /></span>
             <div>
               <strong>Sabai Sabai</strong>
               <p className="footer-tagline">{t.footer.tagline}</p>

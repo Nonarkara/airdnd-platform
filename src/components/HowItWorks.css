@@ -1,7 +1,7 @@
 .how-it-works {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: var(--spacing-2xl);
 }
 
 .hiw-header {
@@ -10,81 +10,63 @@
 
 .hiw-header .section-kicker {
   display: block;
-  margin-bottom: 0.5rem;
-}
-
-.hiw-header h2 {
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
-  font-weight: 400;
   margin-bottom: 0.75rem;
 }
 
+.hiw-header h2 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+
 .hiw-header p {
-  color: var(--color-ink-soft);
+  color: var(--color-cream-soft);
+  font-size: 0.9rem;
   line-height: 1.7;
 }
 
 .hiw-steps {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border-top: 1px solid var(--color-line);
+  gap: 3rem;
 }
 
 .hiw-step {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  padding: 1.5rem 2rem 1.5rem 0;
-  border-right: 1px solid var(--color-line);
-}
-
-.hiw-step:last-child {
-  border-right: none;
-  padding-right: 0;
-}
-
-.hiw-step:not(:first-child) {
-  padding-left: 2rem;
+  gap: 1rem;
 }
 
 .step-icon {
-  color: var(--color-ink-muted);
-  font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: 400;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--color-red);
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 900;
 }
 
 .hiw-step h3 {
-  font-size: 1.1rem;
-  font-weight: 500;
-  line-height: 1.3;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
 }
 
 .hiw-step p {
-  color: var(--color-ink-soft);
-  font-size: 0.88rem;
-  line-height: 1.65;
+  color: var(--color-cream-soft);
+  font-size: 0.85rem;
+  line-height: 1.7;
 }
 
 @media (max-width: 768px) {
   .hiw-steps {
     grid-template-columns: 1fr;
-    border-top: none;
-  }
-
-  .hiw-step {
-    border-right: none;
-    border-bottom: 1px solid var(--color-line);
-    padding: 1.25rem 0;
-  }
-
-  .hiw-step:not(:first-child) {
-    padding-left: 0;
-  }
-
-  .hiw-step:last-child {
-    border-bottom: none;
+    gap: 2.5rem;
   }
 }

@@ -547,9 +547,59 @@ function extractTagsFromText(text, location) {
   return nextTags.slice(0, 3);
 }
 
+function isSpamOrPornContent(text) {
+  const lowered = text.toLowerCase();
+
+  // Reject clickbait / porn / video selling content
+  const pornSignals = [
+    /(?:คลิป|clip|vdo|video|วิดีโอ|หนัง)\s*(?:โป้|โป๊|18\+|xxx|เสียว|ลับ|หลุด|sex)/i,
+    /(?:โป้|โป๊|xxx|18\+|porn|nude|naked|onlyfans|เสียว|หลุด|ลับเฉพาะ)/i,
+    /(?:ขาย\s*(?:คลิป|clip|vdo|video)|sell\s*(?:clip|video|content))/i,
+    /(?:group\s*joining\s*details|เข้ากลุ่ม|สนใจเข้ากลุ่ม|กลุ่มลับ|กลุ่มvip|vip\s*group)/i,
+    /(?:มีเดีย|media)\s*(?:ลับ|vip|premium)/i,
+    /(?:ดูฟรี|free\s*vid|watch\s*free|คลิปฟรี)/i,
+    /(?:ทักซื้อ|ทักเลย|dm\s*(?:me|for)|inbox)\s*(?:คลิป|clip|vdo|video)/i,
+    /(?:แอบถ่าย|hidden\s*cam|spy\s*cam)/i,
+  ];
+
+  if (pornSignals.some((pattern) => pattern.test(text))) {
+    return true;
+  }
+
+  // Reject if text is mostly decorative symbols and no real content
+  const stripped = text.replace(/[^\p{L}\p{N}\s]/gu, '').trim();
+  if (stripped.length < 10 && text.length > 20) {
+    return true;
+  }
+
+  // Reject if text is just "group joining details" with symbols
+  if (/^[\s©▼▲●◆─+\-=*]*group\s*joining\s*details[\s©▼▲●◆─+\-=*]*$/i.test(text.trim())) {
+    return true;
+  }
+
+  return false;
+}
+
+function isVideoOnlyCluster(cluster) {
+  // Check if media messages are videos (not photos) — videos are often porn content
+  return cluster.mediaMessages.length > 0 &&
+    cluster.mediaMessages.every((m) => m.media?.document || m.media?.video) &&
+    !cluster.mediaMessages.some((m) => m.media?.photo);
+}
+
 function buildFallbackListing(cluster, clusterId, sourceLabel) {
   const text = cluster.texts.join('\n').trim();
   if (!text || text.length < 24) {
+    return null;
+  }
+
+  // Reject spam, porn, and clickbait content
+  if (isSpamOrPornContent(text)) {
+    return null;
+  }
+
+  // Reject video-only clusters (likely porn clips, not massage listings)
+  if (isVideoOnlyCluster(cluster)) {
     return null;
   }
 
@@ -597,7 +647,14 @@ function buildFallbackListing(cluster, clusterId, sourceLabel) {
 
 function buildFallbackListings(clusters, sourceLabel) {
   return clusters
-    .map((cluster, clusterId) => buildFallbackListing(cluster, clusterId, sourceLabel))
+    .map((cluster, clusterId) => {
+      // Only accept clusters that have BOTH text and photos from the same sender
+      // This prevents mismatching photos with unrelated text
+      if (cluster.texts.length === 0 || cluster.mediaMessages.length === 0) {
+        return null;
+      }
+      return buildFallbackListing(cluster, clusterId, sourceLabel);
+    })
     .filter(Boolean);
 }
 
@@ -723,7 +780,7 @@ async function enrichListingsWithAi(listings, clusters, sourceLabel) {
  * Cluster Telegram messages by groupedId (albums) or by sender + time proximity.
  * Each cluster has: { texts: string[], mediaMessages: Message[], senderId, startDate }
  */
-function clusterMessages(messages, timeWindowSec = 120) {
+function clusterMessages(messages, timeWindowSec = 300) {
   const groupedIdMap = new Map();
   const ungrouped = [];
 
@@ -801,7 +858,7 @@ function clusterMessages(messages, timeWindowSec = 120) {
   return clusters;
 }
 
-function mergeAdjacentClusters(clusters, mergeWindowSec = 300) {
+function mergeAdjacentClusters(clusters, mergeWindowSec = 600) {
   const sortedClusters = [...clusters].sort((left, right) => (left.startDate || 0) - (right.startDate || 0));
   const merged = [];
 
@@ -952,7 +1009,22 @@ async function extractListingsFromTarget(client, target, state = {}) {
     };
   }
 
-  const enrichedListings = await enrichListingsWithAi(deterministicListings, clusters, target.displayLabel);
+  const rawEnrichedListings = await enrichListingsWithAi(deterministicListings, clusters, target.displayLabel);
+
+  // Post-enrichment spam filter: reject listings with spam descriptions or names
+  const enrichedListings = rawEnrichedListings.filter((listing) => {
+    const combined = `${listing.name || ''} ${listing.description || ''}`;
+    if (isSpamOrPornContent(combined)) {
+      console.log(`${target.displayLabel}: filtered spam listing "${listing.name}"`);
+      return false;
+    }
+    // Reject listings with only "group joining details" as description
+    if (/^[\s.]*group\s*joining\s*details/i.test(listing.description || '')) {
+      console.log(`${target.displayLabel}: filtered "group joining" listing "${listing.name}"`);
+      return false;
+    }
+    return true;
+  });
 
   const referencedClusterIds = [
     ...new Set(

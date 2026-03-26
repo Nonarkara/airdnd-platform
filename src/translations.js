@@ -14,10 +14,10 @@ const shared = {
     logout: 'Logout',
   },
   hero: {
-    kicker: 'Live directory powered by community reports',
-    title: 'Turn noisy channel traffic into a polished live directory.',
+    kicker: 'Thailand massage & spa directory',
+    title: 'Find your next massage.',
     subtitle:
-      'Sabai Sabai turns dense community channel traffic into a clean, visual, continuously updated directory so the newest places, photos, and timestamps are visible the moment they land.',
+      'Real places, real photos, updated every hour from community sources across Thailand. Browse by area, compare prices, and book with confidence.',
     primaryAction: 'Refresh listings',
     secondaryAction: 'Browse all listings',
     panelLabel: 'Directory status',

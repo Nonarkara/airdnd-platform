@@ -31,3 +31,8 @@ token.json
 
 # Scraped photos (downloaded from Telegram)
 public/photos/
+
+# Large files
+*.docx
+*.pdf
+public/*.pdf

@@ -8,6 +8,7 @@ import CompanionGrid from './components/CompanionGrid';
 import CompanionModal from './components/CompanionModal';
 import MapSection from './components/MapSection';
 import HowItWorks from './components/HowItWorks';
+import VibeMap from './components/VibeMap';
 import Footer from './components/Footer';
 import { companions as backupCompanions } from './data/mockData';
 import { supabase } from './lib/supabase';
@@ -396,14 +397,7 @@ function App() {
           recentListings={recentListings}
         />
 
-        <LiveIntakeStrip
-          t={t}
-          listings={allCompanions}
-          intakeSummary={intakeSummary}
-          lastLoadedAt={dataState.lastLoadedAt}
-        />
-
-        <MapSection t={t} />
+        <VibeMap listings={allCompanions} t={t} />
 
         <HowItWorks t={t} />
 
@@ -451,6 +445,8 @@ function App() {
             isLoading={dataState.isLoading}
           />
         </section>
+
+        <MapSection t={t} />
       </main>
 
       <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={dataState.sourceLabel} />
