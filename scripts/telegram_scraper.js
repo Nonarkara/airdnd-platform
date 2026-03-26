@@ -48,7 +48,7 @@ const configuredTargetTokens = (
   .split(',')
   .map((value) => value.trim())
   .filter(Boolean);
-const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '80', 10);
+const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '200', 10);
 const pollIntervalMs = Number.parseInt(process.env.TELEGRAM_POLL_INTERVAL_MS || '30000', 10);
 const snapshotLimit = Number.parseInt(process.env.SNAPSHOT_LISTING_LIMIT || '400', 10);
 const parseTimeoutMs = Number.parseInt(process.env.GEMINI_PARSE_TIMEOUT_MS || '8000', 10);
@@ -609,7 +609,7 @@ function buildFallbackListing(cluster, clusterId, sourceLabel) {
   }
 
   // Reject if the cluster has no real massage/spa business signals
-  const businessSignals = /(?:ร้าน|shop|spa|สปา|นวด|massage|clinic|คลินิก|health|สุขภาพ|therap|เพื่อสุขภาพ|แผนไทย|thai\s*(?:massage|spa)|พิกัด|location|maps|เปิด.*\d|open.*\d|\d{1,2}[:.]\d{2})/i;
+  const businessSignals = /(?:ร้าน|shop|spa|สปา|นวด|massage|clinic|คลินิก|health|สุขภาพ|therap|เพื่อสุขภาพ|แผนไทย|thai\s*(?:massage|spa)|พิกัด|location|maps|เปิด.*\d|open.*\d|\d{1,2}[:.]\d{2}|หมอ|บริการ|ราคา|price|baht|บาท|฿|โทร|tel|phone|line\s*(?:id)?|จอง|booking|reservation|ซอย|soi|ถนน|road|แยก|ใกล้|near|bts|mrt)/i;
   if (!businessSignals.test(text)) {
     return null;
   }
