@@ -550,7 +550,7 @@ function extractTagsFromText(text, location) {
 function isSpamOrPornContent(text) {
   const lowered = text.toLowerCase();
 
-  // Reject clickbait / porn / video selling content
+  // Reject clickbait / porn / video selling / escort-style content
   const pornSignals = [
     /(?:คลิป|clip|vdo|video|วิดีโอ|หนัง)\s*(?:โป้|โป๊|18\+|xxx|เสียว|ลับ|หลุด|sex)/i,
     /(?:โป้|โป๊|xxx|18\+|porn|nude|naked|onlyfans|เสียว|หลุด|ลับเฉพาะ)/i,
@@ -560,6 +560,16 @@ function isSpamOrPornContent(text) {
     /(?:ดูฟรี|free\s*vid|watch\s*free|คลิปฟรี)/i,
     /(?:ทักซื้อ|ทักเลย|dm\s*(?:me|for)|inbox)\s*(?:คลิป|clip|vdo|video)/i,
     /(?:แอบถ่าย|hidden\s*cam|spy\s*cam)/i,
+    // Escort / companion / "special service" signals
+    /(?:น้องใหม่|พร้อมให้บริการ|บริการพิเศษ|บริการถึงที่|ถึงห้อง|out\s*call|in\s*call|service.*room)/i,
+    /(?:ตัวจริง|ตัวเป็นๆ|รูปจริง|ไม่ผิดหวัง|งานดี|เด็ด|แซ่บ|ฟิน|sexy|hot\s*girl)/i,
+    /(?:dream\s*girl|สาวสวย|สาวเซ็กซี่|สาวน่ารัก.*บริการ|companion|escort)/i,
+    // Reject content focused on choosing girls / individual masseuses by appearance
+    /(?:เลือกน้อง|เลือกหมอ|เลือกคน|เลือกสาว|choose.*girl|pick.*girl)/i,
+    // Reject "update on girls" / girl lineup / staff showcase posts
+    /(?:อัพเดต.*สาว|อัพเดท.*สาว|update.*girl|แจ้งเข้า|รอยดึก|น้องๆ.*วันนี้|สาว.*วันนี้|line.*up|lineup)/i,
+    // Reject individual girl profiles (not business listings)
+    /(?:น้อง\s*\S{1,12}\s*(?:อายุ|age|สูง|ผิว|หน้าอก|น้ำหนัก|weight|height))/i,
   ];
 
   if (pornSignals.some((pattern) => pattern.test(text))) {
@@ -595,6 +605,12 @@ function buildFallbackListing(cluster, clusterId, sourceLabel) {
 
   // Reject spam, porn, and clickbait content
   if (isSpamOrPornContent(text)) {
+    return null;
+  }
+
+  // Reject if the cluster has no real massage/spa business signals
+  const businessSignals = /(?:ร้าน|shop|spa|สปา|นวด|massage|clinic|คลินิก|health|สุขภาพ|therap|เพื่อสุขภาพ|แผนไทย|thai\s*(?:massage|spa)|พิกัด|location|maps|เปิด.*\d|open.*\d|\d{1,2}[:.]\d{2})/i;
+  if (!businessSignals.test(text)) {
     return null;
   }
 
