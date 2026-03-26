@@ -36,3 +36,4 @@ public/photos/
 *.docx
 *.pdf
 public/*.pdf
+.vercel

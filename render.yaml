@@ -2,7 +2,7 @@ services:
   - type: web
     name: airdnd-platform
     env: node
-    buildCommand: npm install --include=dev && npm run build
+    buildCommand: npm install --include=dev --ignore-scripts && npm run build
     startCommand: npm start
     healthCheckPath: /
     envVars:
@@ -13,7 +13,7 @@ services:
       - key: VITE_SUPABASE_ANON_KEY
         sync: false
       - key: NODE_OPTIONS
-        value: "--max-old-space-size=400"
+        value: "--max-old-space-size=512"
   - type: worker
     name: airdnd-live-intake
     env: node
