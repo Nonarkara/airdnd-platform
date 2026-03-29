@@ -4,6 +4,7 @@ import {
   formatRelativeTimestamp,
   hasMatchedMedia,
 } from '../lib/listings';
+import { trackListingClick } from '../lib/tracker';
 import './CompanionCard.css';
 
 function CompanionCard({ companion, onClick, t }) {
@@ -16,7 +17,7 @@ function CompanionCard({ companion, onClick, t }) {
   const isMatched = hasMatchedMedia(companion);
 
   return (
-    <article className="companion-card" onClick={() => onClick(companion)}>
+    <article className="companion-card" onClick={() => { trackListingClick(companion.id); onClick(companion); }}>
       <div className="card-image-wrapper">
         {isMatched ? (
           <img

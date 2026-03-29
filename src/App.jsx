@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -10,8 +11,11 @@ import MapSection from './components/MapSection';
 import HowItWorks from './components/HowItWorks';
 import VibeMap from './components/VibeMap';
 import Footer from './components/Footer';
+import AdminGuard from './components/admin/AdminGuard';
+import AdminDashboard from './components/admin/AdminDashboard';
 import { companions as backupCompanions } from './data/mockData';
 import { supabase } from './lib/supabase';
+import { initSession } from './lib/tracker';
 import {
   SOURCE_LABELS,
   createIntakeSummary,
@@ -269,6 +273,10 @@ function App() {
   }, []);
 
   useEffect(() => {
+    initSession();
+  }, []);
+
+  useEffect(() => {
     let isActive = true;
 
     const loadListings = async () => {
@@ -371,94 +379,109 @@ function App() {
   };
 
   return (
-    <div className="app-shell">
-      <div className="app-backdrop" aria-hidden="true" />
-
-      <Header
-        language={language}
-        setLanguage={setLanguage}
-        t={t}
-        onLogout={session ? () => supabase.auth.signOut() : null}
-        onRefresh={handleRefresh}
-        isRefreshing={dataState.isRefreshing}
-        sourceLabel={dataState.sourceLabel}
+    <Routes>
+      <Route
+        path="/admin"
+        element={
+          <AdminGuard session={session}>
+            <AdminDashboard />
+          </AdminGuard>
+        }
       />
+      <Route
+        path="*"
+        element={
+          <div className="app-shell">
+            <div className="app-backdrop" aria-hidden="true" />
 
-      <main className="main-content">
-        <HeroSection
-          t={t}
-          metrics={metrics}
-          intakeSummary={intakeSummary}
-          sourceLabel={dataState.sourceLabel}
-          statusNote={dataState.note}
-          lastLoadedAt={dataState.lastLoadedAt}
-          onRefresh={handleRefresh}
-          isRefreshing={dataState.isRefreshing}
-          recentListings={recentListings}
-        />
+            <Header
+              language={language}
+              setLanguage={setLanguage}
+              t={t}
+              onLogout={session ? () => supabase.auth.signOut() : null}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
+              sourceLabel={dataState.sourceLabel}
+            />
 
-        <VibeMap listings={allCompanions} t={t} />
+            <main className="main-content">
+              <HeroSection
+                t={t}
+                metrics={metrics}
+                intakeSummary={intakeSummary}
+                sourceLabel={dataState.sourceLabel}
+                statusNote={dataState.note}
+                lastLoadedAt={dataState.lastLoadedAt}
+                onRefresh={handleRefresh}
+                isRefreshing={dataState.isRefreshing}
+                recentListings={recentListings}
+              />
 
-        <HowItWorks t={t} />
+              <VibeMap listings={allCompanions} t={t} />
 
-        <section id="live-listings" className="listing-section">
-          <div className="section-header">
-            <div>
-              <span className="section-kicker">{t.featured.kicker}</span>
-              <h2>{t.featured.title}</h2>
-            </div>
-            <div className="section-meta">
-              <span>{filteredCompanions.length} {t.featured.countLabel}</span>
-              <span>{dataState.sourceLabel}</span>
-            </div>
+              <HowItWorks t={t} />
+
+              <section id="live-listings" className="listing-section">
+                <div className="section-header">
+                  <div>
+                    <span className="section-kicker">{t.featured.kicker}</span>
+                    <h2>{t.featured.title}</h2>
+                  </div>
+                  <div className="section-meta">
+                    <span>{filteredCompanions.length} {t.featured.countLabel}</span>
+                    <span>{dataState.sourceLabel}</span>
+                  </div>
+                </div>
+                <p className="section-subtitle">{t.featured.subtitle}</p>
+
+                <FilterBar
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  locationOptions={locationOptions}
+                  activeLocation={activeLocation}
+                  setActiveLocation={setActiveLocation}
+                  activityOptions={activityOptions}
+                  activeActivity={activeActivity}
+                  setActiveActivity={setActiveActivity}
+                  sortOptions={SORT_OPTIONS}
+                  sortBy={sortBy}
+                  setSortBy={setSortBy}
+                  onRefresh={handleRefresh}
+                  isRefreshing={dataState.isRefreshing}
+                  t={t}
+                />
+
+                <CompanionGrid
+                  companions={filteredCompanions}
+                  onCardClick={setSelectedCompanion}
+                  t={t}
+                  onClearFilters={clearFilters}
+                  hasActiveFilters={
+                    searchTerm.trim() ||
+                    activeLocation !== ALL_LOCATIONS_VALUE ||
+                    activeActivity !== ALL_TAGS_VALUE ||
+                    sortBy !== SORT_OPTIONS[0]
+                  }
+                  isLoading={dataState.isLoading}
+                />
+              </section>
+
+              <MapSection t={t} />
+            </main>
+
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={dataState.sourceLabel} />
+
+            {selectedCompanion && (
+              <CompanionModal
+                companion={selectedCompanion}
+                onClose={() => setSelectedCompanion(null)}
+                t={t}
+              />
+            )}
           </div>
-          <p className="section-subtitle">{t.featured.subtitle}</p>
-
-          <FilterBar
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            locationOptions={locationOptions}
-            activeLocation={activeLocation}
-            setActiveLocation={setActiveLocation}
-            activityOptions={activityOptions}
-            activeActivity={activeActivity}
-            setActiveActivity={setActiveActivity}
-            sortOptions={SORT_OPTIONS}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-            onRefresh={handleRefresh}
-            isRefreshing={dataState.isRefreshing}
-            t={t}
-          />
-
-          <CompanionGrid
-            companions={filteredCompanions}
-            onCardClick={setSelectedCompanion}
-            t={t}
-            onClearFilters={clearFilters}
-            hasActiveFilters={
-              searchTerm.trim() ||
-              activeLocation !== ALL_LOCATIONS_VALUE ||
-              activeActivity !== ALL_TAGS_VALUE ||
-              sortBy !== SORT_OPTIONS[0]
-            }
-            isLoading={dataState.isLoading}
-          />
-        </section>
-
-        <MapSection t={t} />
-      </main>
-
-      <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={dataState.sourceLabel} />
-
-      {selectedCompanion && (
-        <CompanionModal
-          companion={selectedCompanion}
-          onClose={() => setSelectedCompanion(null)}
-          t={t}
-        />
-      )}
-    </div>
+        }
+      />
+    </Routes>
   );
 }
 

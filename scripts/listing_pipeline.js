@@ -295,7 +295,7 @@ export function normalizeExtractedListings(rawListings, options = {}) {
 
   const normalized = (Array.isArray(rawListings) ? rawListings : [])
     .map((listing, index) => {
-      const sourceChannel = normalizeText(listing?.sourceChannel, null);
+      const sourceChannel = normalizeText(listing?.sourceChannel || options?.sourceChannel, null);
       const location = cleanLocationLabel(listing?.location);
       const name = resolveDisplayName(listing?.name, sourceChannel, location);
       if (!name) {
@@ -470,7 +470,7 @@ export async function insertListingsIfPossible(supabase, listings) {
     try {
       const { data: existingRows, error: lookupError } = await supabase
         .from('companions')
-        .select('id,image_url,metrics')
+        .select('id,image_url,metrics,phone,hours,line_url,telegram_url,maps_url,source_channel,city,mention_count')
         .eq('name', listing.name)
         .eq('location', listing.location)
         .limit(1);
@@ -495,13 +495,24 @@ export async function insertListingsIfPossible(supabase, listings) {
           updatePayload.image_url = listing.imageUrl;
         }
 
+        // Update contact/business info if we have new data the existing row lacks
+        if (listing.phone && !existingRow.phone) updatePayload.phone = listing.phone;
+        if (listing.hours && !existingRow.hours) updatePayload.hours = listing.hours;
+        if (listing.lineUrl && !existingRow.line_url) updatePayload.line_url = listing.lineUrl;
+        if (listing.telegramUrl && !existingRow.telegram_url) updatePayload.telegram_url = listing.telegramUrl;
+        if (listing.mapsUrl && !existingRow.maps_url) updatePayload.maps_url = listing.mapsUrl;
+        if (listing.sourceChannel && !existingRow.source_channel) updatePayload.source_channel = listing.sourceChannel;
+        if (listing.city && !existingRow.city) updatePayload.city = listing.city;
+        updatePayload.updated_at = new Date().toISOString();
+        updatePayload.mention_count = (existingRow.mention_count || 1) + 1;
+
         if (Object.keys(updatePayload).length > 0) {
           const { error: updateError } = await supabase
             .from('companions')
             .update(updatePayload)
             .eq('id', existingRow.id);
 
-          if (updateError) {
+          if (updateError && !updateError.message?.includes('column')) {
             throw updateError;
           }
         }
@@ -523,21 +534,27 @@ export async function insertListingsIfPossible(supabase, listings) {
         metrics: createDatabaseMetrics(listing),
       };
 
-      // Try with origin metadata first, fall back without if columns don't exist
-      if (listing.postedAt) {
-        row.posted_at = listing.postedAt;
-      }
-      if (listing.sourceChannel) {
-        row.source_channel = listing.sourceChannel;
-      }
+      // Add all available business data columns
+      if (listing.postedAt) row.posted_at = listing.postedAt;
+      if (listing.sourceChannel) row.source_channel = listing.sourceChannel;
+      if (listing.phone) row.phone = listing.phone;
+      if (listing.hours) row.hours = listing.hours;
+      if (listing.lineUrl) row.line_url = listing.lineUrl;
+      if (listing.telegramUrl) row.telegram_url = listing.telegramUrl;
+      if (listing.mapsUrl) row.maps_url = listing.mapsUrl;
+      if (listing.city) row.city = listing.city;
+      row.updated_at = new Date().toISOString();
 
       let { error } = await supabase.from('companions').insert([row]);
 
-      // If columns don't exist yet, retry without them
+      // If new columns don't exist yet, retry with only base columns
       if (error && error.message?.includes('column')) {
-        delete row.posted_at;
-        delete row.source_channel;
-        ({ error } = await supabase.from('companions').insert([row]));
+        const baseRow = {
+          name: row.name, age: row.age, location: row.location, price: row.price,
+          description: row.description, image_url: row.image_url, rating: row.rating,
+          reviews: row.reviews, tags: row.tags, metrics: row.metrics,
+        };
+        ({ error } = await supabase.from('companions').insert([baseRow]));
       }
 
       if (error) {
