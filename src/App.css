@@ -19,7 +19,7 @@
   justify-content: space-between;
   padding: 1rem 0;
   background: var(--color-bg);
-  border-bottom: 3px solid var(--color-gold);
+  border-bottom: 1px solid var(--color-red);
 }
 
 .brand-block {

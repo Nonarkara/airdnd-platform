@@ -1,0 +1,277 @@
+/* ==========================================
+   Methodology — Research Paper Aesthetic
+   Beautifully typeset like a design magazine article
+   ========================================== */
+
+.methodology {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-xl);
+  color: var(--color-cream);
+}
+
+/* --- Header --- */
+.meth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+
+.meth-back {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-cream-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.meth-back:hover {
+  color: var(--color-red);
+}
+
+.meth-label {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-cream-muted);
+}
+
+/* --- Hero --- */
+.meth-hero {
+  padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 6vw, 5rem);
+  text-align: center;
+}
+
+.meth-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--color-cream);
+}
+
+.meth-title-accent {
+  color: var(--color-red);
+}
+
+.meth-hero .meth-line {
+  width: 80px;
+  height: 1px;
+  background: var(--color-red);
+  margin: 2rem auto;
+}
+
+.meth-author {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-cream);
+}
+
+.meth-date {
+  font-size: 0.75rem;
+  color: var(--color-cream-muted);
+  margin-top: 0.3rem;
+}
+
+/* --- Sections --- */
+.meth-section {
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+  border-top: 1px solid var(--color-line-soft);
+  position: relative;
+}
+
+.meth-num {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-red);
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.meth-section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--color-cream);
+  margin-bottom: 1.2rem;
+}
+
+.meth-section p {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--color-cream-soft);
+  margin-bottom: 1rem;
+}
+
+.meth-lead {
+  font-size: 1.05rem !important;
+  color: var(--color-cream) !important;
+  line-height: 1.7 !important;
+}
+
+/* --- Blockquote --- */
+.meth-quote {
+  margin: 2rem 0;
+  padding: 1.5rem 0 1.5rem 1.5rem;
+  border-left: 2px solid var(--color-red);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-cream);
+  font-style: normal;
+}
+
+/* --- Diagram --- */
+.meth-diagram {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--color-bg-inset);
+  border: 1px solid var(--color-line-soft);
+  overflow-x: auto;
+}
+
+.meth-svg {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+}
+
+/* --- Card Grid --- */
+.meth-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.meth-card {
+  padding: 1.2rem;
+  border: 1px solid var(--color-line-soft);
+}
+
+.meth-card h3 {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--color-cream);
+  margin-bottom: 0.5rem;
+}
+
+.meth-card p {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-cream-soft);
+  margin-bottom: 0;
+}
+
+/* --- Table --- */
+.meth-table {
+  margin: 1.5rem 0;
+  border: 1px solid var(--color-line-soft);
+}
+
+.meth-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--color-line-soft);
+  font-size: 0.82rem;
+}
+
+.meth-row:last-child {
+  border-bottom: none;
+}
+
+.meth-row span:first-child {
+  color: var(--color-cream-soft);
+}
+
+.meth-row span:last-child {
+  font-weight: 600;
+  color: var(--color-cream);
+}
+
+.meth-row-total {
+  background: var(--color-bg-inset);
+}
+
+.meth-row-total span:last-child {
+  color: var(--color-gold);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+/* --- Footer --- */
+.meth-footer {
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  text-align: center;
+}
+
+.meth-footer .meth-line {
+  width: 60px;
+  height: 1px;
+  background: var(--color-red);
+  margin: 0 auto 2rem;
+}
+
+.meth-footer p {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-cream);
+}
+
+.meth-footer-sub {
+  font-weight: 400 !important;
+  font-size: 0.75rem !important;
+  color: var(--color-cream-muted) !important;
+  margin-top: 0.3rem;
+}
+
+.meth-footer-link {
+  display: inline-block;
+  margin-top: 2rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-cream-muted);
+  text-decoration: none;
+  padding: 0.7rem 2rem;
+  border: 1px solid var(--color-line);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.meth-footer-link:hover {
+  border-color: var(--color-red);
+  color: var(--color-red);
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .meth-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meth-quote {
+    font-size: 1rem;
+    padding-left: 1rem;
+  }
+}

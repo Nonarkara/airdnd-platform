@@ -23,6 +23,7 @@ function Header({
         <a href="#map">{t.nav.map}</a>
         <a href="#workflow">{t.nav.workflow}</a>
         <a href="#live-listings">{t.nav.listings}</a>
+        <a href="/methodology" className="nav-methodology">Methodology</a>
       </nav>
 
       <div className="header-actions">

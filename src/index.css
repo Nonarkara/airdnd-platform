@@ -1,22 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --color-bg: #1a1714;
-  --color-bg-raised: #221f1a;
-  --color-bg-inset: #131110;
-  --color-surface: #2a2620;
-  --color-surface-hover: #332e27;
-  --color-line: #3a342c;
-  --color-line-soft: #2e2922;
-  --color-cream: #f5f0e8;
-  --color-cream-soft: rgba(245, 240, 232, 0.7);
-  --color-cream-muted: rgba(245, 240, 232, 0.4);
-  --color-cream-faint: rgba(245, 240, 232, 0.08);
-  --color-red: #c8102e;
-  --color-red-hover: #d91a38;
-  --color-red-soft: rgba(200, 16, 46, 0.15);
-  --color-gold: #c4a44a;
-  --color-gold-soft: rgba(196, 164, 74, 0.2);
+  /* Coen Brothers meets Kubrick — cooler, deeper, more cinematic */
+  --color-bg: #0a0a0f;
+  --color-bg-raised: #12121a;
+  --color-bg-inset: #06060b;
+  --color-surface: #1a1a24;
+  --color-surface-hover: #22222e;
+  --color-line: #2a2a3a;
+  --color-line-soft: #1e1e2a;
+  --color-cream: #e8e6e1;
+  --color-cream-soft: rgba(232, 230, 225, 0.65);
+  --color-cream-muted: rgba(232, 230, 225, 0.35);
+  --color-cream-faint: rgba(232, 230, 225, 0.06);
+  --color-red: #b91c1c;
+  --color-red-hover: #dc2626;
+  --color-red-soft: rgba(185, 28, 28, 0.15);
+  --color-gold: #d4a853;
+  --color-gold-soft: rgba(212, 168, 83, 0.15);
 
   --font-display: 'Jost', 'Futura', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;

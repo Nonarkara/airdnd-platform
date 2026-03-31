@@ -1,95 +1,92 @@
-/* 1964 Tokyo Olympics poster aesthetic */
+/* ==========================================
+   Hero — European Minimalist Cinema Poster
+   The line is the knife. The reduction IS the design.
+   ========================================== */
+
 .hero-section {
-  position: relative;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 85vh;
-  padding: clamp(4rem, 10vw, 8rem) 0;
-  overflow: hidden;
-  text-align: center;
-}
-
-/* The iconic Hinomaru — large red circle */
-.hero-geometric {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(50vw, 420px);
-  height: min(50vw, 420px);
-  border-radius: 50%;
-  background: var(--color-red);
-  opacity: 1;
-  pointer-events: none;
-}
-
-.hero-copy {
+  padding: clamp(3rem, 8vw, 6rem) var(--spacing-xl);
   position: relative;
-  z-index: 1;
+  overflow: hidden;
+}
+
+.hero-cinema {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  width: 100%;
   max-width: 700px;
+  position: relative;
 }
 
-.hero-kicker {
-  font-family: var(--font-display);
-  color: var(--color-gold);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+/* --- The Line --- */
+.hero-line {
+  width: 100%;
+  height: 1px;
+  background: var(--color-red);
+  margin: 2.5rem 0;
+  position: relative;
 }
 
-#hero-title {
+.hero-line::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--color-red);
+  border-radius: 50%;
+}
+
+/* --- Above the line: Title only --- */
+.hero-above {
+  text-align: center;
+}
+
+.hero-title {
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-size: clamp(4.5rem, 14vw, 9rem);
   font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
   color: var(--color-cream);
-  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Below the line: details --- */
+.hero-below {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+  text-align: center;
+}
+
+.hero-tagline {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--color-cream-muted);
 }
 
 .hero-subtitle {
-  max-width: 36ch;
-  color: var(--color-cream-soft);
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.7;
-  text-shadow: 0 1px 20px rgba(0, 0, 0, 0.4);
+  color: var(--color-cream-soft);
+  max-width: 38ch;
 }
 
-.hero-actions {
-  padding-top: 0.5rem;
-}
-
-.hero-primary-action {
-  display: inline-flex;
-  align-items: center;
-  padding: 1rem 2.5rem;
-  background: var(--color-cream);
-  color: var(--color-bg);
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition: background 0.15s ease;
-}
-
-.hero-primary-action:hover {
-  background: var(--color-gold);
-  color: var(--color-bg);
-}
-
+/* --- Metrics row --- */
 .hero-metrics {
   display: flex;
-  gap: 4rem;
-  padding-top: 2.5rem;
-  margin-top: 1rem;
-  border-top: 1px solid rgba(245, 240, 232, 0.15);
+  align-items: center;
+  gap: 2rem;
 }
 
 .hero-metric {
@@ -101,46 +98,64 @@
 
 .hero-metric strong {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
   font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.02em;
   color: var(--color-cream);
+  line-height: 1;
 }
 
 .hero-metric span {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-gold);
 }
 
-@media (max-width: 768px) {
-  .hero-section {
-    min-height: 70vh;
-    padding: clamp(3rem, 8vw, 5rem) 0;
-  }
-
-  .hero-geometric {
-    width: 60vw;
-    height: 60vw;
-  }
-
-  .hero-metrics {
-    gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+.hero-metric-divider {
+  width: 1px;
+  height: 2.5rem;
+  background: var(--color-line);
 }
 
-@media (max-width: 480px) {
-  .hero-metrics {
-    gap: 1.5rem;
+/* --- CTA --- */
+.hero-cta {
+  display: inline-block;
+  padding: 0.9rem 2.8rem;
+  background: transparent;
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--color-line);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.hero-cta:hover {
+  border-color: var(--color-red);
+  color: var(--color-red);
+}
+
+/* --- Mobile --- */
+@media (max-width: 600px) {
+  .hero-section {
+    min-height: 90vh;
   }
 
-  .hero-metric strong {
-    font-size: 2rem;
+  .hero-metrics {
+    gap: 1.2rem;
+  }
+
+  .hero-metric-divider {
+    height: 2rem;
+  }
+
+  .hero-cta {
+    width: 100%;
+    text-align: center;
   }
 }
