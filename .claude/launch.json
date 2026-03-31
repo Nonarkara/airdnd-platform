@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "sabai-dev",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["vite", "--port", "5174"],
+      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeArgs": ["node_modules/.bin/vite", "--port", "5174"],
       "port": 5174
     }
   ]

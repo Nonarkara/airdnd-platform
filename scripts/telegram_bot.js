@@ -30,6 +30,7 @@ const forwardGroupId = process.env.TELEGRAM_FORWARD_GROUP_ID
   : null;
 
 const FORWARD_FLUSH_DELAY = 5000;
+const MAX_BUFFER_AGE_MS = 60000;
 const forwardBuffer = new Map();
 
 if (!botToken || !geminiApiKey) {
@@ -64,7 +65,10 @@ Return only a JSON array with this shape:
     "mapsUrl": "https://maps.app.goo.gl/... or null",
     "tags": ["Bangkok", "Massage", "Thai Massage"],
     "age": null,
-    "metrics": {}
+    "metrics": {},
+    "user_rating": null,
+    "service_quality": [],
+    "user_feedback_summary": null
   }
 ]
 
@@ -74,9 +78,14 @@ Rules:
 - Extract price or price range when visible.
 - Use 1-3 tags for city, district, and service type (Thai massage, oil massage, spa, reflexology, etc.).
 - Ignore admin announcements, group rules, or non-listing content.
-- Do not invent ratings or review counts.
 - Keep descriptions factual and concise.
 - Use null for unknown values.
+
+User feedback & ratings extraction:
+- If users mention ratings (e.g., "10/10", "5 stars", "4.5/5"), normalize to a 1.0-5.0 scale in user_rating.
+- Extract service quality keywords into service_quality array: "clean", "friendly", "skilled", "professional", "relaxing", "value", "private", "late_night".
+- If the text contains genuine user reviews, summarize briefly in user_feedback_summary.
+- Do NOT invent ratings or feedback. Only extract what users explicitly stated.
 
 Message:
 ${rawText}
@@ -113,8 +122,17 @@ ${rawText}
         timer: null,
         sourceLabel,
         chatId,
+        createdAt: Date.now(),
       });
       console.log(`Buffering forwarded message from ${sourceLabel}...`);
+    }
+
+    // Force-flush if buffer has been accumulating too long (prevents memory leak)
+    const buf0 = forwardBuffer.get(bufferKey);
+    if (buf0 && Date.now() - buf0.createdAt > MAX_BUFFER_AGE_MS) {
+      if (buf0.timer) clearTimeout(buf0.timer);
+      await flushForwardBatch(bufferKey);
+      return;
     }
 
     const buf = forwardBuffer.get(bufferKey);
@@ -175,7 +193,10 @@ ${rawText}
         config: { responseMimeType: 'application/json' },
       });
 
-      const parsedListings = parseModelJson(response.text);
+      const parsedListings = parseModelJson(response.text).map((l) => ({
+        ...l,
+        rawText: combinedText,
+      }));
       const normalizedListings = normalizeExtractedListings(parsedListings, {
         source: 'bot-forward',
         sourceChannel: sourceLabel,
@@ -300,7 +321,10 @@ ${rawText}
         },
       });
 
-      const parsedListings = parseModelJson(response.text);
+      const parsedListings = parseModelJson(response.text).map((l) => ({
+        ...l,
+        rawText: text,
+      }));
       const normalizedListings = normalizeExtractedListings(parsedListings, {
         source: 'snapshot',
       });

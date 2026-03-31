@@ -129,6 +129,64 @@
   text-align: center;
 }
 
+a.metric-link {
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease;
+}
+
+a.metric-link:hover {
+  border-color: var(--color-accent);
+}
+
+a.metric-link .metric-value {
+  color: var(--color-red);
+}
+
+/* Contact buttons row */
+.modal-contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.modal-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.2rem;
+  min-height: 2.6rem;
+  background: var(--color-surface);
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--color-line);
+  transition: background 0.15s ease, border-color 0.15s ease;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.modal-contact-btn:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-cream-muted);
+}
+
+.modal-contact-line {
+  background: #06c755;
+  border-color: #06c755;
+  color: #fff;
+}
+
+.modal-contact-line:hover {
+  background: #05b34c;
+  border-color: #05b34c;
+}
+
 .metric-value {
   font-family: var(--font-display);
   font-size: 1.5rem;
@@ -236,5 +294,23 @@
 
   .btn-book {
     width: 100%;
+  }
+
+  .modal-contact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .modal-contact-btn {
+    font-size: 0.68rem;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-value {
+    font-size: 1.1rem;
   }
 }

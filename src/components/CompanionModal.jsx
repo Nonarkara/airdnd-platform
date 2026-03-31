@@ -10,12 +10,11 @@ function CompanionModal({ companion, onClose, t }) {
     return null;
   }
 
-  const ratingLine = companion.rating
-    ? `${companion.rating.toFixed(1)}★`
-    : t.card.unrated;
   const preciseTimestamp = formatPreciseTimestamp(companion.postedAt)
     || formatPreciseTimestamp(companion.updatedAt)
     || t.modal.timestampPending;
+  const sourceLabel = companion.sourceChannel || SOURCE_LABELS[companion.dataSource];
+  const hasContact = companion.phone || companion.lineUrl || companion.telegramUrl || companion.mapsUrl;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -49,9 +48,7 @@ function CompanionModal({ companion, onClose, t }) {
 
           <div className="modal-info-section">
             <div className="modal-topline">
-              <span className="status-pill">
-                {companion.sourceChannel || SOURCE_LABELS[companion.dataSource]}
-              </span>
+              <span className="status-pill">{sourceLabel}</span>
               <span>
                 {companion.postedAt
                   ? `Posted ${formatRelativeTimestamp(companion.postedAt)}`
@@ -59,31 +56,77 @@ function CompanionModal({ companion, onClose, t }) {
               </span>
             </div>
 
-            <h2 className="modal-name">
-              {companion.name}
-              {companion.age ? <span className="modal-age">({companion.age})</span> : null}
-            </h2>
+            <h2 className="modal-name">{companion.name}</h2>
 
             <div className="modal-location">
               <span>{companion.location}</span>
-              <span>{ratingLine}</span>
-              {companion.reviews ? <span>{companion.reviews} {t.modal.reviews}</span> : null}
             </div>
 
+            {/* Metrics grid: Contact / Hours / Price */}
             <div className="metrics-grid">
-              <div className="metric-box">
-                <span className="metric-value">{companion.metrics.height || '-'}</span>
-                <span className="metric-label">{t.modal.height}</span>
-              </div>
-              <div className="metric-box">
-                <span className="metric-value">{companion.metrics.weight || '-'}</span>
-                <span className="metric-label">{t.modal.weight}</span>
-              </div>
+              {companion.phone ? (
+                <a href={`tel:${companion.phone.replace(/[^\d+]/g, '')}`} className="metric-box metric-link">
+                  <span className="metric-value">{companion.phone}</span>
+                  <span className="metric-label">Tel</span>
+                </a>
+              ) : companion.lineUrl ? (
+                <a href={companion.lineUrl} target="_blank" rel="noopener noreferrer" className="metric-box metric-link">
+                  <span className="metric-value">LINE</span>
+                  <span className="metric-label">Contact</span>
+                </a>
+              ) : (
+                <div className="metric-box">
+                  <span className="metric-value">-</span>
+                  <span className="metric-label">Contact</span>
+                </div>
+              )}
+              {companion.hours ? (
+                <div className="metric-box">
+                  <span className="metric-value">{companion.hours}</span>
+                  <span className="metric-label">Hours</span>
+                </div>
+              ) : companion.mapsUrl ? (
+                <a href={companion.mapsUrl} target="_blank" rel="noopener noreferrer" className="metric-box metric-link">
+                  <span className="metric-value">Map</span>
+                  <span className="metric-label">Location</span>
+                </a>
+              ) : (
+                <div className="metric-box">
+                  <span className="metric-value">-</span>
+                  <span className="metric-label">Hours</span>
+                </div>
+              )}
               <div className="metric-box">
                 <span className="metric-value">{companion.priceLabel}</span>
                 <span className="metric-label">{t.modal.rate}</span>
               </div>
             </div>
+
+            {/* Contact buttons row */}
+            {hasContact && (
+              <div className="modal-contact-row">
+                {companion.phone && (
+                  <a href={`tel:${companion.phone.replace(/[^\d+]/g, '')}`} className="modal-contact-btn">
+                    Call {companion.phone}
+                  </a>
+                )}
+                {companion.lineUrl && (
+                  <a href={companion.lineUrl} target="_blank" rel="noopener noreferrer" className="modal-contact-btn modal-contact-line">
+                    LINE
+                  </a>
+                )}
+                {companion.telegramUrl && (
+                  <a href={companion.telegramUrl} target="_blank" rel="noopener noreferrer" className="modal-contact-btn">
+                    Telegram
+                  </a>
+                )}
+                {companion.mapsUrl && (
+                  <a href={companion.mapsUrl} target="_blank" rel="noopener noreferrer" className="modal-contact-btn">
+                    Google Maps
+                  </a>
+                )}
+              </div>
+            )}
 
             <div className="modal-description">
               <h3>{t.modal.about}</h3>
@@ -101,9 +144,7 @@ function CompanionModal({ companion, onClose, t }) {
             <div className="modal-footer">
               <div className="modal-price-range">
                 <span className="price-label">{t.modal.source}</span>
-                <span className="price-value">
-                  {companion.sourceChannel || SOURCE_LABELS[companion.dataSource]}
-                </span>
+                <span className="price-value">{sourceLabel}</span>
               </div>
               <button type="button" className="btn-book" onClick={onClose}>
                 {t.modal.closeCta}

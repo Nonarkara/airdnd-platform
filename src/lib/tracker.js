@@ -2,8 +2,10 @@ import { supabase } from './supabase.js'
 
 const SESSION_KEY = 'sabai_session_id'
 const GEO_KEY = 'sabai_geo'
+const TRACKING_KEY = 'sabai_tracking_disabled'
 let sessionId = null
 let geo = null
+let trackingDisabled = sessionStorage.getItem(TRACKING_KEY) === '1'
 
 function getSessionId() {
   if (sessionId) return sessionId
@@ -40,6 +42,15 @@ async function fetchGeo() {
   }
 }
 
+function disableTracking() {
+  trackingDisabled = true
+  sessionStorage.setItem(TRACKING_KEY, '1')
+}
+
+function isTrackingError(error) {
+  return error && (error.code === 'PGRST205' || error.code === '42P01')
+}
+
 function basePayload() {
   return {
     session_id: getSessionId(),
@@ -56,14 +67,18 @@ function basePayload() {
 }
 
 export function trackPageView(page) {
+  if (trackingDisabled) return
   supabase
     .from('page_views')
     .insert({ ...basePayload(), page, event_type: 'pageview' })
-    .then(() => {})
+    .then(({ error }) => {
+      if (isTrackingError(error)) disableTracking()
+    })
     .catch(() => {})
 }
 
 export function trackListingClick(listingId) {
+  if (trackingDisabled) return
   supabase
     .from('page_views')
     .insert({
@@ -72,11 +87,14 @@ export function trackListingClick(listingId) {
       listing_id: listingId,
       event_type: 'listing_click',
     })
-    .then(() => {})
+    .then(({ error }) => {
+      if (isTrackingError(error)) disableTracking()
+    })
     .catch(() => {})
 }
 
 function endSession() {
+  if (trackingDisabled) return
   const url = `https://fehdtfncbutesgadjsxp.supabase.co/rest/v1/page_views`
   const body = JSON.stringify({
     ...basePayload(),
@@ -98,9 +116,26 @@ function endSession() {
   } catch {}
 }
 
+async function probeTable() {
+  if (trackingDisabled) return
+  try {
+    const { error } = await supabase
+      .from('page_views')
+      .select('id')
+      .limit(0)
+    if (isTrackingError(error)) {
+      disableTracking()
+    }
+  } catch {
+    disableTracking()
+  }
+}
+
 export async function initSession() {
   getSessionId()
-  await fetchGeo()
+  await Promise.all([fetchGeo(), probeTable()])
+  if (trackingDisabled) return
+
   trackPageView(window.location.hash || '/')
 
   window.addEventListener('hashchange', () => {

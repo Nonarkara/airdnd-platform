@@ -74,8 +74,9 @@ export async function uploadImageToDrive(localPath, filename) {
 }
 
 /**
- * Upload all photos for a set of listings to Google Drive.
- * Mutates listings in place, adding `driveImageUrl`.
+ * Upload ALL photos for a set of listings to Google Drive.
+ * Supports multiple photos per listing via allPhotoUrls array.
+ * Mutates listings in place, adding `driveImageUrl` (first) and `drivePhotoUrls` (all).
  */
 export async function uploadListingPhotosToDrive(listings) {
   const auth = getAuth();
@@ -87,22 +88,41 @@ export async function uploadListingPhotosToDrive(listings) {
   const photosDir = path.join(__dirname, '../public');
 
   for (const listing of listings) {
-    if (!listing.imageUrl || listing.imageUrl.startsWith('/mockups/')) {
-      continue; // Skip mockup images — only upload real scraped photos
+    // Collect all photo URLs: allPhotoUrls (BI array) + imageUrl (single legacy)
+    const photoUrls = [];
+    if (Array.isArray(listing.allPhotoUrls)) {
+      photoUrls.push(...listing.allPhotoUrls);
+    }
+    if (listing.imageUrl && !photoUrls.includes(listing.imageUrl)) {
+      photoUrls.push(listing.imageUrl);
     }
 
-    const localPath = path.join(photosDir, listing.imageUrl);
-    if (!fs.existsSync(localPath)) continue;
+    // Filter to real scraped photos only (skip mockups)
+    const realPhotos = photoUrls.filter((url) => url && !url.startsWith('/mockups/'));
+    if (realPhotos.length === 0) continue;
 
-    const filename = `${listing.name.replace(/[^a-zA-Z0-9ก-๙]/g, '_')}_${Date.now()}.jpg`;
-    const driveUrl = await uploadImageToDrive(localPath, filename);
-    if (driveUrl) {
-      listing.driveImageUrl = driveUrl;
+    const driveUrls = [];
+    const safeName = (listing.name || 'listing').replace(/[^a-zA-Z0-9ก-๙]/g, '_');
+
+    for (let i = 0; i < realPhotos.length; i++) {
+      const localPath = path.join(photosDir, realPhotos[i]);
+      if (!fs.existsSync(localPath)) continue;
+
+      const filename = `${safeName}_${i + 1}_${Date.now()}.jpg`;
+      const driveUrl = await uploadImageToDrive(localPath, filename);
+      if (driveUrl) {
+        driveUrls.push(driveUrl);
+      }
+    }
+
+    if (driveUrls.length > 0) {
+      listing.driveImageUrl = driveUrls[0]; // backward compatible
+      listing.drivePhotoUrls = driveUrls;   // all Drive URLs
     }
   }
 }
 
-// Column headers for the Google Sheet
+// Expanded column headers for the Google Sheet (22 columns)
 const SHEET_HEADERS = [
   'Name',
   'Location',
@@ -117,35 +137,87 @@ const SHEET_HEADERS = [
   'Google Maps Link',
   'Image URL (local)',
   'Image URL (Drive)',
+  'All Photo URLs',
+  'All Drive URLs',
+  'Source Channel',
+  'Message IDs',
+  'User Rating',
+  'Service Tags',
+  'User Feedback',
+  'Raw Text',
   'Scraped At',
 ];
 
-/**
- * Ensure the sheet has headers in the first row.
- */
-async function ensureSheetHeaders(sheets) {
-  const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: SHEET_ID,
-    range: 'Sheet1!A1:N1',
-  });
+const HEADER_RANGE_END = 'V'; // Column V = 22nd column
 
-  const existingHeaders = res.data.values?.[0];
-  if (!existingHeaders || existingHeaders.length === 0) {
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: SHEET_ID,
-      range: 'Sheet1!A1:N1',
-      valueInputOption: 'RAW',
-      requestBody: {
-        values: [SHEET_HEADERS],
-      },
-    });
-    console.log('  Initialized Google Sheet headers.');
+/**
+ * Get the current month's tab name (e.g., "2026-03")
+ */
+function getMonthlyTabName() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  return `${year}-${month}`;
+}
+
+/**
+ * Ensure the monthly tab exists with headers.
+ * Falls back to Sheet1 if tab creation fails.
+ */
+async function ensureMonthlyTab(sheets) {
+  const tabName = getMonthlyTabName();
+
+  try {
+    // Check if the tab already exists
+    const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId: SHEET_ID });
+    const existingTabs = spreadsheet.data.sheets.map((s) => s.properties.title);
+
+    if (!existingTabs.includes(tabName)) {
+      // Create the new monthly tab
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: SHEET_ID,
+        requestBody: {
+          requests: [{
+            addSheet: { properties: { title: tabName } },
+          }],
+        },
+      });
+
+      // Write headers to the new tab
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SHEET_ID,
+        range: `'${tabName}'!A1:${HEADER_RANGE_END}1`,
+        valueInputOption: 'RAW',
+        requestBody: { values: [SHEET_HEADERS] },
+      });
+
+      console.log(`  Created new monthly tab: ${tabName}`);
+    }
+
+    return tabName;
+  } catch (err) {
+    console.warn(`  Could not create monthly tab ${tabName}: ${err.message}. Using Sheet1.`);
+    // Ensure Sheet1 has headers as fallback
+    try {
+      const res = await sheets.spreadsheets.values.get({
+        spreadsheetId: SHEET_ID,
+        range: `Sheet1!A1:${HEADER_RANGE_END}1`,
+      });
+      if (!res.data.values?.[0]?.length) {
+        await sheets.spreadsheets.values.update({
+          spreadsheetId: SHEET_ID,
+          range: `Sheet1!A1:${HEADER_RANGE_END}1`,
+          valueInputOption: 'RAW',
+          requestBody: { values: [SHEET_HEADERS] },
+        });
+      }
+    } catch { /* ignore */ }
+    return 'Sheet1';
   }
 }
 
 /**
  * Get contact/link info from a listing.
- * Prefers fields extracted by Gemini, falls back to regex on description text.
  */
 function extractLinks(listing) {
   const text = `${listing.description || ''} ${(listing.tags || []).join(' ')}`;
@@ -163,7 +235,7 @@ function extractLinks(listing) {
 }
 
 /**
- * Append listing data as rows to the Google Sheet.
+ * Append listing data as rows to the Google Sheet (22 columns with BI data).
  */
 export async function appendListingsToSheet(listings) {
   const auth = getAuth();
@@ -175,7 +247,7 @@ export async function appendListingsToSheet(listings) {
   const sheets = google.sheets({ version: 'v4', auth });
 
   try {
-    await ensureSheetHeaders(sheets);
+    const tabName = await ensureMonthlyTab(sheets);
 
     const rows = listings.map((listing) => {
       const links = extractLinks(listing);
@@ -193,21 +265,28 @@ export async function appendListingsToSheet(listings) {
         links.maps,
         listing.imageUrl || '',
         listing.driveImageUrl || '',
+        // BI columns
+        (listing.allPhotoUrls || []).join(' | '),
+        (listing.drivePhotoUrls || []).join(' | '),
+        listing.sourceChannel || '',
+        (listing.sourceMessageIds || []).join(', '),
+        listing.userRating || listing.user_rating || '',
+        (listing.serviceTags || listing.service_quality || []).join(', '),
+        listing.userFeedbackSummary || listing.user_feedback_summary || '',
+        (listing.rawText || '').slice(0, 500), // Truncate to avoid cell size limits
         listing.updatedAt || new Date().toISOString(),
       ];
     });
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: 'Sheet1!A:N',
+      range: `'${tabName}'!A:${HEADER_RANGE_END}`,
       valueInputOption: 'RAW',
       insertDataOption: 'INSERT_ROWS',
-      requestBody: {
-        values: rows,
-      },
+      requestBody: { values: rows },
     });
 
-    console.log(`  Appended ${rows.length} row(s) to Google Sheet.`);
+    console.log(`  Appended ${rows.length} row(s) to Google Sheet tab "${tabName}".`);
   } catch (err) {
     console.warn('  Failed to write to Google Sheet:', err.message);
   }

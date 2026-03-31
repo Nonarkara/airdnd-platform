@@ -6,6 +6,36 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const snapshotPath = path.join(__dirname, '../public/data.json');
 
+/**
+ * Resolve lat/lng from a Google Maps short URL by following the redirect.
+ * Returns [lat, lng] or null.
+ */
+async function resolveGoogleMapsCoordinates(mapsUrl) {
+  if (!mapsUrl) return null;
+  try {
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), 5000);
+    const response = await fetch(mapsUrl, {
+      redirect: 'follow',
+      signal: controller.signal,
+      headers: { 'User-Agent': 'Mozilla/5.0' },
+    });
+    const finalUrl = response.url || '';
+    // Extract coordinates from patterns like @13.7563,100.5018 or !3d13.7563!4d100.5018
+    const atMatch = finalUrl.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (atMatch) {
+      return [parseFloat(atMatch[1]), parseFloat(atMatch[2])];
+    }
+    const dMatch = finalUrl.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
+    if (dMatch) {
+      return [parseFloat(dMatch[1]), parseFloat(dMatch[2])];
+    }
+  } catch {
+    // Timeout or network error — non-critical
+  }
+  return null;
+}
+
 function createCaptureTimestamp(date = new Date()) {
   return date.toISOString().replace(/\.\d{3}Z$/, 'Z');
 }
@@ -306,6 +336,14 @@ export function normalizeExtractedListings(rawListings, options = {}) {
       const rating = normalizeNumber(listing?.rating);
       const reviews = normalizeInteger(listing?.reviews);
 
+      // BI enrichment fields
+      const userRating = normalizeNumber(listing?.user_rating || listing?.userRating);
+      const serviceTags = Array.isArray(listing?.service_quality || listing?.serviceTags)
+        ? (listing.service_quality || listing.serviceTags).map((t) => String(t).trim()).filter(Boolean)
+        : [];
+      const userFeedbackSummary = normalizeText(listing?.user_feedback_summary || listing?.userFeedbackSummary, null);
+      const allPhotoUrls = Array.isArray(listing?.allPhotoUrls) ? listing.allPhotoUrls.filter(Boolean) : [];
+
       return {
         id: listing?.id ?? `${source}-${Date.now()}-${index + 1}`,
         name,
@@ -336,6 +374,13 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         mapsUrl: normalizeText(listing?.mapsUrl, null),
         dataSource: source,
         isFallback: source !== 'supabase',
+        // BI enrichment fields
+        rawText: normalizeText(listing?.rawText, null),
+        sourceMessageIds: Array.isArray(listing?.sourceMessageIds) ? listing.sourceMessageIds : [],
+        allPhotoUrls,
+        userRating: userRating && userRating > 0 && userRating <= 5 ? userRating : null,
+        serviceTags,
+        userFeedbackSummary,
       };
     })
     .filter(Boolean);
@@ -453,34 +498,191 @@ export function writeSnapshotListings(listings) {
     return false;
   }
 
-  fs.writeFileSync(snapshotPath, JSON.stringify(normalizedListings, null, 2));
-  console.log(`Saved ${normalizedListings.length} listing(s) to public/data.json`);
+  // Strip bulky BI fields from snapshot to keep frontend payload slim
+  const slimListings = normalizedListings.map(({ rawText, sourceMessageIds, allPhotoUrls, userFeedbackSummary, userRating, serviceTags, ...rest }) => rest);
+
+  fs.writeFileSync(snapshotPath, JSON.stringify(slimListings, null, 2));
+  console.log(`Saved ${slimListings.length} listing(s) to public/data.json`);
   return true;
+}
+
+export function classifyMessageType(text) {
+  if (!text || text.length < 5) return 'unknown';
+  if (/(?:คลิป|clip|vdo|video|โป้|โป๊|18\+|xxx|porn|nude|onlyfans|เสียว|หลุด|กลุ่มลับ|vip\s*group)/i.test(text)) return 'spam';
+  if (/(?:ประกาศ|announcement|admin|rule|กฎ|กติกา|ข้อตกลง)/i.test(text)) return 'admin';
+  if (/(?:รีวิว|review|ประสบการณ์|experience|ไปมา|เคยไป|recommend|แนะนำ|ดีมาก|แย่|สะอาด|clean|คุ้ม|worth|ประทับใจ|ไม่ประทับ)/i.test(text)) return 'feedback';
+  if (/(?:ใครเคย|สอบถาม|เป็นยังไง|ที่ไหน|ราคาเท่าไหร่|มีใครรู้|แนะนำหน่อย|\?$)/i.test(text)) return 'discussion';
+  if (/(?:ร้าน|shop|spa|สปา|นวด|massage|clinic|คลินิก|health|สุขภาพ|therap|ราคา|price|baht|บาท|฿|โทร|tel|phone|line\s*(?:id)?|จอง|booking)/i.test(text)) return 'listing';
+  return 'unknown';
+}
+
+export async function archiveChannelMessages(supabase, messages, channelId, channelName, companionIdMap = new Map()) {
+  if (!supabase || !Array.isArray(messages) || messages.length === 0) return 0;
+
+  let archived = 0;
+  const batch = [];
+
+  for (const msg of messages) {
+    const msgId = Number(msg.id);
+    if (!msgId) continue;
+
+    const text = msg.message || '';
+    const messageType = classifyMessageType(text);
+
+    batch.push({
+      telegram_message_id: msgId,
+      channel_id: String(channelId),
+      channel_name: channelName || null,
+      sender_id: msg.fromId ? String(msg.fromId.userId || msg.fromId.channelId || msg.fromId) : null,
+      message_text: text || null,
+      message_date: msg.date ? new Date(msg.date * 1000).toISOString() : null,
+      has_media: Boolean(msg.media),
+      media_type: msg.media?.photo ? 'photo' : msg.media?.document ? 'document' : msg.media?.video ? 'video' : null,
+      reply_to_message_id: msg.replyTo?.replyToMsgId || null,
+      grouped_id: msg.groupedId ? String(msg.groupedId) : null,
+      message_type: messageType,
+      linked_companion_id: companionIdMap.get(msgId) || null,
+    });
+  }
+
+  // Upsert in batches of 50
+  for (let i = 0; i < batch.length; i += 50) {
+    const chunk = batch.slice(i, i + 50);
+    try {
+      const { error } = await supabase
+        .from('channel_messages')
+        .upsert(chunk, { onConflict: 'channel_id,telegram_message_id', ignoreDuplicates: true });
+
+      if (error && !error.message?.includes('column') && !error.message?.includes('channel_messages')) {
+        console.warn(`Archive batch error: ${error.message}`);
+      } else {
+        archived += chunk.length;
+      }
+    } catch (err) {
+      // Table might not exist yet — skip gracefully
+      if (!err.message?.includes('channel_messages')) {
+        console.warn(`Archive error: ${err.message}`);
+      }
+      break;
+    }
+  }
+
+  return archived;
+}
+
+/**
+ * Quality gate: reject listings that are too low quality to store.
+ * Returns null if the listing passes, or a rejection reason string.
+ */
+function validateListingQuality(listing) {
+  const name = normalizeText(listing?.name).toLowerCase();
+  const desc = normalizeText(listing?.description).toLowerCase();
+  const combined = `${name} ${desc}`;
+
+  // Reject spam/noise that slipped through
+  if (/group\s*joining|children'?s\s*only|new\s*group|เข้ากลุ่ม|กลุ่มลับ|vip\s*group/i.test(combined)) {
+    return 'spam content';
+  }
+  if (/xxx|porn|18\+|โป้|โป๊|หลุด|เสียว|nude|onlyfans/i.test(combined)) {
+    return 'adult spam';
+  }
+
+  // Reject generic/placeholder names
+  if (/^listing\s*\d|^massage listing\s|^unknown$/i.test(name)) {
+    return 'generic name';
+  }
+
+  // Reject names that are only digits or phone-number-like
+  if (/^\d+$/.test(name) || /^\d[\d -]{7,}$/.test(name)) {
+    return 'numeric-only name';
+  }
+
+  // Reject extremely short names (likely noise)
+  if (name.length < 2) {
+    return 'name too short';
+  }
+
+  // Reject if description is too short to be useful
+  if (desc && desc.length > 0 && desc.length < 8 && desc !== 'details for this listing are still being collected.') {
+    return 'description too short';
+  }
+
+  return null;
+}
+
+/**
+ * Fuzzy name matching: check if a listing name is substantially similar to an existing one.
+ * Catches cases like "ร้านกุหลาบ นวดเพื่อสุขภาพ" vs "กุหลาบ นวดเพื่อสุขภาพ"
+ */
+function normalizeNameForDedup(name) {
+  return normalizeText(name)
+    .toLowerCase()
+    .replace(/^(ร้าน|🙏\s*#?|#)/g, '')  // strip common Thai prefixes
+    .replace(/[^\p{L}\p{N}]/gu, '')       // strip all non-alphanumeric
+    .trim();
 }
 
 export async function insertListingsIfPossible(supabase, listings) {
   if (!supabase || !Array.isArray(listings) || listings.length === 0) {
-    return { inserted: 0, skipped: listings?.length || 0 };
+    return { inserted: 0, skipped: listings?.length || 0, rejected: 0, newListings: [] };
   }
 
   let inserted = 0;
   let skipped = 0;
+  let rejected = 0;
+  const newListings = [];
 
   for (const listing of listings) {
+    // Quality gate
+    const rejectReason = validateListingQuality(listing);
+    if (rejectReason) {
+      rejected += 1;
+      console.log(`  Rejected "${listing.name}": ${rejectReason}`);
+      continue;
+    }
+
     try {
+      // Check for exact name+location match
       const { data: existingRows, error: lookupError } = await supabase
         .from('companions')
-        .select('id,image_url,metrics,phone,hours,line_url,telegram_url,maps_url,source_channel,city,mention_count')
+        .select('id,image_url,metrics,phone,hours,line_url,telegram_url,maps_url,source_channel,city,mention_count,photo_urls,source_message_ids,user_rating,service_tags,discussion_notes,raw_text')
         .eq('name', listing.name)
         .eq('location', listing.location)
         .limit(1);
+
+      // Also check fuzzy name match (catches prefix/suffix variations)
+      let fuzzyMatch = null;
+      if ((!existingRows || existingRows.length === 0) && !lookupError) {
+        const normalizedName = normalizeNameForDedup(listing.name);
+        if (normalizedName.length >= 4) {
+          const { data: allRows } = await supabase
+            .from('companions')
+            .select('id,name,location,image_url,metrics,phone,hours,line_url,telegram_url,maps_url,source_channel,city,mention_count,photo_urls,source_message_ids,user_rating,service_tags,discussion_notes,raw_text')
+            .eq('location', listing.location)
+            .limit(100);
+
+          if (allRows) {
+            fuzzyMatch = allRows.find((r) => {
+              const existingNorm = normalizeNameForDedup(r.name);
+              // Exact normalized match (catches prefix stripping like ร้าน)
+              if (existingNorm === normalizedName) return true;
+              // Substring match only for long names (10+ chars) to avoid false positives
+              if (existingNorm.length >= 10 && normalizedName.length >= 10 &&
+                  (existingNorm.includes(normalizedName) || normalizedName.includes(existingNorm))) return true;
+              return false;
+            });
+          }
+        }
+      }
+
+      const matchedRow = (existingRows && existingRows.length > 0) ? existingRows[0] : fuzzyMatch;
 
       if (lookupError) {
         throw lookupError;
       }
 
-      if (existingRows && existingRows.length > 0) {
-        const existingRow = existingRows[0];
+      if (matchedRow) {
+        const existingRow = matchedRow;
         const nextMetrics = createDatabaseMetrics(listing, existingRow.metrics);
         const nextMetricsJson = JSON.stringify(nextMetrics);
         const existingMetricsJson = JSON.stringify(existingRow.metrics || {});
@@ -505,6 +707,37 @@ export async function insertListingsIfPossible(supabase, listings) {
         if (listing.city && !existingRow.city) updatePayload.city = listing.city;
         updatePayload.updated_at = new Date().toISOString();
         updatePayload.mention_count = (existingRow.mention_count || 1) + 1;
+
+        // BI enrichment: merge photo arrays, append feedback, preserve ratings
+        if (listing.allPhotoUrls?.length) {
+          const existingPhotos = Array.isArray(existingRow.photo_urls) ? existingRow.photo_urls : [];
+          const merged = [...new Set([...existingPhotos, ...listing.allPhotoUrls])];
+          if (merged.length > existingPhotos.length) updatePayload.photo_urls = merged;
+        }
+        if (listing.sourceMessageIds?.length) {
+          const existingIds = Array.isArray(existingRow.source_message_ids) ? existingRow.source_message_ids : [];
+          const merged = [...new Set([...existingIds, ...listing.sourceMessageIds])];
+          if (merged.length > existingIds.length) updatePayload.source_message_ids = merged;
+        }
+        if (listing.userRating && !existingRow.user_rating) {
+          updatePayload.user_rating = listing.userRating;
+        }
+        if (listing.serviceTags?.length) {
+          const existingTags = Array.isArray(existingRow.service_tags) ? existingRow.service_tags : [];
+          const merged = [...new Set([...existingTags, ...listing.serviceTags])];
+          if (merged.length > existingTags.length) updatePayload.service_tags = merged;
+        }
+        if (listing.userFeedbackSummary) {
+          const existing = existingRow.discussion_notes || '';
+          if (!existing.includes(listing.userFeedbackSummary)) {
+            updatePayload.discussion_notes = existing
+              ? `${existing}\n---\n${listing.userFeedbackSummary}`
+              : listing.userFeedbackSummary;
+          }
+        }
+        if (listing.rawText && !existingRow.raw_text) {
+          updatePayload.raw_text = listing.rawText;
+        }
 
         if (Object.keys(updatePayload).length > 0) {
           const { error: updateError } = await supabase
@@ -545,6 +778,23 @@ export async function insertListingsIfPossible(supabase, listings) {
       if (listing.city) row.city = listing.city;
       row.updated_at = new Date().toISOString();
 
+      // BI enrichment columns
+      if (listing.rawText) row.raw_text = listing.rawText;
+      if (listing.sourceMessageIds?.length) row.source_message_ids = listing.sourceMessageIds;
+      if (listing.allPhotoUrls?.length) row.photo_urls = listing.allPhotoUrls;
+      if (listing.userRating) row.user_rating = listing.userRating;
+      if (listing.serviceTags?.length) row.service_tags = listing.serviceTags;
+      if (listing.userFeedbackSummary) row.discussion_notes = listing.userFeedbackSummary;
+
+      // Geocoding: resolve coordinates from Google Maps URL
+      if (listing.mapsUrl && !row.latitude) {
+        const coords = await resolveGoogleMapsCoordinates(listing.mapsUrl);
+        if (coords) {
+          row.latitude = coords[0];
+          row.longitude = coords[1];
+        }
+      }
+
       let { error } = await supabase.from('companions').insert([row]);
 
       // If new columns don't exist yet, retry with only base columns
@@ -562,11 +812,12 @@ export async function insertListingsIfPossible(supabase, listings) {
       }
 
       inserted += 1;
+      newListings.push(listing);
     } catch (error) {
       skipped += 1;
       console.error(`Failed to insert ${listing.name}:`, error.message);
     }
   }
 
-  return { inserted, skipped };
+  return { inserted, skipped, rejected, newListings };
 }

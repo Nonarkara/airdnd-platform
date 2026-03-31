@@ -1,10 +1,9 @@
 import { TelegramClient } from 'telegram';
 import { StringSession } from 'telegram/sessions/index.js';
 import input from 'input';
-import { GoogleGenAI } from '@google/genai';
-import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -13,90 +12,82 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const apiId = parseInt(process.env.TELEGRAM_API_ID);
 const apiHash = process.env.TELEGRAM_API_HASH;
-const stringSession = new StringSession(process.env.TELEGRAM_SESSION || ''); // fill this later
-
-const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
-const ai = new GoogleGenAI({ apiKey: geminiApiKey });
-
-const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
-const supabaseKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || 'placeholder';
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 if (!apiId || !apiHash) {
-    console.error('⚠️ Missing TELEGRAM_API_ID or TELEGRAM_API_HASH in .env.');
-    process.exit(1);
+  console.error('Missing TELEGRAM_API_ID or TELEGRAM_API_HASH in .env.');
+  process.exit(1);
+}
+
+async function startClient(sessionString) {
+  const stringSession = new StringSession(sessionString);
+  const client = new TelegramClient(stringSession, apiId, apiHash, {
+    connectionRetries: 5,
+  });
+
+  await client.start({
+    phoneNumber: async () => await input.text('Phone number (international format e.g. +66812345678): '),
+    password: async () => await input.text('Password (if 2FA enabled): '),
+    phoneCode: async () => await input.text('Code received on Telegram: '),
+    onError: (err) => {
+      if (err.errorMessage === 'AUTH_KEY_DUPLICATED') {
+        throw err;
+      }
+      console.error(err);
+    },
+  });
+
+  return client;
 }
 
 (async () => {
-    console.log('Loading interactive GramJS session...');
-    const client = new TelegramClient(stringSession, apiId, apiHash, {
-        connectionRetries: 5,
-    });
+  console.log('Loading interactive GramJS session...');
 
-    await client.start({
-        phoneNumber: async () => await input.text('Phone number (international format e.g. +1234567890): '),
-        password: async () => await input.text('Password (if 2FA enabled): '),
-        phoneCode: async () => await input.text('Code received on Telegram: '),
-        onError: (err) => console.log(err),
-    });
+  let client;
+  const existingSession = process.env.TELEGRAM_SESSION || '';
 
-    console.log('You are successfully logged in!');
-    console.log('Save this string session in your .env file as TELEGRAM_SESSION to avoid logging in again:');
-    console.log(client.session.save());
+  try {
+    client = await startClient(existingSession);
+  } catch (err) {
+    if (err.errorMessage === 'AUTH_KEY_DUPLICATED' || String(err).includes('AUTH_KEY_DUPLICATED')) {
+      console.log('\nSession expired (AUTH_KEY_DUPLICATED). Starting fresh login...\n');
+      client = await startClient('');
+    } else {
+      throw err;
+    }
+  }
 
-    // Add event listener for new messages
-    client.addEventHandler(async (event) => {
-        // GramJS fires events for many things (typing, read access, etc).
-        // We must ensure this event actually contains a text message.
-        if (!event.message) return;
+  const savedSession = client.session.save();
 
-        const message = event.message;
-        const text = message.message || message.text;
+  console.log('\n=== SUCCESS ===');
+  console.log('You are logged in!\n');
+  console.log('New TELEGRAM_SESSION:');
+  console.log(savedSession);
 
-        if (!text) return;
+  // Auto-update .env file
+  const envPath = path.join(__dirname, '../.env');
+  try {
+    let envContent = fs.readFileSync(envPath, 'utf-8');
+    if (envContent.includes('TELEGRAM_SESSION=')) {
+      envContent = envContent.replace(/^TELEGRAM_SESSION=.*$/m, `TELEGRAM_SESSION=${savedSession}`);
+    } else {
+      envContent += `\nTELEGRAM_SESSION=${savedSession}\n`;
+    }
+    fs.writeFileSync(envPath, envContent);
+    console.log('\n.env file updated automatically with new session.');
+  } catch (writeErr) {
+    console.error('\nCould not auto-update .env:', writeErr.message);
+    console.log('Please manually update TELEGRAM_SESSION in your .env file.');
+  }
 
-        // Ensure you only process messages from specific groups or channels
-        // For testing, we will process messages that match a certain pattern
-        if (text.includes('Price:') && text.includes('Age:')) {
-            console.log('\n[Bot] Detected potential companion profile in userbot stream!');
+  // Quick connection test
+  const me = await client.getMe();
+  console.log(`\nLogged in as: ${me.firstName || ''} ${me.lastName || ''} (${me.phone || 'no phone'})`);
 
-            try {
-                const prompt = `
-                Extract companion details from the following message.
-                Respond ONLY with a JSON array exactly matching this format:
-                [{
-                  "name": "Name", "age": 25, "location": "City", "price": "e.g. ฿1,200/hr",
-                  "metrics": { "height": "...", "weight": "..." }, "rating": 4.8, "reviews": 50,
-                  "tags": ["Tag1"], "description": "Short bio"
-                }]
-                Raw message: ${text}
-                `;
+  const dialogs = await client.getDialogs({ limit: 50 });
+  const channels = dialogs.filter(d => d.entity?.broadcast || d.entity?.megagroup);
+  console.log(`Found ${channels.length} channels/groups in your Telegram account.`);
 
-                const response = await ai.models.generateContent({
-                    model: 'gemini-2.5-flash',
-                    contents: prompt,
-                    config: { responseMimeType: 'application/json' }
-                });
-
-                let newCompanions = JSON.parse(response.text);
-                if (newCompanions.length === 0) return;
-
-                for (let companion of newCompanions) {
-                    // Mock an image URL sequentially 
-                    companion.image_url = '/mockups/file_1.jpg'; // We can enhance this later to parse GramJS media!
-
-                    const { data, error } = await supabase.from('companions').insert([companion]);
-                    if (error) {
-                        console.error('[Bot] Supabase Insert Error:', error.message);
-                    } else {
-                        console.log(`✅ Automatically scraped and inserted ${companion.name} into Database!`);
-                    }
-                }
-            } catch (err) {
-                console.error('[Bot] Error processing zero-touch message:', err.message);
-            }
-        }
-    });
-
-    console.log('Userbot is now silently listening to all your incoming Telegram messages...');
+  await client.disconnect();
+  console.log('\nDone. You can now run: npm run scrape:live');
+  process.exit(0);
 })();

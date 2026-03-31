@@ -7,6 +7,7 @@ import { GoogleGenAI } from '@google/genai';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import {
+  archiveChannelMessages,
   buildFingerprint,
   insertListingsIfPossible,
   mergeSnapshotListings,
@@ -15,8 +16,9 @@ import {
   readSnapshotListings,
   writeSnapshotListings,
 } from './listing_pipeline.js';
+import { notifyListings } from './notify.js';
 import { exportToGoogle } from './google_export.js';
-import { ensureLocalPhotosDir, uploadPhotoBuffer } from './photo_storage.js';
+import { ensureLocalPhotosDir, downloadAndStorePhoto, archivePhotoMetadata } from './photo_storage.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -100,7 +102,10 @@ Return only a JSON array with this shape:
     "hours": "10:00-23:00 or null",
     "lineUrl": "https://line.me/... or null",
     "telegramUrl": "https://t.me/... or null",
-    "mapsUrl": "https://maps.app.goo.gl/... or null"
+    "mapsUrl": "https://maps.app.goo.gl/... or null",
+    "user_rating": null,
+    "service_quality": [],
+    "user_feedback_summary": null
   }
 ]
 
@@ -111,9 +116,14 @@ Rules:
 - Use null for unknown name, location, price, phone, hours, or link values.
 - Use an empty object for missing metrics.
 - Add 1-3 short tags based on city/province, district, and service type.
-- Do not invent ratings, reviews, or fields not clearly visible in the text.
 - Keep descriptions factual and concise.
 - Return only valid JSON.
+
+User feedback & ratings extraction:
+- If users mention ratings (e.g., "10/10", "5 stars", "4.5/5", "ให้ 9 เต็ม 10"), normalize to a 1.0-5.0 scale in user_rating.
+- Extract service quality keywords into service_quality array: "clean", "friendly", "skilled", "professional", "relaxing", "value", "private", "late_night", "new_staff", "experienced".
+- If the text contains genuine user reviews or experience reports (not ads), summarize them briefly in user_feedback_summary.
+- Do NOT invent ratings or feedback. Only extract what users explicitly stated.
 
 Messages:
 ${rawText}
@@ -717,6 +727,12 @@ function mergeEnrichment(listing, enrichment) {
       ...(listing.metrics || {}),
       ...((enrichment.metrics && typeof enrichment.metrics === 'object') ? enrichment.metrics : {}),
     },
+    // BI enrichment from Gemini
+    user_rating: enrichment.user_rating || listing.user_rating || null,
+    service_quality: Array.isArray(enrichment.service_quality) && enrichment.service_quality.length > 0
+      ? enrichment.service_quality
+      : listing.service_quality || [],
+    user_feedback_summary: normalizeLine(enrichment.user_feedback_summary || listing.user_feedback_summary) || null,
   };
 }
 
@@ -829,6 +845,8 @@ function clusterMessages(messages, timeWindowSec = 300) {
       senderId,
       startDate: sorted[0]?.date || 0,
       lastDate: sorted.at(-1)?.date || sorted[0]?.date || 0,
+      messageIds: sorted.map((m) => Number(m.id)).filter(Boolean),
+      rawMessages: sorted,
     });
   }
 
@@ -853,6 +871,8 @@ function clusterMessages(messages, timeWindowSec = 300) {
         current.mediaMessages.push(msg);
       }
       current.lastDate = msgDate;
+      if (msg.id) current.messageIds.push(Number(msg.id));
+      current.rawMessages.push(msg);
     } else {
       // Start a new cluster
       if (current && (current.texts.length > 0 || current.mediaMessages.length > 0)) {
@@ -864,6 +884,8 @@ function clusterMessages(messages, timeWindowSec = 300) {
         senderId,
         startDate: msgDate,
         lastDate: msgDate,
+        messageIds: [Number(msg.id)].filter(Boolean),
+        rawMessages: [msg],
       };
     }
   }
@@ -896,6 +918,8 @@ function mergeAdjacentClusters(clusters, mergeWindowSec = 600) {
       lastCluster.mediaMessages.push(...cluster.mediaMessages);
       lastCluster.startDate = Math.min(lastCluster.startDate || 0, cluster.startDate || 0);
       lastCluster.lastDate = Math.max(lastCluster.lastDate || 0, cluster.lastDate || cluster.startDate || 0);
+      if (cluster.messageIds) lastCluster.messageIds.push(...cluster.messageIds);
+      if (cluster.rawMessages) lastCluster.rawMessages.push(...cluster.rawMessages);
       continue;
     }
 
@@ -903,6 +927,8 @@ function mergeAdjacentClusters(clusters, mergeWindowSec = 600) {
       ...cluster,
       texts: [...cluster.texts],
       mediaMessages: [...cluster.mediaMessages],
+      messageIds: [...(cluster.messageIds || [])],
+      rawMessages: [...(cluster.rawMessages || [])],
     });
   }
 
@@ -921,28 +947,27 @@ function getSenderId(msg) {
 
 const photosDir = ensureLocalPhotosDir();
 
-async function downloadClusterPhotos(client, cluster, maxPhotos = 4) {
+async function downloadClusterPhotos(client, cluster, channelName, maxPhotos = 4) {
   const downloaded = [];
-  const toDownload = cluster.mediaMessages.slice(0, maxPhotos);
+  // Download ALL media (photos + image documents), not just first maxPhotos
+  const allMedia = [
+    ...cluster.mediaMessages.filter((m) => m.media?.photo),
+    ...cluster.mediaMessages.filter((m) => m.media?.document?.mimeType?.startsWith('image/')),
+  ];
+  const toDownload = allMedia.slice(0, Math.max(maxPhotos, allMedia.length));
 
   for (const msg of toDownload) {
-    try {
-      const buffer = await client.downloadMedia(msg, {});
-      if (!buffer || buffer.length === 0) continue;
+    const photoInfo = await downloadAndStorePhoto(client, msg, channelName);
+    if (!photoInfo) continue;
 
-      const filename = `tg_${msg.id}_${Date.now()}.jpg`;
-      const storageUrl = await uploadPhotoBuffer(buffer, filename);
-      if (storageUrl) {
-        downloaded.push(storageUrl);
-        continue;
-      }
+    // Archive metadata to photo_archive table
+    const channelId = cluster.rawMessages?.[0]?.peerId
+      ? String(cluster.rawMessages[0].peerId.channelId || cluster.rawMessages[0].peerId)
+      : channelName;
+    await archivePhotoMetadata(photoInfo, msg, channelId, channelName);
 
-      const filepath = path.join(photosDir, filename);
-      fs.writeFileSync(filepath, buffer);
-      downloaded.push(`/photos/${filename}`);
-    } catch (err) {
-      console.warn(`Failed to download photo from message ${msg.id}:`, err.message);
-    }
+    // Use Supabase URL if available, otherwise local
+    downloaded.push(photoInfo.supabaseUrl || photoInfo.localUrl);
   }
 
   return downloaded;
@@ -1057,7 +1082,7 @@ async function extractListingsFromTarget(client, target, state = {}) {
       continue;
     }
 
-    const photos = await downloadClusterPhotos(client, cluster);
+    const photos = await downloadClusterPhotos(client, cluster, target.displayLabel);
     if (photos.length > 0) {
       clusterPhotos.set(clusterId, photos);
       console.log(`  ${target.displayLabel} cluster ${clusterId}: downloaded ${photos.length} photo(s)`);
@@ -1088,6 +1113,10 @@ async function extractListingsFromTarget(client, target, state = {}) {
       cluster_id: clusterId,
       sourceChannel: target.displayLabel,
       sourceTarget: target.token,
+      // BI enrichment: pass raw text, all photos, message IDs
+      rawText: cluster.texts.join('\n'),
+      sourceMessageIds: cluster.messageIds || [],
+      allPhotoUrls: photos,
     };
 
     if (photos.length > 0) {
@@ -1132,6 +1161,19 @@ async function extractListingsFromTarget(client, target, state = {}) {
   console.log(
     `${target.displayLabel}: photo matching summary. Cluster-matched: ${matchedPhotoCount}, mockup fallback: ${fallbackPhotoCount}.`,
   );
+
+  // Archive ALL raw messages to channel_messages table for BI
+  if (supabase) {
+    const allRawMessages = clusters.flatMap((c) => c.rawMessages || []);
+    if (allRawMessages.length > 0) {
+      const channelId = target.token;
+      const channelName = target.displayLabel;
+      const archived = await archiveChannelMessages(supabase, allRawMessages, channelId, channelName);
+      if (archived > 0) {
+        console.log(`${target.displayLabel}: archived ${archived} raw message(s) to channel_messages.`);
+      }
+    }
+  }
 
   return {
     sourceLabel: target.displayLabel,
@@ -1178,14 +1220,26 @@ async function runTelegramScrape(client, targets, state = {}) {
   let inserted = 0;
   let skipped = 0;
 
+  let newListings = [];
   if (supabase) {
     const syncResult = await insertListingsIfPossible(supabase, listingsWithImages);
     inserted = syncResult.inserted;
     skipped = syncResult.skipped;
-    console.log(`Supabase sync complete. Inserted: ${inserted}, skipped: ${skipped}`);
+    newListings = syncResult.newListings || [];
+    const rejectedCount = syncResult.rejected || 0;
+    console.log(`Supabase sync complete. Inserted: ${inserted}, skipped: ${skipped}, rejected: ${rejectedCount}`);
   } else {
     skipped = listingsWithImages.length;
     console.log('Supabase service role key not configured. Snapshot-only mode complete.');
+  }
+
+  // Only push notifications for genuinely NEW listings (not updates to existing ones)
+  if (newListings.length > 0) {
+    try {
+      await notifyListings(newListings);
+    } catch (err) {
+      console.warn('Telegram notification failed (non-fatal):', err.message);
+    }
   }
 
   // Export photos to Google Drive + listing data to Google Sheets
@@ -1205,22 +1259,48 @@ async function runTelegramScrape(client, targets, state = {}) {
   };
 }
 
+const STATE_FILE = path.join(__dirname, '../.sabai-scraper-state.json');
+
+function loadPersistedState() {
+  try {
+    if (fs.existsSync(STATE_FILE)) {
+      const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+      console.log(`Loaded persisted state: ${Object.keys(data.lastSeenMessageIds || {}).length} channel(s) tracked.`);
+      return data;
+    }
+  } catch {
+    console.warn('Could not load persisted state, starting fresh.');
+  }
+  return null;
+}
+
+function savePersistedState(state) {
+  try {
+    fs.writeFileSync(STATE_FILE, JSON.stringify({ lastSeenMessageIds: state.lastSeenMessageIds }, null, 2));
+  } catch {
+    // Non-critical — state will rebuild on next cycle
+  }
+}
+
 async function main() {
   const client = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
   });
 
+  const persisted = loadPersistedState();
   const state = {
-    lastSeenMessageIds: {},
+    lastSeenMessageIds: persisted?.lastSeenMessageIds || {},
     shouldStop: false,
   };
 
   process.on('SIGINT', () => {
     state.shouldStop = true;
+    savePersistedState(state);
   });
 
   process.on('SIGTERM', () => {
     state.shouldStop = true;
+    savePersistedState(state);
   });
 
   await client.connect();
@@ -1241,6 +1321,7 @@ async function main() {
 
       try {
         const result = await runTelegramScrape(client, resolvedTargets, state);
+        savePersistedState(state);
         console.log(
           `Scrape cycle complete. Extracted: ${result.extractedListings}, snapshot size: ${result.snapshotCount}.`,
         );

@@ -10,6 +10,7 @@ import CompanionModal from './components/CompanionModal';
 import MapSection from './components/MapSection';
 import HowItWorks from './components/HowItWorks';
 import VibeMap from './components/VibeMap';
+import ListingMap from './components/ListingMap';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import AdminDashboard from './components/admin/AdminDashboard';
@@ -416,6 +417,8 @@ function App() {
                 isRefreshing={dataState.isRefreshing}
                 recentListings={recentListings}
               />
+
+              <ListingMap listings={allCompanions} t={t} />
 
               <VibeMap listings={allCompanions} t={t} />
 

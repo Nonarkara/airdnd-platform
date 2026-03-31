@@ -47,4 +47,4 @@ services:
       - key: AI_ENRICHMENT_PER_CYCLE
         value: "5"
       - key: NODE_OPTIONS
-        value: "--max-old-space-size=400"
+        value: "--max-old-space-size=768"

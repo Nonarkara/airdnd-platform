@@ -7,6 +7,42 @@ export const SOURCE_LABELS = {
   backup: 'Cached listings',
 };
 
+const VALID_SERVICE_TAGS = new Set([
+  '4 Hand Massage',
+  'Adult Entertainment',
+  'Adult Services',
+  'Aroma Massage',
+  'B2B Massage',
+  'Erotic Massage',
+  'Escort',
+  'Health Massage',
+  'Massage',
+  'Model',
+  'Multiple Providers',
+  'New Provider',
+  'Spa',
+  'Wellness',
+  'Young Talent',
+]);
+
+function isValidServiceTag(tag) {
+  if (VALID_SERVICE_TAGS.has(tag)) {
+    return true;
+  }
+
+  // Reject tags that look like locations (Thai text, area names)
+  if (/^[\u0E00-\u0E7F]/.test(tag)) {
+    return false;
+  }
+
+  // Reject known location patterns
+  if (/^(Bangkok|Bangyai|Pathum Thani|Rangsit|Rama\s*\d|Rama\s*II|Nawamin|Khlong|Bhumibol|Nonthaburi|Samut|Nakhon|Chiang|Phuket|Pattaya)/i.test(tag)) {
+    return false;
+  }
+
+  return true;
+}
+
 function normalizeText(value, fallback = '') {
   if (typeof value !== 'string') {
     return fallback;
@@ -166,6 +202,12 @@ function extractPriceValue(priceLabel) {
 
 export function extractCity(location) {
   const normalizedLocation = normalizeText(location, DEFAULT_LOCATION);
+
+  // Thai street addresses (ถนน, ถ., ซอย, รามอินทรา, etc.) are Bangkok unless specified otherwise
+  if (/^[\u0E00-\u0E7F]/.test(normalizedLocation) && !/,/.test(normalizedLocation)) {
+    return 'Bangkok';
+  }
+
   const segments = normalizedLocation
     .split(',')
     .map((segment) => segment.trim())
@@ -221,7 +263,7 @@ export function normalizeListing(rawListing, options = {}) {
   const tags = Array.isArray(rawListing?.tags)
     ? rawListing.tags
         .map((tag) => normalizeText(String(tag)))
-        .filter(Boolean)
+        .filter((tag) => tag && isValidServiceTag(tag))
     : [];
 
   const updatedAt = normalizeText(rawListing?.updatedAt || rawListing?.created_at, null);
@@ -231,7 +273,7 @@ export function normalizeListing(rawListing, options = {}) {
     name,
     age: Number.isFinite(normalizedAge) ? normalizedAge : null,
     location,
-    city: normalizeText(rawListing?.city, extractCity(location)),
+    city: extractCity(normalizeText(rawListing?.city, '') || location),
     priceLabel,
     priceValue: extractPriceValue(priceLabel),
     description: normalizeText(
@@ -246,6 +288,13 @@ export function normalizeListing(rawListing, options = {}) {
     updatedAt,
     postedAt: listingMeta.postedAt,
     sourceChannel: listingMeta.sourceChannel,
+    phone: normalizeText(rawListing?.phone, null),
+    hours: normalizeText(rawListing?.hours, null),
+    lineUrl: normalizeText(rawListing?.lineUrl || rawListing?.line_url, null),
+    mapsUrl: normalizeText(rawListing?.mapsUrl || rawListing?.maps_url, null),
+    telegramUrl: normalizeText(rawListing?.telegramUrl || rawListing?.telegram_url, null),
+    latitude: typeof rawListing?.latitude === 'number' ? rawListing.latitude : null,
+    longitude: typeof rawListing?.longitude === 'number' ? rawListing.longitude : null,
     dataSource: source,
     isFallback: Boolean(options.isFallback),
   };
