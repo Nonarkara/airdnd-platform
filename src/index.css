@@ -1,23 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  /* Coen Brothers meets Kubrick — cooler, deeper, more cinematic */
-  --color-bg: #0a0a0f;
-  --color-bg-raised: #12121a;
-  --color-bg-inset: #06060b;
-  --color-surface: #1a1a24;
-  --color-surface-hover: #22222e;
-  --color-line: #2a2a3a;
-  --color-line-soft: #1e1e2a;
-  --color-cream: #e8e6e1;
-  --color-cream-soft: rgba(232, 230, 225, 0.65);
-  --color-cream-muted: rgba(232, 230, 225, 0.35);
-  --color-cream-faint: rgba(232, 230, 225, 0.06);
-  --color-red: #b91c1c;
-  --color-red-hover: #dc2626;
-  --color-red-soft: rgba(185, 28, 28, 0.15);
-  --color-gold: #d4a853;
-  --color-gold-soft: rgba(212, 168, 83, 0.15);
+  /* Coen Brothers — No Country for Old Men meets Fargo
+     Dusty desert nights, dried blood on cold earth, projector-beam ochre */
+  --color-bg: #0c0b09;
+  --color-bg-raised: #161412;
+  --color-bg-inset: #080706;
+  --color-surface: #1e1b17;
+  --color-surface-hover: #272320;
+  --color-line: #332e28;
+  --color-line-soft: #241f1a;
+  --color-cream: #e6dfd4;
+  --color-cream-soft: rgba(230, 223, 212, 0.65);
+  --color-cream-muted: rgba(230, 223, 212, 0.35);
+  --color-cream-faint: rgba(230, 223, 212, 0.06);
+  --color-red: #8b2500;
+  --color-red-hover: #a63000;
+  --color-red-soft: rgba(139, 37, 0, 0.18);
+  --color-gold: #c49a3c;
+  --color-gold-soft: rgba(196, 154, 60, 0.15);
 
   --font-display: 'Jost', 'Futura', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
