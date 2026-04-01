@@ -15,6 +15,7 @@ import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import AdminDashboard from './components/admin/AdminDashboard';
 import Methodology from './components/Methodology';
+import TrendInsights from './components/TrendInsights';
 import { companions as backupCompanions } from './data/mockData';
 import { supabase } from './lib/supabase';
 import { initSession } from './lib/tracker';
@@ -423,6 +424,8 @@ function App() {
               <ListingMap listings={allCompanions} t={t} />
 
               <VibeMap listings={allCompanions} t={t} />
+
+              <TrendInsights listings={allCompanions} t={t} />
 
               <HowItWorks t={t} />
 
