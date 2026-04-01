@@ -421,14 +421,6 @@ function App() {
                 recentListings={recentListings}
               />
 
-              <ListingMap listings={allCompanions} t={t} />
-
-              <VibeMap listings={allCompanions} t={t} />
-
-              <TrendInsights listings={allCompanions} t={t} />
-
-              <HowItWorks t={t} />
-
               <section id="live-listings" className="listing-section">
                 <div className="section-header">
                   <div>
@@ -474,7 +466,13 @@ function App() {
                 />
               </section>
 
-              <MapSection t={t} />
+              <ListingMap listings={allCompanions} t={t} />
+
+              <TrendInsights listings={allCompanions} t={t} />
+
+              <VibeMap listings={allCompanions} t={t} />
+
+              <HowItWorks t={t} />
             </main>
 
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={dataState.sourceLabel} />

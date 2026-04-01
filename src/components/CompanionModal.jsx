@@ -62,40 +62,23 @@ function CompanionModal({ companion, onClose, t }) {
               <span>{companion.location}</span>
             </div>
 
-            {/* Metrics grid: Contact / Hours / Price */}
+            {/* Metrics grid: always Phone | Hours | Price */}
             <div className="metrics-grid">
               {companion.phone ? (
                 <a href={`tel:${companion.phone.replace(/[^\d+]/g, '')}`} className="metric-box metric-link">
                   <span className="metric-value">{companion.phone}</span>
                   <span className="metric-label">Tel</span>
                 </a>
-              ) : companion.lineUrl ? (
-                <a href={companion.lineUrl} target="_blank" rel="noopener noreferrer" className="metric-box metric-link">
-                  <span className="metric-value">LINE</span>
-                  <span className="metric-label">Contact</span>
-                </a>
               ) : (
                 <div className="metric-box">
                   <span className="metric-value">-</span>
-                  <span className="metric-label">Contact</span>
+                  <span className="metric-label">Tel</span>
                 </div>
               )}
-              {companion.hours ? (
-                <div className="metric-box">
-                  <span className="metric-value">{companion.hours}</span>
-                  <span className="metric-label">Hours</span>
-                </div>
-              ) : companion.mapsUrl ? (
-                <a href={companion.mapsUrl} target="_blank" rel="noopener noreferrer" className="metric-box metric-link">
-                  <span className="metric-value">Map</span>
-                  <span className="metric-label">Location</span>
-                </a>
-              ) : (
-                <div className="metric-box">
-                  <span className="metric-value">-</span>
-                  <span className="metric-label">Hours</span>
-                </div>
-              )}
+              <div className="metric-box">
+                <span className="metric-value">{companion.hours || '-'}</span>
+                <span className="metric-label">Hours</span>
+              </div>
               <div className="metric-box">
                 <span className="metric-value">{companion.priceLabel}</span>
                 <span className="metric-label">{t.modal.rate}</span>
