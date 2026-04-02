@@ -16,6 +16,7 @@ import AdminGuard from './components/admin/AdminGuard';
 import AdminDashboard from './components/admin/AdminDashboard';
 import Methodology from './components/Methodology';
 import TrendInsights from './components/TrendInsights';
+import ControlPanel from './components/ControlPanel';
 import { companions as backupCompanions } from './data/mockData';
 import { supabase } from './lib/supabase';
 import { initSession } from './lib/tracker';
@@ -409,17 +410,9 @@ function App() {
             />
 
             <main className="main-content">
-              <HeroSection
-                t={t}
-                metrics={metrics}
-                intakeSummary={intakeSummary}
-                sourceLabel={dataState.sourceLabel}
-                statusNote={dataState.note}
-                lastLoadedAt={dataState.lastLoadedAt}
-                onRefresh={handleRefresh}
-                isRefreshing={dataState.isRefreshing}
-                recentListings={recentListings}
-              />
+              <HeroSection t={t} metrics={metrics} />
+
+              <ControlPanel listings={allCompanions} onCardClick={setSelectedCompanion} />
 
               <section id="live-listings" className="listing-section">
                 <div className="section-header">
@@ -432,7 +425,6 @@ function App() {
                     <span>{dataState.sourceLabel}</span>
                   </div>
                 </div>
-                <p className="section-subtitle">{t.featured.subtitle}</p>
 
                 <FilterBar
                   searchTerm={searchTerm}
@@ -467,12 +459,6 @@ function App() {
               </section>
 
               <ListingMap listings={allCompanions} t={t} />
-
-              <TrendInsights listings={allCompanions} t={t} />
-
-              <VibeMap listings={allCompanions} t={t} />
-
-              <HowItWorks t={t} />
             </main>
 
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={dataState.sourceLabel} />

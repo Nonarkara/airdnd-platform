@@ -1,0 +1,322 @@
+/* ==========================================
+   Control Panel — Mission Control Dashboard
+   Dense, data-rich, Bloomberg Terminal meets cinema
+   ========================================== */
+
+.ctrl-panel {
+  padding: var(--spacing-lg) 0;
+}
+
+.ctrl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--color-line-soft);
+  border: 1px solid var(--color-line-soft);
+}
+
+.ctrl-widget {
+  padding: 1.2rem;
+  background: var(--color-bg-raised);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-height: 280px;
+}
+
+.ctrl-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ctrl-label {
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--color-cream-muted);
+}
+
+.ctrl-score {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--color-gold);
+  line-height: 1;
+}
+
+/* Pulse indicator */
+.ctrl-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+}
+
+/* === Live Intake Feed === */
+
+.ctrl-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+}
+
+.ctrl-feed-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-line-soft);
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.ctrl-feed-item:hover {
+  background: var(--color-surface);
+  margin: 0 -1.2rem;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+}
+
+.ctrl-feed-item:last-child {
+  border-bottom: none;
+}
+
+.ctrl-feed-newest {
+  border-left: 2px solid var(--color-red);
+  padding-left: 0.6rem;
+}
+
+.ctrl-feed-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ctrl-feed-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6rem;
+}
+
+.ctrl-feed-channel {
+  color: var(--color-gold);
+  font-weight: 600;
+}
+
+.ctrl-feed-time {
+  color: var(--color-cream-muted);
+}
+
+/* === Donut Chart === */
+
+.ctrl-donut-wrap {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  align-items: center;
+}
+
+.ctrl-donut {
+  width: 130px;
+  height: 130px;
+}
+
+.ctrl-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ctrl-legend-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+}
+
+.ctrl-legend-name {
+  color: var(--color-cream-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ctrl-legend-count {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-cream);
+  min-width: 1.5rem;
+  text-align: right;
+}
+
+/* === Bar Charts === */
+
+.ctrl-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.ctrl-bar-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 2rem;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ctrl-bar-label {
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: var(--color-cream-muted);
+  letter-spacing: 0.05em;
+}
+
+.ctrl-bar-track {
+  height: 4px;
+  background: var(--color-line-soft);
+  overflow: hidden;
+}
+
+.ctrl-bar-fill {
+  height: 100%;
+  background: var(--color-gold);
+  transition: width 0.5s ease;
+}
+
+.ctrl-bar-pct {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--color-cream);
+  text-align: right;
+}
+
+/* === Day Chart (mini) === */
+
+.ctrl-day-chart {
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--color-line-soft);
+}
+
+.ctrl-day-title {
+  font-family: var(--font-display);
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--color-cream-muted);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.ctrl-days {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.3rem;
+  height: 40px;
+}
+
+.ctrl-day {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.ctrl-day-bar {
+  width: 100%;
+  background: var(--color-red);
+  min-height: 2px;
+  transition: height 0.4s ease;
+}
+
+.ctrl-day span {
+  font-family: var(--font-display);
+  font-size: 0.45rem;
+  font-weight: 600;
+  color: var(--color-cream-muted);
+  margin-top: 0.2rem;
+}
+
+/* === Area Distribution === */
+
+.ctrl-areas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.ctrl-area-row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 1.5rem;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ctrl-area-name {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--color-cream-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ctrl-area-track {
+  height: 5px;
+  background: var(--color-line-soft);
+  overflow: hidden;
+}
+
+.ctrl-area-fill {
+  height: 100%;
+  background: var(--color-red);
+  transition: width 0.4s ease;
+}
+
+.ctrl-area-count {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-cream);
+  text-align: right;
+}
+
+/* === Responsive === */
+
+@media (max-width: 1000px) {
+  .ctrl-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ctrl-widget {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ctrl-grid {
+    grid-template-columns: 1fr;
+  }
+  .ctrl-widget {
+    min-height: auto;
+  }
+  .ctrl-donut {
+    width: 100px;
+    height: 100px;
+  }
+}
