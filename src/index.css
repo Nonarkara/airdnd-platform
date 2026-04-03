@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  /* Minimal — pure, tight, youthful, classy */
+  /* Sabai Sabai — refined, cohesive, award-ready */
   --color-bg: #0b0b0b;
   --color-bg-raised: #111111;
   --color-bg-inset: #060606;
@@ -9,15 +9,28 @@
   --color-surface-hover: #1c1c1c;
   --color-line: #1f1f1f;
   --color-line-soft: #161616;
+
   --color-cream: #f0f0f0;
-  --color-cream-soft: rgba(240, 240, 240, 0.55);
-  --color-cream-muted: rgba(240, 240, 240, 0.25);
+  --color-cream-soft: rgba(240, 240, 240, 0.65);
+  --color-cream-muted: rgba(240, 240, 240, 0.35);
   --color-cream-faint: rgba(240, 240, 240, 0.04);
+
   --color-red: #ff3b5c;
   --color-red-hover: #ff5272;
   --color-red-soft: rgba(255, 59, 92, 0.1);
   --color-gold: #5b9cf5;
   --color-gold-soft: rgba(91, 156, 245, 0.1);
+
+  --color-success: #34d399;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.15s var(--ease-out);
+  --transition-normal: 0.3s var(--ease-out);
+  --transition-slow: 0.5s var(--ease-out);
 
   --font-display: 'Jost', 'Futura', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
@@ -100,10 +113,32 @@ select, input {
 select:focus, input:focus {
   outline: none;
   border-color: var(--color-red);
+  box-shadow: 0 0 0 3px var(--color-red-soft);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
 }
 
 input::placeholder {
   color: var(--color-cream-muted);
+}
+
+/* Skeleton loading animation */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.skeleton {
+  background: var(--color-line-soft);
+  border-radius: 8px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
 
 .section-kicker {

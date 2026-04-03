@@ -12,9 +12,9 @@
 }
 
 .poster-card:hover {
-  border-color: rgba(255, 255, 255, 0.08);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 59, 92, 0.2);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 59, 92, 0.08);
 }
 
 .poster-bg {
