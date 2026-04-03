@@ -1,0 +1,7 @@
+public/photos
+scripts
+supabase
+.sabai-scraper-state.json
+google-credentials.json
+credentials.json
+token.json
