@@ -30,12 +30,12 @@
 
 /* Custom pin marker */
 .listing-pin {
-  width: 14px;
-  height: 14px;
-  background: var(--color-red, #c8102e);
-  border: 2px solid var(--color-cream, #f5f0e8);
+  width: 10px;
+  height: 10px;
+  background: var(--color-red, #e31937);
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
   border-radius: 50%;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 6px rgba(227, 25, 55, 0.4);
 }
 
 /* Popup styling */

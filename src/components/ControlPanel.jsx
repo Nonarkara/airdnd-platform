@@ -142,7 +142,7 @@ export default function ControlPanel({ listings, onCardClick }) {
               {(() => {
                 let offset = 0;
                 const circumference = 2 * Math.PI * 45;
-                const colors = ['#8b2500', '#c49a3c', '#4a3520', '#332e28', '#1e1b17'];
+                const colors = ['#e31937', '#3e8ed0', '#1a6fb5', '#222222', '#111111'];
                 return data.topChannels.map(([, count], i) => {
                   const pct = count / data.total;
                   const dash = circumference * pct;

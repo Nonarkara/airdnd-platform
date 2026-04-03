@@ -8,27 +8,46 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
+const TOKEN_PATH = path.join(__dirname, '../token.json');
 const CREDENTIALS_PATH = path.join(__dirname, '../google-credentials.json');
 const DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
 const SHEET_ID = process.env.GOOGLE_SHEET_ID;
 
 /**
- * Load Google service account auth.
- * Returns null if credentials file is missing (graceful skip).
+ * Load Google auth — prefers OAuth (token.json) for user-owned Drive/Sheets,
+ * falls back to service account (google-credentials.json).
  */
 function getAuth() {
-  if (!fs.existsSync(CREDENTIALS_PATH)) {
-    return null;
+  // Try OAuth first (user's own Google account — has Drive quota + Sheets access)
+  if (fs.existsSync(TOKEN_PATH)) {
+    try {
+      const token = JSON.parse(fs.readFileSync(TOKEN_PATH, 'utf8'));
+      if (token.refresh_token && token.client_id && token.client_secret) {
+        const oauth2 = new google.auth.OAuth2(token.client_id, token.client_secret);
+        oauth2.setCredentials({
+          refresh_token: token.refresh_token,
+          access_token: token.token,
+        });
+        return oauth2;
+      }
+    } catch {
+      // Fall through to service account
+    }
   }
 
-  const credentials = JSON.parse(fs.readFileSync(CREDENTIALS_PATH, 'utf8'));
-  return new google.auth.GoogleAuth({
-    credentials,
-    scopes: [
-      'https://www.googleapis.com/auth/drive.file',
-      'https://www.googleapis.com/auth/spreadsheets',
-    ],
-  });
+  // Fallback: service account
+  if (fs.existsSync(CREDENTIALS_PATH)) {
+    const credentials = JSON.parse(fs.readFileSync(CREDENTIALS_PATH, 'utf8'));
+    return new google.auth.GoogleAuth({
+      credentials,
+      scopes: [
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/spreadsheets',
+      ],
+    });
+  }
+
+  return null;
 }
 
 /**
@@ -150,69 +169,39 @@ const SHEET_HEADERS = [
 
 const HEADER_RANGE_END = 'V'; // Column V = 22nd column
 
-/**
- * Get the current month's tab name (e.g., "2026-03")
- */
-function getMonthlyTabName() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  return `${year}-${month}`;
-}
+const LISTINGS_TAB = 'Listings';
 
 /**
- * Ensure the monthly tab exists with headers.
- * Falls back to Sheet1 if tab creation fails.
+ * Ensure the Listings tab exists with headers.
  */
-async function ensureMonthlyTab(sheets) {
-  const tabName = getMonthlyTabName();
-
+async function ensureListingsTab(sheets) {
   try {
-    // Check if the tab already exists
-    const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId: SHEET_ID });
-    const existingTabs = spreadsheet.data.sheets.map((s) => s.properties.title);
+    const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId: SHEET_ID, fields: 'sheets.properties.title' });
+    const tabs = spreadsheet.data.sheets.map((s) => s.properties.title);
 
-    if (!existingTabs.includes(tabName)) {
-      // Create the new monthly tab
+    if (!tabs.includes(LISTINGS_TAB)) {
       await sheets.spreadsheets.batchUpdate({
         spreadsheetId: SHEET_ID,
-        requestBody: {
-          requests: [{
-            addSheet: { properties: { title: tabName } },
-          }],
-        },
+        requestBody: { requests: [{ addSheet: { properties: { title: LISTINGS_TAB } } }] },
       });
+    }
 
-      // Write headers to the new tab
+    // Check if headers exist
+    const headerCheck = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: `'${LISTINGS_TAB}'!A1:A1`,
+    });
+    if (!headerCheck.data.values?.[0]?.[0]) {
       await sheets.spreadsheets.values.update({
         spreadsheetId: SHEET_ID,
-        range: `'${tabName}'!A1:${HEADER_RANGE_END}1`,
+        range: `'${LISTINGS_TAB}'!A1:${HEADER_RANGE_END}1`,
         valueInputOption: 'RAW',
         requestBody: { values: [SHEET_HEADERS] },
       });
-
-      console.log(`  Created new monthly tab: ${tabName}`);
+      console.log('  Initialized Listings tab headers.');
     }
-
-    return tabName;
   } catch (err) {
-    console.warn(`  Could not create monthly tab ${tabName}: ${err.message}. Using Sheet1.`);
-    // Ensure Sheet1 has headers as fallback
-    try {
-      const res = await sheets.spreadsheets.values.get({
-        spreadsheetId: SHEET_ID,
-        range: `Sheet1!A1:${HEADER_RANGE_END}1`,
-      });
-      if (!res.data.values?.[0]?.length) {
-        await sheets.spreadsheets.values.update({
-          spreadsheetId: SHEET_ID,
-          range: `Sheet1!A1:${HEADER_RANGE_END}1`,
-          valueInputOption: 'RAW',
-          requestBody: { values: [SHEET_HEADERS] },
-        });
-      }
-    } catch { /* ignore */ }
-    return 'Sheet1';
+    console.warn('  Listings tab setup error:', err.message);
   }
 }
 
@@ -247,7 +236,7 @@ export async function appendListingsToSheet(listings) {
   const sheets = google.sheets({ version: 'v4', auth });
 
   try {
-    const tabName = await ensureMonthlyTab(sheets);
+    await ensureListingsTab(sheets);
 
     const rows = listings.map((listing) => {
       const links = extractLinks(listing);
@@ -280,13 +269,13 @@ export async function appendListingsToSheet(listings) {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: `'${tabName}'!A:${HEADER_RANGE_END}`,
+      range: `'${LISTINGS_TAB}'!A:${HEADER_RANGE_END}`,
       valueInputOption: 'RAW',
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values: rows },
     });
 
-    console.log(`  Appended ${rows.length} row(s) to Google Sheet tab "${tabName}".`);
+    console.log(`  Appended ${rows.length} row(s) to Google Sheet.`);
   } catch (err) {
     console.warn('  Failed to write to Google Sheet:', err.message);
   }

@@ -1,24 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  /* Coen Brothers — No Country for Old Men meets Fargo
-     Dusty desert nights, dried blood on cold earth, projector-beam ochre */
-  --color-bg: #0c0b09;
-  --color-bg-raised: #161412;
-  --color-bg-inset: #080706;
-  --color-surface: #1e1b17;
-  --color-surface-hover: #272320;
-  --color-line: #332e28;
-  --color-line-soft: #241f1a;
-  --color-cream: #e6dfd4;
-  --color-cream-soft: rgba(230, 223, 212, 0.65);
-  --color-cream-muted: rgba(230, 223, 212, 0.35);
-  --color-cream-faint: rgba(230, 223, 212, 0.06);
-  --color-red: #8b2500;
-  --color-red-hover: #a63000;
-  --color-red-soft: rgba(139, 37, 0, 0.18);
-  --color-gold: #c49a3c;
-  --color-gold-soft: rgba(196, 154, 60, 0.15);
+  /* Tesla — Precision engineering, electric minimalism */
+  --color-bg: #000000;
+  --color-bg-raised: #0a0a0a;
+  --color-bg-inset: #050505;
+  --color-surface: #111111;
+  --color-surface-hover: #1a1a1a;
+  --color-line: #222222;
+  --color-line-soft: #161616;
+  --color-cream: #e4e4e4;
+  --color-cream-soft: rgba(228, 228, 228, 0.6);
+  --color-cream-muted: rgba(228, 228, 228, 0.3);
+  --color-cream-faint: rgba(228, 228, 228, 0.05);
+  --color-red: #e31937;
+  --color-red-hover: #ff2442;
+  --color-red-soft: rgba(227, 25, 55, 0.12);
+  --color-gold: #3e8ed0;
+  --color-gold-soft: rgba(62, 142, 208, 0.12);
 
   --font-display: 'Jost', 'Futura', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
