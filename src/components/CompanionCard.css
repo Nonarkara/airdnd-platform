@@ -24,6 +24,12 @@
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.poster-bg.loaded {
+  opacity: 1;
 }
 
 .poster-card.no-photo {

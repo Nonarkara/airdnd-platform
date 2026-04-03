@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import {
   SOURCE_LABELS,
   formatPreciseTimestamp,
@@ -6,9 +7,47 @@ import {
 import './CompanionModal.css';
 
 function CompanionModal({ companion, onClose, t }) {
-  if (!companion) {
-    return null;
-  }
+  const contentRef = useRef(null);
+
+  // Escape key + focus trap
+  useEffect(() => {
+    if (!companion) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+
+      // Focus trap
+      if (e.key === 'Tab' && contentRef.current) {
+        const focusable = contentRef.current.querySelectorAll(
+          'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    // Focus close button on open
+    const closeBtn = contentRef.current?.querySelector('.btn-close');
+    closeBtn?.focus();
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [companion, onClose]);
+
+  if (!companion) return null;
 
   const preciseTimestamp = formatPreciseTimestamp(companion.postedAt)
     || formatPreciseTimestamp(companion.updatedAt)
@@ -19,6 +58,7 @@ function CompanionModal({ companion, onClose, t }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
+        ref={contentRef}
         className="modal-content"
         onClick={(event) => event.stopPropagation()}
         role="dialog"

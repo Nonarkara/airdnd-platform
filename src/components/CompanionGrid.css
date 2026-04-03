@@ -10,6 +10,82 @@
   gap: 0.75rem;
 }
 
+/* Stagger entrance animation */
+.card-entrance {
+  animation: card-in 0.4s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Skeleton loading cards */
+.skeleton-card {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  border: 1px solid var(--color-line-soft);
+  background: var(--color-bg-raised);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.skeleton-badge {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  width: 3.5rem;
+  height: 1.1rem;
+  border-radius: 4px;
+}
+
+.skeleton-overlay {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.9rem;
+}
+
+.skeleton-title {
+  width: 75%;
+  height: 1rem;
+  border-radius: 4px;
+}
+
+.skeleton-line {
+  width: 90%;
+  height: 0.5rem;
+  border-radius: 3px;
+}
+
+.skeleton-line-short {
+  width: 50%;
+  height: 0.5rem;
+  border-radius: 3px;
+}
+
+.skeleton-row {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.2rem;
+}
+
+.skeleton-pill {
+  width: 3rem;
+  height: 1.5rem;
+  border-radius: 6px;
+}
+
+/* State cards */
 .grid-state-card {
   grid-column: 1 / -1;
   display: flex;
@@ -43,30 +119,26 @@
   background: transparent;
   color: var(--color-red);
   font-family: var(--font-display);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.75rem 2rem;
+  padding: 0.7rem 2rem;
   border: 1px solid var(--color-red);
-  transition: background 0.15s ease, color 0.15s ease;
+  border-radius: 8px;
+  transition: background var(--transition-fast, 0.15s ease), color var(--transition-fast, 0.15s ease);
 }
 
 .btn-load-more:hover {
   background: var(--color-red);
-  color: var(--color-cream);
+  color: #fff;
 }
 
 @media (max-width: 900px) {
-  .companion-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
+  .companion-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
 }
 
 @media (max-width: 600px) {
-  .companion-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+  .companion-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+  .skeleton-card { aspect-ratio: 2 / 3; }
 }

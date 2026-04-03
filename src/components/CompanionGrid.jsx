@@ -2,6 +2,23 @@ import { useState } from 'react';
 import CompanionCard from './CompanionCard';
 import './CompanionGrid.css';
 
+function SkeletonCard() {
+  return (
+    <div className="skeleton-card" aria-hidden="true">
+      <div className="skeleton skeleton-badge" />
+      <div className="skeleton-overlay">
+        <div className="skeleton skeleton-title" />
+        <div className="skeleton skeleton-line" />
+        <div className="skeleton skeleton-line-short" />
+        <div className="skeleton-row">
+          <div className="skeleton skeleton-pill" />
+          <div className="skeleton skeleton-pill" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CompanionGrid({
   companions,
   onCardClick,
@@ -14,9 +31,12 @@ function CompanionGrid({
 
   if (isLoading && companions.length === 0) {
     return (
-      <div className="grid-state-card">
-        <h3>{t.featured.loadingTitle}</h3>
-        <p>{t.featured.loadingBody}</p>
+      <div className="companion-grid-container">
+        <div className="companion-grid">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
       </div>
     );
   }
@@ -41,13 +61,18 @@ function CompanionGrid({
   return (
     <div className="companion-grid-container">
       <div className="companion-grid">
-        {visibleCompanions.map((companion) => (
-          <CompanionCard
+        {visibleCompanions.map((companion, index) => (
+          <div
             key={companion.id}
-            companion={companion}
-            onClick={onCardClick}
-            t={t}
-          />
+            className="card-entrance"
+            style={{ animationDelay: `${Math.min(index, 11) * 40}ms` }}
+          >
+            <CompanionCard
+              companion={companion}
+              onClick={onCardClick}
+              t={t}
+            />
+          </div>
         ))}
       </div>
 

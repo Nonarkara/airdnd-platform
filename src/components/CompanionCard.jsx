@@ -26,6 +26,8 @@ function CompanionCard({ companion, onClick, t }) {
           src={companion.imageUrl}
           alt={companion.name}
           className="poster-bg"
+          loading="lazy"
+          onLoad={(event) => { event.currentTarget.classList.add('loaded'); }}
           onError={(event) => {
             event.currentTarget.style.display = 'none';
             event.currentTarget.closest('.poster-card').classList.add('no-photo');
