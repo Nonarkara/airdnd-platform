@@ -15,6 +15,8 @@
   max-height: 90vh;
   overflow-y: auto;
   background: var(--color-bg-raised);
+  border-radius: 16px;
+  border: 1px solid var(--color-line-soft);
 }
 
 .btn-close {
@@ -154,17 +156,18 @@ a.metric-link .metric-value {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.65rem 1.2rem;
-  min-height: 2.6rem;
+  padding: 0.6rem 1rem;
+  min-height: 2.4rem;
   background: var(--color-surface);
   color: var(--color-cream);
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
   border: 1px solid var(--color-line);
+  border-radius: 8px;
   transition: background 0.15s ease, border-color 0.15s ease;
   flex: 1;
   min-width: 0;
@@ -180,6 +183,7 @@ a.metric-link .metric-value {
   background: #06c755;
   border-color: #06c755;
   color: #fff;
+  border-radius: 8px;
 }
 
 .modal-contact-line:hover {
