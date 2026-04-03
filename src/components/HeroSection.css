@@ -25,7 +25,7 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.2rem 0.5rem;
-  background: rgba(52, 211, 153, 0.08);
+  background: rgba(52, 211, 153, 0.06);
   border-radius: 100px;
   font-family: var(--font-display);
   font-size: 0.45rem;

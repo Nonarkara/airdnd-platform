@@ -117,10 +117,10 @@
   margin-bottom: 1rem;
 }
 
-.meth-lead {
-  font-size: 1.05rem !important;
-  color: var(--color-cream) !important;
-  line-height: 1.7 !important;
+.meth-section p.meth-lead {
+  font-size: 1.05rem;
+  color: var(--color-cream);
+  line-height: 1.7;
 }
 
 /* --- Blockquote --- */
@@ -142,6 +142,7 @@
   padding: 1.5rem;
   background: var(--color-bg-inset);
   border: 1px solid var(--color-line-soft);
+  border-radius: 10px;
   overflow-x: auto;
 }
 
@@ -162,6 +163,7 @@
 .meth-card {
   padding: 1.2rem;
   border: 1px solid var(--color-line-soft);
+  border-radius: 8px;
 }
 
 .meth-card h3 {
@@ -183,6 +185,8 @@
 .meth-table {
   margin: 1.5rem 0;
   border: 1px solid var(--color-line-soft);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .meth-row {

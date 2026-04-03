@@ -42,7 +42,8 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border: 1px solid var(--color-line);
-  transition: color 0.15s ease, border-color 0.15s ease;
+  border-radius: 8px;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .filter-refresh:hover {

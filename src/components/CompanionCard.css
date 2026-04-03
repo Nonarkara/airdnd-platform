@@ -8,13 +8,13 @@
   cursor: pointer;
   border-radius: 12px;
   border: 1px solid var(--color-line-soft);
-  transition: border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-normal);
 }
 
 .poster-card:hover {
-  border-color: rgba(255, 59, 92, 0.2);
+  border-color: var(--color-red-soft);
   transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 59, 92, 0.08);
+  box-shadow: var(--shadow-lg);
 }
 
 .poster-bg {
@@ -25,15 +25,13 @@
   object-fit: cover;
   z-index: 0;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity var(--transition-normal);
 }
 
-.poster-bg.loaded {
-  opacity: 1;
-}
+.poster-bg.loaded { opacity: 1; }
 
 .poster-card.no-photo {
-  background: linear-gradient(160deg, var(--color-red) 0%, #1a0a10 40%, var(--color-bg) 100%);
+  background: linear-gradient(160deg, var(--color-red) 0%, var(--color-bg-inset) 50%, var(--color-bg) 100%);
 }
 
 .poster-city {
@@ -41,7 +39,7 @@
   top: 0.6rem;
   left: 0.6rem;
   padding: 0.25rem 0.55rem;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--color-bg-inset);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: var(--color-cream);
@@ -61,7 +59,7 @@
   flex-direction: column;
   gap: 0.35rem;
   padding: 0.9rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
+  background: linear-gradient(to top, var(--color-bg) 0%, rgba(11, 11, 11, 0.7) 70%, transparent 100%);
   margin-top: auto;
 }
 
@@ -69,7 +67,7 @@
   font-family: var(--font-display);
   font-size: clamp(0.9rem, 2.2vw, 1.1rem);
   font-weight: 800;
-  color: #fff;
+  color: var(--color-cream);
   line-height: 1.2;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -80,7 +78,7 @@
 .poster-location {
   font-size: 0.62rem;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-cream-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -103,14 +101,14 @@
   width: 2px;
   height: 2px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--color-cream-muted);
   flex-shrink: 0;
 }
 
 .poster-hours {
   font-size: 0.62rem;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--color-cream-muted);
 }
 
 .poster-contacts {
@@ -125,23 +123,23 @@
   justify-content: center;
   padding: 0.3rem 0.6rem;
   min-height: 1.7rem;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--color-cream-faint);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  color: #fff;
+  color: var(--color-cream);
   font-family: var(--font-display);
   font-size: 0.58rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--color-line);
   border-radius: 6px;
-  transition: background 0.15s ease;
+  transition: background var(--transition-fast);
 }
 
 .poster-contact:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--color-surface);
 }
 
 .poster-tags {
@@ -155,11 +153,11 @@
   background: var(--color-gold-soft);
   color: var(--color-gold);
   font-family: var(--font-display);
-  font-size: 0.48rem;
+  font-size: 0.5rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .poster-footer {
@@ -172,9 +170,9 @@
 
 .poster-source {
   font-family: var(--font-display);
-  font-size: 0.48rem;
+  font-size: 0.5rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.25);
+  color: var(--color-cream-muted);
   letter-spacing: 0.04em;
   white-space: nowrap;
   overflow: hidden;
@@ -183,9 +181,9 @@
 }
 
 .poster-time {
-  font-size: 0.48rem;
+  font-size: 0.5rem;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.2);
+  color: var(--color-cream-muted);
 }
 
 @media (max-width: 600px) {
