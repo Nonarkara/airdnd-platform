@@ -7,6 +7,17 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 export default defineConfig([
   globalIgnores(['dist']),
   {
+    files: ['scripts/google_apps_script.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        UrlFetchApp: 'readonly',
+        SpreadsheetApp: 'readonly',
+        ScriptApp: 'readonly',
+      },
+    },
+  },
+  {
     files: ['**/*.{js,jsx}'],
     extends: [
       js.configs.recommended,

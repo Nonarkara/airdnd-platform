@@ -15,7 +15,7 @@ function Header({
         </span>
         <span className="brand-copy">
           <strong>Sabai Sabai</strong>
-          <small>v2.0 — {t.header.tagline}</small>
+          <small>{t.header.tagline} · {sourceLabel}</small>
         </span>
       </a>
 

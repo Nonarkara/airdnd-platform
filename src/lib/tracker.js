@@ -1,54 +1,55 @@
-import { supabase } from './supabase.js'
+import { supabase, supabaseAnonKey, supabaseUrl } from './supabase.js';
 
-const SESSION_KEY = 'sabai_session_id'
-const GEO_KEY = 'sabai_geo'
-const TRACKING_KEY = 'sabai_tracking_disabled'
-let sessionId = null
-let geo = null
-let trackingDisabled = sessionStorage.getItem(TRACKING_KEY) === '1'
+const SESSION_KEY = 'sabai_session_id';
+const GEO_KEY = 'sabai_geo';
+const TRACKING_KEY = 'sabai_tracking_disabled';
+let sessionId = null;
+let geo = null;
+let trackingDisabled = sessionStorage.getItem(TRACKING_KEY) === '1';
 
 function getSessionId() {
-  if (sessionId) return sessionId
-  sessionId = sessionStorage.getItem(SESSION_KEY)
+  if (sessionId) return sessionId;
+  sessionId = sessionStorage.getItem(SESSION_KEY);
   if (!sessionId) {
-    sessionId = crypto.randomUUID()
-    sessionStorage.setItem(SESSION_KEY, sessionId)
+    sessionId = crypto.randomUUID();
+    sessionStorage.setItem(SESSION_KEY, sessionId);
   }
-  return sessionId
+  return sessionId;
 }
 
 async function fetchGeo() {
-  const cached = sessionStorage.getItem(GEO_KEY)
+  const cached = sessionStorage.getItem(GEO_KEY);
   if (cached) {
-    geo = JSON.parse(cached)
-    return
+    geo = JSON.parse(cached);
+    return;
   }
   try {
-    const controller = new AbortController()
-    setTimeout(() => controller.abort(), 2000)
-    const resp = await fetch('http://ip-api.com/json/?fields=country,city,lat,lon', {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 2000);
+    const resp = await fetch('https://ipapi.co/json/', {
       signal: controller.signal,
-    })
-    const data = await resp.json()
+    });
+    window.clearTimeout(timeoutId);
+    const data = await resp.json();
     geo = {
-      country: data.country || null,
+      country: data.country_name || data.country || null,
       city: data.city || null,
-      latitude: data.lat || null,
-      longitude: data.lon || null,
-    }
-    sessionStorage.setItem(GEO_KEY, JSON.stringify(geo))
+      latitude: data.latitude || data.lat || null,
+      longitude: data.longitude || data.lon || null,
+    };
+    sessionStorage.setItem(GEO_KEY, JSON.stringify(geo));
   } catch {
-    geo = {}
+    geo = {};
   }
 }
 
 function disableTracking() {
-  trackingDisabled = true
-  sessionStorage.setItem(TRACKING_KEY, '1')
+  trackingDisabled = true;
+  sessionStorage.setItem(TRACKING_KEY, '1');
 }
 
 function isTrackingError(error) {
-  return error && (error.code === 'PGRST205' || error.code === '42P01')
+  return error && (error.code === 'PGRST205' || error.code === '42P01');
 }
 
 function basePayload() {
@@ -63,22 +64,22 @@ function basePayload() {
     city: geo?.city || null,
     latitude: geo?.latitude || null,
     longitude: geo?.longitude || null,
-  }
+  };
 }
 
 export function trackPageView(page) {
-  if (trackingDisabled) return
+  if (trackingDisabled) return;
   supabase
     .from('page_views')
     .insert({ ...basePayload(), page, event_type: 'pageview' })
     .then(({ error }) => {
-      if (isTrackingError(error)) disableTracking()
+      if (isTrackingError(error)) disableTracking();
     })
-    .catch(() => {})
+    .catch(() => {});
 }
 
 export function trackListingClick(listingId) {
-  if (trackingDisabled) return
+  if (trackingDisabled) return;
   supabase
     .from('page_views')
     .insert({
@@ -88,62 +89,64 @@ export function trackListingClick(listingId) {
       event_type: 'listing_click',
     })
     .then(({ error }) => {
-      if (isTrackingError(error)) disableTracking()
+      if (isTrackingError(error)) disableTracking();
     })
-    .catch(() => {})
+    .catch(() => {});
 }
 
 function endSession() {
-  if (trackingDisabled) return
-  const url = `https://fehdtfncbutesgadjsxp.supabase.co/rest/v1/page_views`
+  if (trackingDisabled || !supabaseUrl || !supabaseAnonKey) return;
+  const url = `${supabaseUrl}/rest/v1/page_views`;
   const body = JSON.stringify({
     ...basePayload(),
     page: window.location.hash || '/',
     event_type: 'session_end',
-  })
+  });
   try {
     fetch(url, {
       method: 'POST',
       headers: {
-        apikey: 'sb_publishable_mf3Wmwk6mMO-EoYaDxMUvA_CihTsTBF',
-        Authorization: 'Bearer sb_publishable_mf3Wmwk6mMO-EoYaDxMUvA_CihTsTBF',
+        apikey: supabaseAnonKey,
+        Authorization: `Bearer ${supabaseAnonKey}`,
         'Content-Type': 'application/json',
         Prefer: 'return=minimal',
       },
       body,
       keepalive: true,
-    })
-  } catch {}
+    });
+  } catch {
+    return;
+  }
 }
 
 async function probeTable() {
-  if (trackingDisabled) return
+  if (trackingDisabled) return;
   try {
     const { error } = await supabase
       .from('page_views')
       .select('id')
-      .limit(0)
+      .limit(0);
     if (isTrackingError(error)) {
-      disableTracking()
+      disableTracking();
     }
   } catch {
-    disableTracking()
+    disableTracking();
   }
 }
 
 export async function initSession() {
-  getSessionId()
-  await Promise.all([fetchGeo(), probeTable()])
-  if (trackingDisabled) return
+  getSessionId();
+  await Promise.all([fetchGeo(), probeTable()]);
+  if (trackingDisabled) return;
 
-  trackPageView(window.location.hash || '/')
+  trackPageView(window.location.hash || '/');
 
   window.addEventListener('hashchange', () => {
-    trackPageView(window.location.hash || '/')
-  })
+    trackPageView(window.location.hash || '/');
+  });
 
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') endSession()
-  })
-  window.addEventListener('beforeunload', endSession)
+    if (document.visibilityState === 'hidden') endSession();
+  });
+  window.addEventListener('beforeunload', endSession);
 }

@@ -386,12 +386,14 @@ function isValidListingName(name) {
   const lowered = normalized.toLowerCase();
   if (
     /^(group joining details|นี้|นวด|massage|spa|สปา|เปิด|open)$/i.test(normalized) ||
-    /(?:group joining details|new group|line\s*id|เปิดให้บริการ|ติดตามน้องใหม่|ห้ามพลาด|ได้เลยนะ|ส่งไรนักหนา|ทักมา|แอดไลน์|มีน้องคนไหน|จะดู|เอาใจ|แซ่บ)/i.test(lowered) ||
+    /(?:group joining details|new group|line\s*id|id\s*line|เปิดให้บริการ|ติดตามน้องใหม่|ห้ามพลาด|ได้เลยนะ|ส่งไรนักหนา|ทักมา|แอดไลน์|มีน้องคนไหน|จะดู|เอาใจ|แซ่บ|สะอาด|ปลอดภัย|คนไม่พลุกพล่าน|เงียบสงบ|ที่จอดรถ|private room|parking|จับจอง|แล้วค่า|แล้วครับ|แล้วค่ะ)/i.test(lowered) ||
     /(?:ครับ|ค่ะ|คะ|จ้า|นะคะ|นะครับ|ไหม|มั้ย)/i.test(normalized) ||
     /^[a-z\s.]+group[a-z\s.]*$/i.test(normalized) ||
     /[:：]/.test(normalized) ||
     /^(?:เปิด|line|group|new|ได้|มี|จะ|ติดตาม|โทร|พิกัด)\b/i.test(normalized) ||
+    (/society/i.test(normalized) && !/massage|spa|สปา|นวด/i.test(normalized)) ||
     /^\d+$/.test(normalized) ||
+    (/^[\u0E00-\u0E7F]{1,4}$/.test(normalized) && !/massage|spa|สปา|นวด/i.test(normalized)) ||
     normalized.length < 3
   ) {
     return false;
@@ -439,6 +441,10 @@ function scoreNameLine(line) {
 
   if (/(?:สวย|เด็ด|แซ่บ|เอาใจ|น่ารัก|ฟิน|งานดี|น้องใหม่|ติดตาม|ได้เลย|มีน้อง|จะดู)/i.test(normalized)) {
     score -= 20;
+  }
+
+  if (/(?:สะอาด|ปลอดภัย|คนไม่พลุกพล่าน|เงียบสงบ|private room|parking|ที่จอดรถ|เปิดทุกวัน)/i.test(normalized)) {
+    score -= 24;
   }
 
   if (/\b\d{1,2}[:.]\d{2}\b|\d{3,5}\s*(?:บาท|฿|THB)/i.test(normalized)) {

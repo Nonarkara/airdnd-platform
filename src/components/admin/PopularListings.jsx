@@ -15,7 +15,10 @@ export default function PopularListings({ events }) {
   const ids = sorted.map(([id]) => Number(id));
 
   useEffect(() => {
-    if (ids.length === 0) return;
+    if (ids.length === 0) {
+      return;
+    }
+
     supabase
       .from('companions')
       .select('id, name')
@@ -25,7 +28,7 @@ export default function PopularListings({ events }) {
         (data || []).forEach(r => { map[r.id] = r.name; });
         setNames(map);
       });
-  }, [events.length]);
+  }, [ids]);
 
   if (sorted.length === 0) return <p style={{ color: '#94a3b8', fontSize: 13 }}>No listing clicks yet</p>;
 

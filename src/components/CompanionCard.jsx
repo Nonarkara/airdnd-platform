@@ -1,5 +1,6 @@
 import {
   SOURCE_LABELS,
+  formatSourceChannelName,
   formatPreciseTimestamp,
   hasMatchedMedia,
 } from '../lib/listings';
@@ -11,7 +12,8 @@ function CompanionCard({ companion, onClick, t }) {
     || formatPreciseTimestamp(companion.updatedAt)
     || t.card.timestampPending;
   const isMatched = hasMatchedMedia(companion);
-  const sourceLabel = companion.sourceChannel || SOURCE_LABELS[companion.dataSource];
+  const sourceLabel =
+    formatSourceChannelName(companion.sourceChannel) || SOURCE_LABELS[companion.dataSource];
 
   const hasContact = companion.phone || companion.lineUrl || companion.telegramUrl || companion.mapsUrl;
 

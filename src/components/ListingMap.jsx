@@ -158,12 +158,13 @@ export default function ListingMap({ listings, t }) {
   }, [pins]);
 
   return (
-    <section className="listing-map-section">
+    <section className="listing-map-section" id="map">
       <div className="listing-map-header">
         <span className="section-kicker">{t.map?.kicker || 'LIVE MAP'}</span>
         <h2>{t.map?.title || 'Massage & Spa Locations'}</h2>
+        <p className="listing-map-count">{pins.length} places mapped in the current directory.</p>
         <p className="listing-map-subtitle">
-          {pins.length} {t.map?.subtitle || 'places mapped across Thailand. Click a pin for details.'}
+          {t.map?.subtitle || 'Click a pin for details.'}
         </p>
       </div>
       <div ref={mapRef} className="listing-map-container" />

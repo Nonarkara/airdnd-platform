@@ -6,6 +6,62 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const snapshotPath = path.join(__dirname, '../public/data.json');
 
+const CITY_PATTERNS = [
+  {
+    canonical: 'Bangkok',
+    patterns: [
+      'bangkok',
+      'กรุงเทพ',
+      'กรุงเทพมหานคร',
+      'สุขุมวิท',
+      'ทองหล่อ',
+      'เอกมัย',
+      'อโศก',
+      'ลาดพร้าว',
+      'รามอินทรา',
+      'พระราม',
+      'รัชดา',
+      'ห้วยขวาง',
+      'สาทร',
+      'สีลม',
+      'บางนา',
+      'นวมินทร์',
+      'มีนบุรี',
+      'ฉลองกรุง',
+      'คลองสอง',
+      'ศาลายา',
+    ],
+  },
+  {
+    canonical: 'Nonthaburi',
+    patterns: ['nonthaburi', 'นนทบุรี', 'นนทบุร', 'บางใหญ่', 'ปากเกร็ด', 'บางกรวย', 'วัดลาดปลาดุก'],
+  },
+  {
+    canonical: 'Pathum Thani',
+    patterns: ['pathum thani', 'ปทุมธานี', 'รังสิต', 'ลำลูกกา'],
+  },
+  {
+    canonical: 'Samut Prakan',
+    patterns: ['samut prakan', 'สมุทรปราการ', 'สำโรง', 'แบริ่ง'],
+  },
+  {
+    canonical: 'Chonburi',
+    patterns: ['chonburi', 'ชลบุรี', 'pattaya', 'พัทยา', 'jomtien'],
+  },
+  {
+    canonical: 'Phuket',
+    patterns: ['phuket', 'ภูเก็ต', 'patong'],
+  },
+  {
+    canonical: 'Chiang Mai',
+    patterns: ['chiang mai', 'เชียงใหม่'],
+  },
+  {
+    canonical: 'Saraburi',
+    patterns: ['saraburi', 'สระบุรี'],
+  },
+];
+
 /**
  * Resolve lat/lng from a Google Maps short URL by following the redirect.
  * Returns [lat, lng] or null.
@@ -59,6 +115,23 @@ function cleanDisplayText(value) {
     .trim();
 }
 
+function hasServiceNameSignal(value) {
+  return /massage|spa|นวด|สปา|เพื่อสุขภาพ|wellness|therapy|therapist|คลินิก|clinic/i.test(value);
+}
+
+function inferCityFromText(value) {
+  const normalized = normalizeText(value, '').toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+
+  const matchedCity = CITY_PATTERNS.find(({ patterns }) =>
+    patterns.some((pattern) => normalized.includes(pattern.toLowerCase())),
+  );
+
+  return matchedCity?.canonical || null;
+}
+
 function formatSourceChannelName(sourceChannel) {
   const raw = normalizeText(sourceChannel, '').replace(/^@/, '');
   if (!raw) {
@@ -100,6 +173,18 @@ function cleanLocationLabel(location) {
       .replace(/\([^)]*\)/g, ' '),
   );
 
+  if (!cleaned || cleaned === 'ร้าน') {
+    return 'Bangkok, Thailand';
+  }
+
+  if (
+    cleaned.length > 72 ||
+    /เปิดบริการ|สวัสดี|line|โทร|#|บริการทุกวัน|\d{1,2}[:.]\d{2}/i.test(cleaned)
+  ) {
+    const inferredCity = inferCityFromText(cleaned);
+    return inferredCity ? `${inferredCity}, Thailand` : 'Bangkok, Thailand';
+  }
+
   return cleaned || 'Bangkok, Thailand';
 }
 
@@ -111,10 +196,14 @@ function isBadDisplayName(name) {
 
   return (
     /^(group joining details|group|telegram|open|เปิด|นี้|massage|spa|สปา|line|new)$/i.test(normalized) ||
-    /group|joining|children'?s only|new group|line\s*id|telegram|เปิดให้บริการ|ได้เลยนะ|มีน้องคนไหน|ด่วนโทร|เอาใจ|แซ่บ|ส่งไรนักหนา|ประกาศภาวะฉุกเฉิน|จะดู|ครับ|ค่ะ|คะ/i.test(normalized) ||
+    /group|joining|children'?s only|line\s*id|id\s*line|new group|telegram|เปิดให้บริการ|ได้เลยนะ|มีน้องคนไหน|ด่วนโทร|เอาใจ|แซ่บ|ส่งไรนักหนา|ประกาศภาวะฉุกเฉิน|จะดู|ครับ|ค่ะ|คะ|สะอาด|ปลอดภัย|คนไม่พลุกพล่าน|private room|parking|บรรยากาศ|เงียบสงบ|น้องใหม่|บริการทุกวัน|จับจอง|แล้วค่า|แล้วครับ|แล้วค่ะ/i.test(normalized) ||
     /^\d[\d -]{7,}$/.test(normalized) ||
     /^\d{1,2}[:.]\d{2}/.test(normalized) ||
     /[:：]/.test(normalized) ||
+    (/society/i.test(normalized) && !hasServiceNameSignal(normalized)) ||
+    (!hasServiceNameSignal(normalized) && normalized.split(/\s+/).filter(Boolean).length >= 5) ||
+    (!hasServiceNameSignal(normalized) && normalized.length > 36) ||
+    (/^[\u0E00-\u0E7F]{1,4}$/.test(normalized) && !hasServiceNameSignal(normalized)) ||
     normalized.length < 3
   );
 }
@@ -258,6 +347,11 @@ function buildNameLocationKey(listing) {
 }
 
 function extractCity(location) {
+  const inferredCity = inferCityFromText(location);
+  if (inferredCity) {
+    return inferredCity;
+  }
+
   const normalizedLocation = normalizeText(location, 'Bangkok, Thailand');
   const segments = normalizedLocation
     .split(',')
@@ -278,6 +372,30 @@ function extractCity(location) {
   }
 
   return segments.at(-1) || 'Bangkok';
+}
+
+function resolveCity(rawCity, location) {
+  const locationCity = inferCityFromText(location);
+  const cleanedCity = cleanDisplayText(rawCity);
+  const explicitCity = inferCityFromText(cleanedCity);
+
+  if (explicitCity) {
+    return explicitCity;
+  }
+
+  if (locationCity) {
+    return locationCity;
+  }
+
+  if (
+    cleanedCity &&
+    cleanedCity.length <= 32 &&
+    !/ร้าน|เปิด|บริการ|สะอาด|ปลอดภัย|ใกล้|พิกัด|ซอย|ถนน|บาท|thb|นวด/i.test(cleanedCity)
+  ) {
+    return cleanedCity;
+  }
+
+  return 'Bangkok';
 }
 
 function extractPriceValue(priceLabel) {
@@ -332,6 +450,10 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         return null;
       }
 
+      if (name.startsWith('Massage Listing') && location === 'Bangkok, Thailand') {
+        return null;
+      }
+
       const priceLabel = sanitizePriceLabel(listing?.priceLabel || listing?.price);
       const rating = normalizeNumber(listing?.rating);
       const reviews = normalizeInteger(listing?.reviews);
@@ -349,7 +471,7 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         name,
         age: normalizeInteger(listing?.age),
         location,
-        city: normalizeText(listing?.city, extractCity(location)),
+        city: resolveCity(listing?.city, location),
         priceLabel,
         priceValue: extractPriceValue(priceLabel),
         description: normalizeText(

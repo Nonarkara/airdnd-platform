@@ -6,8 +6,20 @@
 
 .companion-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 0.75rem;
+}
+
+.companion-grid > .card-entrance {
+  grid-column: span 4;
+}
+
+.companion-grid > .card-entrance:first-child {
+  grid-column: span 8;
+}
+
+.companion-grid > .card-entrance:first-child .poster-card {
+  aspect-ratio: 16 / 10;
 }
 
 /* Stagger entrance animation */
@@ -116,26 +128,33 @@
 }
 
 .btn-load-more {
-  background: transparent;
-  color: var(--color-red);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-cream);
   font-family: var(--font-display);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 0.7rem 2rem;
-  border: 1px solid var(--color-red);
-  border-radius: 8px;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
   transition: background var(--transition-fast, 0.15s ease), color var(--transition-fast, 0.15s ease);
 }
 
 .btn-load-more:hover {
-  background: var(--color-red);
-  color: #fff;
+  background: var(--color-surface-hover);
 }
 
 @media (max-width: 900px) {
-  .companion-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+  .companion-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+  .companion-grid > .card-entrance,
+  .companion-grid > .card-entrance:first-child {
+    grid-column: span 1;
+  }
+
+  .companion-grid > .card-entrance:first-child .poster-card {
+    aspect-ratio: 3 / 4;
+  }
 }
 
 @media (max-width: 600px) {

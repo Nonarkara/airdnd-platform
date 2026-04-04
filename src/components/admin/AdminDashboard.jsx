@@ -17,12 +17,10 @@ const RANGE_OPTIONS = [
 
 export default function AdminDashboard() {
   const [range, setRange] = useState(7);
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
 
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - range);
@@ -36,16 +34,17 @@ export default function AdminDashboard() {
       .then(({ data, error }) => {
         if (!cancelled) {
           setEvents(error ? [] : data || []);
-          setLoading(false);
         }
       });
 
     return () => { cancelled = true; };
   }, [range]);
 
-  const pageviews = events.filter(e => e.event_type === 'pageview');
-  const clicks = events.filter(e => e.event_type === 'listing_click');
-  const sessions = [...new Set(events.map(e => e.session_id))];
+  const safeEvents = events || [];
+  const loading = events === null;
+  const pageviews = safeEvents.filter(e => e.event_type === 'pageview');
+  const clicks = safeEvents.filter(e => e.event_type === 'listing_click');
+  const sessions = [...new Set(safeEvents.map(e => e.session_id))];
 
   return (
     <div className="admin-dashboard">
@@ -62,7 +61,10 @@ export default function AdminDashboard() {
               <button
                 key={opt.days}
                 className={`range-btn ${range === opt.days ? 'active' : ''}`}
-                onClick={() => setRange(opt.days)}
+                onClick={() => {
+                  setEvents(null);
+                  setRange(opt.days);
+                }}
               >
                 {opt.label}
               </button>

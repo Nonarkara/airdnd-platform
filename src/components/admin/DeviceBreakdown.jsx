@@ -27,18 +27,27 @@ export default function DeviceBreakdown({ events }) {
   const colors = { Mobile: '#2a9d6e', Desktop: '#1e7a54', Tablet: '#64748b', Unknown: '#cbd5e1' };
 
   const segments = Object.entries(types).sort((a, b) => b[1] - a[1]);
-  let offset = 0;
   const circumference = 2 * Math.PI * 40;
+  const arcSegments = segments.map(([type, count], index) => {
+    const pct = count / total;
+    const previousShare = segments
+      .slice(0, index)
+      .reduce((sum, [, previousCount]) => sum + previousCount / total, 0);
+
+    return {
+      type,
+      count,
+      pct,
+      dash: pct * circumference,
+      gap: circumference - pct * circumference,
+      rotation: previousShare * 360 - 90,
+    };
+  });
 
   return (
     <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
       <svg width={100} height={100} viewBox="0 0 100 100">
-        {segments.map(([type, count]) => {
-          const pct = count / total;
-          const dash = pct * circumference;
-          const gap = circumference - dash;
-          const rot = offset * 360 - 90;
-          offset += pct;
+        {arcSegments.map(({ type, dash, gap, rotation }) => {
           return (
             <circle
               key={type}
@@ -47,7 +56,7 @@ export default function DeviceBreakdown({ events }) {
               stroke={colors[type] || '#94a3b8'}
               strokeWidth={16}
               strokeDasharray={`${dash} ${gap}`}
-              transform={`rotate(${rot} 50 50)`}
+              transform={`rotate(${rotation} 50 50)`}
             />
           );
         })}

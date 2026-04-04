@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.35rem;
-  padding: 1.6rem 0 0;
+  padding: 1.2rem 0 0;
   border-top: 1px solid var(--color-line);
 }
 
@@ -97,10 +97,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.24rem;
-  padding: 1rem;
-  border: 1px solid var(--color-line);
-  border-radius: 1rem 0.35rem 1rem 0.35rem;
-  background: var(--color-surface-muted);
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--color-line-soft);
 }
 
 .live-intake-board-card span {
@@ -171,8 +169,8 @@
   width: 0.42rem;
   height: 0.42rem;
   border-radius: 50%;
-  background: rgba(200, 96, 52, 0.25);
-  box-shadow: 0 0 0 0.22rem rgba(200, 96, 52, 0.08);
+  background: rgba(255, 116, 64, 0.3);
+  box-shadow: 0 0 0 0.22rem rgba(255, 116, 64, 0.08);
 }
 
 .live-intake-item-dot.is-matched {

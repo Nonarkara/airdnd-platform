@@ -1,6 +1,6 @@
 const shared = {
   header: {
-    tagline: 'Thailand massage & spa directory',
+    tagline: 'Thailand wellness intelligence',
   },
   nav: {
     map: 'Map',
@@ -14,10 +14,10 @@ const shared = {
     logout: 'Logout',
   },
   hero: {
-    kicker: 'Thailand massage & spa directory',
-    title: 'Find your next massage.',
+    kicker: 'Thailand wellness intelligence',
+    title: 'Live wellness intelligence, cleaned for humans.',
     subtitle:
-      'Real places, real photos, updated every hour from community sources across Thailand. Browse by area, compare prices, and book with confidence.',
+      'Sabai Sabai turns noisy Telegram source flow into a usable Thailand massage and spa directory: real places, real matched photos, fast filters, and a live intake story that holds up in the room.',
     primaryAction: 'Refresh listings',
     secondaryAction: 'Browse all listings',
     panelLabel: 'Directory status',
@@ -45,8 +45,8 @@ const shared = {
     railTitle: 'Newest live matches',
     timestampPending: 'Pending',
     notes: {
-      primary: 'New listings are sorted by actual source post time and surfaced with their matched media when available.',
-      secondary: 'Each card below is built from the latest clustered source posts, not static sample content.',
+      primary: 'New listings are ranked by actual source post time, not a fake demo clock, and surfaced with their matched media when available.',
+      secondary: 'The directory below is built from clustered Telegram intake, deduplicated, normalized, and pushed through live sync plus verified snapshot fallback.',
     },
     emptyRail: 'New listings will appear here as they are added to the directory.',
     spotlightLabel: 'Live spotlight',
@@ -62,9 +62,9 @@ const shared = {
   },
   intake: {
     kicker: 'Live intake',
-    title: 'Telegram flow, cleaned up for the room.',
+    title: 'Live intake, not theatre.',
     subtitle:
-      'This strip shows what the pipeline is actually absorbing right now: newest arrivals, current feed velocity, matched-photo quality, and the last successful Telegram sync.',
+      'This strip shows what the system is actually absorbing right now: newest arrivals, current feed velocity, matched-photo quality, and the last successful Telegram sync.',
     syncLabel: 'Last Telegram sync',
     pending: 'Waiting for sync',
     tickerLabel: 'Newest arrivals',
@@ -121,9 +121,9 @@ const shared = {
   },
   featured: {
     kicker: 'All listings',
-    title: 'Massage & spa directory',
+    title: 'Current massage and spa directory',
     subtitle:
-      'Browse by location, service type, or price. All listings are sourced from community channels and updated regularly.',
+      'Browse by location, service type, or price. Listings are sourced from community channels, cleaned automatically, and sorted to keep Bangkok front and center without hiding the wider Thailand feed.',
     countLabel: 'places found',
     showMore: 'Show more',
     hidden: 'remaining',
@@ -155,10 +155,10 @@ const shared = {
     viewDetails: 'View details',
   },
   footer: {
-    tagline: 'Your guide to quality massage and spa services in Thailand.',
+    tagline: 'Realtime massage and spa discovery across Thailand.',
     disclaimerTitle: 'About this directory',
     disclaimerText:
-      'Sabai Sabai collects listings from community channels and keeps the directory up to date automatically. Listings are provided for informational purposes.',
+      'Sabai Sabai collects listings from live community channels, cleans them into a usable directory, and keeps the experience stable with verified snapshot fallback when live services slow down.',
     opsLabel: 'Data source',
     rights: '\u00a9 2026 Sabai Sabai. Thailand massage & spa directory.',
     mapLink: 'Map',

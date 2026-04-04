@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   createIntakeSummary,
+  formatSourceChannelName,
   formatPreciseTimestamp,
   formatRelativeTimestamp,
   getIngestTimestamp,
@@ -158,7 +159,7 @@ function LiveIntakeStrip({ t, listings, intakeSummary, lastLoadedAt }) {
                   <span className={`live-intake-item-dot${hasMatchedMedia(listing) ? ' is-matched' : ''}`} />
                   <strong>{listing.name}</strong>
                   <span>{listing.location}</span>
-                  <span>{listing.sourceChannel || t.intake.unknownChannel}</span>
+                  <span>{formatSourceChannelName(listing.sourceChannel) || t.intake.unknownChannel}</span>
                   <span>{formatRelativeTimestamp(listingTimestamp) || t.intake.pending}</span>
                 </article>
               );
@@ -176,7 +177,7 @@ function LiveIntakeStrip({ t, listings, intakeSummary, lastLoadedAt }) {
             {intake.channelLeaders.map((channel) => (
               <li key={channel.channel} className="live-intake-flow-item">
                 <div className="live-intake-flow-main">
-                  <strong>{channel.channel}</strong>
+                  <strong>{formatSourceChannelName(channel.channel) || channel.channel}</strong>
                   <span>{channel.count} {t.intake.listingsUnit}</span>
                 </div>
                 <div className="live-intake-flow-bar" aria-hidden="true">

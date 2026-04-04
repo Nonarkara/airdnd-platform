@@ -1,72 +1,69 @@
 .how-it-works {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2xl);
+  display: grid;
+  gap: 1.8rem;
+  padding-top: 0.5rem;
 }
 
 .hiw-header {
-  max-width: 40ch;
+  max-width: 48rem;
 }
 
 .hiw-header .section-kicker {
-  display: block;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.8rem;
 }
 
 .hiw-header h2 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 900;
-  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  margin-bottom: 0.65rem;
 }
 
 .hiw-header p {
   color: var(--color-cream-soft);
-  font-size: 0.9rem;
-  line-height: 1.7;
+  font-size: 0.95rem;
+  line-height: 1.75;
 }
 
 .hiw-steps {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3rem;
-}
-
-.hiw-step {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
 }
 
+.hiw-step {
+  display: grid;
+  gap: 0.95rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-line);
+}
+
 .step-icon {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  background: var(--color-red);
-  color: var(--color-cream);
+  width: fit-content;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 116, 64, 0.12);
+  color: var(--color-red);
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 900;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
 }
 
 .hiw-step h3 {
-  font-family: var(--font-display);
   font-size: 1.2rem;
-  font-weight: 900;
-  letter-spacing: -0.01em;
+  line-height: 1.15;
 }
 
 .hiw-step p {
   color: var(--color-cream-soft);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   line-height: 1.7;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .hiw-steps {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
   }
 }

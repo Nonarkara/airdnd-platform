@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
@@ -7,16 +7,9 @@ import LiveIntakeStrip from './components/LiveIntakeStrip';
 import FilterBar from './components/FilterBar';
 import CompanionGrid from './components/CompanionGrid';
 import CompanionModal from './components/CompanionModal';
-import MapSection from './components/MapSection';
 import HowItWorks from './components/HowItWorks';
-import VibeMap from './components/VibeMap';
-import ListingMap from './components/ListingMap';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
-import AdminDashboard from './components/admin/AdminDashboard';
-import Methodology from './components/Methodology';
-import TrendInsights from './components/TrendInsights';
-import ControlPanel from './components/ControlPanel';
 import { companions as backupCompanions } from './data/mockData';
 import { supabase } from './lib/supabase';
 import { initSession } from './lib/tracker';
@@ -31,12 +24,17 @@ import { translations } from './translations';
 
 const REFRESH_INTERVAL_MS = 60_000;
 const SUPABASE_TIMEOUT_MS = 4_000;
+const LIVE_QUERY_LIMIT = 400;
+const REALTIME_REFRESH_DEBOUNCE_MS = 1_200;
 const ALL_LOCATIONS_VALUE = 'all-locations';
 const ALL_TAGS_VALUE = 'all-tags';
 const normalizedBackupListings = normalizeListings(backupCompanions, {
   source: 'backup',
   isFallback: true,
 });
+const ListingMap = lazy(() => import('./components/ListingMap'));
+const Methodology = lazy(() => import('./components/Methodology'));
+const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
 const SORT_OPTIONS = [
   'Newest',
   'Lowest price',
@@ -116,7 +114,8 @@ async function fetchSupabaseListings() {
   const supabaseRequest = supabase
     .from('companions')
     .select('*')
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .limit(LIVE_QUERY_LIMIT);
 
   let timeoutId = null;
   const timeoutPromise = new Promise((_, reject) => {
@@ -247,11 +246,20 @@ function App() {
     lastLoadedAt: null,
     warning: null,
   });
+  const isActiveRef = useRef(true);
+  const loadInFlightRef = useRef(false);
+  const pendingAutoRefreshRef = useRef(false);
+  const realtimeRefreshTimerRef = useRef(null);
+  const manualLoadRef = useRef(async () => {});
 
   const t = translations[language] || translations.en;
-  const metrics = createMetrics(allCompanions);
-  const intakeSummary = createIntakeSummary(allCompanions);
-  const recentListings = sortListings(allCompanions, SORT_OPTIONS[0]).slice(0, 5);
+  const deferredSearchTerm = useDeferredValue(searchTerm);
+  const metrics = useMemo(() => createMetrics(allCompanions), [allCompanions]);
+  const intakeSummary = useMemo(() => createIntakeSummary(allCompanions), [allCompanions]);
+  const recentListings = useMemo(
+    () => sortListings(allCompanions, SORT_OPTIONS[0]).slice(0, 5),
+    [allCompanions],
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -281,23 +289,70 @@ function App() {
   }, []);
 
   useEffect(() => {
-    let isActive = true;
+    isActiveRef.current = true;
 
     const loadListings = async () => {
-      setDataState((current) => ({
-        ...current,
-        isLoading: current.lastLoadedAt === null,
-        isRefreshing: current.lastLoadedAt !== null,
-        warning: null,
-      }));
-
-      const result = await loadListingsWithFallback();
-      if (!isActive) {
+      if (loadInFlightRef.current) {
+        pendingAutoRefreshRef.current = true;
         return;
       }
 
-      setAllCompanions(result.listings);
-      setDataState(createDataState(result));
+      loadInFlightRef.current = true;
+
+      try {
+        setDataState((current) => ({
+          ...current,
+          isLoading: current.lastLoadedAt === null,
+          isRefreshing: current.lastLoadedAt !== null,
+          warning: null,
+        }));
+
+        const result = await loadListingsWithFallback();
+        if (!isActiveRef.current) {
+          return;
+        }
+
+        setAllCompanions(result.listings);
+        setDataState(createDataState(result));
+      } finally {
+        loadInFlightRef.current = false;
+
+        if (pendingAutoRefreshRef.current) {
+          pendingAutoRefreshRef.current = false;
+          void loadListings();
+        }
+      }
+    };
+    manualLoadRef.current = async (mode = 'manual') => {
+      if (loadInFlightRef.current && mode !== 'manual') {
+        pendingAutoRefreshRef.current = true;
+        return;
+      }
+
+      if (loadInFlightRef.current && mode === 'manual') {
+        return;
+      }
+
+      loadInFlightRef.current = true;
+
+      try {
+        setDataState((current) => ({
+          ...current,
+          isLoading: current.lastLoadedAt === null,
+          isRefreshing: true,
+          warning: null,
+        }));
+
+        const result = await loadListingsWithFallback(mode);
+        if (!isActiveRef.current) {
+          return;
+        }
+
+        setAllCompanions(result.listings);
+        setDataState(createDataState(result));
+      } finally {
+        loadInFlightRef.current = false;
+      }
     };
 
     const refreshIfVisible = () => {
@@ -305,62 +360,82 @@ function App() {
         void loadListings();
       }
     };
+    const scheduleRealtimeRefresh = () => {
+      if (document.visibilityState !== 'visible' || realtimeRefreshTimerRef.current !== null) {
+        return;
+      }
+
+      realtimeRefreshTimerRef.current = window.setTimeout(() => {
+        realtimeRefreshTimerRef.current = null;
+        void loadListings();
+      }, REALTIME_REFRESH_DEBOUNCE_MS);
+    };
 
     void loadListings();
     const intervalId = window.setInterval(refreshIfVisible, REFRESH_INTERVAL_MS);
     document.addEventListener('visibilitychange', refreshIfVisible);
 
-    // Real-time subscription — fires immediately when the Telegram bot inserts a new row
     const channel = supabase
       .channel('companions-realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'companions' }, () => {
-        if (isActive) {
-          void loadListings();
-        }
-      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'companions' }, scheduleRealtimeRefresh)
       .subscribe();
 
     return () => {
-      isActive = false;
+      isActiveRef.current = false;
+      manualLoadRef.current = async () => {};
+      pendingAutoRefreshRef.current = false;
       window.clearInterval(intervalId);
+      if (realtimeRefreshTimerRef.current !== null) {
+        window.clearTimeout(realtimeRefreshTimerRef.current);
+      }
       document.removeEventListener('visibilitychange', refreshIfVisible);
       supabase.removeChannel(channel);
     };
   }, []);
 
-  const locationOptions = [
-    { value: ALL_LOCATIONS_VALUE, label: t.filters.allLocations },
-    ...[...new Set(allCompanions.map((listing) => listing.city))]
-      .filter(Boolean)
-      .sort((left, right) => left.localeCompare(right))
-      .map((city) => ({ value: city, label: city })),
-  ];
+  const locationOptions = useMemo(
+    () => [
+      { value: ALL_LOCATIONS_VALUE, label: t.filters.allLocations },
+      ...[...new Set(allCompanions.map((listing) => listing.city))]
+        .filter(Boolean)
+        .sort((left, right) => left.localeCompare(right))
+        .map((city) => ({ value: city, label: city })),
+    ],
+    [allCompanions, t.filters.allLocations],
+  );
 
-  const activityOptions = [
-    { value: ALL_TAGS_VALUE, label: t.filters.allTags },
-    ...[...new Set(allCompanions.flatMap((listing) => listing.tags))]
-      .filter(Boolean)
-      .sort((left, right) => left.localeCompare(right))
-      .map((tag) => ({ value: tag, label: tag })),
-  ];
+  const activityOptions = useMemo(
+    () => [
+      { value: ALL_TAGS_VALUE, label: t.filters.allTags },
+      ...[...new Set(allCompanions.flatMap((listing) => listing.tags))]
+        .filter(Boolean)
+        .sort((left, right) => left.localeCompare(right))
+        .map((tag) => ({ value: tag, label: tag })),
+    ],
+    [allCompanions, t.filters.allTags],
+  );
 
-  const filteredCompanions = sortListings(
-    allCompanions.filter((listing) => {
-      const matchesLocation =
-        activeLocation === ALL_LOCATIONS_VALUE || listing.city === activeLocation;
-      const matchesActivity =
-        activeActivity === ALL_TAGS_VALUE || listing.tags.includes(activeActivity);
+  const filteredCompanions = useMemo(
+    () =>
+      sortListings(
+        allCompanions.filter((listing) => {
+          const matchesLocation =
+            activeLocation === ALL_LOCATIONS_VALUE || listing.city === activeLocation;
+          const matchesActivity =
+            activeActivity === ALL_TAGS_VALUE || listing.tags.includes(activeActivity);
 
-      const normalizedSearch = searchTerm.trim().toLowerCase();
-      const matchesSearch =
-        !normalizedSearch ||
-        [listing.name, listing.location, listing.description]
-          .filter(Boolean)
-          .some((value) => value.toLowerCase().includes(normalizedSearch));
+          const normalizedSearch = deferredSearchTerm.trim().toLowerCase();
+          const matchesSearch =
+            !normalizedSearch ||
+            [listing.name, listing.location, listing.description]
+              .filter(Boolean)
+              .some((value) => value.toLowerCase().includes(normalizedSearch));
 
-      return matchesLocation && matchesActivity && matchesSearch;
-    }),
-    sortBy,
+          return matchesLocation && matchesActivity && matchesSearch;
+        }),
+        sortBy,
+      ),
+    [activeActivity, activeLocation, allCompanions, deferredSearchTerm, sortBy],
   );
 
   const clearFilters = () => {
@@ -370,26 +445,25 @@ function App() {
     setSortBy(SORT_OPTIONS[0]);
   };
 
-  const handleRefresh = async () => {
-    setDataState((current) => ({
-      ...current,
-      isRefreshing: true,
-      warning: null,
-    }));
-
-    const result = await loadListingsWithFallback('manual');
-    setAllCompanions(result.listings);
-    setDataState(createDataState(result));
-  };
+  const handleRefresh = async () => manualLoadRef.current('manual');
 
   return (
     <Routes>
-      <Route path="/methodology" element={<Methodology />} />
+      <Route
+        path="/methodology"
+        element={(
+          <Suspense fallback={<div className="page-shell-loading">Loading methodology…</div>}>
+            <Methodology />
+          </Suspense>
+        )}
+      />
       <Route
         path="/admin"
         element={
           <AdminGuard session={session}>
-            <AdminDashboard />
+            <Suspense fallback={<div className="page-shell-loading">Loading dashboard…</div>}>
+              <AdminDashboard />
+            </Suspense>
           </AdminGuard>
         }
       />
@@ -410,9 +484,21 @@ function App() {
             />
 
             <main className="main-content">
-              <HeroSection t={t} metrics={metrics} />
+              <HeroSection
+                t={t}
+                metrics={metrics}
+                intakeSummary={intakeSummary}
+                recentListings={recentListings}
+                dataState={dataState}
+                onRefresh={handleRefresh}
+              />
 
-              <ControlPanel listings={allCompanions} onCardClick={setSelectedCompanion} />
+              <LiveIntakeStrip
+                t={t}
+                listings={allCompanions}
+                intakeSummary={intakeSummary}
+                lastLoadedAt={dataState.lastLoadedAt}
+              />
 
               <section id="live-listings" className="listing-section">
                 <div className="section-header">
@@ -420,6 +506,7 @@ function App() {
                     <span className="section-kicker">{t.featured.kicker}</span>
                     <h2>{t.featured.title}</h2>
                   </div>
+                  <p className="section-subtitle">{t.featured.subtitle}</p>
                   <div className="section-meta">
                     <span>{filteredCompanions.length} {t.featured.countLabel}</span>
                     <span>{dataState.sourceLabel}</span>
@@ -458,7 +545,11 @@ function App() {
                 />
               </section>
 
-              <ListingMap listings={allCompanions} t={t} />
+              <Suspense fallback={<section className="section-shell-loading">Loading live map…</section>}>
+                <ListingMap listings={allCompanions} t={t} />
+              </Suspense>
+
+              <HowItWorks t={t} />
             </main>
 
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={dataState.sourceLabel} />

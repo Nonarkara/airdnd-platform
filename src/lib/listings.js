@@ -2,9 +2,9 @@ const DEFAULT_LOCATION = 'Bangkok, Thailand';
 const DEFAULT_IMAGE = '/mockups/109748.jpg';
 
 export const SOURCE_LABELS = {
-  supabase: 'Live directory',
-  snapshot: 'Recent snapshot',
-  backup: 'Cached listings',
+  supabase: 'Live sync',
+  snapshot: 'Verified snapshot',
+  backup: 'Cached fallback',
 };
 
 const VALID_SERVICE_TAGS = new Set([
@@ -24,6 +24,62 @@ const VALID_SERVICE_TAGS = new Set([
   'Wellness',
   'Young Talent',
 ]);
+
+const CITY_PATTERNS = [
+  {
+    canonical: 'Bangkok',
+    patterns: [
+      'bangkok',
+      'กรุงเทพ',
+      'กรุงเทพมหานคร',
+      'สุขุมวิท',
+      'ทองหล่อ',
+      'เอกมัย',
+      'อโศก',
+      'ลาดพร้าว',
+      'รามอินทรา',
+      'พระราม',
+      'รัชดา',
+      'ห้วยขวาง',
+      'สาทร',
+      'สีลม',
+      'บางนา',
+      'นวมินทร์',
+      'มีนบุรี',
+      'ฉลองกรุง',
+      'คลองสอง',
+      'ศาลายา',
+    ],
+  },
+  {
+    canonical: 'Nonthaburi',
+    patterns: ['nonthaburi', 'นนทบุรี', 'นนทบุร', 'บางใหญ่', 'ปากเกร็ด', 'บางกรวย', 'วัดลาดปลาดุก'],
+  },
+  {
+    canonical: 'Pathum Thani',
+    patterns: ['pathum thani', 'ปทุมธานี', 'รังสิต', 'ลำลูกกา'],
+  },
+  {
+    canonical: 'Samut Prakan',
+    patterns: ['samut prakan', 'สมุทรปราการ', 'สำโรง', 'แบริ่ง'],
+  },
+  {
+    canonical: 'Chonburi',
+    patterns: ['chonburi', 'ชลบุรี', 'pattaya', 'พัทยา', 'jomtien'],
+  },
+  {
+    canonical: 'Phuket',
+    patterns: ['phuket', 'ภูเก็ต', 'patong'],
+  },
+  {
+    canonical: 'Chiang Mai',
+    patterns: ['chiang mai', 'เชียงใหม่'],
+  },
+  {
+    canonical: 'Saraburi',
+    patterns: ['saraburi', 'สระบุรี'],
+  },
+];
 
 function isValidServiceTag(tag) {
   if (VALID_SERVICE_TAGS.has(tag)) {
@@ -62,7 +118,24 @@ function cleanDisplayText(value) {
     .trim();
 }
 
-function formatSourceChannelName(sourceChannel) {
+function hasServiceNameSignal(value) {
+  return /massage|spa|นวด|สปา|เพื่อสุขภาพ|wellness|therapy|therapist|คลินิก|clinic/i.test(value);
+}
+
+function inferCityFromText(value) {
+  const normalized = normalizeText(value, '').toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+
+  const matchedCity = CITY_PATTERNS.find(({ patterns }) =>
+    patterns.some((pattern) => normalized.includes(pattern.toLowerCase())),
+  );
+
+  return matchedCity?.canonical || null;
+}
+
+export function formatSourceChannelName(sourceChannel) {
   const raw = normalizeText(sourceChannel, '').replace(/^@/, '');
   if (!raw) {
     return '';
@@ -103,6 +176,18 @@ function cleanLocationLabel(location) {
       .replace(/\([^)]*\)/g, ' '),
   );
 
+  if (!cleaned || cleaned === 'ร้าน') {
+    return DEFAULT_LOCATION;
+  }
+
+  if (
+    cleaned.length > 72 ||
+    /เปิดบริการ|สวัสดี|line|โทร|#|บริการทุกวัน|\d{1,2}[:.]\d{2}/i.test(cleaned)
+  ) {
+    const inferredCity = inferCityFromText(cleaned);
+    return inferredCity ? `${inferredCity}, Thailand` : DEFAULT_LOCATION;
+  }
+
   return cleaned || DEFAULT_LOCATION;
 }
 
@@ -114,10 +199,14 @@ function isBadDisplayName(name) {
 
   return (
     /^(group joining details|group|telegram|open|เปิด|นี้|massage|spa|สปา|line|new)$/i.test(normalized) ||
-    /group|joining|children'?s only|new group|line\s*id|telegram|เปิดให้บริการ|ได้เลยนะ|มีน้องคนไหน|ด่วนโทร|เอาใจ|แซ่บ|ส่งไรนักหนา|ประกาศภาวะฉุกเฉิน|จะดู|ครับ|ค่ะ|คะ/i.test(normalized) ||
+    /group|joining|children'?s only|line\s*id|id\s*line|new group|telegram|เปิดให้บริการ|ได้เลยนะ|มีน้องคนไหน|ด่วนโทร|เอาใจ|แซ่บ|ส่งไรนักหนา|ประกาศภาวะฉุกเฉิน|จะดู|ครับ|ค่ะ|คะ|สะอาด|ปลอดภัย|คนไม่พลุกพล่าน|private room|parking|บรรยากาศ|เงียบสงบ|น้องใหม่|บริการทุกวัน|จับจอง|แล้วค่า|แล้วครับ|แล้วค่ะ/i.test(normalized) ||
     /^\d[\d -]{7,}$/.test(normalized) ||
     /^\d{1,2}[:.]\d{2}/.test(normalized) ||
     /[:：]/.test(normalized) ||
+    (/society/i.test(normalized) && !hasServiceNameSignal(normalized)) ||
+    (!hasServiceNameSignal(normalized) && normalized.split(/\s+/).filter(Boolean).length >= 5) ||
+    (!hasServiceNameSignal(normalized) && normalized.length > 36) ||
+    (/^[\u0E00-\u0E7F]{1,4}$/.test(normalized) && !hasServiceNameSignal(normalized)) ||
     normalized.length < 3
   );
 }
@@ -200,7 +289,36 @@ function extractPriceValue(priceLabel) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function resolveCity(rawCity, location) {
+  const locationCity = inferCityFromText(location);
+  const cleanedCity = cleanDisplayText(rawCity);
+  const explicitCity = inferCityFromText(cleanedCity);
+
+  if (explicitCity) {
+    return explicitCity;
+  }
+
+  if (locationCity) {
+    return locationCity;
+  }
+
+  if (
+    cleanedCity &&
+    cleanedCity.length <= 32 &&
+    !/ร้าน|เปิด|บริการ|สะอาด|ปลอดภัย|ใกล้|พิกัด|ซอย|ถนน|บาท|thb|นวด/i.test(cleanedCity)
+  ) {
+    return cleanedCity;
+  }
+
+  return 'Bangkok';
+}
+
 export function extractCity(location) {
+  const inferredCity = inferCityFromText(location);
+  if (inferredCity) {
+    return inferredCity;
+  }
+
   const normalizedLocation = normalizeText(location, DEFAULT_LOCATION);
 
   // Thai street addresses (ถนน, ถ., ซอย, รามอินทรา, etc.) are Bangkok unless specified otherwise
@@ -273,7 +391,7 @@ export function normalizeListing(rawListing, options = {}) {
     name,
     age: Number.isFinite(normalizedAge) ? normalizedAge : null,
     location,
-    city: extractCity(normalizeText(rawListing?.city, '') || location),
+    city: resolveCity(rawListing?.city, location),
     priceLabel,
     priceValue: extractPriceValue(priceLabel),
     description: normalizeText(
@@ -337,6 +455,15 @@ export function createIntakeSummary(listings) {
     (left, right) => getListingTimestampValue(right) - getListingTimestampValue(left),
   );
   const currentFeedListings = newestListings.slice(0, 60);
+  const currentFeedTimestamps = currentFeedListings
+    .map((listing) => getListingTimestamp(listing) || getIngestTimestamp(listing))
+    .filter(Boolean)
+    .map((date) => date.getTime())
+    .sort((left, right) => right - left);
+  const feedWindowHours =
+    currentFeedTimestamps.length > 1
+      ? Math.max(0.25, (currentFeedTimestamps[0] - currentFeedTimestamps.at(-1)) / 3_600_000)
+      : 1;
   const latestSourceDate = newestListings.length > 0 ? getListingTimestamp(newestListings[0]) : null;
   const latestIngestDate = currentFeedListings
     .map((listing) => getIngestTimestamp(listing))
@@ -377,7 +504,7 @@ export function createIntakeSummary(listings) {
     last60Minutes: countWithinWindow(60),
     last240Minutes: countWithinWindow(240),
     throughputPerHour: currentFeedListings.length
-      ? Math.max(1, Math.round(currentFeedListings.length / 4))
+      ? Math.max(1, Math.round(currentFeedListings.length / feedWindowHours))
       : 0,
     matchedRate: currentFeedListings.length
       ? Math.round((currentFeedListings.filter((listing) => hasMatchedMedia(listing)).length / currentFeedListings.length) * 100)
@@ -404,15 +531,17 @@ export function normalizeListings(listings, options = {}) {
     return [];
   }
 
-  const normalized = listings.map((listing, index) =>
-    normalizeListing(
-      {
-        ...listing,
-        id: listing?.id ?? `${options.source || 'backup'}-${index + 1}`,
-      },
-      options,
-    ),
-  );
+  const normalized = listings
+    .map((listing, index) =>
+      normalizeListing(
+        {
+          ...listing,
+          id: listing?.id ?? `${options.source || 'backup'}-${index + 1}`,
+        },
+        options,
+      ),
+    )
+    .filter((listing) => !(listing.name.startsWith('Massage Listing') && listing.location === DEFAULT_LOCATION));
 
   const deduped = new Map();
   normalized.forEach((listing) => {
