@@ -764,15 +764,34 @@ export async function insertListingsIfPossible(supabase, listings) {
     }
 
     try {
-      // Check for exact name+location match
-      const { data: existingRows, error: lookupError } = await supabase
+      const selectCols = 'id,name,location,image_url,metrics,phone,hours,line_url,telegram_url,maps_url,source_channel,city,mention_count,photo_urls,source_message_ids,user_rating,service_tags,discussion_notes,raw_text';
+
+      // FIRST: Check phone match (same phone = same business, regardless of name)
+      let phoneMatch = null;
+      if (listing.phone) {
+        const digits = listing.phone.replace(/[^\d]/g, '');
+        if (digits.length >= 8) {
+          const suffix = digits.slice(-8);
+          const { data: phoneRows } = await supabase
+            .from('companions')
+            .select(selectCols)
+            .like('phone', `%${suffix}%`)
+            .limit(1);
+          if (phoneRows?.length > 0) {
+            phoneMatch = phoneRows[0];
+          }
+        }
+      }
+
+      // SECOND: Check for exact name+location match
+      const { data: existingRows, error: lookupError } = phoneMatch ? { data: [], error: null } : await supabase
         .from('companions')
-        .select('id,image_url,metrics,phone,hours,line_url,telegram_url,maps_url,source_channel,city,mention_count,photo_urls,source_message_ids,user_rating,service_tags,discussion_notes,raw_text')
+        .select(selectCols)
         .eq('name', listing.name)
         .eq('location', listing.location)
         .limit(1);
 
-      // Also check fuzzy name match (catches prefix/suffix variations)
+      // THIRD: Fuzzy name match (catches prefix/suffix variations)
       let fuzzyMatch = null;
       if ((!existingRows || existingRows.length === 0) && !lookupError) {
         const normalizedName = normalizeNameForDedup(listing.name);
@@ -797,7 +816,7 @@ export async function insertListingsIfPossible(supabase, listings) {
         }
       }
 
-      const matchedRow = (existingRows && existingRows.length > 0) ? existingRows[0] : fuzzyMatch;
+      const matchedRow = phoneMatch || ((existingRows && existingRows.length > 0) ? existingRows[0] : fuzzyMatch);
 
       if (lookupError) {
         throw lookupError;

@@ -35,6 +35,7 @@ const normalizedBackupListings = normalizeListings(backupCompanions, {
 const ListingMap = lazy(() => import('./components/ListingMap'));
 const Methodology = lazy(() => import('./components/Methodology'));
 const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
+const Analytics = lazy(() => import('./components/Analytics'));
 const SORT_OPTIONS = [
   'Newest',
   'Lowest price',
@@ -450,6 +451,14 @@ function App() {
   return (
     <Routes>
       <Route
+        path="/analytics"
+        element={(
+          <Suspense fallback={<div className="page-shell-loading">Loading analytics…</div>}>
+            <Analytics />
+          </Suspense>
+        )}
+      />
+      <Route
         path="/methodology"
         element={(
           <Suspense fallback={<div className="page-shell-loading">Loading methodology…</div>}>
@@ -549,7 +558,6 @@ function App() {
                 <ListingMap listings={allCompanions} t={t} />
               </Suspense>
 
-              <HowItWorks t={t} />
             </main>
 
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={dataState.sourceLabel} />
