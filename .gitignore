@@ -37,3 +37,6 @@ public/photos/
 *.pdf
 public/*.pdf
 .vercel
+
+# Local Netlify folder
+.netlify

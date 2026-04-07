@@ -51,7 +51,7 @@
   flex-direction: column;
   gap: 0.3rem;
   padding: 1rem 0.8rem 0.8rem;
-  background: linear-gradient(to top, rgba(6, 8, 11, 0.94) 0%, rgba(6, 8, 11, 0.6) 70%, transparent 100%);
+  background: rgba(6, 8, 11, 0.88);
   margin-top: auto;
 }
 
