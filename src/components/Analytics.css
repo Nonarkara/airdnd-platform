@@ -65,11 +65,8 @@
 .an-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--color-line-soft);
-  border: 1px solid var(--color-line-soft);
-  border-radius: 12px;
-  overflow: hidden;
+  border-top: 1px solid var(--color-line-soft);
+  border-bottom: 1px solid var(--color-line-soft);
   margin-bottom: var(--spacing-2xl);
 }
 
@@ -114,10 +111,8 @@
 }
 
 .an-card {
-  padding: 1.2rem;
-  background: var(--color-bg-raised);
-  border: 1px solid var(--color-line-soft);
-  border-radius: 12px;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--color-line-soft);
 }
 
 .an-wide { grid-column: 1 / -1; }
@@ -160,13 +155,13 @@
 .an-bar-track {
   height: 4px;
   background: var(--color-line-soft);
-  border-radius: 4px;
+  /* sharp */
   overflow: hidden;
 }
 
 .an-bar-fill {
   height: 100%;
-  border-radius: 4px;
+  /* sharp */
   transition: width var(--transition-slow);
 }
 
@@ -199,7 +194,7 @@
 .an-hour-fill {
   width: 100%;
   background: var(--color-red);
-  border-radius: 2px 2px 0 0;
+  /* sharp top */
   min-height: 1px;
   transition: height var(--transition-normal);
 }

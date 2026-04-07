@@ -227,14 +227,12 @@
   position: relative;
   height: 0.38rem;
   overflow: hidden;
-  border-radius: 999px;
   background: var(--color-line);
 }
 
 .live-intake-flow-bar span {
   position: absolute;
   inset: 0 auto 0 0;
-  border-radius: inherit;
   background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 40%, #ffffff));
 }
 

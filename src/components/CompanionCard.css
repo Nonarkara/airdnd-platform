@@ -1,3 +1,5 @@
+/* Dieter Rams: as little design as possible */
+
 .poster-card {
   position: relative;
   display: flex;
@@ -6,17 +8,10 @@
   aspect-ratio: 3 / 4;
   overflow: hidden;
   cursor: pointer;
-  border-radius: 1.35rem;
-  border: 1px solid var(--color-line);
-  transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-normal);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+  transition: opacity var(--transition-fast);
 }
 
-.poster-card:hover {
-  border-color: color-mix(in srgb, var(--color-red) 26%, transparent);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
+.poster-card:hover { opacity: 0.88; }
 
 .poster-bg {
   position: absolute;
@@ -32,27 +27,21 @@
 .poster-bg.loaded { opacity: 1; }
 
 .poster-card.no-photo {
-  background:
-    radial-gradient(circle at top left, rgba(255, 116, 64, 0.28), transparent 40%),
-    linear-gradient(160deg, var(--color-bg-raised) 0%, var(--color-bg-inset) 60%, var(--color-bg) 100%);
+  background: var(--color-bg-raised);
 }
 
 .poster-city {
   position: absolute;
   top: 0.6rem;
   left: 0.6rem;
-  padding: 0.25rem 0.55rem;
-  background: rgba(6, 8, 11, 0.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--color-cream);
+  color: rgba(255, 255, 255, 0.7);
   font-family: var(--font-display);
-  font-size: 0.52rem;
+  font-size: 0.5rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   z-index: 2;
-  border-radius: 999px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .poster-overlay {
@@ -60,18 +49,18 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: 1rem;
-  background: linear-gradient(to top, rgba(6, 8, 11, 0.96) 0%, rgba(6, 8, 11, 0.76) 58%, transparent 100%);
+  gap: 0.3rem;
+  padding: 1rem 0.8rem 0.8rem;
+  background: linear-gradient(to top, rgba(6, 8, 11, 0.94) 0%, rgba(6, 8, 11, 0.6) 70%, transparent 100%);
   margin-top: auto;
 }
 
 .poster-name {
   font-family: var(--font-display);
-  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
-  font-weight: 800;
+  font-size: clamp(0.85rem, 2vw, 1.05rem);
+  font-weight: 700;
   color: var(--color-cream);
-  line-height: 1.2;
+  line-height: 1.25;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -79,8 +68,7 @@
 }
 
 .poster-location {
-  font-size: 0.62rem;
-  font-weight: 400;
+  font-size: 0.6rem;
   color: var(--color-cream-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -95,88 +83,70 @@
 
 .poster-price {
   font-family: var(--font-display);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  color: var(--color-gold);
+  color: var(--color-red);
 }
 
 .poster-dot {
   width: 2px;
   height: 2px;
-  border-radius: 50%;
   background: var(--color-cream-muted);
   flex-shrink: 0;
 }
 
 .poster-hours {
-  font-size: 0.62rem;
-  font-weight: 400;
+  font-size: 0.6rem;
   color: var(--color-cream-muted);
 }
 
 .poster-contacts {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 0.6rem;
+  margin-top: 0.1rem;
 }
 
 .poster-contact {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.3rem 0.6rem;
-  min-height: 1.7rem;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  color: var(--color-cream);
+  color: var(--color-cream-soft);
   font-family: var(--font-display);
-  font-size: 0.58rem;
+  font-size: 0.55rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
-  border: 1px solid var(--color-line);
-  border-radius: 999px;
-  transition: background var(--transition-fast);
+  transition: color var(--transition-fast);
 }
 
-.poster-contact:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
+.poster-contact:hover { color: var(--color-red); }
 
 .poster-tags {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.2rem;
+  gap: 0.4rem;
+  margin-top: 0.05rem;
 }
 
 .poster-tag {
-  padding: 0.12rem 0.4rem;
-  background: rgba(159, 194, 255, 0.12);
   color: var(--color-gold);
   font-family: var(--font-display);
-  font-size: 0.5rem;
+  font-size: 0.48rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  border-radius: 999px;
 }
 
 .poster-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 0.3rem;
-  margin-top: 0.1rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 0.15rem;
 }
 
 .poster-source {
-  font-family: var(--font-display);
-  font-size: 0.5rem;
+  font-size: 0.48rem;
   font-weight: 500;
   color: var(--color-cream-muted);
-  letter-spacing: 0.04em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -184,14 +154,13 @@
 }
 
 .poster-time {
-  font-size: 0.5rem;
-  font-weight: 400;
+  font-size: 0.48rem;
   color: var(--color-cream-muted);
 }
 
 @media (max-width: 600px) {
-  .poster-card { aspect-ratio: 2 / 3; border-radius: 10px; }
-  .poster-overlay { padding: 1rem 0.85rem; gap: 0.4rem; }
-  .poster-name { font-size: 1rem; }
-  .poster-contact { min-height: 2rem; padding: 0.35rem 0.7rem; font-size: 0.62rem; border-radius: 8px; }
+  .poster-card { aspect-ratio: 2 / 3; }
+  .poster-overlay { padding: 0.9rem 0.75rem 0.75rem; }
+  .poster-name { font-size: 0.95rem; }
+  .poster-contact { font-size: 0.6rem; }
 }

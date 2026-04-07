@@ -3,37 +3,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(20rem, 0.98fr);
   gap: clamp(2rem, 4vw, 3.5rem);
-  padding: clamp(1.75rem, 4vw, 3.5rem);
-  border: 1px solid color-mix(in srgb, var(--color-cream) 8%, transparent);
-  border-radius: 2rem;
-  background:
-    radial-gradient(circle at top left, rgba(255, 116, 64, 0.18), transparent 32%),
-    radial-gradient(circle at 85% 20%, rgba(159, 194, 255, 0.14), transparent 30%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
-    var(--color-bg-raised);
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.hero-shell::before,
-.hero-shell::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.hero-shell::before {
-  background:
-    linear-gradient(90deg, transparent 0, transparent calc(100% - 1px), rgba(255, 255, 255, 0.04) calc(100% - 1px)),
-    linear-gradient(transparent 0, transparent calc(100% - 1px), rgba(255, 255, 255, 0.04) calc(100% - 1px));
-  background-size: 8rem 8rem;
-  opacity: 0.12;
-  mix-blend-mode: screen;
-}
-
-.hero-shell::after {
-  background: linear-gradient(180deg, transparent 0%, transparent 72%, rgba(255, 255, 255, 0.02) 100%);
+  padding: clamp(1.75rem, 4vw, 3.5rem) 0;
+  border-bottom: 1px solid var(--color-line-soft);
 }
 
 .hero-copy,
@@ -185,7 +156,7 @@
 .hero-spotlight {
   position: relative;
   min-height: 100%;
-  border-radius: 1.5rem;
+  /* no radius */
   overflow: hidden;
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
 }
@@ -259,7 +230,7 @@
   align-items: center;
   justify-content: center;
   padding: 0.26rem 0.55rem;
-  border-radius: 999px;
+  /* no radius */
   background: rgba(255, 255, 255, 0.08);
   color: var(--color-cream);
   font-family: var(--font-display);
@@ -360,7 +331,7 @@
   align-items: center;
   gap: 0.55rem;
   padding: 0.48rem 0.7rem;
-  border-radius: 999px;
+  /* no radius */
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -395,7 +366,7 @@
   .hero-shell {
     grid-template-columns: 1fr;
     padding: 1.4rem;
-    border-radius: 1.5rem;
+    /* no radius */
   }
 
   .hero-copy h1 {

@@ -54,7 +54,7 @@
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(135deg, var(--color-red), color-mix(in srgb, var(--color-red) 54%, #ffffff));
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 16px 40px rgba(255, 116, 64, 0.22);
+  /* no shadow */
 }
 
 .brand-copy {
@@ -117,7 +117,7 @@
   justify-content: center;
   min-height: 2.5rem;
   padding: 0.55rem 0.95rem;
-  border-radius: 999px;
+  /* no radius */
   font-family: var(--font-display);
   font-size: 0.72rem;
   font-weight: 700;
@@ -133,7 +133,7 @@
 .btn-refresh {
   background: var(--color-red);
   color: var(--color-cream);
-  box-shadow: 0 14px 28px rgba(255, 116, 64, 0.18);
+  /* no shadow */
 }
 
 .btn-refresh:hover:not(:disabled) {
@@ -234,7 +234,7 @@
   place-items: center;
   min-height: 16rem;
   border: 1px solid var(--color-line);
-  border-radius: 1.5rem;
+  /* no radius */
   background: rgba(255, 255, 255, 0.03);
   color: var(--color-cream-muted);
   font-family: var(--font-display);
@@ -255,7 +255,7 @@
   width: min(100%, 400px);
   padding: var(--spacing-xl);
   border: 1px solid var(--color-line);
-  border-radius: 1rem;
+  /* no radius */
   background: rgba(255, 255, 255, 0.03);
 }
 
