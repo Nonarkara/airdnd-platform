@@ -38,8 +38,12 @@ function CompanionCard({ companion, onClick, t }) {
         />
       ) : null}
 
-      {/* City badge */}
-      <span className="poster-city">{companion.city}</span>
+      {/* City + signals */}
+      <div className="poster-badges">
+        <span className="poster-city">{companion.city}</span>
+        {companion.mentionCount > 1 && <span className="poster-activity">{companion.mentionCount}×</span>}
+        {companion.photoCount > 1 && <span className="poster-photos">{companion.photoCount} photos</span>}
+      </div>
 
       {/* Content overlay */}
       <div className="poster-overlay">

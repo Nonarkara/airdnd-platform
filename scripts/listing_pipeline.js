@@ -507,7 +507,43 @@ export function normalizeExtractedListings(rawListings, options = {}) {
     })
     .filter(Boolean);
 
-  return dedupeListings(normalized);
+  // Second-pass sweeper: catch fields Gemini/deterministic parser missed
+  const swept = normalized.map((listing) => {
+    if (!listing.rawText) return listing;
+    const t = listing.rawText;
+    const updates = {};
+
+    if (!listing.phone) {
+      const m = t.match(/(?:\+?66|0)\d[\d -]{7,}/);
+      if (m) updates.phone = m[0].trim();
+    }
+    if (!listing.hours) {
+      const m = t.match(/(\d{1,2}[.:]\d{2}\s*[-–]\s*\d{1,2}[.:]\d{2})/);
+      if (m) updates.hours = m[1].trim();
+    }
+    if (!listing.priceLabel || listing.priceLabel === 'Rate on request') {
+      const m = t.match(/(\d{3,5})\s*(?:บาท|฿|THB|baht)/i);
+      if (m) {
+        const val = Number.parseInt(m[1], 10);
+        if (val >= 100 && val <= 20000) {
+          updates.priceLabel = `${val} THB`;
+          updates.priceValue = val;
+        }
+      }
+    }
+    if (!listing.lineUrl) {
+      const urlMatch = t.match(/https?:\/\/line\.me\/\S+/i);
+      if (urlMatch) updates.lineUrl = urlMatch[0];
+    }
+    if (!listing.mapsUrl) {
+      const m = t.match(/https?:\/\/(?:maps\.app\.goo\.gl|goo\.gl\/maps|maps\.google\.com)\S+/i);
+      if (m) updates.mapsUrl = m[0];
+    }
+
+    return Object.keys(updates).length > 0 ? { ...listing, ...updates } : listing;
+  });
+
+  return dedupeListings(swept);
 }
 
 export function buildFingerprint(listing) {

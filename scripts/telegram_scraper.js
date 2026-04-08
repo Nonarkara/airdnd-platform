@@ -96,7 +96,7 @@ Return only a JSON array with this shape:
     "location": "District or area, City/Province or null",
     "price": null,
     "metrics": {},
-    "tags": ["Bangkok", "Massage"],
+    "tags": ["Thai Massage", "Oil Massage"],
     "description": "Short factual summary of the service, area, hours, or availability or null",
     "phone": "0XX-XXX-XXXX or null",
     "hours": "10:00-23:00 or null",
@@ -115,7 +115,7 @@ Rules:
 - Extract phone numbers, operating hours, LINE links, Telegram links, Google Maps links, location, price, and a short factual description when present.
 - Use null for unknown name, location, price, phone, hours, or link values.
 - Use an empty object for missing metrics.
-- Add 1-3 short tags based on city/province, district, and service type.
+- Tags must be SERVICE TYPES only (e.g., "Thai Massage", "Oil Massage", "Aromatherapy", "Foot Massage", "Health Spa", "Late Night", "24 Hours"). Do NOT use city or location names as tags.
 - Keep descriptions factual and concise.
 - Return only valid JSON.
 

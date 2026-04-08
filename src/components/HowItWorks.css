@@ -42,7 +42,7 @@
   justify-content: center;
   width: fit-content;
   padding: 0.3rem 0.65rem;
-  border-radius: 999px;
+  /* no radius */
   background: rgba(255, 116, 64, 0.12);
   color: var(--color-red);
   font-family: var(--font-display);

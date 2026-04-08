@@ -170,12 +170,12 @@
   height: 0.42rem;
   border-radius: 50%;
   background: rgba(255, 116, 64, 0.3);
-  box-shadow: 0 0 0 0.22rem rgba(255, 116, 64, 0.08);
+  /* no decorative shadow */
 }
 
 .live-intake-item-dot.is-matched {
   background: var(--color-success);
-  box-shadow: 0 0 0 0.22rem rgba(61, 139, 110, 0.12);
+  /* no decorative shadow */
 }
 
 .live-intake-flow {

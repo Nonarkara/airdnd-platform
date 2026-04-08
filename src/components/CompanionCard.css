@@ -30,19 +30,25 @@
   background: var(--color-bg-raised);
 }
 
-.poster-city {
+.poster-badges {
   position: absolute;
-  top: 0.6rem;
-  left: 0.6rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  top: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.4rem;
   z-index: 2;
+  font-family: var(--font-display);
+  font-size: 0.48rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
+
+.poster-city { color: rgba(255, 255, 255, 0.7); }
+.poster-activity { color: var(--color-red); margin-left: auto; }
+.poster-photos { color: var(--color-gold); }
 
 .poster-overlay {
   position: relative;

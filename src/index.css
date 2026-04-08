@@ -22,6 +22,11 @@
   --color-accent: #ff9b64;
   --color-success: #34d399;
 
+  --color-ink: var(--color-cream);
+  --color-ink-soft: var(--color-cream-soft);
+  --color-ink-muted: var(--color-cream-muted);
+  --font-heading: var(--font-display);
+
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --transition-fast: 0.18s var(--ease-out);
   --transition-normal: 0.32s var(--ease-out);
