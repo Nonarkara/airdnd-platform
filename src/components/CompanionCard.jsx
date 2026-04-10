@@ -10,98 +10,51 @@ import './CompanionCard.css';
 function CompanionCard({ companion, onClick, t }) {
   const preciseTimestamp = formatPreciseTimestamp(companion.postedAt)
     || formatPreciseTimestamp(companion.updatedAt)
-    || t.card.timestampPending;
+    || '';
   const isMatched = hasMatchedMedia(companion) && companion.isSafeImage !== false;
-  const sourceLabel =
-    formatSourceChannelName(companion.sourceChannel) || SOURCE_LABELS[companion.dataSource];
-
   const hasContact = companion.phone || companion.lineUrl || companion.telegramUrl || companion.mapsUrl;
 
   return (
     <article
-      className={`poster-card ${isMatched ? 'has-photo' : 'no-photo'}`}
+      className="row-card"
       onClick={() => { trackListingClick(companion.id); onClick(companion); }}
     >
-      {/* Background: real photo or gradient poster — hidden if flagged unsafe */}
-      {isMatched ? (
-        <img
-          src={companion.imageUrl}
-          alt={companion.name}
-          className="poster-bg"
-          loading="lazy"
-          onLoad={(event) => { event.currentTarget.classList.add('loaded'); }}
-          onError={(event) => {
-            event.currentTarget.style.display = 'none';
-            event.currentTarget.closest('.poster-card').classList.add('no-photo');
-            event.currentTarget.closest('.poster-card').classList.remove('has-photo');
-          }}
-        />
-      ) : null}
-
-      {/* City + signals */}
-      <div className="poster-badges">
-        <span className="poster-city">{companion.city}</span>
-        {companion.mentionCount > 1 && <span className="poster-activity">{companion.mentionCount}×</span>}
-        {companion.photoCount > 1 && <span className="poster-photos">{companion.photoCount} photos</span>}
+      {/* Thin photo strip */}
+      <div className="row-photo">
+        {isMatched ? (
+          <img
+            src={companion.imageUrl}
+            alt=""
+            loading="lazy"
+            onLoad={(e) => e.currentTarget.classList.add('loaded')}
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+          />
+        ) : null}
       </div>
 
-      {/* Content overlay */}
-      <div className="poster-overlay">
-        <h3 className="poster-name">{companion.name}</h3>
-        <p className="poster-location">{companion.location}</p>
-
-        {/* Price + Hours row */}
-        <div className="poster-meta">
-          <span className="poster-price">{companion.priceLabel}</span>
-          {companion.hours && (
-            <>
-              <span className="poster-dot" aria-hidden="true" />
-              <span className="poster-hours">{companion.hours}</span>
-            </>
-          )}
-        </div>
-
-        {/* Contact row */}
-        {hasContact && (
-          <div className="poster-contacts">
-            {companion.phone && (
-              <a href={`tel:${companion.phone.replace(/[^\d+]/g, '')}`} className="poster-contact" onClick={(e) => e.stopPropagation()}>
-                Tel
-              </a>
-            )}
-            {companion.lineUrl && (
-              <a href={companion.lineUrl} target="_blank" rel="noopener noreferrer" className="poster-contact" onClick={(e) => e.stopPropagation()}>
-                LINE
-              </a>
-            )}
-            {companion.telegramUrl && (
-              <a href={companion.telegramUrl} target="_blank" rel="noopener noreferrer" className="poster-contact" onClick={(e) => e.stopPropagation()}>
-                Telegram
-              </a>
-            )}
-            {companion.mapsUrl && (
-              <a href={companion.mapsUrl} target="_blank" rel="noopener noreferrer" className="poster-contact" onClick={(e) => e.stopPropagation()}>
-                Map
-              </a>
-            )}
-          </div>
-        )}
-
-        {/* Tags */}
-        {companion.tags.length > 0 && (
-          <div className="poster-tags">
-            {companion.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="poster-tag">{tag}</span>
-            ))}
-          </div>
-        )}
-
-        {/* Source + timestamp footer */}
-        <div className="poster-footer">
-          <span className="poster-source">{sourceLabel}</span>
-          <span className="poster-time">{preciseTimestamp}</span>
-        </div>
+      {/* Data */}
+      <div className="row-body">
+        <span className="row-name">{companion.name}</span>
+        <span className="row-area">{companion.city || 'Bangkok'}</span>
+        <span className="row-hours">{companion.hours || '—'}</span>
+        <span className="row-price">{companion.priceLabel}</span>
       </div>
+
+      {/* Contact links */}
+      <div className="row-links">
+        {companion.phone && (
+          <a href={`tel:${companion.phone.replace(/[^\d+]/g, '')}`} onClick={(e) => e.stopPropagation()}>Tel</a>
+        )}
+        {companion.lineUrl && (
+          <a href={companion.lineUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>LINE</a>
+        )}
+        {companion.mapsUrl && (
+          <a href={companion.mapsUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>Map</a>
+        )}
+      </div>
+
+      {/* Timestamp */}
+      <span className="row-time">{preciseTimestamp}</span>
     </article>
   );
 }

@@ -1,9 +1,11 @@
 .listing-map-section {
-  padding: var(--spacing-2xl) 0;
+  padding: var(--spacing-2xl) 0 0;
+  margin: 0 calc(-1 * clamp(1.25rem, 3vw, 2.5rem));
 }
 
 .listing-map-header {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
 }
 
 .listing-map-header h2 {

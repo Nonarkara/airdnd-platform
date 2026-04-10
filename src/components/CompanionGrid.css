@@ -1,48 +1,37 @@
 .companion-grid-container {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-lg);
 }
 
 .companion-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-line);
 }
 
 .card-entrance {
-  animation: card-in 0.4s var(--ease-out) both;
+  animation: card-in 0.3s var(--ease-out) both;
 }
 
 @keyframes card-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
+/* Skeleton for loading */
 .skeleton-card {
-  aspect-ratio: 3 / 4;
+  height: 3.5rem;
   background: var(--color-bg-raised);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  border-bottom: 1px solid var(--color-line-soft);
 }
 
-.skeleton-overlay {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding: 0.9rem;
+.skeleton-overlay, .skeleton-badge, .skeleton-title,
+.skeleton-line, .skeleton-line-short, .skeleton-row, .skeleton-pill {
+  display: none;
 }
-
-.skeleton-badge { position: absolute; top: 0.6rem; left: 0.6rem; width: 3rem; height: 0.6rem; }
-.skeleton-title { width: 70%; height: 0.8rem; }
-.skeleton-line { width: 85%; height: 0.45rem; }
-.skeleton-line-short { width: 45%; height: 0.45rem; }
-.skeleton-row { display: flex; gap: 0.5rem; }
-.skeleton-pill { width: 2rem; height: 0.5rem; }
 
 .grid-state-card {
-  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,7 +40,7 @@
   text-align: center;
 }
 
-.grid-state-card h3 { font-size: 1.5rem; }
+.grid-state-card h3 { font-size: 1.2rem; }
 .grid-state-card p { max-width: 40ch; color: var(--color-cream-soft); font-size: 0.85rem; }
 
 .load-more-container {
@@ -64,11 +53,11 @@
   background: transparent;
   color: var(--color-cream-muted);
   font-family: var(--font-display);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.6rem 0;
+  padding: 0.5rem 0;
   border-bottom: 1px solid var(--color-line);
   transition: color var(--transition-fast), border-color var(--transition-fast);
 }
@@ -77,6 +66,3 @@
   color: var(--color-cream);
   border-color: var(--color-cream);
 }
-
-@media (max-width: 900px) { .companion-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .companion-grid { grid-template-columns: 1fr; } .skeleton-card { aspect-ratio: 2 / 3; } }

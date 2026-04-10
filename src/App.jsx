@@ -493,14 +493,7 @@ function App() {
             />
 
             <main className="main-content">
-              <HeroSection
-                t={t}
-                metrics={metrics}
-                intakeSummary={intakeSummary}
-                recentListings={recentListings}
-                dataState={dataState}
-                onRefresh={handleRefresh}
-              />
+              <HeroSection t={t} metrics={metrics} dataState={dataState} />
 
               <LiveIntakeStrip
                 t={t}
@@ -554,7 +547,13 @@ function App() {
                 />
               </section>
 
-              <Suspense fallback={<section className="section-shell-loading">Loading live map…</section>}>
+              <div className="analytics-callout">
+                <a href="/analytics">
+                  View industry intelligence — {metrics.total} businesses, {metrics.cityCount} cities, updated in real time →
+                </a>
+              </div>
+
+              <Suspense fallback={<section className="section-shell-loading">Loading map…</section>}>
                 <ListingMap listings={allCompanions} t={t} />
               </Suspense>
 

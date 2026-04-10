@@ -272,6 +272,25 @@
   }
 }
 
+.analytics-callout {
+  padding: var(--spacing-2xl) 0;
+  text-align: center;
+  border-top: 1px solid var(--color-line-soft);
+}
+
+.analytics-callout a {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-cream-muted);
+  transition: color var(--transition-fast);
+}
+
+.analytics-callout a:hover {
+  color: var(--color-red);
+}
+
 @media (max-width: 640px) {
   .header {
     padding: 0.85rem 0;
