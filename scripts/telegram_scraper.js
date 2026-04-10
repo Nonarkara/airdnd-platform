@@ -1114,15 +1114,20 @@ async function extractListingsFromTarget(client, target, state = {}) {
     const assignmentIndex = clusterAssignmentCounts.get(clusterId) || 0;
     clusterAssignmentCounts.set(clusterId, assignmentIndex + 1);
 
+    // Check if cluster text contains adult/explicit signals — if so, flag images as unsafe
+    // Photos still get saved (for training data) but won't display on the web
+    const clusterText = cluster.texts.join('\n');
+    const hasAdultSignals = /(?:เปลือย|naked|nude|โป้|โป๊|18\+|xxx|เสียว|หลุด|sex|ขายตัว|full\s*service|fs\b|hj\b|bj\b|cim\b|cif\b|a-level|ตัวจริง.*เต็ม|บริการ.*ครบ|ไม่สวม)/i.test(clusterText);
+
     const enriched = {
       ...listing,
       cluster_id: clusterId,
       sourceChannel: target.displayLabel,
       sourceTarget: target.token,
-      // BI enrichment: pass raw text, all photos, message IDs
-      rawText: cluster.texts.join('\n'),
+      rawText: clusterText,
       sourceMessageIds: cluster.messageIds || [],
       allPhotoUrls: photos,
+      isSafeImage: !hasAdultSignals,
     };
 
     if (photos.length > 0) {

@@ -72,7 +72,7 @@ function CompanionModal({ companion, onClose, t }) {
         <div className="modal-body">
           <div className="modal-image-section">
             <img
-              src={companion.imageUrl}
+              src={companion.isSafeImage !== false ? companion.imageUrl : '/mockups/109748.jpg'}
               alt={companion.name}
               className="modal-main-image"
               onError={(event) => {

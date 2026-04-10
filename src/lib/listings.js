@@ -413,6 +413,7 @@ export function normalizeListing(rawListing, options = {}) {
     telegramUrl: normalizeText(rawListing?.telegramUrl || rawListing?.telegram_url, null),
     latitude: typeof rawListing?.latitude === 'number' ? rawListing.latitude : null,
     longitude: typeof rawListing?.longitude === 'number' ? rawListing.longitude : null,
+    isSafeImage: rawListing?.is_safe_image !== false && rawListing?.isSafeImage !== false,
     mentionCount: rawListing?.mention_count || rawListing?.mentionCount || 0,
     photoCount: Array.isArray(rawListing?.photo_urls) ? rawListing.photo_urls.length :
       Array.isArray(rawListing?.allPhotoUrls) ? rawListing.allPhotoUrls.length : 0,

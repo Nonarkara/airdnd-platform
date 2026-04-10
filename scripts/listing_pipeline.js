@@ -503,6 +503,7 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         userRating: userRating && userRating > 0 && userRating <= 5 ? userRating : null,
         serviceTags,
         userFeedbackSummary,
+        isSafeImage: listing?.isSafeImage !== false,
       };
     })
     .filter(Boolean);
@@ -962,6 +963,7 @@ export async function insertListingsIfPossible(supabase, listings) {
       if (listing.userRating) row.user_rating = listing.userRating;
       if (listing.serviceTags?.length) row.service_tags = listing.serviceTags;
       if (listing.userFeedbackSummary) row.discussion_notes = listing.userFeedbackSummary;
+      if (listing.isSafeImage === false) row.is_safe_image = false;
 
       // Geocoding: resolve coordinates from Google Maps URL
       if (listing.mapsUrl && !row.latitude) {

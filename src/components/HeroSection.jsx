@@ -82,7 +82,7 @@ function HeroSection({
         {spotlight ? (
           <article className="hero-spotlight">
             <div className="hero-spotlight-media">
-              <img src={spotlight.imageUrl} alt={spotlight.name} />
+              <img src={spotlight.isSafeImage !== false ? spotlight.imageUrl : '/mockups/109748.jpg'} alt={spotlight.name} />
             </div>
 
             <div className="hero-spotlight-copy">

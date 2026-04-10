@@ -11,7 +11,7 @@ function CompanionCard({ companion, onClick, t }) {
   const preciseTimestamp = formatPreciseTimestamp(companion.postedAt)
     || formatPreciseTimestamp(companion.updatedAt)
     || t.card.timestampPending;
-  const isMatched = hasMatchedMedia(companion);
+  const isMatched = hasMatchedMedia(companion) && companion.isSafeImage !== false;
   const sourceLabel =
     formatSourceChannelName(companion.sourceChannel) || SOURCE_LABELS[companion.dataSource];
 
@@ -22,7 +22,7 @@ function CompanionCard({ companion, onClick, t }) {
       className={`poster-card ${isMatched ? 'has-photo' : 'no-photo'}`}
       onClick={() => { trackListingClick(companion.id); onClick(companion); }}
     >
-      {/* Background: real photo or gradient poster */}
+      {/* Background: real photo or gradient poster — hidden if flagged unsafe */}
       {isMatched ? (
         <img
           src={companion.imageUrl}
