@@ -238,6 +238,7 @@ function App() {
   const [sortBy, setSortBy] = useState(SORT_OPTIONS[0]);
   const [selectedCompanion, setSelectedCompanion] = useState(null);
   const [language, setLanguage] = useState('en');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
   const [dataState, setDataState] = useState({
     source: 'backup',
     sourceLabel: SOURCE_LABELS.backup,
@@ -288,6 +289,11 @@ function App() {
   useEffect(() => {
     initSession();
   }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     isActiveRef.current = true;
@@ -486,6 +492,8 @@ function App() {
               language={language}
               setLanguage={setLanguage}
               t={t}
+              theme={theme}
+              setTheme={setTheme}
               onLogout={session ? () => supabase.auth.signOut() : null}
               onRefresh={handleRefresh}
               isRefreshing={dataState.isRefreshing}

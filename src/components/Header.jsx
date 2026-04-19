@@ -6,6 +6,8 @@ function Header({
   onRefresh,
   isRefreshing,
   sourceLabel,
+  theme,
+  setTheme,
 }) {
   return (
     <header className="header" id="overview">
@@ -48,6 +50,18 @@ function Header({
             <option value="th">TH</option>
             <option value="zh">ZH</option>
             <option value="ko">KO</option>
+          </select>
+        </label>
+
+        <label className="language-picker theme-picker">
+          <select
+            value={theme}
+            onChange={(event) => setTheme(event.target.value)}
+            aria-label="Theme"
+          >
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="hot-as-hell">Hot</option>
           </select>
         </label>
 

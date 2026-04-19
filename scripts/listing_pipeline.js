@@ -766,6 +766,15 @@ function validateListingQuality(listing) {
     return 'description too short';
   }
 
+  // AIRTIGHT REQUIREMENT: Must have at least a location other than default, or valid contact info
+  const hasContact = Boolean(listing?.phone || listing?.lineUrl || listing?.telegramUrl);
+  const locationText = normalizeText(listing?.location, '').toLowerCase();
+  const hasSpecificLocation = locationText.length > 0 && locationText !== 'bangkok, thailand' && locationText !== 'bangkok';
+
+  if (!hasContact && !hasSpecificLocation) {
+    return 'insufficient data (needs contact info or specific location)';
+  }
+
   return null;
 }
 

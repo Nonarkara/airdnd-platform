@@ -46,10 +46,13 @@ Each item must follow this shape:
 ]
 
 Rules:
+- Be EXTREMELY airtight and accurate with your full data entry.
+- Thoroughly extract location data specifically to map it accurately later (e.g. precise District and City).
 - Ignore administrative posts or generic announcements.
 - Do not invent ratings or review counts.
 - Use null for age when it is missing.
 - Keep descriptions factual and concise.
+- Ensure that the resulting JSON is strictly compliant and captures as filled-out a profile as possible from the text.
 
 Raw text:
 ${rawText}

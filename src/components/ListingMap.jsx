@@ -97,13 +97,27 @@ function buildPopupHtml(listing) {
   return lines.join('');
 }
 
-// Custom red circle marker icon
-const pinIcon = L.divIcon({
-  className: 'listing-pin',
-  iconSize: [14, 14],
-  iconAnchor: [7, 7],
-  popupAnchor: [0, -10],
-});
+function getAuraClass(listing) {
+  let score = 0;
+  if (listing.description && listing.description.length > 20 && listing.description !== 'Details for this listing are still being collected.') score++;
+  if (listing.phone || listing.lineUrl || listing.telegramUrl || listing.mapsUrl) score++;
+  if (listing.priceLabel && listing.priceLabel !== 'Rate on request') score++;
+  if (listing.imageUrl && !listing.imageUrl.startsWith('/mockups/')) score++;
+
+  if (score >= 3) return 'aura-level-3';
+  if (score === 2) return 'aura-level-2';
+  return 'aura-level-1';
+}
+
+function createPinIcon(listing) {
+  return L.divIcon({
+    className: `listing-pin ${getAuraClass(listing)}`,
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10],
+    tooltipAnchor: [10, 0]
+  });
+}
 
 export default function ListingMap({ listings, t }) {
   const mapRef = useRef(null);
@@ -148,10 +162,15 @@ export default function ListingMap({ listings, t }) {
     markersRef.current.clearLayers();
 
     for (const { listing, coords } of pins) {
-      const marker = L.marker(coords, { icon: pinIcon });
+      const marker = L.marker(coords, { icon: createPinIcon(listing) });
       marker.bindPopup(buildPopupHtml(listing), {
         maxWidth: 260,
         className: 'listing-popup',
+      });
+      // Tooltip on hover
+      marker.bindTooltip(`<strong>${listing.name || 'Unknown'}</strong>`, {
+        direction: 'top',
+        className: 'listing-hover-tooltip',
       });
       markersRef.current.addLayer(marker);
     }

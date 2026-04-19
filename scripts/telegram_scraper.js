@@ -110,6 +110,8 @@ Return only a JSON array with this shape:
 ]
 
 Rules:
+- Be EXTREMELY airtight and accurate with your full data entry.
+- Thoroughly extract location data specifically to map it accurately later (e.g. precise District and City).
 - Return at most one object per cluster.
 - cluster_id must match the [CLUSTER <id>] from which the listing was enriched.
 - Extract phone numbers, operating hours, LINE links, Telegram links, Google Maps links, location, price, and a short factual description when present.
@@ -117,7 +119,7 @@ Rules:
 - Use an empty object for missing metrics.
 - Tags must be SERVICE TYPES only (e.g., "Thai Massage", "Oil Massage", "Aromatherapy", "Foot Massage", "Health Spa", "Late Night", "24 Hours"). Do NOT use city or location names as tags.
 - Keep descriptions factual and concise.
-- Return only valid JSON.
+- Ensure that the resulting JSON is strictly compliant and captures as filled-out a profile as possible from the text.
 
 User feedback & ratings extraction:
 - If users mention ratings (e.g., "10/10", "5 stars", "4.5/5", "ให้ 9 เต็ม 10"), normalize to a 1.0-5.0 scale in user_rating.
