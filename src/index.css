@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&display=swap');
 
 :root {
   --color-bg: #06080b;
@@ -32,8 +32,8 @@
   --transition-normal: 0.32s var(--ease-out);
   --transition-slow: 0.5s var(--ease-out);
 
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', 'Cormorant Garamond', serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
   --spacing-xs: 0.5rem;
   --spacing-sm: 0.75rem;
@@ -45,13 +45,13 @@
 }
 
 [data-theme='light'] {
-  --color-bg: #f9fafb;
+  --color-bg: #fdfbf7;
   --color-bg-raised: #ffffff;
-  --color-bg-inset: #f3f4f6;
-  --color-surface: rgba(0, 0, 0, 0.04);
-  --color-surface-hover: rgba(0, 0, 0, 0.07);
+  --color-bg-inset: #f5f3ef;
+  --color-surface: rgba(0, 0, 0, 0.03);
+  --color-surface-hover: rgba(0, 0, 0, 0.06);
   --color-line: rgba(0, 0, 0, 0.08);
-  --color-line-soft: rgba(0, 0, 0, 0.05);
+  --color-line-soft: rgba(0, 0, 0, 0.04);
 
   --color-cream: #111827;
   --color-cream-soft: rgba(17, 24, 39, 0.7);
@@ -67,13 +67,13 @@
 }
 
 [data-theme='hot-as-hell'] {
-  --color-bg: #000000;
-  --color-bg-raised: #110000;
-  --color-bg-inset: #090000;
-  --color-surface: rgba(255, 60, 0, 0.08);
-  --color-surface-hover: rgba(255, 60, 0, 0.14);
-  --color-line: rgba(255, 60, 0, 0.2);
-  --color-line-soft: rgba(255, 60, 0, 0.1);
+  --color-bg: #630000;
+  --color-bg-raised: #8a0101;
+  --color-bg-inset: #4a0000;
+  --color-surface: rgba(255, 0, 0, 0.15);
+  --color-surface-hover: rgba(255, 0, 0, 0.25);
+  --color-line: rgba(255, 255, 255, 0.2);
+  --color-line-soft: rgba(255, 255, 255, 0.1);
 
   --color-cream: #ffffff;
   --color-cream-soft: rgba(255, 200, 180, 0.9);

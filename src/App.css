@@ -22,7 +22,7 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem 0;
-  background: rgba(6, 8, 11, 0.92);
+  background: color-mix(in srgb, var(--color-bg) 85%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
