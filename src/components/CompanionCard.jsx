@@ -16,53 +16,72 @@ function CompanionCard({ companion, onClick, t }) {
 
   return (
     <article
-      className="organic-card group"
+      className="bento-card"
       onClick={() => { trackListingClick(companion.id); onClick(companion); }}
     >
-      <div className="card-photo-container">
+      <div className="bento-photo-section">
         {isMatched ? (
           <img
             src={companion.imageUrl}
             alt=""
             loading="lazy"
-            className="card-photo"
+            className="bento-photo"
             onLoad={(e) => e.currentTarget.classList.add('loaded')}
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
         ) : (
-          <div className="card-photo-placeholder" />
+          <div className="bento-photo-placeholder" />
         )}
-      </div>
-
-      <div className="card-body">
+        
         {companion.tags && companion.tags.length > 0 && (
-          <div className="organic-tags">
+          <div className="bento-badges-overlay">
             {companion.tags.slice(0, 3).map((tag, i) => (
-              <span key={i} className="organic-tag-pill">
-                {tag}
-              </span>
+              <span key={i} className="bento-badge">{tag}</span>
             ))}
           </div>
         )}
+      </div>
 
-        <header className="card-header">
-          <h3 className="organic-title">{companion.name}</h3>
-        </header>
+      <div className="bento-body">
+        <div className="bento-header">
+          <h3 className="bento-title">{companion.name}</h3>
+          <span className="bento-location">{companion.city || 'Bangkok'}</span>
+        </div>
 
-        {companion.description ? (
-          <p className="organic-description">
-            {companion.description}
-          </p>
-        ) : (
-          <p className="organic-description">
-            Experience the Rhythm of Tranquility at {companion.city || 'Bangkok'}.
-          </p>
-        )}
+        <div className="bento-data-grid">
+          <div className="bento-widget price-widget">
+            <span className="widget-label">RATE</span>
+            <span className="widget-value">{companion.priceLabel}</span>
+          </div>
+          
+          <div className="bento-widget hours-widget">
+            <span className="widget-label">HOURS</span>
+            <span className="widget-value">{companion.hours || '24/7'}</span>
+          </div>
+        </div>
 
-        <footer className="organic-footer">
-          <span className="organic-price">{companion.priceLabel}</span>
-          <span className="organic-link">Discover</span>
-        </footer>
+        <div className="bento-actions">
+          {companion.lineUrl ? (
+            <a href={companion.lineUrl} target="_blank" rel="noopener noreferrer" className="bento-btn btn-line" onClick={(e) => e.stopPropagation()}>
+              Open LINE
+            </a>
+          ) : companion.phone ? (
+            <a href={`tel:${companion.phone.replace(/[^\d+]/g, '')}`} className="bento-btn btn-tel" onClick={(e) => e.stopPropagation()}>
+              Call
+            </a>
+          ) : (
+            <button className="bento-btn btn-view">View Details</button>
+          )}
+
+          {companion.mapsUrl && (
+            <a href={companion.mapsUrl} target="_blank" rel="noopener noreferrer" className="bento-btn btn-map icon-only" onClick={(e) => e.stopPropagation()}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </a>
+          )}
+        </div>
       </div>
     </article>
   );

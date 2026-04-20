@@ -1,38 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&display=swap');
 
 :root {
-  --color-bg: #faf9f8;
-  --color-bg-raised: #ffffff;
-  --color-bg-inset: #eeeeed;
-  --color-surface: #f4f3f2;
-  --color-surface-hover: #e9e8e7;
-  --color-line: #907067;
-  --color-line-soft: #e4beb4;
+  --color-bg: #06080b;
+  --color-bg-raised: #0d1117;
+  --color-bg-inset: #040609;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-surface-hover: rgba(255, 255, 255, 0.07);
+  --color-line: rgba(255, 255, 255, 0.12);
+  --color-line-soft: rgba(255, 255, 255, 0.06);
 
-  --color-cream: #1a1c1c; /* On-surface dark text */
-  --color-cream-soft: #5b4039; /* On-surface variant */
-  --color-cream-muted: #767474; /* Text muted */
-  --color-cream-faint: rgba(26, 28, 28, 0.05);
+  --color-cream: #ffffff;
+  --color-cream-soft: rgba(255, 255, 255, 0.75);
+  --color-cream-muted: rgba(255, 255, 255, 0.45);
+  --color-cream-faint: rgba(255, 255, 255, 0.05);
 
-  --color-red: #b02f00; /* Primary terracotta */
-  --color-red-hover: #862200;
-  --color-red-soft: #ffdbd1;
-  --color-gold: #ffb5a0;
-  --color-gold-soft: rgba(255, 181, 160, 0.2);
-  --color-accent: #ff5722;
+  --color-red: #ff3366; /* Vibrant playful pinkish red */
+  --color-red-hover: #ff4d79;
+  --color-red-soft: rgba(255, 51, 102, 0.15);
+  --color-gold: #00e676; /* Accent green for fun/success features */
+  --color-gold-soft: rgba(0, 230, 118, 0.15);
+  --color-accent: #7c4dff; /* Deep purple app accent */
   --color-success: #34d399;
 
   --color-ink: var(--color-cream);
   --color-ink-soft: var(--color-cream-soft);
   --color-ink-muted: var(--color-cream-muted);
-  --font-heading: var(--font-display);
+  --font-heading: var(--font-body); /* Drops Noto Serif */
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-fast: 0.18s var(--ease-out);
-  --transition-normal: 0.32s var(--ease-out);
-  --transition-slow: 0.5s var(--ease-out);
+  --transition-fast: 0.15s var(--ease-out);
+  --transition-normal: 0.25s var(--ease-out);
+  --transition-slow: 0.4s var(--ease-out);
 
-  --font-display: 'Noto Serif', serif;
+  /* Force single readable typeface */
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
   --spacing-xs: 0.5rem;
@@ -45,7 +46,25 @@
 }
 
 [data-theme='light'] {
-  /* Inherit defaults as light mode */
+  --color-bg: #f5f6f8;
+  --color-bg-raised: #ffffff;
+  --color-bg-inset: #eef0f3;
+  --color-surface: rgba(0, 0, 0, 0.03);
+  --color-surface-hover: rgba(0, 0, 0, 0.06);
+  --color-line: rgba(0, 0, 0, 0.1);
+  --color-line-soft: rgba(0, 0, 0, 0.05);
+
+  --color-cream: #0f141e;
+  --color-cream-soft: rgba(15, 20, 30, 0.75);
+  --color-cream-muted: rgba(15, 20, 30, 0.5);
+  --color-cream-faint: rgba(15, 20, 30, 0.04);
+
+  --color-red: #ff3366;
+  --color-red-hover: #e62e5c;
+  --color-red-soft: rgba(255, 51, 102, 0.12);
+  --color-gold: #00c853;
+  --color-gold-soft: rgba(0, 200, 83, 0.12);
+  --color-accent: #651fff;
 }
 
 [data-theme='hot-as-hell'] {
