@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e3e2e2",
+                        "inverse-primary": "#ffb5a0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#5b4039",
+                        "surface-container": "#eeeeed",
+                        "secondary-container": "#e3e2e2",
+                        "surface-container-high": "#e9e8e7",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "primary": "#b02f00",
+                        "outline-variant": "#e4beb4",
+                        "tertiary": "#5d5c5b",
+                        "surface-bright": "#faf9f8",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#541200",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "surface-container-highest": "#e3e2e1",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#ffdbd1",
+                        "on-secondary-container": "#646464",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "outline": "#907067",
+                        "on-primary-fixed-variant": "#862200",
+                        "tertiary-container": "#767474",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "error": "#ba1a1a",
+                        "background": "#faf9f8",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#3b0900",
+                        "inverse-on-surface": "#f1f0f0",
+                        "surface-tint": "#b02f00",
+                        "inverse-surface": "#2f3130",
+                        "primary-container": "#ff5722",
+                        "surface": "#faf9f8",
+                        "on-tertiary-container": "#f7feff",
+                        "on-background": "#1a1c1c",
+                        "surface-dim": "#dadad9",
+                        "secondary": "#5e5e5e",
+                        "surface-container-low": "#f4f3f2",
+                        "surface-variant": "#e3e2e1",
+                        "on-surface": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#464747"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "serif": ["Noto Serif", "serif"],
+                        "sans": ["Plus Jakarta Sans", "sans-serif"],
+                        "headline": ["Noto Serif"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #faf9f8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e4beb4;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-sans selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-2xl">
+<div class="flex justify-between items-center w-full px-8 md:px-16 py-6 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-serif italic text-stone-900 dark:text-stone-50 tracking-tighter">Sabai Sabai</div>
+<div class="hidden md:flex items-center gap-12">
+<a class="font-sans uppercase tracking-[0.15em] text-[10px] text-stone-900 dark:text-stone-50 border-b border-orange-800/20 pb-1 hover:text-orange-800 dark:hover:text-orange-400 transition-colors duration-500" href="#">Sanctuaries</a>
+<a class="font-sans uppercase tracking-[0.15em] text-[10px] text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-400 transition-colors duration-500" href="#">Interactive Map</a>
+<a class="font-sans uppercase tracking-[0.15em] text-[10px] text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-400 transition-colors duration-500" href="#">Journal</a>
+<a class="font-sans uppercase tracking-[0.15em] text-[10px] text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-400 transition-colors duration-500" href="#">About</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-stone-900 dark:text-stone-50">person</button>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-6 py-2 rounded-full font-sans uppercase tracking-widest text-[10px] transition-all duration-300">Book a treatment</button>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Gallery Section -->
+<section class="px-8 md:px-16 max-w-screen-2xl mx-auto mb-24">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-[716px]">
+<div class="md:col-span-8 overflow-hidden rounded-xl relative group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Luxurious Thai spa interior with warm wooden accents, soft ambient lighting, and a focused view of a professional massage setup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWViVNrSiXf12U0xJBCkFvxdDlkeJCAwWMSQiM7j1n3rQCrqgBCg8wJ45BNWcXvIrcrQfyj4Y0h6AFm9-XP5WjRfPGwpSnX9CkUtn0LNgR9HAZSJkfnoJYS4ZOIfoT4b7cMuPKc9bzI5Y5jn2g1UzpPg_3PT_Sy5ifMUe2SNSocz2Df1GvJWPoCNd30itHkY8BXSM72QbFKWPUdpsENOb3O0lQGJ235qaN6_YqTHPOnKZVek1-5O9eTabWoOG4mmrw51I_9z6DzMI"/>
+<div class="absolute bottom-12 left-12 text-on-primary">
+<span class="font-sans uppercase tracking-widest text-xs mb-4 block">Signature Sanctuary</span>
+<h1 class="font-serif italic text-6xl md:text-8xl tracking-tighter leading-none">Phuket Serenity</h1>
+</div>
+</div>
+<div class="md:col-span-4 flex flex-col gap-6">
+<div class="flex-1 overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover" data-alt="Close up of essential oils and smooth basalt stones on a textured linen surface with a single orchid" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsYfWN21MC-pw53sHdjwtMg6dALnakcLcEH11FIzUO9rD-cuy-ZmmN68ZM97PPopzDQdijZk1QFK6RRppWm1WJCLTJuYjoFk9g2sOQ7SNmFfrSShLCgSsU_9FjgIhvkd5LdGTji1WiKuNENB8Iz2vUW74TJhjwINkuV17NmbOvEeYnifGhxXHMoSziwYXXXkqGw_dDwUrTErgZ259Th_eec2DxgN5UD8oYclzCPJ6E1Q60pm7tnLmfVIXLxfICeeKWHtQHxEJL_rc"/>
+</div>
+<div class="flex-1 overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover" data-alt="A tranquil outdoor spa lounge area overlooking a lush tropical garden with dappled sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH15Jb0uqjGCPHsCEiG9s2mqm_oylWBg4ZrAB9bLgFVpEpjgxsxNXlA8gT5yu_c9YyLB3PSWIuc_wY2xjapLA07Khc4pTahdvFdiqi027otz749uvy11N7_UkMkvMo4LZ0FnhVjBvgJM_aKIp8L9bJNTYqICpDVEqdzcOXnlon7H56Gx6QoOnDKviiLEnWu4TiTrmPjHgRGnyaMoOa680FZJtAqawbfhUQnAW0UOV4ZTIk-dXfXswmqim0WDTADrKuhJFf1T_9WNc"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Atmosphere Section -->
+<section class="px-8 md:px-16 max-w-screen-2xl mx-auto mb-32">
+<div class="flex flex-col md:flex-row gap-16 items-start">
+<div class="md:w-1/3">
+<h2 class="font-serif italic text-4xl text-on-surface mb-6 leading-tight">The Art of Stillness</h2>
+<p class="font-sans text-secondary leading-relaxed mb-8">
+                        Phuket Serenity is more than a destination; it is a sensory journey designed to realign the spirit. Our space is curated to evoke the rhythmic breath of the Andaman sea, utilizing organic textures and native Thai botanicals.
+                    </p>
+<div class="flex flex-wrap gap-3">
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-[11px] font-sans uppercase tracking-widest text-secondary">Aromatherapy</span>
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-[11px] font-sans uppercase tracking-widest text-secondary">Ocean View</span>
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-[11px] font-sans uppercase tracking-widest text-secondary">Private Suites</span>
+</div>
+</div>
+<div class="md:w-2/3 grid grid-cols-2 gap-8">
+<div class="mt-12">
+<img class="rounded-xl w-full aspect-[4/5] object-cover" data-alt="Serene woman enjoying a facial treatment with soft focus and high-end editorial lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB48B4FV1KrZ3ehieP89UmbBAVdERW91vu0g_M2ryH1DB7VxcvWnmxvGnzNMwLO5irEfI5LdIFEEZWqJkz4a-cqYowfMpOERpH-qNJjWhFaBRYcqJ46vDcmVHUOONHOnJPzyH1sHEZ3rG4eeQ2YZ3vXg81jsifoM_8RHKkYARZ1J1ea6DMm36rVWAwlx4t1LcakD_KCJ4qoUC8RmGxw8o4v30QdWSoJ5e-NwjMRuoW_Tvz59vbJqIP-64I9t-QwaUbgOU-ipB4PDco"/>
+<p class="font-serif italic mt-4 text-stone-500">Ancient techniques, modern comfort.</p>
+</div>
+<div>
+<img class="rounded-xl w-full aspect-[4/5] object-cover" data-alt="Detail shot of herbal compress balls used in traditional Thai massage on a dark wooden background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuCrTv0wmbzSJ03lSXNzS6zOFiqa_PRs0Hg5fF9zOcrTHF818JV7s1jlDxw8qHLAORNK-aXsQRy-pBMvEXfS9u8EKzwGOpwfe4u1gw5toxMN4hDo3z-vRm0fo5cblzyZlQf1t_31f5t5uS1Nph-xx9f25GSho5MvcR3tWqLqT9rPQOMvRqeVPCkVW7w5gnLhNv5MFkdzMkfYjwY7iXKo2czVhw0HYzk_gb0aG3uP-8LPSbt5VmrDQoynPVMrObnWGQ24BKxASOX4I"/>
+<p class="font-serif italic mt-4 text-stone-500">The scent of lemongrass and jasmine.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Service Menu Section -->
+<section class="bg-surface-container-low py-32">
+<div class="px-8 md:px-16 max-w-screen-2xl mx-auto">
+<div class="flex justify-between items-end mb-16">
+<div>
+<span class="font-sans uppercase tracking-[0.2em] text-xs text-primary mb-4 block">The Rituals</span>
+<h2 class="font-serif italic text-5xl">Service Menu</h2>
+</div>
+<div class="hidden md:block h-px flex-1 mx-12 bg-outline-variant/20 mb-4"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-12">
+<!-- Menu Item -->
+<div class="group">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-sans font-semibold text-lg group-hover:text-primary transition-colors">Traditional Thai Stretching</h3>
+<span class="font-serif italic text-xl">฿2,400</span>
+</div>
+<p class="text-secondary text-sm leading-relaxed mb-4">Deep tissue alignment and assisted stretching using ancient Buddhist techniques to release energy blockages.</p>
+<div class="text-[10px] font-sans uppercase tracking-widest text-stone-400">90 Minutes / 120 Minutes</div>
+</div>
+<!-- Menu Item -->
+<div class="group">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-sans font-semibold text-lg group-hover:text-primary transition-colors">Silk Road Aromatherapy</h3>
+<span class="font-serif italic text-xl">฿3,100</span>
+</div>
+<p class="text-secondary text-sm leading-relaxed mb-4">A gentle, flowing massage using warm essential oils derived from northern Thai blossoms.</p>
+<div class="text-[10px] font-sans uppercase tracking-widest text-stone-400">60 Minutes / 90 Minutes</div>
+</div>
+<!-- Menu Item -->
+<div class="group">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-sans font-semibold text-lg group-hover:text-primary transition-colors">Royal Herbal Compress</h3>
+<span class="font-serif italic text-xl">฿3,800</span>
+</div>
+<p class="text-secondary text-sm leading-relaxed mb-4">Application of steamed herbal pouches to the body followed by a restorative pressure point massage.</p>
+<div class="text-[10px] font-sans uppercase tracking-widest text-stone-400">120 Minutes</div>
+</div>
+<!-- Menu Item -->
+<div class="group">
+<div class="flex justify-between items-baseline mb-2">
+<h3 class="font-sans font-semibold text-lg group-hover:text-primary transition-colors">Andaman Sea Salt Scrub</h3>
+<span class="font-serif italic text-xl">฿1,900</span>
+</div>
+<p class="text-secondary text-sm leading-relaxed mb-4">Exfoliating ritual using mineral-rich sea salts and virgin coconut oil for luminous skin.</p>
+<div class="text-[10px] font-sans uppercase tracking-widest text-stone-400">45 Minutes</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Guest Stories Section -->
+<section class="py-32 overflow-hidden">
+<div class="px-8 md:px-16 max-w-screen-2xl mx-auto mb-16">
+<h2 class="font-serif italic text-4xl text-center">Guest Stories</h2>
+</div>
+<div class="flex gap-8 overflow-x-auto pb-8 px-8 no-scrollbar">
+<!-- Review Card -->
+<div class="min-w-[320px] md:min-w-[400px] bg-white p-8 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-1 mb-6 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-sans italic text-on-surface mb-8 leading-relaxed">"The transition from the heat of Phuket into this cool, jasmine-scented sanctuary was life-changing. The Thai stretching felt like ten years of stress leaving my body."</p>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center font-bold text-primary">E</div>
+<div>
+<span class="block font-semibold text-sm">Elena Rodriguez</span>
+<span class="block text-xs text-stone-400">Visited June 2024</span>
+</div>
+</div>
+</div>
+<!-- Review Card -->
+<div class="min-w-[320px] md:min-w-[400px] bg-white p-8 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-1 mb-6 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-sans italic text-on-surface mb-8 leading-relaxed">"Pure architectural bliss. Every corner of the spa is designed for photography, but the experience is so grounding you forget to even take your phone out."</p>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center font-bold text-primary">J</div>
+<div>
+<span class="block font-semibold text-sm">James Chen</span>
+<span class="block text-xs text-stone-400">Visited May 2024</span>
+</div>
+</div>
+</div>
+<!-- Review Card -->
+<div class="min-w-[320px] md:min-w-[400px] bg-white p-8 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-1 mb-6 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">star</span>
+</div>
+<p class="font-sans italic text-on-surface mb-8 leading-relaxed">"The herbal compress was exactly what I needed after a week of travel. Truly the best massage in Thailand, and I've tried many."</p>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center font-bold text-primary">M</div>
+<div>
+<span class="block font-semibold text-sm">Marcus Vogt</span>
+<span class="block text-xs text-stone-400">Visited April 2024</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Reserve CTA -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 w-full max-w-md px-4">
+<div class="bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-2xl flex items-center justify-between border border-white/20">
+<div class="px-4">
+<span class="block text-[10px] font-sans uppercase tracking-widest text-stone-400">Starting from</span>
+<span class="block font-serif italic text-lg text-primary">฿1,900</span>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-8 py-3 rounded-xl font-sans font-semibold tracking-wide transition-all duration-300 shadow-lg shadow-primary/20">
+                Reserve Experience
+            </button>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-stone-100 dark:bg-stone-900 w-full mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 md:px-16 py-12 gap-8">
+<div class="font-serif italic text-xl text-stone-900 dark:text-stone-50">Sabai Sabai</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-sans text-[11px] uppercase tracking-widest text-stone-400 hover:text-stone-900 dark:hover:text-white transition-opacity" href="#">The Collection</a>
+<a class="font-sans text-[11px] uppercase tracking-widest text-stone-400 hover:text-stone-900 dark:hover:text-white transition-opacity" href="#">Partner Login</a>
+<a class="font-sans text-[11px] uppercase tracking-widest text-stone-400 hover:text-stone-900 dark:hover:text-white transition-opacity" href="#">Press Inquiries</a>
+<a class="font-sans text-[11px] uppercase tracking-widest text-stone-400 hover:text-stone-900 dark:hover:text-white transition-opacity" href="#">Privacy</a>
+</div>
+<div class="font-sans text-[11px] uppercase tracking-widest text-stone-400">
+                © 2024 Sabai Sabai. The Digital Breath.
+            </div>
+</div>
+</footer>
+</body></html>

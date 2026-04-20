@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sabai Sabai | The Digital Breath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e3e2e2",
+                        "inverse-primary": "#ffb5a0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#5b4039",
+                        "surface-container": "#eeeeed",
+                        "secondary-container": "#e3e2e2",
+                        "surface-container-high": "#e9e8e7",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "primary": "#b02f00",
+                        "outline-variant": "#e4beb4",
+                        "tertiary": "#5d5c5b",
+                        "surface-bright": "#faf9f8",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#541200",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "surface-container-highest": "#e3e2e1",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#ffdbd1",
+                        "on-secondary-container": "#646464",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "outline": "#907067",
+                        "on-primary-fixed-variant": "#862200",
+                        "tertiary-container": "#767474",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "error": "#ba1a1a",
+                        "background": "#faf9f8",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#3b0900",
+                        "inverse-on-surface": "#f1f0f0",
+                        "surface-tint": "#b02f00",
+                        "inverse-surface": "#2f3130",
+                        "primary-container": "#ff5722",
+                        "surface": "#faf9f8",
+                        "on-tertiary-container": "#f7feff",
+                        "on-background": "#1a1c1c",
+                        "surface-dim": "#dadad9",
+                        "secondary": "#5e5e5e",
+                        "surface-container-low": "#f4f3f2",
+                        "surface-variant": "#e3e2e1",
+                        "on-surface": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#464747"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "serif": ["Noto Serif", "serif"],
+                        "sans": ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-serif { font-family: 'Noto Serif', serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .text-display-lg { font-size: 5rem; line-height: 1; letter-spacing: -0.02em; }
+        .glass-nav { background: rgba(250, 249, 248, 0.8); backdrop-filter: blur(20px); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary/20">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 glass-nav">
+<div class="flex justify-between items-center w-full px-8 md:px-16 py-6 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-serif italic text-stone-900 dark:text-stone-50 tracking-tighter">Sabai Sabai</div>
+<div class="hidden md:flex gap-12">
+<a class="font-sans uppercase tracking-[0.15em] text-[10px] text-stone-900 dark:text-stone-50 border-b border-orange-800/20 pb-1 hover:text-orange-800 transition-colors duration-500" href="#">Sanctuaries</a>
+<a class="font-sans uppercase tracking-[0.15em] text-[10px] text-stone-500 hover:text-orange-800 transition-colors duration-500" href="#">Interactive Map</a>
+<a class="font-sans uppercase tracking-[0.15em] text-[10px] text-stone-500 hover:text-orange-800 transition-colors duration-500" href="#">Journal</a>
+<a class="font-sans uppercase tracking-[0.15em] text-[10px] text-stone-500 hover:text-orange-800 transition-colors duration-500" href="#">About</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="hidden md:block font-sans uppercase tracking-[0.15em] text-[10px] text-orange-800 border-b border-orange-800/20 pb-1">Book a treatment</button>
+<div class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">person</span>
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="relative h-[921px] flex items-center px-8 md:px-16 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale-[20%] sepia-[10%]" data-alt="Serene luxury Thai spa interior with warm golden lighting, wooden textures, and a stone massage table prepared with orchid flowers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf9sVRTLXeohumAPPTlXqztF-0TD_cUEkrRfnwvzrSg9nzdxexIqTedd0z0uqb_DU9XG_J_PFK7BSLmWImChYJtb4ndQOKC0oT95L5blZUMDsLj2HI8nL4o9AUZ_oNMxjJ2xg41gKkMQWC_bNBrhhxBIMxKPfFrDpqqAyRYcdVP2lv1s8yAYk-cRznOtEY1B5VBXSywiC1yTnO_l9LbLVaq14S_fDpqT78Gnn9z2ZLc4C8MSuJKqZe_4-HgGimTwRJRS0lZrEM88o"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/40 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-4xl">
+<span class="font-sans uppercase tracking-widest text-xs text-primary font-semibold mb-6 block">Wellness Redefined</span>
+<h1 class="text-display-lg font-serif italic text-on-surface mb-8">Experience the Rhythm of Tranquility</h1>
+<!-- Search/Booking Widget -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-md p-8 rounded-xl max-w-2xl shadow-sm border border-outline-variant/10">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+<div class="space-y-2">
+<label class="font-sans text-[11px] uppercase tracking-widest text-on-surface-variant">Destination</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-3 text-sm focus:ring-1 focus:ring-primary/20" placeholder="e.g. Bangkok" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-sans text-[11px] uppercase tracking-widest text-on-surface-variant">Treatment</label>
+<select class="w-full bg-surface-container-low border-none rounded-lg p-3 text-sm focus:ring-1 focus:ring-primary/20">
+<option>Traditional Thai</option>
+<option>Aromatherapy</option>
+<option>Herbal Compress</option>
+</select>
+</div>
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-xl h-12 font-sans font-semibold text-sm hover:opacity-90 transition-all shadow-xl shadow-primary/10">
+                            Find Sanctuary
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- The Collection Section -->
+<section class="py-24 px-8 md:px-16 bg-surface">
+<div class="flex flex-col md:flex-row justify-between items-baseline mb-16">
+<h2 class="font-serif italic text-4xl text-on-surface">The Collection</h2>
+<p class="font-sans text-stone-500 uppercase tracking-widest text-[10px] mt-4 md:mt-0">Curated experiences for the weary soul</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Card 1 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/5] overflow-hidden rounded-xl mb-6 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Traditional Thai wooden pavilion in a lush tropical garden with afternoon sunlight filtering through palm leaves" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNVkfZtUpcb3aWldmy4hsF9nMiu4qSkb2rrxRiKbQVBbw11FD6m2PMFyhDgCTJYKQAtQpribcfdHcB6ZL6DemE-wqyXDIwOk_PFhL7IqbjhUeqESJyJaJ3S4SVGz1-6up862XW_bEHOcEYgsHWR3PTqCd1tWoNJ_7zn1bceOHg5K7rILbrsKIJvaa_tdBcJz5xp0HaL1pft7qQhQq_EBKPj5wSh7vZdS4glNmDwVb0DVY02manJo9fAEbMOsQCy36awozdCk_1jbQ"/>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-[10px] font-sans uppercase tracking-wider text-on-surface">Heritage</span>
+</div>
+<h3 class="font-serif italic text-2xl mb-2">Traditional Thai</h3>
+<p class="text-stone-500 text-sm leading-relaxed mb-4">Ancient healing arts focused on energy lines and deep physical restoration.</p>
+<a class="text-primary font-sans text-xs uppercase tracking-widest border-b border-primary/20 pb-1" href="#">Discover</a>
+</div>
+<!-- Card 2 -->
+<div class="group cursor-pointer md:mt-12">
+<div class="aspect-[4/5] overflow-hidden rounded-xl mb-6 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Modern minimalist luxury spa infinity pool overlooking a tropical coastline at dawn with soft blue and pink sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgQGaOKXqleG6KRwo_J2RKktkazeYW9I3oW7_e9CD9JONMO1Ie0MTCk5kbq8osrJ_J5oI7dsa24x5XeWoXMV5SDNiDt87Tn9_CJ4Nw4-_rnW9EdyRc7EWX6ksY6cEEOJYWofxoG_bQHkZRdyU8CbfME88MF3K9wlLqnnkQseDpebEz1T45zjhQ066mWf3fjYNgssXM_4iH3BGdN_U1iG7FrOsrKN1_pQOHQCjqgwMp4K_j6gNfuBZCykzwXuF2MBem7CIly9lgOnM"/>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-[10px] font-sans uppercase tracking-wider text-on-surface">Luxury</span>
+</div>
+<h3 class="font-serif italic text-2xl mb-2">Luxury Retreats</h3>
+<p class="text-stone-500 text-sm leading-relaxed mb-4">Immersive multi-day experiences in secluded islands and mountain hideaways.</p>
+<a class="text-primary font-sans text-xs uppercase tracking-widest border-b border-primary/20 pb-1" href="#">Explore</a>
+</div>
+<!-- Card 3 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/5] overflow-hidden rounded-xl mb-6 bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Chic urban spa interior with concrete walls, warm wood accents, and soft candlelight in a metropolitan setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnjWGC8XD5Ste7prDWg0MtvNbIzIRlhjtP6EmUgQs1x81lL-1BPD6L5AVNrrkMPvGcprgclQKCRvr6zhGWsRjSb42r-M50rpIwnhxESOyEvplzZklLzdxxTS44-o1mGRjFnmiHGKCip8BLyD0Gtiq3Sb7L6x8cPxA_zbs5dpoIt4QVFdvC-hfsSqx6BbtLcbAFUiURrYtjsPV3eAnvx-QGhxmHe7Wofuv6PARjpiiOq1Nn92pAOv8ogZYKoYt4PVOD3CrOocoKoNc"/>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-[10px] font-sans uppercase tracking-wider text-on-surface">City</span>
+</div>
+<h3 class="font-serif italic text-2xl mb-2">Urban Oasis</h3>
+<p class="text-stone-500 text-sm leading-relaxed mb-4">Moments of stillness designed for the modern professional within the city's pulse.</p>
+<a class="text-primary font-sans text-xs uppercase tracking-widest border-b border-primary/20 pb-1" href="#">Browse</a>
+</div>
+</div>
+</section>
+<!-- The Local Guide Section -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-screen-2xl mx-auto px-8 md:px-16">
+<div class="flex flex-col md:flex-row gap-16 items-center">
+<div class="w-full md:w-1/2">
+<img class="w-full h-[500px] object-cover rounded-xl shadow-2xl shadow-stone-900/10" data-alt="Close-up of ceramic bowl with Thai herbal massage compresses, frangipani flowers and smooth river stones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn3nCzYubT5X4oeZEzJlDXzxVymKX_qz_RZZkCDhLz3gbbqYc95v0ed1XEbelIbElliwesBTQXPu5EHcoazclkd6NqM9N4DkJrXJ5eJXpFv30dpEoqCkY2Uyy70Td2rUVzlWMNNT-UY5HWjNYX9cEW50q7htltjNM-nNOJsJzVbsikt94_jyNPhuP4SG7PuZvmPwMfXpBEn4t9e8vBkbcb7TuU1TRJSRqcT_6XpBN2EHULDR40Loq61hjRpvMMmYaTVLQqTGbAN-w"/>
+</div>
+<div class="w-full md:w-1/2 space-y-8">
+<span class="font-sans uppercase tracking-[0.2em] text-[10px] text-primary">The Local Guide</span>
+<h2 class="font-serif italic text-5xl leading-tight">The Art of Thai Herbal Compresses</h2>
+<p class="text-stone-600 leading-relaxed font-sans text-lg">
+                            "Wellness in Thailand is not a service; it is a philosophy of balance. Luk Pra Kob, or the herbal compress, has been used for centuries to alleviate chronic aches and soothe the nervous system..."
+                        </p>
+<div class="flex gap-4 items-center">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a travel writer, professional and friendly, soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYvn6xPBqPhhjW_J5zWECX7jAx_pd_Vp_nn8uQe7Ey-BZUx2AtdUUzBf9z2w92ANH57_gL5o7olnuoEgOM53a6EleLa42HbcIebLalvoC7Q3BsY1ghxU17BYOw5YjMv6bNLeHNfraqOomINAW7z1iqIO-gF8awIhbF5b71N4qRFPlfYNpcBrd9TQC49VBSPSrKWZHDObs2OtQf2C2KgwTNH8CgMn9a5kdZnA96XwBrwiCfNFcIk8hzHa59KV9A6HWWLWkvn2FzZJU"/>
+<div>
+<p class="text-sm font-semibold">Ananda Srisai</p>
+<p class="text-[10px] uppercase tracking-widest text-stone-400">Wellness Editor</p>
+</div>
+</div>
+<button class="text-primary font-sans text-xs uppercase tracking-widest border-b-2 border-primary/10 hover:border-primary transition-all pb-1">Read the Full Journal</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Social Proof Section -->
+<section class="py-24 px-8 md:px-16 text-center bg-surface">
+<h2 class="font-serif italic text-3xl mb-12">Shared Moments of Peace</h2>
+<div class="flex flex-wrap justify-center gap-4">
+<span class="bg-surface-container-high px-6 py-3 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-colors cursor-default">@aura_travels</span>
+<span class="bg-surface-container-high px-6 py-3 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-colors cursor-default">@zen_seeker</span>
+<span class="bg-surface-container-high px-6 py-3 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-colors cursor-default">@thai_wellness_guide</span>
+<span class="bg-surface-container-high px-6 py-3 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-colors cursor-default">@serene_escapes</span>
+<span class="bg-surface-container-high px-6 py-3 rounded-full font-sans text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-colors cursor-default">@the_slow_life</span>
+</div>
+<div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="aspect-square bg-surface-container rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" data-alt="Tiled spa pool with floating flowers and natural stone walls" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDh-D2oo_BmvIjbeq6w_ovSXI_BZx6D5Cuhx0A-oGx6q9cnweBTOUmSGb_48blku5919BaKqw3BKC_5g6tDmPjSsOsbmXj0Cg76goMdGxWdiJPDA99gFUw_JlFASmkt1y5xFv6O2UxwaJ12P3XPfqL3miX-DeHQAcGJkBBqAlyVjn9y7X9lK45RkQYnH6L1sJdIm_D0FrAfPfwagL7sqpJF5Fe_WfSYbkJYZVLhFcG8FhpehE9PzCGz0uIRjlmpjv-EyVZtXVE3sig"/>
+</div>
+<div class="aspect-square bg-surface-container rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" data-alt="Soft lighting on a spa reception desk with Thai art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbZItwRjtly1ZQNaHfV_P_ptLiWfQDPABrWBG3SPf1845j7G0vaWsypmRhP_4BXJT2akY5A2VqJoYO9MYNVu4k8DjYu4z73knP8omF3_A-GfYtxUxM4XAbUOemAnMs8XEOs_8k1vhJqDae3m9UkIyNYxEAEuEbGQBF0KkOTJRFkW5OzgbOP784Uff4u0weCKSwud_IbKAWtxADss5mCsKQlVNz_YqC1aH6P1qIJrAlpkB9aCYhBgmBRDrqoeU73TNsM3gqJdxu6cI"/>
+</div>
+<div class="aspect-square bg-surface-container rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" data-alt="Relaxed person receiving head massage in a luxury setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkTGqU_JXytN2qUqP6qA-HpzrZZU1dVs73jMsAxfzzm0pZ_F6rZffx5YMwjHZYeLcKMHb71t7ZePseStb6pv9slsYWPC3hcuMTe9Clh8MpLbmX0W8mTSiPLgkUXE1QExsyo87uyEXZxv5fUml3EBU7AqAnDl4dLB-RyRXi7W--n1AZFUsTCh6RoK0HKxADMvdFTUvzMHgogC9ti5Jy42HszVrTl_fvFCuiVjdbF0AOQ85r1sxAPv3iIZqet8FID3Z0LuSo21yzni0"/>
+</div>
+<div class="aspect-square bg-surface-container rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" data-alt="Assortment of essential oils and aromatherapy candles on a bamboo tray" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAo0b3LFV2UuxpvmYlKsqCTqf3dufUrc3d_4bKspDBsnbD6JGMoLEAHBp8S7drpNHcHyZNzBY_JR6iFBPsEBqR6Z2BH4HtFOHU-BFn0wQL0NX3qlNdgiH42otQ7c3_OlKuNRCAWWe45eVXL1oPIhSg_f_rUGdNanmYuQuwxBLrtU5jydVWvwbM6Wz87y8bpn3fwDjG14yiCHF_CwBTZhxjgkhq3VmqVGlW35Lde85S3v9fbh93uwYUN8nDpts37DeL-pGy18FmjiJg"/>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-stone-100 dark:bg-stone-900">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 md:px-16 py-12 gap-8">
+<div class="space-y-4">
+<div class="font-serif italic text-xl text-stone-900 dark:text-stone-50">Sabai Sabai</div>
+<p class="font-sans text-[11px] uppercase tracking-widest text-stone-400">© 2024 Sabai Sabai. The Digital Breath.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-sans text-[11px] uppercase tracking-widest text-stone-400 hover:text-stone-900 dark:hover:text-white transition-opacity" href="#">The Collection</a>
+<a class="font-sans text-[11px] uppercase tracking-widest text-stone-400 hover:text-stone-900 dark:hover:text-white transition-opacity" href="#">Partner Login</a>
+<a class="font-sans text-[11px] uppercase tracking-widest text-stone-400 hover:text-stone-900 dark:hover:text-white transition-opacity" href="#">Press Inquiries</a>
+<a class="font-sans text-[11px] uppercase tracking-widest text-stone-400 hover:text-stone-900 dark:hover:text-white transition-opacity" href="#">Privacy</a>
+</div>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">language</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">share</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- FAB (Contextual for Homepage) -->
+<button class="fixed bottom-8 right-8 bg-gradient-to-tr from-primary to-primary-container text-on-primary w-14 h-14 rounded-full flex items-center justify-center shadow-[0_40px_40px_-5px_rgba(176,47,0,0.2)] hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">spa</span>
+</button>
+</body></html>
