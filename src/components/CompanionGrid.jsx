@@ -1,5 +1,7 @@
+
 import { useState } from 'react';
 import CompanionCard from './CompanionCard';
+import InsightsGrid from './InsightsGrid';
 import './CompanionGrid.css';
 
 function SkeletonCard() {
@@ -29,63 +31,56 @@ function CompanionGrid({
 }) {
   const [visibleCount, setVisibleCount] = useState(12);
 
-  if (isLoading && companions.length === 0) {
-    return (
-      <div className="companion-grid-container">
+  return (
+    <div className="companion-grid-container">
+      {!isLoading && companions.length > 0 && <InsightsGrid t={t} />}
+      
+      {isLoading && companions.length === 0 ? (
         <div className="companion-grid">
-          {Array.from({ length: 6 }).map((_, i) => (
+           {Array.from({ length: 6 }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
-      </div>
-    );
-  }
-
-  if (companions.length === 0) {
-    return (
-      <div className="grid-state-card">
-        <h3>{t.featured.emptyTitle}</h3>
-        <p>{t.featured.emptyBody}</p>
-        {hasActiveFilters && (
-          <button type="button" className="btn-load-more" onClick={onClearFilters}>
-            {t.featured.clearFilters}
-          </button>
-        )}
-      </div>
-    );
-  }
-
-  const visibleCompanions = companions.slice(0, visibleCount);
-  const hasMore = visibleCount < companions.length;
-
-  return (
-    <div className="companion-grid-container">
-      <div className="companion-grid">
-        {visibleCompanions.map((companion, index) => (
-          <div
-            key={companion.id}
-            className="card-entrance"
-            style={{ animationDelay: `${Math.min(index, 11) * 40}ms` }}
-          >
-            <CompanionCard
-              companion={companion}
-              onClick={onCardClick}
-              t={t}
-            />
-          </div>
-        ))}
-      </div>
-
-      {hasMore && (
-        <div className="load-more-container">
-          <button
-            type="button"
-            className="btn-load-more"
-            onClick={() => setVisibleCount((current) => current + 12)}
-          >
-            {t.featured.showMore} ({companions.length - visibleCount} {t.featured.hidden})
-          </button>
+      ) : companions.length === 0 ? (
+        <div className="grid-state-card">
+          <h3>{t.featured.emptyTitle}</h3>
+          <p>{t.featured.emptyBody}</p>
+          {hasActiveFilters && (
+            <button type="button" className="btn-load-more" onClick={onClearFilters}>
+              {t.featured.clearFilters}
+            </button>
+          )}
         </div>
+      ) : (
+        <>
+          <div className="companion-grid">
+            {companions.slice(0, visibleCount).map((companion, index) => (
+              <div
+                key={companion.id}
+                className="card-entrance"
+                style={{ animationDelay: `${Math.min(index, 11) * 40}ms` }}
+              >
+                <CompanionCard
+                  companion={companion}
+                  onClick={onCardClick}
+                  t={t}
+                />
+              </div>
+            ))}
+          </div>
+
+          {visibleCount < companions.length && (
+            <div className="load-more-container">
+              <button
+                type="button"
+                className="btn-load-more"
+                onClick={() => setVisibleCount((current) => current + 12)}
+              >
+                {t.featured.showMore} ({companions.length - visibleCount} {t.featured.hidden})
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
