@@ -93,15 +93,12 @@ ${rawText}
   }
 
   function assignImages(listings) {
-    const fallbackPool = availableImages.length > 0 ? availableImages : ['109748.jpg'];
-
-    return listings.map((listing, index) => {
-      const queuedPhoto = pendingPhotos.shift();
-      const fileName = queuedPhoto || fallbackPool[index % fallbackPool.length];
+    return listings.map((listing) => {
+      pendingPhotos.shift();
 
       return {
         ...listing,
-        imageUrl: `/mockups/${fileName}`,
+        imageUrl: listing.imageUrl && !listing.imageUrl.startsWith('/mockups/') ? listing.imageUrl : null,
       };
     });
   }

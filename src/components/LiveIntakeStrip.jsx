@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
 import {
   createIntakeSummary,
   formatSourceChannelName,
-  formatPreciseTimestamp,
   formatRelativeTimestamp,
   getIngestTimestamp,
   getListingTimestamp,
@@ -10,141 +8,35 @@ import {
 } from '../lib/listings';
 import './LiveIntakeStrip.css';
 
-function formatClockTime(value) {
-  if (!value) {
-    return null;
+const BAD_TICKER_NAMES = [
+  /^location$/i,
+  /^facebook page$/i,
+  /โลเคชั้น/i,
+  /cracker/i,
+];
+
+function formatTickerName(listing, t) {
+  const name = String(listing?.name || '').trim();
+  if (!name || BAD_TICKER_NAMES.some((pattern) => pattern.test(name))) {
+    return t.intake.pendingName || 'Listing pending review';
   }
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return null;
-  }
-
-  return new Intl.DateTimeFormat('en', {
-    hour: 'numeric',
-    minute: '2-digit',
-    second: '2-digit',
-  }).format(date);
-}
-
-function formatElapsed(now, value) {
-  if (!value) {
-    return null;
-  }
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return null;
-  }
-
-  const diffSeconds = Math.max(0, Math.floor((now - date.getTime()) / 1000));
-  if (diffSeconds < 60) {
-    return `${diffSeconds}s ago`;
-  }
-
-  const diffMinutes = Math.floor(diffSeconds / 60);
-  if (diffMinutes < 60) {
-    return `${diffMinutes}m ago`;
-  }
-
-  const diffHours = Math.floor(diffMinutes / 60);
-  if (diffHours < 24) {
-    return `${diffHours}h ago`;
-  }
-
-  const diffDays = Math.floor(diffHours / 24);
-  return `${diffDays}d ago`;
+  return name;
 }
 
 function LiveIntakeStrip({ t, listings, intakeSummary, lastLoadedAt }) {
-  const [now, setNow] = useState(() => Date.now());
   const intake = intakeSummary || createIntakeSummary(listings);
-  const syncTimestamp = intake.latestIngestTimestamp || lastLoadedAt;
   const tickerItems = intake.newestListings.length > 0
     ? [...intake.newestListings, ...intake.newestListings]
     : [];
 
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setNow(Date.now());
-    }, 1000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, []);
-
   return (
-    <section className="live-intake-strip" aria-labelledby="live-intake-title">
-      <div className="live-intake-header">
-        <div className="live-intake-heading">
-          <p className="live-intake-kicker">{t.intake.kicker}</p>
-          <h2 id="live-intake-title">{t.intake.title}</h2>
-        </div>
-        <p className="live-intake-subtitle">{t.intake.subtitle}</p>
+    <section className="live-intake-strip" aria-label={t.intake.tickerLabel}>
+      <div className="live-intake-label">
+        <span>{t.intake.kicker}</span>
+        <strong>{lastLoadedAt ? formatRelativeTimestamp(lastLoadedAt) : t.intake.pending}</strong>
       </div>
 
-      <div className="live-intake-stats-row">
-        <div className="live-intake-sync">
-          <span>{t.intake.syncLabel}</span>
-          <strong>{formatClockTime(syncTimestamp) || t.intake.pending}</strong>
-          <small>
-            {formatElapsed(now, syncTimestamp) || t.intake.pending}
-            {syncTimestamp ? ` · ${formatPreciseTimestamp(syncTimestamp)}` : ''}
-          </small>
-        </div>
-
-        <div className="live-intake-stat">
-          <span>{t.intake.stats.last15}</span>
-          <strong>{intake.last15Minutes}</strong>
-          <small>{t.intake.stats.last15Note}</small>
-        </div>
-
-        <div className="live-intake-stat">
-          <span>{t.intake.stats.last60}</span>
-          <strong>{intake.last60Minutes}</strong>
-          <small>{t.intake.stats.last60Note}</small>
-        </div>
-
-        <div className="live-intake-stat">
-          <span>{t.intake.stats.last240}</span>
-          <strong>{intake.last240Minutes}</strong>
-          <small>{t.intake.stats.last240Note}</small>
-        </div>
-
-        <div className="live-intake-stat">
-          <span>{t.intake.stats.matched}</span>
-          <strong>{intake.matchedRate}%</strong>
-          <small>{t.intake.stats.matchedNote}</small>
-        </div>
-      </div>
-
-      <div className="live-intake-board">
-        <article className="live-intake-board-card">
-          <span>{t.intake.board.feedNow}</span>
-          <strong>{intake.feedCount}</strong>
-          <small>{t.intake.board.feedNowNote}</small>
-        </article>
-        <article className="live-intake-board-card">
-          <span>{t.intake.board.throughput}</span>
-          <strong>{intake.throughputPerHour}</strong>
-          <small>{t.intake.board.throughputNote}</small>
-        </article>
-        <article className="live-intake-board-card">
-          <span>{t.intake.stats.channels}</span>
-          <strong>{intake.channelCount}</strong>
-          <small>{t.intake.stats.channelsNote}</small>
-        </article>
-        <article className="live-intake-board-card">
-          <span>{t.intake.board.topChannel}</span>
-          <strong>{intake.topChannel?.channel || t.intake.board.topChannelPending}</strong>
-          <small>
-            {intake.topChannel ? `${intake.topChannel.count} ${t.intake.listingsUnit}` : t.intake.board.topChannelNote}
-          </small>
-        </article>
-      </div>
-
-      <div className="live-intake-marquee" aria-label={t.intake.tickerLabel}>
+      <div className="live-intake-marquee">
         {tickerItems.length > 0 ? (
           <div className="live-intake-track">
             {tickerItems.map((listing, index) => {
@@ -154,39 +46,15 @@ function LiveIntakeStrip({ t, listings, intakeSummary, lastLoadedAt }) {
                 <article
                   key={`${listing.id}-${index}`}
                   className="live-intake-item"
-                  aria-label={`${listing.name} ${formatPreciseTimestamp(listingTimestamp) || ''}`}
                 >
                   <span className={`live-intake-item-dot${hasMatchedMedia(listing) ? ' is-matched' : ''}`} />
-                  <strong>{listing.name}</strong>
-                  <span>{listing.location}</span>
+                  <strong>{formatTickerName(listing, t)}</strong>
                   <span>{formatSourceChannelName(listing.sourceChannel) || t.intake.unknownChannel}</span>
                   <span>{formatRelativeTimestamp(listingTimestamp) || t.intake.pending}</span>
                 </article>
               );
             })}
           </div>
-        ) : (
-          <p className="live-intake-empty">{t.intake.empty}</p>
-        )}
-      </div>
-
-      <div className="live-intake-flow">
-        <span className="live-intake-flow-label">{t.intake.channelFlow}</span>
-        {intake.channelLeaders.length > 0 ? (
-          <ul className="live-intake-flow-list">
-            {intake.channelLeaders.map((channel) => (
-              <li key={channel.channel} className="live-intake-flow-item">
-                <div className="live-intake-flow-main">
-                  <strong>{formatSourceChannelName(channel.channel) || channel.channel}</strong>
-                  <span>{channel.count} {t.intake.listingsUnit}</span>
-                </div>
-                <div className="live-intake-flow-bar" aria-hidden="true">
-                  <span style={{ width: `${Math.max(channel.share, 8)}%` }} />
-                </div>
-                <em>{channel.share}%</em>
-              </li>
-            ))}
-          </ul>
         ) : (
           <p className="live-intake-empty">{t.intake.empty}</p>
         )}

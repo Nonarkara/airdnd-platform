@@ -1,0 +1,35 @@
+.atomic-clock {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  height: 22px;
+  padding: 0 clamp(0.75rem, 2vw, 1.35rem);
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.atomic-clock-label {
+  color: var(--color-cream-muted);
+  flex: 0 0 auto;
+}
+
+.atomic-clock-time {
+  color: var(--color-action);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* Show full HH:MM:SS.mmm on desktop, HH:MM:SS on mobile */
+.atomic-clock-short {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .atomic-clock-full  { display: none; }
+  .atomic-clock-short { display: inline; }
+}

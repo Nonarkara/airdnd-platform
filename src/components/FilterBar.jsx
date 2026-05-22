@@ -14,6 +14,9 @@ function FilterBar({
   setSortBy,
   onRefresh,
   isRefreshing,
+  onClearFilters,
+  hasActiveFilters,
+  resultCount,
   t,
 }) {
   return (
@@ -27,6 +30,16 @@ function FilterBar({
           onChange={(event) => setSearchTerm(event.target.value)}
           placeholder={t.filters.searchPlaceholder}
         />
+        {searchTerm && (
+          <button
+            type="button"
+            className="filter-search-clear"
+            onClick={() => setSearchTerm('')}
+            aria-label="Clear search"
+          >
+            ×
+          </button>
+        )}
       </div>
 
       <div className="filter-field">
@@ -68,20 +81,37 @@ function FilterBar({
         >
           {sortOptions.map((option) => (
             <option key={option} value={option}>
-              {option}
+              {t.sortOptions?.[option] || option}
             </option>
           ))}
         </select>
       </div>
 
-      <button
-        type="button"
-        className="filter-refresh"
-        onClick={onRefresh}
-        disabled={isRefreshing}
-      >
-        {isRefreshing ? t.common.refreshing : t.filters.refreshButton}
-      </button>
+      <div className="filter-actions">
+        <button
+          type="button"
+          className="filter-refresh"
+          onClick={onRefresh}
+          disabled={isRefreshing}
+        >
+          {isRefreshing ? t.common.refreshing : t.filters.refreshButton}
+        </button>
+        {hasActiveFilters && (
+          <button
+            type="button"
+            className="filter-clear"
+            onClick={onClearFilters}
+          >
+            {t.filters.clearButton || 'Clear'}
+          </button>
+        )}
+      </div>
+
+      {resultCount != null && (
+        <div className="filter-results-count" aria-live="polite">
+          {resultCount.toLocaleString()} {t.featured.countLabel}
+        </div>
+      )}
     </section>
   );
 }

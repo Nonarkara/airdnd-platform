@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { translations } from '../translations';
+import './Login.css';
 
 export default function Login({ setSession, language, setLanguage }) {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
-
-    const t = translations[language];
 
     // For this private hub, we only allow Logins of pre-approved emails.
     // Signups are disabled in the UI (managed via Supabase dashboard by the owner).
@@ -34,9 +32,9 @@ export default function Login({ setSession, language, setLanguage }) {
         <div className="login-container">
             <div className="login-card">
                 <div className="login-header">
-                    <span className="logo-icon">✨</span>
-                    <h2>AirDnD Private Hub</h2>
-                    <p>Exclusive access required.</p>
+                    <span className="logo-icon">Live</span>
+                    <h2>Sabai Admin</h2>
+                    <p>Private intelligence console.</p>
                 </div>
 
                 {errorMsg && <div className="error-banner">{errorMsg}</div>}

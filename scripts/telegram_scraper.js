@@ -20,6 +20,7 @@ import { notifyListings } from './notify.js';
 import { exportToGoogle } from './google_export.js';
 import { ensureLocalPhotosDir, downloadAndStorePhoto, archivePhotoMetadata } from './photo_storage.js';
 
+import { cleanDisplayText, normalizeText } from '../src/lib/normalization.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
@@ -50,9 +51,9 @@ const configuredTargetTokens = (
   .split(',')
   .map((value) => value.trim())
   .filter(Boolean);
-const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '200', 10);
+const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '2000', 10);
 const pollIntervalMs = Number.parseInt(process.env.TELEGRAM_POLL_INTERVAL_MS || '30000', 10);
-const snapshotLimit = Number.parseInt(process.env.SNAPSHOT_LISTING_LIMIT || '400', 10);
+const snapshotLimit = Number.parseInt(process.env.SNAPSHOT_LISTING_LIMIT || '2000', 10);
 const parseTimeoutMs = Number.parseInt(process.env.GEMINI_PARSE_TIMEOUT_MS || '8000', 10);
 const aiEnrichmentPerCycle = Number.parseInt(process.env.AI_ENRICHMENT_PER_CYCLE || '5', 10);
 const watchMode = process.argv.includes('--watch');
@@ -95,7 +96,11 @@ Return only a JSON array with this shape:
     "name": "Business or provider name or null",
     "location": "District or area, City/Province or null",
     "price": null,
-    "metrics": {},
+    "metrics": {
+      "best_time_to_book": "Extracted time window (e.g. 'Afternoon', '14:00-18:00') or 'Unknown'",
+      "staff_count": "Extracted number of girls/staff (e.g. '5', 'Many') or 'Unknown'",
+      "price_assessment": "Extracted assessment (e.g. 'Value', 'Standard', 'Premium') or 'Unknown'"
+    },
     "tags": ["Thai Massage", "Oil Massage"],
     "description": "Short factual summary of the service, area, hours, or availability or null",
     "phone": "0XX-XXX-XXXX or null",
@@ -112,14 +117,17 @@ Return only a JSON array with this shape:
 Rules:
 - Be EXTREMELY airtight and accurate with your full data entry.
 - Thoroughly extract location data specifically to map it accurately later (e.g. precise District and City).
-- Return at most one object per cluster.
+- **Consolidation Rule**: Return EXACTLY ONE object per cluster. If a cluster mentions multiple people (e.g. a list of available staff), consolidate them into a single listing for that venue. Mention the staff variety in the "description" instead of creating multiple cards.
+- **Human-Centric Priority**: Focus on listings that describe people/staff availability. If a cluster only describes the shop facility/room with no mention of staff, it is lower priority.
 - cluster_id must match the [CLUSTER <id>] from which the listing was enriched.
 - Extract phone numbers, operating hours, LINE links, Telegram links, Google Maps links, location, price, and a short factual description when present.
 - Use null for unknown name, location, price, phone, hours, or link values.
-- Use an empty object for missing metrics.
+- For the metrics object, carefully evaluate the text:
+  - best_time_to_book: What time is generally recommended or when are girls most available?
+  - staff_count: How many staff or girls are listed as available?
+  - price_assessment: Based on the price, evaluate if it is 'Value', 'Standard', 'Premium', or 'Luxury'.
 - Tags must be SERVICE TYPES only (e.g., "Thai Massage", "Oil Massage", "Aromatherapy", "Foot Massage", "Health Spa", "Late Night", "24 Hours"). Do NOT use city or location names as tags.
 - Keep descriptions factual and concise.
-- Ensure that the resulting JSON is strictly compliant and captures as filled-out a profile as possible from the text.
 
 User feedback & ratings extraction:
 - If users mention ratings (e.g., "10/10", "5 stars", "4.5/5", "ให้ 9 เต็ม 10"), normalize to a 1.0-5.0 scale in user_rating.
@@ -258,17 +266,13 @@ function hashString(value) {
 }
 
 function attachImages(listings, files) {
-  const imagePool = Array.isArray(files) && files.length > 0 ? files : ['109748.jpg'];
-
   return listings.map((listing) => {
     if (listing.imageUrl && !listing.imageUrl.startsWith('/mockups/')) {
       return listing;
     }
-    const fingerprint = buildFingerprint(listing);
-    const imageIndex = hashString(fingerprint) % imagePool.length;
     return {
       ...listing,
-      imageUrl: `/mockups/${imagePool[imageIndex]}`,
+      imageUrl: null,
     };
   });
 }
@@ -306,15 +310,6 @@ function normalizeLink(value) {
   return trimmed || null;
 }
 
-function cleanDisplayText(value) {
-  return String(value || '')
-    .replace(/https?:\/\/\S+/gi, ' ')
-    .replace(/[\u200B-\u200D\uFEFF]/g, ' ')
-    .replace(/^[^\p{L}\p{N}@#]+/gu, '')
-    .replace(/[^\p{L}\p{N})]+$/gu, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
 
 function formatSourceLabelName(sourceLabel) {
   const raw = normalizeLine(sourceLabel).replace(/^@/, '');
@@ -570,8 +565,8 @@ function isSpamOrPornContent(text) {
 
   // Reject clickbait / porn / video selling / escort-style content
   const pornSignals = [
-    /(?:คลิป|clip|vdo|video|วิดีโอ|หนัง)\s*(?:โป้|โป๊|18\+|xxx|เสียว|ลับ|หลุด|sex)/i,
-    /(?:โป้|โป๊|xxx|18\+|porn|nude|naked|onlyfans|เสียว|หลุด|ลับเฉพาะ)/i,
+    /(?:คลิป|clip|vdo|video|วิดีโอ|หนัง)\s*(?:โป้|โป๊|18\+|xxx|เสียว|ลับ|หลุด|sex|เซ็ก)/i,
+    /(?:โป้|โป๊|xxx|18\+|porn|nude|naked|onlyfans|เสียว|หลุด|ลับเฉพาะ|เซ็กส์|เย็ด)/i,
     /(?:ขาย\s*(?:คลิป|clip|vdo|video)|sell\s*(?:clip|video|content))/i,
     /(?:group\s*joining\s*details|เข้ากลุ่ม|สนใจเข้ากลุ่ม|กลุ่มลับ|กลุ่มvip|vip\s*group)/i,
     /(?:มีเดีย|media)\s*(?:ลับ|vip|premium)/i,
@@ -579,7 +574,7 @@ function isSpamOrPornContent(text) {
     /(?:ทักซื้อ|ทักเลย|dm\s*(?:me|for)|inbox)\s*(?:คลิป|clip|vdo|video)/i,
     /(?:แอบถ่าย|hidden\s*cam|spy\s*cam)/i,
     // Escort / companion / "special service" signals
-    /(?:น้องใหม่|พร้อมให้บริการ|บริการพิเศษ|บริการถึงที่|ถึงห้อง|out\s*call|in\s*call|service.*room)/i,
+    /(?:บริการพิเศษ|บริการถึงที่|ถึงห้อง|out\s*call|in\s*call|service.*room)/i,
     /(?:ตัวจริง|ตัวเป็นๆ|รูปจริง|ไม่ผิดหวัง|งานดี|เด็ด|แซ่บ|ฟิน|sexy|hot\s*girl)/i,
     /(?:dream\s*girl|สาวสวย|สาวเซ็กซี่|สาวน่ารัก.*บริการ|companion|escort)/i,
     // Reject content focused on choosing girls / individual masseuses by appearance
@@ -955,14 +950,15 @@ function getSenderId(msg) {
 
 const photosDir = ensureLocalPhotosDir();
 
-async function downloadClusterPhotos(client, cluster, channelName, maxPhotos = 4) {
+async function downloadClusterPhotos(client, cluster, channelName, maxPhotos = 8) {
   const downloaded = [];
-  // Download ALL media (photos + image documents), not just first maxPhotos
+  // Download ALL media (photos + image documents)
   const allMedia = [
     ...cluster.mediaMessages.filter((m) => m.media?.photo),
     ...cluster.mediaMessages.filter((m) => m.media?.document?.mimeType?.startsWith('image/')),
   ];
-  const toDownload = allMedia.slice(0, Math.max(maxPhotos, allMedia.length));
+  // Limit to maxPhotos but prioritize what might be 'profile' photos if we could tell
+  const toDownload = allMedia.slice(0, maxPhotos);
 
   for (const msg of toDownload) {
     const photoInfo = await downloadAndStorePhoto(client, msg, channelName);
@@ -1114,6 +1110,15 @@ async function extractListingsFromTarget(client, target, state = {}) {
 
     const photos = clusterPhotos.get(clusterId) || [];
     const assignmentIndex = clusterAssignmentCounts.get(clusterId) || 0;
+
+    // Repetition Prevention: If we've already assigned a listing to this cluster,
+    // skip subsequent ones to avoid "same post as multiple cards".
+    // All photos will be available in the first card's modal gallery.
+    if (assignmentIndex > 0) {
+      console.log(`${target.displayLabel}: consolidating multiple candidates from cluster ${clusterId} into single listing.`);
+      continue;
+    }
+
     clusterAssignmentCounts.set(clusterId, assignmentIndex + 1);
 
     // Check if cluster text contains adult/explicit signals — if so, flag images as unsafe
@@ -1160,19 +1165,13 @@ async function extractListingsFromTarget(client, target, state = {}) {
     };
   }
 
-  // Fall back to mockup images for any listings without real photos
-  const mockupsDir = path.join(__dirname, '../public/mockups');
-  const files = fs
-    .readdirSync(mockupsDir)
-    .filter((file) => file.endsWith('.jpg') || file.endsWith('.png'));
-
-  const listingsWithImages = attachImages(normalizedListings, files);
+  const listingsWithImages = attachImages(normalizedListings);
   const matchedPhotoCount = listingsWithImages.filter(
     (listing) => listing.imageUrl && !listing.imageUrl.startsWith('/mockups/'),
   ).length;
-  const fallbackPhotoCount = listingsWithImages.length - matchedPhotoCount;
+  const noPublicPhotoCount = listingsWithImages.length - matchedPhotoCount;
   console.log(
-    `${target.displayLabel}: photo matching summary. Cluster-matched: ${matchedPhotoCount}, mockup fallback: ${fallbackPhotoCount}.`,
+    `${target.displayLabel}: photo matching summary. Cluster-matched: ${matchedPhotoCount}, no public photo: ${noPublicPhotoCount}.`,
   );
 
   // Archive ALL raw messages to channel_messages table for BI

@@ -1,0 +1,346 @@
+/*
+ * FeedGrid — abundance-first card flow. CSS columns deliver a Pinterest-style
+ * masonry without JS. Card chrome is hairline-only, photos use the same
+ * radial dissolve mask as CompanionCard to keep them sitting in the dark
+ * Tron grid bg.
+ */
+
+.feed-grid-section {
+  margin-top: clamp(0.75rem, 2vw, 1.25rem);
+  padding-top: 0.5rem;
+}
+
+.feed-grid-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-bottom: 0.85rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.feed-grid-header h2 {
+  margin: 0;
+  font-size: var(--text-display);
+  line-height: 1.05;
+}
+
+.feed-grid-subtitle {
+  max-width: 70ch;
+  color: var(--color-cream-soft);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.5;
+}
+
+.feed-grid-loading {
+  padding: 2rem 0;
+  color: var(--color-cream-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.feed-grid {
+  column-count: 4;
+  column-gap: 0.85rem;
+}
+
+@media (max-width: 1240px) { .feed-grid { column-count: 3; } }
+@media (max-width: 880px)  { .feed-grid { column-count: 2; } }
+@media (max-width: 560px)  { .feed-grid { column-count: 1; } }
+
+/* Each card lives inside a column, must avoid breaking. */
+.feed-card {
+  display: block;
+  width: 100%;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-cream);
+  cursor: pointer;
+  break-inside: avoid;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.feed-card:hover,
+.feed-card:focus-visible {
+  border-color: var(--color-action);
+  background-color: var(--color-surface-hover);
+  outline: none;
+}
+
+.feed-card.is-fresh {
+  border-left: 2px solid var(--color-action);
+}
+
+.feed-card.is-freshest {
+  border-color: var(--color-action);
+  border-left: 3px solid var(--color-action);
+}
+
+/* Photo pane — square thumb when present, slim band when text-only. */
+.feed-card-photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-bg-inset);
+}
+
+.feed-card-photo-wrap.is-textonly {
+  aspect-ratio: auto;
+  height: 8px;
+  background: var(--color-bg-inset);
+  border-top: 2px solid var(--color-action);
+}
+
+.feed-card-photo-wrap.is-review-held {
+  border-top-color: var(--color-cream-muted);
+}
+
+.feed-card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.78) contrast(0.95) brightness(0.88);
+  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 45%, black 55%, rgba(0,0,0,0.85) 78%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 45%, black 55%, rgba(0,0,0,0.85) 78%, transparent 100%);
+  display: block;
+}
+
+.feed-card-photo-count {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border: 1px solid var(--color-line);
+  background: rgba(10, 10, 10, 0.9);
+  color: var(--color-cream);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.feed-card-post-count {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border: 1px solid var(--color-accent);
+  background: rgba(10, 10, 10, 0.88);
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.feed-card-fresh-stamp {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  background: var(--color-action);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.feed-card-fresh-stamp.is-just-in {
+  background: var(--color-status);
+  animation: feed-fresh-blink 1.6s ease-in-out infinite;
+}
+
+@keyframes feed-fresh-blink {
+  0%, 40%, 100% { opacity: 1; }
+  60% { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feed-card-fresh-stamp.is-just-in { animation: none; }
+}
+
+.feed-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem 0.7rem 0.7rem;
+}
+
+.feed-card-review-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.feed-card-review-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.35rem;
+  padding: 0 0.45rem;
+  border: 1px solid var(--color-status);
+  color: var(--color-status);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.feed-card-review-badge.is-held {
+  border-color: var(--color-cream-muted);
+  color: var(--color-cream-muted);
+}
+
+.feed-card-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--text-body);
+  line-height: 1.25;
+  color: var(--color-cream);
+  letter-spacing: -0.01em;
+  /* Clamp 2 lines to keep card heights bounded */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.feed-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  color: var(--color-cream-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+}
+
+.feed-card-channel { color: var(--color-action); }
+.feed-card-sep    { color: var(--color-cream-muted); }
+.feed-card-ago    { color: var(--color-data); }
+
+.feed-card-desc {
+  margin: 0;
+  color: var(--color-cream-soft);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.feed-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 0.25rem;
+}
+
+.feed-card-chip {
+  display: inline-flex;
+  align-items: center;
+  /* §11.8 — interactive chips must be at least 44 px tall on phone.
+   * Desktop can be slightly tighter but we keep the same height for
+   * touchpad / Voice Control / Switch Control accessibility. */
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--color-line);
+  background: transparent;
+  color: var(--color-cream);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+@media (max-width: 560px) {
+  .feed-card-chip { min-height: 44px; padding: 0 12px; }
+}
+
+.feed-card-chip:hover {
+  border-color: var(--color-action);
+  color: var(--color-action);
+}
+
+.feed-card-chip-tel  { border-color: var(--color-action); color: var(--color-action); }
+.feed-card-chip-line { border-color: var(--color-status); color: var(--color-status); }
+.feed-card-chip-map  { border-color: var(--color-data); color: var(--color-data); }
+.feed-card-chip-tel:hover  { background: var(--color-action); color: #000; }
+.feed-card-chip-line:hover { background: var(--color-status); color: #000; }
+.feed-card-chip-map:hover  { background: var(--color-data); color: #000; }
+
+.feed-card-chip-price,
+.feed-card-chip-hours {
+  border-color: var(--color-line);
+  color: var(--color-cream-soft);
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: default;
+}
+
+/* "More" button — large, square-cornered, mono. */
+.feed-more-container {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 0 0;
+}
+
+.feed-more-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 52px;
+  padding: 10px 28px;
+  border: 1px solid var(--color-action);
+  background: transparent;
+  color: var(--color-action);
+  font-family: var(--font-display);
+  font-size: var(--text-title);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  cursor: pointer;
+}
+
+.feed-more-btn:hover {
+  background-color: var(--color-action);
+  color: #000;
+}
+
+.feed-more-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: inherit;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+@media (max-width: 560px) {
+  .feed-card-photo-wrap { aspect-ratio: 16 / 11; }
+  .feed-grid-header h2 { font-size: 26px; }
+}

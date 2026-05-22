@@ -1,11 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
+
+const supabase = createClient(
+  process.env.VITE_SUPABASE_URL,
+  process.env.VITE_SUPABASE_SERVICE_ROLE_KEY
+);
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;
@@ -189,4 +195,79 @@ export async function notifyListings(listings) {
   if (sent > 0) {
     console.log(`Pushed ${sent} listing notification(s) to Telegram.`);
   }
+}
+
+/**
+ * Query recent demand signals and push a digest to Telegram.
+ * Designed to run every 15 minutes via cron or the scraper loop.
+ */
+export async function notifyDemandSignals(sinceMinutes = 15) {
+  if (!BOT_TOKEN) return;
+
+  const chatId = await discoverChatId();
+  if (!chatId) return;
+
+  const since = new Date(Date.now() - sinceMinutes * 60 * 1000).toISOString();
+
+  // Fetch recent signals joined with listing names
+  const { data: signals, error } = await supabase
+    .from('signals')
+    .select('listing_id, signal_type, payload, created_at')
+    .gte('created_at', since)
+    .order('created_at', { ascending: false });
+
+  if (error || !signals || signals.length === 0) return;
+
+  // Group by listing
+  const byListing = {};
+  for (const sig of signals) {
+    const lid = sig.listing_id || 'unknown';
+    if (!byListing[lid]) byListing[lid] = { saves: 0, inquiries: [], shares: 0 };
+    if (sig.signal_type === 'save') byListing[lid].saves++;
+    if (sig.signal_type === 'share') byListing[lid].shares++;
+    if (sig.signal_type === 'inquire') byListing[lid].inquiries.push(sig.payload?.contact || '(no contact)');
+  }
+
+  // Fetch listing names for all listing IDs
+  const listingIds = Object.keys(byListing).filter(k => k !== 'unknown').map(Number);
+  let nameMap = {};
+  if (listingIds.length > 0) {
+    const { data: listings } = await supabase
+      .from('companions')
+      .select('id, name')
+      .in('id', listingIds);
+    if (listings) {
+      nameMap = Object.fromEntries(listings.map(l => [l.id, l.name]));
+    }
+  }
+
+  // Build digest message
+  const lines = ['<b>📊 Demand Signal Digest</b>', ''];
+  let hasContent = false;
+
+  for (const [lid, counts] of Object.entries(byListing)) {
+    const name = nameMap[lid] || `Listing #${lid}`;
+    const parts = [];
+    if (counts.saves > 0) parts.push(`${counts.saves} save${counts.saves > 1 ? 's' : ''}`);
+    if (counts.shares > 0) parts.push(`${counts.shares} share${counts.shares > 1 ? 's' : ''}`);
+    if (counts.inquiries.length > 0) parts.push(`${counts.inquiries.length} inquir${counts.inquiries.length > 1 ? 'ies' : 'y'}`);
+
+    if (parts.length > 0) {
+      lines.push(`<b>${name}</b>: ${parts.join(', ')}`);
+      hasContent = true;
+    }
+
+    // Surface inquiry contacts directly — this is the actionable data
+    for (const contact of counts.inquiries) {
+      lines.push(`  → Contact: <code>${contact}</code>`);
+    }
+  }
+
+  if (!hasContent) return;
+
+  lines.push('');
+  lines.push(`<i>${new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok' })} ICT</i>`);
+
+  await sendMessage(chatId, lines.join('\n'));
+  console.log(`[DEMAND] Pushed signal digest: ${signals.length} signal(s) across ${Object.keys(byListing).length} listing(s).`);
 }

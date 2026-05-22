@@ -1,0 +1,85 @@
+/*
+ * NowLooking ticker — minimal mono presence cue, sits just below the
+ * LiveIntakeStrip. Hairline-bordered rows, one per event, fade in then
+ * naturally drop off when the parent component prunes by age.
+ */
+
+.now-looking {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.now-looking-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  border-bottom: 1px solid var(--color-line);
+  background: rgba(159, 194, 255, 0.02);
+  color: var(--color-cream-soft);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: now-looking-in 320ms ease-out both;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.now-looking-row:last-child {
+  border-bottom: 0;
+}
+
+.now-looking-row:hover {
+  background-color: rgba(159, 194, 255, 0.06);
+  color: var(--color-cream);
+}
+
+.now-looking-prefix {
+  color: var(--color-data);
+  flex: 0 0 auto;
+}
+
+.now-looking-sep {
+  color: var(--color-cream-muted);
+  flex: 0 0 auto;
+}
+
+.now-looking-where,
+.now-looking-when {
+  color: var(--color-cream-soft);
+  flex: 0 0 auto;
+}
+
+.now-looking-name {
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  letter-spacing: 0;
+  text-transform: none;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes now-looking-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .now-looking-row { animation: none; }
+}
+
+@media (max-width: 560px) {
+  .now-looking-row {
+    flex-wrap: wrap;
+    gap: 0.3rem 0.45rem;
+    padding: 0.45rem 0.75rem;
+  }
+}

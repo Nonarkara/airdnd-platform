@@ -9,7 +9,7 @@ export default function AdminGuard({ session, children }) {
 
   if (!activeSession) {
     return (
-      <div style={{ minHeight: '100vh', background: '#f8faf9' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg)' }}>
         <Login setSession={setLocalSession} language={language} setLanguage={setLanguage} />
       </div>
     );

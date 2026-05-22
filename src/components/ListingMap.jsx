@@ -1,174 +1,418 @@
-import { useEffect, useRef, useMemo } from 'react';
+import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import {
+  formatTelLink,
+  formatTelDisplay,
+  formatLineUrl,
+  formatMapsUrl,
+} from '../lib/normalization';
+import MapMarketBar from './MapMarketBar';
 import './ListingMap.css';
 
 const BANGKOK_CENTER = [13.7563, 100.5018];
 const DEFAULT_ZOOM = 11;
-
-const AREA_CENTROIDS = {
-  sukhumvit: [13.7380, 100.5610],
-  thonglor: [13.7300, 100.5780],
-  silom: [13.7280, 100.5230],
-  ratchada: [13.7690, 100.5740],
-  ladprao: [13.8167, 100.5614],
-  rama2: [13.6540, 100.4760],
-  rama9: [13.7400, 100.5830],
-  bangna: [13.6630, 100.6200],
-  bangkapi: [13.7630, 100.6390],
-  chatuchak: [13.8000, 100.5530],
-  pattaya: [12.9236, 100.8825],
-  chiangmai: [18.7883, 98.9853],
-  phuket: [7.8804, 98.3923],
-  rayong: [12.6814, 101.2817],
-  nonthaburi: [13.8622, 100.5134],
-  ramintra: [13.8400, 100.6200],
-  bangkruai: [13.8100, 100.4750],
-  serithai: [13.7700, 100.6550],
-  hathairat: [13.8550, 100.6350],
+const AREA_COORDINATES = [
+  { patterns: ['เมืองทอง', 'muang thong'], coords: [13.912, 100.548] },
+  { patterns: ['ปากเกร็ด', 'pak kret'], coords: [13.914, 100.504] },
+  { patterns: ['บางใหญ่', 'bang yai', 'วัดลาดปลาดุก'], coords: [13.876, 100.411] },
+  { patterns: ['บางกรวย', 'bang kruai'], coords: [13.805, 100.472] },
+  { patterns: ['นนทบุรี', 'นนทบุร', 'nonthaburi'], coords: [13.86, 100.514] },
+  { patterns: ['รังสิต', 'rangsit'], coords: [13.99, 100.617] },
+  { patterns: ['ลำลูกกา', 'lam luk ka'], coords: [13.932, 100.724] },
+  { patterns: ['คลอง 4', 'คลอง4'], coords: [13.969, 100.661] },
+  { patterns: ['สุขุมวิท', 'sukhumvit', 'ทองหล่อ', 'thonglor', 'อโศก', 'asok', 'เอกมัย', 'ekkamai'], coords: [13.735, 100.566] },
+  { patterns: ['ลาดพร้าว', 'lat phrao', 'โชคชัย4', 'โชคชัย 4', 'สตรีวิทยา2', 'สตรีวิทยา 2'], coords: [13.81, 100.594] },
+  { patterns: ['รามอินทรา', 'ramintra', 'ram intra'], coords: [13.852, 100.626] },
+  { patterns: ['นวมินทร์', 'นวมินทร', 'nawamin'], coords: [13.816, 100.647] },
+  { patterns: ['มีนบุรี', 'min buri', 'สามวา', 'sam wa'], coords: [13.814, 100.735] },
+  { patterns: ['รัชดา', 'ratchada', 'ห้วยขวาง', 'huai khwang'], coords: [13.773, 100.574] },
+  { patterns: ['บางนา', 'bang na', 'แบริ่ง', 'bearing', 'สำโรง', 'samrong'], coords: [13.666, 100.612] },
+  { patterns: ['สาทร', 'sathorn', 'สีลม', 'silom'], coords: [13.724, 100.529] },
+  { patterns: ['ศาลายา', 'salaya'], coords: [13.793, 100.322] },
+];
+const CITY_COORDINATES = {
+  Bangkok: BANGKOK_CENTER,
+  Nonthaburi: [13.86, 100.514],
+  'Pathum Thani': [14.02, 100.525],
+  'Samut Prakan': [13.599, 100.599],
+  Chonburi: [13.361, 100.985],
+  Phuket: [7.88, 98.392],
+  'Chiang Mai': [18.788, 98.985],
+  'Chiang Rai': [19.91, 99.84],
+  Saraburi: [14.528, 100.91],
+  'Khon Kaen': [16.441, 102.836],
+  'Udon Thani': [17.414, 102.786],
+  'Nakhon Ratchasima': [14.979, 102.097],
+  Songkhla: [7.19, 100.595],
+  'Prachuap Khiri Khan': [11.812, 99.797],
+  Rayong: [12.682, 101.278],
+  Ayutthaya: [14.353, 100.568],
+  'Nakhon Pathom': [13.819, 100.064],
+  'Surat Thani': [9.14, 99.333],
 };
 
-const AREA_PATTERNS = [
-  { key: 'sukhumvit', patterns: ['สุขุมวิท', 'sukhumvit', 'asoke', 'อโศก', 'nana', 'นานา', 'phrom phong', 'พร้อมพงษ์'] },
-  { key: 'thonglor', patterns: ['ทองหล่อ', 'thonglor', 'thong lo', 'ekkamai', 'เอกมัย'] },
-  { key: 'silom', patterns: ['สีลม', 'silom', 'สาทร', 'sathorn', 'sala daeng', 'ศาลาแดง'] },
-  { key: 'ratchada', patterns: ['รัชดา', 'ratchada', 'huai khwang', 'ห้วยขวาง', 'din daeng', 'ดินแดง'] },
-  { key: 'ladprao', patterns: ['ลาดพร้าว', 'ladprao', 'lat phrao', 'โชคชัย', 'chokchai'] },
-  { key: 'rama2', patterns: ['พระราม 2', 'พระราม2', 'rama 2', 'rama2'] },
-  { key: 'rama9', patterns: ['พระราม 9', 'พระราม9', 'rama 9', 'rama9', 'ramkhamhaeng', 'รามคำแหง'] },
-  { key: 'bangna', patterns: ['บางนา', 'bang na', 'bangna', 'bearing', 'แบริ่ง', 'srinakarin', 'ศรีนครินทร์'] },
-  { key: 'bangkapi', patterns: ['บางกะปิ', 'bangkapi', 'bang kapi'] },
-  { key: 'chatuchak', patterns: ['จตุจักร', 'chatuchak', 'lat yao', 'ลาดยาว', 'phahon', 'พหล'] },
-  { key: 'pattaya', patterns: ['พัทยา', 'pattaya', 'ชลบุรี', 'chonburi', 'jomtien'] },
-  { key: 'chiangmai', patterns: ['เชียงใหม่', 'chiang mai', 'chiangmai'] },
-  { key: 'phuket', patterns: ['ภูเก็ต', 'phuket', 'patong'] },
-  { key: 'rayong', patterns: ['ระยอง', 'rayong'] },
-  { key: 'nonthaburi', patterns: ['นนทบุรี', 'nonthaburi', 'nontaburi', 'ปากเกร็ด', 'pak kret', 'บางกรวย', 'bang kruai'] },
-  { key: 'ramintra', patterns: ['รามอินทรา', 'ramintra', 'ram intra', 'คู้บอน'] },
-  { key: 'serithai', patterns: ['เสรีไทย', 'serithai', 'seri thai'] },
-  { key: 'hathairat', patterns: ['หทัยราษฎร์', 'hathairat', 'hathai rat', 'ลำลูกกา', 'lam luk ka'] },
-];
+// NASA GPM/IMERG precipitation tiles via GIBS — no API key required.
+// Date is set 3 days in the past to ensure processing is complete.
+const imergDate = (() => {
+  const d = new Date();
+  d.setDate(d.getDate() - 3);
+  return d.toISOString().slice(0, 10);
+})();
 
-function jitter() {
-  return (Math.random() - 0.5) * 0.004;
+function createStableOffset(listing, radius = 0.012) {
+  const key = String(listing?.id || listing?.phone || listing?.name || '');
+  let hash = 0;
+  for (let i = 0; i < key.length; i += 1) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+
+  const angle = ((hash % 360) * Math.PI) / 180;
+  const distance = (((hash >>> 8) % 100) / 100) * radius;
+  return [Math.sin(angle) * distance, Math.cos(angle) * distance];
+}
+
+function getApproximateCoordinates(listing) {
+  const haystack = [
+    listing?.name,
+    listing?.location,
+    listing?.city,
+    listing?.description,
+  ].filter(Boolean).join(' ').toLowerCase();
+
+  const area = AREA_COORDINATES.find(({ patterns }) =>
+    patterns.some((pattern) => haystack.includes(pattern.toLowerCase())),
+  );
+  const cityCoords = CITY_COORDINATES[listing?.city];
+  const baseCoords = area?.coords || cityCoords;
+
+  if (!baseCoords) {
+    return null;
+  }
+
+  const [latOffset, lngOffset] = createStableOffset(listing, area ? 0.008 : 0.025);
+  return [baseCoords[0] + latOffset, baseCoords[1] + lngOffset];
 }
 
 function getListingCoordinates(listing) {
-  // Tier 1: Use stored coordinates
-  if (listing.latitude && listing.longitude) {
-    return [listing.latitude, listing.longitude];
+  const latitude = Number.parseFloat(listing?.latitude);
+  const longitude = Number.parseFloat(listing?.longitude);
+  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+    return { coords: [latitude, longitude], precision: 'exact' };
   }
 
-  // Tier 2: Match area from location text
-  const searchText = `${listing.location || ''} ${listing.city || ''} ${listing.description || ''}`.toLowerCase();
-  for (const area of AREA_PATTERNS) {
-    for (const pattern of area.patterns) {
-      if (searchText.includes(pattern.toLowerCase())) {
-        const centroid = AREA_CENTROIDS[area.key];
-        if (centroid) {
-          return [centroid[0] + jitter(), centroid[1] + jitter()];
-        }
-      }
-    }
+  const approximate = getApproximateCoordinates(listing);
+  if (approximate) {
+    return { coords: approximate, precision: 'area' };
   }
 
-  // Tier 3: Default Bangkok center with jitter
-  return [BANGKOK_CENTER[0] + jitter(), BANGKOK_CENTER[1] + jitter()];
+  return null;
 }
 
-function buildPopupHtml(listing) {
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function buildPopupHtml(listing, precision) {
   const lines = [];
-  lines.push(`<strong style="font-size:14px">${listing.name || 'Unknown'}</strong>`);
-  if (listing.location) lines.push(`<div style="font-size:11px;color:#888;margin-top:2px">${listing.location}</div>`);
+  lines.push(`<strong style="font-size:14px">${escapeHtml(listing.name || 'Unknown')}</strong>`);
+  if (listing.location) lines.push(`<div style="font-size:11px;color:#888;margin-top:2px">${escapeHtml(listing.location)}</div>`);
+  if (precision === 'area') {
+    lines.push('<div style="margin-top:5px;font-size:10px;color:#9fc2ff;font-family:monospace;text-transform:uppercase">Area-level pin</div>');
+  }
 
   const meta = [];
   if (listing.priceLabel && listing.priceLabel !== 'Rate on request') meta.push(listing.priceLabel);
   if (listing.hours) meta.push(listing.hours);
-  if (meta.length > 0) lines.push(`<div style="margin-top:6px;font-weight:600;color:#c4a44a">${meta.join(' · ')}</div>`);
+  if (meta.length > 0) lines.push(`<div style="margin-top:6px;font-weight:600;color:#c4a44a">${escapeHtml(meta.join(' · '))}</div>`);
 
   const links = [];
-  if (listing.phone) links.push(`<a href="tel:${listing.phone.replace(/[^\d+]/g, '')}" style="color:#c8102e">Tel</a>`);
-  if (listing.lineUrl) links.push(`<a href="${listing.lineUrl}" target="_blank" style="color:#06c755">LINE</a>`);
-  if (listing.mapsUrl) links.push(`<a href="${listing.mapsUrl}" target="_blank" style="color:#4285f4">Maps</a>`);
+  const telHref = formatTelLink(listing.phone);
+  const lineHref = formatLineUrl(listing.lineUrl);
+  const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude);
+  if (telHref) links.push(`<a href="${escapeHtml(telHref)}" style="color:#c8102e">Tel</a>`);
+  if (lineHref) links.push(`<a href="${escapeHtml(lineHref)}" target="_blank" rel="noopener noreferrer" style="color:#06c755">LINE</a>`);
+  if (mapsHref) links.push(`<a href="${escapeHtml(mapsHref)}" target="_blank" rel="noopener noreferrer" style="color:#4285f4">Maps</a>`);
   if (links.length > 0) lines.push(`<div style="margin-top:6px;display:flex;gap:10px;font-size:12px;font-weight:600">${links.join('')}</div>`);
 
-  if (listing.sourceChannel) lines.push(`<div style="margin-top:6px;font-size:10px;color:#666">${listing.sourceChannel}</div>`);
+  const mentions = Number(listing.mentionCount) || Number(listing.mention_count) || 0;
+  if (mentions > 1) lines.push(`<div style="margin-top:4px;font-size:10px;color:#9fc2ff;font-family:monospace">${mentions}× in feed</div>`);
+  if (listing.sourceChannel) lines.push(`<div style="margin-top:4px;font-size:10px;color:#666">${escapeHtml(listing.sourceChannel)}</div>`);
+
+  lines.push(`
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(123, 244, 255, 0.15)">
+      <button class="popup-view-btn" data-id="${escapeHtml(listing.id)}" style="
+        width: 100%;
+        height: 32px;
+        background: rgba(34, 247, 255, 0.1);
+        border: 1px solid #22f7ff;
+        color: #22f7ff;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    ">View details</button>
+    </div>
+  `);
 
   return lines.join('');
 }
 
 function getAuraClass(listing) {
-  let score = 0;
-  if (listing.description && listing.description.length > 20 && listing.description !== 'Details for this listing are still being collected.') score++;
-  if (listing.phone || listing.lineUrl || listing.telegramUrl || listing.mapsUrl) score++;
-  if (listing.priceLabel && listing.priceLabel !== 'Rate on request') score++;
-  if (listing.imageUrl && !listing.imageUrl.startsWith('/mockups/')) score++;
-
-  if (score >= 3) return 'aura-level-3';
-  if (score === 2) return 'aura-level-2';
+  const mentions = Number(listing.mentionCount) || Number(listing.mention_count) || 1;
+  const dataScore =
+    (listing.description && listing.description.length > 20 && listing.description !== 'Details for this listing are still being collected.' ? 1 : 0) +
+    (listing.phone || listing.lineUrl || listing.telegramUrl || listing.mapsUrl ? 1 : 0) +
+    (listing.priceLabel && listing.priceLabel !== 'Rate on request' ? 1 : 0) +
+    (listing.imageUrl && !listing.imageUrl.startsWith('/mockups/') ? 1 : 0);
+  const activityBonus = mentions > 10 ? 2 : mentions > 3 ? 1 : 0;
+  const total = dataScore + activityBonus;
+  if (total >= 4) return 'aura-level-3';
+  if (total >= 2) return 'aura-level-2';
   return 'aura-level-1';
 }
 
 function createPinIcon(listing) {
+  const mentions = Number(listing.mentionCount) || Number(listing.mention_count) || 1;
+  const size = mentions > 10 ? 22 : mentions > 3 ? 16 : 10;
   return L.divIcon({
     className: `listing-pin ${getAuraClass(listing)}`,
-    iconSize: [14, 14],
-    iconAnchor: [7, 7],
-    popupAnchor: [0, -10],
-    tooltipAnchor: [10, 0]
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -(size / 2 + 3)],
+    tooltipAnchor: [size / 2 + 3, 0],
   });
 }
 
-export default function ListingMap({ listings, t }) {
+export default function ListingMap({ listings, onCardClick, t, viewKey = 'all' }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef(null);
+  const listingsRef = useRef(listings);
+  const hasFittedInitialRef = useRef(false);
+  const lastAutoFitKeyRef = useRef(null);
+  const [aqiActive, setAqiActive] = useState(false);
+  const [rainActive, setRainActive] = useState(false);
+  const [locating, setLocating] = useState(false);
+  const [locateError, setLocateError] = useState(null);
 
-  const pins = useMemo(() => {
-    if (!Array.isArray(listings)) return [];
-    return listings.map((listing) => ({
-      listing,
-      coords: getListingCoordinates(listing),
-    }));
+  const { pins, pendingListings } = useMemo(() => {
+    if (!Array.isArray(listings)) return { pins: [], pendingListings: [] };
+    const withCoords = [];
+    const withoutCoords = [];
+    listings.forEach((listing) => {
+      const coordinateResult = getListingCoordinates(listing);
+      if (coordinateResult) withCoords.push({ listing, ...coordinateResult });
+      else withoutCoords.push(listing);
+    });
+    return { pins: withCoords, pendingListings: withoutCoords };
   }, [listings]);
+  const exactPinCount = pins.filter((pin) => pin.precision === 'exact').length;
+  const areaPinCount = pins.length - exactPinCount;
+  const pinSummary = [
+    exactPinCount > 0 ? `${exactPinCount} verified pins` : null,
+    areaPinCount > 0 ? `${areaPinCount} area pins` : null,
+  ].filter(Boolean).join(' · ') || '0 mapped pins';
+
+  useEffect(() => {
+    listingsRef.current = listings;
+  }, [listings]);
+
+  const fitMapToPins = useCallback(() => {
+    if (!mapInstanceRef.current) return;
+
+    if (pins.length === 0) {
+      mapInstanceRef.current.setView(BANGKOK_CENTER, DEFAULT_ZOOM);
+      return;
+    }
+
+    const bounds = L.latLngBounds(pins.map((pin) => pin.coords));
+    const span = Math.max(
+      bounds.getNorth() - bounds.getSouth(),
+      bounds.getEast() - bounds.getWest(),
+    );
+    const tightCluster = span < 0.25;
+    const maxFitZoom = tightCluster ? 11 : 13;
+    mapInstanceRef.current.fitBounds(bounds.pad(0.25), { maxZoom: maxFitZoom });
+  }, [pins]);
+
+  const handleLocate = useCallback(() => {
+    if (!navigator.geolocation) {
+      setLocateError('Geolocation not supported');
+      return;
+    }
+    setLocating(true);
+    setLocateError(null);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocating(false);
+        if (mapInstanceRef.current) {
+          const { latitude, longitude } = position.coords;
+          mapInstanceRef.current.setView([latitude, longitude], 13);
+          L.circleMarker([latitude, longitude], {
+            radius: 8,
+            fillColor: '#7aa7ff',
+            color: '#7aa7ff',
+            weight: 2,
+            opacity: 0.8,
+            fillOpacity: 0.2,
+          }).addTo(mapInstanceRef.current);
+        }
+      },
+      (error) => {
+        setLocating(false);
+        setLocateError(error.message || 'Unable to retrieve location');
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 },
+    );
+  }, []);
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
+    const mapElement = mapRef.current;
 
-    const map = L.map(mapRef.current, {
+    const map = L.map(mapElement, {
       center: BANGKOK_CENTER,
       zoom: DEFAULT_ZOOM,
-      scrollWheelZoom: true,
+      minZoom: 5,
+      scrollWheelZoom: 'center',
+      touchZoom: true,
+      doubleClickZoom: true,
+      boxZoom: true,
+      keyboard: true,
       zoomControl: true,
+      worldCopyJump: false,
+      // Smoother, less jumpy zoom on touchpad / scroll wheel.
+      zoomSnap: 0.5,
+      zoomDelta: 0.5,
+      wheelDebounceTime: 80,
+      wheelPxPerZoomLevel: 140,
     });
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // Base layers — dark vector for readability, satellite for context.
+    const dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
       maxZoom: 19,
-    }).addTo(map);
+    });
+    const satellite = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      {
+        attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics',
+        maxZoom: 19,
+      },
+    );
+    dark.addTo(map);
+
+    // AQI overlay (AQICN tiles — public demo token; rate-limited but functional).
+    const aqi = L.tileLayer(
+      'https://tiles.aqicn.org/tiles/usepa-aqi/{z}/{x}/{y}.png?token=demo',
+      {
+        attribution: 'Air-quality tiles &copy; <a href="https://aqicn.org">aqicn.org</a>',
+        maxZoom: 16,
+        opacity: 0.55,
+      },
+    );
+
+    // Precipitation overlay — NASA GPM/IMERG via GIBS (free, no API key).
+    // Shows actual satellite-measured precipitation rate, not a forecast model.
+    const rain = L.tileLayer(
+      `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/IMERG_Precipitation_Rate/default/${imergDate}/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png`,
+      {
+        attribution: 'Precipitation &copy; <a href="https://gpm.nasa.gov">NASA GPM/IMERG</a> via <a href="https://earthdata.nasa.gov/eosdis/science-system-description/eosdis-components/gibs">GIBS</a>',
+        maxZoom: 6,
+        opacity: 0.75,
+        errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+      },
+    );
+
+    L.control
+      .layers(
+        { Map: dark, Satellite: satellite },
+        { 'Air Quality (PM2.5)': aqi, 'Precipitation (IMERG)': rain },
+        { position: 'topright', collapsed: true },
+      )
+      .addTo(map);
+
+    // Sync legend visibility with overlay toggles.
+    map.on('overlayadd', (e) => {
+      if (e.layer === aqi) setAqiActive(true);
+      if (e.layer === rain) setRainActive(true);
+    });
+    map.on('overlayremove', (e) => {
+      if (e.layer === aqi) setAqiActive(false);
+      if (e.layer === rain) setRainActive(false);
+    });
 
     mapInstanceRef.current = map;
     markersRef.current = L.layerGroup().addTo(map);
 
+    // Click delegation for popup buttons
+    const handlePopupClick = (e) => {
+      if (e.target.classList.contains('popup-view-btn')) {
+        const id = e.target.getAttribute('data-id');
+        const listing = listingsRef.current.find((l) => String(l.id) === String(id));
+        if (listing && onCardClick) {
+          onCardClick(listing);
+        }
+      }
+    };
+
+    mapElement.addEventListener('click', handlePopupClick);
+
     return () => {
+      mapElement.removeEventListener('click', handlePopupClick);
       map.remove();
       mapInstanceRef.current = null;
       markersRef.current = null;
     };
-  }, []);
+  }, [onCardClick]);
+
+  useEffect(() => {
+    if (window.location.hash !== '#map' || !mapRef.current) return;
+    const timeoutIds = [];
+    const scrollToMap = () => {
+      const section = mapRef.current?.closest('#map');
+      if (!section) return;
+      const targetTop = window.scrollY + section.getBoundingClientRect().top - 72;
+      if (typeof window.scrollTo === 'function') {
+        window.scrollTo(0, targetTop);
+      }
+      document.documentElement.scrollTop = targetTop;
+      document.body.scrollTop = targetTop;
+      mapInstanceRef.current?.invalidateSize();
+    };
+    const frameId = window.requestAnimationFrame(() => {
+      scrollToMap();
+      [150, 600, 1200].forEach((delay) => {
+        timeoutIds.push(window.setTimeout(scrollToMap, delay));
+      });
+    });
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
+  }, [pins.length]);
 
   useEffect(() => {
     if (!markersRef.current || !mapInstanceRef.current) return;
     markersRef.current.clearLayers();
 
-    for (const { listing, coords } of pins) {
+    for (const { listing, coords, precision } of pins) {
       const marker = L.marker(coords, { icon: createPinIcon(listing) });
-      marker.bindPopup(buildPopupHtml(listing), {
+      marker.bindPopup(buildPopupHtml(listing, precision), {
         maxWidth: 260,
         className: 'listing-popup',
       });
       // Tooltip on hover
-      marker.bindTooltip(`<strong>${listing.name || 'Unknown'}</strong>`, {
+      marker.bindTooltip(`<strong>${escapeHtml(listing.name || 'Unknown')}</strong>`, {
         direction: 'top',
         className: 'listing-hover-tooltip',
       });
@@ -176,17 +420,91 @@ export default function ListingMap({ listings, t }) {
     }
   }, [pins]);
 
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+    if (!hasFittedInitialRef.current || lastAutoFitKeyRef.current !== viewKey) {
+      fitMapToPins();
+      hasFittedInitialRef.current = true;
+      lastAutoFitKeyRef.current = viewKey;
+    }
+  }, [fitMapToPins, viewKey]);
+
   return (
     <section className="listing-map-section" id="map">
       <div className="listing-map-header">
         <span className="section-kicker">{t.map?.kicker || 'LIVE MAP'}</span>
         <h2>{t.map?.title || 'Massage & Spa Locations'}</h2>
-        <p className="listing-map-count">{pins.length} places mapped in the current directory.</p>
+        <p className="listing-map-count">
+          {pinSummary}
+          {pendingListings.length > 0 && ` · ${pendingListings.length} pending locations`}
+        </p>
         <p className="listing-map-subtitle">
           {t.map?.subtitle || 'Click a pin for details.'}
         </p>
       </div>
-      <div ref={mapRef} className="listing-map-container" />
+      <div className="listing-map-toolbar" aria-label="Map tools">
+        <div className="map-toolbar-left">
+          <button type="button" onClick={fitMapToPins} disabled={pins.length === 0}>
+            Fit all
+          </button>
+          <button type="button" onClick={handleLocate} disabled={locating}>
+            {locating ? 'Locating…' : 'Near me'}
+          </button>
+        </div>
+        <span>{listings.length} listings in current view</span>
+      </div>
+      {locateError && (
+        <div className="listing-map-locate-error">{locateError}</div>
+      )}
+      <div
+        ref={mapRef}
+        className="listing-map-container"
+        role="application"
+        aria-label="Interactive listing map"
+      >
+        <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
+          <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#00e400' }} />0–50  Good</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#ffff00' }} />51–100  Moderate</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#ff7e00' }} />101–150  Unhealthy (sensitive)</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#ff0000' }} />151–200  Unhealthy</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#8f3f97' }} />201+  Very unhealthy</span>
+        </div>
+        <div className={`rain-legend${rainActive ? ' is-visible' : ''}`} aria-hidden={!rainActive}>
+          <span className="rain-legend-title">Precipitation · NASA GPM/IMERG</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#c8f0ff' }} />Light</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#4da6ff' }} />Moderate</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#0033cc' }} />Heavy</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#6600cc' }} />Extreme</span>
+        </div>
+      </div>
+      <MapMarketBar />
+      {pendingListings.length > 0 && (
+        <div className="listing-map-pending">
+          <div className="pending-header">
+            <span className="section-kicker">PENDING LOCATION</span>
+            <p>{pendingListings.length} listings are active but have no confirmed map coordinates.</p>
+          </div>
+          <div className="pending-list">
+            {pendingListings.map((listing) => {
+              const telHref = formatTelLink(listing.phone);
+              const lineHref = formatLineUrl(listing.lineUrl);
+              const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude);
+              return (
+                <div key={listing.id} className="pending-row">
+                  <span className="pending-name">{listing.name || '—'}</span>
+                  <span className="pending-location">{listing.location || '—'}</span>
+                  <span className="pending-contacts">
+                    {telHref && <a href={telHref}>{formatTelDisplay(listing.phone) || listing.phone}</a>}
+                    {mapsHref && <a href={mapsHref} target="_blank" rel="noreferrer">Maps</a>}
+                    {lineHref && <a href={lineHref} target="_blank" rel="noreferrer">LINE</a>}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

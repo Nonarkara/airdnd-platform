@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { google } from 'googleapis';
+import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,6 +13,11 @@ const TOKEN_PATH = path.join(__dirname, '../token.json');
 const CREDENTIALS_PATH = path.join(__dirname, '../google-credentials.json');
 const DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
 const SHEET_ID = process.env.GOOGLE_SHEET_ID;
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_KEY =
+  process.env.VITE_SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.VITE_SUPABASE_ANON_KEY;
 
 /**
  * Load Google auth — prefers OAuth (token.json) for user-owned Drive/Sheets,
@@ -170,38 +176,86 @@ const SHEET_HEADERS = [
 const HEADER_RANGE_END = 'V'; // Column V = 22nd column
 
 const LISTINGS_TAB = 'Listings';
+const VISITORS_TAB = 'Visitors';
+
+const VISITOR_HEADERS = [
+  'ID',
+  'Session',
+  'Page',
+  'Event',
+  'IP Address',
+  'Country',
+  'Country Code',
+  'Region',
+  'City',
+  'Latitude',
+  'Longitude',
+  'Timezone',
+  'Org / ISP',
+  'Language',
+  'Screen',
+  'Referrer',
+  'User Agent',
+  'Timestamp',
+];
+
+const VISITOR_RANGE_END = 'R';
+
+function getSupabaseAdmin() {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+    return null;
+  }
+
+  return createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+    auth: { persistSession: false },
+  });
+}
+
+async function ensureSheetTab(sheets, tabName, headers, rangeEnd) {
+  const spreadsheet = await sheets.spreadsheets.get({
+    spreadsheetId: SHEET_ID,
+    fields: 'sheets.properties.title',
+  });
+  const tabs = spreadsheet.data.sheets.map((s) => s.properties.title);
+
+  if (!tabs.includes(tabName)) {
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId: SHEET_ID,
+      requestBody: { requests: [{ addSheet: { properties: { title: tabName } } }] },
+    });
+  }
+
+  const headerCheck = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: `'${tabName}'!A1:A1`,
+  });
+  if (!headerCheck.data.values?.[0]?.[0]) {
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SHEET_ID,
+      range: `'${tabName}'!A1:${rangeEnd}1`,
+      valueInputOption: 'RAW',
+      requestBody: { values: [headers] },
+    });
+    console.log(`  Initialized ${tabName} tab headers.`);
+  }
+}
 
 /**
  * Ensure the Listings tab exists with headers.
  */
 async function ensureListingsTab(sheets) {
   try {
-    const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId: SHEET_ID, fields: 'sheets.properties.title' });
-    const tabs = spreadsheet.data.sheets.map((s) => s.properties.title);
-
-    if (!tabs.includes(LISTINGS_TAB)) {
-      await sheets.spreadsheets.batchUpdate({
-        spreadsheetId: SHEET_ID,
-        requestBody: { requests: [{ addSheet: { properties: { title: LISTINGS_TAB } } }] },
-      });
-    }
-
-    // Check if headers exist
-    const headerCheck = await sheets.spreadsheets.values.get({
-      spreadsheetId: SHEET_ID,
-      range: `'${LISTINGS_TAB}'!A1:A1`,
-    });
-    if (!headerCheck.data.values?.[0]?.[0]) {
-      await sheets.spreadsheets.values.update({
-        spreadsheetId: SHEET_ID,
-        range: `'${LISTINGS_TAB}'!A1:${HEADER_RANGE_END}1`,
-        valueInputOption: 'RAW',
-        requestBody: { values: [SHEET_HEADERS] },
-      });
-      console.log('  Initialized Listings tab headers.');
-    }
+    await ensureSheetTab(sheets, LISTINGS_TAB, SHEET_HEADERS, HEADER_RANGE_END);
   } catch (err) {
     console.warn('  Listings tab setup error:', err.message);
+  }
+}
+
+async function ensureVisitorsTab(sheets) {
+  try {
+    await ensureSheetTab(sheets, VISITORS_TAB, VISITOR_HEADERS, VISITOR_RANGE_END);
+  } catch (err) {
+    console.warn('  Visitors tab setup error:', err.message);
   }
 }
 
@@ -282,6 +336,81 @@ export async function appendListingsToSheet(listings) {
 }
 
 /**
+ * Refresh the Visitors tab from Supabase page_views.
+ * Uses a service role key when available so RLS can stay locked down.
+ */
+export async function syncVisitorLogsToSheet({ limit = 1000 } = {}) {
+  const auth = getAuth();
+  const supabase = getSupabaseAdmin();
+
+  if (!auth || !SHEET_ID) {
+    console.log('Google Sheets not configured — skipping visitor export.');
+    return;
+  }
+
+  if (!supabase) {
+    console.log('Supabase credentials not configured — skipping visitor export.');
+    return;
+  }
+
+  const sheets = google.sheets({ version: 'v4', auth });
+
+  try {
+    await ensureVisitorsTab(sheets);
+
+    const { data, error } = await supabase
+      .from('page_views')
+      .select('id,session_id,page,event_type,ip_address,country,country_code,region,city,latitude,longitude,timezone,org,language,screen_w,screen_h,referrer,user_agent,created_at')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.warn('  Failed to read visitor logs from Supabase:', error.message);
+      return;
+    }
+
+    const rows = (data || []).map((row) => [
+      row.id || '',
+      row.session_id || '',
+      row.page || '',
+      row.event_type || '',
+      row.ip_address || '',
+      row.country || '',
+      row.country_code || '',
+      row.region || '',
+      row.city || '',
+      row.latitude || '',
+      row.longitude || '',
+      row.timezone || '',
+      row.org || '',
+      row.language || '',
+      row.screen_w && row.screen_h ? `${row.screen_w}x${row.screen_h}` : '',
+      row.referrer || '',
+      (row.user_agent || '').slice(0, 180),
+      row.created_at || '',
+    ]);
+
+    await sheets.spreadsheets.values.clear({
+      spreadsheetId: SHEET_ID,
+      range: `'${VISITORS_TAB}'!A2:${VISITOR_RANGE_END}`,
+    });
+
+    if (rows.length > 0) {
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SHEET_ID,
+        range: `'${VISITORS_TAB}'!A2:${VISITOR_RANGE_END}${rows.length + 1}`,
+        valueInputOption: 'RAW',
+        requestBody: { values: rows },
+      });
+    }
+
+    console.log(`  Synced ${rows.length} visitor log row(s) to Google Sheet.`);
+  } catch (err) {
+    console.warn('  Failed to sync visitor logs to Google Sheet:', err.message);
+  }
+}
+
+/**
  * Full export: upload photos to Drive, then log all data to Sheets.
  */
 export async function exportToGoogle(listings) {
@@ -298,5 +427,6 @@ export async function exportToGoogle(listings) {
   console.log('Exporting to Google Drive + Sheets...');
   await uploadListingPhotosToDrive(listings);
   await appendListingsToSheet(listings);
+  await syncVisitorLogsToSheet();
   console.log('Google export complete.');
 }

@@ -1,29 +1,179 @@
 .hero {
-  padding: clamp(4rem, 12vw, 10rem) 0 clamp(3rem, 8vw, 6rem);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 0.75rem;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.hero-system {
+  margin: 0;
+  color: var(--color-action);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(3.5rem, 10vw, 8rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 0.9;
+  margin: 0;
   color: var(--color-cream);
-}
-
-.hero-data {
-  margin-top: 1.5rem;
   font-family: var(--font-display);
-  font-size: clamp(0.8rem, 1.8vw, 1.1rem);
+  font-size: clamp(32px, 7vw, 56px);
   font-weight: 500;
-  color: var(--color-red);
-  letter-spacing: 0.02em;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 18ch;
 }
 
 .hero-sub {
-  margin-top: 0.6rem;
-  font-size: 0.8rem;
+  margin: 0;
+  max-width: 60ch;
+  color: var(--color-cream-soft);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.6;
+}
+
+/* Status card */
+.hero-status-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.hero-status-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-status-top span {
   color: var(--color-cream-muted);
-  letter-spacing: 0.01em;
+}
+
+.hero-status-top strong {
+  color: var(--color-status);
+  font-weight: 700;
+}
+
+.hero-status-card p {
+  margin: 0;
+  color: var(--color-cream-soft);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.5;
+}
+
+.hero-status-card small {
+  color: var(--color-action);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Four metric tiles */
+.hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+@media (min-width: 880px) {
+  .hero-metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+.hero-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 80px;
+  padding: 0.75rem 1rem;
+  margin: 0;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  position: relative;
+  transition: border-color var(--transition-fast);
+}
+
+.hero-metric:hover {
+  border-color: var(--color-line-soft);
+}
+
+.hero-metric::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-action);
+  opacity: 0.6;
+}
+
+.hero-metric-secondary::before {
+  background: var(--color-data);
+}
+
+.hero-metric-tertiary::before {
+  background: var(--color-cream-faint);
+}
+
+.hero-metric span {
+  color: var(--color-cream-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.hero-metric strong {
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.hero-metric-primary strong {
+  color: var(--color-action);
+}
+
+.hero-metric-secondary strong {
+  color: var(--color-data);
+}
+
+.hero-metric-tertiary strong {
+  color: var(--color-cream-soft);
+  font-size: var(--text-body);
+}
+
+@media (min-width: 880px) {
+  .hero-metric strong {
+    font-size: 32px;
+  }
+  .hero-metric-tertiary strong {
+    font-size: var(--text-body);
+  }
 }

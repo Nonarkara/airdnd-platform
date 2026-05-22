@@ -1,13 +1,16 @@
 import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
+import AtomicClock from './components/AtomicClock';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import LiveIntakeStrip from './components/LiveIntakeStrip';
+import NowLooking from './components/NowLooking';
+import HowItWorks from './components/HowItWorks';
+import FeedGrid from './components/FeedGrid';
 import FilterBar from './components/FilterBar';
 import CompanionGrid from './components/CompanionGrid';
 import CompanionModal from './components/CompanionModal';
-import HowItWorks from './components/HowItWorks';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import { companions as backupCompanions } from './data/mockData';
@@ -22,7 +25,7 @@ import {
 } from './lib/listings';
 import { translations } from './translations';
 
-const REFRESH_INTERVAL_MS = 60_000;
+const REFRESH_INTERVAL_MS = 30_000;
 const SUPABASE_TIMEOUT_MS = 4_000;
 const LIVE_QUERY_LIMIT = 400;
 const REALTIME_REFRESH_DEBOUNCE_MS = 1_200;
@@ -38,6 +41,7 @@ const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
 const Analytics = lazy(() => import('./components/Analytics'));
 const SORT_OPTIONS = [
   'Newest',
+  'Most credible',
   'Lowest price',
   'Highest price',
   'Highest rating',
@@ -71,13 +75,13 @@ function sortListings(listings, sortBy) {
   const nextListings = [...listings];
 
   nextListings.sort((left, right) => {
-    if (sortBy === 'Newest') {
-      const leftBangkokPriority = left.city === 'Bangkok' ? 0 : 1;
-      const rightBangkokPriority = right.city === 'Bangkok' ? 0 : 1;
-
-      if (leftBangkokPriority !== rightBangkokPriority) {
-        return leftBangkokPriority - rightBangkokPriority;
-      }
+    // Default lens: composite credibility (mention volume × contact channel
+    // breadth × photo count × text quality × recency, less image-reuse
+    // penalty). See research/findings-2026-05-02.md §5.
+    if (sortBy === 'Most credible') {
+      const lc = Number.isFinite(left.credibility) ? left.credibility : 0;
+      const rc = Number.isFinite(right.credibility) ? right.credibility : 0;
+      if (lc !== rc) return rc - lc;
     }
 
     if (sortBy === 'Lowest price') {
@@ -112,22 +116,25 @@ function sortListings(listings, sortBy) {
 }
 
 async function fetchSupabaseListings() {
+  const abortController = new AbortController();
+  let timedOut = false;
   const supabaseRequest = supabase
     .from('companions')
     .select('*')
-    .order('created_at', { ascending: false })
-    .limit(LIVE_QUERY_LIMIT);
+    .order('updated_at', { ascending: false, nullsFirst: false })
+    .order('created_at', { ascending: false, nullsFirst: false })
+    .limit(LIVE_QUERY_LIMIT)
+    .abortSignal(abortController.signal);
 
   let timeoutId = null;
-  const timeoutPromise = new Promise((_, reject) => {
-    timeoutId = window.setTimeout(() => {
-      reject(new Error('Live data request timed out.'));
-    }, SUPABASE_TIMEOUT_MS);
-  });
 
   let response;
   try {
-    response = await Promise.race([supabaseRequest, timeoutPromise]);
+    timeoutId = window.setTimeout(() => {
+      timedOut = true;
+      abortController.abort();
+    }, SUPABASE_TIMEOUT_MS);
+    response = await supabaseRequest;
   } finally {
     if (timeoutId) {
       window.clearTimeout(timeoutId);
@@ -135,6 +142,9 @@ async function fetchSupabaseListings() {
   }
 
   if (response.error) {
+    if (timedOut || response.error.name === 'AbortError') {
+      throw new Error('Live data request timed out.');
+    }
     throw response.error;
   }
 
@@ -258,10 +268,13 @@ function App() {
   const deferredSearchTerm = useDeferredValue(searchTerm);
   const metrics = useMemo(() => createMetrics(allCompanions), [allCompanions]);
   const intakeSummary = useMemo(() => createIntakeSummary(allCompanions), [allCompanions]);
-  const recentListings = useMemo(
-    () => sortListings(allCompanions, SORT_OPTIONS[0]).slice(0, 5),
-    [allCompanions],
-  );
+  const displayDataState = useMemo(() => ({
+    ...dataState,
+    sourceLabel: t.sourceLabels?.[dataState.source] || dataState.sourceLabel,
+    note: dataState.isLoading
+      ? t.dataNotes?.loading || dataState.note
+      : t.dataNotes?.[dataState.source] || dataState.note,
+  }), [dataState, t]);
 
   useEffect(() => {
     let isMounted = true;
@@ -289,6 +302,34 @@ function App() {
   useEffect(() => {
     initSession();
   }, []);
+
+  // Deep-link: ?listing=<id> auto-opens that listing's modal once data has
+  // loaded. If the id isn't in the filtered allCompanions set (some listings
+  // are dropped by visualDeduplication or validation but are still legitimate
+  // shares), fetch from public/data.json — the broader 75-listing snapshot.
+  useEffect(() => {
+    if (allCompanions.length === 0) return;
+    const params = new URLSearchParams(window.location.search);
+    const targetId = params.get('listing');
+    if (!targetId) return;
+    const match = allCompanions.find((listing) => String(listing.id) === String(targetId));
+    if (match) {
+      setSelectedCompanion(match);
+      return;
+    }
+    // Fallback: snapshot lookup so deep-links to filtered listings still resolve.
+    let cancelled = false;
+    fetch('/data.json')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((rows) => {
+        if (cancelled) return;
+        const fromSnapshot = (Array.isArray(rows) ? rows : [])
+          .find((listing) => String(listing.id) === String(targetId));
+        if (fromSnapshot) setSelectedCompanion(fromSnapshot);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [allCompanions]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -381,6 +422,8 @@ function App() {
     void loadListings();
     const intervalId = window.setInterval(refreshIfVisible, REFRESH_INTERVAL_MS);
     document.addEventListener('visibilitychange', refreshIfVisible);
+    window.addEventListener('focus', refreshIfVisible);
+    window.addEventListener('online', refreshIfVisible);
 
     const channel = supabase
       .channel('companions-realtime')
@@ -396,6 +439,8 @@ function App() {
         window.clearTimeout(realtimeRefreshTimerRef.current);
       }
       document.removeEventListener('visibilitychange', refreshIfVisible);
+      window.removeEventListener('focus', refreshIfVisible);
+      window.removeEventListener('online', refreshIfVisible);
       supabase.removeChannel(channel);
     };
   }, []);
@@ -434,9 +479,18 @@ function App() {
           const normalizedSearch = deferredSearchTerm.trim().toLowerCase();
           const matchesSearch =
             !normalizedSearch ||
-            [listing.name, listing.location, listing.description]
+            [
+              listing.name,
+              listing.location,
+              listing.description,
+              listing.phone,
+              listing.hours,
+              listing.sourceChannel,
+              ...(Array.isArray(listing.tags) ? listing.tags : []),
+              ...(Array.isArray(listing.serviceTags) ? listing.serviceTags : []),
+            ]
               .filter(Boolean)
-              .some((value) => value.toLowerCase().includes(normalizedSearch));
+              .some((value) => String(value).toLowerCase().includes(normalizedSearch));
 
           return matchesLocation && matchesActivity && matchesSearch;
         }),
@@ -487,6 +541,10 @@ function App() {
         element={
           <div className="app-shell">
             <div className="app-backdrop" aria-hidden="true" />
+            <div className="app-noise-overlay" aria-hidden="true" />
+            <div className="app-ambient-glow" aria-hidden="true" />
+
+            <AtomicClock />
 
             <Header
               language={language}
@@ -497,17 +555,68 @@ function App() {
               onLogout={session ? () => supabase.auth.signOut() : null}
               onRefresh={handleRefresh}
               isRefreshing={dataState.isRefreshing}
-              sourceLabel={dataState.sourceLabel}
+              sourceLabel={displayDataState.sourceLabel}
             />
 
             <main className="main-content">
-              <HeroSection t={t} metrics={metrics} dataState={dataState} />
+              <HeroSection
+                t={t}
+                metrics={metrics}
+                dataState={displayDataState}
+                intakeSummary={intakeSummary}
+              />
+
+              <div className="research-preview-banner">
+                <span className="research-preview-kicker">{t.researchPreview?.kicker || 'Research Preview'}</span>
+                <p className="research-preview-body">{t.researchPreview?.body}</p>
+              </div>
 
               <LiveIntakeStrip
                 t={t}
                 listings={allCompanions}
                 intakeSummary={intakeSummary}
                 lastLoadedAt={dataState.lastLoadedAt}
+              />
+
+              <NowLooking listings={allCompanions} />
+
+              <HowItWorks t={t} />
+
+              <FeedGrid
+                t={t}
+                onOpen={(card) => {
+                  // The feed card is a Telegram post, not a deduped canonical
+                  // listing. Shape it into the same surface the modal expects
+                  // so the existing CompanionModal can render it without
+                  // special-casing. linked_companion_id may resolve later
+                  // (see findings.md §1.1) — when it does, we can swap to
+                  // the canonical record at this point instead.
+                  setSelectedCompanion({
+                    id: `feed-${card.id}`,
+                    name: card.displayName || card.name,
+                    location: card.channel ? `${card.channel}` : '—',
+                    city: 'Bangkok',
+                    description: card.displayDescription || card.description,
+                    sourceChannel: card.channel,
+                    postedAt: card.messageDate,
+                    updatedAt: card.messageDate,
+                    createdAt: card.messageDate,
+                    phone: card.phone,
+                    lineUrl: card.lineUrl,
+                    telegramUrl: card.telegramUrl,
+                    mapsUrl: card.mapsUrl,
+                    hours: card.hours,
+                    priceLabel: card.priceLabel || 'Rate on request',
+                    imageUrl: card.requiresReview ? null : card.displayPrimaryPhoto || card.primaryPhoto,
+                    allPhotoUrls: card.requiresReview ? [] : card.displayPhotoUrls || card.photoUrls,
+                    isSafeImage: !card.requiresReview,
+                    mentionCount: 1,
+                    serviceTags: [],
+                    tags: [],
+                    metrics: {},
+                    dataSource: 'feed',
+                  });
+                }}
               />
 
               <section id="live-listings" className="listing-section">
@@ -519,7 +628,7 @@ function App() {
                   <p className="section-subtitle">{t.featured.subtitle}</p>
                   <div className="section-meta">
                     <span>{filteredCompanions.length} {t.featured.countLabel}</span>
-                    <span>{dataState.sourceLabel}</span>
+                    <span>{displayDataState.sourceLabel}</span>
                   </div>
                 </div>
 
@@ -537,6 +646,14 @@ function App() {
                   setSortBy={setSortBy}
                   onRefresh={handleRefresh}
                   isRefreshing={dataState.isRefreshing}
+                  onClearFilters={clearFilters}
+                  hasActiveFilters={
+                    searchTerm.trim() ||
+                    activeLocation !== ALL_LOCATIONS_VALUE ||
+                    activeActivity !== ALL_TAGS_VALUE ||
+                    sortBy !== SORT_OPTIONS[0]
+                  }
+                  resultCount={filteredCompanions.length}
                   t={t}
                 />
 
@@ -544,6 +661,9 @@ function App() {
                   companions={filteredCompanions}
                   onCardClick={setSelectedCompanion}
                   t={t}
+                  metrics={metrics}
+                  intakeSummary={intakeSummary}
+                  dataState={displayDataState}
                   onClearFilters={clearFilters}
                   hasActiveFilters={
                     searchTerm.trim() ||
@@ -562,12 +682,17 @@ function App() {
               </div>
 
               <Suspense fallback={<section className="section-shell-loading">Loading map…</section>}>
-                <ListingMap listings={allCompanions} t={t} />
+                <ListingMap
+                  listings={filteredCompanions}
+                  onCardClick={setSelectedCompanion}
+                  t={t}
+                  viewKey={`${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
+                />
               </Suspense>
 
             </main>
 
-            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={dataState.sourceLabel} />
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
 
             {selectedCompanion && (
               <CompanionModal

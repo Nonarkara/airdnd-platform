@@ -11,9 +11,9 @@ const PORT = process.env.PORT || 10000;
 const distDir = path.join(__dirname, 'dist');
 const publicDir = path.join(__dirname, 'public');
 
-function resolveSnapshotPath() {
-    const publicSnapshotPath = path.join(publicDir, 'data.json');
-    const distSnapshotPath = path.join(distDir, 'data.json');
+function resolveMutablePublicPath(filename) {
+    const publicSnapshotPath = path.join(publicDir, filename);
+    const distSnapshotPath = path.join(distDir, filename);
     const existingPaths = [publicSnapshotPath, distSnapshotPath].filter((candidate) => fs.existsSync(candidate));
 
     if (existingPaths.length === 0) {
@@ -23,10 +23,10 @@ function resolveSnapshotPath() {
     return existingPaths.sort((left, right) => fs.statSync(right).mtimeMs - fs.statSync(left).mtimeMs)[0];
 }
 
-app.get('/data.json', (req, res) => {
-    const snapshotPath = resolveSnapshotPath();
+app.get(['/data.json', '/feed.json'], (req, res) => {
+    const snapshotPath = resolveMutablePublicPath(path.basename(req.path));
     if (!snapshotPath) {
-        res.status(404).json({ error: 'Snapshot file not found.' });
+        res.status(404).json({ error: 'Public data file not found.' });
         return;
     }
 

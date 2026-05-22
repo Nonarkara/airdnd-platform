@@ -1,5 +1,17 @@
+import {
+  canonicalizePublicListings,
+  hasMatchedPublicMedia,
+  normalizePublicListing,
+  validatePublicListing,
+} from './listing_contract';
+import {
+  cleanDisplayText,
+  inferCityFromLocation as inferCityFromText,
+  normalizePhone,
+  normalizeText,
+} from './normalization';
+
 const DEFAULT_LOCATION = 'Bangkok, Thailand';
-const DEFAULT_IMAGE = '/mockups/109748.jpg';
 
 export const SOURCE_LABELS = {
   supabase: 'Live sync',
@@ -7,133 +19,17 @@ export const SOURCE_LABELS = {
   backup: 'Cached fallback',
 };
 
-const VALID_SERVICE_TAGS = new Set([
-  '4 Hand Massage',
+const UNSAFE_VISUAL_TAGS = new Set([
   'Adult Entertainment',
   'Adult Services',
-  'Aroma Massage',
-  'B2B Massage',
   'Erotic Massage',
   'Escort',
-  'Health Massage',
-  'Massage',
   'Model',
-  'Multiple Providers',
-  'New Provider',
-  'Spa',
-  'Wellness',
   'Young Talent',
 ]);
 
-const CITY_PATTERNS = [
-  {
-    canonical: 'Bangkok',
-    patterns: [
-      'bangkok',
-      'กรุงเทพ',
-      'กรุงเทพมหานคร',
-      'สุขุมวิท',
-      'ทองหล่อ',
-      'เอกมัย',
-      'อโศก',
-      'ลาดพร้าว',
-      'รามอินทรา',
-      'พระราม',
-      'รัชดา',
-      'ห้วยขวาง',
-      'สาทร',
-      'สีลม',
-      'บางนา',
-      'นวมินทร์',
-      'มีนบุรี',
-      'ฉลองกรุง',
-      'คลองสอง',
-      'ศาลายา',
-    ],
-  },
-  {
-    canonical: 'Nonthaburi',
-    patterns: ['nonthaburi', 'นนทบุรี', 'นนทบุร', 'บางใหญ่', 'ปากเกร็ด', 'บางกรวย', 'วัดลาดปลาดุก'],
-  },
-  {
-    canonical: 'Pathum Thani',
-    patterns: ['pathum thani', 'ปทุมธานี', 'รังสิต', 'ลำลูกกา'],
-  },
-  {
-    canonical: 'Samut Prakan',
-    patterns: ['samut prakan', 'สมุทรปราการ', 'สำโรง', 'แบริ่ง'],
-  },
-  {
-    canonical: 'Chonburi',
-    patterns: ['chonburi', 'ชลบุรี', 'pattaya', 'พัทยา', 'jomtien'],
-  },
-  {
-    canonical: 'Phuket',
-    patterns: ['phuket', 'ภูเก็ต', 'patong'],
-  },
-  {
-    canonical: 'Chiang Mai',
-    patterns: ['chiang mai', 'เชียงใหม่'],
-  },
-  {
-    canonical: 'Saraburi',
-    patterns: ['saraburi', 'สระบุรี'],
-  },
-];
-
-function isValidServiceTag(tag) {
-  if (VALID_SERVICE_TAGS.has(tag)) {
-    return true;
-  }
-
-  // Reject tags that look like locations (Thai text, area names)
-  if (/^[\u0E00-\u0E7F]/.test(tag)) {
-    return false;
-  }
-
-  // Reject known location patterns
-  if (/^(Bangkok|Bangyai|Pathum Thani|Rangsit|Rama\s*\d|Rama\s*II|Nawamin|Khlong|Bhumibol|Nonthaburi|Samut|Nakhon|Chiang|Phuket|Pattaya)/i.test(tag)) {
-    return false;
-  }
-
-  return true;
-}
-
-function normalizeText(value, fallback = '') {
-  if (typeof value !== 'string') {
-    return fallback;
-  }
-
-  const trimmed = value.trim();
-  return trimmed || fallback;
-}
-
-function cleanDisplayText(value) {
-  return String(value || '')
-    .replace(/https?:\/\/\S+/gi, ' ')
-    .replace(/[\u200B-\u200D\uFEFF]/g, ' ')
-    .replace(/^[^\p{L}\p{N}@#]+/gu, '')
-    .replace(/[^\p{L}\p{N})]+$/gu, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function hasServiceNameSignal(value) {
-  return /massage|spa|นวด|สปา|เพื่อสุขภาพ|wellness|therapy|therapist|คลินิก|clinic/i.test(value);
-}
-
-function inferCityFromText(value) {
-  const normalized = normalizeText(value, '').toLowerCase();
-  if (!normalized) {
-    return null;
-  }
-
-  const matchedCity = CITY_PATTERNS.find(({ patterns }) =>
-    patterns.some((pattern) => normalized.includes(pattern.toLowerCase())),
-  );
-
-  return matchedCity?.canonical || null;
-}
+const UNSAFE_VISUAL_RE =
+  /(?:adult|erotic|escort|full\s*service|xxx|porn|nude|naked|onlyfans|18\+|vip\s*group|งานแรง|งานครบ|บริการพิเศษ|เสียว|เสร[็้]จ|อม(?:ไม่)?อั้?น|อมไม|จบ\s*\d{3,5}|แซ่บ|หุ่น|สาวๆ|สาวสาว|น้องหน้า|น้องใหม่|เลือกน้อง|เลือกสาว|หมอมาใหม่|โป้|โป๊|กลุ่มลับ|คลิป(?:โป้|โป๊|ลับ))/i;
 
 export function formatSourceChannelName(sourceChannel) {
   const raw = normalizeText(sourceChannel, '').replace(/^@/, '');
@@ -165,128 +61,6 @@ export function formatSourceChannelName(sourceChannel) {
   }
 
   return spaced;
-}
-
-function cleanLocationLabel(location) {
-  const cleaned = cleanDisplayText(
-    normalizeText(location, DEFAULT_LOCATION)
-      .replace(/^#/, '')
-      .replace(/^(?:พิกัด|พิกัดฐานทัพ|location|map|maps)\s*[:：]?\s*/i, '')
-      .replace(/^แผนที่ร้านนวดใกล้ฉัน\s*/i, '')
-      .replace(/\([^)]*\)/g, ' '),
-  );
-
-  if (!cleaned || cleaned === 'ร้าน') {
-    return DEFAULT_LOCATION;
-  }
-
-  if (
-    cleaned.length > 72 ||
-    /เปิดบริการ|สวัสดี|line|โทร|#|บริการทุกวัน|\d{1,2}[:.]\d{2}/i.test(cleaned)
-  ) {
-    const inferredCity = inferCityFromText(cleaned);
-    return inferredCity ? `${inferredCity}, Thailand` : DEFAULT_LOCATION;
-  }
-
-  return cleaned || DEFAULT_LOCATION;
-}
-
-function isBadDisplayName(name) {
-  const normalized = cleanDisplayText(name);
-  if (!normalized) {
-    return true;
-  }
-
-  return (
-    /^(group joining details|group|telegram|open|เปิด|นี้|massage|spa|สปา|line|new)$/i.test(normalized) ||
-    /group|joining|children'?s only|line\s*id|id\s*line|new group|telegram|เปิดให้บริการ|ได้เลยนะ|มีน้องคนไหน|ด่วนโทร|เอาใจ|แซ่บ|ส่งไรนักหนา|ประกาศภาวะฉุกเฉิน|จะดู|ครับ|ค่ะ|คะ|สะอาด|ปลอดภัย|คนไม่พลุกพล่าน|private room|parking|บรรยากาศ|เงียบสงบ|น้องใหม่|บริการทุกวัน|จับจอง|แล้วค่า|แล้วครับ|แล้วค่ะ/i.test(normalized) ||
-    /^\d[\d -]{7,}$/.test(normalized) ||
-    /^\d{1,2}[:.]\d{2}/.test(normalized) ||
-    /[:：]/.test(normalized) ||
-    (/society/i.test(normalized) && !hasServiceNameSignal(normalized)) ||
-    (!hasServiceNameSignal(normalized) && normalized.split(/\s+/).filter(Boolean).length >= 5) ||
-    (!hasServiceNameSignal(normalized) && normalized.length > 36) ||
-    (/^[\u0E00-\u0E7F]{1,4}$/.test(normalized) && !hasServiceNameSignal(normalized)) ||
-    normalized.length < 3
-  );
-}
-
-function resolveDisplayName(rawName, sourceChannel, location) {
-  const cleanedName = cleanDisplayText(rawName);
-  if (!isBadDisplayName(cleanedName)) {
-    return cleanedName.slice(0, 48);
-  }
-
-  const sourceName = formatSourceChannelName(sourceChannel);
-  if (sourceName && !isBadDisplayName(sourceName)) {
-    return sourceName.slice(0, 48);
-  }
-
-  const area = cleanLocationLabel(location).split(',')[0]?.trim();
-  return (area ? `Massage Listing ${area}` : 'Massage Listing').slice(0, 48);
-}
-
-function sanitizePriceLabel(rawPriceLabel) {
-  const normalized = normalizeText(rawPriceLabel, '');
-  if (!normalized) {
-    return 'Rate on request';
-  }
-
-  const value = extractPriceValue(normalized);
-  if (!Number.isFinite(value) || value < 100 || value > 20000) {
-    return 'Rate on request';
-  }
-
-  return `${value} THB`;
-}
-
-function normalizeMetrics(metrics) {
-  if (!metrics || typeof metrics !== 'object') {
-    return {};
-  }
-
-  const nextMetrics = {};
-  if (metrics.height) {
-    nextMetrics.height = String(metrics.height).trim();
-  }
-  if (metrics.weight) {
-    nextMetrics.weight = String(metrics.weight).trim();
-  }
-  return nextMetrics;
-}
-
-function extractListingMeta(rawListing) {
-  const rawMetrics =
-    rawListing?.metrics && typeof rawListing.metrics === 'object' ? rawListing.metrics : {};
-
-  return {
-    postedAt: normalizeText(
-      rawListing?.postedAt ||
-        rawListing?.posted_at ||
-        rawMetrics.__postedAt ||
-        rawMetrics.postedAt ||
-        rawMetrics.posted_at,
-      null,
-    ),
-    sourceChannel: normalizeText(
-      rawListing?.sourceChannel ||
-        rawListing?.source_channel ||
-        rawMetrics.__sourceChannel ||
-        rawMetrics.sourceChannel ||
-        rawMetrics.source_channel,
-      null,
-    ),
-  };
-}
-
-function extractPriceValue(priceLabel) {
-  const numeric = String(priceLabel || '').replace(/[^\d]/g, '');
-  if (!numeric) {
-    return null;
-  }
-
-  const parsed = Number.parseInt(numeric, 10);
-  return Number.isFinite(parsed) ? parsed : null;
 }
 
 function resolveCity(rawCity, location) {
@@ -349,74 +123,24 @@ export function extractCity(location) {
 
 export function normalizeListing(rawListing, options = {}) {
   const source = options.source || 'backup';
-  const fallbackLocation = options.fallbackLocation || DEFAULT_LOCATION;
-  const listingMeta = extractListingMeta(rawListing);
-  const location = cleanLocationLabel(rawListing?.location || fallbackLocation);
-  const name = resolveDisplayName(rawListing?.name, listingMeta.sourceChannel, location);
-  const priceLabel = sanitizePriceLabel(rawListing?.priceLabel || rawListing?.price);
-  const ratingValue = rawListing?.rating;
-  const reviewsValue = rawListing?.reviews;
+  const normalized = normalizePublicListing(rawListing, {
+    source,
+    isFallback: options.isFallback,
+    allowUnverified: source === 'backup',
+  });
 
-  const rating =
-    typeof ratingValue === 'number'
-      ? ratingValue
-      : typeof ratingValue === 'string' && ratingValue.trim()
-        ? Number.parseFloat(ratingValue)
-        : null;
-
-  const reviews =
-    typeof reviewsValue === 'number'
-      ? reviewsValue
-      : typeof reviewsValue === 'string' && reviewsValue.trim()
-        ? Number.parseInt(reviewsValue, 10)
-        : null;
-
-  const normalizedAge =
-    typeof rawListing?.age === 'number'
-      ? rawListing.age
-      : typeof rawListing?.age === 'string' && rawListing.age.trim()
-        ? Number.parseInt(rawListing.age, 10)
-        : null;
-
-  const tags = Array.isArray(rawListing?.tags)
-    ? rawListing.tags
-        .map((tag) => normalizeText(String(tag)))
-        .filter((tag) => tag && isValidServiceTag(tag))
-    : [];
-
-  const updatedAt = normalizeText(rawListing?.updatedAt || rawListing?.created_at, null);
+  if (!normalized) {
+    return null;
+  }
 
   return {
-    id: rawListing?.id ?? `${source}-${name}-${location}`,
-    name,
-    age: Number.isFinite(normalizedAge) ? normalizedAge : null,
-    location,
-    city: resolveCity(rawListing?.city, location),
-    priceLabel,
-    priceValue: extractPriceValue(priceLabel),
-    description: normalizeText(
-      rawListing?.description,
-      'Details for this listing are still being collected.',
-    ),
-    tags,
-    metrics: normalizeMetrics(rawListing?.metrics),
-    imageUrl: normalizeText(rawListing?.imageUrl || rawListing?.image_url, DEFAULT_IMAGE),
-    rating: Number.isFinite(rating) && rating > 0 ? rating : null,
-    reviews: Number.isFinite(reviews) && reviews > 0 ? reviews : null,
-    updatedAt,
-    postedAt: listingMeta.postedAt,
-    sourceChannel: listingMeta.sourceChannel,
-    phone: normalizeText(rawListing?.phone, null),
-    hours: normalizeText(rawListing?.hours, null),
-    lineUrl: normalizeText(rawListing?.lineUrl || rawListing?.line_url, null),
-    mapsUrl: normalizeText(rawListing?.mapsUrl || rawListing?.maps_url, null),
-    telegramUrl: normalizeText(rawListing?.telegramUrl || rawListing?.telegram_url, null),
-    latitude: typeof rawListing?.latitude === 'number' ? rawListing.latitude : null,
-    longitude: typeof rawListing?.longitude === 'number' ? rawListing.longitude : null,
-    isSafeImage: rawListing?.is_safe_image !== false && rawListing?.isSafeImage !== false,
-    mentionCount: rawListing?.mention_count || rawListing?.mentionCount || 0,
+    ...normalized,
+    id: normalized.id ?? `${source}-${normalized.name}-${normalized.location}`,
+    city: normalized.city || resolveCity(rawListing?.city, normalized.location),
+    description: normalized.description || 'Details for this listing are still being collected.',
     photoCount: Array.isArray(rawListing?.photo_urls) ? rawListing.photo_urls.length :
-      Array.isArray(rawListing?.allPhotoUrls) ? rawListing.allPhotoUrls.length : 0,
+      Array.isArray(rawListing?.allPhotoUrls) ? rawListing.allPhotoUrls.length :
+      Array.isArray(normalized.allPhotoUrls) ? normalized.allPhotoUrls.length : 0,
     dataSource: source,
     isFallback: Boolean(options.isFallback),
   };
@@ -436,11 +160,18 @@ function parseTimestamp(value) {
 }
 
 export function getIngestTimestamp(listing) {
-  return parseTimestamp(listing?.updatedAt || listing?.created_at);
+  return parseTimestamp(listing?.updatedAt || listing?.updated_at || listing?.createdAt || listing?.created_at);
 }
 
 export function getListingTimestamp(listing) {
-  return parseTimestamp(listing?.postedAt || listing?.posted_at || listing?.updatedAt || listing?.created_at);
+  return parseTimestamp(
+    listing?.postedAt ||
+      listing?.posted_at ||
+      listing?.updatedAt ||
+      listing?.updated_at ||
+      listing?.createdAt ||
+      listing?.created_at,
+  );
 }
 
 export function getListingTimestampValue(listing) {
@@ -449,8 +180,7 @@ export function getListingTimestampValue(listing) {
 }
 
 export function hasMatchedMedia(listing) {
-  const imageUrl = normalizeText(listing?.imageUrl || listing?.image_url, '');
-  return Boolean(imageUrl) && !imageUrl.startsWith('/mockups/');
+  return getSafeListingGalleryUrls(listing).length > 0 || (isListingMediaSafe(listing) && hasMatchedPublicMedia(listing));
 }
 
 export function createIntakeSummary(listings) {
@@ -545,41 +275,47 @@ export function normalizeListings(listings, options = {}) {
         options,
       ),
     )
-    .filter((listing) => !(listing.name.startsWith('Massage Listing') && listing.location === DEFAULT_LOCATION));
+    .filter(Boolean)
+    .filter((listing) => options.source === 'backup' || validatePublicListing(listing).ok);
 
-  const deduped = new Map();
-  normalized.forEach((listing) => {
-    const dedupeKey = listing.sourceChannel && listing.postedAt
-      ? `${listing.sourceChannel}|${listing.postedAt}|${listing.location}`
-      : `${listing.name}|${listing.location}|${listing.updatedAt || listing.id}`;
-    const existing = deduped.get(dedupeKey);
-
-    if (!existing) {
-      deduped.set(dedupeKey, listing);
-      return;
-    }
-
-    const existingBadName = isBadDisplayName(existing.name);
-    const nextBadName = isBadDisplayName(listing.name);
-    const existingMatchedMedia = hasMatchedMedia(existing);
-    const nextMatchedMedia = hasMatchedMedia(listing);
-
-    if (existingBadName && !nextBadName) {
-      deduped.set(dedupeKey, listing);
-      return;
-    }
-
-    if (existingMatchedMedia !== nextMatchedMedia) {
-      deduped.set(dedupeKey, nextMatchedMedia ? listing : existing);
-      return;
-    }
-
-    if ((getListingTimestampValue(listing) || 0) > (getListingTimestampValue(existing) || 0)) {
-      deduped.set(dedupeKey, listing);
-    }
+  const canonicalized = canonicalizePublicListings(normalized, {
+    source: options.source || 'backup',
+    isFallback: options.isFallback,
+    allowUnverified: options.source === 'backup',
   });
 
-  return [...deduped.values()];
+  // Apply visual deduplication: if multiple listings have the same image,
+  // we either hide the duplicate images or spread them out.
+  // For the "Newest" view, we prioritize the first occurrence of an image.
+  return visualDeduplication(canonicalized);
+}
+
+function visualDeduplication(listings) {
+  const seenImages = new Set();
+  const seenPhones = new Set();
+  const deduped = [];
+
+  for (const listing of listings) {
+    const imageUrl = listing.imageUrl;
+    const phone = normalizePhone(listing.phone);
+    const isMock = !imageUrl || imageUrl.startsWith('/mockups/');
+
+    // If we have a phone, use that as primary dedup key
+    if (phone) {
+      if (seenPhones.has(phone)) continue;
+      seenPhones.add(phone);
+    }
+
+    // If we have a real image, dedup by image URL too
+    if (!isMock) {
+      if (seenImages.has(imageUrl)) continue;
+      seenImages.add(imageUrl);
+    }
+
+    deduped.push(listing);
+  }
+
+  return deduped;
 }
 
 export function createMetrics(listings) {
@@ -611,6 +347,10 @@ export function createMetrics(listings) {
       .filter(Boolean),
   ).size;
   const matchedMediaCount = normalizedListings.filter((listing) => hasMatchedMedia(listing)).length;
+  const withPhone = normalizedListings.filter((listing) => listing.phone).length;
+  const withContact = normalizedListings.filter((listing) =>
+    listing.phone || listing.lineUrl || listing.telegramUrl || listing.mapsUrl,
+  ).length;
 
   return {
     total: normalizedListings.length,
@@ -618,6 +358,14 @@ export function createMetrics(listings) {
     cityCount,
     sourceChannelCount,
     matchedMediaCount,
+    withPhone,
+    withContact,
+    mediaRate: normalizedListings.length
+      ? Math.round((matchedMediaCount / normalizedListings.length) * 100)
+      : 0,
+    contactRate: normalizedListings.length
+      ? Math.round((withContact / normalizedListings.length) * 100)
+      : 0,
     coverage: normalizedListings.length
       ? Math.round((bangkokCount / normalizedListings.length) * 100)
       : 0,
@@ -653,4 +401,73 @@ export function formatPreciseTimestamp(value) {
     minute: '2-digit',
     second: '2-digit',
   }).format(date);
+}
+
+export function isListingNew(listing) {
+  const timestamp =
+    listing?.updatedAt ||
+    listing?.updated_at ||
+    listing?.postedAt ||
+    listing?.posted_at ||
+    listing?.createdAt ||
+    listing?.created_at;
+  if (!timestamp) return false;
+  const date = new Date(timestamp);
+  if (isNaN(date.getTime())) return false;
+  const diffHours = (new Date() - date) / 3600000;
+  return diffHours <= 24;
+}
+
+export function getListingMediaCount(listing) {
+  return getListingGalleryUrls(listing).length;
+}
+
+export function getListingGalleryUrls(listing) {
+  if (!listing) return [];
+
+  const urls = [
+    ...(Array.isArray(listing.allPhotoUrls) ? listing.allPhotoUrls : []),
+    ...(Array.isArray(listing.photo_urls) ? listing.photo_urls : []),
+    listing.imageUrl,
+    listing.image_url,
+  ];
+
+  return [...new Set(
+    urls
+      .filter(Boolean)
+      .map((url) => String(url).trim())
+      .filter((url) => url && !url.startsWith('/mockups/')),
+  )];
+}
+
+export function hasUnsafeVisualSignal(listing) {
+  const tags = [
+    ...(Array.isArray(listing?.tags) ? listing.tags : []),
+    ...(Array.isArray(listing?.serviceTags) ? listing.serviceTags : []),
+    ...(Array.isArray(listing?.service_tags) ? listing.service_tags : []),
+  ].map((tag) => String(tag).trim());
+
+  if (tags.some((tag) => UNSAFE_VISUAL_TAGS.has(tag))) {
+    return true;
+  }
+
+  const text = [
+    listing?.name,
+    listing?.location,
+    listing?.description,
+    listing?.rawText,
+    listing?.raw_text,
+    ...tags,
+  ].filter(Boolean).join(' ');
+
+  return UNSAFE_VISUAL_RE.test(text);
+}
+
+export function isListingMediaSafe(listing) {
+  return listing?.isSafeImage !== false && !hasUnsafeVisualSignal(listing);
+}
+
+export function getSafeListingGalleryUrls(listing) {
+  if (!isListingMediaSafe(listing)) return [];
+  return getListingGalleryUrls(listing);
 }

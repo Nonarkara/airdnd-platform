@@ -6,8 +6,10 @@
  * 2. Create a new spreadsheet named "Sabai Sabai BI Dashboard"
  * 3. Go to Extensions > Apps Script
  * 4. Paste this entire file
- * 5. Click Run > setup (authorize when prompted)
- * 6. Data will auto-refresh every hour via trigger
+ * 5. Optional but recommended: Project Settings > Script Properties,
+ *    add SUPABASE_SERVICE_ROLE_KEY so private visitor logs can be read under RLS.
+ * 6. Click Run > setup (authorize when prompted)
+ * 7. Data will auto-refresh every hour via trigger
  *
  * The script pulls data directly from your Supabase API.
  */
@@ -15,19 +17,25 @@
 const SUPABASE_URL = 'https://fehdtfncbutesgadjsxp.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_mf3Wmwk6mMO-EoYaDxMUvA_CihTsTBF';
 
+function getSupabaseKey() {
+  return PropertiesService.getScriptProperties().getProperty('SUPABASE_SERVICE_ROLE_KEY') || SUPABASE_KEY;
+}
+
 function supabaseFetch(table, params = '') {
   const url = `${SUPABASE_URL}/rest/v1/${table}?${params}`;
+  const key = getSupabaseKey();
   const options = {
     method: 'GET',
     headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'apikey': key,
+      'Authorization': `Bearer ${key}`,
       'Prefer': 'count=exact',
     },
     muteHttpExceptions: true,
   };
   const response = UrlFetchApp.fetch(url, options);
-  return JSON.parse(response.getContentText());
+  const parsed = JSON.parse(response.getContentText());
+  return Array.isArray(parsed) ? parsed : [];
 }
 
 // ============ SETUP ============
@@ -130,14 +138,15 @@ function refreshListings() {
 // ============ VISITORS ============
 
 function refreshVisitors() {
-  const data = supabaseFetch('page_views', 'select=id,session_id,page,event_type,country,city,language,screen_w,screen_h,referrer,user_agent,created_at&order=created_at.desc&limit=1000');
+  const data = supabaseFetch('page_views', 'select=id,session_id,page,event_type,ip_address,country,country_code,region,city,latitude,longitude,timezone,org,language,screen_w,screen_h,referrer,user_agent,created_at&order=created_at.desc&limit=1000');
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Visitors');
   if (!sheet) return;
 
   sheet.clear();
 
   const headers = [
-    'ID', 'Session', 'Page', 'Event', 'Country', 'City',
+    'ID', 'Session', 'Page', 'Event', 'IP Address', 'Country', 'Country Code',
+    'Region', 'City', 'Latitude', 'Longitude', 'Timezone', 'Org / ISP',
     'Language', 'Screen', 'Referrer', 'User Agent', 'Timestamp'
   ];
 
@@ -157,8 +166,15 @@ function refreshVisitors() {
     r.session_id || '',
     r.page || '',
     r.event_type || '',
+    r.ip_address || '',
     r.country || '',
+    r.country_code || '',
+    r.region || '',
     r.city || '',
+    r.latitude || '',
+    r.longitude || '',
+    r.timezone || '',
+    r.org || '',
     r.language || '',
     r.screen_w && r.screen_h ? `${r.screen_w}x${r.screen_h}` : '',
     r.referrer || '',
@@ -168,6 +184,7 @@ function refreshVisitors() {
 
   sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
   sheet.setFrozenRows(1);
+  sheet.autoResizeColumns(1, Math.min(headers.length, 10));
 }
 
 // ============ DAILY STATS ============

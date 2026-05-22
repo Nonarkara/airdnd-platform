@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "og:cards": "node scripts/generate_og_cards.js",
     "build": "vite build",
+    "build:full": "npm run snapshot:refresh && npm run og:cards && npm run build",
     "lint": "eslint .",
     "preview": "vite preview",
     "scrape": "node scripts/scraper.js",
@@ -13,6 +15,13 @@
     "scrape:watch": "node scripts/telegram_scraper.js --watch",
     "repair:photos": "node scripts/repair_photo_urls.js",
     "verify:snapshot": "node scripts/verify_snapshot.js",
+    "snapshot:refresh": "node scripts/refresh_public_snapshot.js",
+    "feed:refresh": "node scripts/refresh_feed_snapshot.js",
+    "patterns:compute": "node scripts/compute_patterns.js",
+    "audit:data": "node scripts/audit_public_data.js",
+    "cleanup:companions": "node scripts/cleanup_public_companions.js",
+    "visitors:sync": "node scripts/sync_visitor_logs.js",
+    "test": "node --test",
     "bot": "node scripts/telegram_bot.js",
     "userbot": "node scripts/userbot.js",
     "userbot:daemon": "chmod +x scripts/daemon.sh && ./scripts/daemon.sh",
@@ -34,6 +43,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
@@ -41,6 +51,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "satori": "^0.26.0",
     "vite": "^7.3.1"
   }
 }

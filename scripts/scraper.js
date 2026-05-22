@@ -60,11 +60,9 @@ ${rawText}
 }
 
 function attachImages(listings, files) {
-  const imagePool = Array.isArray(files) && files.length > 0 ? files : ['109748.jpg'];
-
-  return listings.map((listing, index) => ({
+  return listings.map((listing) => ({
     ...listing,
-    imageUrl: `/mockups/${imagePool[index % imagePool.length]}`,
+    imageUrl: listing.imageUrl && !listing.imageUrl.startsWith('/mockups/') ? listing.imageUrl : null,
   }));
 }
 
@@ -100,12 +98,7 @@ async function main() {
       source: 'snapshot',
     });
 
-    const mockupsDir = path.join(__dirname, '../public/mockups');
-    const files = fs
-      .readdirSync(mockupsDir)
-      .filter((file) => file.endsWith('.jpg') || file.endsWith('.png'));
-
-    const listingsWithImages = attachImages(normalizedListings, files);
+    const listingsWithImages = attachImages(normalizedListings);
     const wroteSnapshot = writeSnapshotListings(listingsWithImages);
 
     if (!wroteSnapshot) {

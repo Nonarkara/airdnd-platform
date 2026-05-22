@@ -17,7 +17,7 @@ function Header({
         </span>
         <span className="brand-copy">
           <strong>Sabai Sabai</strong>
-          <small>{t.header.tagline} · {sourceLabel}</small>
+          <small>{t.header.tagline}</small>
         </span>
       </a>
 
@@ -25,11 +25,15 @@ function Header({
         <a href="#map">{t.nav.map}</a>
         <a href="#workflow">{t.nav.workflow}</a>
         <a href="#live-listings">{t.nav.listings}</a>
-        <a href="/analytics">Analytics</a>
-        <a href="/methodology">Methodology</a>
+        <a href="/analytics">{t.nav.analytics}</a>
+        <a href="/methodology">{t.nav.methodology}</a>
       </nav>
 
       <div className="header-actions">
+        <span className={`source-chip${sourceLabel?.includes('fallback') || sourceLabel?.includes('backup') ? ' is-fallback' : ''}`}>
+          {sourceLabel}
+        </span>
+
         <button
           type="button"
           className="btn-refresh"

@@ -3,9 +3,11 @@ import { supabase, supabaseAnonKey, supabaseUrl } from './supabase.js';
 const SESSION_KEY = 'sabai_session_id';
 const GEO_KEY = 'sabai_geo';
 const TRACKING_KEY = 'sabai_tracking_disabled';
+const EXTENDED_TRACKING_KEY = 'sabai_extended_tracking_disabled';
 let sessionId = null;
 let geo = null;
 let trackingDisabled = sessionStorage.getItem(TRACKING_KEY) === '1';
+let extendedTrackingDisabled = sessionStorage.getItem(EXTENDED_TRACKING_KEY) === '1';
 
 function getSessionId() {
   if (sessionId) return sessionId;
@@ -32,10 +34,15 @@ async function fetchGeo() {
     window.clearTimeout(timeoutId);
     const data = await resp.json();
     geo = {
+      ipAddress: data.ip || null,
       country: data.country_name || data.country || null,
+      countryCode: data.country_code || data.country || null,
+      region: data.region || data.region_code || null,
       city: data.city || null,
       latitude: data.latitude || data.lat || null,
       longitude: data.longitude || data.lon || null,
+      timezone: data.timezone || data.utc_offset || null,
+      org: data.org || data.asn || null,
     };
     sessionStorage.setItem(GEO_KEY, JSON.stringify(geo));
   } catch {
@@ -48,12 +55,39 @@ function disableTracking() {
   sessionStorage.setItem(TRACKING_KEY, '1');
 }
 
+function disableExtendedTracking() {
+  extendedTrackingDisabled = true;
+  sessionStorage.setItem(EXTENDED_TRACKING_KEY, '1');
+}
+
 function isTrackingError(error) {
   return error && (error.code === 'PGRST205' || error.code === '42P01');
 }
 
+function isColumnCacheError(error) {
+  if (!error) return false;
+  return (
+    error.code === 'PGRST204' ||
+    error.code === '42703' ||
+    /column|schema cache/i.test(error.message || '')
+  );
+}
+
+function stripExtendedVisitorFields(payload) {
+  const {
+    ip_address,
+    country_code,
+    region,
+    timezone,
+    org,
+    ...basicPayload
+  } = payload;
+
+  return basicPayload;
+}
+
 function basePayload() {
-  return {
+  const payload = {
     session_id: getSessionId(),
     referrer: document.referrer || null,
     user_agent: navigator.userAgent || null,
@@ -65,40 +99,54 @@ function basePayload() {
     latitude: geo?.latitude || null,
     longitude: geo?.longitude || null,
   };
+
+  if (!extendedTrackingDisabled) {
+    payload.ip_address = geo?.ipAddress || null;
+    payload.country_code = geo?.countryCode || null;
+    payload.region = geo?.region || null;
+    payload.timezone = geo?.timezone || null;
+    payload.org = geo?.org || null;
+  }
+
+  return payload;
+}
+
+async function insertPageView(payload) {
+  const { error } = await supabase.from('page_views').insert(payload);
+  if (isTrackingError(error)) {
+    disableTracking();
+    return;
+  }
+
+  if (isColumnCacheError(error) && !extendedTrackingDisabled) {
+    disableExtendedTracking();
+    const { error: fallbackError } = await supabase
+      .from('page_views')
+      .insert(stripExtendedVisitorFields(payload));
+    if (isTrackingError(fallbackError)) disableTracking();
+  }
 }
 
 export function trackPageView(page) {
   if (trackingDisabled) return;
-  supabase
-    .from('page_views')
-    .insert({ ...basePayload(), page, event_type: 'pageview' })
-    .then(({ error }) => {
-      if (isTrackingError(error)) disableTracking();
-    })
-    .catch(() => {});
+  insertPageView({ ...basePayload(), page, event_type: 'pageview' }).catch(() => {});
 }
 
 export function trackListingClick(listingId) {
   if (trackingDisabled) return;
-  supabase
-    .from('page_views')
-    .insert({
-      ...basePayload(),
-      page: window.location.hash || '/',
-      listing_id: listingId,
-      event_type: 'listing_click',
-    })
-    .then(({ error }) => {
-      if (isTrackingError(error)) disableTracking();
-    })
-    .catch(() => {});
+  insertPageView({
+    ...basePayload(),
+    page: window.location.hash || '/',
+    listing_id: listingId,
+    event_type: 'listing_click',
+  }).catch(() => {});
 }
 
 function endSession() {
   if (trackingDisabled || !supabaseUrl || !supabaseAnonKey) return;
   const url = `${supabaseUrl}/rest/v1/page_views`;
   const body = JSON.stringify({
-    ...basePayload(),
+    ...(extendedTrackingDisabled ? stripExtendedVisitorFields(basePayload()) : basePayload()),
     page: window.location.hash || '/',
     event_type: 'session_end',
   });
@@ -132,6 +180,53 @@ async function probeTable() {
   } catch {
     disableTracking();
   }
+}
+
+// --- Demand signals (Phase 1: The Whisper) ---
+
+const SAVES_KEY = 'sabai_saves';
+let signalsDisabled = false;
+
+function getSavedListings() {
+  try {
+    return new Set(JSON.parse(sessionStorage.getItem(SAVES_KEY) || '[]'));
+  } catch { return new Set(); }
+}
+
+function persistSaves(set) {
+  sessionStorage.setItem(SAVES_KEY, JSON.stringify([...set]));
+}
+
+export function isListingSaved(listingId) {
+  return getSavedListings().has(listingId);
+}
+
+export async function trackSignal(listingId, signalType, payload = {}) {
+  if (trackingDisabled || signalsDisabled) return false;
+  try {
+    const { error } = await supabase.from('signals').insert({
+      session_id: getSessionId(),
+      listing_id: listingId,
+      signal_type: signalType,
+      payload,
+      country: geo?.country || null,
+      city: geo?.city || null,
+    });
+    if (isTrackingError(error)) { signalsDisabled = true; return false; }
+    if (error) return false;
+    if (signalType === 'save') {
+      const saves = getSavedListings();
+      saves.add(listingId);
+      persistSaves(saves);
+    }
+    return true;
+  } catch { return false; }
+}
+
+export async function unsaveSignal(listingId) {
+  const saves = getSavedListings();
+  saves.delete(listingId);
+  persistSaves(saves);
 }
 
 export async function initSession() {
