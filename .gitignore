@@ -40,3 +40,11 @@ public/*.pdf
 
 # Local Netlify folder
 .netlify
+
+# Runtime / scratch artifacts (audited 2026-05-22)
+tmp/
+test-results/
+scratch/
+supabase/.temp/
+.sabai-scraper-state.json
+.sabai-scraper-state.backup.json
