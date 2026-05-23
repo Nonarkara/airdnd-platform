@@ -8,9 +8,9 @@ import {
   isVerifiedLocation,
   mergeCanonicalGroup,
   normalizePublicListing,
-  resolveGoogleMapsData,
   validatePublicListing,
 } from '../src/lib/listing_contract.js';
+import { resolveGoogleMapsDataCached as resolveGoogleMapsData } from './geocoder_cache.js';
 
 dotenv.config();
 

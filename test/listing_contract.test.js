@@ -5,6 +5,7 @@ import {
   canonicalizePublicListings,
   extractCoordinatesFromText,
   extractMapsAddress,
+  isGoogleMapsUrl,
   isBadPublicName,
   isVerifiedLocation,
   mergeCanonicalGroup,
@@ -194,4 +195,50 @@ test('maps resolver follows shortlink redirects before reading final HTML', asyn
   assert.equal(result.address, 'Lat Phrao 71, Bangkok');
   assert.equal(result.latitude, 13.7527296);
   assert.equal(result.longitude, 100.5453312);
+});
+
+test('maps resolver blocks non-Google URLs before fetching', async () => {
+  let called = false;
+  const result = await resolveGoogleMapsData('http://127.0.0.1/admin', {
+    fetchImpl: async () => {
+      called = true;
+      return { status: 200, headers: { get: () => null }, text: async () => '' };
+    },
+  });
+
+  assert.equal(result, null);
+  assert.equal(called, false);
+});
+
+test('maps resolver blocks redirects away from Google Maps', async () => {
+  const calls = [];
+  const result = await resolveGoogleMapsData('https://maps.app.goo.gl/example', {
+    fetchImpl: async (url) => {
+      calls.push(url);
+      return {
+        status: 302,
+        headers: {
+          get(name) {
+            return name.toLowerCase() === 'location'
+              ? 'http://169.254.169.254/latest/meta-data'
+              : null;
+          },
+        },
+        text: async () => '',
+      };
+    },
+  });
+
+  assert.equal(calls.length, 1);
+  assert.equal(result.latitude, null);
+  assert.equal(result.longitude, null);
+});
+
+test('maps URL allowlist accepts known Google Maps share shapes', () => {
+  assert.equal(isGoogleMapsUrl('https://maps.app.goo.gl/example'), true);
+  assert.equal(isGoogleMapsUrl('https://g.co/kgs/example'), true);
+  assert.equal(isGoogleMapsUrl('https://www.google.co.th/maps/place/example'), true);
+  assert.equal(isGoogleMapsUrl('https://example.com/maps/place/example'), false);
+  assert.equal(isGoogleMapsUrl('https://maps.google.evil.com/maps/place/example'), false);
+  assert.equal(isGoogleMapsUrl('file:///etc/passwd'), false);
 });

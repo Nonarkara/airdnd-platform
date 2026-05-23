@@ -373,7 +373,6 @@ export default function Analytics() {
     load();
     const intervalId = window.setInterval(load, ANALYTICS_REFRESH_INTERVAL_MS);
     return () => window.clearInterval(intervalId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const data = useMemo(() => {

@@ -492,7 +492,16 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all' }
               const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude);
               return (
                 <div key={listing.id} className="pending-row">
-                  <span className="pending-name">{listing.name || '—'}</span>
+                  <span className="pending-name">
+                    <button
+                      type="button"
+                      className="pending-view-btn"
+                      onClick={() => onCardClick?.(listing)}
+                      title={`View details for ${listing.name || 'this listing'}`}
+                    >
+                      {listing.name || '—'}
+                    </button>
+                  </span>
                   <span className="pending-location">{listing.location || '—'}</span>
                   <span className="pending-contacts">
                     {telHref && <a href={telHref}>{formatTelDisplay(listing.phone) || listing.phone}</a>}

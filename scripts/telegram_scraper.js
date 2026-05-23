@@ -54,7 +54,7 @@ const configuredTargetTokens = (
 const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '2000', 10);
 const pollIntervalMs = Number.parseInt(process.env.TELEGRAM_POLL_INTERVAL_MS || '30000', 10);
 const snapshotLimit = Number.parseInt(process.env.SNAPSHOT_LISTING_LIMIT || '2000', 10);
-const parseTimeoutMs = Number.parseInt(process.env.GEMINI_PARSE_TIMEOUT_MS || '8000', 10);
+const parseTimeoutMs = Number.parseInt(process.env.GEMINI_PARSE_TIMEOUT_MS || '15000', 10);
 const aiEnrichmentPerCycle = Number.parseInt(process.env.AI_ENRICHMENT_PER_CYCLE || '5', 10);
 const watchMode = process.argv.includes('--watch');
 
@@ -772,22 +772,40 @@ async function enrichListingsWithAi(listings, clusters, sourceLabel) {
     return listings;
   }
 
-  try {
-    const response = await Promise.race([
-      ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: buildEnrichmentPrompt(rawText),
-        config: {
-          responseMimeType: 'application/json',
-        },
-      }),
-      new Promise((_, reject) => {
-        setTimeout(() => {
-          reject(new Error(`Gemini parsing timed out after ${parseTimeoutMs}ms.`));
-        }, parseTimeoutMs);
-      }),
-    ]);
+  let response = null;
+  const MAX_RETRIES = 2;
+  let attempts = 0;
 
+  while (attempts <= MAX_RETRIES) {
+    try {
+      attempts += 1;
+      response = await Promise.race([
+        ai.models.generateContent({
+          model: 'gemini-2.5-flash',
+          contents: buildEnrichmentPrompt(rawText),
+          config: {
+            responseMimeType: 'application/json',
+          },
+        }),
+        new Promise((_, reject) => {
+          setTimeout(() => {
+            reject(new Error(`Gemini parsing timed out after ${parseTimeoutMs}ms.`));
+          }, parseTimeoutMs);
+        }),
+      ]);
+      break;
+    } catch (error) {
+      if (attempts <= MAX_RETRIES) {
+        console.warn(`${sourceLabel}: Gemini enrichment failed (attempt ${attempts}/${MAX_RETRIES + 1}). Error: ${error.message}. Retrying in 2000ms...`);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      } else {
+        console.warn(`${sourceLabel}: Gemini enrichment skipped. All ${MAX_RETRIES + 1} attempts failed. Last error: ${error.message}`);
+        return listings;
+      }
+    }
+  }
+
+  try {
     const enrichedListings = parseModelJson(response.text);
     console.log(`${sourceLabel}: Gemini enriched ${enrichedListings.length} listing candidate(s).`);
 
@@ -806,7 +824,7 @@ async function enrichListingsWithAi(listings, clusters, sourceLabel) {
       return mergeEnrichment(listing, enrichmentByCluster.get(clusterId));
     });
   } catch (error) {
-    console.warn(`${sourceLabel}: Gemini enrichment skipped. ${error.message}`);
+    console.warn(`${sourceLabel}: Gemini parsing of response failed. ${error.message}`);
     return listings;
   }
 }

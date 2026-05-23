@@ -48,3 +48,6 @@ scratch/
 supabase/.temp/
 .sabai-scraper-state.json
 .sabai-scraper-state.backup.json
+.maps_cache.json
+offline-packages/
+~/

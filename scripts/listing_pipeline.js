@@ -6,9 +6,9 @@ import {
   canonicalizePublicListings,
   isVerifiedLocation,
   normalizePublicListing,
-  resolveGoogleMapsData,
   validatePublicListing,
 } from '../src/lib/listing_contract.js';
+import { resolveGoogleMapsDataCached as resolveGoogleMapsData } from './geocoder_cache.js';
 import { CITY_PATTERNS, cleanDisplayText, normalizeText, normalizePhone, inferCityFromLocation } from '../src/lib/normalization.js';
 
 const __filename = fileURLToPath(import.meta.url);

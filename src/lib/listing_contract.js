@@ -144,6 +144,48 @@ function normalizeUrl(value) {
   return normalizeText(value, '').replace(/[)\]}>,.]+$/g, '');
 }
 
+function getNormalizedHostname(value) {
+  return String(value || '').toLowerCase().replace(/\.+$/g, '').replace(/^www\./, '');
+}
+
+function isGoogleDomain(hostname) {
+  const host = getNormalizedHostname(hostname);
+  return host === 'google.com'
+    || host.endsWith('.google.com')
+    || /^(.+\.)?google\.[a-z]{2,}(?:\.[a-z]{2})?$/.test(host);
+}
+
+export function isGoogleMapsUrl(value) {
+  const raw = normalizeUrl(value);
+  if (!raw) {
+    return false;
+  }
+
+  try {
+    const url = new URL(raw);
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      return false;
+    }
+
+    const host = getNormalizedHostname(url.hostname);
+    const path = normalizePath(url.pathname);
+
+    if (host === 'maps.app.goo.gl' || (host === 'goo.gl' && path.startsWith('/maps'))) {
+      return true;
+    }
+
+    if ((host === 'g.co' && path.startsWith('/kgs')) || host === 'share.google') {
+      return true;
+    }
+
+    const isMapsGoogleHost = (host === 'maps.google.com' || host.startsWith('maps.google.')) && isGoogleDomain(host);
+    return isMapsGoogleHost
+      || (isGoogleDomain(host) && path.includes('/maps'));
+  } catch {
+    return false;
+  }
+}
+
 function normalizePath(pathname) {
   return pathname.replace(/\/+$/g, '').toLowerCase();
 }
@@ -763,7 +805,17 @@ async function followMapsRedirects(fetchImpl, initialUrl, options) {
       return { response, finalUrl: currentUrl, urls };
     }
 
-    currentUrl = new URL(location, currentUrl).toString();
+    const nextUrl = new URL(location, currentUrl).toString();
+    if (!isGoogleMapsUrl(nextUrl)) {
+      return {
+        response,
+        finalUrl: currentUrl,
+        urls,
+        error: new Error(`Blocked non-Google Maps redirect: ${nextUrl}`),
+      };
+    }
+
+    currentUrl = nextUrl;
     urls.push(currentUrl);
   }
 
@@ -772,7 +824,7 @@ async function followMapsRedirects(fetchImpl, initialUrl, options) {
 
 export async function resolveGoogleMapsData(mapsUrl, options = {}) {
   const fetchImpl = options.fetchImpl || globalThis.fetch;
-  if (!mapsUrl || typeof fetchImpl !== 'function') {
+  if (!mapsUrl || typeof fetchImpl !== 'function' || !isGoogleMapsUrl(mapsUrl)) {
     return null;
   }
 
@@ -783,9 +835,11 @@ export async function resolveGoogleMapsData(mapsUrl, options = {}) {
     : null;
 
   try {
+    const { fetchImpl: _fetchImpl, timeoutMs: _timeoutMs, headers = {}, ...fetchOptions } = options;
     const requestOptions = {
+      ...fetchOptions,
       signal: controller?.signal,
-      headers: { 'User-Agent': 'Mozilla/5.0' },
+      headers: { 'User-Agent': 'Mozilla/5.0', ...headers },
     };
     const redirectResult = await followMapsRedirects(fetchImpl, mapsUrl, requestOptions);
     const finalUrl = redirectResult.finalUrl || redirectResult.response?.url || mapsUrl;

@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { resolveGoogleMapsData } from '../src/lib/listing_contract.js';
+import { resolveGoogleMapsDataCached as resolveGoogleMapsData } from './geocoder_cache.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

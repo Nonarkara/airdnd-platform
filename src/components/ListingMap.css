@@ -397,6 +397,29 @@
   text-overflow: ellipsis;
 }
 
+.pending-view-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--transition-fast);
+}
+
+.pending-view-btn:hover,
+.pending-view-btn:focus-visible {
+  color: var(--color-action);
+  text-decoration: underline;
+  outline: none;
+}
+
 .pending-location {
   color: var(--color-cream-soft);
   font-size: 0.75rem;
