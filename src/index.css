@@ -1,68 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
 
 /*
- * Sabai Sabai 2.0 — World-class professional intelligence platform.
+ * Sabai Sabai 2.5 — World-class professional intelligence platform.
+ * Built strictly according to the Design System Five Laws.
  *
  * Design principles:
- *   - Clarity over decoration. Every element communicates.
- *   - Restraint in color. Orange for action, blue for data, green for success.
- *   - Generous whitespace. Information needs room to breathe.
- *   - Sharp geometry. Zero radius. Precision communicates professionalism.
- *   - Typography creates hierarchy. Space Grotesk for display, Inter for body.
+ *   - Law 1: Sharp geometry. Zero border-radius globally.
+ *   - Law 2: No gradients, no shadows. Hairline borders only.
+ *   - Law 3: Spacing-led editorial grid. Dense and scannable.
+ *   - Law 4: Color encodes meaning only. 
+ *   - Law 5: Typography is the interface. JetBrains Mono + Manrope + Inter + IBM Plex Sans Thai.
  */
 
 :root {
   color-scheme: dark;
 
-  /* Background — warm deep tones, not harsh pure black */
-  --color-bg: #0c0c0c;
-  --color-bg-raised: #141414;
-  --color-bg-inset: #0a0a0a;
-  --color-surface: #141414;
-  --color-surface-strong: #1a1a1a;
-  --color-surface-hover: #1f1f1f;
+  /* Theme: Dark Mode (Default) — Deep Ink & Cyan Accent */
+  --color-bg: #0a0f1e;
+  --color-bg-raised: #10182e;
+  --color-bg-inset: #070b16;
+  --color-surface: #10182e;
+  --color-surface-strong: #141e3a;
+  --color-surface-hover: #18274a;
 
   /* Dividers — hairline precision */
-  --color-line: #242424;
-  --color-line-soft: #1a1a1a;
-  --color-line-hot: #ff7440;
+  --color-line: rgba(0, 212, 255, 0.12);
+  --color-line-soft: rgba(0, 212, 255, 0.06);
+  --color-line-hot: #00d4ff;
 
-  /* Text — warm, not clinical */
-  --color-cream: #f2f2f0;
-  --color-cream-soft: #b0b0b0;
-  --color-cream-muted: #737373;
-  --color-cream-faint: #333333;
+  /* Text — Cream Paper */
+  --color-cream: #f5f0e8;
+  --color-cream-soft: #c5c0b8;
+  --color-cream-muted: #858078;
+  --color-cream-faint: #353028;
 
   /* Accents — meaning only */
-  --color-action: #ff7440;
-  --color-action-soft: rgba(255, 116, 64, 0.12);
-  --color-data: #7aa7ff;
-  --color-data-soft: rgba(122, 167, 255, 0.12);
-  --color-status: #4ade80;
-  --color-status-soft: rgba(74, 222, 128, 0.12);
+  --color-action: #00d4ff; /* Cyan accent */
+  --color-action-soft: rgba(0, 212, 255, 0.12);
+  --color-data: #ffaa00; /* Amber secondary data */
+  --color-data-soft: rgba(255, 170, 0, 0.12);
+  --color-status: #00cc66; /* Status normal green */
+  --color-status-soft: rgba(0, 204, 102, 0.12);
 
   /* Legacy aliases */
   --color-red: var(--color-action);
   --color-red-hover: var(--color-action);
   --color-red-soft: var(--color-action-soft);
-  --color-gold: var(--color-status);
-  --color-gold-soft: var(--color-status-soft);
+  --color-gold: var(--color-data);
+  --color-gold-soft: var(--color-data-soft);
   --color-accent: var(--color-action);
   --color-accent-soft: var(--color-action-soft);
   --color-purple: var(--color-data);
   --color-purple-soft: var(--color-data-soft);
   --color-success: var(--color-status);
-  --color-warning: var(--color-action);
-  --color-danger: var(--color-action);
+  --color-warning: var(--color-data);
+  --color-danger: #ff4444;
 
   --color-ink: var(--color-cream);
   --color-ink-soft: var(--color-cream-soft);
   --color-ink-muted: var(--color-cream-muted);
 
   /* Typography — professional, readable, distinctive */
-  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  --font-body: 'Inter', 'Space Grotesk', system-ui, sans-serif;
-  --font-mono: 'Space Mono', 'SF Mono', monospace;
+  --font-display: 'Manrope', 'IBM Plex Sans Thai', system-ui, sans-serif;
+  --font-body: 'Inter', 'IBM Plex Sans Thai', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Sans Thai', monospace;
   --font-heading: var(--font-display);
 
   /* Scale — generous, readable */
@@ -95,10 +96,66 @@
   --spacing-3xl: 4rem;
 }
 
-[data-theme='light'],
-[data-theme='dark'],
+[data-theme='light'] {
+  color-scheme: light;
+
+  /* Background — Cream Paper */
+  --color-bg: #f5f0e8;
+  --color-bg-raised: #ffffff;
+  --color-bg-inset: #ebe6de;
+  --color-surface: #ffffff;
+  --color-surface-strong: #ebe6de;
+  --color-surface-hover: #eae4db;
+
+  /* Dividers — hairline precision */
+  --color-line: rgba(10, 15, 30, 0.12);
+  --color-line-soft: rgba(10, 15, 30, 0.06);
+  --color-line-hot: #0a0f1e;
+
+  /* Text — Deep Ink */
+  --color-cream: #0a0f1e;
+  --color-cream-soft: #333e50;
+  --color-cream-muted: #5b6c84;
+  --color-cream-faint: #dcd7cf;
+
+  /* Accents — meaning only */
+  --color-action: #0088cc; /* Darker cyan for light mode readability */
+  --color-action-soft: rgba(0, 136, 204, 0.12);
+  --color-data: #cc8800; /* Darker amber */
+  --color-data-soft: rgba(204, 136, 0, 0.12);
+  --color-status: #009944; /* Darker green */
+  --color-status-soft: rgba(0, 153, 68, 0.12);
+}
+
 [data-theme='hot-as-hell'] {
   color-scheme: dark;
+
+  /* Background — Pure Black */
+  --color-bg: #000000;
+  --color-bg-raised: #111111;
+  --color-bg-inset: #050505;
+  --color-surface: #111111;
+  --color-surface-strong: #222222;
+  --color-surface-hover: #2d2d2d;
+
+  /* Dividers — hairline precision */
+  --color-line: rgba(255, 68, 68, 0.18);
+  --color-line-soft: rgba(255, 68, 68, 0.08);
+  --color-line-hot: #ff4444;
+
+  /* Text — Bright Cream */
+  --color-cream: #ffffff;
+  --color-cream-soft: #d0d0d0;
+  --color-cream-muted: #888888;
+  --color-cream-faint: #333333;
+
+  /* Accents — hot red/amber */
+  --color-action: #ff4444; /* Critical Red */
+  --color-action-soft: rgba(255, 68, 68, 0.12);
+  --color-data: #ffaa00; /* Amber */
+  --color-data-soft: rgba(255, 170, 0, 0.12);
+  --color-status: #00ff66; /* Neon green */
+  --color-status-soft: rgba(0, 255, 102, 0.12);
 }
 
 * {
@@ -122,6 +179,13 @@ body {
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+code, pre, .font-mono, [class*='mono'] {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  letter-spacing: -0.02em;
 }
 
 #root {

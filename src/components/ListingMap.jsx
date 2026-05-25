@@ -192,13 +192,15 @@ function createPinIcon(listing) {
   });
 }
 
-export default function ListingMap({ listings, onCardClick, t, viewKey = 'all' }) {
+export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', theme }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef(null);
   const listingsRef = useRef(listings);
   const hasFittedInitialRef = useRef(false);
   const lastAutoFitKeyRef = useRef(null);
+  const darkLayerRef = useRef(null);
+  const lightLayerRef = useRef(null);
   const [aqiActive, setAqiActive] = useState(false);
   const [rainActive, setRainActive] = useState(false);
   const [locating, setLocating] = useState(false);
@@ -297,8 +299,12 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all' }
       wheelPxPerZoomLevel: 140,
     });
 
-    // Base layers — dark vector for readability, satellite for context.
+    // Base layers — dark vector, light vector, and satellite.
     const dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+      maxZoom: 19,
+    });
+    const light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
       maxZoom: 19,
     });
@@ -309,7 +315,16 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all' }
         maxZoom: 19,
       },
     );
-    dark.addTo(map);
+
+    darkLayerRef.current = dark;
+    lightLayerRef.current = light;
+
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    if (currentTheme === 'light') {
+      light.addTo(map);
+    } else {
+      dark.addTo(map);
+    }
 
     // AQI overlay (AQICN tiles — public demo token; rate-limited but functional).
     const aqi = L.tileLayer(
@@ -335,7 +350,7 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all' }
 
     L.control
       .layers(
-        { Map: dark, Satellite: satellite },
+        { 'Dark Map': dark, 'Light Map': light, Satellite: satellite },
         { 'Air Quality (PM2.5)': aqi, 'Precipitation (IMERG)': rain },
         { position: 'topright', collapsed: true },
       )
@@ -428,6 +443,22 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all' }
       lastAutoFitKeyRef.current = viewKey;
     }
   }, [fitMapToPins, viewKey]);
+
+  useEffect(() => {
+    if (!mapInstanceRef.current || !darkLayerRef.current || !lightLayerRef.current) return;
+    const map = mapInstanceRef.current;
+    if (theme === 'light') {
+      if (map.hasLayer(darkLayerRef.current)) {
+        map.removeLayer(darkLayerRef.current);
+      }
+      lightLayerRef.current.addTo(map);
+    } else {
+      if (map.hasLayer(lightLayerRef.current)) {
+        map.removeLayer(lightLayerRef.current);
+      }
+      darkLayerRef.current.addTo(map);
+    }
+  }, [theme]);
 
   return (
     <section className="listing-map-section" id="map">

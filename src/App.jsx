@@ -687,6 +687,7 @@ function App() {
                   onCardClick={setSelectedCompanion}
                   t={t}
                   viewKey={`${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
+                  theme={theme}
                 />
               </Suspense>
 
