@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
 
 /*
  * Sabai Sabai 2.5 — World-class professional intelligence platform.
@@ -23,10 +23,10 @@
   --color-surface-strong: #141e3a;
   --color-surface-hover: #18274a;
 
-  /* Dividers — hairline precision */
-  --color-line: rgba(0, 212, 255, 0.12);
-  --color-line-soft: rgba(0, 212, 255, 0.06);
-  --color-line-hot: #00d4ff;
+  /* Dividers — warm cream hairlines, not neon grid */
+  --color-line: rgba(245, 240, 232, 0.08);
+  --color-line-soft: rgba(245, 240, 232, 0.04);
+  --color-line-hot: #f59e0b; /* amber */
 
   /* Text — Cream Paper */
   --color-cream: #f5f0e8;
@@ -34,11 +34,11 @@
   --color-cream-muted: #858078;
   --color-cream-faint: #353028;
 
-  /* Accents — meaning only */
-  --color-action: #00d4ff; /* Cyan accent */
-  --color-action-soft: rgba(0, 212, 255, 0.12);
-  --color-data: #ffaa00; /* Amber secondary data */
-  --color-data-soft: rgba(255, 170, 0, 0.12);
+  /* Accents — meaning only. One amber. Always. Only. */
+  --color-action: #f59e0b; /* Amber — the Braun ET66 equals key */
+  --color-action-soft: rgba(245, 158, 11, 0.12);
+  --color-data: #58a6ff; /* Blue — secondary info/data */
+  --color-data-soft: rgba(88, 166, 255, 0.10);
   --color-status: #00cc66; /* Status normal green */
   --color-status-soft: rgba(0, 204, 102, 0.12);
 
@@ -46,23 +46,23 @@
   --color-red: var(--color-action);
   --color-red-hover: var(--color-action);
   --color-red-soft: var(--color-action-soft);
-  --color-gold: var(--color-data);
-  --color-gold-soft: var(--color-data-soft);
+  --color-gold: var(--color-action);       /* gold = amber */
+  --color-gold-soft: var(--color-action-soft);
   --color-accent: var(--color-action);
   --color-accent-soft: var(--color-action-soft);
   --color-purple: var(--color-data);
   --color-purple-soft: var(--color-data-soft);
   --color-success: var(--color-status);
-  --color-warning: var(--color-data);
+  --color-warning: var(--color-action);    /* warning = amber */
   --color-danger: #ff4444;
 
   --color-ink: var(--color-cream);
   --color-ink-soft: var(--color-cream-soft);
   --color-ink-muted: var(--color-cream-muted);
 
-  /* Typography — professional, readable, distinctive */
-  --font-display: 'Manrope', 'IBM Plex Sans Thai', system-ui, sans-serif;
-  --font-body: 'Inter', 'IBM Plex Sans Thai', system-ui, sans-serif;
+  /* Typography — Josefin Sans display, Source Sans 3 body, JetBrains Mono data */
+  --font-display: 'Josefin Sans', 'IBM Plex Sans Thai', system-ui, sans-serif;
+  --font-body: 'Source Sans 3', 'IBM Plex Sans Thai', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'IBM Plex Sans Thai', monospace;
   --font-heading: var(--font-display);
 
@@ -118,11 +118,11 @@
   --color-cream-muted: #5b6c84;
   --color-cream-faint: #dcd7cf;
 
-  /* Accents — meaning only */
-  --color-action: #0088cc; /* Darker cyan for light mode readability */
-  --color-action-soft: rgba(0, 136, 204, 0.12);
-  --color-data: #cc8800; /* Darker amber */
-  --color-data-soft: rgba(204, 136, 0, 0.12);
+  /* Accents — amber primary in light mode too */
+  --color-action: #b45309; /* Dark amber — readable on cream */
+  --color-action-soft: rgba(180, 83, 9, 0.10);
+  --color-data: #1d4ed8; /* Dark blue — secondary */
+  --color-data-soft: rgba(29, 78, 216, 0.10);
   --color-status: #009944; /* Darker green */
   --color-status-soft: rgba(0, 153, 68, 0.12);
 }

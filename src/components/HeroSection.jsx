@@ -17,8 +17,8 @@ const HeroSection = ({ t, metrics, dataState, intakeSummary }) => {
   return (
     <section className="hero">
       <div className="hero-copy">
-        <p className="hero-system">{heroText.system || 'Live community intelligence'}</p>
-        <h1 className="hero-title">{heroText.title || 'Live wellness intelligence, cleaned for humans.'}</h1>
+        <p className="hero-system">{heroText.system || 'Telegram → AI → directory · research prototype'}</p>
+        <h1 className="hero-title">{heroText.title || 'What operators post. Where they are.'}</h1>
         <p className="hero-sub">{summary}</p>
       </div>
 
