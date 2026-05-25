@@ -13,23 +13,69 @@ import './ListingMap.css';
 const BANGKOK_CENTER = [13.7563, 100.5018];
 const DEFAULT_ZOOM = 11;
 const AREA_COORDINATES = [
+  // Nonthaburi / North Bangkok
   { patterns: ['เมืองทอง', 'muang thong'], coords: [13.912, 100.548] },
   { patterns: ['ปากเกร็ด', 'pak kret'], coords: [13.914, 100.504] },
   { patterns: ['บางใหญ่', 'bang yai', 'วัดลาดปลาดุก'], coords: [13.876, 100.411] },
   { patterns: ['บางกรวย', 'bang kruai'], coords: [13.805, 100.472] },
   { patterns: ['นนทบุรี', 'นนทบุร', 'nonthaburi'], coords: [13.86, 100.514] },
+  { patterns: ['บางพลัด', 'bang phlat', 'บางอ้อ', 'bang o'], coords: [13.795, 100.501] },
+
+  // Pathum Thani / Far North
   { patterns: ['รังสิต', 'rangsit'], coords: [13.99, 100.617] },
   { patterns: ['ลำลูกกา', 'lam luk ka'], coords: [13.932, 100.724] },
-  { patterns: ['คลอง 4', 'คลอง4'], coords: [13.969, 100.661] },
-  { patterns: ['สุขุมวิท', 'sukhumvit', 'ทองหล่อ', 'thonglor', 'อโศก', 'asok', 'เอกมัย', 'ekkamai'], coords: [13.735, 100.566] },
+  { patterns: ['คลอง 4', 'คลอง4', 'คลอง6', 'คลอง 6'], coords: [13.969, 100.661] },
+  { patterns: ['ดอนเมือง', 'don mueang', 'สนามบินดอนเมือง'], coords: [13.926, 100.607] },
+  { patterns: ['หลักสี่', 'lak si', 'สะพานใหม่', 'saphan mai'], coords: [13.882, 100.576] },
+  { patterns: ['บางเขน', 'bang khen', 'วัดพระศรีมหาธาตุ'], coords: [13.869, 100.571] },
+  { patterns: ['พหลโยธิน', 'phahon yothin', 'phahonyothin'], coords: [13.826, 100.567] },
+
+  // East / Lat Phrao / Nawamin
   { patterns: ['ลาดพร้าว', 'lat phrao', 'โชคชัย4', 'โชคชัย 4', 'สตรีวิทยา2', 'สตรีวิทยา 2'], coords: [13.81, 100.594] },
   { patterns: ['รามอินทรา', 'ramintra', 'ram intra'], coords: [13.852, 100.626] },
   { patterns: ['นวมินทร์', 'นวมินทร', 'nawamin'], coords: [13.816, 100.647] },
+  { patterns: ['บึงกุ่ม', 'bueng kum'], coords: [13.790, 100.649] },
   { patterns: ['มีนบุรี', 'min buri', 'สามวา', 'sam wa'], coords: [13.814, 100.735] },
+  { patterns: ['หนองจอก', 'nong chok'], coords: [13.835, 100.838] },
+  { patterns: ['ลาดกระบัง', 'lat krabang'], coords: [13.728, 100.771] },
+  { patterns: ['สุวรรณภูมิ', 'suvarnabhumi', 'บางพลี', 'bang phli'], coords: [13.691, 100.750] },
+
+  // Central / Sukhumvit corridor
+  { patterns: ['สุขุมวิท', 'sukhumvit', 'ทองหล่อ', 'thonglor', 'อโศก', 'asok', 'เอกมัย', 'ekkamai'], coords: [13.735, 100.566] },
   { patterns: ['รัชดา', 'ratchada', 'ห้วยขวาง', 'huai khwang'], coords: [13.773, 100.574] },
+  { patterns: ['จตุจักร', 'chatuchak', 'ม.กษัตริย์ศึก', 'สวนจตุจักร'], coords: [13.799, 100.553] },
+  { patterns: ['สะพานควาย', 'saphan khwai', 'อารีย์', 'ari', 'สามเสน', 'sam sen'], coords: [13.783, 100.547] },
+  { patterns: ['ปทุมวัน', 'pathum wan', 'สยาม', 'siam', 'ราชประสงค์', 'ratchaprasong', 'ประตูน้ำ', 'pratunam'], coords: [13.744, 100.535] },
+  { patterns: ['ดุสิต', 'dusit', 'นางเลิ้ง', 'nang loeng'], coords: [13.773, 100.519] },
+  { patterns: ['พระราม9', 'พระราม 9', 'rama 9', 'rama9', 'รามา9', 'รามา 9'], coords: [13.756, 100.563] },
+
+  // Far East / On Nut / Prawet
+  { patterns: ['อ่อนนุช', 'on nut', 'on-nut'], coords: [13.704, 100.601] },
+  { patterns: ['อุดมสุข', 'udom suk', 'udomsuk'], coords: [13.686, 100.616] },
+  { patterns: ['ประเวศ', 'prawet'], coords: [13.698, 100.637] },
+  { patterns: ['พัฒนาการ', 'phatthakan', 'pattanakan'], coords: [13.724, 100.617] },
+
+  // South Bangkok
   { patterns: ['บางนา', 'bang na', 'แบริ่ง', 'bearing', 'สำโรง', 'samrong'], coords: [13.666, 100.612] },
   { patterns: ['สาทร', 'sathorn', 'สีลม', 'silom'], coords: [13.724, 100.529] },
+  { patterns: ['บางรัก', 'bang rak', 'สี่พระยา', 'si phraya'], coords: [13.726, 100.521] },
+  { patterns: ['ยานนาวา', 'yan nawa', 'yannawa'], coords: [13.705, 100.537] },
+  { patterns: ['ดาวคะนอง', 'dao khanong', 'ราษฎร์บูรณะ', 'rat burana', 'ratburana'], coords: [13.673, 100.516] },
+  { patterns: ['สมุทรปราการ', 'samut prakan', 'ปากน้ำ', 'pak nam', 'พระประแดง', 'phra pradaeng'], coords: [13.599, 100.600] },
+  { patterns: ['บางขุนเทียน', 'bang khun thian'], coords: [13.655, 100.468] },
+
+  // West Bangkok / Thonburi
+  { patterns: ['ธนบุรี', 'thonburi', 'วงเวียนใหญ่', 'wong wian yai'], coords: [13.722, 100.491] },
+  { patterns: ['ปิ่นเกล้า', 'pin klao', 'บางกอกน้อย', 'bang kok noi'], coords: [13.771, 100.485] },
+  { patterns: ['ท่าพระ', 'tha phra', 'บางแค', 'bang khae'], coords: [13.712, 100.430] },
+  { patterns: ['ตลิ่งชัน', 'taling chan'], coords: [13.784, 100.449] },
+  { patterns: ['บางกอกใหญ่', 'bang kok yai', 'บางกอกใหญ', 'วัดอรุณ', 'wat arun'], coords: [13.743, 100.494] },
+
+  // Outlying / Other
   { patterns: ['ศาลายา', 'salaya'], coords: [13.793, 100.322] },
+  { patterns: ['สมุทรสาคร', 'samut sakhon', 'มหาชัย', 'mahachai'], coords: [13.547, 100.274] },
+  { patterns: ['นครปฐม', 'nakhon pathom', 'nakhonpathom'], coords: [13.819, 100.064] },
+  { patterns: ['ปทุมธานี', 'pathum thani', 'pathumthani', 'คลองหลวง', 'khlong luang'], coords: [14.020, 100.525] },
 ];
 const CITY_COORDINATES = {
   Bangkok: BANGKOK_CENTER,

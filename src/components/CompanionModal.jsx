@@ -13,7 +13,6 @@ import {
   formatMapsUrl,
 } from '../lib/normalization';
 import { trackSignal, isListingSaved } from '../lib/tracker';
-import InsightsOverlay from './InsightsOverlay';
 import './CompanionModal.css';
 
 function CompanionModal({ companion, onClose, t }) {
@@ -23,9 +22,10 @@ function CompanionModal({ companion, onClose, t }) {
     url: null,
   });
   const [savedOverrides, setSavedOverrides] = useState({});
-  const [showInquiry, setShowInquiry] = useState(false);
   const [copied, setCopied] = useState(false);
   const [mainImageFailed, setMainImageFailed] = useState(false);
+  const [reported, setReported] = useState(false);
+  const [phoneCopied, setPhoneCopied] = useState(false);
 
   const galleryUrls = getSafeListingGalleryUrls(companion);
   const activeIndex = (() => {
@@ -115,6 +115,30 @@ function CompanionModal({ companion, onClose, t }) {
     }
   };
 
+  const handleReportPhoto = async () => {
+    setReported(true);
+    await trackSignal(companion.id, 'report_explicit', { reason: 'explicit_content' });
+  };
+
+  const handleCopyPhone = async () => {
+    const raw = companion.phone || '';
+    if (!raw) return;
+    try {
+      await navigator.clipboard.writeText(raw);
+      setPhoneCopied(true);
+      setTimeout(() => setPhoneCopied(false), 2000);
+    } catch {
+      const input = document.createElement('input');
+      input.value = raw;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      setPhoneCopied(true);
+      setTimeout(() => setPhoneCopied(false), 2000);
+    }
+  };
+
   const telHref = formatTelLink(companion.phone);
   const telDisplay = formatTelDisplay(companion.phone) || companion.phone;
   const lineHref = formatLineUrl(companion.lineUrl);
@@ -147,7 +171,7 @@ function CompanionModal({ companion, onClose, t }) {
 
         <div className="modal-body">
           <div className="modal-image-section">
-            {hasDisplayImage && !mainImageFailed ? (
+            {hasDisplayImage && !mainImageFailed && !reported ? (
               <div className="modal-gallery">
                 <img
                   src={displayImageUrl}
@@ -191,6 +215,10 @@ function CompanionModal({ companion, onClose, t }) {
                     ))}
                   </div>
                 )}
+
+                <button type="button" className="modal-report-btn" onClick={handleReportPhoto}>
+                  Report explicit content
+                </button>
 
                 <div className="modal-image-stamp">
                   <span className="modal-image-stamp-label">{t.modal.capturedAt}</span>
@@ -327,13 +355,19 @@ function CompanionModal({ companion, onClose, t }) {
                 </svg>
                 {saved ? (t?.signal?.saved || 'Saved') : (t?.signal?.save || 'Save')}
               </button>
-              <button
-                type="button"
-                className="modal-signal-btn signal-inquire"
-                onClick={() => setShowInquiry(true)}
-              >
-                {t?.signal?.inquire || "I'm interested"}
-              </button>
+              {companion.phone && (
+                <button
+                  type="button"
+                  className="modal-signal-btn"
+                  onClick={handleCopyPhone}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="9" y="9" width="13" height="13" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>
+                  {phoneCopied ? 'Copied' : 'Copy number'}
+                </button>
+              )}
               <button
                 type="button"
                 className="modal-signal-btn"
@@ -378,13 +412,6 @@ function CompanionModal({ companion, onClose, t }) {
           </div>
         </div>
 
-        {showInquiry && (
-          <InsightsOverlay
-            listing={companion}
-            onClose={() => setShowInquiry(false)}
-            t={t}
-          />
-        )}
       </div>
     </div>
   );
