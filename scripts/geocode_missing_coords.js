@@ -23,7 +23,6 @@ async function run() {
   const { data: rows, error } = await supabase
     .from('companions')
     .select('id, name, location, maps_url, latitude, longitude')
-    .not('maps_url', 'is', null)
     .or('latitude.is.null,longitude.is.null')
     .limit(10000);
 
@@ -39,24 +38,53 @@ async function run() {
   const updates = [];
   const failures = [];
 
+const LOCATION_FALLBACKS = {
+  'กรุงเทพและปริมณฑล': { lat: 13.7563, lng: 100.5018 },
+  'bangkok, thailand': { lat: 13.7563, lng: 100.5018 },
+  'bangkok': { lat: 13.7563, lng: 100.5018 },
+  'นนทบุรีปากเกร็ด': { lat: 13.9133, lng: 100.4988 },
+  'ท่าน้ำนนท์, nonthaburi': { lat: 13.8443, lng: 100.4930 },
+  'sukhumvit 22, bangkok': { lat: 13.7317, lng: 100.5651 },
+  'สุขุมวิท 22, กรุงเทพฯ': { lat: 13.7317, lng: 100.5651 },
+  'พริตตี้สปาa5 massage สุขุมวิท22': { lat: 13.7317, lng: 100.5651 },
+  'ร้าน📌:ประดิษฐ์มนูธรรมซอย 9': { lat: 13.7915, lng: 100.6120 },
+  'เคหะร่มเกล้า 74': { lat: 13.7668, lng: 100.7258 },
+  'ร้านนวดแก้ว มาซซาส 📍สาขาลาดปลาดุก': { lat: 13.8967, lng: 100.4072 },
+  'ลาดพร้าว 71': { lat: 13.8055, lng: 100.6067 },
+  'รามอินทรา14': { lat: 13.8426, lng: 100.6180 }
+};
+
   for (let i = 0; i < rows.length; i += 1) {
     const row = rows[i];
     process.stdout.write(`[${i + 1}/${rows.length}] ${row.name?.slice(0, 40) || row.id} ... `);
 
-    if (!cache.has(row.maps_url)) {
-      try {
-        cache.set(row.maps_url, await resolveGoogleMapsData(row.maps_url));
-      } catch (err) {
-        cache.set(row.maps_url, null);
-        failures.push({ id: row.id, name: row.name, reason: err.message });
-        console.log('FAIL (' + err.message.slice(0, 50) + ')');
-        continue;
+    let mapsData = null;
+
+    if (row.maps_url) {
+      if (!cache.has(row.maps_url)) {
+        try {
+          cache.set(row.maps_url, await resolveGoogleMapsData(row.maps_url));
+        } catch (err) {
+          cache.set(row.maps_url, null);
+        }
+      }
+      mapsData = cache.get(row.maps_url);
+    }
+
+    if (!mapsData?.latitude || !mapsData?.longitude) {
+      // Check fallback dictionary
+      const locKey = String(row.location).trim().toLowerCase();
+      if (LOCATION_FALLBACKS[locKey]) {
+         mapsData = {
+           latitude: LOCATION_FALLBACKS[locKey].lat,
+           longitude: LOCATION_FALLBACKS[locKey].lng,
+           address: row.location
+         };
       }
     }
 
-    const mapsData = cache.get(row.maps_url);
     if (!mapsData?.latitude || !mapsData?.longitude) {
-      failures.push({ id: row.id, name: row.name, reason: 'no coords resolved' });
+      failures.push({ id: row.id, name: row.name, reason: 'no coords resolved and no fallback' });
       console.log('NO COORDS');
       continue;
     }

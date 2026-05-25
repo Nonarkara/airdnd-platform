@@ -29,6 +29,7 @@ function CompanionCard({ companion, onClick, priority = false }) {
   const sourceName = formatSourceChannelName(companion.sourceChannel) || companion.sourceChannel || 'Source pending';
   const isNew = isListingNew(companion);
   const [cardSaved, setCardSaved] = useState(() => isListingSaved(companion.id));
+  const [imageFailed, setImageFailed] = useState(false);
 
   return (
     <article
@@ -39,18 +40,19 @@ function CompanionCard({ companion, onClick, priority = false }) {
       }}
     >
       <div className="bento-photo-section">
-        {primaryImage ? (
+        {primaryImage && !imageFailed ? (
           <img
             src={primaryImage}
             alt=""
             loading={priority ? 'eager' : 'lazy'}
+            decoding="async"
             className="bento-photo"
             onLoad={(event) => event.currentTarget.classList.add('loaded')}
-            onError={(event) => { event.currentTarget.style.display = 'none'; }}
+            onError={() => setImageFailed(true)}
           />
         ) : (
           <div className="bento-photo-placeholder">
-            <span>No image</span>
+            <span>{imageFailed ? 'Image unavailable' : 'No image'}</span>
           </div>
         )}
 

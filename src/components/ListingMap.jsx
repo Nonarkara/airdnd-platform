@@ -421,7 +421,11 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
     markersRef.current.clearLayers();
 
     for (const { listing, coords, precision } of pins) {
-      const marker = L.marker(coords, { icon: createPinIcon(listing) });
+      const marker = L.marker(coords, { 
+        icon: createPinIcon(listing),
+        alt: listing.name || 'Listing location',
+        title: listing.name || 'Listing location',
+      });
       marker.bindPopup(buildPopupHtml(listing, precision), {
         maxWidth: 260,
         className: 'listing-popup',

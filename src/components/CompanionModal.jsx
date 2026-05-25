@@ -25,6 +25,7 @@ function CompanionModal({ companion, onClose, t }) {
   const [savedOverrides, setSavedOverrides] = useState({});
   const [showInquiry, setShowInquiry] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [mainImageFailed, setMainImageFailed] = useState(false);
 
   const galleryUrls = getSafeListingGalleryUrls(companion);
   const activeIndex = (() => {
@@ -39,6 +40,7 @@ function CompanionModal({ companion, onClose, t }) {
     if (!galleryUrls.length || !companion) return;
     const wrapped = ((idx % galleryUrls.length) + galleryUrls.length) % galleryUrls.length;
     setImageState({ companionId: companion.id, url: galleryUrls[wrapped] });
+    setMainImageFailed(false);
   };
 
   useEffect(() => {
@@ -145,15 +147,13 @@ function CompanionModal({ companion, onClose, t }) {
 
         <div className="modal-body">
           <div className="modal-image-section">
-            {hasDisplayImage ? (
+            {hasDisplayImage && !mainImageFailed ? (
               <div className="modal-gallery">
                 <img
                   src={displayImageUrl}
                   alt={companion.name}
                   className="modal-main-image"
-                  onError={(event) => {
-                    event.currentTarget.style.display = 'none';
-                  }}
+                  onError={() => setMainImageFailed(true)}
                 />
                 {galleryUrls.length > 1 && (
                   <>
@@ -183,7 +183,10 @@ function CompanionModal({ companion, onClose, t }) {
                         src={url}
                         alt=""
                         className={`modal-thumb ${url === activeImageUrl ? 'active' : ''}`}
-                        onClick={() => setImageState({ companionId: companion.id, url })}
+                        onClick={() => {
+                          setImageState({ companionId: companion.id, url });
+                          setMainImageFailed(false);
+                        }}
                       />
                     ))}
                   </div>
@@ -195,7 +198,9 @@ function CompanionModal({ companion, onClose, t }) {
                 </div>
               </div>
             ) : (
-              <div className="modal-main-image modal-image-placeholder" />
+              <div className="modal-main-image modal-image-placeholder">
+                <span>{mainImageFailed ? 'Image unavailable' : 'No image'}</span>
+              </div>
             )}
           </div>
 
