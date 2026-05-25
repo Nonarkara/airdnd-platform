@@ -1,6 +1,6 @@
 const en = {
   header: { tagline: 'Thailand wellness intelligence' },
-  nav: { map: 'Map', workflow: 'How it works', listings: 'Listings', analytics: 'Analytics', methodology: 'Methodology' },
+  nav: { map: 'Map', workflow: 'How it works', listings: 'Listings', analytics: 'Analytics', methodology: 'Methodology', sociology: 'Field Notes' },
   common: { refresh: 'Refresh', refreshing: 'Refreshing...', language: 'Language', logout: 'Logout' },
   sourceLabels: { supabase: 'Live sync', snapshot: 'Verified snapshot', backup: 'Cached fallback' },
   dataNotes: {
@@ -87,7 +87,7 @@ const en = {
 const th = {
   ...en,
   header: { tagline: 'ข้อมูลสุขภาพและสปาของไทยแบบเรียลไทม์' },
-  nav: { map: 'แผนที่', workflow: 'วิธีการทำงาน', listings: 'รายการ', analytics: 'วิเคราะห์', methodology: 'วิธีวิจัย' },
+  nav: { map: 'แผนที่', workflow: 'วิธีการทำงาน', listings: 'รายการ', analytics: 'วิเคราะห์', methodology: 'วิธีวิจัย', sociology: 'บันทึกภาคสนาม' },
   common: { refresh: 'รีเฟรช', refreshing: 'กำลังโหลด...', language: 'ภาษา', logout: 'ออกจากระบบ' },
   sourceLabels: { supabase: 'ซิงก์สด', snapshot: 'ภาพรวมที่ตรวจแล้ว', backup: 'ข้อมูลสำรอง' },
   dataNotes: {
@@ -167,7 +167,7 @@ const th = {
 const zh = {
   ...en,
   header: { tagline: '泰国健康与水疗实时情报' },
-  nav: { map: '地图', workflow: '工作原理', listings: '场所列表', analytics: '分析', methodology: '方法' },
+  nav: { map: '地图', workflow: '工作原理', listings: '场所列表', analytics: '分析', methodology: '方法', sociology: '田野笔记' },
   common: { refresh: '刷新', refreshing: '加载中...', language: '语言', logout: '退出' },
   sourceLabels: { supabase: '实时同步', snapshot: '已验证快照', backup: '缓存备用' },
   dataNotes: {
@@ -245,7 +245,7 @@ const zh = {
 const ko = {
   ...en,
   header: { tagline: '태국 웰니스 실시간 정보' },
-  nav: { map: '지도', workflow: '작동 방식', listings: '목록', analytics: '분석', methodology: '방법론' },
+  nav: { map: '지도', workflow: '작동 방식', listings: '목록', analytics: '분석', methodology: '방법론', sociology: '현장 노트' },
   common: { refresh: '새로 고침', refreshing: '로딩 중...', language: '언어', logout: '로그아웃' },
   sourceLabels: { supabase: '실시간 동기화', snapshot: '검증된 스냅샷', backup: '캐시 백업' },
   dataNotes: {

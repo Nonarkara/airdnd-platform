@@ -27,6 +27,7 @@ function Header({
         <a href="#live-listings">{t.nav.listings}</a>
         <a href="/analytics">{t.nav.analytics}</a>
         <a href="/methodology">{t.nav.methodology}</a>
+        <a href="/sociology">{t.nav.sociology}</a>
       </nav>
 
       <div className="header-actions">

@@ -1,0 +1,451 @@
+/* ── Sociology — Field Notes ─────────────────────────────────────────────── */
+/* Inherits from .meth-* conventions in Methodology.css.                      */
+/* New namespace: .soc-*                                                       */
+
+.sociology {
+  width: min(100%, 1220px);
+  margin: 0 auto;
+  padding: 0 clamp(0.75rem, 2vw, 1.35rem);
+  color: var(--color-cream);
+}
+
+/* ── Section shell ──────────────────────────────────────────────────────── */
+
+.soc-section {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-line-soft);
+}
+
+.soc-section h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin: 0.25rem 0 1rem;
+  color: var(--color-cream);
+}
+
+.soc-lead {
+  font-size: var(--text-body);
+  line-height: 1.65;
+  color: var(--color-cream);
+  max-width: 72ch;
+  margin-bottom: 1.25rem;
+}
+
+.soc-note {
+  font-size: var(--text-body);
+  line-height: 1.65;
+  color: var(--color-cream-muted);
+  max-width: 72ch;
+  margin-top: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-action);
+}
+
+.soc-note strong {
+  color: var(--color-cream);
+}
+
+/* ── Summary stats row ──────────────────────────────────────────────────── */
+
+.soc-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  margin-bottom: 1.5rem;
+  background: var(--color-line-soft);
+}
+
+.soc-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-bg);
+  flex: 1;
+  min-width: 8rem;
+}
+
+.soc-stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-action);
+  line-height: 1;
+}
+
+.soc-stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-cream-muted);
+}
+
+/* ── Hour chart (24-column SVG bar chart) ────────────────────────────────── */
+
+.soc-chart-wrap {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.soc-chart-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-cream-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* ── Day-of-week mini bars ────────────────────────────────────────────────── */
+
+.soc-day-bars {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: var(--color-line-soft);
+  margin-bottom: 1rem;
+}
+
+.soc-day-bar {
+  background: var(--color-surface);
+  padding: 0.5rem 0.25rem 0.35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.soc-day-track {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.soc-day-fill {
+  width: 100%;
+  background: var(--color-data);
+  transition: none;
+}
+
+.soc-day-fill.peak {
+  background: var(--color-action);
+}
+
+.soc-day-name {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-cream-muted);
+}
+
+.soc-day-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-cream);
+}
+
+/* ── Horizontal bar rows (buckets, name taxonomy, lexicon) ──────────────── */
+
+.soc-bar-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--color-line-soft);
+  margin-bottom: 1rem;
+}
+
+.soc-bar-row {
+  display: grid;
+  grid-template-columns: 7rem 1fr 3rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface);
+}
+
+.soc-bar-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-cream-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.soc-bar-track {
+  height: 6px;
+  background: var(--color-line-soft);
+  position: relative;
+}
+
+.soc-bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--color-data);
+}
+
+.soc-bar-fill.accent {
+  background: var(--color-action);
+}
+
+.soc-bar-fill.th {
+  background: var(--color-action);
+}
+
+.soc-bar-fill.en {
+  background: var(--color-data);
+}
+
+.soc-bar-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-cream);
+  text-align: right;
+}
+
+/* ── Velocity table ─────────────────────────────────────────────────────── */
+
+.soc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: var(--text-body);
+}
+
+.soc-table thead tr {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.soc-table th {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-cream-muted);
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+  font-weight: 400;
+}
+
+.soc-table th:last-child,
+.soc-table td:last-child {
+  text-align: right;
+}
+
+.soc-table tbody tr {
+  border-bottom: 1px solid var(--color-line-soft);
+}
+
+.soc-table tbody tr:first-child .soc-td-name {
+  color: var(--color-action);
+}
+
+.soc-table td {
+  padding: 0.45rem 0.5rem;
+  color: var(--color-cream);
+}
+
+.soc-td-rank {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-cream-muted);
+  width: 1.5rem;
+}
+
+.soc-td-name {
+  font-size: var(--text-body);
+}
+
+.soc-td-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-cream-muted);
+  white-space: nowrap;
+}
+
+.soc-td-velocity {
+  font-family: var(--font-mono);
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: var(--color-action);
+  text-align: right;
+}
+
+/* ── Name gallery ────────────────────────────────────────────────────────── */
+
+.soc-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+
+.soc-tag {
+  font-size: var(--text-body);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-cream);
+  line-height: 1.2;
+}
+
+.soc-tag.nong {
+  border-color: var(--color-action);
+  color: var(--color-action);
+}
+
+.soc-tag.nature {
+  border-color: var(--color-status);
+  color: var(--color-status);
+}
+
+.soc-tag.english {
+  border-color: var(--color-data);
+  color: var(--color-data);
+}
+
+/* ── Legend row ─────────────────────────────────────────────────────────── */
+
+.soc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.soc-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-cream-muted);
+}
+
+.soc-legend-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+}
+
+.soc-legend-dot.accent { background: var(--color-action); }
+.soc-legend-dot.data   { background: var(--color-data); }
+.soc-legend-dot.status { background: var(--color-status); }
+
+/* ── Lexicon rank row ────────────────────────────────────────────────────── */
+
+.soc-lex-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--color-line-soft);
+  margin-bottom: 1rem;
+}
+
+.soc-lex-row {
+  display: grid;
+  grid-template-columns: 1.5rem 2.5rem 8rem 1fr 3rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  background: var(--color-surface);
+}
+
+.soc-lex-rank {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-cream-muted);
+}
+
+.soc-lex-lang {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-cream-muted);
+}
+
+.soc-lex-lang.th { color: var(--color-action); }
+.soc-lex-lang.en { color: var(--color-data); }
+
+.soc-lex-term {
+  font-size: var(--text-body);
+  color: var(--color-cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+
+.soc-footer {
+  margin-top: 3rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--color-line-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.soc-footer-note {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-cream-muted);
+}
+
+/* ── Loading / error states ─────────────────────────────────────────────── */
+
+.soc-loading {
+  padding: 4rem 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-cream-muted);
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .soc-bar-row {
+    grid-template-columns: 6rem 1fr 2.5rem;
+    gap: 0.5rem;
+  }
+
+  .soc-lex-row {
+    grid-template-columns: 1.5rem 2rem 6rem 1fr 2.5rem;
+    gap: 0.35rem;
+  }
+
+  .soc-table th,
+  .soc-table td {
+    padding: 0.4rem 0.3rem;
+  }
+
+  .soc-stat-value {
+    font-size: 1.25rem;
+  }
+
+  .soc-table .soc-td-mono {
+    display: none;
+  }
+}

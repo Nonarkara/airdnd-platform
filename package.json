@@ -25,6 +25,7 @@
     "bot": "node scripts/telegram_bot.js",
     "userbot": "node scripts/userbot.js",
     "userbot:daemon": "chmod +x scripts/daemon.sh && ./scripts/daemon.sh",
+    "sociology:compute": "node scripts/compute_sociology.js",
     "start": "node server.js"
   },
   "dependencies": {
