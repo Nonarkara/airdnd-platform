@@ -3,9 +3,14 @@
   grid-template-columns: minmax(14rem, 1.35fr) repeat(3, minmax(9rem, 0.55fr)) auto;
   gap: 0.6rem;
   align-items: end;
-  padding: 0.75rem;
-  border: 1px solid var(--color-line);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-lg);
   background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-panel);
 }
 
 .filter-field {
@@ -29,6 +34,7 @@
   height: 44px;
   min-height: 44px;
   font-size: var(--text-body);
+  border-radius: var(--radius-pill);
 }
 
 .filter-search {
@@ -80,7 +86,8 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .filter-refresh {

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function Header({
   language,
   setLanguage,
@@ -8,26 +10,53 @@ function Header({
   sourceLabel,
   theme,
   setTheme,
+  activeView,
+  setActiveView,
 }) {
+  const tabs = [
+    { id: 'directory', label: t.nav?.listings || 'Directory' },
+    { id: 'map', label: t.nav?.map || 'Map' },
+    { id: 'feed', label: 'Live Feed' },
+    { id: 'analytics', label: t.nav?.analytics || 'Analytics', href: '/analytics' },
+    { id: 'methodology', label: t.nav?.methodology || 'Methodology', href: '/methodology' },
+    { id: 'sociology', label: t.nav?.sociology || 'Sociology', href: '/sociology' },
+  ];
+
   return (
     <header className="header" id="overview">
-      <a className="brand-block" href="#overview" aria-label="Sabai Sabai">
+      <div className="brand-block">
         <span className="brand-mark">
           <span className="brand-circle" aria-hidden="true" />
         </span>
         <span className="brand-copy">
-          <strong>Sabai Sabai</strong>
-          <small>{t.header.tagline}</small>
+          <strong>SUB-I 2.0</strong>
+          <small>{t.header?.tagline || 'INTELLIGENCE'}</small>
         </span>
-      </a>
+      </div>
 
-      <nav className="nav-links" aria-label="Primary">
-        <a href="#map">{t.nav.map}</a>
-        <a href="#workflow">{t.nav.workflow}</a>
-        <a href="#live-listings">{t.nav.listings}</a>
-        <a href="/analytics">{t.nav.analytics}</a>
-        <a href="/methodology">{t.nav.methodology}</a>
-        <a href="/sociology">{t.nav.sociology}</a>
+      <nav className="nav-links" aria-label="Primary" role="tablist">
+        {tabs.map((tab) => {
+          if (tab.href) {
+            return (
+              <Link key={tab.id} to={tab.href} className="nav-tab" role="tab" aria-selected={false}>
+                {tab.label}
+              </Link>
+            );
+          }
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              className={`nav-tab ${activeView === tab.id ? 'is-active' : ''}`}
+              onClick={() => setActiveView(tab.id)}
+              role="tab"
+              aria-selected={activeView === tab.id}
+              aria-controls={`${tab.id}-panel`}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
       </nav>
 
       <div className="header-actions">
@@ -41,15 +70,14 @@ function Header({
           onClick={onRefresh}
           disabled={isRefreshing}
         >
-          {isRefreshing ? t.common.refreshing : t.common.refresh}
+          {isRefreshing ? (t.common?.refreshing || 'REFRESHING...') : (t.common?.refresh || 'REFRESH')}
         </button>
 
         <label className="language-picker">
-          <span>{t.common.language}</span>
           <select
             value={language}
             onChange={(event) => setLanguage(event.target.value)}
-            aria-label={t.common.language}
+            aria-label="Language"
           >
             <option value="en">EN</option>
             <option value="th">TH</option>
@@ -58,7 +86,7 @@ function Header({
           </select>
         </label>
 
-        <label className="language-picker theme-picker">
+        <label className="language-picker theme-picker" style={{ display: 'inline-flex' }}>
           <select
             value={theme}
             onChange={(event) => setTheme(event.target.value)}
@@ -72,7 +100,7 @@ function Header({
 
         {onLogout && (
           <button type="button" className="btn-ghost" onClick={onLogout}>
-            {t.common.logout}
+            {t.common?.logout || 'LOGOUT'}
           </button>
         )}
       </div>

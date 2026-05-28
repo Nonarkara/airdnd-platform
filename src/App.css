@@ -2,7 +2,11 @@
   position: relative;
   width: min(100%, 1520px);
   margin: 0 auto;
-  padding: 0 clamp(0.75rem, 2vw, 1.35rem) clamp(2rem, 5vw, 4rem);
+  padding: 0 clamp(0.75rem, 2vw, 1.35rem);
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* Header — clean, confident, minimal */
@@ -15,11 +19,14 @@
   align-items: center;
   gap: 1rem;
   min-height: 4rem;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid var(--color-line);
-  background: rgba(12, 12, 12, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: 0.65rem 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-panel);
 }
 
 .brand-block {
@@ -79,7 +86,7 @@
   gap: clamp(0.5rem, 1.5vw, 1.2rem);
 }
 
-.nav-links a {
+.nav-links .nav-tab {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -92,26 +99,35 @@
   font-size: var(--text-small);
   font-weight: 500;
   letter-spacing: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   transition: color var(--transition-fast);
 }
 
-.nav-links a:hover {
+.nav-links .nav-tab:hover {
   color: var(--color-cream);
 }
 
-.nav-links a::after {
+.nav-links .nav-tab.is-active {
+  color: var(--color-action);
+  font-weight: 700;
+}
+
+.nav-links .nav-tab::after {
   content: '';
   position: absolute;
   left: 10px;
   right: 10px;
   bottom: 6px;
-  height: 1px;
+  height: 2px;
   background: var(--color-action);
   opacity: 0;
   transition: opacity var(--transition-fast);
 }
 
-.nav-links a:hover::after {
+.nav-links .nav-tab:hover::after,
+.nav-links .nav-tab.is-active::after {
   opacity: 1;
 }
 
@@ -212,6 +228,13 @@
   flex-direction: column;
   gap: 1.25rem;
   padding-top: 1.25rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar for cleaner look if desired, or let it show */
+}
+.main-content::-webkit-scrollbar {
+  display: none;
 }
 
 .listing-section {

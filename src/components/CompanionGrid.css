@@ -39,35 +39,33 @@
 }
 
 .skeleton-card {
-  min-height: 88px;
-  padding: 0.7rem 0.9rem;
-}
-
-.skeleton-card-tall {
-  min-height: 88px;
+  display: grid;
+  grid-template-columns: 4rem minmax(180px, 1fr) minmax(120px, 1fr) minmax(100px, 0.8fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
 }
 
 .skeleton-media {
-  width: 88px;
-  height: 88px;
-  margin: 0;
+  width: 4rem;
+  height: 2.5rem;
   background: var(--color-bg-inset);
+  border: 1px solid var(--color-line);
 }
 
 .skeleton-title,
 .skeleton-line,
 .skeleton-row {
   height: 12px;
-  margin-top: 0.5rem;
   background: var(--color-surface);
 }
 
 .skeleton-line {
-  width: 72%;
+  width: 70%;
 }
 
 .skeleton-row {
-  width: 45%;
+  width: 50%;
 }
 
 /*

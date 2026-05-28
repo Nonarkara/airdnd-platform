@@ -1,86 +1,90 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
 
 /*
- * Sabai Sabai 2.5 — World-class professional intelligence platform.
- * Built strictly according to the Design System Five Laws.
+ * Sub-i 2.0 — The Operator Theme
+ * Built for a cinematic, state-of-the-art intelligence experience.
  *
  * Design principles:
- *   - Law 1: Sharp geometry. Zero border-radius globally.
- *   - Law 2: No gradients, no shadows. Hairline borders only.
- *   - Law 3: Spacing-led editorial grid. Dense and scannable.
- *   - Law 4: Color encodes meaning only. 
- *   - Law 5: Typography is the interface. JetBrains Mono + Manrope + Inter + IBM Plex Sans Thai.
+ *   - Deep obsidian background with heavy glassmorphism.
+ *   - Blurred backdrop filters and semi-transparent surfaces.
+ *   - Vibrant neon glowing accents (cyan, magenta, amber).
+ *   - Smooth geometry with subtle rounded corners.
  */
 
 :root {
   color-scheme: dark;
 
-  /* Theme: Dark Mode (Default) — Deep Ink & Cyan Accent */
-  --color-bg: #0a0f1e;
-  --color-bg-raised: #10182e;
-  --color-bg-inset: #070b16;
-  --color-surface: #10182e;
-  --color-surface-strong: #141e3a;
-  --color-surface-hover: #18274a;
+  /* Theme: Dark Mode (Default) — Obsidian & Neon Accents */
+  --color-bg: #030509;
+  --color-bg-raised: rgba(10, 15, 26, 0.6);
+  --color-bg-inset: rgba(3, 5, 9, 0.8);
+  
+  /* Glass Surfaces */
+  --color-surface: rgba(15, 20, 36, 0.35);
+  --color-surface-strong: rgba(20, 28, 48, 0.5);
+  --color-surface-hover: rgba(30, 42, 68, 0.6);
 
-  /* Dividers — warm cream hairlines, not neon grid */
-  --color-line: rgba(245, 240, 232, 0.08);
-  --color-line-soft: rgba(245, 240, 232, 0.04);
-  --color-line-hot: #f59e0b; /* amber */
+  /* Dividers — glowing hairlines */
+  --color-line: rgba(0, 240, 255, 0.15);
+  --color-line-soft: rgba(0, 240, 255, 0.05);
+  --color-line-hot: rgba(255, 0, 102, 0.4);
 
-  /* Text — Cream Paper */
-  --color-cream: #f5f0e8;
-  --color-cream-soft: #c5c0b8;
-  --color-cream-muted: #858078;
-  --color-cream-faint: #353028;
+  /* Text — Bright Neon & Crisp White */
+  --color-cream: #ffffff;
+  --color-cream-soft: #b0c4de;
+  --color-cream-muted: #5e7799;
+  --color-cream-faint: #1a2639;
 
-  /* Accents — meaning only. One amber. Always. Only. */
-  --color-action: #f59e0b; /* Amber — the Braun ET66 equals key */
-  --color-action-soft: rgba(245, 158, 11, 0.12);
-  --color-data: #58a6ff; /* Blue — secondary info/data */
-  --color-data-soft: rgba(88, 166, 255, 0.10);
-  --color-status: #00cc66; /* Status normal green */
-  --color-status-soft: rgba(0, 204, 102, 0.12);
+  /* Accents — Neon cyberpunk */
+  --color-action: #00f0ff; /* Neon Cyan */
+  --color-action-soft: rgba(0, 240, 255, 0.15);
+  --color-data: #ff0055; /* Neon Magenta/Pink */
+  --color-data-soft: rgba(255, 0, 85, 0.15);
+  --color-status: #00ffaa; /* Neon Mint */
+  --color-status-soft: rgba(0, 255, 170, 0.15);
+  --color-accent: #ffb000; /* Neon Amber */
+  --color-accent-soft: rgba(255, 176, 0, 0.15);
 
   /* Legacy aliases */
-  --color-red: var(--color-action);
-  --color-red-hover: var(--color-action);
-  --color-red-soft: var(--color-action-soft);
-  --color-gold: var(--color-action);       /* gold = amber */
-  --color-gold-soft: var(--color-action-soft);
-  --color-accent: var(--color-action);
-  --color-accent-soft: var(--color-action-soft);
-  --color-purple: var(--color-data);
-  --color-purple-soft: var(--color-data-soft);
+  --color-red: var(--color-data);
+  --color-red-hover: #ff3377;
+  --color-red-soft: var(--color-data-soft);
+  --color-gold: var(--color-accent);
+  --color-gold-soft: var(--color-accent-soft);
+  --color-purple: #b000ff;
+  --color-purple-soft: rgba(176, 0, 255, 0.15);
   --color-success: var(--color-status);
-  --color-warning: var(--color-action);    /* warning = amber */
-  --color-danger: #ff4444;
+  --color-warning: var(--color-accent);
+  --color-danger: var(--color-data);
 
   --color-ink: var(--color-cream);
   --color-ink-soft: var(--color-cream-soft);
   --color-ink-muted: var(--color-cream-muted);
 
-  /* Typography — Josefin Sans display, Source Sans 3 body, JetBrains Mono data */
-  --font-display: 'Josefin Sans', 'IBM Plex Sans Thai', system-ui, sans-serif;
-  --font-body: 'Source Sans 3', 'IBM Plex Sans Thai', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'IBM Plex Sans Thai', monospace;
+  /* Typography */
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
   --font-heading: var(--font-display);
 
-  /* Scale — generous, readable */
+  /* Scale */
   --text-display: 36px;
   --text-title: 24px;
-  --text-body: 15px;
+  --text-body: 14px;
   --text-small: 13px;
   --text-micro: 11px;
 
-  /* Geometry — zero radius for precision */
-  --radius-xs: 0;
-  --radius-sm: 0;
+  /* Geometry — Smooth Glass Corners */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
 
-  /* Shadows — functional only */
-  --shadow-glow-cyan: none;
-  --shadow-glow-pink: none;
-  --shadow-panel: none;
+  /* Shadows — Neon Glows */
+  --shadow-glow-cyan: 0 0 10px rgba(0, 240, 255, 0.3), 0 0 20px rgba(0, 240, 255, 0.1);
+  --shadow-glow-pink: 0 0 10px rgba(255, 0, 85, 0.3), 0 0 20px rgba(255, 0, 85, 0.1);
+  --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.5);
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --transition-fast: 0.15s var(--ease-out);
@@ -232,18 +236,19 @@ select, input {
   min-height: 2.75rem;
   padding: 0.65rem 0.75rem;
   border: 1px solid var(--color-line);
-  border-radius: 0;
-  background: var(--color-bg-inset);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--color-cream);
   font-family: var(--font-body);
   font-size: var(--text-body);
   letter-spacing: 0;
-  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 select {
   appearance: none;
-  background-color: var(--color-bg-inset);
   background-image: none;
   padding-right: 1rem;
 }
@@ -251,7 +256,8 @@ select {
 select:focus, input:focus {
   outline: none;
   border-color: var(--color-action);
-  background-color: var(--color-bg-raised);
+  background-color: var(--color-surface-strong);
+  box-shadow: var(--shadow-glow-cyan);
 }
 
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
@@ -334,8 +340,24 @@ input::placeholder {
   font-weight: 500;
 }
 
-.app-noise-overlay, .app-ambient-glow {
-  display: none;
+.app-noise-overlay {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.app-ambient-glow {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.08), transparent 40%),
+              radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.08), transparent 40%);
+  pointer-events: none;
 }
 
 .app-backdrop {
@@ -347,8 +369,11 @@ input::placeholder {
 
 .cyber-panel {
   border: 1px solid var(--color-line);
-  border-radius: 0;
+  border-radius: var(--radius-md);
   background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-panel);
 }
 
 @media (prefers-reduced-motion: reduce) {

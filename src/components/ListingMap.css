@@ -94,7 +94,9 @@
 .listing-map-container {
   position: relative;
   width: 100%;
-  height: clamp(24rem, 48vw, 34rem);
+  height: 100%;
+  flex: 1;
+  min-height: 400px;
   border: 1px solid var(--color-line);
   /* no radius */
   overflow: hidden;

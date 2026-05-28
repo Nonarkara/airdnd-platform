@@ -197,6 +197,7 @@ function buildPopupHtml(listing, precision) {
         height: 32px;
         background: rgba(34, 247, 255, 0.1);
         border: 1px solid #22f7ff;
+        border-radius: 999px;
         color: #22f7ff;
         font-family: 'Space Grotesk', sans-serif;
         font-size: 11px;

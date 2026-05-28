@@ -3,10 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import AtomicClock from './components/AtomicClock';
 import Header from './components/Header';
-import HeroSection from './components/HeroSection';
-import LiveIntakeStrip from './components/LiveIntakeStrip';
-import NowLooking from './components/NowLooking';
-import HowItWorks from './components/HowItWorks';
 import FeedGrid from './components/FeedGrid';
 import FilterBar from './components/FilterBar';
 import CompanionGrid from './components/CompanionGrid';
@@ -250,6 +246,7 @@ function App() {
   const [selectedCompanion, setSelectedCompanion] = useState(null);
   const [language, setLanguage] = useState('en');
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  const [activeView, setActiveView] = useState('directory');
   const [dataState, setDataState] = useState({
     source: 'backup',
     sourceLabel: SOURCE_LABELS.backup,
@@ -565,141 +562,124 @@ function App() {
               onRefresh={handleRefresh}
               isRefreshing={dataState.isRefreshing}
               sourceLabel={displayDataState.sourceLabel}
+              activeView={activeView}
+              setActiveView={setActiveView}
             />
 
-            <main className="main-content">
-              <HeroSection
-                t={t}
-                metrics={metrics}
-                dataState={displayDataState}
-                intakeSummary={intakeSummary}
-              />
-
-              <div className="research-preview-banner">
-                <span className="research-preview-kicker">{t.researchPreview?.kicker || 'Research Preview'}</span>
-                <p className="research-preview-body">{t.researchPreview?.body}</p>
+            <main className="main-content dashboard-content">
+              <div
+                id="feed-panel"
+                role="tabpanel"
+                style={{ display: activeView === 'feed' ? 'block' : 'none' }}
+              >
+                <FeedGrid
+                  t={t}
+                  onOpen={(card) => {
+                    setSelectedCompanion({
+                      id: `feed-${card.id}`,
+                      name: card.displayName || card.name,
+                      location: card.channel ? `${card.channel}` : '—',
+                      city: 'Bangkok',
+                      description: card.displayDescription || card.description,
+                      sourceChannel: card.channel,
+                      postedAt: card.messageDate,
+                      updatedAt: card.messageDate,
+                      createdAt: card.messageDate,
+                      phone: card.phone,
+                      lineUrl: card.lineUrl,
+                      telegramUrl: card.telegramUrl,
+                      mapsUrl: card.mapsUrl,
+                      hours: card.hours,
+                      priceLabel: card.priceLabel || 'Rate on request',
+                      imageUrl: card.requiresReview ? null : card.displayPrimaryPhoto || card.primaryPhoto,
+                      allPhotoUrls: card.requiresReview ? [] : card.displayPhotoUrls || card.photoUrls,
+                      isSafeImage: !card.requiresReview,
+                      mentionCount: 1,
+                      serviceTags: [],
+                      tags: [],
+                      metrics: {},
+                      dataSource: 'feed',
+                    });
+                  }}
+                />
               </div>
 
-              <LiveIntakeStrip
-                t={t}
-                listings={allCompanions}
-                intakeSummary={intakeSummary}
-                lastLoadedAt={dataState.lastLoadedAt}
-              />
-
-              <NowLooking listings={allCompanions} />
-
-              <HowItWorks t={t} />
-
-              <FeedGrid
-                t={t}
-                onOpen={(card) => {
-                  // The feed card is a Telegram post, not a deduped canonical
-                  // listing. Shape it into the same surface the modal expects
-                  // so the existing CompanionModal can render it without
-                  // special-casing. linked_companion_id may resolve later
-                  // (see findings.md §1.1) — when it does, we can swap to
-                  // the canonical record at this point instead.
-                  setSelectedCompanion({
-                    id: `feed-${card.id}`,
-                    name: card.displayName || card.name,
-                    location: card.channel ? `${card.channel}` : '—',
-                    city: 'Bangkok',
-                    description: card.displayDescription || card.description,
-                    sourceChannel: card.channel,
-                    postedAt: card.messageDate,
-                    updatedAt: card.messageDate,
-                    createdAt: card.messageDate,
-                    phone: card.phone,
-                    lineUrl: card.lineUrl,
-                    telegramUrl: card.telegramUrl,
-                    mapsUrl: card.mapsUrl,
-                    hours: card.hours,
-                    priceLabel: card.priceLabel || 'Rate on request',
-                    imageUrl: card.requiresReview ? null : card.displayPrimaryPhoto || card.primaryPhoto,
-                    allPhotoUrls: card.requiresReview ? [] : card.displayPhotoUrls || card.photoUrls,
-                    isSafeImage: !card.requiresReview,
-                    mentionCount: 1,
-                    serviceTags: [],
-                    tags: [],
-                    metrics: {},
-                    dataSource: 'feed',
-                  });
-                }}
-              />
-
-              <section id="live-listings" className="listing-section">
-                <div className="section-header">
-                  <div>
-                    <span className="section-kicker">{t.featured.kicker}</span>
-                    <h2>{t.featured.title}</h2>
+              <div
+                id="directory-panel"
+                role="tabpanel"
+                style={{ display: activeView === 'directory' ? 'block' : 'none' }}
+              >
+                <section id="live-listings" className="listing-section">
+                  <div className="section-header">
+                    <div>
+                      <span className="section-kicker">{t.featured.kicker}</span>
+                      <h2>{t.featured.title}</h2>
+                    </div>
+                    <div className="section-meta">
+                      <span>{filteredCompanions.length} {t.featured.countLabel}</span>
+                      <span>{displayDataState.sourceLabel}</span>
+                    </div>
                   </div>
-                  <p className="section-subtitle">{t.featured.subtitle}</p>
-                  <div className="section-meta">
-                    <span>{filteredCompanions.length} {t.featured.countLabel}</span>
-                    <span>{displayDataState.sourceLabel}</span>
-                  </div>
-                </div>
 
-                <FilterBar
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  locationOptions={locationOptions}
-                  activeLocation={activeLocation}
-                  setActiveLocation={setActiveLocation}
-                  activityOptions={activityOptions}
-                  activeActivity={activeActivity}
-                  setActiveActivity={setActiveActivity}
-                  sortOptions={SORT_OPTIONS}
-                  sortBy={sortBy}
-                  setSortBy={setSortBy}
-                  onRefresh={handleRefresh}
-                  isRefreshing={dataState.isRefreshing}
-                  onClearFilters={clearFilters}
-                  hasActiveFilters={
-                    searchTerm.trim() ||
-                    activeLocation !== ALL_LOCATIONS_VALUE ||
-                    activeActivity !== ALL_TAGS_VALUE ||
-                    sortBy !== SORT_OPTIONS[0]
-                  }
-                  resultCount={filteredCompanions.length}
-                  t={t}
-                />
+                  <FilterBar
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    locationOptions={locationOptions}
+                    activeLocation={activeLocation}
+                    setActiveLocation={setActiveLocation}
+                    activityOptions={activityOptions}
+                    activeActivity={activeActivity}
+                    setActiveActivity={setActiveActivity}
+                    sortOptions={SORT_OPTIONS}
+                    sortBy={sortBy}
+                    setSortBy={setSortBy}
+                    onRefresh={handleRefresh}
+                    isRefreshing={dataState.isRefreshing}
+                    onClearFilters={clearFilters}
+                    hasActiveFilters={
+                      searchTerm.trim() ||
+                      activeLocation !== ALL_LOCATIONS_VALUE ||
+                      activeActivity !== ALL_TAGS_VALUE ||
+                      sortBy !== SORT_OPTIONS[0]
+                    }
+                    resultCount={filteredCompanions.length}
+                    t={t}
+                  />
 
-                <CompanionGrid
-                  companions={filteredCompanions}
-                  onCardClick={setSelectedCompanion}
-                  t={t}
-                  metrics={metrics}
-                  intakeSummary={intakeSummary}
-                  dataState={displayDataState}
-                  onClearFilters={clearFilters}
-                  hasActiveFilters={
-                    searchTerm.trim() ||
-                    activeLocation !== ALL_LOCATIONS_VALUE ||
-                    activeActivity !== ALL_TAGS_VALUE ||
-                    sortBy !== SORT_OPTIONS[0]
-                  }
-                  isLoading={dataState.isLoading}
-                />
-              </section>
-
-              <div className="analytics-callout">
-                <a href="/analytics">
-                  View industry intelligence — {metrics.total} businesses, {metrics.cityCount} cities, updated in real time →
-                </a>
+                  <CompanionGrid
+                    companions={filteredCompanions}
+                    onCardClick={setSelectedCompanion}
+                    t={t}
+                    metrics={metrics}
+                    intakeSummary={intakeSummary}
+                    dataState={displayDataState}
+                    onClearFilters={clearFilters}
+                    hasActiveFilters={
+                      searchTerm.trim() ||
+                      activeLocation !== ALL_LOCATIONS_VALUE ||
+                      activeActivity !== ALL_TAGS_VALUE ||
+                      sortBy !== SORT_OPTIONS[0]
+                    }
+                    isLoading={dataState.isLoading}
+                  />
+                </section>
               </div>
 
-              <Suspense fallback={<section className="section-shell-loading">Loading map…</section>}>
-                <ListingMap
-                  listings={filteredCompanions}
-                  onCardClick={setSelectedCompanion}
-                  t={t}
-                  viewKey={`${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
-                  theme={theme}
-                />
-              </Suspense>
-
+              <div
+                id="map-panel"
+                role="tabpanel"
+                style={{ display: activeView === 'map' ? 'flex' : 'none', height: '100%', flexDirection: 'column' }}
+              >
+                <Suspense fallback={<section className="section-shell-loading">Loading map…</section>}>
+                  <ListingMap
+                    listings={filteredCompanions}
+                    onCardClick={setSelectedCompanion}
+                    t={t}
+                    viewKey={`${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
+                    theme={theme}
+                  />
+                </Suspense>
+              </div>
             </main>
 
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
