@@ -43,7 +43,7 @@ function Methodology() {
         <div className="meth-diagram">
           <svg viewBox="0 0 800 320" fill="none" xmlns="http://www.w3.org/2000/svg" className="meth-svg">
             {/* Telegram Sources */}
-            <rect x="20" y="120" width="140" height="80" rx="2" stroke="#ff3366" strokeWidth="1" fill="none" />
+            <rect x="20" y="120" width="140" height="80" stroke="#ff3366" strokeWidth="1" fill="none" />
             <text x="90" y="155" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">TELEGRAM</text>
             <text x="90" y="175" textAnchor="middle" fill="#e8e6e180" fontSize="9">12 channels</text>
             <text x="90" y="190" textAnchor="middle" fill="#e8e6e180" fontSize="9">2,500+ messages</text>
@@ -53,7 +53,7 @@ function Methodology() {
             <polygon points="220,155 230,160 220,165" fill="#ff3366" />
 
             {/* Gemini AI */}
-            <rect x="230" y="120" width="140" height="80" rx="2" stroke="#34d399" strokeWidth="1" fill="none" />
+            <rect x="230" y="120" width="140" height="80" stroke="#34d399" strokeWidth="1" fill="none" />
             <text x="300" y="155" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">GEMINI AI</text>
             <text x="300" y="175" textAnchor="middle" fill="#e8e6e180" fontSize="9">Extract, classify,</text>
             <text x="300" y="190" textAnchor="middle" fill="#e8e6e180" fontSize="9">enrich listings</text>
@@ -63,7 +63,7 @@ function Methodology() {
             <polygon points="430,155 440,160 430,165" fill="#ff3366" />
 
             {/* Supabase */}
-            <rect x="440" y="100" width="140" height="120" rx="2" stroke="#ff3366" strokeWidth="1" fill="none" />
+            <rect x="440" y="100" width="140" height="120" stroke="#ff3366" strokeWidth="1" fill="none" />
             <text x="510" y="135" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">SUPABASE</text>
             <text x="510" y="155" textAnchor="middle" fill="#e8e6e180" fontSize="9">companions</text>
             <text x="510" y="170" textAnchor="middle" fill="#e8e6e180" fontSize="9">channel_messages</text>
@@ -75,7 +75,7 @@ function Methodology() {
             <polygon points="640,155 650,160 640,165" fill="#ff3366" />
 
             {/* Frontend */}
-            <rect x="650" y="120" width="130" height="80" rx="2" stroke="#34d399" strokeWidth="1" fill="none" />
+            <rect x="650" y="120" width="130" height="80" stroke="#34d399" strokeWidth="1" fill="none" />
             <text x="715" y="155" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">FRONTEND</text>
             <text x="715" y="175" textAnchor="middle" fill="#e8e6e180" fontSize="9">Real-time directory</text>
             <text x="715" y="190" textAnchor="middle" fill="#e8e6e180" fontSize="9">Interactive map</text>
@@ -312,7 +312,7 @@ function Methodology() {
         <div className="meth-diagram">
           <svg viewBox="0 0 800 240" fill="none" xmlns="http://www.w3.org/2000/svg" className="meth-svg" role="img" aria-label="Temporal State Diagram">
             {/* Input Node */}
-            <rect x="20" y="80" width="140" height="60" rx="2" stroke="#ff3366" strokeWidth="1" fill="none" />
+            <rect x="20" y="80" width="140" height="60" stroke="#ff3366" strokeWidth="1" fill="none" />
             <text x="90" y="110" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">TELEGRAM WEBHOOK</text>
             <text x="90" y="125" textAnchor="middle" fill="#e8e6e180" fontSize="9">Raw Cluster</text>
 
@@ -320,24 +320,24 @@ function Methodology() {
             <polygon points="220,105 230,110 220,115" fill="#ff3366" />
 
             {/* Semantic Engine Box */}
-            <rect x="230" y="40" width="300" height="140" rx="2" stroke="#34d399" strokeWidth="1" strokeDasharray="4 4" fill="none" />
+            <rect x="230" y="40" width="300" height="140" stroke="#34d399" strokeWidth="1" strokeDasharray="4 4" fill="none" />
             <text x="380" y="60" textAnchor="middle" fill="#34d399" fontSize="10" fontWeight="700" letterSpacing="2">SEMANTIC ENGINE (LLM)</text>
 
             {/* LLM Steps */}
-            <rect x="250" y="80" width="80" height="40" rx="2" stroke="#34d399" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
+            <rect x="250" y="80" width="80" height="40" stroke="#34d399" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
             <text x="290" y="103" textAnchor="middle" fill="#e8e6e1" fontSize="9">Tokenize</text>
 
             <line x1="330" y1="100" x2="350" y2="100" stroke="#2a2a3a" strokeWidth="1" />
             <polygon points="350,97 355,100 350,103" fill="#34d399" />
 
-            <rect x="355" y="80" width="80" height="40" rx="2" stroke="#34d399" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
+            <rect x="355" y="80" width="80" height="40" stroke="#34d399" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
             <text x="395" y="98" textAnchor="middle" fill="#e8e6e1" fontSize="9">Sentiment</text>
             <text x="395" y="110" textAnchor="middle" fill="#e8e6e180" fontSize="8">Extraction</text>
 
             <line x1="435" y1="100" x2="455" y2="100" stroke="#2a2a3a" strokeWidth="1" />
             <polygon points="455,97 460,100 455,103" fill="#34d399" />
 
-            <rect x="460" y="80" width="60" height="40" rx="2" stroke="#34d399" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
+            <rect x="460" y="80" width="60" height="40" stroke="#34d399" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
             <text x="490" y="98" textAnchor="middle" fill="#e8e6e1" fontSize="9">Temporal</text>
             <text x="490" y="110" textAnchor="middle" fill="#e8e6e180" fontSize="8">Scoring</text>
 
@@ -346,7 +346,7 @@ function Methodology() {
             <polygon points="590,105 600,110 590,115" fill="#34d399" />
 
             {/* Heatmap Node */}
-            <rect x="600" y="80" width="140" height="60" rx="2" stroke="#FF3D8B" strokeWidth="1" fill="none" />
+            <rect x="600" y="80" width="140" height="60" stroke="#FF3D8B" strokeWidth="1" fill="none" />
             <text x="670" y="110" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">ACTIVITY HEATMAP</text>
             <text x="670" y="125" textAnchor="middle" fill="#e8e6e180" fontSize="9">Predictive Indicator</text>
           </svg>

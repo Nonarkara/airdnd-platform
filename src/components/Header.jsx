@@ -45,7 +45,7 @@ function Header({
         <div className="site-header__in">
           <a className="brand" href="#overview" aria-label="Sabai Sabai">
             <svg className="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <rect width="32" height="32" rx="8" fill="#FF3D8B" />
+              <rect width="32" height="32" fill="#FF3D8B" />
               <circle cx="16" cy="12.5" r="4.8" fill="#141017" />
               <path d="M6 21.5c2.5-2.3 5-2.3 7.5 0s5 2.3 7.5 0 3.6-1.6 3.6-1.6" stroke="#141017" strokeWidth="2" strokeLinecap="round" />
             </svg>

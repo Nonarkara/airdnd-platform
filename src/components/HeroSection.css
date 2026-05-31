@@ -4,16 +4,9 @@
   padding-block: var(--s9) var(--s7);
 }
 
-.hero2__glow {
-  position: absolute;
-  width: 720px;
-  height: 720px;
-  right: -220px;
-  top: -280px;
-  background: radial-gradient(circle, rgba(255, 61, 139, 0.20), transparent 62%);
-  pointer-events: none;
-  z-index: 0;
-}
+/* No decorative glow — clean lines only. A single hairline rule under the
+   hero does the dividing instead of a soft radial wash. */
+.hero2__glow { display: none; }
 
 .hero2__grid {
   position: relative;
@@ -57,9 +50,8 @@
 .hero2__chart {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--r-lg);
+  border-top: 2px solid var(--mango);
   padding: var(--s6);
-  box-shadow: var(--sh-md);
 }
 
 .hero2__chart-head {
@@ -72,13 +64,22 @@
 
 .hero2__svg { width: 100%; height: auto; }
 
+/* Instrument strip, not six template cards: one bold pink rule on top, hairline
+   grid dividers (the 1px gaps over a line-coloured backing), flat tiles. */
 .hero2__kpis {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: var(--s4);
+  gap: 1px;
   margin-top: var(--s8);
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--mango);
+}
+.hero2__kpis .kpi {
+  border: 0;
+  background: var(--bg);
 }
 
 @media (max-width: 1000px) {

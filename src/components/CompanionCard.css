@@ -1,10 +1,12 @@
-/* Duotone cover variants — the signature venue-initial gradient covers */
-.cv1 { background: linear-gradient(140deg, #FF5FA3, #C71A5E); }
-.cv2 { background: linear-gradient(140deg, #2FB89A, #0E5547); }
-.cv3 { background: linear-gradient(140deg, #ECB659, #B97D16); }
-.cv4 { background: linear-gradient(140deg, #5BA6F0, #2C5C92); }
-.cv5 { background: linear-gradient(140deg, #A98BE0, #5B3E96); }
-.cv6 { background: linear-gradient(140deg, #F0657F, #A02744); }
+/* Venue-initial covers — flat crayon colour blocks (no gradient, no sheen).
+   A letterform on a flat field: subway-map clarity, not a template card. */
+.cv1 { background: #FF3D8B; }
+.cv2 { background: #2FE0A6; }
+.cv3 { background: #FFD23D; }
+.cv4 { background: #36C7FF; }
+.cv5 { background: #B073FF; }
+.cv6 { background: #FF8A3D; }
+.cv3 .photo__glyph { color: #141017; }
 
 .lcard__img {
   position: absolute;

@@ -70,15 +70,15 @@
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px;
   --s7:32px; --s8:40px; --s9:56px; --s10:72px; --s11:96px; --s12:128px;
 
-  /* ---- Radius ---------------------------------------------------------- */
-  --r-xs:6px; --r-sm:9px; --r-md:13px; --r-lg:18px; --r-xl:26px; --r-pill:999px;
+  /* ---- Radius · SHARP. Zero everywhere; circles use 50% directly. ------ */
+  --r-xs:0; --r-sm:0; --r-md:0; --r-lg:0; --r-xl:0; --r-pill:0;
 
-  /* ---- Shadow / glow --------------------------------------------------- */
-  --sh-sm: 0 1px 2px rgba(0,0,0,.4);
-  --sh-md: 0 8px 28px rgba(0,0,0,.5);
-  --sh-lg: 0 24px 60px rgba(0,0,0,.6);
-  --glow-mango: 0 0 0 1px rgba(255,61,139,.40), 0 8px 30px rgba(255,61,139,.26);
-  --glow-jade:  0 0 24px rgba(47,224,166,.35);
+  /* ---- Shadow / glow · hairlines, not soft shadows --------------------- */
+  --sh-sm: none;
+  --sh-md: none;
+  --sh-lg: 0 24px 60px rgba(0,0,0,.6);   /* modal overlay depth only */
+  --glow-mango: none;
+  --glow-jade:  none;
 
   /* ---- Layout ---------------------------------------------------------- */
   --maxw: 1280px;
@@ -222,7 +222,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 ::selection { background: var(--mango); color: #fff; }
 ::-webkit-scrollbar { height: 10px; width: 10px; }
-::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 99px; }
+::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 0; }
 ::-webkit-scrollbar-track { background: transparent; }
 
 /* film grain — tactile, anti-sterile */
@@ -360,7 +360,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .barrow__track { height: 12px; background: var(--surface-2); border-radius: var(--r-pill); overflow: hidden; }
 .barrow__fill { height: 100%; border-radius: var(--r-pill); background: var(--mango); transition: width .6s var(--ease-out); }
 .barrow__val { font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
-.swatch { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.swatch { width: 9px; height: 9px; border-radius: 0; flex: none; }
 .axis-label { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-3); letter-spacing: .05em; }
 .grid-line { stroke: var(--line); stroke-width: 1; }
 .axis-line { stroke: var(--line-2); stroke-width: 1; }
@@ -385,11 +385,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .rating { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .rating .icon { color: var(--gold); }
 
-.lcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; cursor: pointer; transition: transform .22s var(--ease-out), border-color .2s; }
-.lcard:hover { transform: translateY(-4px); border-color: var(--line-2); }
+.lcard { background: var(--surface); border: 1px solid var(--line); overflow: hidden; cursor: pointer; transition: border-color .16s var(--ease), background .16s var(--ease); }
+.lcard:hover { border-color: var(--mango); background: var(--surface-2); }
 .lcard__media { position: relative; aspect-ratio: 3/2; }
 .photo { width: 100%; height: 100%; position: relative; overflow: hidden; display: grid; place-items: center; }
-.photo::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 80% at 25% 15%, rgba(255,255,255,.22), transparent 60%); }
 .photo__glyph { font-family: var(--font-display); font-weight: 700; font-size: 2.4rem; color: rgba(255,255,255,.85); }
 .photo__tag { position: absolute; left: 9px; bottom: 9px; z-index: 1; font-family: var(--font-mono); font-size: 9px; letter-spacing: .08em; color: rgba(255,255,255,.85); background: rgba(0,0,0,.4); padding: 3px 7px; border-radius: var(--r-xs); }
 .lcard__body { padding: var(--s4); }
