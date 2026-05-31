@@ -12,6 +12,13 @@ Read at the start of every session. The same mistake never happens twice.
 - **Correct behaviour:** when injecting tall page content, first check whether the app shell is fixed-viewport (`height:100vh/100dvh` + `overflow:hidden`) or natural-flow. If fixed, convert: `min-height:100dvh`, drop `overflow:hidden`, change the scroll pane from `flex:1; overflow-y:auto` to `flex:1 0 auto`, and give any map/fill view an explicit height.
 - **How to recognise:** symptoms = `document.documentElement.scrollHeight` far smaller than a child's height; a section's `getBoundingClientRect().height` huge while its parent's is ~0; footer `top` overlapping earlier sections. `preview_eval` reading section tops/heights diagnoses it in one call.
 
+## 2026-05-31 · A background deploy can exit 0 yet upload nothing
+
+- **What went wrong:** ran `wrangler pages deploy` with `run_in_background`. It exited 0 but produced no "Deployment complete" line and uploaded nothing — production silently stayed on the previous build. Reported the work as live; the user (correctly) saw the old version.
+- **Correct behaviour:** never trust a deploy's exit code. **Verify the artifact on production**, not the process: fetch the live `index.html`, extract the hashed asset name, fetch that asset, and grep for a token you just changed (e.g. `--r-xs:0`). If prod's asset hash ≠ your local `dist/` hash, the deploy didn't land. Prefer deploying in the **foreground** and confirming the "✨ Deployment complete" line + a unique deployment URL.
+- **How to recognise:** user says "looks the same as before." First check: `curl -s "$PROD/?cb=$(date +%s)" | grep -oE '/assets/index-[A-Za-z0-9_-]+\.css'` vs the hash in local `dist/index.html`. Mismatch = stale prod (failed deploy OR you deployed before building). Match but user still sees old = their browser cached `index.html` → hard refresh.
+- **Also:** commit BEFORE deploying, so the Cloudflare deployment's "Source" commit matches the files actually shipped. Deploying first labels the deployment with the prior commit and muddies forensics.
+
 ## 2026-05-31 · Map "not loading" + preview-sandbox tiles
 
 - **Leaflet in a tab that's `display:none` renders at 0×0 and never recovers** unless something re-measures it. The old code only called `invalidateSize()` on a `#map` hash that the new tab UI never fires → the map "didn't load." Fix: a `ResizeObserver` on the map container that calls `invalidateSize()` on every resize (fires when the tab goes none→visible) and runs a few settle passes + one fit on first real size. This is the canonical fix for any Leaflet/Mapbox map inside a tabbed/`display:none` panel.
