@@ -7,24 +7,27 @@
 .companion-grid-container {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: var(--s7);
 }
 
 .companion-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  border-bottom: 1px solid var(--color-line);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--s5);
 }
 
 .card-entrance {
   display: block;
   width: 100%;
+  height: 100%;
 }
 
-.masonry-intel-item {
-  display: block;
-}
+.card-entrance > .lcard { height: 100%; display: flex; flex-direction: column; }
+.card-entrance > .lcard .lcard__body { flex: 1; display: flex; flex-direction: column; }
+.card-entrance > .lcard .lcard__foot { margin-top: auto; }
+
+.masonry-intel-item { display: block; height: 100%; }
+.masonry-intel-item > .intel-card { height: 100%; }
 
 /*
  * Skeleton placeholder rows mirror CompanionCard's row layout so the page
@@ -33,31 +36,36 @@
 .skeleton-card,
 .intel-card,
 .grid-state-card {
-  border: 0;
-  border-top: 1px solid var(--color-line);
-  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--r-md);
+  background: var(--color-surface);
 }
 
 .skeleton-card {
-  display: grid;
-  grid-template-columns: 4rem minmax(180px, 1fr) minmax(120px, 1fr) minmax(100px, 0.8fr) auto;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0;
+  overflow: hidden;
 }
 
 .skeleton-media {
-  width: 4rem;
-  height: 2.5rem;
+  width: 100%;
+  aspect-ratio: 3 / 2;
   background: var(--color-bg-inset);
-  border: 1px solid var(--color-line);
+  border-radius: 0;
 }
+
+.skeleton-title,
+.skeleton-line,
+.skeleton-row { margin-inline: var(--s4); }
+.skeleton-row { margin-bottom: var(--s4); }
 
 .skeleton-title,
 .skeleton-line,
 .skeleton-row {
   height: 12px;
-  background: var(--color-surface);
+  background: var(--color-surface-strong);
 }
 
 .skeleton-line {

@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import AtomicClock from './components/AtomicClock';
 import Header from './components/Header';
+import HeroSection from './components/HeroSection';
 import FeedGrid from './components/FeedGrid';
 import FilterBar from './components/FilterBar';
 import CompanionGrid from './components/CompanionGrid';
@@ -547,8 +548,7 @@ function App() {
         element={
           <div className="app-shell">
             <div className="app-backdrop" aria-hidden="true" />
-            <div className="app-noise-overlay" aria-hidden="true" />
-            <div className="app-ambient-glow" aria-hidden="true" />
+            <div className="grain-overlay" aria-hidden="true" />
 
             <AtomicClock />
 
@@ -570,7 +570,13 @@ function App() {
               <div
                 id="feed-panel"
                 role="tabpanel"
-                style={{ display: activeView === 'feed' ? 'block' : 'none' }}
+                style={{
+                  display: activeView === 'feed' ? 'block' : 'none',
+                  width: '100%',
+                  maxWidth: 'var(--maxw)',
+                  margin: '0 auto',
+                  padding: '0 var(--gutter)',
+                }}
               >
                 <FeedGrid
                   t={t}
@@ -609,6 +615,13 @@ function App() {
                 role="tabpanel"
                 style={{ display: activeView === 'directory' ? 'block' : 'none' }}
               >
+                <HeroSection
+                  t={t}
+                  metrics={metrics}
+                  dataState={displayDataState}
+                  intakeSummary={intakeSummary}
+                />
+
                 <section id="live-listings" className="listing-section">
                   <div className="section-header">
                     <div>
@@ -668,7 +681,15 @@ function App() {
               <div
                 id="map-panel"
                 role="tabpanel"
-                style={{ display: activeView === 'map' ? 'flex' : 'none', height: '100%', flexDirection: 'column' }}
+                style={{
+                  display: activeView === 'map' ? 'flex' : 'none',
+                  height: 'min(80vh, 820px)',
+                  flexDirection: 'column',
+                  width: '100%',
+                  maxWidth: 'var(--maxw)',
+                  margin: '0 auto',
+                  padding: '0 var(--gutter)',
+                }}
               >
                 <Suspense fallback={<section className="section-shell-loading">Loading map…</section>}>
                   <ListingMap

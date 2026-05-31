@@ -6,6 +6,20 @@ Read this at the start of every session. Mark `- [x]` as work completes.
 
 ## Active
 
+### Sabai Sabai 2.0 — "Intelligence Terminal" design overhaul (Dr Non's Claude Design handoff)
+
+The user designed a warm-dark "intelligence terminal" in Claude Design and handed over the bundle. Mango `#FF6B3D` primary, Bricolage Grotesque + Hanken Grotesk + Instrument Serif + JetBrains Mono, film grain, editorial index rows, rounded radius. NOTE: this is Dr Non's own authored direction — it intentionally supersedes the prior zero-radius/amber house defaults for THIS project. Source: `/tool-results/design_extract/airdnd-sabai-sabai/`.
+
+- [x] **Foundation** — port `ds.css` into `src/index.css` with backward-compat token aliases (old `--color-*` names → new warm-dark values) so all 40+ existing components inherit the palette/fonts/radius. Add new component classes (.btn .panel .kpi .barlist .lcard .index-row .topbar .site-header .gauge) + grain overlay.
+- [x] **Header** — rebuild to topbar ticker + brand mark + nav + status pill + actions.
+- [x] **Hero** — rebuild as "What operators post. Where they are. *What it means.*" with cumulative-growth chart card, wired to real metrics. Render it at top of directory view.
+- [x] **CompanionCard** — rebuild to `.lcard` professional card (photo cover, name, area, rating, badges, price, source chip).
+- [x] **Map coverage fix** — every listing gets a pin: fall back lat/lng → AREA pattern → city centroid → Bangkok centroid+offset. Fixes "map shows 1/100".
+- [ ] **Overview landing page** — full hub (KPI strip, supply-by-district barlist, service-mix donut, supply-density map, live-intake feed, newest-in-index rows). Currently hero is injected into directory; build the standalone Overview route next.
+- [ ] **Listing Detail page** — gallery grid, services/pricing table, location map, sticky contact sidecard, provenance panel (new design `Listing Detail.html`).
+- [ ] **Analytics deep-dive** — port the new Analytics charts (price histogram, median-by-service, channel activity, intake-velocity stacked bars, photo-match gauge, pipeline funnel) + add the **proximity+budget finder**: "near Soi Ladprao 10, 1hr, <1000 THB" → nearest matches. Needs listing lat/lng + duration/price parse.
+- [ ] **Real geocoding** — verify each listing's address against Google Maps coordinates and store lat/lng so the map is precise, not approximate. Backfill via `scripts/` geocoder.
+
 - [ ] **Replace `node-telegram-bot-api` with `grammy` or `telegraf`** — eliminates the last 6 moderate CVEs (qs, uuid in the `@cypress/request` chain). `node-telegram-bot-api` is effectively unmaintained for this dep chain. `grammy` is the modern replacement. Affects: `scripts/telegram_bot.js`, `scripts/telegram_scraper.js`.
 
 - [x] **Lazy-load Analytics route** — Already done. `App.jsx:41` has `const Analytics = lazy(() => import('./components/Analytics'))`. The 508KB main bundle is React+router+eagerly-loaded components; gzip is 156KB (acceptable). Vite warning threshold is just set too low for a modern React app.

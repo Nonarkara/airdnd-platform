@@ -130,13 +130,13 @@ function getApproximateCoordinates(listing) {
     patterns.some((pattern) => haystack.includes(pattern.toLowerCase())),
   );
   const cityCoords = CITY_COORDINATES[listing?.city];
-  const baseCoords = area?.coords || cityCoords;
+  // Every listing earns a pin. Matched district → tight scatter; known city →
+  // medium scatter; otherwise fall back to Bangkok with a wide stable scatter
+  // so unmapped supply is still visible (approximate, flagged as 'area').
+  const baseCoords = area?.coords || cityCoords || BANGKOK_CENTER;
+  const radius = area ? 0.008 : cityCoords ? 0.025 : 0.055;
 
-  if (!baseCoords) {
-    return null;
-  }
-
-  const [latOffset, lngOffset] = createStableOffset(listing, area ? 0.008 : 0.025);
+  const [latOffset, lngOffset] = createStableOffset(listing, radius);
   return [baseCoords[0] + latOffset, baseCoords[1] + lngOffset];
 }
 
