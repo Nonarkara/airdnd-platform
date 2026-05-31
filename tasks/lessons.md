@@ -4,6 +4,20 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-05-31 · Sabai Sabai 2.0 design overhaul
+
+**What went wrong — fixed-viewport shell vs. page-scroll design:**
+- Dropped the new hero into the directory view; the page collapsed (docHeight 454px, hero 1421px overflowing a 12px-tall `.main-content`, footer overlapping the hero).
+- Root cause: `.app-shell` was `height:100dvh; overflow:hidden` with `.main-content { flex:1; overflow-y:auto }` — a *fixed-viewport* app built for the old directory/map/feed tab interface, where an internal pane scrolls inside a locked screen. The new design is a *scrolling hub* (hero → KPIs → listings → footer), which needs natural document flow.
+- **Correct behaviour:** when injecting tall page content, first check whether the app shell is fixed-viewport (`height:100vh/100dvh` + `overflow:hidden`) or natural-flow. If fixed, convert: `min-height:100dvh`, drop `overflow:hidden`, change the scroll pane from `flex:1; overflow-y:auto` to `flex:1 0 auto`, and give any map/fill view an explicit height.
+- **How to recognise:** symptoms = `document.documentElement.scrollHeight` far smaller than a child's height; a section's `getBoundingClientRect().height` huge while its parent's is ~0; footer `top` overlapping earlier sections. `preview_eval` reading section tops/heights diagnoses it in one call.
+
+**What went right — the token-bridge force multiplier:**
+- Rewrote `index.css` as the new design system but aliased every legacy `--color-*/--font-*/--radius-*` token onto the new warm-dark values. All 40+ untouched components adopted the new palette/fonts/radius instantly. One file, whole-app shift, near-zero regression risk. Reuse this pattern for future re-skins.
+- `preview_eval` + `preview_screenshot` (launch.json with the CORRECT node path — `/opt/homebrew/bin/node`, not `/usr/local/bin/node`) caught the layout bug before deploy. Kill stray vite servers on the port first (another project's "CITY HUB" was holding 5174 and got screenshotted instead).
+
+---
+
 ## 2026-05-24 · Kimi audit + deploy session
 
 **What went right:**
