@@ -111,7 +111,7 @@ function Header({
               >
                 <option value="dark">Dark</option>
                 <option value="light">Light</option>
-                <option value="hot-as-hell">Hot</option>
+                <option value="high-contrast">High Contrast</option>
               </select>
             </label>
 

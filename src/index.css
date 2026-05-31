@@ -171,19 +171,25 @@
   --jade-dim: #CFF2E6;  --gold-dim: #F8EEC8;
 }
 
-/* HOT — a real fire theme, not a darker plum. Warm near-black with molten
-   orange/amber heat, clearly distinct from the cool plum-pink Dark. High-
-   contrast warm-white text keeps it legible (the old hot-pink-on-plum strained
-   the eyes). One mint spark survives for "live" status and chart contrast. */
-[data-theme='hot-as-hell'] {
+/* HIGH CONTRAST — accessibility theme for low vision (WCAG AAA-leaning).
+   Pure black, pure white text, VISIBLE borders (faint hairlines vanish for
+   low-vision users), and a maximum-luminance yellow accent (the established
+   high-contrast convention). Every text token clears 7:1 on black; even the
+   "muted" greys stay legible. Bright, distinct status/data colours. */
+[data-theme='high-contrast'] {
   color-scheme: dark;
-  --bg: #0A0503;  --bg-2: #120A05;  --surface: #1A0E07;  --surface-2: #25140C;  --surface-3: #331D11;
-  --line: #3C2113;  --line-2: #58311B;
-  --ink: #FFF2E6;  --ink-2: #E6C9B0;  --ink-3: #B08A6E;  --ink-4: #6F5440;
-  --mango: #FF4D1F;  --mango-2: #FF7A45;  --mango-dim: #5A1E0A;
-  --gold: #FFD23D;  --berry: #FF3D5E;  --sky: #FF8A3D;  --violet: #FFB020;
-  --d1: #FF4D1F;  --d2: #FFB020;  --d3: #FFD23D;  --d4: #FF7A45;  --d5: #FF3D6E;  --d6: #2FE0A6;
+  --bg: #000000;  --bg-2: #000000;  --surface: #000000;  --surface-2: #141414;  --surface-3: #242424;
+  --line: #8A8A8A;  --line-2: #FFFFFF;
+  --ink: #FFFFFF;  --ink-2: #F0F0F0;  --ink-3: #C8C8C8;  --ink-4: #A0A0A0;
+  --mango: #FFE600;  --mango-2: #FFEF66;  --mango-dim: #3A3400;
+  --jade: #5CFF7A;  --jade-dim: #0A2A10;
+  --gold: #FFE600;  --gold-dim: #3A3400;
+  --berry: #FF7A7A;  --sky: #5CD6FF;  --violet: #D0A6FF;
+  --live: #5CFF7A;  --warn: #FFE600;  --down: #FF7A7A;
+  --d1: #FFE600;  --d2: #5CD6FF;  --d3: #FFFFFF;  --d4: #5CFF7A;  --d5: #FF9A4D;  --d6: #FF6BD6;
 }
+/* No film grain in high-contrast mode — visual noise hurts low-vision users. */
+[data-theme='high-contrast'] .grain-overlay { display: none; }
 
 /* ============================================================================
    BASE
