@@ -82,10 +82,11 @@ export default function Sociology() {
   if (error) return shell(<p className="soc-loading">Data unavailable — {error}</p>);
   if (!research) return shell(<p className="soc-loading">Loading field notes…</p>);
 
-  const { corpus, temporal, intervals, repeat, queries } = research;
+  const { corpus, temporal, intervals, repeat, queries, pricing, channelTiers } = research;
   const maxDayCount = Math.max(...temporal.dayOfWeek.map((d) => d.count), 1);
   const maxBucket = Math.max(...intervals.buckets.map((b) => b.count), 1);
   const maxIntent = Math.max(...queries.intents.map((q) => q.count), 1);
+  const maxPrice = pricing?.buckets?.length ? Math.max(...pricing.buckets.map((b) => b.count), 1) : 1;
   const years = corpus.firstSeen && corpus.lastSeen
     ? Math.max(1, Math.round((new Date(corpus.lastSeen) - new Date(corpus.firstSeen)) / (365.25 * 864e5)))
     : null;
@@ -232,6 +233,11 @@ export default function Sociology() {
           And it does not stay in one room. <strong>{repeat.crossPostRate}%</strong> of unique posts appear on more than one
           channel — the same broadcast sprayed across {repeat.maxChannelsForOnePost} groups at once. This is not organic reach.
           It is coordinated flooding: a single supply, multiplied until it fills the field of view.
+          {channelTiers && (
+            <> The structure is two-tier: <strong>{channelTiers.aggregatorCount} aggregator channels</strong> carry {channelTiers.aggregatorPosts.toLocaleString()} of
+            the broadcasts and fire every few minutes, while <strong>{channelTiers.shopCount} shop channels</strong> carry {channelTiers.shopPosts.toLocaleString()} and
+            surface roughly once a day. The desperation belongs to the aggregators; the shops just open the door.</>
+          )}
         </p>
       </section>
 
@@ -268,10 +274,39 @@ export default function Sociology() {
         </p>
       </section>
 
+      {/* ── The Alibi Price ── */}
+      {pricing?.count > 50 && (
+        <section className="soc-section">
+          <span className="meth-num">04</span>
+          <h2>The Alibi Price</h2>
+
+          <p className="soc-lead">
+            Where a number is named at all — and it rarely is — it clusters tightly. Across {pricing.count.toLocaleString()} baht
+            figures extracted from the text, the median is <strong>฿{pricing.median.toLocaleString()}</strong>, and roughly
+            nine in ten fall under ฿1,000.
+          </p>
+
+          <div className="soc-chart-label" style={{ marginBottom: '0.5rem' }}>Named prices, by band (฿/hour)</div>
+          <div className="soc-bar-rows">
+            {pricing.buckets.map((b) => (
+              <BarRow key={b.label} label={b.label} count={b.count} maxCount={maxPrice} variant={b.lo < 1000 ? 'accent' : 'data'} suffix={` (${b.pct}%)`} />
+            ))}
+          </div>
+
+          <p className="soc-note">
+            But read this against §03 and the trick reveals itself. The visible price is the <strong>legitimate-massage</strong> price —
+            the ฿450 hour of therapeutic bodywork, the alibi the whole vocabulary is built to protect. The other price, the one
+            attached to what the room and the oil and the shower actually imply, is the one figure the corpus almost never
+            contains. <strong>The price you are allowed to read is the price of the cover story.</strong> The real number is settled in
+            private, off the record, in the same silence that hides the women's names and their countries of origin.
+          </p>
+        </section>
+      )}
+
       {/* ── 04 The Name Economy (from sociology.json) ── */}
       {names && (
         <section className="soc-section">
-          <span className="meth-num">04</span>
+          <span className="meth-num">05</span>
           <h2>The Name Economy</h2>
 
           <p className="soc-lead">
@@ -315,7 +350,7 @@ export default function Sociology() {
       {/* ── 05 The Service Lexicon (from sociology.json) ── */}
       {lexicon && (
         <section className="soc-section">
-          <span className="meth-num">05</span>
+          <span className="meth-num">06</span>
           <h2>The Service Lexicon</h2>
 
           <p className="soc-lead">

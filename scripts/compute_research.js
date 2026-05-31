@@ -297,6 +297,102 @@ async function computeQueries(convo) {
   return { intents: results, bookingToPriceRatio: round(booking / (price || 1), 1) };
 }
 
+// The threshold lexicon — the euphemisms that encode the service without naming
+// it. Tracked over time, their rise and fall is a seismograph of enforcement.
+const THRESHOLD_TERMS = [
+  { id: 'room', label: 'ห้อง · room', re: /ห้อง/ },
+  { id: 'oil', label: 'น้ำมัน · oil', re: /น้ำมัน/ },
+  { id: 'aroma', label: 'อโรมา · aroma', re: /อโรมา|aroma/i },
+  { id: 'body', label: 'บอดี้ · body', re: /บอดี้/ },
+  { id: 'shower', label: 'อาบ · shower', re: /อาบน้ำ|อาบอบ/ },
+  { id: 'available', label: 'ว่าง · available', re: /ว่าง/ },
+];
+
+function ym(dateStr) {
+  const d = bkk(dateStr);
+  if (!d) return null;
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+}
+
+// Diachronic lexicon — monthly share of posts carrying each euphemism. Code
+// under enforcement pressure drifts; this dates the drift from the text alone.
+function computeLexiconOverTime(listings) {
+  const months = new Map();
+  for (const m of listings) {
+    const key = ym(m.message_date);
+    if (!key) continue;
+    if (!months.has(key)) months.set(key, { month: key, total: 0, ...Object.fromEntries(THRESHOLD_TERMS.map((t) => [t.id, 0])) });
+    const row = months.get(key);
+    row.total += 1;
+    const text = m.message_text || '';
+    for (const t of THRESHOLD_TERMS) if (t.re.test(text)) row[t.id] += 1;
+  }
+  const series = [...months.values()].sort((a, b) => a.month.localeCompare(b.month));
+  series.forEach((r) => THRESHOLD_TERMS.forEach((t) => { r[`${t.id}Pct`] = r.total ? round((r[t.id] / r.total) * 100) : 0; }));
+  return { terms: THRESHOLD_TERMS.map((t) => ({ id: t.id, label: t.label })), series };
+}
+
+// Market trajectory — broadcast volume per month and per year.
+function computeGrowth(listings) {
+  const months = new Map();
+  for (const m of listings) {
+    const key = ym(m.message_date);
+    if (!key) continue;
+    months.set(key, (months.get(key) || 0) + 1);
+  }
+  const monthly = [...months.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([month, count]) => ({ month, count }));
+  const years = new Map();
+  monthly.forEach((s) => { const y = s.month.slice(0, 4); years.set(y, (years.get(y) || 0) + s.count); });
+  return { monthly, yearly: [...years.entries()].sort().map(([year, count]) => ({ year, count })) };
+}
+
+// Aggregator vs shop tiers — separates high-volume re-broadcasters from
+// single-shop channels so interval figures can be read honestly.
+function computeChannelTiers(listings) {
+  const byCh = new Map();
+  for (const m of listings) { const c = m.channel_name || 'unknown'; byCh.set(c, (byCh.get(c) || 0) + 1); }
+  const channels = [...byCh.entries()]
+    .map(([channel, posts]) => ({ channel, posts, tier: posts >= 500 ? 'aggregator' : 'shop' }))
+    .sort((a, b) => b.posts - a.posts);
+  const agg = channels.filter((c) => c.tier === 'aggregator');
+  const shop = channels.filter((c) => c.tier === 'shop');
+  return {
+    channels,
+    aggregatorCount: agg.length,
+    shopCount: shop.length,
+    aggregatorPosts: agg.reduce((s, c) => s + c.posts, 0),
+    shopPosts: shop.reduce((s, c) => s + c.posts, 0),
+  };
+}
+
+// Pricing — the small fraction of messages that name a baht figure. Numbers are
+// extracted only when adjacent to a price token, and bounded 200–9,999 to avoid
+// phone numbers and clock times. Directional, not audited.
+function computePricing(messages) {
+  const prices = [];
+  for (const m of messages) {
+    const t = m.message_text || '';
+    if (!/ราคา|บาท|฿|baht/i.test(t)) continue;
+    const re = /(?:ราคา|฿)\s*(\d{3,4})|(\d{3,4})\s*(?:บาท|฿|baht)/gi;
+    let mt;
+    while ((mt = re.exec(t))) {
+      const n = parseInt(mt[1] || mt[2], 10);
+      if (n >= 200 && n <= 9999) prices.push(n);
+    }
+  }
+  if (!prices.length) return { count: 0, buckets: [] };
+  const buckets = [
+    { label: '฿200–499', lo: 200, hi: 500, count: 0 },
+    { label: '฿500–999', lo: 500, hi: 1000, count: 0 },
+    { label: '฿1,000–1,999', lo: 1000, hi: 2000, count: 0 },
+    { label: '฿2,000+', lo: 2000, hi: Infinity, count: 0 },
+  ];
+  prices.forEach((p) => { const b = buckets.find((x) => p >= x.lo && p < x.hi); if (b) b.count += 1; });
+  const total = prices.length;
+  buckets.forEach((b) => { b.pct = round((b.count / total) * 100); });
+  return { count: total, median: median(prices), min: Math.min(...prices), max: Math.max(...prices), buckets };
+}
+
 // ---- main ------------------------------------------------------------------
 
 async function main() {
@@ -319,6 +415,10 @@ async function main() {
   const intervals = computeIntervals(listings);
   const repeat = computeRepeatAndCross(listings);
   const queries = await computeQueries(convo);
+  const lexiconOverTime = computeLexiconOverTime(listings);
+  const growth = computeGrowth(listings);
+  const channelTiers = computeChannelTiers(listings);
+  const pricing = computePricing([...listings, ...convo]);
 
   const out = {
     generatedAt: new Date().toISOString(),
@@ -334,6 +434,10 @@ async function main() {
     intervals,
     repeat,
     queries,
+    lexiconOverTime,
+    growth,
+    channelTiers,
+    pricing,
   };
 
   const outPath = path.join(ROOT, 'public', 'research.json');
@@ -341,14 +445,12 @@ async function main() {
   console.log(`[research] wrote ${outPath}`);
   console.log(JSON.stringify({
     peakWindow: temporal.peakWindow,
-    pilotPostRate: temporal.pilotPostRate,
-    medianInterval: intervals.medianIntervalHours,
-    fastestRepostMin: intervals.fastestRepostMinutes,
     repeatRate: repeat.repeatRate,
-    maxRepeats: repeat.maxRepeatsOfOnePost,
-    crossPostRate: repeat.crossPostRate,
     bookingToPrice: queries.bookingToPriceRatio,
-    topQuery: queries.intents[0]?.label,
+    growthYearly: growth.yearly,
+    tiers: `${channelTiers.aggregatorCount} aggregators (${channelTiers.aggregatorPosts}) / ${channelTiers.shopCount} shops (${channelTiers.shopPosts})`,
+    pricing: pricing.count ? `n=${pricing.count} median=฿${pricing.median} range=฿${pricing.min}–${pricing.max}` : 'none',
+    seismographMonths: lexiconOverTime.series.length,
   }, null, 2));
 }
 
