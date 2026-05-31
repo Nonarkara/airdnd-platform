@@ -1,0 +1,24 @@
+.snapshot { padding-block: var(--s9) 0; }
+
+.snapshot .sec-head { margin-bottom: var(--s6); }
+
+.snapshot__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--s6);
+}
+
+.snapshot__mix {
+  display: flex;
+  gap: var(--s6);
+  align-items: center;
+}
+
+.snapshot__mix .legend__item { width: 100%; }
+
+@media (max-width: 900px) {
+  .snapshot__grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .snapshot__mix { flex-direction: column; align-items: flex-start; gap: var(--s4); }
+}

@@ -48,6 +48,17 @@ export function resolveLocation(text) {
   return null;
 }
 
+// Classify a listing to its best-matching area label (for supply-by-district),
+// falling back to the city or "Other".
+export function classifyArea(listing) {
+  const hay = [listing?.location, listing?.name, listing?.city]
+    .filter(Boolean).join(' ').toLowerCase();
+  for (const area of AREAS) {
+    if (area.keywords.some((k) => hay.includes(k.toLowerCase()))) return area.label;
+  }
+  return null;
+}
+
 export function listingCoords(listing) {
   const lat = Number.parseFloat(listing?.latitude);
   const lng = Number.parseFloat(listing?.longitude);

@@ -5,6 +5,7 @@ import AtomicClock from './components/AtomicClock';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import ProximityFinder from './components/ProximityFinder';
+import MarketSnapshot from './components/MarketSnapshot';
 import FeedGrid from './components/FeedGrid';
 import FilterBar from './components/FilterBar';
 import CompanionGrid from './components/CompanionGrid';
@@ -627,6 +628,8 @@ function App() {
                   listings={allCompanions}
                   onSelect={setSelectedCompanion}
                 />
+
+                <MarketSnapshot listings={allCompanions} />
 
                 <section id="live-listings" className="listing-section">
                   <div className="section-header">
