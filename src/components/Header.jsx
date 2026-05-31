@@ -24,6 +24,7 @@ function Header({
     { id: 'analytics', label: t.nav?.analytics || 'Analytics', href: '/analytics' },
     { id: 'methodology', label: t.nav?.methodology || 'Methodology', href: '/methodology' },
     { id: 'sociology', label: t.nav?.sociology || 'Field Notes', href: '/sociology' },
+    { id: 'paper', label: 'Paper', href: '/paper' },
   ];
 
   return (

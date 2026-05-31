@@ -110,6 +110,7 @@ export default function Sociology() {
           </h1>
           <p className="meth-author">Non Arkaraprasertkul</p>
           <p className="meth-date">Working Notes, 2026 · {fmt(corpus.totalMessages)} messages, read by machine</p>
+          <p className="meth-date"><a href="/paper" style={{ color: 'var(--mango)', borderBottom: '1px solid currentColor' }}>Read the formal working paper →</a></p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', justifyContent: 'center' }}>
           <div className="soc-stat" style={{ background: 'transparent', padding: 0 }}>

@@ -39,6 +39,7 @@ const Methodology = lazy(() => import('./components/Methodology'));
 const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
 const Analytics = lazy(() => import('./components/Analytics'));
 const Sociology = lazy(() => import('./components/Sociology'));
+const Paper = lazy(() => import('./components/Paper'));
 const SORT_OPTIONS = [
   'Newest',
   'Most credible',
@@ -532,6 +533,14 @@ function App() {
         element={(
           <Suspense fallback={<div className="page-shell-loading">Loading field notes…</div>}>
             <Sociology />
+          </Suspense>
+        )}
+      />
+      <Route
+        path="/paper"
+        element={(
+          <Suspense fallback={<div className="page-shell-loading">Loading paper…</div>}>
+            <Paper />
           </Suspense>
         )}
       />

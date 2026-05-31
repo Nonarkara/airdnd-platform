@@ -1,0 +1,166 @@
+.paper {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+  padding-bottom: var(--s11);
+}
+
+/* ── Masthead ───────────────────────────────────────────────────────────── */
+.paper-masthead {
+  padding-block: var(--s9) var(--s7);
+  border-bottom: 2px solid var(--mango);
+}
+.paper-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: var(--s4) 0 0;
+  color: var(--ink);
+}
+.paper-subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.6vw, 1.7rem);
+  line-height: 1.25;
+  color: var(--ink-2);
+  margin: var(--s4) 0 var(--s6);
+  max-width: 40ch;
+}
+.paper-byline { font-size: var(--fs-sm); color: var(--ink-2); margin: 0 0 var(--s4); max-width: 60ch; }
+.paper-byline strong { color: var(--ink); }
+.paper-namenote {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-3);
+  margin: 0;
+  max-width: 64ch;
+  padding-left: var(--s4);
+  border-left: 1px solid var(--line-2);
+}
+
+/* ── Abstract ───────────────────────────────────────────────────────────── */
+.paper-abstract {
+  padding: var(--s6) 0;
+  border-bottom: 1px solid var(--line);
+}
+.paper-abstract p { font-size: 1.06rem; line-height: 1.62; color: var(--ink-2); margin: 0 0 var(--s4); }
+.paper-keywords { font-size: var(--fs-sm) !important; color: var(--ink-3) !important; }
+
+.paper-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 var(--s4);
+}
+.paper-abstract .paper-h { font-size: var(--fs-xs); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mango); font-family: var(--font-mono); }
+
+/* ── Sections ───────────────────────────────────────────────────────────── */
+.paper-sec { padding-block: var(--s8); border-bottom: 1px solid var(--line); position: relative; }
+.paper-num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.2em;
+  color: var(--mango);
+  margin-bottom: var(--s3);
+}
+.paper-lead {
+  font-size: 1.12rem;
+  line-height: 1.68;
+  color: var(--ink-2);
+  margin: 0 0 var(--s5);
+  max-width: 68ch;
+}
+.paper-lead strong { color: var(--ink); font-weight: 700; }
+.paper-coda {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: var(--mango);
+  margin: var(--s6) 0 0;
+}
+
+/* ── Figures ────────────────────────────────────────────────────────────── */
+.paper-fig {
+  margin: var(--s6) 0;
+  padding: var(--s5) var(--s5) var(--s4);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--line-2);
+  background: var(--surface);
+}
+.paper-fig-cap {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: var(--s4);
+}
+.paper-fig-note { font-size: var(--fs-sm); line-height: 1.55; color: var(--ink-3); margin: var(--s4) 0 0; }
+.paper-fig-note strong { color: var(--ink-2); }
+.paper-hourfig { width: 100%; height: auto; }
+
+.paper-bars { display: flex; flex-direction: column; gap: var(--s3); }
+.paper-bar-row { display: grid; grid-template-columns: minmax(120px, 1.4fr) 1fr auto; align-items: center; gap: var(--s4); }
+.paper-bar-label { font-size: var(--fs-sm); color: var(--ink-2); }
+.paper-bar-track { height: 10px; background: var(--surface-2); overflow: hidden; }
+.paper-bar-fill { display: block; height: 100%; background: var(--sky); }
+.paper-bar-fill.accent { background: var(--mango); }
+.paper-bar-val { font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* ── Redaction ──────────────────────────────────────────────────────────── */
+.paper-redact {
+  background: var(--ink-2);
+  color: var(--ink-2);
+  letter-spacing: -0.04em;
+  border-radius: 0;
+  user-select: none;
+  padding: 0 1px;
+  white-space: nowrap;
+}
+
+/* ── Plates ─────────────────────────────────────────────────────────────── */
+.paper-plates {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s5);
+  margin: var(--s6) 0 0;
+}
+.paper-plate { margin: 0; border: 1px solid var(--line); background: var(--surface); }
+.paper-plate-frame { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--bg-2); }
+.paper-plate-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(18px) saturate(0.7) brightness(0.82) contrast(0.95);
+  transform: scale(1.1); /* hide blurred edges */
+}
+.paper-plate-missing {
+  display: grid; place-items: center; filter: none; transform: none;
+  font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.1em;
+}
+.paper-plate-stamp {
+  position: absolute; top: 10px; left: 10px;
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
+  color: var(--ink); background: var(--mango); padding: 3px 7px;
+}
+.paper-plate-cap { display: block; padding: var(--s4); }
+.paper-plate-n { display: block; font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--mango); margin-bottom: var(--s2); }
+.paper-plate-text { display: block; font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); margin-bottom: var(--s3); }
+.paper-plate-src { display: block; font-size: var(--fs-2xs); line-height: 1.5; color: var(--ink-4); }
+
+/* ── References ─────────────────────────────────────────────────────────── */
+.paper-refs { padding-block: var(--s8); }
+.paper-refs ul { list-style: none; margin: 0; padding: 0; }
+.paper-refs li { font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); padding: var(--s3) 0; border-bottom: 1px solid var(--line); text-indent: -1.2em; padding-left: 1.2em; }
+
+@media (max-width: 560px) {
+  .paper-plates { grid-template-columns: 1fr; }
+  .paper-bar-row { grid-template-columns: minmax(90px, 1.4fr) 1fr auto; gap: var(--s3); }
+}
