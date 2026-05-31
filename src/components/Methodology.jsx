@@ -149,11 +149,11 @@ function Methodology() {
           <svg viewBox="0 0 820 360" className="meth-svg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three-layer deduplication decision tree">
             <defs>
               <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#ff7440" />
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF3D8B" />
               </marker>
             </defs>
             {/* Input */}
-            <rect x="20" y="20" width="200" height="56" stroke="#ff7440" strokeWidth="1" fill="none" />
+            <rect x="20" y="20" width="200" height="56" stroke="#FF3D8B" strokeWidth="1" fill="none" />
             <text x="120" y="46" textAnchor="middle" fill="#f0f0f0" fontFamily="ChakraPetch, sans-serif" fontWeight="700" fontSize="14">Telegram cluster</text>
             <text x="120" y="64" textAnchor="middle" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="11">name · phone · LINE · maps</text>
 
@@ -185,8 +185,8 @@ function Methodology() {
             {/* Layer 3: fuzzy */}
             <line x1="120" y1="300" x2="120" y2="325" stroke="#2a2a2a" markerEnd="url(#arrow-orange)" />
             <text x="138" y="318" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="10">distinct</text>
-            <rect x="20" y="330" width="200" height="20" stroke="#ff7440" strokeWidth="1" fill="none" />
-            <text x="120" y="345" textAnchor="middle" fill="#ff7440" fontFamily="Share Tech Mono, monospace" fontSize="11" letterSpacing="0.1em">LAYER 3 — FUZZY (≥ 10 char substring)</text>
+            <rect x="20" y="330" width="200" height="20" stroke="#FF3D8B" strokeWidth="1" fill="none" />
+            <text x="120" y="345" textAnchor="middle" fill="#FF3D8B" fontFamily="Share Tech Mono, monospace" fontSize="11" letterSpacing="0.1em">LAYER 3 — FUZZY (≥ 10 char substring)</text>
 
             {/* Right column: outcomes */}
             <rect x="320" y="120" width="220" height="60" stroke="#34d399" strokeWidth="1" fill="none" />
@@ -200,7 +200,7 @@ function Methodology() {
 
             {/* Far right: scoring formula */}
             <rect x="580" y="80" width="220" height="240" stroke="#2a2a2a" strokeWidth="1" fill="none" />
-            <text x="690" y="105" textAnchor="middle" fill="#ff7440" fontFamily="Share Tech Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.12em">CANONICAL SCORE</text>
+            <text x="690" y="105" textAnchor="middle" fill="#FF3D8B" fontFamily="Share Tech Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.12em">CANONICAL SCORE</text>
             <text x="600" y="135" fill="#f0f0f0" fontFamily="Share Tech Mono, monospace" fontSize="11">score(L) =</text>
             <text x="610" y="155" fill="#34d399" fontFamily="Share Tech Mono, monospace" fontSize="11">  35 · I[maps]</text>
             <text x="610" y="172" fill="#34d399" fontFamily="Share Tech Mono, monospace" fontSize="11">+ 25 · I[phone]</text>
@@ -346,7 +346,7 @@ function Methodology() {
             <polygon points="590,105 600,110 590,115" fill="#34d399" />
 
             {/* Heatmap Node */}
-            <rect x="600" y="80" width="140" height="60" rx="2" stroke="#ff7440" strokeWidth="1" fill="none" />
+            <rect x="600" y="80" width="140" height="60" rx="2" stroke="#FF3D8B" strokeWidth="1" fill="none" />
             <text x="670" y="110" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">ACTIVITY HEATMAP</text>
             <text x="670" y="125" textAnchor="middle" fill="#e8e6e180" fontSize="9">Predictive Indicator</text>
           </svg>

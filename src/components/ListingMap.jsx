@@ -175,7 +175,7 @@ function buildPopupHtml(listing, precision) {
   const meta = [];
   if (listing.priceLabel && listing.priceLabel !== 'Rate on request') meta.push(listing.priceLabel);
   if (listing.hours) meta.push(listing.hours);
-  if (meta.length > 0) lines.push(`<div style="margin-top:6px;font-weight:600;color:#c4a44a">${escapeHtml(meta.join(' · '))}</div>`);
+  if (meta.length > 0) lines.push(`<div style="margin-top:6px;font-weight:600;color:#FFD23D">${escapeHtml(meta.join(' · '))}</div>`);
 
   const links = [];
   const telHref = formatTelLink(listing.phone);
@@ -195,10 +195,10 @@ function buildPopupHtml(listing, precision) {
       <button class="popup-view-btn" data-id="${escapeHtml(listing.id)}" style="
         width: 100%;
         height: 32px;
-        background: rgba(196, 164, 74, 0.1);
-        border: 1px solid #c4a44a;
+        background: rgba(255, 61, 139, 0.12);
+        border: 1px solid #FF3D8B;
         border-radius: 8px;
-        color: #c4a44a;
+        color: #FF3D8B;
         font-family: 'Inter', sans-serif;
         font-size: 11px;
         font-weight: 600;

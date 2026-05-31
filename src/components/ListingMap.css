@@ -115,12 +115,12 @@
 }
 
 .aura-level-3 {
-  background: radial-gradient(circle, var(--color-action) 18%, rgba(255, 116, 64, 0.4) 55%, transparent 100%);
+  background: radial-gradient(circle, var(--color-action) 18%, rgba(255, 61, 139, 0.4) 55%, transparent 100%);
   z-index: 1000 !important;
 }
 
 .aura-level-2 {
-  background: radial-gradient(circle, var(--color-data) 20%, rgba(159, 194, 255, 0.32) 60%, transparent 100%);
+  background: radial-gradient(circle, var(--color-data) 20%, rgba(54, 199, 255, 0.32) 60%, transparent 100%);
   z-index: 900 !important;
 }
 

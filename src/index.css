@@ -14,41 +14,41 @@
 :root {
   color-scheme: dark;
 
-  /* ---- Surfaces · warm near-black, NOT navy ---------------------------- */
-  --bg:        #100D08;
-  --bg-2:      #16120B;
-  --surface:   #1C1710;
-  --surface-2: #241E15;
-  --surface-3: #2E2719;
-  --line:      #322A1C;
-  --line-2:    #443A27;
+  /* ---- Surfaces · deep plum-black stage so crayon colours pop ---------- */
+  --bg:        #141017;
+  --bg-2:      #1A141F;
+  --surface:   #221A29;
+  --surface-2: #2C2235;
+  --surface-3: #382C44;
+  --line:      #352A40;
+  --line-2:    #4C3C5A;
 
-  /* ---- Text ------------------------------------------------------------ */
-  --ink:       #F6EEDD;
-  --ink-2:     #C3B79B;
-  --ink-3:     #8A7E66;
-  --ink-4:     #5E543F;
+  /* ---- Text · warm white with a faint pink-cream warmth ---------------- */
+  --ink:       #F7EEF3;
+  --ink-2:     #CBBCC9;
+  --ink-3:     #948499;
+  --ink-4:     #64586E;
 
-  /* ---- Brand / accents ------------------------------------------------- */
-  --mango:     #FF6B3D;
-  --mango-2:   #FF8A5C;
-  --mango-dim: #6E2E16;
-  --jade:      #34C79E;
-  --jade-dim:  #143F34;
-  --gold:      #E9B23C;
-  --gold-dim:  #4A3A14;
-  --berry:     #F0657F;
-  --sky:       #5BA6F0;
-  --violet:    #A98BE0;
+  /* ---- Brand / accents · jazzy pink star + a box of crayons ------------ */
+  --mango:     #FF3D8B;   /* JAZZY PINK — the one star accent */
+  --mango-2:   #FF63A4;
+  --mango-dim: #5E1538;
+  --jade:      #2FE0A6;   /* crayon mint */
+  --jade-dim:  #0E4636;
+  --gold:      #FFD23D;   /* crayon sunshine */
+  --gold-dim:  #4A3A10;
+  --berry:     #FF5C7A;   /* crayon coral */
+  --sky:       #36C7FF;   /* crayon electric blue */
+  --violet:    #B073FF;   /* crayon grape */
 
-  /* ---- Categorical data palette (charts) ------------------------------ */
-  --d1: #FF6B3D;  --d2: #34C79E;  --d3: #E9B23C;
-  --d4: #5BA6F0;  --d5: #F0657F;  --d6: #A98BE0;
-  --d1-dim: rgba(255,107,61,.18);  --d2-dim: rgba(52,199,158,.18);
-  --d3-dim: rgba(233,178,60,.18);  --d4-dim: rgba(91,166,240,.18);
+  /* ---- Categorical data palette (charts) · the crayon box ------------- */
+  --d1: #FF3D8B;  --d2: #36C7FF;  --d3: #FFD23D;
+  --d4: #5CE08A;  --d5: #FF8A3D;  --d6: #B073FF;
+  --d1-dim: rgba(255,61,139,.18);  --d2-dim: rgba(54,199,255,.18);
+  --d3-dim: rgba(255,210,61,.18);  --d4-dim: rgba(92,224,138,.18);
 
   /* ---- Status ---------------------------------------------------------- */
-  --live: #34C79E;  --warn: #E9B23C;  --down: #F0657F;
+  --live: #2FE0A6;  --warn: #FFD23D;  --down: #FF5C7A;
 
   /* ---- Type ------------------------------------------------------------ */
   --font-display: 'Bricolage Grotesque','Hanken Grotesk','IBM Plex Sans Thai',system-ui,sans-serif;
@@ -77,8 +77,8 @@
   --sh-sm: 0 1px 2px rgba(0,0,0,.4);
   --sh-md: 0 8px 28px rgba(0,0,0,.5);
   --sh-lg: 0 24px 60px rgba(0,0,0,.6);
-  --glow-mango: 0 0 0 1px rgba(255,107,61,.35), 0 8px 30px rgba(255,107,61,.22);
-  --glow-jade:  0 0 24px rgba(52,199,158,.35);
+  --glow-mango: 0 0 0 1px rgba(255,61,139,.40), 0 8px 30px rgba(255,61,139,.26);
+  --glow-jade:  0 0 24px rgba(47,224,166,.35);
 
   /* ---- Layout ---------------------------------------------------------- */
   --maxw: 1280px;
@@ -164,17 +164,18 @@
    is the canonical default. */
 [data-theme='light'] {
   color-scheme: light;
-  --bg: #FBF6EC;  --bg-2: #F3EBDC;  --surface: #FFFFFF;  --surface-2: #F3EBDC;  --surface-3: #ECE2D0;
-  --line: #E2D6C0;  --line-2: #CDBD9F;
-  --ink: #1E170D;  --ink-2: #4C422F;  --ink-3: #796E57;  --ink-4: #A89B80;
-  --mango-dim: #FBE0D2;  --jade-dim: #D4F0E6;  --gold-dim: #F6EBCB;
+  --bg: #FCF4F8;  --bg-2: #F4E7EF;  --surface: #FFFFFF;  --surface-2: #F4E7EF;  --surface-3: #ECDAE5;
+  --line: #E8D5E1;  --line-2: #D0B2C4;
+  --ink: #1F1320;  --ink-2: #4E3A48;  --ink-3: #7C6675;  --ink-4: #AB91A2;
+  --mango: #E61E73;  --mango-2: #FF3D8B;  --mango-dim: #FBD9E7;
+  --jade-dim: #CFF2E6;  --gold-dim: #F8EEC8;
 }
 
 [data-theme='hot-as-hell'] {
   color-scheme: dark;
-  --bg: #0A0805;  --bg-2: #100B06;  --surface: #17110A;  --surface-2: #201810;  --surface-3: #2B2014;
-  --line: #3A2C18;  --line-2: #523E22;
-  --mango: #FF5722;  --mango-2: #FF7847;
+  --bg: #0E0710;  --bg-2: #150A16;  --surface: #1D0E1F;  --surface-2: #28142A;  --surface-3: #351A38;
+  --line: #3C1E40;  --line-2: #562C5B;
+  --mango: #FF1A6B;  --mango-2: #FF4D8F;  --mango-dim: #5A0E33;
 }
 
 /* ============================================================================
@@ -219,7 +220,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   outline: 2px solid var(--mango); outline-offset: 2px;
 }
 
-::selection { background: var(--mango); color: #1a1208; }
+::selection { background: var(--mango); color: #fff; }
 ::-webkit-scrollbar { height: 10px; width: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 99px; }
 ::-webkit-scrollbar-track { background: transparent; }
