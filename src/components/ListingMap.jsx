@@ -262,6 +262,28 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
       if (coordinateResult) withCoords.push({ listing, ...coordinateResult });
       else withoutCoords.push(listing);
     });
+
+    // De-stack shared centroids. The scraper assigns a district/province centroid
+    // when it can't geocode a precise address, so dozens of listings pile onto a
+    // single coordinate (14 on Bangkok-center alone) and the map reads as "1 pin
+    // for 100 listings". Spread any shared coordinate with a stable per-listing
+    // offset so the real supply density becomes visible.
+    const buckets = new Map();
+    withCoords.forEach((pin) => {
+      const key = `${pin.coords[0].toFixed(3)},${pin.coords[1].toFixed(3)}`;
+      if (!buckets.has(key)) buckets.set(key, []);
+      buckets.get(key).push(pin);
+    });
+    buckets.forEach((group) => {
+      if (group.length <= 1) return;
+      const radius = Math.min(0.004 + group.length * 0.0016, 0.03);
+      group.forEach((pin) => {
+        const [dLat, dLng] = createStableOffset(pin.listing, radius);
+        pin.coords = [pin.coords[0] + dLat, pin.coords[1] + dLng];
+        pin.precision = 'area';
+      });
+    });
+
     return { pins: withCoords, pendingListings: withoutCoords };
   }, [listings]);
   const exactPinCount = pins.filter((pin) => pin.precision === 'exact').length;

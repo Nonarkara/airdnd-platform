@@ -4,6 +4,7 @@ import './App.css';
 import AtomicClock from './components/AtomicClock';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
+import ProximityFinder from './components/ProximityFinder';
 import FeedGrid from './components/FeedGrid';
 import FilterBar from './components/FilterBar';
 import CompanionGrid from './components/CompanionGrid';
@@ -620,6 +621,11 @@ function App() {
                   metrics={metrics}
                   dataState={displayDataState}
                   intakeSummary={intakeSummary}
+                />
+
+                <ProximityFinder
+                  listings={allCompanions}
+                  onSelect={setSelectedCompanion}
                 />
 
                 <section id="live-listings" className="listing-section">
