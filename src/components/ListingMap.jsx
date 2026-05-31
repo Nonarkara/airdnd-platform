@@ -191,17 +191,17 @@ function buildPopupHtml(listing, precision) {
   if (listing.sourceChannel) lines.push(`<div style="margin-top:4px;font-size:10px;color:#666">${escapeHtml(listing.sourceChannel)}</div>`);
 
   lines.push(`
-    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(123, 244, 255, 0.15)">
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255, 255, 255, 0.08)">
       <button class="popup-view-btn" data-id="${escapeHtml(listing.id)}" style="
         width: 100%;
         height: 32px;
-        background: rgba(34, 247, 255, 0.1);
-        border: 1px solid #22f7ff;
-        border-radius: 999px;
-        color: #22f7ff;
-        font-family: 'Space Grotesk', sans-serif;
+        background: rgba(196, 164, 74, 0.1);
+        border: 1px solid #c4a44a;
+        border-radius: 8px;
+        color: #c4a44a;
+        font-family: 'Inter', sans-serif;
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 600;
         letter-spacing: 0.05em;
         text-transform: uppercase;
         cursor: pointer;

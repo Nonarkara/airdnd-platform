@@ -1,60 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
 
 /*
- * Sub-i 2.0 — The Operator Theme
+ * Sub-i 3.0 — The Executive Theme
  * Built for a cinematic, state-of-the-art intelligence experience.
  *
  * Design principles:
- *   - Deep obsidian background with heavy glassmorphism.
- *   - Blurred backdrop filters and semi-transparent surfaces.
- *   - Vibrant neon glowing accents (cyan, magenta, amber).
- *   - Smooth geometry with subtle rounded corners.
+ *   - Rich charcoal and deep slate background tones.
+ *   - Soft cinematic lighting and subtle mesh gradients.
+ *   - Delicate 1px borders and understated shadows.
+ *   - Muted, elegant accent colors.
  */
 
 :root {
   color-scheme: dark;
 
-  /* Theme: Dark Mode (Default) — Obsidian & Neon Accents */
-  --color-bg: #030509;
-  --color-bg-raised: rgba(10, 15, 26, 0.6);
-  --color-bg-inset: rgba(3, 5, 9, 0.8);
+  /* Theme: Dark Mode (Default) — Premium Minimalism */
+  --color-bg: #111317;
+  --color-bg-raised: #1a1d24;
+  --color-bg-inset: #0a0b0e;
   
   /* Glass Surfaces */
-  --color-surface: rgba(15, 20, 36, 0.35);
-  --color-surface-strong: rgba(20, 28, 48, 0.5);
-  --color-surface-hover: rgba(30, 42, 68, 0.6);
+  --color-surface: rgba(26, 29, 36, 0.4);
+  --color-surface-strong: rgba(35, 39, 48, 0.6);
+  --color-surface-hover: rgba(45, 50, 62, 0.6);
 
-  /* Dividers — glowing hairlines */
-  --color-line: rgba(0, 240, 255, 0.15);
-  --color-line-soft: rgba(0, 240, 255, 0.05);
-  --color-line-hot: rgba(255, 0, 102, 0.4);
+  /* Dividers — delicate hairlines */
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-soft: rgba(255, 255, 255, 0.04);
+  --color-line-hot: rgba(196, 164, 74, 0.4);
 
-  /* Text — Bright Neon & Crisp White */
-  --color-cream: #ffffff;
-  --color-cream-soft: #b0c4de;
-  --color-cream-muted: #5e7799;
-  --color-cream-faint: #1a2639;
+  /* Text — Elegant & Muted */
+  --color-cream: #f5f5f7;
+  --color-cream-soft: #a1a6b0;
+  --color-cream-muted: #6b7280;
+  --color-cream-faint: #374151;
 
-  /* Accents — Neon cyberpunk */
-  --color-action: #00f0ff; /* Neon Cyan */
-  --color-action-soft: rgba(0, 240, 255, 0.15);
-  --color-data: #ff0055; /* Neon Magenta/Pink */
-  --color-data-soft: rgba(255, 0, 85, 0.15);
-  --color-status: #00ffaa; /* Neon Mint */
-  --color-status-soft: rgba(0, 255, 170, 0.15);
-  --color-accent: #ffb000; /* Neon Amber */
-  --color-accent-soft: rgba(255, 176, 0, 0.15);
+  /* Accents — Muted Luxury */
+  --color-action: #c4a44a; /* Champagne / Gold */
+  --color-action-soft: rgba(196, 164, 74, 0.15);
+  --color-data: #4a607a; /* Slate Blue */
+  --color-data-soft: rgba(74, 96, 122, 0.15);
+  --color-status: #5b7a60; /* Muted Green */
+  --color-status-soft: rgba(91, 122, 96, 0.15);
+  --color-accent: #8e7a68; /* Warm Taupe */
+  --color-accent-soft: rgba(142, 122, 104, 0.15);
 
   /* Legacy aliases */
   --color-red: var(--color-data);
-  --color-red-hover: #ff3377;
+  --color-red-hover: #5a7391;
   --color-red-soft: var(--color-data-soft);
-  --color-gold: var(--color-accent);
-  --color-gold-soft: var(--color-accent-soft);
-  --color-purple: #b000ff;
-  --color-purple-soft: rgba(176, 0, 255, 0.15);
+  --color-gold: var(--color-action);
+  --color-gold-soft: var(--color-action-soft);
+  --color-purple: var(--color-accent);
+  --color-purple-soft: var(--color-accent-soft);
   --color-success: var(--color-status);
-  --color-warning: var(--color-accent);
+  --color-warning: var(--color-action);
   --color-danger: var(--color-data);
 
   --color-ink: var(--color-cream);
@@ -74,17 +74,17 @@
   --text-small: 13px;
   --text-micro: 11px;
 
-  /* Geometry — Smooth Glass Corners */
+  /* Geometry — Smooth Soft Corners */
   --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-pill: 999px;
 
-  /* Shadows — Neon Glows */
-  --shadow-glow-cyan: 0 0 10px rgba(0, 240, 255, 0.3), 0 0 20px rgba(0, 240, 255, 0.1);
-  --shadow-glow-pink: 0 0 10px rgba(255, 0, 85, 0.3), 0 0 20px rgba(255, 0, 85, 0.1);
-  --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.5);
+  /* Shadows — Soft cinematic */
+  --shadow-glow-cyan: 0 0 10px rgba(196, 164, 74, 0.15), 0 0 20px rgba(196, 164, 74, 0.05); /* Aliased to gold for inputs */
+  --shadow-glow-pink: 0 0 10px rgba(74, 96, 122, 0.15), 0 0 20px rgba(74, 96, 122, 0.05);
+  --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.3);
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --transition-fast: 0.15s var(--ease-out);
@@ -346,7 +346,7 @@ input::placeholder {
   inset: 0;
   z-index: -1;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.05;
+  opacity: 0.03; /* Softer noise */
   pointer-events: none;
 }
 
@@ -355,8 +355,8 @@ input::placeholder {
   position: fixed;
   inset: 0;
   z-index: -2;
-  background: radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.08), transparent 40%),
-              radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.08), transparent 40%);
+  background: radial-gradient(circle at 15% 50%, rgba(196, 164, 74, 0.04), transparent 50%),
+              radial-gradient(circle at 85% 30%, rgba(74, 96, 122, 0.05), transparent 50%);
   pointer-events: none;
 }
 

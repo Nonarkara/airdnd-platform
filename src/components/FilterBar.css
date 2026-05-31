@@ -34,7 +34,6 @@
   height: 44px;
   min-height: 44px;
   font-size: var(--text-body);
-  border-radius: var(--radius-pill);
 }
 
 .filter-search {
@@ -86,7 +85,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
