@@ -276,9 +276,12 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
     });
     buckets.forEach((group) => {
       if (group.length <= 1) return;
-      const radius = Math.min(0.004 + group.length * 0.0016, 0.03);
+      // Fixed radius — must NOT depend on group.length, or bucket sizes shifting
+      // between 30s refreshes would move every pin and make the map "bounce".
+      // Each listing's offset is deterministic (hash of its id), so pins are
+      // stable across refreshes.
       group.forEach((pin) => {
-        const [dLat, dLng] = createStableOffset(pin.listing, radius);
+        const [dLat, dLng] = createStableOffset(pin.listing, 0.016);
         pin.coords = [pin.coords[0] + dLat, pin.coords[1] + dLng];
         pin.precision = 'area';
       });
@@ -312,8 +315,13 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
     );
     const tightCluster = span < 0.25;
     const maxFitZoom = tightCluster ? 11 : 13;
-    mapInstanceRef.current.fitBounds(bounds.pad(0.25), { maxZoom: maxFitZoom });
+    mapInstanceRef.current.fitBounds(bounds.pad(0.25), { maxZoom: maxFitZoom, animate: false });
   }, [pins]);
+
+  // Keep a live ref to fitMapToPins so the (run-once) init effect's
+  // ResizeObserver can call the current version without re-subscribing.
+  const fitRef = useRef(fitMapToPins);
+  useEffect(() => { fitRef.current = fitMapToPins; }, [fitMapToPins]);
 
   const handleLocate = useCallback(() => {
     if (!navigator.geolocation) {
@@ -438,6 +446,31 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
     mapInstanceRef.current = map;
     markersRef.current = L.layerGroup().addTo(map);
 
+    // Leaflet renders at 0×0 while the Map tab is display:none. The tab-based UI
+    // never fires the old #map hash, so the map never re-measured and "didn't
+    // load". Watch the container: invalidateSize on every resize, and fit the
+    // pins once it first gains real size.
+    let hasSized = false;
+    const settleTimers = [];
+    const settleSize = () => mapInstanceRef.current?.invalidateSize({ animate: false });
+    const resizeObserver = new ResizeObserver((entries) => {
+      if (!mapInstanceRef.current) return;
+      settleSize();
+      const rect = entries[0]?.contentRect;
+      if (!hasSized && rect && rect.width > 8 && rect.height > 8) {
+        hasSized = true;
+        // Tile grid often populates only the centre tile when the map is first
+        // un-hidden. Re-measure across a few frames so the full grid fills, then
+        // fit the pins once on the settled size.
+        window.requestAnimationFrame(() => {
+          settleSize();
+          if (fitRef.current) fitRef.current();
+        });
+        [120, 350, 700].forEach((d) => settleTimers.push(window.setTimeout(settleSize, d)));
+      }
+    });
+    resizeObserver.observe(mapElement);
+
     // Click delegation for popup buttons
     const handlePopupClick = (e) => {
       if (e.target.classList.contains('popup-view-btn')) {
@@ -452,6 +485,8 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
     mapElement.addEventListener('click', handlePopupClick);
 
     return () => {
+      resizeObserver.disconnect();
+      settleTimers.forEach((id) => window.clearTimeout(id));
       mapElement.removeEventListener('click', handlePopupClick);
       map.remove();
       mapInstanceRef.current = null;
