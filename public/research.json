@@ -1,0 +1,361 @@
+{
+  "generatedAt": "2026-05-31T18:04:53.173Z",
+  "corpus": {
+    "totalMessages": 85632,
+    "listingPosts": 5867,
+    "conversations": 6316,
+    "channels": 9,
+    "firstSeen": "2020-01-29T03:16:00+00:00",
+    "lastSeen": "2026-05-31T17:59:00+00:00"
+  },
+  "temporal": {
+    "hourly": [
+      {
+        "hour": 0,
+        "count": 78
+      },
+      {
+        "hour": 1,
+        "count": 41
+      },
+      {
+        "hour": 2,
+        "count": 54
+      },
+      {
+        "hour": 3,
+        "count": 64
+      },
+      {
+        "hour": 4,
+        "count": 14
+      },
+      {
+        "hour": 5,
+        "count": 8
+      },
+      {
+        "hour": 6,
+        "count": 42
+      },
+      {
+        "hour": 7,
+        "count": 49
+      },
+      {
+        "hour": 8,
+        "count": 149
+      },
+      {
+        "hour": 9,
+        "count": 565
+      },
+      {
+        "hour": 10,
+        "count": 511
+      },
+      {
+        "hour": 11,
+        "count": 404
+      },
+      {
+        "hour": 12,
+        "count": 464
+      },
+      {
+        "hour": 13,
+        "count": 543
+      },
+      {
+        "hour": 14,
+        "count": 403
+      },
+      {
+        "hour": 15,
+        "count": 378
+      },
+      {
+        "hour": 16,
+        "count": 332
+      },
+      {
+        "hour": 17,
+        "count": 317
+      },
+      {
+        "hour": 18,
+        "count": 380
+      },
+      {
+        "hour": 19,
+        "count": 309
+      },
+      {
+        "hour": 20,
+        "count": 227
+      },
+      {
+        "hour": 21,
+        "count": 240
+      },
+      {
+        "hour": 22,
+        "count": 178
+      },
+      {
+        "hour": 23,
+        "count": 117
+      }
+    ],
+    "dayOfWeek": [
+      {
+        "day": 0,
+        "label": "Sun",
+        "count": 686
+      },
+      {
+        "day": 1,
+        "label": "Mon",
+        "count": 785
+      },
+      {
+        "day": 2,
+        "label": "Tue",
+        "count": 717
+      },
+      {
+        "day": 3,
+        "label": "Wed",
+        "count": 907
+      },
+      {
+        "day": 4,
+        "label": "Thu",
+        "count": 994
+      },
+      {
+        "day": 5,
+        "label": "Fri",
+        "count": 935
+      },
+      {
+        "day": 6,
+        "label": "Sat",
+        "count": 843
+      }
+    ],
+    "peakWindow": {
+      "startHour": 9,
+      "endHour": 12,
+      "count": 1480
+    },
+    "totalPosts": 5867,
+    "activeDays": 419,
+    "postsPerDay": {
+      "median": 1,
+      "max": 213,
+      "mean": 14
+    },
+    "pilotPostRate": 57,
+    "floodDayRate": 19.5,
+    "maxPostsInOperatorDay": 110
+  },
+  "intervals": {
+    "medianIntervalHours": 0.2,
+    "fastestRepostMinutes": 0,
+    "buckets": [
+      {
+        "label": "< 1h",
+        "lo": 0,
+        "hi": 1,
+        "count": 4536,
+        "pct": 77.6
+      },
+      {
+        "label": "1–3h",
+        "lo": 1,
+        "hi": 3,
+        "count": 426,
+        "pct": 7.3
+      },
+      {
+        "label": "3–6h",
+        "lo": 3,
+        "hi": 6,
+        "count": 157,
+        "pct": 2.7
+      },
+      {
+        "label": "6–12h",
+        "lo": 6,
+        "hi": 12,
+        "count": 158,
+        "pct": 2.7
+      },
+      {
+        "label": "12–24h",
+        "lo": 12,
+        "hi": 24,
+        "count": 223,
+        "pct": 3.8
+      },
+      {
+        "label": "> 24h",
+        "lo": 24,
+        "hi": null,
+        "count": 347,
+        "pct": 5.9
+      }
+    ],
+    "topRepeaters": [
+      {
+        "operator": "@relaxsociety2020",
+        "posts": 2548,
+        "medianGapHours": 0.1,
+        "minGapMinutes": 0,
+        "burstiness": 8.58
+      },
+      {
+        "operator": "@relaxsocietymassage",
+        "posts": 2049,
+        "medianGapHours": 0.1,
+        "minGapMinutes": 0,
+        "burstiness": 7.72
+      },
+      {
+        "operator": "@chanelmassage",
+        "posts": 346,
+        "medianGapHours": 19.8,
+        "minGapMinutes": 0.3,
+        "burstiness": 0.66
+      },
+      {
+        "operator": "The​ nicha​ spa",
+        "posts": 337,
+        "medianGapHours": 0,
+        "minGapMinutes": 0,
+        "burstiness": 4.81
+      },
+      {
+        "operator": "วิถีไทสปา164",
+        "posts": 258,
+        "medianGapHours": 22.7,
+        "minGapMinutes": 0,
+        "burstiness": 1.43
+      },
+      {
+        "operator": "Baannine Massage Spa",
+        "posts": 163,
+        "medianGapHours": 2.8,
+        "minGapMinutes": 0.1,
+        "burstiness": 3.11
+      },
+      {
+        "operator": "@newmassagerama5",
+        "posts": 89,
+        "medianGapHours": 115.9,
+        "minGapMinutes": 0.4,
+        "burstiness": 1.24
+      },
+      {
+        "operator": "@keawjaojormmassage",
+        "posts": 50,
+        "medianGapHours": 23.1,
+        "minGapMinutes": 0.2,
+        "burstiness": 2.05
+      },
+      {
+        "operator": "ชโนทัย นวดเพื่อสุขภาพ พระราม2",
+        "posts": 27,
+        "medianGapHours": 24,
+        "minGapMinutes": 188.3,
+        "burstiness": 1.45
+      }
+    ],
+    "operatorsTracked": 9
+  },
+  "repeat": {
+    "uniquePosts": 1271,
+    "totalPosts": 5563,
+    "repeatRate": 77.2,
+    "maxRepeatsOfOnePost": 711,
+    "medianRepeatGapHours": 0,
+    "crossPostedGroups": 578,
+    "crossPostRate": 45.5,
+    "maxChannelsForOnePost": 3,
+    "avgChannelsWhenCrossed": 2.03
+  },
+  "queries": {
+    "intents": [
+      {
+        "id": "inquire",
+        "label": "General inquiry",
+        "count": 4896,
+        "examples": [
+          "ทางร้านเปลี่ยนเบอร์โทรใหม่ สอบถามเบอร์นี้คะ",
+          "สอบถามหน่อยครับ",
+          "สอบถามครับ",
+          "สอบถามครับ หมอแป้ง หายไปไหนครับ"
+        ],
+        "pct": 53.6
+      },
+      {
+        "id": "booking",
+        "label": "Booking / queue",
+        "count": 3678,
+        "examples": [
+          "สอบถามรอบจองน้องๆได้นะคะ",
+          "ลูกค้าสะดวกจองน้องไหมคะ?",
+          "สอบถามรอบจองเข้ามาได้นะคะพี่ๆ",
+          "น้องๆว่างค่ะพี่ๆทักมาสอบถามรอบจองได้ค่ะ"
+        ],
+        "pct": 40.3
+      },
+      {
+        "id": "price",
+        "label": "Price / cost",
+        "count": 308,
+        "examples": [
+          "ขออนุญาตสอบถามนะครับ ราคาคอสนวดกษัย ไม่ทราบรวมค่าขนมน้องแล้วยังครับ",
+          "สอบถาม ราคาจบน้องแต่ละคนเท่าไรครับ",
+          "ใครเข้าบ้าง สอบถามราคา และ โปร ที",
+          "ราคาเท่าไหร่ครับ"
+        ],
+        "pct": 3.4
+      },
+      {
+        "id": "availability",
+        "label": "Availability",
+        "count": 236,
+        "examples": [
+          "มีน้องใหม่มาแนะนำพี่ๆค่ะ พร้อมต้อนรับพี่ๆค่ะ😘",
+          "มีน้องใหม่มาแนะนำค่ะ"
+        ],
+        "pct": 2.6
+      },
+      {
+        "id": "location",
+        "label": "Location",
+        "count": 13,
+        "examples": [
+          "สตูดิโออยู่ที่ไหน",
+          "ร้านอยู่ที่ไหนครับ",
+          "Update น้องได้จากที่ไหนครับ",
+          "ร้านอยูที่ไหนครับ"
+        ],
+        "pct": 0.1
+      },
+      {
+        "id": "hours",
+        "label": "Hours",
+        "count": 4,
+        "examples": [
+          "ลค สะดวกมากี่โมงคะ?",
+          "ตอนประมาณกี่โมงคะ?"
+        ],
+        "pct": 0
+      }
+    ],
+    "bookingToPriceRatio": 11.9
+  }
+}

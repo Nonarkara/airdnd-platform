@@ -26,6 +26,7 @@
     "userbot": "node scripts/userbot.js",
     "userbot:daemon": "chmod +x scripts/daemon.sh && ./scripts/daemon.sh",
     "sociology:compute": "node scripts/compute_sociology.js",
+    "research:compute": "node scripts/compute_research.js",
     "start": "node server.js"
   },
   "dependencies": {
@@ -36,6 +37,8 @@
     "googleapis": "^171.4.0",
     "input": "^1.0.1",
     "leaflet": "^1.9.4",
+    "leaflet.heat": "^0.2.0",
+    "leaflet.markercluster": "^1.5.3",
     "node-telegram-bot-api": "^0.67.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

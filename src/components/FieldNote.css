@@ -1,0 +1,38 @@
+.fieldnote {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  margin-top: var(--s6);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--line);
+  max-width: 56ch;
+  cursor: pointer;
+}
+
+.fieldnote__tag {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mango);
+}
+
+.fieldnote__text {
+  font-family: var(--font-text);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  color: var(--ink-2);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.fieldnote:hover .fieldnote__text { color: var(--ink); }
+
+.fieldnote__text.is-out {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+@media (max-width: 560px) {
+  .fieldnote { flex-direction: column; gap: 4px; }
+}

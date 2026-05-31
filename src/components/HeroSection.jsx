@@ -1,4 +1,5 @@
 import { formatRelativeTimestamp } from '../lib/listings';
+import FieldNote from './FieldNote';
 import './HeroSection.css';
 
 // Build a cumulative-growth area+line path ending at the real total.
@@ -62,6 +63,7 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
             </a>
             <a className="btn btn-outline btn-lg" href="/methodology">See the method</a>
           </div>
+          <FieldNote />
         </div>
 
         {/* CUMULATIVE GROWTH CHART */}
