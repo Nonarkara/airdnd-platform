@@ -171,11 +171,18 @@
   --jade-dim: #CFF2E6;  --gold-dim: #F8EEC8;
 }
 
+/* HOT — a real fire theme, not a darker plum. Warm near-black with molten
+   orange/amber heat, clearly distinct from the cool plum-pink Dark. High-
+   contrast warm-white text keeps it legible (the old hot-pink-on-plum strained
+   the eyes). One mint spark survives for "live" status and chart contrast. */
 [data-theme='hot-as-hell'] {
   color-scheme: dark;
-  --bg: #0E0710;  --bg-2: #150A16;  --surface: #1D0E1F;  --surface-2: #28142A;  --surface-3: #351A38;
-  --line: #3C1E40;  --line-2: #562C5B;
-  --mango: #FF1A6B;  --mango-2: #FF4D8F;  --mango-dim: #5A0E33;
+  --bg: #0A0503;  --bg-2: #120A05;  --surface: #1A0E07;  --surface-2: #25140C;  --surface-3: #331D11;
+  --line: #3C2113;  --line-2: #58311B;
+  --ink: #FFF2E6;  --ink-2: #E6C9B0;  --ink-3: #B08A6E;  --ink-4: #6F5440;
+  --mango: #FF4D1F;  --mango-2: #FF7A45;  --mango-dim: #5A1E0A;
+  --gold: #FFD23D;  --berry: #FF3D5E;  --sky: #FF8A3D;  --violet: #FFB020;
+  --d1: #FF4D1F;  --d2: #FFB020;  --d3: #FFD23D;  --d4: #FF7A45;  --d5: #FF3D6E;  --d6: #2FE0A6;
 }
 
 /* ============================================================================

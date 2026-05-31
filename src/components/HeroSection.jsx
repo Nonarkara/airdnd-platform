@@ -79,8 +79,8 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
           <svg viewBox="0 0 1000 300" className="hero2__svg" aria-label="Cumulative listings over time">
             <defs>
               <linearGradient id="heroArea" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#FF3D8B" stopOpacity=".45" />
-                <stop offset="1" stopColor="#FF3D8B" stopOpacity="0" />
+                <stop offset="0" style={{ stopColor: 'var(--mango)' }} stopOpacity=".45" />
+                <stop offset="1" style={{ stopColor: 'var(--mango)' }} stopOpacity="0" />
               </linearGradient>
             </defs>
             <g className="grid-line">
@@ -89,9 +89,9 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
               <line x1="40" y1="260" x2="980" y2="260" />
             </g>
             <path d={area} fill="url(#heroArea)" />
-            <path d={line} fill="none" stroke="#FF3D8B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx={last[0]} cy={last[1]} r="5" fill="#FF3D8B" />
-            <circle cx={last[0]} cy={last[1]} r="9" fill="none" stroke="#FF3D8B" strokeOpacity=".4" strokeWidth="2" />
+            <path d={line} fill="none" style={{ stroke: 'var(--mango)' }} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx={last[0]} cy={last[1]} r="5" style={{ fill: 'var(--mango)' }} />
+            <circle cx={last[0]} cy={last[1]} r="9" fill="none" style={{ stroke: 'var(--mango)' }} strokeOpacity=".4" strokeWidth="2" />
           </svg>
         </div>
       </div>
