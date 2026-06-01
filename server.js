@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import { createHealthReport } from './src/lib/server_health.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,6 +40,12 @@ app.get(['/data.json', '/feed.json'], (req, res) => {
     res.sendFile(snapshotPath);
 });
 
+app.get('/health', (req, res) => {
+    const report = createHealthReport({ rootDir: __dirname, distDir, publicDir });
+    res.set('Cache-Control', 'no-store');
+    res.status(report.ok ? 200 : 503).json(report);
+});
+
 // Serve built assets directly, but let the SPA shell route through the fallback below.
 app.use(express.static(distDir, { index: false }));
 
@@ -56,6 +63,10 @@ app.use((req, res) => {
     }
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Production Express server running on port ${PORT}`);
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Production Express server running on port ${PORT}`);
+    });
+}
+
+export default app;

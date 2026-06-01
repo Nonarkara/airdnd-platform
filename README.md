@@ -11,6 +11,13 @@ Air DnD is a React + Vite dashboard for Bangkok-first listing intelligence. The 
 
 The web server is intentionally decoupled from the Telegram bot so the UI can stay stable even if Telegram polling or Gemini extraction fails.
 
+## Health checks
+
+- `GET /health`: production health contract for external monitors such as UptimeRobot.
+- Returns `200` with `status: "ok"` when the built SPA shell exists, `public/data.json` and `public/feed.json` are valid non-empty arrays, and the heartbeat has not raised `logs/heartbeat.stall`.
+- Returns `503` with `status: "degraded"` when a critical check fails. The JSON response includes per-check details under `checks` so an operator can see whether the break is the build artifact, data snapshot, feed snapshot, or heartbeat.
+- The response is `Cache-Control: no-store`; monitors should always hit the live server state.
+
 ## Data pipeline
 
 - `npm run scrape`: parse `scripts/sample_data.txt`, normalize listings, write a fresh snapshot, and sync Supabase when the service role key is available
@@ -51,7 +58,8 @@ Default curated demo target set:
 3. If you want the dashboard to prefer current Supabase data, run `node scripts/seed_supabase.js`.
 4. Run `npm run build`.
 5. Run `npm run start` for the production web server.
-6. Open the dashboard and confirm the source badge shows `Live`, `Verified snapshot`, or `Verified backup`, and that listings render in the grid.
+6. Confirm `GET /health` returns `200` before pointing uptime monitoring at the deployment.
+7. Open the dashboard and confirm the source badge shows `Live`, `Verified snapshot`, or `Verified backup`, and that listings render in the grid.
 
 ## Reliability rules
 

@@ -4,6 +4,14 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-06-01 · Health checks must test the product contract, not just the port
+
+- **What matters:** a production monitor that only checks whether Express responds can miss the failures this project actually suffers from: missing `dist/index.html`, empty mutable snapshots, and heartbeat stalls from the scraper pipeline.
+- **Correct behaviour:** `GET /health` should be a product health contract. It returns `200` only when the SPA shell is present, `public/data.json` and `public/feed.json` are parseable non-empty arrays, and `logs/heartbeat.stall` is absent with no stale/error heartbeat. It returns `503` with structured JSON when any critical condition degrades.
+- **Operator habit:** after `npm run build` and `npm run start`, fetch `/health` before declaring the deploy healthy. Add the external monitor URL to `_reference/monitoring-urls.md` so the monitoring surface is part of project history, not an oral tradition.
+
+---
+
 ## 2026-05-31 · Sabai Sabai 2.0 design overhaul
 
 **What went wrong — fixed-viewport shell vs. page-scroll design:**

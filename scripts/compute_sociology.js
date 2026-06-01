@@ -138,7 +138,7 @@ const NATURE_WORDS = [
 ];
 
 function isEnglishName(name) {
-  return /^[A-Za-z0-9\s\-\.\&\@\(\)\'\/]+$/.test(name.trim());
+  return /^[A-Za-z0-9\s .&@()'/-]+$/.test(name.trim());
 }
 
 function isNongName(name) {

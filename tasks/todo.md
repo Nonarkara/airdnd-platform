@@ -47,7 +47,7 @@ The user designed a warm-dark "intelligence terminal" in Claude Design and hande
 
 - [ ] **Bundle code-splitting** — after lazy-loading Analytics, run a proper `vite-bundle-visualizer` pass to find the next largest contributors in the 508KB main chunk.
 
-- [ ] **Monitoring / alerting** — the scraper daemon runs via `launchd` but has no external health check. Add a `/health` endpoint to `server.js` and wire it to UptimeRobot (free tier). The `_reference/monitoring-urls.md` in the workspace is where this URL belongs.
+- [x] **Monitoring / alerting foundation** — the production server now exposes `GET /health`, which checks the SPA build artifact, mutable data/feed snapshots, and heartbeat stall state. Contract documented in `README.md` and `_reference/monitoring-urls.md`; tests cover ok/degraded health states. Remaining manual step: create the UptimeRobot monitor once the production host is selected/confirmed.
 
 ---
 

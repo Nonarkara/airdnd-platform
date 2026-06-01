@@ -8,6 +8,11 @@ import {
   formatMapsUrl,
 } from '../lib/normalization';
 import MapMarketBar from './MapMarketBar';
+import SpatialAnalyticsPanel from './SpatialAnalyticsPanel';
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.heat';
 import './ListingMap.css';
 
 const BANGKOK_CENTER = [13.7563, 100.5018];
@@ -248,6 +253,7 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
   const lastAutoFitKeyRef = useRef(null);
   const darkLayerRef = useRef(null);
   const lightLayerRef = useRef(null);
+  const heatLayerRef = useRef(null);
   const [aqiActive, setAqiActive] = useState(false);
   const [rainActive, setRainActive] = useState(false);
   const [locating, setLocating] = useState(false);
@@ -425,10 +431,19 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
       },
     );
 
+    // Heatmap layer for spatial mathematics
+    const heatLayer = L.heatLayer([], {
+      radius: 20,
+      blur: 15,
+      maxZoom: 13,
+      gradient: { 0.4: '#4a607a', 0.6: '#8e7a68', 0.8: '#c4a44a', 1.0: '#ffd23d' }
+    });
+    heatLayerRef.current = heatLayer;
+
     L.control
       .layers(
         { 'Dark Map': dark, 'Light Map': light, Satellite: satellite },
-        { 'Air Quality (PM2.5)': aqi, 'Precipitation (IMERG)': rain },
+        { 'Air Quality (PM2.5)': aqi, 'Precipitation (IMERG)': rain, 'Demand Heatmap': heatLayer },
         { position: 'topright', collapsed: true },
       )
       .addTo(map);
@@ -444,7 +459,13 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
     });
 
     mapInstanceRef.current = map;
-    markersRef.current = L.layerGroup().addTo(map);
+    markersRef.current = L.markerClusterGroup({
+      maxClusterRadius: 35,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      chunkedLoading: true
+    }).addTo(map);
 
     // Leaflet renders at 0×0 while the Map tab is display:none. The tab-based UI
     // never fires the old #map hash, so the map never re-measured and "didn't
@@ -491,6 +512,7 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
       map.remove();
       mapInstanceRef.current = null;
       markersRef.current = null;
+      heatLayerRef.current = null;
     };
   }, [onCardClick]);
 
@@ -540,6 +562,17 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
         className: 'listing-hover-tooltip',
       });
       markersRef.current.addLayer(marker);
+    }
+    
+    // Update mathematical density heatmap
+    if (heatLayerRef.current) {
+      const heatData = pins.map(p => {
+        const mentions = Number(p.listing.mentionCount) || Number(p.listing.mention_count) || 1;
+        // Normalize intensity
+        const intensity = Math.min(mentions / 50, 1.0);
+        return [p.coords[0], p.coords[1], intensity];
+      });
+      heatLayerRef.current.setLatLngs(heatData);
     }
   }, [pins]);
 
@@ -592,6 +625,9 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
         </div>
         <span>{listings.length} listings in current view</span>
       </div>
+      
+      <SpatialAnalyticsPanel visiblePins={pins} totalListings={listings.length} />
+      
       {locateError && (
         <div className="listing-map-locate-error">{locateError}</div>
       )}
