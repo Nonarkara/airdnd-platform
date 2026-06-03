@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { db, auth } from '../../lib/firebase';
+import { db } from '../../lib/firebase';
+import { collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
 import VisitorChart from './VisitorChart';
 import DeviceBreakdown from './DeviceBreakdown';
 import TopPages from './TopPages';
@@ -25,17 +26,24 @@ export default function AdminDashboard() {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - range);
 
-    supabase
-      .from('page_views')
-      .select('*')
-      .gte('created_at', startDate.toISOString())
-      .order('created_at', { ascending: true })
-      .limit(10000)
-      .then(({ data, error }) => {
-        if (!cancelled) {
-          setEvents(error ? [] : data || []);
-        }
-      });
+    const q = query(
+      collection(db, 'page_views'),
+      where('created_at', '>=', startDate.toISOString()),
+      orderBy('created_at', 'asc'),
+      limit(10000)
+    );
+
+    getDocs(q).then((snapshot) => {
+      if (!cancelled) {
+         const data = snapshot.docs.map(doc => doc.data());
+         setEvents(data);
+      }
+    }).catch((error) => {
+      console.error(error);
+      if (!cancelled) {
+        setEvents([]);
+      }
+    });
 
     return () => { cancelled = true; };
   }, [range]);

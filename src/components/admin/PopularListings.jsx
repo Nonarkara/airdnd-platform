@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { db, auth } from '../../lib/firebase';
+import { db } from '../../lib/firebase';
+import { collection, query, where, documentId, getDocs } from 'firebase/firestore';
 
 export default function PopularListings({ events }) {
   const [names, setNames] = useState({});
@@ -18,16 +19,18 @@ export default function PopularListings({ events }) {
     if (ids.length === 0) {
       return;
     }
+    const q = query(
+      collection(db, 'companions'),
+      where(documentId(), 'in', ids.map(String))
+    );
 
-    supabase
-      .from('companions')
-      .select('id, name')
-      .in('id', ids)
-      .then(({ data }) => {
-        const map = {};
-        (data || []).forEach(r => { map[r.id] = r.name; });
-        setNames(map);
+    getDocs(q).then((snapshot) => {
+      const map = {};
+      snapshot.docs.forEach(doc => {
+        map[doc.id] = doc.data().name;
       });
+      setNames(map);
+    }).catch(console.error);
   }, [ids]);
 
   if (sorted.length === 0) return <p style={{ color: '#94a3b8', fontSize: 13 }}>No listing clicks yet</p>;

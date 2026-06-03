@@ -86,6 +86,7 @@ function basePayload() {
     city: geo?.city || null,
     latitude: geo?.latitude || null,
     longitude: geo?.longitude || null,
+    created_at: new Date().toISOString(),
   };
 
   if (!extendedTrackingDisabled) {
@@ -170,6 +171,7 @@ export async function trackSignal(listingId, signalType, payload = {}) {
       payload,
       country: geo?.country || null,
       city: geo?.city || null,
+      created_at: new Date().toISOString(),
     });
     if (signalType === 'save') {
       const saves = getSavedListings();
