@@ -1,72 +1,75 @@
 .insight-narrative-container {
-  background: rgba(15, 23, 42, 0.4);
-  border: 1px solid var(--color-line-soft);
-  border-left: 3px solid #D4AF37;
-  border-radius: var(--radius-sm);
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: var(--s4);
+  border-radius: var(--r-md);
+  margin-bottom: var(--s5);
+  font-family: var(--font-mono);
   position: relative;
   overflow: hidden;
 }
 
-.insight-narrative-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, #D4AF37 0%, transparent 100%);
-  opacity: 0.3;
+.professional-terminal {
+  background: #0a0a0c;
+  border-color: #333;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .insight-narrative-header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  gap: var(--s2);
+  margin-bottom: var(--s3);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  text-transform: uppercase;
 }
 
 .live-dot {
-  width: 6px;
-  height: 6px;
-  background-color: #D4AF37;
+  width: 8px;
+  height: 8px;
+  background-color: var(--mango);
   border-radius: 50%;
-  box-shadow: 0 0 8px #D4AF37;
-  animation: pulse 2s infinite;
+  display: inline-block;
+}
+
+.live-dot.pulse {
+  animation: pulse-dot 2s infinite ease-in-out;
 }
 
 .kicker {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: #D4AF37;
+  color: var(--mango);
+  font-weight: 600;
 }
 
 .insight-narrative-text {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--color-cream);
   margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: #e0e0e0;
 }
 
 .cursor {
   display: inline-block;
   width: 8px;
-  color: #D4AF37;
-  animation: blink 1s step-end infinite;
-  margin-left: 2px;
+  height: 1.2em;
+  background-color: var(--mango);
+  vertical-align: middle;
+  margin-left: 4px;
 }
 
-@keyframes pulse {
-  0% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(1.2); }
-  100% { opacity: 1; transform: scale(1); }
+.cursor.blink {
+  animation: blink-cursor 1s step-end infinite;
 }
 
-@keyframes blink {
+@keyframes blink-cursor {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 0 rgba(255, 179, 71, 0.7); }
+  70% { box-shadow: 0 0 0 6px rgba(255, 179, 71, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 179, 71, 0); }
 }

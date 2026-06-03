@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { supabase } from '../lib/supabase';
+import { db, auth } from '../lib/firebase';
 import './NowLooking.css';
 
 /*
@@ -50,31 +50,7 @@ export default function NowLooking({ listings }) {
 
   useEffect(() => {
     let cancelled = false;
-    const channel = supabase
-      .channel('now-looking')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'page_views', filter: 'event_type=eq.listing_click' },
-        (payload) => {
-          if (cancelled) return;
-          const row = payload?.new;
-          if (!row || row.session_id === ownSessionId) return;
-          if (row.listing_id == null) return;
-          setEvents((current) => {
-            const next = [
-              {
-                key: `${row.id}-${row.created_at}`,
-                listingId: String(row.listing_id),
-                country: (row.country || 'Somewhere').trim(),
-                ts: row.created_at || new Date().toISOString(),
-              },
-              ...current.filter((e) => Date.now() - new Date(e.ts).getTime() < MAX_AGE_MS),
-            ].slice(0, MAX_VISIBLE);
-            return next;
-          });
-        },
-      )
-      .subscribe();
+    const unsubscribe = () => {};
 
     // Tick every 4s so timeAgo updates and old events drop off.
     const tickId = window.setInterval(() => {
@@ -88,7 +64,7 @@ export default function NowLooking({ listings }) {
     return () => {
       cancelled = true;
       window.clearInterval(tickId);
-      supabase.removeChannel(channel);
+      unsubscribe();
     };
   }, [ownSessionId]);
 

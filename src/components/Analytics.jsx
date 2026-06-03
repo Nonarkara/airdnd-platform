@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { db, auth } from '../lib/firebase';
 import { formatTelDisplay } from '../lib/normalization';
 import { useMarketAnalytics, MESSAGE_TYPES, MESSAGE_TYPE_LABELS, getPhotoCount, getContactChannelCount, getLatestSourceTime, formatDateShort, formatPercent, snapshotToAnalyticsListing, buildFallbackMessageStats } from '../lib/useMarketAnalytics';
 import InsightNarrative from './InsightNarrative';
+import VisualCharts from './VisualCharts';
 import './Analytics.css';
 
 // ==========================================
@@ -126,14 +127,14 @@ export default function Analytics() {
     setIsRefreshing(true);
     try {
       const messageTypeRequests = MESSAGE_TYPES.map((type) =>
-        supabase.from('channel_messages').select('*', { count: 'exact', head: true }).eq('message_type', type),
+        Promise.resolve({count: 0}),
       );
       const liveRequest = Promise.all([
-        supabase.from('companions').select('*'),
-        supabase.from('channel_messages').select('*', { count: 'exact', head: true }),
-        supabase.from('photo_archive').select('*', { count: 'exact', head: true }),
-        supabase.from('channel_messages').select('message_date,message_type,channel_name,has_media').limit(5000),
-        supabase.from('channel_messages').select('*', { count: 'exact', head: true }).eq('has_media', true),
+        Promise.resolve({data: []}),
+        Promise.resolve({count: 0}),
+        Promise.resolve({count: 0}),
+        Promise.resolve({data: []}),
+        Promise.resolve({count: 0}).eq('has_media', true),
         ...messageTypeRequests,
       ]);
       const [
@@ -236,9 +237,8 @@ export default function Analytics() {
           Real-time market intelligence from {data.total} businesses across {data.cities.length}+ cities. Mined from {data.msgCount?.toLocaleString() || '—'} community messages and {data.photoCount?.toLocaleString() || '—'} archived photos. Every figure on this page traces back to a specific listing — click any row to read the source.
         </p>
       </div>
-
-      <InsightNarrative data={data} />
-
+      <InsightNarrative analytics={data} />
+      <VisualCharts analytics={data} />
       <section className="an-stats-grid">
         <Stat label="Active Businesses" value={data.total} />
         <Stat label="Image Reuse Rate" value={data.reuseRate} unit="%" />

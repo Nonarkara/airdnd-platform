@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { db, auth } from '../../lib/firebase';
 import VisitorChart from './VisitorChart';
 import DeviceBreakdown from './DeviceBreakdown';
 import TopPages from './TopPages';

@@ -1,4 +1,5 @@
-import { supabase, supabaseAnonKey, supabaseUrl } from './supabase.js';
+import { db } from './firebase.js';
+import { collection, addDoc, limit, query, getDocs } from 'firebase/firestore';
 
 const SESSION_KEY = 'sabai_session_id';
 const GEO_KEY = 'sabai_geo';
@@ -60,19 +61,6 @@ function disableExtendedTracking() {
   sessionStorage.setItem(EXTENDED_TRACKING_KEY, '1');
 }
 
-function isTrackingError(error) {
-  return error && (error.code === 'PGRST205' || error.code === '42P01');
-}
-
-function isColumnCacheError(error) {
-  if (!error) return false;
-  return (
-    error.code === 'PGRST204' ||
-    error.code === '42703' ||
-    /column|schema cache/i.test(error.message || '')
-  );
-}
-
 function stripExtendedVisitorFields(payload) {
   const {
     ip_address,
@@ -112,18 +100,10 @@ function basePayload() {
 }
 
 async function insertPageView(payload) {
-  const { error } = await supabase.from('page_views').insert(payload);
-  if (isTrackingError(error)) {
+  try {
+    await addDoc(collection(db, 'page_views'), payload);
+  } catch (error) {
     disableTracking();
-    return;
-  }
-
-  if (isColumnCacheError(error) && !extendedTrackingDisabled) {
-    disableExtendedTracking();
-    const { error: fallbackError } = await supabase
-      .from('page_views')
-      .insert(stripExtendedVisitorFields(payload));
-    if (isTrackingError(fallbackError)) disableTracking();
   }
 }
 
@@ -143,40 +123,19 @@ export function trackListingClick(listingId) {
 }
 
 function endSession() {
-  if (trackingDisabled || !supabaseUrl || !supabaseAnonKey) return;
-  const url = `${supabaseUrl}/rest/v1/page_views`;
-  const body = JSON.stringify({
+  if (trackingDisabled) return;
+  insertPageView({
     ...(extendedTrackingDisabled ? stripExtendedVisitorFields(basePayload()) : basePayload()),
     page: window.location.hash || '/',
     event_type: 'session_end',
-  });
-  try {
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        apikey: supabaseAnonKey,
-        Authorization: `Bearer ${supabaseAnonKey}`,
-        'Content-Type': 'application/json',
-        Prefer: 'return=minimal',
-      },
-      body,
-      keepalive: true,
-    });
-  } catch {
-    return;
-  }
+  }).catch(() => {});
 }
 
 async function probeTable() {
   if (trackingDisabled) return;
   try {
-    const { error } = await supabase
-      .from('page_views')
-      .select('id')
-      .limit(0);
-    if (isTrackingError(error)) {
-      disableTracking();
-    }
+    const q = query(collection(db, 'page_views'), limit(1));
+    await getDocs(q);
   } catch {
     disableTracking();
   }
@@ -204,7 +163,7 @@ export function isListingSaved(listingId) {
 export async function trackSignal(listingId, signalType, payload = {}) {
   if (trackingDisabled || signalsDisabled) return false;
   try {
-    const { error } = await supabase.from('signals').insert({
+    await addDoc(collection(db, 'signals'), {
       session_id: getSessionId(),
       listing_id: listingId,
       signal_type: signalType,
@@ -212,15 +171,16 @@ export async function trackSignal(listingId, signalType, payload = {}) {
       country: geo?.country || null,
       city: geo?.city || null,
     });
-    if (isTrackingError(error)) { signalsDisabled = true; return false; }
-    if (error) return false;
     if (signalType === 'save') {
       const saves = getSavedListings();
       saves.add(listingId);
       persistSaves(saves);
     }
     return true;
-  } catch { return false; }
+  } catch { 
+    signalsDisabled = true;
+    return false; 
+  }
 }
 
 export async function unsaveSignal(listingId) {

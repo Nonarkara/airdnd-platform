@@ -59,7 +59,13 @@ function Header({
                 key={tab.id}
                 type="button"
                 className={`nav-link-btn${activeView === tab.id ? ' is-active' : ''}`}
-                onClick={() => setActiveView(tab.id)}
+                onClick={() => {
+                  if (document.startViewTransition) {
+                    document.startViewTransition(() => setActiveView(tab.id));
+                  } else {
+                    setActiveView(tab.id);
+                  }
+                }}
                 role="tab"
                 aria-selected={activeView === tab.id}
                 aria-controls={`${tab.id}-panel`}
@@ -68,7 +74,7 @@ function Header({
               </button>
             ))}
             {linkTabs.map((tab) => (
-              <Link key={tab.id} to={tab.href} role="tab" aria-selected={false}>
+              <Link key={tab.id} to={tab.href} viewTransition role="tab" aria-selected={false}>
                 {tab.label}
               </Link>
             ))}

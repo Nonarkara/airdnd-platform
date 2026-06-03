@@ -8,12 +8,15 @@ import ProximityFinder from './components/ProximityFinder';
 import MarketSnapshot from './components/MarketSnapshot';
 import FeedGrid from './components/FeedGrid';
 import FilterBar from './components/FilterBar';
+import FunFacts from './components/FunFacts';
 import CompanionGrid from './components/CompanionGrid';
 import CompanionModal from './components/CompanionModal';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import { companions as backupCompanions } from './data/mockData';
-import { supabase } from './lib/supabase';
+import { db, auth } from './lib/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { collection, query, orderBy, limit, onSnapshot, getDocs } from 'firebase/firestore';
 import { initSession } from './lib/tracker';
 import {
   SOURCE_LABELS,
@@ -23,6 +26,7 @@ import {
   normalizeListings,
 } from './lib/listings';
 import { translations } from './translations';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const REFRESH_INTERVAL_MS = 30_000;
 const SUPABASE_TIMEOUT_MS = 4_000;
@@ -116,46 +120,21 @@ function sortListings(listings, sortBy) {
   return nextListings;
 }
 
-async function fetchSupabaseListings() {
-  const abortController = new AbortController();
-  let timedOut = false;
-  const supabaseRequest = supabase
-    .from('companions')
-    .select('*')
-    .order('updated_at', { ascending: false, nullsFirst: false })
-    .order('created_at', { ascending: false, nullsFirst: false })
-    .limit(LIVE_QUERY_LIMIT)
-    .abortSignal(abortController.signal);
 
-  let timeoutId = null;
-
-  let response;
-  try {
-    timeoutId = window.setTimeout(() => {
-      timedOut = true;
-      abortController.abort();
-    }, SUPABASE_TIMEOUT_MS);
-    response = await supabaseRequest;
-  } finally {
-    if (timeoutId) {
-      window.clearTimeout(timeoutId);
-    }
-  }
-
-  if (response.error) {
-    if (timedOut || response.error.name === 'AbortError') {
-      throw new Error('Live data request timed out.');
-    }
-    throw response.error;
-  }
-
-  if (!Array.isArray(response.data) || response.data.length === 0) {
+async function fetchFirebaseListings() {
+  const q = query(
+    collection(db, 'companions'),
+    orderBy('updated_at', 'desc'),
+    orderBy('created_at', 'desc'),
+    limit(LIVE_QUERY_LIMIT)
+  );
+  const snapshot = await getDocs(q);
+  if (snapshot.empty) {
     throw new Error('No live data available.');
   }
-
-  return normalizeListings(response.data, { source: 'supabase', isFallback: false });
+  const data = snapshot.docs.map(doc => doc.data());
+  return normalizeListings(data, { source: 'supabase', isFallback: false }); // keep 'supabase' label for now to not break UI logic, or change to 'firebase'
 }
-
 async function fetchSnapshotListings() {
   const response = await fetch(`/data.json?ts=${Date.now()}`, {
     cache: 'no-store',
@@ -179,7 +158,7 @@ async function loadListingsWithFallback(mode = 'automatic') {
   let liveError = null;
 
   try {
-    const liveListings = await fetchSupabaseListings();
+    const liveListings = await fetchFirebaseListings();
     liveResult = {
       listings: liveListings,
       source: 'supabase',
@@ -281,15 +260,7 @@ function App() {
   useEffect(() => {
     let isMounted = true;
 
-    supabase.auth.getSession().then(({ data: { session: activeSession } }) => {
-      if (isMounted) {
-        setSession(activeSession);
-      }
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, activeSession) => {
+    const unsubscribe = onAuthStateChanged(auth, (activeSession) => {
       if (isMounted) {
         setSession(activeSession);
       }
@@ -297,7 +268,7 @@ function App() {
 
     return () => {
       isMounted = false;
-      subscription?.unsubscribe();
+      unsubscribe();
     };
   }, []);
 
@@ -427,10 +398,12 @@ function App() {
     window.addEventListener('focus', refreshIfVisible);
     window.addEventListener('online', refreshIfVisible);
 
-    const channel = supabase
-      .channel('companions-realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'companions' }, scheduleRealtimeRefresh)
-      .subscribe();
+    
+    const q = query(collection(db, 'companions'), orderBy('updated_at', 'desc'), limit(LIVE_QUERY_LIMIT));
+    const unsubscribe = onSnapshot(q, () => {
+      scheduleRealtimeRefresh();
+    });
+
 
     return () => {
       isActiveRef.current = false;
@@ -443,7 +416,7 @@ function App() {
       document.removeEventListener('visibilitychange', refreshIfVisible);
       window.removeEventListener('focus', refreshIfVisible);
       window.removeEventListener('online', refreshIfVisible);
-      supabase.removeChannel(channel);
+      unsubscribe();
     };
   }, []);
 
@@ -569,7 +542,7 @@ function App() {
               t={t}
               theme={theme}
               setTheme={setTheme}
-              onLogout={session ? () => supabase.auth.signOut() : null}
+              onLogout={session ? () => auth.signOut() : null}
               onRefresh={handleRefresh}
               isRefreshing={dataState.isRefreshing}
               sourceLabel={displayDataState.sourceLabel}
@@ -589,7 +562,8 @@ function App() {
                   padding: '0 var(--gutter)',
                 }}
               >
-                <FeedGrid
+                <ErrorBoundary>
+                  <FeedGrid
                   t={t}
                   onOpen={(card) => {
                     setSelectedCompanion({
@@ -619,6 +593,7 @@ function App() {
                     });
                   }}
                 />
+                </ErrorBoundary>
               </div>
 
               <div
@@ -633,6 +608,7 @@ function App() {
                   intakeSummary={intakeSummary}
                 />
 
+                <FunFacts listings={filteredCompanions} metrics={metrics} />
                 <ProximityFinder
                   listings={allCompanions}
                   onSelect={setSelectedCompanion}
@@ -677,6 +653,7 @@ function App() {
                     t={t}
                   />
 
+                  <ErrorBoundary>
                   <CompanionGrid
                     companions={filteredCompanions}
                     onCardClick={setSelectedCompanion}
@@ -693,6 +670,7 @@ function App() {
                     }
                     isLoading={dataState.isLoading}
                   />
+                </ErrorBoundary>
                 </section>
               </div>
 

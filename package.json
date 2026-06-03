@@ -31,9 +31,10 @@
   },
   "dependencies": {
     "@google/genai": "^1.43.0",
-    "@supabase/supabase-js": "^2.98.0",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "firebase": "^12.14.0",
+    "firebase-admin": "^13.10.0",
     "googleapis": "^171.4.0",
     "input": "^1.0.1",
     "leaflet": "^1.9.4",

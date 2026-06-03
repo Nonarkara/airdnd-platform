@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { auth } from '../lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css';
 
 export default function Login({ setSession, language, setLanguage }) {
@@ -15,15 +16,15 @@ export default function Login({ setSession, language, setLanguage }) {
         setLoading(true);
         setErrorMsg('');
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        let error = null;
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+        } catch(e) { error = e; }
 
         if (error) {
             setErrorMsg(error.message);
         } else {
-            setSession(data.session);
+            setSession(auth.currentUser);
         }
         setLoading(false);
     };

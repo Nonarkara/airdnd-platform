@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { db, auth } from '../../lib/firebase';
 
 export default function PopularListings({ events }) {
   const [names, setNames] = useState({});
