@@ -164,3 +164,30 @@
   .paper-plates { grid-template-columns: 1fr; }
   .paper-bar-row { grid-template-columns: minmax(90px, 1.4fr) 1fr auto; gap: var(--s3); }
 }
+
+/* ── Custom Diagram ─────────────────────────────────────────────────────── */
+.paper-diagram-container {
+  overflow: hidden;
+  padding: var(--s5);
+}
+.paper-diagram-scroll {
+  width: 100%;
+  overflow-x: auto;
+  margin-block: var(--s2);
+}
+.paper-diagram-svg {
+  display: block;
+  width: 100%;
+  min-width: 600px;
+  height: auto;
+}
+.paper-diagram-svg text {
+  font-family: var(--font-sans);
+}
+.paper-diagram-svg text[font-family="var(--font-mono)"] {
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 768px) {
+  .paper-diagram-container { padding: var(--s4); }
+}

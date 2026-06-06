@@ -142,6 +142,10 @@
 
   --radius-xs: var(--r-xs);
   --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+  --radius-pill: var(--r-pill);
 
   --shadow-glow-cyan: var(--glow-mango);
   --shadow-glow-pink: var(--glow-mango);

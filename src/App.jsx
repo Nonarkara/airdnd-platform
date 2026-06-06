@@ -122,10 +122,12 @@ function sortListings(listings, sortBy) {
 
 
 async function fetchFirebaseListings() {
+  // Single orderBy to match the realtime onSnapshot query and avoid requiring a
+  // Firestore composite index — a missing index would throw and silently drop
+  // the app to the static snapshot instead of live data.
   const q = query(
     collection(db, 'companions'),
     orderBy('updated_at', 'desc'),
-    orderBy('created_at', 'desc'),
     limit(LIVE_QUERY_LIMIT)
   );
   const snapshot = await getDocs(q);

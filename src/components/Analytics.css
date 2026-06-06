@@ -731,3 +731,55 @@
     display: none;
   }
 }
+
+/* ── Upgrade Socio-Linguistic and NGO Panels ────────────────────────────── */
+.an-upgrade-section {
+  margin-bottom: 1rem;
+}
+.an-upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.an-upgrade-panel {
+  padding: 1.2rem;
+  background: var(--color-bg-inset);
+  border: 1px solid var(--color-line-soft);
+  display: flex;
+  flex-direction: column;
+}
+.an-upgrade-panel h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--color-cream);
+  font-weight: 500;
+}
+.panel-desc {
+  margin: 0 0 1rem;
+  font-size: var(--text-small);
+  line-height: 1.45;
+  color: var(--color-cream-muted);
+}
+.ngo-metric-card {
+  border-radius: 0;
+  transition: border-color var(--transition-fast);
+}
+.ngo-metric-card:hover {
+  border-color: var(--color-line);
+}
+.euphemism-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  padding-bottom: 0.45rem;
+}
+.euphemism-row:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 1024px) {
+  .an-upgrade-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

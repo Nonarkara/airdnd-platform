@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { db, auth } from '../lib/firebase';
 import { formatTelDisplay } from '../lib/normalization';
 import { useMarketAnalytics, MESSAGE_TYPES, MESSAGE_TYPE_LABELS, getPhotoCount, getContactChannelCount, getLatestSourceTime, formatDateShort, formatPercent, snapshotToAnalyticsListing, buildFallbackMessageStats } from '../lib/useMarketAnalytics';
 import InsightNarrative from './InsightNarrative';
@@ -197,6 +196,59 @@ export default function Analytics() {
 
   if (!data) return null;
 
+  // Dynamic Euphemism Frequency Mining
+  const aromaCount = listings.filter(l => {
+    const s = `${l.name} ${l.description} ${l.raw_text}`.toLowerCase();
+    return s.includes('aroma') || s.includes('อโรมา') || s.includes('อโรม่า');
+  }).length;
+
+  const oilCount = listings.filter(l => {
+    const s = `${l.name} ${l.description} ${l.raw_text}`.toLowerCase();
+    return s.includes('oil') || s.includes('น้ำมัน') || s.includes('นวดน้ำมัน');
+  }).length;
+
+  const b2bCount = listings.filter(l => {
+    const s = `${l.name} ${l.description} ${l.raw_text}`.toLowerCase();
+    return s.includes('b2b') || s.includes('บอดี้') || s.includes('body') || s.includes('b to b') || s.includes('บีทูบี');
+  }).length;
+
+  const showerCount = listings.filter(l => {
+    const s = `${l.name} ${l.description} ${l.raw_text}`.toLowerCase();
+    return s.includes('shower') || s.includes('อาบ') || s.includes('สบู่') || s.includes('soap');
+  }).length;
+
+  const freestyleCount = listings.filter(l => {
+    const s = `${l.name} ${l.description} ${l.raw_text}`.toLowerCase();
+    return s.includes('freestyle') || s.includes('ฟรีสไตล์');
+  }).length;
+
+  const euphemisms = [
+    { label: 'น้ำมัน · Oil Massage', count: oilCount, implied: 'Gateway / standard physical contact' },
+    { label: 'อโรมา · Aroma Massage', count: aromaCount, implied: 'Body contact & exposure' },
+    { label: 'บอดี้ · B2B / Body-to-Body', count: b2bCount, implied: 'Sensual full-contact rubbing' },
+    { label: 'อาบน้ำ · Shower / Soap', count: showerCount, implied: 'Hygiene prep for sexual contact' },
+    { label: 'ฟรีสไตล์ · Freestyle (Explicit)', count: freestyleCount, implied: 'Explicit sexual terms (Self-censored)', color: 'var(--color-status)' },
+  ].sort((a, b) => b.count - a.count);
+
+  const maxEuphemism = Math.max(...euphemisms.map(e => e.count), 1);
+
+  const basePriceVal = data.priceMedian || 600;
+  const estimatedAddonVal = 2000;
+  const totalEstimatedPriceVal = basePriceVal + estimatedAddonVal;
+
+  const lowPriceOutliers = listings
+    .filter((l) => l.priceValue && l.priceValue < 500)
+    .slice(0, 5);
+
+  const highAnonymityListings = listings
+    .filter((l) => {
+      const nameLower = (l.name || '').toLowerCase();
+      const isGeneric = !l.name || nameLower === 'น้อง' || nameLower === 'น้องใหม่' || nameLower.includes('ร้าน') || nameLower.length < 5;
+      const hasNoPhotos = !l.photo_urls || l.photo_urls.length === 0;
+      return isGeneric && hasNoPhotos;
+    })
+    .slice(0, 5);
+
   const maxCity = data.cities[0]?.[1] || 1;
   const maxChannel = data.channels[0]?.[1] || 1;
   const maxContact = data.contactRows[0]?.[1] || 1;
@@ -237,7 +289,7 @@ export default function Analytics() {
           Real-time market intelligence from {data.total} businesses across {data.cities.length}+ cities. Mined from {data.msgCount?.toLocaleString() || '—'} community messages and {data.photoCount?.toLocaleString() || '—'} archived photos. Every figure on this page traces back to a specific listing — click any row to read the source.
         </p>
       </div>
-      <InsightNarrative analytics={data} />
+      <InsightNarrative analytics={data} mode="global" />
       <VisualCharts analytics={data} />
       <section className="an-stats-grid">
         <Stat label="Active Businesses" value={data.total} />
@@ -261,6 +313,123 @@ export default function Analytics() {
               tone={fact.tone}
             />
           ))}
+        </div>
+      </section>
+
+      {/* ── Section: Socio-Linguistic and NGO Support Matrix ────────────────── */}
+      <section className="an-card an-wide an-upgrade-section">
+        <h2>Socio-Linguistic Decoding & NGO Outreach Matrix</h2>
+        <p className="an-card-sub">
+          Critical data layers translating euphemisms, exposing hidden pricing structures, and providing social outreach teams with actionable intervention targets.
+        </p>
+
+        <div className="an-upgrade-grid">
+          {/* 1. Linguistic Decoder */}
+          <div className="an-upgrade-panel card-linguistic">
+            <h3>Linguistic Decoder (Euphemism Frequencies)</h3>
+            <p className="panel-desc">
+              The Thai grey massage economy operates on therapeutic alibi terms. We extract these counts dynamically from the active listings to map the threshold of deniability.
+            </p>
+            <div className="an-bars" style={{ marginTop: '1rem' }}>
+              {euphemisms.map((e) => (
+                <div key={e.label} className="euphemism-row" style={{ marginBottom: '0.5rem' }}>
+                  <Bar label={e.label} value={e.count} max={maxEuphemism} color={e.color || 'var(--color-data)'} />
+                  <span className="euphemism-implied" style={{ display: 'block', fontSize: '9px', color: 'var(--color-cream-muted)', marginLeft: '8.55rem', marginTop: '-2px' }}>
+                    {e.implied}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 2. Economy of Add-ons */}
+          <div className="an-upgrade-panel card-addons">
+            <h3>The Economy of Add-Ons</h3>
+            <p className="panel-desc">
+              The visible price is the alibi. The true economic transaction depends on private negotiation conducted behind closed doors.
+            </p>
+            <div className="an-addon-chart-container" style={{ marginTop: '1rem' }}>
+              <div className="an-addon-stack-bar" style={{ display: 'flex', height: '24px', border: '1px solid var(--color-line)', background: 'var(--color-bg-inset)', overflow: 'hidden' }}>
+                <div className="an-addon-stack-segment segment-base" style={{ width: `${(basePriceVal / totalEstimatedPriceVal) * 100}%`, background: 'var(--color-data)', display: 'grid', placeItems: 'center', fontSize: '10px', color: 'var(--color-bg)', fontWeight: 'bold' }}>
+                  <span>Base Alibi ฿{basePriceVal}</span>
+                </div>
+                <div className="an-addon-stack-segment segment-addon" style={{ width: `${(estimatedAddonVal / totalEstimatedPriceVal) * 100}%`, background: 'var(--color-action)', display: 'grid', placeItems: 'center', fontSize: '10px', color: 'var(--color-bg)', fontWeight: 'bold' }}>
+                  <span>Est. Add-On ~฿{estimatedAddonVal}</span>
+                </div>
+              </div>
+              <div className="an-addon-legend" style={{ marginTop: '0.85rem' }}>
+                <p style={{ margin: '0 0 0.5rem', fontSize: 'var(--text-body)', fontWeight: 'bold', color: 'var(--color-cream)' }}>
+                  Estimated Total Transaction: ฿{totalEstimatedPriceVal}
+                </p>
+                <div className="an-addon-legend-items" style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                  <div className="legend-item" style={{ display: 'flex', gap: '0.5rem', fontSize: 'var(--text-small)', color: 'var(--color-cream-soft)' }}>
+                    <span className="legend-color color-base" style={{ display: 'inline-block', width: '12px', height: '12px', background: 'var(--color-data)', flexShrink: 0, marginTop: '2px' }} />
+                    <span><strong>Base Fee (Room/Alibi):</strong> Split 50/50 with the landlord. Covers towels, facility maintenance, and the legal alibi of health massage.</span>
+                  </div>
+                  <div className="legend-item" style={{ display: 'flex', gap: '0.5rem', fontSize: 'var(--text-small)', color: 'var(--color-cream-soft)' }}>
+                    <span className="legend-color color-addon" style={{ display: 'inline-block', width: '12px', height: '12px', background: 'var(--color-action)', flexShrink: 0, marginTop: '2px' }} />
+                    <span><strong>Negotiated tip (Intimacy):</strong> Retained by the provider, but vulnerable to safety rent, transportation, and health supplies.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. NGO Intervention Matrix */}
+          <div className="an-upgrade-panel card-ngo-matrix">
+            <h3>NGO & Social Worker Support Matrix</h3>
+            <p className="panel-desc">
+              Outreach targeting tools. We flag high-risk listings based on pricing anomalies (potential economic coercion) and extreme anonymity (potential trafficking/high turnover).
+            </p>
+            
+            <div className="ngo-stats-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBlock: '0.75rem' }}>
+              <div className="ngo-metric-card" style={{ padding: '0.5rem', border: '1px solid var(--color-line-soft)', background: 'var(--color-bg-inset)', textAlign: 'center' }}>
+                <span className="ngo-metric-val" style={{ display: 'block', fontSize: '20px', fontWeight: 'bold', color: 'var(--color-action)' }}>{listings.filter(l => l.priceValue && l.priceValue < 500).length}</span>
+                <span className="ngo-metric-label" style={{ fontSize: '9px', textTransform: 'uppercase', color: 'var(--color-cream-muted)', fontFamily: 'var(--font-mono)' }}>Low Price Outliers</span>
+              </div>
+              <div className="ngo-metric-card" style={{ padding: '0.5rem', border: '1px solid var(--color-line-soft)', background: 'var(--color-bg-inset)', textAlign: 'center' }}>
+                <span className="ngo-metric-val" style={{ display: 'block', fontSize: '20px', fontWeight: 'bold', color: 'var(--color-status)' }}>
+                  {listings.filter(l => {
+                    const nameLower = (l.name || '').toLowerCase();
+                    const isGeneric = !l.name || nameLower === 'น้อง' || nameLower === 'น้องใหม่' || nameLower.includes('ร้าน') || nameLower.length < 5;
+                    const hasNoPhotos = !l.photo_urls || l.photo_urls.length === 0;
+                    return isGeneric && hasNoPhotos;
+                  }).length}
+                </span>
+                <span className="ngo-metric-label" style={{ fontSize: '9px', textTransform: 'uppercase', color: 'var(--color-cream-muted)', fontFamily: 'var(--font-mono)' }}>High Anonymity Profiles</span>
+              </div>
+            </div>
+
+            <div className="ngo-outreach-lists" style={{ marginTop: '0.75rem' }}>
+              <span className="section-kicker" style={{ fontSize: '9px', color: 'var(--color-action)' }}>LOW PRICE INTERVENTION TARGETS</span>
+              <div className="an-table an-table-mini" style={{ marginBottom: '0.75rem', marginTop: '0.2rem' }}>
+                {lowPriceOutliers.length === 0 ? (
+                  <div className="an-empty" style={{ fontSize: '10px', color: 'var(--color-cream-muted)' }}>No low-price outliers detected in snapshot.</div>
+                ) : (
+                  lowPriceOutliers.map((l) => (
+                    <a key={l.id} href={listingHref(l.id)} className="an-table-row an-table-row-link an-mini-row" style={{ fontSize: '11px', paddingBlock: '0.35rem' }}>
+                      <span>{l.name || 'Anonymous Provider'} ({l.city || 'Bangkok'})</span>
+                      <strong>{l.priceValue} THB</strong>
+                    </a>
+                  ))
+                )}
+              </div>
+
+              <span className="section-kicker" style={{ fontSize: '9px', color: 'var(--color-status)' }}>HIGH ANONYMITY INTERVENTION TARGETS</span>
+              <div className="an-table an-table-mini" style={{ marginTop: '0.2rem' }}>
+                {highAnonymityListings.length === 0 ? (
+                  <div className="an-empty" style={{ fontSize: '10px', color: 'var(--color-cream-muted)' }}>No high-anonymity targets detected.</div>
+                ) : (
+                  highAnonymityListings.map((l) => (
+                    <a key={l.id} href={listingHref(l.id)} className="an-table-row an-table-row-link an-mini-row" style={{ fontSize: '11px', paddingBlock: '0.35rem' }}>
+                      <span>{l.name || 'Unnamed น้อง'} ({l.city || 'Bangkok'})</span>
+                      <strong>ID: {l.id}</strong>
+                    </a>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

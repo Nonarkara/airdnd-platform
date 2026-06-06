@@ -132,7 +132,7 @@
 .value-card {
   margin-top: 0.75rem;
   padding: 1rem;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.02) 100%);
+  background: rgba(212, 175, 55, 0.08);
   border-radius: var(--radius-sm);
   border: 1px solid rgba(212, 175, 55, 0.2);
   display: flex;

@@ -204,7 +204,7 @@ function buildPopupHtml(listing, precision) {
         border: 1px solid #FF3D8B;
         border-radius: 0;
         color: #FF3D8B;
-        font-family: 'Inter', sans-serif;
+        font-family: 'Hanken Grotesk', system-ui, sans-serif;
         font-size: 11px;
         font-weight: 600;
         letter-spacing: 0.05em;
