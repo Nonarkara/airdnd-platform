@@ -29,7 +29,7 @@ const UNSAFE_VISUAL_TAGS = new Set([
 ]);
 
 const UNSAFE_VISUAL_RE =
-  /(?:adult|erotic|escort|full\s*service|xxx|porn|nude|naked|onlyfans|18\+|vip\s*group|งานแรง|งานครบ|บริการพิเศษ|เสียว|เสร[็้]จ|อม(?:ไม่)?อั้?น|อมไม|จบ\s*\d{3,5}|แซ่บ|หุ่น|สาวๆ|สาวสาว|น้องหน้า|น้องใหม่|เลือกน้อง|เลือกสาว|หมอมาใหม่|โป้|โป๊|กลุ่มลับ|คลิป(?:โป้|โป๊|ลับ))/i;
+  /(?:adult|erotic|escort|full\s*service|xxx|porn|nude|naked|onlyfans|18\+|vip\s*group|งานแรง|งานครบ|บริการพิเศษ|เสียว|เสร[็้]จ|อม(?:ไม่)?อั้?น|อมไม|จบ\s*\d{3,5}|โป้|โป๊|กลุ่มลับ|คลิป(?:โป้|โป๊|ลับ))/i;
 
 export function formatSourceChannelName(sourceChannel) {
   const raw = normalizeText(sourceChannel, '').replace(/^@/, '');
