@@ -5,6 +5,7 @@ import {
   isListingNew,
 } from '../lib/listings';
 import { trackListingClick, trackSignal, isListingSaved } from '../lib/tracker';
+import { useLanguage } from '../context/LanguageContext';
 import './CompanionCard.css';
 
 // Stable duotone cover variant (cv1–cv6) from the listing identity — the
@@ -32,6 +33,7 @@ function priceDisplay(listing) {
 }
 
 function CompanionCard({ companion, onClick, priority = false }) {
+  const { t } = useLanguage();
   const galleryUrls = getSafeListingGalleryUrls(companion);
   const primaryImage = galleryUrls[0] || null;
   const [imageFailed, setImageFailed] = useState(false);
@@ -67,12 +69,12 @@ function CompanionCard({ companion, onClick, priority = false }) {
               className="lcard__img"
               onError={() => setImageFailed(true)}
             />
-            <span className="photo__tag">PHOTO · matched</span>
+            <span className="photo__tag">{t.card?.photoMatched || 'PHOTO · matched'}</span>
           </div>
         ) : (
           <div className={`photo ${variant}`}>
             <span className="photo__glyph">{venueInitial(companion.name)}</span>
-            <span className="photo__tag">awaiting match</span>
+            <span className="photo__tag">{t.card?.photoFallback || 'awaiting match'}</span>
           </div>
         )}
 
@@ -116,10 +118,10 @@ function CompanionCard({ companion, onClick, priority = false }) {
           {verified && (
             <span className="badge-verified">
               <svg className="icon icon-sm" viewBox="0 0 24 24"><path d="M12 3.5 19 6v5c0 4.6-3 8-7 9.5C8 19 5 15.6 5 11V6Z" /><path d="m9 11.5 2 2 4-4.5" /></svg>
-              Verified
+              {t.card?.verifiedTag || 'Verified'}
             </span>
           )}
-          {isNew && <span className="tag-mango tag">New</span>}
+          {isNew && <span className="tag-mango tag">{t.card?.newBadge || 'New'}</span>}
           {tag && <span className="tag">{tag}</span>}
         </div>
 

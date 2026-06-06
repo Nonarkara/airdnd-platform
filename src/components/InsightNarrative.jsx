@@ -21,44 +21,59 @@ export default function InsightNarrative({ analytics, mode = 'spatial' }) {
         return "The current viewport contains no known listings. The intelligence grid is offline for this sector.";
       }
 
-      // 1. Density & Commoditization (Urban Commoditization)
-      if (visibleCount > 20) {
-        sentences.push(`This district exhibits strong signs of Urban Commoditization. With ${visibleCount} active locations fiercely competing for attention (${totalMentions} total market mentions), providers are forced to differentiate heavily on price or specialized niches to survive the noise.`);
-      } else if (visibleCount > 5) {
-        sentences.push(`This sector maintains a balanced equilibrium. ${visibleCount} locations share the demand pool without triggering destructive price wars.`);
-      } else {
-        sentences.push(`A zone of High-Value Discretion. Scarcity defines this micro-market, allowing the ${visibleCount} operators here to command significant leverage over consumer choices.`);
+      // Compute HHI (Herfindahl-Hirschman Index) based on mention share in the current viewport
+      let hhi = 0;
+      if (visibleCount > 0 && totalMentions > 0 && Array.isArray(topPerformers)) {
+        let sumSquares = 0;
+        topPerformers.forEach((p) => {
+          const share = (p.computedMentions || 0) / totalMentions;
+          sumSquares += (share * 100) ** 2;
+        });
+        hhi = Math.round(sumSquares);
       }
 
-      // 2. The Alpha Gravity
+      // 1. Density & HHI Concentration
+      if (hhi > 2500) {
+        sentences.push(`This district exhibits a highly concentrated supply structure (HHI: ${hhi}). A few dominant channels monopolize attention, leaving the remaining ${visibleCount} locations to compete on residual local traffic.`);
+      } else if (hhi > 1500) {
+        sentences.push(`This sector maintains a moderately concentrated market (HHI: ${hhi}). Competition is balanced across ${visibleCount} active locations without extreme attention capture.`);
+      } else {
+        sentences.push(`A highly fragmented micro-market (HHI: ${hhi}). Social capital is widely distributed among the ${visibleCount} active providers, suggesting low entry barriers and high local differentiation.`);
+      }
+
+      // 2. The Alpha Gravity (Attention Capture)
       if (topPerformers && topPerformers.length > 0) {
         const top = topPerformers[0];
         if (top.computedMentions > (avgMentions || 0) * 2) {
-          sentences.push(`We detect massive Alpha Gravity radiating from "${top.name || 'a dominant player'}". Commanding a disproportionate ${top.computedMentions} mentions, this apex provider essentially dictates the market standards and gravitational pull for the entire neighborhood.`);
+          sentences.push(`We detect significant attention asymmetry radiating from "${top.name || 'a dominant player'}". Commanding a disproportionate ${top.computedMentions} mentions, this provider holds a strong local indexing advantage.`);
         } else {
-          sentences.push(`Influence here is democratized; no single entity monopolizes the narrative, leading to a highly fluid and competitive landscape.`);
+          sentences.push(`Attention dynamics here are egalitarian; no single operator monopolizes the local feeds, leading to a fluid discovery landscape.`);
         }
       }
 
-      // 3. Socioeconomic Pricing & High-Value Discretion
+      // 3. Price Deviation from the Bangkok Median (฿1,800/hr)
       if (avgPrice) {
-        if (avgPrice > 2500) {
-           sentences.push(`Socioeconomic indicators point to a premium exclusionary zone (average rate: ฿${avgPrice.toLocaleString()}). Operators here are trading volume for prestige and curated anonymity.`);
-        } else if (avgPrice < 1500) {
-           sentences.push(`The baseline economic velocity is high, with prices aggressively anchored around ฿${avgPrice.toLocaleString()}, optimizing for rapid turnover and mass accessibility.`);
+        const medianBaseline = 1800;
+        const priceDev = Math.round(((avgPrice - medianBaseline) / medianBaseline) * 100);
+        const devSign = priceDev >= 0 ? '+' : '';
+        
+        if (priceDev > 35) {
+           sentences.push(`Pricing indicators point to a high price deviation (${devSign}${priceDev}% from Bangkok median, average: ฿${avgPrice.toLocaleString()}). Operators here trade volume for high-value discretion and premium placement.`);
+        } else if (priceDev < -15) {
+           sentences.push(`Pricing indicators show a negative price deviation (${priceDev}% from Bangkok median, average: ฿${avgPrice.toLocaleString()}), typical of high-velocity transit zones optimizing for rapid turnover.`);
         } else {
-           sentences.push(`Pricing is stabilized at ฿${avgPrice.toLocaleString()}, a standard middle-class threshold.`);
+           sentences.push(`Pricing conforms to the city median (${devSign}${priceDev}% deviation, average: ฿${avgPrice.toLocaleString()}), reflecting stable middle-class threshold alignment.`);
         }
       } else {
-        sentences.push(`The absence of explicit numeric pricing suggests a highly psychological, inquiry-based economic model designed to screen clientele.`);
+        sentences.push(`The lack of numeric price labels indicates a highly psychological, inquiry-based booking model designed to filter demand prior to contact.`);
       }
 
-      // 4. Temporal/Psychological Rhythms
+      // 4. Temporal Rhythms
       if (peakHour !== null && peakHour !== undefined) {
         if (peakHour >= 22 || peakHour <= 3) {
-          sentences.push(`Psychologically, this district awakens under the cover of night, catering to late-hour escapism peaking at ${peakHour}:00.`);
+          sentences.push(`Temporal patterns indicate a late-night service rhythm, with message density peaking at ${peakHour}:00.`);
         } else if (peakHour >= 12 && peakHour <= 17) {
-          sentences.push(`Contrarian temporal behavior is observed: demand paradoxically peaks in broad daylight (${peakHour}:00), signaling a clientele seeking mid-day disruption.`);
+          sentences.push(`Contrarian temporal behavior is observed: message density peaks during daylight hours (${peakHour}:00), signaling mid-day operator shifts.`);
         } else {
           sentences.push(`The temporal rhythm aligns with standard after-hours decompression, peaking predictably at ${peakHour}:00.`);
         }

@@ -126,3 +126,11 @@
   .finder__row .index-row__price { display: none; }
   .finder__name { font-size: 0.95rem; }
 }
+
+.finder__approx-badge {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  font-style: italic;
+  font-weight: normal;
+  opacity: 0.85;
+}

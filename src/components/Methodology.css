@@ -323,3 +323,25 @@
     grid-template-columns: 1fr;
   }
 }
+
+.meth-lang-note {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: var(--gold, #f59e0b);
+  border-left: 2px solid var(--gold, #f59e0b);
+  padding: 0.35rem 0.75rem;
+  margin: 0 0 2rem;
+  opacity: 0.8;
+}
+
+.meth-row-head {
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+  color: var(--ink-3, #888);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line, #2a2a3a);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.25rem;
+}
+

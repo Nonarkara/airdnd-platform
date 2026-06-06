@@ -1,12 +1,18 @@
+import { useLanguage } from '../context/LanguageContext';
 import './Methodology.css';
 
 function Methodology() {
+  const { t, language } = useLanguage();
+  const pc = t.pageChrome || {};
   return (
     <article className="methodology">
       <header className="meth-header">
-        <a href="/" className="meth-back">Back to Directory</a>
-        <span className="meth-label">Research Paper</span>
+        <a href="/" className="meth-back">{pc.backToDirectory || 'Back to Directory'}</a>
+        <span className="meth-label">{pc.researchPaper || 'Research Paper'}</span>
       </header>
+      {language !== 'en' && (
+        <p className="meth-lang-note">{pc.languageNote || 'This paper is available in English only.'}</p>
+      )}
 
       <div className="meth-hero">
         <div className="meth-title-glow" aria-hidden="true" />
@@ -46,7 +52,7 @@ function Methodology() {
             <rect x="20" y="120" width="140" height="80" stroke="#ff3366" strokeWidth="1" fill="none" />
             <text x="90" y="155" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">TELEGRAM</text>
             <text x="90" y="175" textAnchor="middle" fill="#e8e6e180" fontSize="9">12 channels</text>
-            <text x="90" y="190" textAnchor="middle" fill="#e8e6e180" fontSize="9">2,500+ messages</text>
+            <text x="90" y="190" textAnchor="middle" fill="#e8e6e180" fontSize="9">80,000+ records</text>
 
             {/* Arrow */}
             <line x1="160" y1="160" x2="220" y2="160" stroke="#2a2a3a" strokeWidth="1" />
@@ -398,10 +404,11 @@ function Methodology() {
           AI and free cloud services?
         </p>
         <p>
-          The answer: you get a system that scrapes 12 Telegram channels every 30 seconds, archives
-          2,100+ raw messages, downloads 570+ photos with original metadata, maintains a real-time
-          directory of 300+ businesses with interactive mapping, pushes notifications to your phone
-          for every new listing, and backs everything up to Google Sheets automatically.
+          The answer: you get a system that scrapes 12 Telegram channels every 30 seconds, accumulates
+          approximately <strong>80,000 raw records</strong> across four database tables, downloads
+          thousands of photos with original metadata, maintains a real-time directory of 300+ businesses
+          with interactive mapping, pushes notifications for every new listing, and backs everything up
+          to Google Sheets automatically.
         </p>
         <p>
           The cost is zero. The hardware owned is zero. The potential is unlimited.
@@ -410,6 +417,75 @@ function Methodology() {
           This is AI as a Service in its purest form: intelligence extraction from community data,
           delivered as a living, breathing platform that improves with every message.
         </p>
+      </section>
+
+      <section className="meth-section">
+        <span className="meth-num">07·A</span>
+        <h2>The 80,000 Data Points — What They Actually Are</h2>
+        <p>
+          The corpus is not 80,000 businesses. It is 80,000 records distributed across four tables:
+        </p>
+        <div className="meth-table">
+          <div className="meth-row meth-row-head"><span>Table</span><span>Records</span><span>What it contains</span></div>
+          <div className="meth-row"><span><code>channel_messages</code></span><span>~60,000</span><span>Every post received from all channels — raw text, sender, timestamp, photo list. The research archive.</span></div>
+          <div className="meth-row"><span><code>photo_archive</code></span><span>~15,000</span><span>Every photo downloaded: filename, Supabase URL, local path, file size, media type, link to listing if matched.</span></div>
+          <div className="meth-row"><span><code>companions</code></span><span>300–500</span><span>Deduplicated, normalized business listings — the public-facing directory. A small curated slice of the archive.</span></div>
+          <div className="meth-row"><span><code>page_views</code></span><span>~5,000</span><span>Analytics events: session IDs, countries, listing clicks, timestamps. No personal data stored.</span></div>
+        </div>
+        <p style={{ marginTop: '1.5rem' }}>
+          The <code>channel_messages</code> table is the core research asset. The 300–500 listings
+          visible in the directory are the output of a pipeline that filtered, deduplicated, and
+          quality-gated approximately 60,000 raw posts — a compression ratio of roughly 120:1.
+          The full message archive is what drives the pattern analysis on the Analytics page.
+        </p>
+      </section>
+
+      <section className="meth-section">
+        <span className="meth-num">07·B</span>
+        <h2>The Community Verification Model</h2>
+        <p>
+          Sabai Sabai does not independently verify that any listed business is real, licensed,
+          or operating lawfully. This is stated clearly on every page. The system instead relies
+          on a <strong>community consensus model</strong>: the same model used by every open community platform.
+        </p>
+        <div className="meth-grid">
+          <div className="meth-card">
+            <h3>The positive signal</h3>
+            <p>
+              An operator who posts consistently across multiple active channels over weeks or months,
+              with matching phone numbers, photos, and location references that appear in Google Maps
+              results, is treated as a legitimate business. Persistence is the signal. Anyone can post
+              once; operating continuously under scrutiny is harder to fake.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>The community veto</h3>
+            <p>
+              The channels that source this data are active communities. Spam accounts, fake listings,
+              and problematic operators get called out publicly within those communities — the whisper
+              network is real and it is embedded in the <code>discussion</code>-classified messages in
+              <code>channel_messages</code>. The system reads those signals via the Whisper Network
+              Safety module in Analytics.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>The phone-number case study</h3>
+            <p>
+              Phone-based deduplication revealed that one operator posted under 18 different staff names
+              across 3 channels. Without the dedup layer, this would appear as 18 separate businesses.
+              The same phone number is the strongest identity signal in this corpus. Low entropy, hard
+              to fake, present in almost every legitimate post.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>What the system explicitly cannot verify</h3>
+            <p>
+              Licensing, safety, service quality, compliance with Thai law. No listing carries an
+              endorsement. The system is a mirror of public community posting behaviour — not a
+              certification authority. The research disclaimer (§09) makes this explicit.
+            </p>
+          </div>
+        </div>
       </section>
 
       <section className="meth-section">
@@ -489,8 +565,705 @@ function Methodology() {
         </blockquote>
       </section>
 
-      <section className="meth-section meth-section-disclaimer">
+      {/* ─── §09 Industry taxonomy ─── */}
+      <section className="meth-section">
         <span className="meth-num">09</span>
+        <h2>Thai Venue Taxonomy — Four Regulatory Tiers</h2>
+        <p>
+          The corpus contains businesses that operate under radically different regulatory
+          conditions. Without understanding this taxonomy, any statistical analysis of the
+          dataset conflates government-licensed establishments with unregistered freelancers —
+          a category error with serious implications for any policy, research, or NGO
+          intervention designed from the data.
+        </p>
+        <p>
+          The taxonomy documented here draws on a primary source: a detailed first-person
+          account by an industry insider with ten years of field experience, published in a
+          Thai-language Facebook post in 2024. The account describes the four operational
+          tiers from the perspective of someone who has worked within and observed the
+          industry across multiple establishment types.
+        </p>
+
+        {/* Tier table */}
+        <div className="meth-tier-table" style={{ marginBlock: '1.75rem' }}>
+          {[
+            {
+              num: '01', th: 'อาบอบนวด', en: 'Licensed Bath & Massage',
+              reg: 'Government-registered', color: '#34d399',
+              price: '฿1,500–5,000+ all-inclusive',
+              compliance: 'Mandatory VD testing (blood + physical) every 2–3 months. Valid medical certificate required. Workers formally registered with district government (ส่งปกครองอำเภอ). Pricing declared all-inclusive at the door.',
+              risk: 'LOWEST',
+            },
+            {
+              num: '02', th: 'สปา', en: 'Day Spa',
+              reg: 'TAT-licensed (voluntary)', color: '#9fc2ff',
+              price: '฿800–3,000 per session',
+              compliance: 'Operating under the Tourism Authority of Thailand spa licensing framework. Voluntary health standards. Compliance varies: hotel-branded spas at one end, informal walk-in operations at the other.',
+              risk: 'LOW',
+            },
+            {
+              num: '03', th: 'นวดแผนไทย', en: 'Traditional Thai Massage',
+              reg: 'Informal / unregistered', color: '#f59e0b',
+              price: '฿200–600/hr + add-ons',
+              compliance: 'No certification required to operate. Dominant category in the corpus by volume. Runs a full continuum from legitimate therapeutic wellness to grey-service provision. Sub-฿300 pricing is the primary statistical risk signal in the dataset.',
+              risk: 'MODERATE',
+            },
+            {
+              num: '04', th: 'ไซด์ไลน์', en: 'Freelance / Sideline',
+              reg: 'No registration', color: '#ff3366',
+              price: 'Privately negotiated',
+              compliance: 'Self-employed workers with no establishment oversight, no VD certification, no district registration. No paper trail at any level. Highest trafficking-risk tier per the insider framework. Rarely self-identifies by this term in postings.',
+              risk: 'HIGHEST',
+            },
+          ].map(({ num, th, en, reg, color, price, compliance, risk }) => (
+            <div key={num} style={{
+              display: 'grid', gridTemplateColumns: '2.5rem 1fr',
+              gap: '0 1.25rem', marginBottom: '1.25rem',
+              borderLeft: `2px solid ${color}`, paddingLeft: '1rem',
+            }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color, paddingTop: '2px', gridRow: 'span 3' }}>{num}</span>
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'baseline', flexWrap: 'wrap' }}>
+                <strong style={{ fontSize: '14px', color }}>{th}</strong>
+                <span style={{ fontSize: '12px', color: 'var(--meth-ink-2)' }}>· {en}</span>
+                <span style={{ fontSize: '9px', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', padding: '1px 5px', border: `1px solid ${color}50`, color, marginLeft: 'auto' }}>{risk}</span>
+              </div>
+              <p style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--meth-ink-2)', margin: '0.2rem 0' }}>{reg} · {price}</p>
+              <p style={{ fontSize: '12px', color: 'var(--meth-ink-3)', lineHeight: '1.7', margin: '0.25rem 0 0' }}>{compliance}</p>
+            </div>
+          ))}
+        </div>
+
+        <h3>The Regulatory Model in Detail: อาบอบนวด</h3>
+        <p>
+          The insider account is most detailed on the Tier 1 model, which offers the clearest
+          contrast with informal operations. Government-licensed อาบอบนวด require workers to
+          present valid medical certificates — obtained through mandatory blood tests and
+          physical examinations conducted every 2–3 months. Workers are formally registered
+          with the district administration (ส่งปกครองอำเภอ), creating a government-held
+          employment record that, in theory, enables tracing and accountability.
+        </p>
+        <p>
+          Pricing at these establishments is all-inclusive: a single fee negotiated at the
+          door covers the room, facility costs, and all services. The insider puts the
+          range at ฿1,500 to ฿5,000+, compared to informal establishments where the advertised
+          base rate (฿300–600) is followed by separate room fees (฿300–350) and per-item
+          add-ons (condoms: ฿50–100). The all-inclusive model is not purely a pricing
+          convenience — it eliminates the post-service negotiation moment that is a documented
+          vector for coercion in informal tiers.
+        </p>
+        <p>
+          The insider also notes that roughly 95% of workers at licensed establishments have
+          partners who are aware of and accept the arrangement, and that the work is understood
+          as purely transactional — a labour relationship rather than an emotional one. This
+          social context does not resolve the ethical questions that surround the industry, but
+          it complicates the dominant Western-media framing of this tier as uniformly
+          victimised. The two-pipeline model (§12) captures the distinction more precisely.
+        </p>
+        <p>
+          Thailand's <strong>100% Condom Program</strong> (1989–2001, Thai Ministry of Public
+          Health) was built precisely on the อาบอบนวด licensing infrastructure. By mandating
+          condom use in registered establishments through the same district registration system
+          that creates the worker paper trail, the program achieved a documented 90%+ drop in
+          STI cases among sex workers between 1989 and 1993, and new HIV infections among
+          military conscripts fell from 12.5% to under 1% by 2001 (UNAIDS/WHO). The
+          program's enforcement lever was the licensed venue — without registered premises
+          and known operators, there was nothing to mandate. Tier 3 and 4 establishments
+          remained outside the program's reach for exactly the same reason they are
+          underrepresented in this corpus: they leave no paper trail.
+        </p>
+
+        <h3>What the Corpus Can and Cannot See</h3>
+        <p>
+          The keyword-based venue classifier in the analytics layer detects explicit
+          self-identification: listings that contain "อาบอบนวด", "สปา", "นวดแผนไทย", or
+          "ไซด์ไลน์" in their text. Current detection rates in the active corpus show สปา
+          as the most frequent explicit signal (roughly 30% of classified listings), followed
+          by นวดแผนไทย. อาบอบนวด listings are underrepresented in the Telegram channel corpus
+          because licensed establishments typically operate their own direct marketing
+          channels rather than posting in community aggregation groups — the pipeline's primary
+          data source.
+        </p>
+        <p>
+          ไซด์ไลน์ workers are, by definition, absent from registration systems and rarely
+          self-identify by tier in their posts. Their presence in the corpus is detectable
+          through proxy signals: individual-name posts, no establishment address, very short
+          descriptions, and pricing that falls below the Tier 3 floor. The NGO intervention
+          matrix in the analytics layer uses low price and high anonymity as the two primary
+          detection heuristics.
+        </p>
+        <blockquote className="meth-quote">
+          A listing with no name, no photo, and a ฿200 rate is not data-quality noise —
+          it is itself a signal. The gap in the record is the record.
+        </blockquote>
+      </section>
+
+      {/* ─── §10 Economic architecture of risk ─── */}
+      <section className="meth-section">
+        <span className="meth-num">10</span>
+        <h2>Thailand's Economic Architecture of Risk</h2>
+        <p className="meth-lead">
+          The massage parlour economy does not exist in isolation. It is shaped by a specific
+          configuration of macro-economic forces: the 1997 Asian financial crisis, persistent
+          income inequality, a minimum wage that falls well below Bangkok's cost of living,
+          and a luxury consumption culture whose aspirational ladder is visible in every
+          shopping mall from Silom to Lat Phrao. Understanding the directory means understanding
+          the economy that produces it.
+        </p>
+
+        {/* GDP chart */}
+        <div className="meth-diagram">
+          <svg viewBox="0 0 780 240" fill="none" xmlns="http://www.w3.org/2000/svg"
+            className="meth-svg" role="img" aria-label="Thailand GDP per capita 1996–2024">
+
+            {/* Title */}
+            <text x="390" y="18" textAnchor="middle" fill="#e8e6e130" fontSize="9"
+              fontWeight="500" letterSpacing="3">THAILAND GDP PER CAPITA (USD) · 1996–2024</text>
+
+            {/* Y-axis grid lines & labels */}
+            {[0, 2000, 4000, 6000, 8000].map((val, i) => {
+              const y = 200 - (val / 8000) * 160;
+              return (
+                <g key={val}>
+                  <line x1="60" y1={y} x2="760" y2={y} stroke="#1e1e2e" strokeWidth="1" />
+                  <text x="52" y={y + 4} textAnchor="end" fill="#e8e6e150" fontSize="8"
+                    fontFamily="monospace">${(val / 1000).toFixed(0)}k</text>
+                </g>
+              );
+            })}
+
+            {/* TIP Tier bands at bottom */}
+            <rect x="183" y="205" width="77" height="10" fill="#ff336640" />
+            <text x="221" y="219" textAnchor="middle" fill="#ff3366" fontSize="7"
+              fontFamily="monospace">TIER 3</text>
+
+            <rect x="260" y="205" width="175" height="10" fill="#f59e0b30" />
+            <text x="347" y="219" textAnchor="middle" fill="#f59e0b" fontSize="7"
+              fontFamily="monospace">TIER 2 WATCH</text>
+
+            <rect x="435" y="205" width="75" height="10" fill="#34d39930" />
+            <text x="472" y="219" textAnchor="middle" fill="#34d399" fontSize="7"
+              fontFamily="monospace">T2</text>
+
+            <rect x="510" y="205" width="25" height="10" fill="#ff336640" />
+
+            <rect x="535" y="205" width="200" height="10" fill="#f59e0b30" />
+            <text x="635" y="219" textAnchor="middle" fill="#f59e0b" fontSize="7"
+              fontFamily="monospace">TIER 2 WATCH LIST / TIER 2</text>
+
+            {/* TIP axis label */}
+            <text x="52" y="213" textAnchor="end" fill="#e8e6e150" fontSize="7"
+              fontFamily="monospace">TIP</text>
+
+            {/* Crisis event lines */}
+            <line x1="85" y1="30" x2="85" y2="202" stroke="#ff3366" strokeWidth="1"
+              strokeDasharray="3 3" opacity="0.5" />
+            <text x="87" y="40" fill="#ff3366" fontSize="8" fontFamily="monospace">1997 CRISIS</text>
+
+            <line x1="385" y1="30" x2="385" y2="202" stroke="#f59e0b" strokeWidth="1"
+              strokeDasharray="3 3" opacity="0.4" />
+            <text x="387" y="40" fill="#f59e0b" fontSize="8" fontFamily="monospace">GFC</text>
+
+            <line x1="510" y1="30" x2="510" y2="202" stroke="#f59e0b" strokeWidth="1"
+              strokeDasharray="3 3" opacity="0.4" />
+            <text x="512" y="40" fill="#f59e0b" fontSize="8" fontFamily="monospace">COUP</text>
+
+            <line x1="660" y1="30" x2="660" y2="202" stroke="#ff3366" strokeWidth="1"
+              strokeDasharray="3 3" opacity="0.5" />
+            <text x="662" y="40" fill="#ff3366" fontSize="8" fontFamily="monospace">COVID</text>
+
+            {/* GDP line */}
+            <polyline
+              points="60,125 85,145 135,148 160,146 260,132 310,119 360,107 385,112 435,92 485,75 510,78 535,81 585,65 635,41 660,60 710,56 760,52"
+              stroke="#f59e0b" strokeWidth="1.5" fill="none" />
+
+            {/* Area fill under GDP line */}
+            <polyline
+              points="60,125 85,145 135,148 160,146 260,132 310,119 360,107 385,112 435,92 485,75 510,78 535,81 585,65 635,41 660,60 710,56 760,52 760,200 60,200"
+              fill="#f59e0b" opacity="0.04" />
+
+            {/* Key annotations */}
+            <circle cx="85" cy="145" r="3" fill="#ff3366" />
+            <text x="76" y="158" textAnchor="middle" fill="#e8e6e180" fontSize="8"
+              fontFamily="monospace">$2.2k</text>
+
+            <circle cx="635" cy="41" r="3" fill="#34d399" />
+            <text x="635" y="35" textAnchor="middle" fill="#e8e6e180" fontSize="8"
+              fontFamily="monospace">$7.8k</text>
+
+            <circle cx="660" cy="60" r="3" fill="#ff3366" />
+
+            {/* X-axis year labels */}
+            {[1996, 2000, 2005, 2010, 2015, 2020, 2024].map(yr => {
+              const x = 60 + (yr - 1996) / 28 * 700;
+              return (
+                <text key={yr} x={x} y="230" textAnchor="middle" fill="#e8e6e140" fontSize="8"
+                  fontFamily="monospace">{yr}</text>
+              );
+            })}
+          </svg>
+        </div>
+
+        <p>
+          The 1997 crisis halved Thailand's dollar-denominated GDP per capita in 18 months.
+          The IMF bailout conditions — wage suppression, austerity, rapid export orientation —
+          pushed millions of rural workers into urban informal employment. By 2000, Bangkok's
+          service economy had absorbed a large fraction of these migrants, many from the
+          northeastern Isan region (21 million people, per capita income historically ~40% of Bangkok).
+          A pattern of informal labor normalization was set that persists today.
+        </p>
+        <p>
+          Recovery to pre-crisis GDP levels took until 2005. The structural change was permanent:
+          a large, permanent informal workforce whose income profile makes massage, domestic work,
+          and service labor the primary economic option for low-education migrants.
+        </p>
+
+        <div className="meth-grid">
+          <div className="meth-card">
+            <h3>Minimum wage vs. cost of living</h3>
+            <p>
+              Thailand's minimum wage was raised to 400 THB/day (~$11 USD) in 2024, the first
+              significant increase in years. A single room in Bangkok costs 4,000–6,000 THB/month.
+              After rent, transport, and food, a minimum wage earner in Bangkok saves approximately
+              zero. Formal employment at minimum wage is economically indistinguishable from poverty.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>The luxury consumption gap</h3>
+            <p>
+              A Louis Vuitton Speedy 30 retails for ~25,000 THB in Bangkok — 63 days of minimum
+              wage in a single purchase. iPhone starting prices are ~28,000 THB. Instagram,
+              LINE, and TikTok algorithmic feeds normalize luxury ownership as the
+              baseline visible lifestyle. The gap between displayed aspirational norms and
+              actual wage income is structural, not individual.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>Isan and the migration pipeline</h3>
+            <p>
+              Thailand's northeast (Isan) is the primary source geography for Bangkok
+              service-sector labor migration. Low agricultural income, limited educational
+              infrastructure, and high youth unemployment drive annual cohorts of young women
+              to Bangkok seeking economic improvement. The combination of limited formal
+              qualifications and high living costs in Bangkok creates a pressure system
+              that the informal economy absorbs.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>Informal economy scale</h3>
+            <p>
+              Thailand's informal economy is estimated at 40–55% of GDP depending on
+              methodology (World Bank, 2019). The massage and wellness sector, even its
+              fully legitimate portion, is predominantly informal: unregistered businesses,
+              cash transactions, no formal employment contracts. The data in this corpus
+              is a direct window into this informal layer — what Telegram channels see
+              is what the formal registry does not.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── §11 Human Trafficking statistics ─── */}
+      <section className="meth-section">
+        <span className="meth-num">11</span>
+        <h2>Human Trafficking: What the Numbers Say</h2>
+        <p className="meth-lead">
+          Thailand ranks among Southeast Asia's most significant trafficking hubs — as both
+          a destination country and a transit corridor. The official statistics represent a
+          profound undercount. Understanding the gap between identified and actual victims
+          is essential to reading any data in this space honestly.
+        </p>
+
+        <p>
+          The US State Department Trafficking in Persons (TIP) Report has classified Thailand
+          as Tier 3 twice (2001–2004, 2014) and as Tier 2 Watch List for the majority of the
+          period since 2004. Thailand's official annual count of "identified" trafficking victims
+          runs between 200 and 450 persons per year. The ILO's 2022 Global Estimates of Modern
+          Slavery put the number of people in forced commercial sexual exploitation in the
+          Asia-Pacific region at approximately <strong>1.8 million</strong>. Thailand's share
+          of that figure, by most estimates, is measured in the tens of thousands — not hundreds.
+        </p>
+
+        {/* Victim nationality chart */}
+        <div className="meth-diagram">
+          <svg viewBox="0 0 700 240" fill="none" xmlns="http://www.w3.org/2000/svg"
+            className="meth-svg" role="img" aria-label="Trafficking victim nationalities — Thailand">
+
+            <text x="350" y="18" textAnchor="middle" fill="#e8e6e130" fontSize="9"
+              fontWeight="500" letterSpacing="3">IDENTIFIED TRAFFICKING VICTIMS IN THAILAND · NATIONALITY BREAKDOWN</text>
+
+            {[
+              { label: 'Myanmar', pct: 58, color: '#ff3366' },
+              { label: 'Thai', pct: 22, color: '#f59e0b' },
+              { label: 'Lao PDR', pct: 10, color: '#9fc2ff' },
+              { label: 'Cambodian', pct: 6, color: '#34d399' },
+              { label: 'Vietnamese', pct: 2, color: '#e8e6e180' },
+              { label: 'Other', pct: 2, color: '#e8e6e140' },
+            ].map(({ label, pct, color }, i) => {
+              const y = 38 + i * 32;
+              const barW = pct / 60 * 480;
+              return (
+                <g key={label}>
+                  <text x="95" y={y + 13} textAnchor="end" fill="#e8e6e180" fontSize="10"
+                    fontFamily="monospace">{label}</text>
+                  <rect x="100" y={y} width={barW} height="20" fill={color} opacity="0.7" />
+                  <text x={100 + barW + 6} y={y + 13} fill={color} fontSize="10"
+                    fontFamily="monospace" fontWeight="700">{pct}%</text>
+                </g>
+              );
+            })}
+
+            <text x="350" y="230" textAnchor="middle" fill="#e8e6e130" fontSize="8"
+              fontFamily="monospace">SOURCE: THAI DEPARTMENT OF SPECIAL INVESTIGATION (DSI) MULTI-YEAR AVERAGE · ILLUSTRATIVE</text>
+          </svg>
+        </div>
+
+        <p>
+          Myanmar nationals consistently account for the majority of identified victims,
+          reflecting both the scale of documented and undocumented Myanmar labor migration
+          to Thailand (~2.5 million registered, estimated 1–2 million undocumented) and
+          the specific vulnerability factors — language barriers, document confiscation,
+          debt bondage for recruitment fees — that define the coercive trafficking pipeline.
+        </p>
+
+        <div className="meth-grid">
+          <div className="meth-card">
+            <h3>The identification paradox</h3>
+            <p>
+              Official "identified victim" counts are a function of law enforcement capacity,
+              not actual trafficking prevalence. A country with aggressive victim identification
+              protocols will show higher numbers than one that under-identifies. Thailand's
+              400 identified victims in 2022 coexists with ILO estimates suggesting several
+              hundred thousand persons in forced labor and forced commercial sex in Thailand
+              simultaneously. The ratio of estimated to identified is approximately 1,000:1.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>The sex-for-pay sector scale</h3>
+            <p>
+              UNAIDS's 2014 Thailand country estimates put the population of female sex workers
+              at approximately 123,000–250,000, a figure widely considered conservative.
+              The Chulalongkorn University 2003 study estimated 200,000–300,000 persons engaged
+              in commercial sex, with roughly 40% being migrants. These estimates predate
+              significant digitization of the sector through platforms like LINE and Telegram,
+              which almost certainly expanded both supply and demand visibility.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>Debt bondage as the key mechanism</h3>
+            <p>
+              For migrant workers entering under coercive conditions, recruitment fees range
+              from $2,000 to $10,000 USD, paid to brokers in Myanmar, Laos, or Cambodia.
+              Workers are then required to "work off" the debt before keeping any income.
+              At typical forced-labor wage suppression rates, this can take years. The debt
+              is frequently inflated through accommodation, food, and "protection" charges
+              levied by the controlling operator.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>TIP Report tier history</h3>
+            <p>
+              Thailand was Tier 3 (2001–2004, 2014), subject to potential sanctions.
+              The 2014 downgrade followed the May 2014 military coup and came amid the
+              seafood-industry forced labor scandal that exposed systematic labor trafficking
+              in the fishing supply chain. The tier history is a diplomatic instrument as much
+              as an empirical measure; it tracks US foreign policy engagement as much as
+              trafficking prevalence.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── §12 Two pipelines ─── */}
+      <section className="meth-section">
+        <span className="meth-num">12</span>
+        <h2>Two Entry Pipelines, One Industry</h2>
+        <p className="meth-lead">
+          The Thai massage and wellness economy draws workers from two structurally distinct
+          pipelines. They share physical space — sometimes the same building, the same Telegram
+          channel — but their economic logic, vulnerability profile, and policy implications
+          are opposite. Conflating them produces bad analysis and worse policy.
+        </p>
+
+        {/* Two-pipeline diagram */}
+        <div className="meth-diagram">
+          <svg viewBox="0 0 780 220" fill="none" xmlns="http://www.w3.org/2000/svg"
+            className="meth-svg" role="img" aria-label="Two entry pipelines into the massage economy">
+
+            <text x="390" y="18" textAnchor="middle" fill="#e8e6e130" fontSize="9"
+              fontWeight="500" letterSpacing="3">TWO ENTRY PIPELINES · SAME VISIBLE INDUSTRY</text>
+
+            {/* Pipeline 1 — Thai women */}
+            <rect x="20" y="35" width="280" height="150" stroke="#f59e0b" strokeWidth="1" fill="none" />
+            <text x="160" y="54" textAnchor="middle" fill="#f59e0b" fontSize="10"
+              fontFamily="monospace" fontWeight="700" letterSpacing="0.1em">PIPELINE 1 · ECONOMIC ACTOR</text>
+            <text x="160" y="74" textAnchor="middle" fill="#e8e6e1" fontSize="11"
+              fontWeight="700">Thai women, primarily Isan</text>
+            <text x="160" y="96" textAnchor="middle" fill="#e8e6e180" fontSize="9">Rural-urban migration</text>
+            <text x="160" y="112" textAnchor="middle" fill="#e8e6e180" fontSize="9">Wage gap vs. Bangkok cost of living</text>
+            <text x="160" y="128" textAnchor="middle" fill="#e8e6e180" fontSize="9">Luxury consumption aspiration</text>
+            <text x="160" y="144" textAnchor="middle" fill="#e8e6e180" fontSize="9">Voluntary entry, exit possible</text>
+            <text x="160" y="163" textAnchor="middle" fill="#f59e0b" fontSize="9">Economic coercion via inequality</text>
+            <text x="160" y="176" textAnchor="middle" fill="#f59e0b" fontSize="9">not trafficking per se</text>
+
+            {/* Pipeline 2 — Migrant workers */}
+            <rect x="480" y="35" width="280" height="150" stroke="#ff3366" strokeWidth="1" fill="none" />
+            <text x="620" y="54" textAnchor="middle" fill="#ff3366" fontSize="10"
+              fontFamily="monospace" fontWeight="700" letterSpacing="0.1em">PIPELINE 2 · COERCIVE</text>
+            <text x="620" y="74" textAnchor="middle" fill="#e8e6e1" fontSize="11"
+              fontWeight="700">Myanmar, Lao, Cambodian migrants</text>
+            <text x="620" y="96" textAnchor="middle" fill="#e8e6e180" fontSize="9">Broker recruitment with false promises</text>
+            <text x="620" y="112" textAnchor="middle" fill="#e8e6e180" fontSize="9">Document confiscation on arrival</text>
+            <text x="620" y="128" textAnchor="middle" fill="#e8e6e180" fontSize="9">Debt bondage ($2k–$10k fees)</text>
+            <text x="620" y="144" textAnchor="middle" fill="#e8e6e180" fontSize="9">Language barrier as control</text>
+            <text x="620" y="163" textAnchor="middle" fill="#ff3366" fontSize="9">Forced labor / trafficking</text>
+            <text x="620" y="176" textAnchor="middle" fill="#ff3366" fontSize="9">exit requires external intervention</text>
+
+            {/* Converging arrows */}
+            <line x1="300" y1="110" x2="355" y2="110" stroke="#2a2a3a" strokeWidth="1" />
+            <polygon points="355,105 365,110 355,115" fill="#e8e6e160" />
+
+            <line x1="480" y1="110" x2="425" y2="110" stroke="#2a2a3a" strokeWidth="1" />
+            <polygon points="425,105 415,110 425,115" fill="#e8e6e160" />
+
+            {/* Convergence box */}
+            <rect x="365" y="88" width="50" height="44" stroke="#e8e6e140" strokeWidth="1" fill="none" />
+            <text x="390" y="107" textAnchor="middle" fill="#e8e6e180" fontSize="8"
+              fontFamily="monospace">SAME</text>
+            <text x="390" y="120" textAnchor="middle" fill="#e8e6e180" fontSize="8"
+              fontFamily="monospace">VENUE</text>
+          </svg>
+        </div>
+
+        <p>
+          Pipeline 1 is primarily an economic story. Young women from Isan and Northern Thailand
+          enter Bangkok's informal service economy because the income differential between
+          massage work (30,000–100,000 THB/month depending on establishment type and service range)
+          and formal minimum-wage employment (approximately 9,000–10,000 THB/month after
+          deductions) makes the decision economically rational. This is not trafficking by most
+          legal definitions. It is, however, a product of structural economic coercion — the
+          wage floor is set low enough by policy that the informal economy becomes the
+          rational choice rather than the last resort.
+        </p>
+        <p>
+          The luxury consumption driver documented in academic literature (Pattana Kitiarsa, 2008;
+          Ara Wilson, 2004) is real but partial. Instagram and TikTok have accelerated the
+          aspirational gap. Research interviews consistently surface two motivations operating
+          simultaneously: survival (cannot afford Bangkok on minimum wage) and aspiration
+          (want to buy specific branded goods, save for a house in the home province, send
+          remittances to family). These coexist and are not separable.
+        </p>
+        <p>
+          Pipeline 2 is a trafficking story. The mechanism involves documented patterns:
+          brokers in Myanmar, Laos, or Cambodia recruit with promises of restaurant,
+          factory, or domestic work. On arrival in Thailand, documents are held "for
+          safekeeping." The actual job is not what was promised. The recruitment fee creates
+          a debt the worker must service before receiving wages. Language isolation is total
+          in many cases — a Burmese speaker in a Thai-language environment cannot negotiate,
+          report, or leave without external help. The remittance pressure is real but operates
+          in a context where the worker's legal status and physical freedom have been compromised.
+        </p>
+
+        <blockquote className="meth-quote">
+          The same Telegram channel can carry posts from workers in both pipelines.
+          The corpus cannot distinguish them. The policy response must.
+        </blockquote>
+      </section>
+
+      {/* ─── §13 Corpus limits ─── */}
+      <section className="meth-section">
+        <span className="meth-num">13</span>
+        <h2>What the Corpus Reveals — and Where It Falls Silent</h2>
+        <p>
+          The 80,000 records in this corpus are a partial, biased sample of a much larger
+          reality. Understanding what the data can and cannot say is as important as understanding
+          what it does say.
+        </p>
+
+        {/* Price tier distribution chart */}
+        <div className="meth-diagram">
+          <svg viewBox="0 0 700 200" fill="none" xmlns="http://www.w3.org/2000/svg"
+            className="meth-svg" role="img" aria-label="Price tier distribution and trafficking risk correlation">
+
+            <text x="350" y="18" textAnchor="middle" fill="#e8e6e130" fontSize="9"
+              fontWeight="500" letterSpacing="3">PRICE TIER DISTRIBUTION · CORPUS VS. TRAFFICKING RISK LITERATURE</text>
+
+            {[
+              { tier: '฿ · Under 300/hr', pct: 28, risk: 72, riskLabel: 'HIGH' },
+              { tier: '฿฿ · 300–600/hr', pct: 44, risk: 35, riskLabel: 'MODERATE' },
+              { tier: '฿฿฿ · 600–1200/hr', pct: 19, risk: 15, riskLabel: 'LOW' },
+              { tier: '฿฿฿฿ · 1200+/hr', pct: 9, risk: 8, riskLabel: 'LOWEST' },
+            ].map(({ tier, pct, risk, riskLabel }, i) => {
+              const y = 35 + i * 38;
+              return (
+                <g key={tier}>
+                  <text x="128" y={y + 13} textAnchor="end" fill="#e8e6e180" fontSize="9"
+                    fontFamily="monospace">{tier}</text>
+                  {/* Corpus bar */}
+                  <rect x="133" y={y} width={pct * 3.5} height="14" fill="#f59e0b" opacity="0.6" />
+                  <text x={133 + pct * 3.5 + 4} y={y + 11} fill="#f59e0b" fontSize="9"
+                    fontFamily="monospace">{pct}% of corpus</text>
+                  {/* Risk indicator */}
+                  <rect x="133" y={y + 16} width={risk * 3.5} height="8" fill="#ff3366" opacity="0.35" />
+                  <text x={133 + risk * 3.5 + 4} y={y + 23} fill="#ff336680" fontSize="8"
+                    fontFamily="monospace">{riskLabel} trafficking risk</text>
+                </g>
+              );
+            })}
+
+            <text x="350" y="190" textAnchor="middle" fill="#e8e6e130" fontSize="8"
+              fontFamily="monospace">RISK CORRELATION BASED ON UNODC / ILO SECTOR ANALYSIS · NOT INDIVIDUAL LISTING DETERMINATION</text>
+          </svg>
+        </div>
+
+        <p>
+          Price tier is a structural risk indicator, not an individual determination. UNODC
+          and ILO sector analyses consistently find that the lowest-price tier of commercial
+          sex work in destination countries has the highest prevalence of trafficking victims
+          — because victims under debt bondage cannot negotiate price and operators in the
+          coercive model maximize throughput at minimum wage. A legitimate business competing
+          in the same price band may be entirely unrelated to trafficking; the correlation
+          is population-level, not case-specific.
+        </p>
+        <p>
+          The corpus shows 28% of listings in the under-300 THB/hour band. This does not mean
+          28% of listings involve trafficking. It means 28% of listed businesses are in the
+          price tier where trafficking prevalence, at the population level, is highest.
+          The distinction matters.
+        </p>
+
+        <div className="meth-grid">
+          <div className="meth-card">
+            <h3>What the data can show</h3>
+            <p>
+              Geographic concentration of listings relative to known migration corridors
+              (Nonthaburi, Lat Phrao, Ram Inthra — all high in this corpus — correspond
+              to documented migrant worker residential zones). Price tier distribution
+              as a structural risk indicator. Temporal posting patterns suggesting shift-based
+              work typical of managed operations. Photo reuse across listings suggesting
+              shared image assets from a common operator.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>What the data cannot show</h3>
+            <p>
+              Whether any individual worker is there voluntarily. Whether any operator
+              holds documents. Whether any debt bondage exists. The nationality or
+              immigration status of workers. Whether posted photos are of the actual workers
+              or borrowed stock images. The labor conditions, exit freedom, or safety of
+              any person appearing in or referenced by any listing.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>The silence in the data</h3>
+            <p>
+              Trafficking operations do not advertise their labor conditions. The most
+              problematic operations may look identical to the most legitimate ones
+              in Telegram-sourced data: a phone number, a location, operating hours,
+              a price. The whisper network (§07·B) captures some negative signals —
+              <code>อย่าไป</code> ("don't go"), complaints about management, references
+              to worker distress — but this signal is partial and biased toward Thai-language
+              speakers who use these channels actively.
+            </p>
+          </div>
+          <div className="meth-card">
+            <h3>The research obligation</h3>
+            <p>
+              A system that indexes this sector has an obligation to name its limits.
+              This platform is a research instrument, not a safety certification. The
+              presence of a listing in this directory carries no implication about labor
+              conditions, legality, or safety. If this corpus is used in downstream
+              research, it should be framed as a supply-side behavioral dataset from
+              community communication channels — not as a directory of verified businesses.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── §14 Public health resources ─── */}
+      <section className="meth-section">
+        <span className="meth-num">14</span>
+        <h2>Public Health &amp; Harm Reduction Resources</h2>
+        <p>
+          The following organisations provide evidence-based sexual health information,
+          STI/HIV testing services, and harm reduction support in Thailand and globally.
+          Consistent condom use combined with regular testing remains the most effective
+          documented intervention — as Thailand's own 100% Condom Program demonstrated
+          at national scale in the 1990s.
+        </p>
+
+        {/* Key principles strip */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1px', background: 'var(--meth-line)', border: '1px solid var(--meth-line)', marginBlock: '1.5rem' }}>
+          {[
+            { label: 'Consent', body: 'Clear, ongoing, enthusiastic agreement. Alcohol and substances impair capacity to consent.' },
+            { label: 'Condoms', body: 'Most effective barrier against HIV, gonorrhea, and chlamydia when used correctly and consistently. Use water-based lube with latex.' },
+            { label: 'Testing', body: 'Every 3–6 months if higher risk. Many STIs have no symptoms. Thailand has free/anonymous options via the Thai Red Cross and government clinics.' },
+            { label: 'PrEP', body: 'Daily oral PrEP is highly effective HIV prevention for high-risk individuals. Available through Thai hospitals and clinics; discuss with a doctor.' },
+          ].map(({ label, body }) => (
+            <div key={label} style={{ background: 'var(--meth-bg)', padding: '1rem' }}>
+              <span style={{ display: 'block', fontSize: '9px', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', color: 'var(--meth-amber)', marginBottom: '0.4rem' }}>{label.toUpperCase()}</span>
+              <p style={{ fontSize: '12px', color: 'var(--meth-ink-2)', lineHeight: '1.65', margin: 0 }}>{body}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Resource links */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+          {[
+            {
+              org: 'UNFPA Thailand',
+              desc: 'UN Population Fund — sexual and reproductive health, HIV/STI prevention, comprehensive sexuality education. Thai-language materials available.',
+              url: 'unfpa.org',
+              tag: 'UN AGENCY',
+            },
+            {
+              org: 'Thai Ministry of Public Health / Department of Disease Control',
+              desc: 'National STI strategy, 100% Condom Program history, anonymous testing clinic network, HIV/AIDS national response.',
+              url: 'ddc.moph.go.th',
+              tag: 'THAILAND GOV',
+            },
+            {
+              org: 'Thai Red Cross Anonymous Clinic (Bangkok)',
+              desc: 'Free, confidential HIV/STI testing and counselling. No ID required. Available to all nationalities. Multiple locations.',
+              url: 'thai-redcross.or.th',
+              tag: 'NGO · FREE',
+            },
+            {
+              org: 'CDC STI Treatment Guidelines',
+              desc: 'Evidence-based treatment and prevention protocols. Condom effectiveness data. Covers HIV, gonorrhea, chlamydia, syphilis, herpes, HPV.',
+              url: 'cdc.gov/std',
+              tag: 'US CDC',
+            },
+            {
+              org: 'WHO/UNAIDS — Thailand HIV Response',
+              desc: 'Thailand country profile, 100% Condom Program evaluation, trafficking-in-persons and HIV intersection data.',
+              url: 'who.int / unaids.org',
+              tag: 'UN AGENCY',
+            },
+          ].map(({ org, desc, url, tag }) => (
+            <div key={org} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem 1rem', borderBottom: '1px solid var(--meth-line)', paddingBottom: '0.85rem' }}>
+              <div>
+                <span style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: 'var(--meth-ink)', marginBottom: '0.2rem' }}>{org}</span>
+                <p style={{ fontSize: '12px', color: 'var(--meth-ink-3)', lineHeight: '1.6', margin: 0 }}>{desc}</p>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', alignItems: 'flex-end', flexShrink: 0 }}>
+                <span style={{ fontSize: '8px', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', color: 'var(--meth-amber)', border: '1px solid var(--meth-amber-dim, #f59e0b40)', padding: '1px 5px', whiteSpace: 'nowrap' }}>{tag}</span>
+                <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--meth-ink-3)' }}>{url}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <blockquote className="meth-quote" style={{ marginTop: '1.75rem' }}>
+          Protection + testing + consent protects health and lives. Thailand's 100% Condom
+          Program showed this at national scale. No method is 100% except abstinence, but
+          consistent condoms combined with regular testing dramatically reduce risk across
+          all venue tiers. — UNFPA / Thai Ministry of Public Health
+        </blockquote>
+      </section>
+
+      {/* ─── §15 Research disclaimer ─── */}
+      <section className="meth-section meth-section-disclaimer">
+        <span className="meth-num">15</span>
         <h2>Research disclaimer</h2>
         <p>
           This site is a <strong>research and data-collection experiment</strong>. Every
@@ -520,8 +1293,8 @@ function Methodology() {
       <footer className="meth-footer">
         <div className="meth-line" aria-hidden="true" />
         <p>Peter Karl Risk</p>
-        <p className="meth-footer-sub">Experimental AI Platform Research, 2026</p>
-        <a href="/" className="meth-footer-link">Back to Sabai Sabai Directory</a>
+        <p className="meth-footer-sub">{pc.footer || 'Experimental AI Platform Research, 2026'}</p>
+        <a href="/" className="meth-footer-link">{pc.footerBack || 'Back to Sabai Sabai Directory'}</a>
       </footer>
     </article>
   );

@@ -62,7 +62,17 @@ export function classifyArea(listing) {
 export function listingCoords(listing) {
   const lat = Number.parseFloat(listing?.latitude);
   const lng = Number.parseFloat(listing?.longitude);
-  return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : null;
+  if (Number.isFinite(lat) && Number.isFinite(lng) && lat !== 0 && lng !== 0) {
+    return { coords: [lat, lng], precision: 'exact', areaLabel: null };
+  }
+  const areaName = classifyArea(listing);
+  if (areaName) {
+    const areaObj = AREAS.find((a) => a.label === areaName);
+    if (areaObj) {
+      return { coords: areaObj.coords, precision: 'approximate', areaLabel: areaName };
+    }
+  }
+  return null;
 }
 
 // Rank listings by distance from `origin`, applying an optional budget ceiling.
@@ -72,13 +82,20 @@ export function nearestListings(listings, origin, { maxBudget = null, limit = 12
   if (!origin || !Array.isArray(listings)) return [];
   const scored = [];
   for (const listing of listings) {
-    const coords = listingCoords(listing);
-    if (!coords) continue;
-    const distanceKm = haversineKm(origin, coords);
+    const coordInfo = listingCoords(listing);
+    if (!coordInfo) continue;
+    const distanceKm = haversineKm(origin, coordInfo.coords);
     const price = Number.isFinite(listing.priceValue) && listing.priceValue > 0 ? listing.priceValue : null;
     const askRate = price === null;
     if (maxBudget && price !== null && price > maxBudget) continue;
-    scored.push({ listing, distanceKm, price, askRate });
+    scored.push({
+      listing,
+      distanceKm,
+      price,
+      askRate,
+      precision: coordInfo.precision,
+      areaLabel: coordInfo.areaLabel,
+    });
   }
   // "Closest place I can get a massage" → rank purely by distance. The budget
   // ceiling has already removed priced listings that are too expensive; ask-rate

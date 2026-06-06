@@ -191,3 +191,181 @@
 @media (max-width: 768px) {
   .paper-diagram-container { padding: var(--s4); }
 }
+
+/* ── Tab navigation ─────────────────────────────────────────────────────── */
+.paper-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.paper-tabs::-webkit-scrollbar { display: none; }
+
+.paper-tab-btn {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--s4) var(--s5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.paper-tab-btn:hover { color: var(--ink); }
+.paper-tab-btn.is-active {
+  color: var(--mango);
+  border-bottom-color: var(--mango);
+}
+
+.paper-tab-panel { display: none; }
+.paper-tab-panel.is-active { display: block; }
+
+/* ── Economic chart (new tab) ───────────────────────────────────────────── */
+.paper-econ-chart {
+  margin: var(--s6) 0;
+  padding: var(--s5);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--line-2);
+  background: var(--surface);
+}
+.paper-econ-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* ── Quote block ────────────────────────────────────────────────────────── */
+.paper-quote {
+  margin: var(--s6) 0;
+  padding: var(--s5) var(--s5) var(--s5) var(--s6);
+  border-left: 3px solid var(--mango);
+  background: var(--surface);
+}
+.paper-quote p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.08rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0 0 var(--s3);
+}
+.paper-quote cite {
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-style: normal;
+}
+
+/* ── Stat callouts ──────────────────────────────────────────────────────── */
+.paper-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin: var(--s6) 0;
+}
+.paper-stat-cell {
+  background: var(--surface);
+  padding: var(--s5) var(--s4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+.paper-stat-val {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--mango);
+  line-height: 1;
+}
+.paper-stat-label {
+  font-size: var(--fs-2xs);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ── Two-col layout for origin tab ─────────────────────────────────────── */
+.paper-arch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s5);
+  margin: var(--s6) 0;
+}
+.paper-arch-cell {
+  border: 1px solid var(--line);
+  padding: var(--s4);
+  background: var(--surface);
+}
+.paper-arch-cell-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mango);
+  margin-bottom: var(--s3);
+  display: block;
+}
+.paper-arch-cell p {
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+/* ── Policy comparison table ────────────────────────────────────────────── */
+.paper-policy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin: var(--s6) 0;
+  font-size: var(--fs-sm);
+}
+.paper-policy-header {
+  background: var(--surface-2);
+  padding: var(--s3) var(--s4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mango);
+}
+.paper-policy-cell {
+  background: var(--surface);
+  padding: var(--s3) var(--s4);
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.paper-policy-cell strong { color: var(--ink); }
+
+/* ── Wage math SVG diagram ──────────────────────────────────────────────── */
+.paper-wage-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 500px;
+}
+
+@media (max-width: 600px) {
+  .paper-tabs { padding: 0; }
+  .paper-tab-btn { padding: var(--s3) var(--s4); font-size: 9px; }
+  .paper-stats-row { grid-template-columns: repeat(2, 1fr); }
+  .paper-arch-grid { grid-template-columns: 1fr; }
+  .paper-policy-grid { grid-template-columns: 1fr; }
+  .paper-stat-val { font-size: 1.25rem; }
+}

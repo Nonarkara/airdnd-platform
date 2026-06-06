@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { AREAS, nearestListings, resolveLocation } from '../lib/geo';
+import { useLanguage } from '../context/LanguageContext';
 import './ProximityFinder.css';
 
 const BUDGETS = [
@@ -9,12 +10,15 @@ const BUDGETS = [
   { label: 'Any', value: null },
 ];
 
-function fmtDistance(km) {
-  if (km < 1) return `${Math.round(km * 1000)} m`;
-  return `${km.toFixed(km < 10 ? 1 : 0)} km`;
+function fmtDistance(km, precision) {
+  const prefix = precision === 'approximate' ? '~' : '';
+  if (km < 1) return `${prefix}${Math.round(km * 1000)} m`;
+  return `${prefix}${km.toFixed(km < 10 ? 1 : 0)} km`;
 }
 
 function ProximityFinder({ listings, onSelect }) {
+  const { t } = useLanguage();
+  const tp = t.proximity || {};
   const [origin, setOrigin] = useState(null); // { coords, label }
   const [maxBudget, setMaxBudget] = useState(1000);
   const [query, setQuery] = useState('');
@@ -27,15 +31,15 @@ function ProximityFinder({ listings, onSelect }) {
   );
 
   const useMyLocation = () => {
-    if (!navigator.geolocation) { setError('Geolocation is not available on this device.'); return; }
+    if (!navigator.geolocation) { setError(tp.errorGeo || 'Geolocation is not available on this device.'); return; }
     setLocating(true);
     setError(null);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setLocating(false);
-        setOrigin({ coords: [pos.coords.latitude, pos.coords.longitude], label: 'Your location' });
+        setOrigin({ coords: [pos.coords.latitude, pos.coords.longitude], label: tp.useMyLocation || 'Your location' });
       },
-      () => { setLocating(false); setError('Could not get your location. Pick an area below.'); },
+      () => { setLocating(false); setError(tp.errorLocation || 'Could not get your location. Pick an area below.'); },
       { enableHighAccuracy: true, timeout: 8000 },
     );
   };
@@ -44,7 +48,7 @@ function ProximityFinder({ listings, onSelect }) {
     event.preventDefault();
     const match = resolveLocation(query);
     if (match) { setOrigin(match); setError(null); }
-    else setError(`No area matched "${query}". Try a district or BTS station.`);
+    else setError((tp.errorQuery || 'No area matched "{query}". Try a district or BTS station.').replace('{query}', query));
   };
 
   return (
@@ -53,12 +57,12 @@ function ProximityFinder({ listings, onSelect }) {
         <div className="panel finder__panel">
           <div className="finder__head">
             <div>
-              <span className="sec-num">// decide for me</span>
+              <span className="sec-num">{tp.kicker || '// decide for me'}</span>
               <h2 className="h3 finder__title">
-                Where can I get a massage <span className="serif">right now</span>?
+                {tp.title || 'Where can I get a massage right now?'}
               </h2>
               <p className="finder__sub">
-                Tell us where you are and your budget. We rank the nearest places by distance — so demand and supply meet at speed.
+                {tp.subtitle || 'Tell us where you are and your budget. We rank the nearest places by distance — so demand and supply meet at speed.'}
               </p>
             </div>
           </div>
@@ -71,18 +75,18 @@ function ProximityFinder({ listings, onSelect }) {
               disabled={locating}
             >
               <svg className="icon icon-sm" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 1 1 14 0c0 5.8-7 11-7 11Z" /><circle cx="12" cy="10" r="2.5" /></svg>
-              {locating ? 'Locating…' : 'Use my location'}
+              {locating ? (tp.locating || 'Locating…') : (tp.useMyLocation || 'Use my location')}
             </button>
 
             <form className="finder__search" onSubmit={submitQuery}>
               <input
                 type="text"
-                placeholder="…or type an area: Ladprao, Sukhumvit, Silom"
+                placeholder={tp.searchPlaceholder || '…or type an area: Ladprao, Sukhumvit, Silom'}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 aria-label="Search by area"
               />
-              <button type="submit" className="btn btn-outline btn-sm">Find</button>
+              <button type="submit" className="btn btn-outline btn-sm">{tp.find || 'Find'}</button>
             </form>
           </div>
 
@@ -100,7 +104,7 @@ function ProximityFinder({ listings, onSelect }) {
           </div>
 
           <div className="finder__budget">
-            <span className="eyebrow">Max ฿ / hour</span>
+            <span className="eyebrow">{tp.maxBudget || 'Max ฿ / hour'}</span>
             {BUDGETS.map((b) => (
               <button
                 key={b.label}
@@ -119,17 +123,17 @@ function ProximityFinder({ listings, onSelect }) {
             <div className="finder__results">
               <div className="finder__results-head">
                 <span className="panel__sub">
-                  Nearest to <b style={{ color: 'var(--ink)' }}>{origin.label}</b>
-                  {maxBudget ? ` · under ฿${maxBudget.toLocaleString()}` : ''}
+                  {tp.nearestTo || 'Nearest to'} <b style={{ color: 'var(--ink)' }}>{origin.label}</b>
+                  {maxBudget ? ` · ${tp.under || 'under'} ฿${maxBudget.toLocaleString()}` : ''}
                 </span>
-                <span className="panel__sub">{results.length} match{results.length === 1 ? '' : 'es'}</span>
+                <span className="panel__sub">{results.length} {results.length === 1 ? (tp.match || 'match') : (tp.matches || 'matches')}</span>
               </div>
 
               {results.length === 0 ? (
-                <p className="finder__empty">No places match yet — try widening the budget or a different area.</p>
+                <p className="finder__empty">{tp.noResults || 'No places match yet — try widening the budget or a different area.'}</p>
               ) : (
                 <div className="index-list finder__list">
-                  {results.map(({ listing, distanceKm, price, askRate }, i) => (
+                  {results.map(({ listing, distanceKm, price, askRate, precision }, i) => (
                     <button
                       key={listing.id}
                       type="button"
@@ -142,11 +146,12 @@ function ProximityFinder({ listings, onSelect }) {
                         <span className="index-row__area">
                           <svg className="icon icon-sm" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 1 1 14 0c0 5.8-7 11-7 11Z" /><circle cx="12" cy="10" r="2.5" /></svg>
                           {listing.location || listing.city || 'Bangkok'}
+                          {precision === 'approximate' && <span className="finder__approx-badge" title="Location approximated from district patterns"> (approx)</span>}
                         </span>
                       </div>
-                      <span className="finder__dist">{fmtDistance(distanceKm)}</span>
+                      <span className="finder__dist">{fmtDistance(distanceKm, precision)}</span>
                       <span className="index-row__price">
-                        {askRate ? <span className="finder__ask">ask rate</span> : <><b>฿{price}</b>/hr</>}
+                        {askRate ? <span className="finder__ask">{tp.askRate || 'ask rate'}</span> : <><b>฿{price}</b>/hr</>}
                       </span>
                     </button>
                   ))}

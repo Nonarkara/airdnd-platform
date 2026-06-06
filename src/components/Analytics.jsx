@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { formatTelDisplay } from '../lib/normalization';
 import { useMarketAnalytics, MESSAGE_TYPES, MESSAGE_TYPE_LABELS, getPhotoCount, getContactChannelCount, getLatestSourceTime, formatDateShort, formatPercent, snapshotToAnalyticsListing, buildFallbackMessageStats } from '../lib/useMarketAnalytics';
 import InsightNarrative from './InsightNarrative';
@@ -104,6 +105,8 @@ function withTimeout(promise, ms, label) {
 }
 
 export default function Analytics() {
+  const { t } = useLanguage();
+  const pc = t.pageChrome || {};
   const [listings, setListings] = useState([]);
   const [msgStats, setMsgStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -222,6 +225,36 @@ export default function Analytics() {
     return s.includes('freestyle') || s.includes('ฟรีสไตล์');
   }).length;
 
+  // Venue type taxonomy — Thai industry regulatory tiers (insider source, 2024)
+  const venueTypes = [
+    { key: 'aab', label: 'อาบอบนวด · Licensed Bath & Massage', short: 'อาบอบนวด', color: '#34d399', risk: 'TIER 1',
+      price: '฿1,500–5,000+', note: 'Government-registered. Mandatory VD testing & medical certificate every 2–3 months. Workers registered with district office (ส่งปกครอง). All-inclusive pricing negotiated at the door.',
+      keywords: ['อาบอบนวด', 'อ.อ.น', 'อาอบ'] },
+    { key: 'spa', label: 'สปา · Day Spa', short: 'สปา', color: '#9fc2ff', risk: 'TIER 2',
+      price: '฿800–3,000', note: 'Operating under TAT spa licensing framework. Voluntary health standards. Compliance varies widely — hotel-branded spas anchor one end, informal operations anchor the other.',
+      keywords: ['สปา', ' spa', 'spa '] },
+    { key: 'thai', label: 'นวดแผนไทย · Traditional Thai', short: 'นวดแผนไทย', color: '#f59e0b', risk: 'TIER 3',
+      price: '฿200–600', note: 'Most common category in the corpus. Continuum from legitimate wellness to grey services. Sub-฿300 pricing is the primary risk signal. No certification required to operate.',
+      keywords: ['นวดแผนไทย', 'นวดไทย', 'แผนไทย'] },
+    { key: 'sideline', label: 'ไซด์ไลน์ · Freelance / Sideline', short: 'ไซด์ไลน์', color: '#ff3366', risk: 'TIER 4',
+      price: 'Negotiated', note: 'Self-employed workers, no establishment oversight, no VD certification, no worker registration. Highest trafficking-risk tier per industry insider framework.',
+      keywords: ['ไซด์ไลน์', 'sideline', 'ไซด์'] },
+  ];
+  const venueCounts = venueTypes.map(vt => ({
+    ...vt,
+    count: listings.filter(l => {
+      const s = `${l.name || ''} ${l.description || ''} ${l.raw_text || ''}`.toLowerCase();
+      return vt.keywords.some(kw => s.includes(kw));
+    }).length,
+  }));
+  const classifiedVenueIds = new Set();
+  listings.forEach(l => {
+    const s = `${l.name || ''} ${l.description || ''} ${l.raw_text || ''}`.toLowerCase();
+    if (venueTypes.some(vt => vt.keywords.some(kw => s.includes(kw)))) classifiedVenueIds.add(l.id);
+  });
+  const unclassifiedVenueCount = listings.length - classifiedVenueIds.size;
+  const maxVenueCount = Math.max(...venueCounts.map(v => v.count), unclassifiedVenueCount, 1);
+
   const euphemisms = [
     { label: 'น้ำมัน · Oil Massage', count: oilCount, implied: 'Gateway / standard physical contact' },
     { label: 'อโรมา · Aroma Massage', count: aromaCount, implied: 'Body contact & exposure' },
@@ -264,7 +297,7 @@ export default function Analytics() {
   return (
     <div className="an-page">
       <header className="an-header">
-        <a href="/" className="an-back">← Back to Directory</a>
+        <a href="/" className="an-back">← {pc.backToDirectory || 'Back to Directory'}</a>
         <div className="an-header-meta">
           {lastRefreshed && (
             <span className="an-refresh-time">
@@ -430,6 +463,98 @@ export default function Analytics() {
               </div>
             </div>
           </div>
+
+          {/* 4. Public Health Resources */}
+          <div className="an-upgrade-panel card-resources">
+            <h3>Public Health &amp; Harm Reduction</h3>
+            <p className="panel-desc">
+              Evidence-based resources for NGO workers, outreach teams, and at-risk individuals. Thailand's 100% Condom Program (1989–2001) achieved 90%+ STI reduction by working through the licensed อาบอบนวด tier — the same registration chain visible in this corpus.
+            </p>
+            <div style={{ marginTop: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {[
+                { org: 'UNFPA Thailand', url: 'unfpa.org', note: 'Thai-language sexuality education & STI prevention materials' },
+                { org: 'Thai Red Cross Anonymous Clinic', url: 'thai-redcross.or.th', note: 'Free, confidential HIV/STI testing — no ID required' },
+                { org: 'Dept of Disease Control (DDC)', url: 'ddc.moph.go.th', note: 'National STI strategy, clinic network, PrEP access' },
+                { org: 'CDC STI Treatment Guidelines', url: 'cdc.gov/std', note: 'Condom effectiveness data, treatment protocols' },
+              ].map(({ org, url, note }) => (
+                <div key={org} style={{ borderBottom: '1px solid var(--color-line-soft)', paddingBottom: '0.45rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '11px', fontWeight: '600', color: 'var(--color-cream)' }}>{org}</span>
+                    <span style={{ fontSize: '9px', fontFamily: 'var(--font-mono)', color: 'var(--color-data)', flexShrink: 0 }}>{url}</span>
+                  </div>
+                  <p style={{ fontSize: '10px', color: 'var(--color-cream-muted)', margin: '0.1rem 0 0', lineHeight: '1.5' }}>{note}</p>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-action)', marginTop: '0.75rem', lineHeight: '1.5' }}>
+              CORE PREVENTION · Condom + testing + consent. No method is 100% except abstinence, but consistent condom use dramatically reduces risk across all venue tiers.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Section: Venue Type Intelligence ────────────────────────────────── */}
+      <section className="an-card an-wide" style={{ marginBottom: '1rem' }}>
+        <h2>Venue Type Intelligence · Industry Taxonomy</h2>
+        <p className="an-card-sub">
+          Thailand's massage industry operates across four regulatory tiers — from government-licensed อาบอบนวด to unregistered ไซด์ไลน์ freelancers. Each tier carries distinct safety standards, pricing models, and compliance obligations. Signal detection uses keyword patterns extracted from listing names, descriptions, and raw community text.
+        </p>
+
+        {/* Safety tier ladder */}
+        <div style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
+          <svg viewBox="0 0 760 108" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', minWidth: '580px' }} role="img" aria-label="Venue safety tier ladder">
+            <text x="380" y="11" textAnchor="middle" fill="#e8e6e125" fontSize="9" fontWeight="500" letterSpacing="3">SAFETY TIER LADDER · INSIDER FRAMEWORK</text>
+            {[
+              { x: 8,   label: 'อาบอบนวด', sub: 'TIER 1 · LICENSED',      col: '#34d399', note: 'VD cert · ส่งปกครอง' },
+              { x: 198, label: 'สปา',       sub: 'TIER 2 · SEMI-FORMAL',   col: '#9fc2ff', note: 'TAT license · varies' },
+              { x: 388, label: 'นวดแผนไทย',sub: 'TIER 3 · INFORMAL',      col: '#f59e0b', note: 'No cert · price signals risk' },
+              { x: 578, label: 'ไซด์ไลน์', sub: 'TIER 4 · UNREGISTERED',  col: '#ff3366', note: 'No oversight · highest risk' },
+            ].map(({ x, label, sub, col, note }) => (
+              <g key={x}>
+                <rect x={x} y="18" width="172" height="72" stroke={col} strokeWidth="1" fill="none" />
+                <text x={x + 86} y="41" textAnchor="middle" fill={col} fontSize="11" fontWeight="700">{label}</text>
+                <text x={x + 86} y="57" textAnchor="middle" fill="#e8e6e155" fontSize="8" letterSpacing="1">{sub}</text>
+                <text x={x + 86} y="73" textAnchor="middle" fill="#e8e6e170" fontSize="8">{note}</text>
+              </g>
+            ))}
+            {[180, 370, 560].map(ax => (
+              <g key={ax}>
+                <line x1={ax} y1="54" x2={ax + 8} y2="54" stroke="#333" strokeWidth="1" />
+                <polygon points={`${ax + 8},50 ${ax + 18},54 ${ax + 8},58`} fill="#444" />
+              </g>
+            ))}
+            <text x="380" y="102" textAnchor="middle" fill="#34d39975" fontSize="8" letterSpacing="1">SAFEST ←——————————————————————————→ HIGHEST RISK</text>
+          </svg>
+        </div>
+
+        {/* Venue count bars */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <span className="section-kicker" style={{ display: 'block', marginBottom: '0.65rem' }}>CORPUS DISTRIBUTION · VENUE TYPE SIGNALS</span>
+          {[...venueCounts, { label: 'Unclassified · General listing', count: unclassifiedVenueCount, color: '#e8e6e128' }].map(vt => (
+            <Bar key={vt.label} label={vt.label} value={vt.count} max={maxVenueCount} color={vt.color} />
+          ))}
+        </div>
+
+        {/* Insider intelligence cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1px', background: 'var(--color-line)', border: '1px solid var(--color-line)', marginBottom: '1.25rem' }}>
+          {venueCounts.map(vt => (
+            <div key={vt.key} style={{ background: 'var(--color-bg-inset)', padding: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                <span style={{ fontSize: '13px', fontWeight: '700', color: vt.color }}>{vt.short}</span>
+                <span style={{ fontSize: '8px', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', padding: '2px 5px', border: `1px solid ${vt.color}55`, color: vt.color }}>{vt.risk}</span>
+              </div>
+              <div style={{ fontSize: '10px', color: 'var(--color-cream-muted)', marginBottom: '0.5rem', fontFamily: 'var(--font-mono)' }}>PRICE · {vt.price}</div>
+              <p style={{ fontSize: '12px', color: 'var(--color-cream-soft)', lineHeight: '1.65', margin: 0 }}>{vt.note}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Regulatory model note */}
+        <div style={{ padding: '1rem', border: '1px solid var(--color-line-soft)', background: 'var(--color-bg-inset)' }}>
+          <span className="section-kicker" style={{ color: 'var(--color-action)', display: 'block', marginBottom: '0.4rem' }}>INSIDER CONTEXT · REGULATORY MODEL</span>
+          <p style={{ fontSize: '12px', color: 'var(--color-cream-muted)', lineHeight: '1.8', margin: 0 }}>
+            Government-licensed อาบอบนวด establishments require mandatory VD testing — blood work and physical examinations every 2–3 months. Workers must hold valid medical certificates before working. Each worker is formally registered with the district government (ส่งปกครองอำเภอ). All services are priced all-inclusive at the door: ฿1,500–5,000+ covers the room, facility, and all negotiated services. This paper trail — medical certification, district registration, declared pricing — is what distinguishes Tier 1 from the rest of the market. The Telegram corpus can corroborate or contradict this compliance through posting frequency, price signals, and anonymity patterns.
+          </p>
         </div>
       </section>
 
@@ -1212,7 +1337,7 @@ export default function Analytics() {
 
       <footer className="an-footer">
         <p>Every figure traces back to a specific listing. Click any row to read the source post. Data updated in real time by the Sabai Sabai AI pipeline.</p>
-        <a href="/">← Back to Directory</a>
+        <a href="/">← {pc.backToDirectory || 'Back to Directory'}</a>
       </footer>
     </div>
   );

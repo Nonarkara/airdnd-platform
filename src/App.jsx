@@ -25,7 +25,7 @@ import {
   getListingTimestampValue,
   normalizeListings,
 } from './lib/listings';
-import { translations } from './translations';
+import { useLanguage } from './context/LanguageContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 const REFRESH_INTERVAL_MS = 30_000;
@@ -44,6 +44,7 @@ const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
 const Analytics = lazy(() => import('./components/Analytics'));
 const Sociology = lazy(() => import('./components/Sociology'));
 const Paper = lazy(() => import('./components/Paper'));
+const FAQ = lazy(() => import('./components/FAQ'));
 const SORT_OPTIONS = [
   'Newest',
   'Most credible',
@@ -229,7 +230,7 @@ function App() {
   const [activeActivity, setActiveActivity] = useState(ALL_TAGS_VALUE);
   const [sortBy, setSortBy] = useState(SORT_OPTIONS[0]);
   const [selectedCompanion, setSelectedCompanion] = useState(null);
-  const [language, setLanguage] = useState('en');
+  const { language, setLanguage, t: tCtx } = useLanguage();
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
   const [activeView, setActiveView] = useState('directory');
   const [dataState, setDataState] = useState({
@@ -247,7 +248,7 @@ function App() {
   const realtimeRefreshTimerRef = useRef(null);
   const manualLoadRef = useRef(async () => {});
 
-  const t = translations[language] || translations.en;
+  const t = tCtx;
   const deferredSearchTerm = useDeferredValue(searchTerm);
   const metrics = useMemo(() => createMetrics(allCompanions), [allCompanions]);
   const intakeSummary = useMemo(() => createIntakeSummary(allCompanions), [allCompanions]);
@@ -516,6 +517,14 @@ function App() {
         element={(
           <Suspense fallback={<div className="page-shell-loading">Loading paper…</div>}>
             <Paper />
+          </Suspense>
+        )}
+      />
+      <Route
+        path="/faq"
+        element={(
+          <Suspense fallback={<div className="page-shell-loading">Loading FAQ…</div>}>
+            <FAQ />
           </Suspense>
         )}
       />

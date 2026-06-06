@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import './Sociology.css';
 
 // ── SVG Hour Chart ────────────────────────────────────────────────────────────
@@ -56,6 +57,8 @@ const fmt = (n) => Number(n).toLocaleString();
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function Sociology() {
+  const { t } = useLanguage();
+  const pc = t.pageChrome || {};
   const [research, setResearch] = useState(null);
   const [socio, setSocio] = useState(null);
   const [error, setError] = useState(null);
@@ -72,8 +75,8 @@ export default function Sociology() {
   const shell = (children) => (
     <article className="sociology">
       <header className="meth-header">
-        <a href="/" className="meth-back">← Directory</a>
-        <span className="meth-label">Field Notes</span>
+        <a href="/" className="meth-back">{pc.backToDirectoryArrow || '← Directory'}</a>
+        <span className="meth-label">{pc.fieldNotes || 'Field Notes'}</span>
       </header>
       {children}
     </article>
