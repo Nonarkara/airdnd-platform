@@ -4,6 +4,15 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-06-06 · Airtight audit — AI-fraud, concurrent-session hazards
+
+- **AI-generated "VISUAL EVIDENCE" is the worst regression class.** A concurrent session added three AI images to the research-paper page, stamped "VISUAL EVIDENCE" and captioned as real field photographs. This violates §0 (no AI imagery, ever), §11.4 (no fabricated content), and would disqualify the research outright. **Catch:** audit every new image asset — is it a real curated photo or AI-generated? Grep new `public/**/*.png|jpg` against the components that reference them; read the captions. Remove on sight unless Dr Non asked in-session. Keep the legitimate siblings (a hand-coded SVG diagram, real prose) — surgical, not scorched-earth (§11.1).
+- **Two sessions on one repo = silent architectural drift.** While I worked, a parallel session migrated the whole app Supabase→Firebase (committed, authored as Dr Non), truncated then refactored Analytics, and added an `award-pass.css`. Don't assume the tree you left is the tree you return to. **First move every session: `git log --oneline -15` + `git status` + `npx vite build && npm test` to establish ground truth before editing.**
+- **The classic concurrent bugs to grep for:** an effect dependency that's a freshly-built array/object every render (→ infinite fetch loop; here PopularListings burned Firestore quota) → use a stable string key; a child component called without a required `mode`/variant prop (→ silent wrong-shape filler; InsightNarrative defaulted to 'spatial' on global data); dead imports left after a migration; orphaned components no longer rendered (delete them, §9); a compound Firestore `orderBy` that needs a composite index (→ silent fallback to the static snapshot) — match the realtime query's single orderBy.
+- **A `200` on a missing static asset can be the SPA fallback, not the file.** With `_redirects: /* /index.html 200`, any path returns index.html. To check whether a file truly exists on prod, look at `content-type` — `text/html` means it's the SPA shell (file is gone), an image/* content-type means it's really there. Don't trust the status code alone.
+
+---
+
 ## 2026-06-01 · Health checks must test the product contract, not just the port
 
 - **What matters:** a production monitor that only checks whether Express responds can miss the failures this project actually suffers from: missing `dist/index.html`, empty mutable snapshots, and heartbeat stalls from the scraper pipeline.
