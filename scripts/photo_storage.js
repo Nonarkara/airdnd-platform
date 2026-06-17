@@ -9,17 +9,25 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const publicDir = path.join(__dirname, '../public');
-const photosBaseDir = path.join(publicDir, 'photos');
+const photosBaseDir = path.join(publicDir, 'images');
 const bucketName = process.env.SUPABASE_PHOTO_BUCKET || 'listing-photos';
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
-const supabase =
+const configuredSupabase =
   supabaseUrl && supabaseServiceRoleKey
     ? createClient(supabaseUrl, supabaseServiceRoleKey)
     : null;
+let supabase = configuredSupabase;
 
 let bucketReady = false;
+
+export function setPhotoStorageSupabaseEnabled(enabled) {
+  supabase = enabled ? configuredSupabase : null;
+  if (!enabled) {
+    bucketReady = false;
+  }
+}
 
 function sanitizeFilename(filename) {
   return String(filename || 'photo.jpg')
@@ -78,7 +86,7 @@ export function buildStoredFilename(msg, channelName, originalFilename) {
 }
 
 /**
- * Ensure a channel/date subfolder exists under public/photos/.
+ * Ensure a channel/date subfolder exists under public/images/.
  * Returns the full directory path.
  * Structure: photos/{channel}/{YYYY-MM-DD}/
  */
@@ -93,7 +101,7 @@ export function ensureChannelPhotosDir(channelName) {
 }
 
 export function isLocalPhotoUrl(imageUrl) {
-  return typeof imageUrl === 'string' && imageUrl.startsWith('/photos/');
+  return typeof imageUrl === 'string' && imageUrl.startsWith('/images/');
 }
 
 export function resolveLocalPhotoPath(imageUrl) {
@@ -157,7 +165,7 @@ export async function uploadPhotoBuffer(buffer, storedFilename, channelName) {
 
 /**
  * Save a photo buffer locally with structured path.
- * Local path: public/photos/{channel}/{YYYY-MM-DD}/{stored_filename}
+ * Local path: public/images/{channel}/{YYYY-MM-DD}/{stored_filename}
  * Returns the URL path relative to public/ (e.g., /photos/channel/2026-03-30/file.jpg)
  */
 export function savePhotoLocally(buffer, storedFilename, channelName) {
