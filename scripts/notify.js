@@ -8,10 +8,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_SERVICE_ROLE_KEY
-);
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+const supabase =
+  supabaseUrl && supabaseServiceRoleKey
+    ? createClient(supabaseUrl, supabaseServiceRoleKey)
+    : null;
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;
@@ -202,7 +204,7 @@ export async function notifyListings(listings) {
  * Designed to run every 15 minutes via cron or the scraper loop.
  */
 export async function notifyDemandSignals(sinceMinutes = 15) {
-  if (!BOT_TOKEN) return;
+  if (!BOT_TOKEN || !supabase) return;
 
   const chatId = await discoverChatId();
   if (!chatId) return;

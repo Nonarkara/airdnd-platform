@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import CompanionCard from './CompanionCard';
-import './CompanionGrid.css';
+import ListingCard from './ListingCard';
+import './ListingGrid.css';
 
 function SkeletonCard({ tall = false }) {
   return (
@@ -113,8 +113,8 @@ function buildFeedItems(listings, modules) {
   return items;
 }
 
-function CompanionGrid({
-  companions,
+function ListingGrid({
+  listings,
   onCardClick,
   t,
   metrics,
@@ -167,21 +167,21 @@ function CompanionGrid({
     },
   ]), [intakeSummary, metrics]);
 
-  const visibleListings = companions.slice(0, visibleCount);
+  const visibleListings = listings.slice(0, visibleCount);
   const feedItems = useMemo(
     () => buildFeedItems(visibleListings, modules),
     [modules, visibleListings],
   );
 
   return (
-    <div className="companion-grid-container">
-      {isLoading && companions.length === 0 ? (
-        <div className="companion-grid">
+    <div className="listing-grid-container">
+      {isLoading && listings.length === 0 ? (
+        <div className="listing-grid">
           {Array.from({ length: 8 }).map((_, i) => (
             <SkeletonCard key={i} tall={i % 3 === 0} />
           ))}
         </div>
-      ) : companions.length === 0 ? (
+      ) : listings.length === 0 ? (
         <div className="grid-state-card">
           <span className="intel-label">{dataState?.sourceLabel || 'Directory'}</span>
           <h3>{t.featured.emptyTitle}</h3>
@@ -194,15 +194,15 @@ function CompanionGrid({
         </div>
       ) : (
         <>
-          <div className="companion-grid">
+          <div className="listing-grid">
             {feedItems.map((item) => (
               <div
                 key={item.id}
                 className={`card-entrance ${item.type !== 'listing' ? 'masonry-intel-item' : ''}`}
               >
                 {item.type === 'listing' ? (
-                  <CompanionCard
-                    companion={item.listing}
+                  <ListingCard
+                    listing={item.listing}
                     onClick={onCardClick}
                     t={t}
                     priority={item.index < 4}
@@ -212,14 +212,14 @@ function CompanionGrid({
             ))}
           </div>
 
-          {visibleCount < companions.length && (
+          {visibleCount < listings.length && (
             <div className="load-more-container">
               <button
                 type="button"
                 className="btn-load-more"
                 onClick={() => setVisibleCount((current) => current + 24)}
               >
-                {t.featured.showMore} ({companions.length - visibleCount} {t.featured.hidden})
+                {t.featured.showMore} ({listings.length - visibleCount} {t.featured.hidden})
               </button>
             </div>
           )}
@@ -229,4 +229,4 @@ function CompanionGrid({
   );
 }
 
-export default CompanionGrid;
+export default ListingGrid;

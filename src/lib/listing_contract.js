@@ -21,7 +21,7 @@ const SERVICE_NAME_RE = /massage|spa|นวด|สปา|เพื่อสุ�
 const CONTACT_NAME_RE = /^(?:โทร|ติดต่อ(?:สอบถาม)?|จอง(?:คิว)?|แอด(?:ไลน์|ไลน)?|โทรศัพท์)|^(?:line|id line)(?=\s|[:：\d@]|$)|(?:โทรศัพท์|ติดต่อไลน์|แอดไอดีไลน์|line\s*id|id\s*line|จอง\d)/i;
 const STAFF_LINEUP_RE = /(?:น้องๆวันที่|รายชื่อ|line\s*up|lineup|update\s*(?:today|now)|อัพเดต|อัพเดท|แจ้งเข้า|รอบดึก|เปิดรับรอบจองด่วน|คิวว่างตอนนี้|เลือกน้อง|เลือกหมอ|เลือกสาว|น้อง\s*\S{1,12}\s*(?:อายุ|age|สูง|น้ำหนัก|weight|height))/i;
 const META_NAME_RE = /^(?:หมายเหตุ|หมายเหต|นวดแนะนำ|เปิด\s*(?:ทุกวัน|บริการ)|ทุกรายการนวด)/i;
-const AD_COPY_RE = /(?:หุ่น|หน้าคม|ไฟหน้า|ตัวเล็ก|สเป็ค|เสี่ย|งานดี|เด็ด|แซ่บ|ฟิน|ตัวจริง|ไม่ผิดหวัง|พร้อมให้บริการ|งานครบ|การบ้าน|โปรโมชั่น|โปรโมชัน|ส่งท้ายเดือน|กินตอนดึก|ใกล้เสร็จ|อดทนหน่อย|หื่น|บริการพิเศษ|full\s*service|escort|companion)/i;
+const AD_COPY_RE = /(?:หุ่น|หน้าคม|ไฟหน้า|ตัวเล็ก|สเป็ค|เสี่ย|งานดี|เด็ด|แซ่บ|ฟิน|ตัวจริง|ไม่ผิดหวัง|พร้อมให้บริการ|งานครบ|การบ้าน|โปรโมชั่น|โปรโมชัน|ส่งท้ายเดือน|กินตอนดึก|ใกล้เสร็จ|อดทนหน่อย|หื่น|บริการพิเศษ|full\s*service|escort|listing)/i;
 const ADULT_OR_SPAM_RE = /(?:xxx|porn|18\+|โป้|โป๊|หลุด|เสียว|เสร[็้]จ|นวดเสียว|อม(?:ไม่)?อั้?น|อมไม|จบ\s*\d{3,5}|nude|naked|onlyfans|กลุ่มลับ|vip\s*group|ขาย\s*(?:คลิป|clip|vdo|video)|คลิป\s*(?:โป้|โป๊|18\+|ลับ)|children'?s only|group joining details)/i;
 const LOCATION_NOISE_RE = /(?:เปิดบริการ|สวัสดี|line|โทร|#|บริการทุกวัน|จองคิว|แอดไลน์|หื่น|กินตอนดึก|ใกล้เสร็จ|งานนวดจัดจ้าน|การันตี|ฟิว|โปรโมชั่น|\d{1,2}[:.]\d{2})/i;
 
@@ -405,6 +405,22 @@ function normalizeMetrics(metrics) {
   }
   if (metrics.weight) {
     nextMetrics.weight = String(metrics.weight).trim();
+  }
+  const availabilityStatus = String(metrics.availability_status || metrics.availabilityStatus || '').toLowerCase();
+  if (['available', 'unavailable', 'unknown'].includes(availabilityStatus)) {
+    nextMetrics.availability_status = availabilityStatus;
+  }
+  if (metrics.availability_evidence || metrics.availabilityEvidence) {
+    nextMetrics.availability_evidence = normalizeText(
+      metrics.availability_evidence || metrics.availabilityEvidence,
+      null,
+    );
+  }
+  const availableStaffCount = normalizeInteger(
+    metrics.available_staff_count ?? metrics.availableStaffCount,
+  );
+  if (availableStaffCount !== null && availableStaffCount >= 0 && availableStaffCount <= 100) {
+    nextMetrics.available_staff_count = availableStaffCount;
   }
   return nextMetrics;
 }

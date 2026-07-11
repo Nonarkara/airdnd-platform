@@ -214,6 +214,22 @@ function PolicyTable() {
   );
 }
 
+// ── Live case callout ─────────────────────────────────────────────────────────
+// variant: 'red' (criminal / trafficking) | 'sky' (contrast / legitimate) | 'amber' (folk taxonomy)
+function LiveCaseCallout({ date, source, headline, children, variant = 'red', kicker = 'LIVE CASE' }) {
+  return (
+    <div className={`paper-live-case${variant !== 'red' ? ` ${variant}` : ''}`}>
+      <div className="paper-live-case-header">
+        <span className="paper-live-case-kicker">{kicker}</span>
+        <span className="paper-live-case-date">{date}</span>
+        <span className="paper-live-case-source">{source}</span>
+      </div>
+      <p className="paper-live-case-headline">{headline}</p>
+      <div className="paper-live-case-body">{children}</div>
+    </div>
+  );
+}
+
 // ── Platform architecture diagram ─────────────────────────────────────────────
 function PlatformPivotDiagram() {
   return (
@@ -404,6 +420,74 @@ export default function Paper() {
             <FigBars rows={lex} max={maxLex} />
             <p className="paper-fig-note">A room (enclosure), oil and aroma (exposure), a shower (preparation): assembled, they describe the service without a prosecutable word. The most telling figure is the absent one — <strong>ฟรีสไตล์</strong> ("freestyle," the explicit term) appears <strong>zero</strong> times. The code self-censors at exactly the boundary where deniability would fail. Foucault, rendered as a frequency count.</p>
           </div>
+
+          <LiveCaseCallout
+            variant="amber"
+            kicker="FOLK TAXONOMY"
+            date="24 May 2026"
+            source="ไทยรัฐบันเทิง / นวดไหนดี"
+            headline='"ต้นหอม ศกุนตลา" opens a massage and spa — immediately clarifies: "สายขาว" (white line) — no hidden services'
+          >
+            <p>
+              When the Thai celebrity ต้นหอม ศกุนตลา announced her massage and spa business, the first question from fans and industry contacts was automatic: <em>what kind of shop is this? Hidden services or not?</em> She responded publicly: her establishment is <strong>สายขาว</strong> — white line. Body and foot massage only. No inappropriate services. To demonstrate the commitment, she washed customers' feet by hand.
+            </p>
+            <p>
+              The terms <strong>สายขาว</strong> (white line) and its implied opposite <strong>สายดำ/สายเทา</strong> (black line / grey line) are the folk taxonomy the Thai industry and its clients actually use to classify the market — operationally precise, entirely absent from regulatory frameworks, and completely invisible to the paper's corpus. White-line establishments deliver exactly what the therapeutic vocabulary promises. Grey/black-line establishments use the same vocabulary for a different service. The corpus contains both without distinguishing them, because the vocabulary distinguishes nothing.
+            </p>
+            <p>
+              The celebrity's need to clarify her category is the argument. <em>The question is automatic.</em> Thai speakers no longer read นวดเพื่อสุขภาพ as unambiguous, because the phrase has served as alibi long enough to colonise the name. The legitimate operator must now actively distinguish herself from the coded market she shares a vocabulary with. The code works structurally because it is indistinguishable until someone is asked to clarify — and the clarification must come from the operator, not the sign on the door.
+            </p>
+          </LiveCaseCallout>
+
+          <LiveCaseCallout
+            variant="sky"
+            kicker="CONTRAST CASE"
+            date="25 May 2026"
+            source="หม่อนไหม สุราษฎร์ / โหนกระแส / นวดไหนดี"
+            headline="Surat Thani restaurateur files police report after being threatened at a shopping-mall health massage parlour — for asking a fellow client to silence his phone"
+          >
+            <p>
+              A 58-year-old restaurateur, receiving health massage inside a Surat Thani department store, asked a neighbouring client to silence his phone. The client threatened him. The masseuse — described throughout the police report as <em>หมอนวด</em> (massage doctor, the professional title) — witnessed the incident and physically intervened before the aggressor left. The restaurateur filed a criminal intimidation report.
+            </p>
+            <p>
+              This is <strong>สายขาว</strong> in operation. The same phrase — นวดเพื่อสุขภาพ — describes a department-store therapeutic service used by a prominent local businessman as a routine wellness activity. The masseuse is a professional with the authority and responsibility to intervene between clients. The conflict is about phone etiquette in a shared therapeutic space, of precisely the kind that occurs in gyms, libraries, and cinemas.
+            </p>
+            <p>
+              The alibi works because this case is real. The code in this paper's corpus is structurally parasitic on the genuine health-massage industry — it wears its vocabulary, occupies its regulatory category, and shelters behind its social legitimacy. Every shopping-mall masseuse who intervenes in a phone dispute is providing cover, structurally and involuntarily, for the Telegram channel's aroma oil hour. The lexicon is shared. The distinction lives elsewhere — in the negotiation, in the room, in the price that is never named.
+            </p>
+          </LiveCaseCallout>
+
+          <p className="paper-lead">
+            The alibi deepens when the anatomical territory it claims is traced to its legitimate medical
+            origin. <strong>นวดกษัย</strong> (Karsai massage) is a recognised discipline within Thai
+            traditional medicine that specifically targets the genital and groin area
+            (<em>กษัย</em>: the lower abdomen, inguinal region, and genital musculature) to improve
+            blood circulation and address male erectile dysfunction. A named medical doctor at Reverie
+            Clinic, Bangkok, publishes clinical guidance on the practice under the category{' '}
+            <em>สุขภาพเพศชาย</em> (men's sexual health), advising patients on outcomes, risks, and the
+            distinction between Karsai as a circulatory intervention and modern shockwave therapy as an
+            evidence-based equivalent. The practice is legal, prescribed, documented, and performed
+            on the same anatomical territory as what the grey market's alibi vocabulary invokes.{' '}
+            <strong>The alibi is not merely borrowed vocabulary — it is borrowed anatomy, borrowed
+            legitimacy, and borrowed legal cover, derived from a medical tradition that works in the
+            same room and touches the same body.</strong> The distinction between a Reverie Clinic
+            appointment and a Telegram channel's oil-and-aroma session is not anatomical. It is the
+            certificate on the wall, the price on the invoice, and the name that can be said aloud.
+          </p>
+
+          <p className="paper-lead">
+            Perhaps the most precise measure of the alibi's structural effectiveness is a thread on
+            the same Pantip forum in which a legitimate customer asks: <em>"How can you tell which
+            regular massage shops have special services?"</em> (topic 39711381). The author is not
+            seeking grey services. He has been solicited at what he thought was a regular shop and is
+            trying to filter them <strong>out</strong> of his massage routine — and he cannot. The
+            vocabulary is identical. The shopfront is identical. The listing is identical. The alibi
+            has succeeded so completely that it provides no reliable signal to clients who don't want
+            it, let alone to regulators who do. The corpus this system reads is a machine rendering of
+            the same illegibility: {fmt(corpus.totalMessages)} messages in a shared vocabulary where
+            the distinction between สายขาว and สายดำ is not in the text. It is in the room.
+          </p>
+
           <p className="paper-lead">
             Below: the advertising itself, entered into the record as anonymised plates. The faces are blurred and every traceable identifier — phone, LINE, handle, location — is crossed out. The irony is acknowledged and intended: <strong>the same fields, for the same posts, are fully legible two clicks away on this very site's directory.</strong> The redaction is not security. It is a statement about who is owed protection in a piece of research, and who is not owed exposure in a piece of advertising — and about the thin, arbitrary, productive line between the two.
           </p>
@@ -484,10 +568,155 @@ export default function Paper() {
         </section>
 
         <section className="paper-sec">
+          <span className="paper-num">VII·B</span>
+          <h2 className="paper-h">The Demand Voice: What the Forum Knows</h2>
+          <p className="paper-lead">
+            The corpus is {fmt(corpus.totalMessages)} supply-side messages. It produces zero demand-side
+            testimony. The booking ratio — customers asking to book 11.9× more often than they ask the
+            price — is visible from the outside; the booking experience is not. For that, this research
+            must leave the database and enter the forum.
+          </p>
+          <p className="paper-lead">
+            Pantip.com is Thailand's largest community forum — a Reddit equivalent where anonymous
+            accounts discuss daily life, products, experiences, and advice in Thai. The platform has
+            indexed a well-documented genre for at least a decade: first-person accounts by Thai men of
+            encounters in the grey massage market, posted publicly in threads that circulate widely.
+            The testimonial cited below (topic 38529177, published 2020) is representative of this
+            genre and cited here as the demand-side record the corpus cannot supply.
+          </p>
+          <blockquote className="paper-quote">
+            <p>"แถวนี้มีหลายร้านเลยครับ เป็นสิบๆร้านเลย เลือกร้านไม่ถูก"</p>
+            <cite>— Pantip.com topic 38529177 (2020)</cite>
+          </blockquote>
+          <p className="paper-lead">
+            <em>"There are many shops in my area — tens of them. I couldn't choose, so I just walked
+            into one randomly."</em> The market this paper studies has a neighbourhood density so high
+            that a consumer without a specific destination can proceed by random selection. Section VI's
+            geographic concentration data is confirmed, from the inside, by the person who navigated
+            it on foot.
+          </p>
+          <p className="paper-lead">
+            The account describes three moments the author calls <strong>สตั้น</strong> — a Thai
+            loanword from "stunned," indicating a sudden freeze of cognition at an unexpected threshold.
+            Each corresponds to a crossing: the masseuse's instruction to undress completely rather
+            than leaving paper underwear on; her direction to turn supine rather than closing the
+            session; and the moment manual stimulation began without announcement. None of the three
+            was preceded by a verbal offer. None named a service. None specified a price. The escalation
+            was constructed entirely through proxemics — the spatial and tactile logic of progressive
+            physical approach. <strong>The code that self-censors in the advertisement (Section II)
+            was executed in the body without a prosecutable word being spoken at any point.</strong>
+          </p>
+          <blockquote className="paper-quote">
+            <p>"ผมไม่ได้พิศวาสอะไรพี่แกเลยนะ แต่มันแข็งของมันเอง"</p>
+            <cite>— Pantip.com topic 38529177 (2020)</cite>
+          </blockquote>
+          <p className="paper-lead">
+            <em>"I didn't feel anything for her — it just got hard on its own."</em> The testimony
+            describes the physiological without the psychological — the exact mechanism the alibi
+            structure produces. By ensuring that no explicit offer is made, no desire acknowledged,
+            no negotiation spoken, the operator constructs a transaction in which the client can
+            say — and sincerely mean — that he did not intend for what happened to happen. The moral
+            architecture of the encounter is built for this. It is not a side effect. It is the design.
+          </p>
+          <blockquote className="paper-quote">
+            <p>"คิดว่าพี่แกคงเห็นมาหลายคนแล้วแหละ คงไม่ใช่เราคนแรกที่แข็ง เพราะพี่แกก็ดูเฉยๆ"</p>
+            <cite>— Pantip.com topic 38529177 (2020)</cite>
+          </blockquote>
+          <p className="paper-lead">
+            <em>"I figured she must have seen many like this before — I can't be the first to get
+            hard, because she was completely unfazed."</em> The client reads the masseuse's professional
+            detachment accurately. She has seen this before. The emotional labour is not distress
+            management — it is professional composure in a routinised service context. Hochschild
+            (1983) called this the management of "feeling rules": the worker performs equanimity because
+            equanimity is what the service requires and what the client's embarrassment can absorb.
+            The client's relief at her composure is testimony to a skill the corpus never records —
+            because the corpus records only the advertisement. Not the room.
+          </p>
+          <blockquote className="paper-quote">
+            <p>"เสร็จแล้วก็เริ่มคิดได้ว่าเค้าทำแบบนี้เพื่ออะไร เลยทริปให้พี่แกไป 300"</p>
+            <cite>— Pantip.com topic 38529177 (2020)</cite>
+          </blockquote>
+          <p className="paper-lead">
+            <em>"After finishing I started thinking — why does she do this? — so I tipped her ฿300."</em>{' '}
+            The informal supplement appears here not as a negotiated price but as a retrospective gift
+            — offered after the fact, set unilaterally by the client, motivated by a sudden
+            acknowledgement of the worker's economic reality. ฿300 is smaller than the ฿1,500–3,000
+            range the corpus implies for higher-tier encounters; it may represent the neighbourhood
+            base rate or the spontaneous nature of an unplanned single visit. What the corpus cannot
+            contain — because the supplement is never named before the service and therefore never
+            appears in advertising text — the forum records: the money passed, the amount, the
+            direction of the decision, and the moral processing that accompanied it.
+          </p>
+          <p className="paper-lead">
+            The account adds one further detail the supply-side corpus cannot produce at all: the
+            client's retrospective questioning of the worker's motive. <em>Why does she do this?</em>{' '}
+            is the demand-side mirror of this paper's central sociological argument. The client does
+            not ask why she advertises on Telegram, or what the code means, or why the price is
+            structured as it is. He asks why she is in the room. He has no answer. The ฿300 is what
+            he puts in the space where the answer should be. Together with the Karsai analysis above
+            (II), the Surat Thani contrast case (II), and the structural silence about irregular
+            migrants (VIII), this forum testimony completes a picture that the corpus, on its own,
+            cannot form: a market that is simultaneously ordinary, technically legal, medically
+            adjacent, violently enforced at its edges, and invisible to the economics it sustains.
+          </p>
+          <p className="paper-lead">
+            The demand-side record is incomplete without its structural mirror. A Japanese-Thai woman
+            posting under the handle BeamSensei published, on the same Pantip platform, her first oil
+            massage experience at Inner Spa, Bang Yai — a regular legitimate spa. She went because she
+            was exhausted after five days of travel and a marathon month of work. She arrived without
+            reading any reviews: <em>"จะลองเสียเงินไม่กี่พันเพื่อซื้อประสบการณ์"</em> — "I'll just
+            spend a few hundred baht to buy the experience." The masseuse gave her a shower cap and
+            paper underwear. She showered. She lay face-down on a table with a hole for her face,
+            flowers floating in a dish below. The session: back, arms, shoulders, legs, feet, one hour
+            thirty minutes — 850 baht, disclosed upfront. When the masseuse asked <em>"Would you like
+            a chest massage too?"</em> BeamSensei declined; the session closed. She tipped Aunty Porn
+            and left.
+          </p>
+          <p className="paper-lead">
+            Three moments of surprised reaction — the shower requirement she didn't know about, the
+            exposure of her back during the massage, the offer of chest work — appear in BeamSensei's
+            account as what they structurally were: unfamiliar thresholds in a legitimate
+            professional service context, crossed only with her knowledge and consent, at a declared
+            price, with a verbal offer for anything beyond the base session. She ends her post:{' '}
+            <em>"ไว้เมื่อยจะไปอีก"</em> — "I'll come back when sore again."
+          </p>
+          <p className="paper-lead">
+            Place the two accounts side by side. The physical setup is identical: shower, oil,
+            prone position, turn supine, the possibility of areas beyond the back. The vocabulary is
+            identical. The reaction — surprised, threshold-crossing, physiologically involved — is
+            structurally parallel. The difference is not in the room's furniture or the oil's scent
+            or the masseuse's hands. It is in: the price declared before entry, the paper underwear
+            retained throughout, every escalation named and consented to before it occurred, and the
+            moral weight of the question <em>why does she do this?</em> never needing to be asked.
+            BeamSensei knows exactly why Aunty Porn is in that room. The Pantip man who tipped ฿300
+            does not. That gap — between the declared service and the undeclared one, between the
+            price on the wall and the supplement that is never named — is the entire distance between
+            สายขาว and สายดำ, and the entire subject of this paper.
+          </p>
+        </section>
+
+        <section className="paper-sec">
           <span className="paper-num">VIII</span>
           <h2 className="paper-h">The Silence That Names</h2>
           <p className="paper-lead">
             The data cannot tell us who these women are. But it tells us, with force, <em>who the market refuses to name.</em> Against migration figures showing Thailand's informal labour pool is overwhelmingly Burmese and Cambodian — over five million migrants, three million from Myanmar, displaced by coup and conscription — the corpus names <strong>Burmese zero times, Cambodian zero times, Lao twice.</strong> It names "Vietnamese" (cachet) and "student" (fantasy), but the most precarious workers are folded into the undifferentiated <em>น้อง</em>. The firewall name extends to a <strong>firewall nationality</strong>: the irregular migrant, the refugee, is rendered invisible, her labour absorbed without acknowledgement.
+          </p>
+          <p className="paper-lead">
+            There is a second silence the corpus cannot even map, because it is not within its source pool at all. The open Telegram channel — the kind this system monitors — is where the visible market advertises. It is not where an operator advertising minors would post. The intelligence that locates that market comes from undercover police work, not from reading public channels. The corpus, which reads 85,632 messages from the open market, generates a picture of its most legible end. The illegible end exists too. The absence of evidence for it in this dataset is not evidence of its absence from the city.
+          </p>
+          <p className="paper-lead">
+            A third silence: the vulnerability created by the massage context is not unidirectional.
+            A Pantip thread (topic 38519086) documents a male client at a regular legitimate Thai
+            massage shop who was sexually assaulted by a male masseuse — oral penetration, without
+            consent, while the client was prone, groggy, and in a professional trust relationship.
+            He came with his girlfriend. He was shocked into immobility. He did not report to police.
+            The shop, confronted by his girlfriend, fired the worker and refunded the session price —
+            900 baht. The client writes: <em>"ผมคงไม่กล้าไปนวดที่ไหนอีกแล้ว"</em> — "I don't think
+            I'll dare go for a massage anywhere again." The structural context that makes the grey
+            market possible — alone, horizontal, undressed, in a closed room with a trusted
+            professional — creates vulnerability for everyone in that room, in every direction.
+            The corpus registers the alibi's supply-side text. It cannot register what happens to the
+            person whose guard was down.
           </p>
           <div className="paper-fig">
             <div className="paper-fig-cap">Figure 5 · Demographic markers named in the corpus (read the absences)</div>
@@ -504,6 +733,22 @@ export default function Paper() {
           <p className="paper-lead">
             One need not believe the answer is the open market in intimacy — Zelizer (2005) would warn the question is always <em>which</em> matches we permit, never whether money and intimacy may touch. One need only notice that the prohibition has not stopped the thing. It has only made it dangerous, and silent, and {fmt(corpus.totalMessages)} messages deep, and very good at never saying its own name. The collapse, if the word is used at all, is not moral and is not located in the women. It is the visible cost of a contradiction the rest of us maintain in good conscience: an economy that requires the commodification of intimacy at industrial scale, and a public culture that forbids us to say so.
           </p>
+          <LiveCaseCallout
+            date="9 June 2026 · 38 minutes before this update"
+            source="ข่าวสด / นวดไหนดี (Thailand's #1 massage review page)"
+            headline="Rama 2 raid: CIB and Anti-Human Trafficking Division find two girls aged 16–17 inside a health-massage-fronted establishment, operators charged with human trafficking and procuring child prostitution"
+          >
+            <p>
+              This paper was updated thirty-eight minutes after the following was posted to <em>นวดไหนดี</em>. CIB officers, acting on online advertising intelligence and an undercover sting, raided an establishment on Rama 2 road, Bangkok. Two women — aged 51 and 37 — were arrested on charges of human trafficking and procuring child prostitution. Two girls, aged 16 and 17, were found inside, prepared to provide sexual services under a <em>นวดเพื่อสุขภาพ</em> (health massage) cover story.
+            </p>
+            <p>
+              The case confirms every structural argument this paper has made, and then goes one step further. The alibi structure (Section II) was present: <em>นวดเพื่อสุขภาพบังหน้า</em> — health massage as a front — is the paper's central exhibit, now documented in a criminal indictment. The online advertising pipeline (Section VI) was the detection mechanism: officers found the establishment through its own promotion on digital platforms. The operators were not male pimps but two women — operators, not workers, which the paper's circular flow diagram (Section III) models as a distinct node in the rent-extraction chain.
+            </p>
+            <p>
+              And then the case departs from everything else in this paper: the two people found inside were <strong>sixteen and seventeen years old</strong>. They were not making the LV Index calculation (Economy tab, Section XVI). They were not sending katanyu remittances to their parents. The rational-choice framework that this paper has applied to the adult workers documented in the corpus does not apply to them, because the concept of rational labor choice requires that the chooser be in a position to refuse. The corpus cannot see this case at all: the open Telegram channels this system monitors are not where a trafficker advertising minors would post. <strong>The corpus shows the most legible end of the market. This case is the end the corpus is structurally blind to.</strong> Both are true simultaneously. Neither cancels the other.
+            </p>
+          </LiveCaseCallout>
+
           <p className="paper-coda">
             The machine has finished reading. The reading has barely begun.
           </p>
@@ -523,6 +768,11 @@ export default function Paper() {
             <li>Zelizer, V. A. (2005). <em>The Purchase of Intimacy.</em> Princeton University Press.</li>
             <li>Di Cicco, M. &amp; Beraldo, D. (2025). "Sex Work as Cross-Platform Self-Branding." <em>New Media &amp; Society.</em></li>
             <li>IOM Thailand (2024–25); Human Rights Watch (2025); World Bank (2025) — contemporary migration figures.</li>
+            <li>Pantip.com community forums (2020). Anonymous user testimony, topic/38529177 — first-person demand-side account of escalation mechanics in the grey massage market. Public forum post, Thailand.</li>
+            <li>Pantip.com community forums (n.d.). BeamSensei (pseudonym). Topic: ประสบการณ์นวดน้ำมันครั้งแรกในชีวิต [First oil massage experience]. Inner Spa, Bang Yai. Public forum post, Thailand. — Cited as structural contrast: สายขาว (white-line) oil massage.</li>
+            <li>Pantip.com community forums (n.d.). Anonymous user testimony, topic/39711381 — "How can you tell if a regular massage shop has special services?" — cited as evidence of alibi's effectiveness against unwilling consumers.</li>
+            <li>Pantip.com community forums (n.d.). Anonymous user testimony, topic/38519086 — male client assaulted by male masseuse at a legitimate Thai massage shop; cited for bidirectional vulnerability analysis.</li>
+            <li>นพ. กิตติพัชญ์ รัศมีจารุกิตติ์ / Reverie Clinic (2024). "นวดกษัยเห็นผลจริงไหม ทำแล้วกลับมาแข็งจริงรึเปล่า?" [Does Karsai massage really work? Does it actually improve erectile function?]. reveriebkk.com. <em>Category: UPSIZE | สุขภาพเพศชาย.</em></li>
           </ul>
         </section>
       </div>
@@ -717,6 +967,25 @@ export default function Paper() {
           <p className="paper-lead">
             The crucial distinction — which the abolitionist position conflates and the sex-work-as-work position sometimes underweights — is between structural coercion and individual agency operating within structurally coercive conditions. A woman who enters this market because the minimum wage does not cover Bangkok rent is not making a free choice in any absolute sense. She is also not making a coerced choice in the sense that trafficking researchers mean when they use that word. She is making the kind of choice that most people make most of the time: a rational response to a constrained option set, where the constraints were not of her choosing and the options were not freely offered. Treating this choice as either fully free or fully coerced misreads the situation. Both misreadings protect the person who misreads rather than the person who chose.
           </p>
+
+          <LiveCaseCallout
+            date="9 June 2026"
+            source="ข่าวสด / นวดไหนดี"
+            headline="The distinction this section depends on — drawn in real time, on the same day it was written"
+          >
+            <p>
+              On the same day this section was written, CIB officers raided a Rama 2 establishment and found two girls aged 16 and 17, prepared to provide sexual services under a health-massage cover. Two female operators — aged 51 and 37 — were charged with human trafficking and procuring child prostitution.
+            </p>
+            <p>
+              This case is not in this paper's corpus. The open Telegram channels this system monitors are not where an operator advertising minors would post. The corpus reads the market's legible surface. This case is what lies beneath it — and the distinction matters enormously for this section's argument.
+            </p>
+            <p>
+              This paper has argued against the rescue industry's reflex to treat adult workers who see their situation clearly as trafficking victims in need of rescue. That argument stands for the adult workers documented in this corpus. It does not extend to the two girls on Rama 2. They were not making the LV Index calculation. The operator made it for them. <strong>The crucial distinction that the rescue industry collapses in one direction — treating consenting adults as trafficking victims — cannot be collapsed in the other direction either.</strong> The Rama 2 minors are not rational-choice workers who have been misread. They are trafficking victims who deserve exactly the rescue narrative that the adult worker does not.
+            </p>
+            <p>
+              Both cases coexist in the same city, on the same road, behind the same alibi structure — separated by age, by consent, and by a legal and ethical distinction that research is obliged to preserve even when it is inconvenient for whichever prior argument the researcher has been building.
+            </p>
+          </LiveCaseCallout>
         </section>
 
         <section className="paper-sec">

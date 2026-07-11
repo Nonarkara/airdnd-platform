@@ -9,14 +9,14 @@ import MarketSnapshot from './components/MarketSnapshot';
 import FeedGrid from './components/FeedGrid';
 import FilterBar from './components/FilterBar';
 import FunFacts from './components/FunFacts';
-import CompanionGrid from './components/CompanionGrid';
-import CompanionModal from './components/CompanionModal';
+import ListingGrid from './components/ListingGrid';
+import ListingModal from './components/ListingModal';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
-import { companions as backupCompanions } from './data/mockData';
-import { db, auth } from './lib/firebase';
+import { listings as backupListings } from './data/mockData';
+import { auth } from './lib/firebase';
+import { supabase } from './lib/supabase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, query, orderBy, limit, onSnapshot, getDocs } from 'firebase/firestore';
 import { initSession } from './lib/tracker';
 import {
   SOURCE_LABELS,
@@ -27,14 +27,15 @@ import {
 } from './lib/listings';
 import { useLanguage } from './context/LanguageContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { validateListingsPayload } from './lib/schema';
 
 const REFRESH_INTERVAL_MS = 30_000;
-const SUPABASE_TIMEOUT_MS = 4_000;
 const LIVE_QUERY_LIMIT = 400;
+const LIVE_FETCH_TIMEOUT_MS = 6_500;
 const REALTIME_REFRESH_DEBOUNCE_MS = 1_200;
 const ALL_LOCATIONS_VALUE = 'all-locations';
 const ALL_TAGS_VALUE = 'all-tags';
-const normalizedBackupListings = normalizeListings(backupCompanions, {
+const normalizedBackupListings = normalizeListings(backupListings, {
   source: 'backup',
   isFallback: true,
 });
@@ -45,6 +46,8 @@ const Analytics = lazy(() => import('./components/Analytics'));
 const Sociology = lazy(() => import('./components/Sociology'));
 const Paper = lazy(() => import('./components/Paper'));
 const FAQ = lazy(() => import('./components/FAQ'));
+const MatchingPaper = lazy(() => import('./components/MatchingPaper'));
+const Trends = lazy(() => import('./components/Trends'));
 const SORT_OPTIONS = [
   'Newest',
   'Most credible',
@@ -75,6 +78,26 @@ function getLatestListingTimestamp(listings) {
     const timestamp = getListingTimestampValue(listing);
     return Number.isFinite(timestamp) ? Math.max(latest, timestamp) : latest;
   }, 0);
+}
+
+function sanitizeLoadError(error, fallbackMessage = 'Live data unavailable.') {
+  const message = error?.message || String(error || '');
+  if (!message || /<!doctype|<html|cloudflare|522|timed out/i.test(message)) {
+    return fallbackMessage;
+  }
+
+  return message.length > 180 ? `${message.slice(0, 177)}...` : message;
+}
+
+function withTimeout(promise, timeoutMs, message) {
+  let timeoutId;
+  const timeout = new Promise((_, reject) => {
+    timeoutId = window.setTimeout(() => reject(new Error(message)), timeoutMs);
+  });
+
+  return Promise.race([promise, timeout]).finally(() => {
+    window.clearTimeout(timeoutId);
+  });
 }
 
 function sortListings(listings, sortBy) {
@@ -122,21 +145,31 @@ function sortListings(listings, sortBy) {
 }
 
 
-async function fetchFirebaseListings() {
-  // Single orderBy to match the realtime onSnapshot query and avoid requiring a
-  // Firestore composite index — a missing index would throw and silently drop
-  // the app to the static snapshot instead of live data.
-  const q = query(
-    collection(db, 'companions'),
-    orderBy('updated_at', 'desc'),
-    limit(LIVE_QUERY_LIMIT)
-  );
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) {
+async function fetchLiveListings() {
+  const { data, error } = await supabase
+    .from('companions')
+    .select('*')
+    .order('updated_at', { ascending: false, nullsFirst: false })
+    .order('created_at', { ascending: false, nullsFirst: false })
+    .limit(LIVE_QUERY_LIMIT);
+
+  if (error) {
+    throw new Error(sanitizeLoadError(error));
+  }
+
+  if (!Array.isArray(data) || data.length === 0) {
     throw new Error('No live data available.');
   }
-  const data = snapshot.docs.map(doc => doc.data());
-  return normalizeListings(data, { source: 'supabase', isFallback: false }); // keep 'supabase' label for now to not break UI logic, or change to 'firebase'
+
+  const validatedData = validateListingsPayload(data);
+  if (validatedData.length === 0) {
+    throw new Error('Live data failed validation.');
+  }
+
+  return normalizeListings(
+    validatedData,
+    { source: 'supabase', isFallback: false },
+  );
 }
 async function fetchSnapshotListings() {
   const response = await fetch(`/data.json?ts=${Date.now()}`, {
@@ -152,7 +185,12 @@ async function fetchSnapshotListings() {
     throw new Error('Snapshot file is empty.');
   }
 
-  return normalizeListings(snapshot, { source: 'snapshot', isFallback: true });
+  const validatedSnapshot = validateListingsPayload(snapshot);
+  if (validatedSnapshot.length === 0) {
+    throw new Error('Snapshot failed validation.');
+  }
+
+  return normalizeListings(validatedSnapshot, { source: 'snapshot', isFallback: true });
 }
 
 async function loadListingsWithFallback(mode = 'automatic') {
@@ -161,7 +199,11 @@ async function loadListingsWithFallback(mode = 'automatic') {
   let liveError = null;
 
   try {
-    const liveListings = await fetchFirebaseListings();
+    const liveListings = await withTimeout(
+      fetchLiveListings(),
+      LIVE_FETCH_TIMEOUT_MS,
+      'Live Supabase request timed out.',
+    );
     liveResult = {
       listings: liveListings,
       source: 'supabase',
@@ -169,7 +211,7 @@ async function loadListingsWithFallback(mode = 'automatic') {
       warning: null,
     };
   } catch (error) {
-    liveError = error;
+    liveError = new Error(sanitizeLoadError(error, 'Live Supabase request timed out.'));
   }
 
   try {
@@ -205,7 +247,7 @@ async function loadListingsWithFallback(mode = 'automatic') {
       listings: normalizedBackupListings,
       source: 'backup',
       note: notes.backup,
-      warning: snapshotError.message || liveError?.message,
+      warning: sanitizeLoadError(snapshotError, liveError?.message),
     };
   }
 }
@@ -224,12 +266,12 @@ function createDataState(result) {
 
 function App() {
   const [session, setSession] = useState(null);
-  const [allCompanions, setAllCompanions] = useState([]);
+  const [allListings, setAllListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeLocation, setActiveLocation] = useState(ALL_LOCATIONS_VALUE);
   const [activeActivity, setActiveActivity] = useState(ALL_TAGS_VALUE);
   const [sortBy, setSortBy] = useState(SORT_OPTIONS[0]);
-  const [selectedCompanion, setSelectedCompanion] = useState(null);
+  const [selectedListing, setSelectedListing] = useState(null);
   const { language, setLanguage, t: tCtx } = useLanguage();
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
   const [activeView, setActiveView] = useState('directory');
@@ -250,8 +292,8 @@ function App() {
 
   const t = tCtx;
   const deferredSearchTerm = useDeferredValue(searchTerm);
-  const metrics = useMemo(() => createMetrics(allCompanions), [allCompanions]);
-  const intakeSummary = useMemo(() => createIntakeSummary(allCompanions), [allCompanions]);
+  const metrics = useMemo(() => createMetrics(allListings), [allListings]);
+  const intakeSummary = useMemo(() => createIntakeSummary(allListings), [allListings]);
   const displayDataState = useMemo(() => ({
     ...dataState,
     sourceLabel: t.sourceLabels?.[dataState.source] || dataState.sourceLabel,
@@ -280,17 +322,17 @@ function App() {
   }, []);
 
   // Deep-link: ?listing=<id> auto-opens that listing's modal once data has
-  // loaded. If the id isn't in the filtered allCompanions set (some listings
+  // loaded. If the id isn't in the filtered allListings set (some listings
   // are dropped by visualDeduplication or validation but are still legitimate
   // shares), fetch from public/data.json — the broader 75-listing snapshot.
   useEffect(() => {
-    if (allCompanions.length === 0) return;
+    if (allListings.length === 0) return;
     const params = new URLSearchParams(window.location.search);
     const targetId = params.get('listing');
     if (!targetId) return;
-    const match = allCompanions.find((listing) => String(listing.id) === String(targetId));
+    const match = allListings.find((listing) => String(listing.id) === String(targetId));
     if (match) {
-      setSelectedCompanion(match);
+      setSelectedListing(match);
       return;
     }
     // Fallback: snapshot lookup so deep-links to filtered listings still resolve.
@@ -301,11 +343,11 @@ function App() {
         if (cancelled) return;
         const fromSnapshot = (Array.isArray(rows) ? rows : [])
           .find((listing) => String(listing.id) === String(targetId));
-        if (fromSnapshot) setSelectedCompanion(fromSnapshot);
+        if (fromSnapshot) setSelectedListing(fromSnapshot);
       })
       .catch(() => {});
     return () => { cancelled = true; };
-  }, [allCompanions]);
+  }, [allListings]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -336,7 +378,7 @@ function App() {
           return;
         }
 
-        setAllCompanions(result.listings);
+        setAllListings(result.listings);
         setDataState(createDataState(result));
       } finally {
         loadInFlightRef.current = false;
@@ -372,7 +414,7 @@ function App() {
           return;
         }
 
-        setAllCompanions(result.listings);
+        setAllListings(result.listings);
         setDataState(createDataState(result));
       } finally {
         loadInFlightRef.current = false;
@@ -401,12 +443,20 @@ function App() {
     window.addEventListener('focus', refreshIfVisible);
     window.addEventListener('online', refreshIfVisible);
 
-    
-    const q = query(collection(db, 'companions'), orderBy('updated_at', 'desc'), limit(LIVE_QUERY_LIMIT));
-    const unsubscribe = onSnapshot(q, () => {
-      scheduleRealtimeRefresh();
-    });
-
+    const liveChannel = supabase
+      .channel('companions-live')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'companions' },
+        scheduleRealtimeRefresh,
+      )
+      .subscribe((status, error) => {
+        if (error) {
+          console.warn('Live listing subscription unavailable:', error.message);
+        } else if (status === 'CHANNEL_ERROR') {
+          console.warn(`Live listing subscription unavailable: ${status}`);
+        }
+      });
 
     return () => {
       isActiveRef.current = false;
@@ -419,36 +469,36 @@ function App() {
       document.removeEventListener('visibilitychange', refreshIfVisible);
       window.removeEventListener('focus', refreshIfVisible);
       window.removeEventListener('online', refreshIfVisible);
-      unsubscribe();
+      supabase.removeChannel(liveChannel);
     };
   }, []);
 
   const locationOptions = useMemo(
     () => [
       { value: ALL_LOCATIONS_VALUE, label: t.filters.allLocations },
-      ...[...new Set(allCompanions.map((listing) => listing.city))]
+      ...[...new Set(allListings.map((listing) => listing.city))]
         .filter(Boolean)
         .sort((left, right) => left.localeCompare(right))
         .map((city) => ({ value: city, label: city })),
     ],
-    [allCompanions, t.filters.allLocations],
+    [allListings, t.filters.allLocations],
   );
 
   const activityOptions = useMemo(
     () => [
       { value: ALL_TAGS_VALUE, label: t.filters.allTags },
-      ...[...new Set(allCompanions.flatMap((listing) => listing.tags))]
+      ...[...new Set(allListings.flatMap((listing) => listing.tags))]
         .filter(Boolean)
         .sort((left, right) => left.localeCompare(right))
         .map((tag) => ({ value: tag, label: tag })),
     ],
-    [allCompanions, t.filters.allTags],
+    [allListings, t.filters.allTags],
   );
 
-  const filteredCompanions = useMemo(
+  const filteredListings = useMemo(
     () =>
       sortListings(
-        allCompanions.filter((listing) => {
+        allListings.filter((listing) => {
           const matchesLocation =
             activeLocation === ALL_LOCATIONS_VALUE || listing.city === activeLocation;
           const matchesActivity =
@@ -474,7 +524,7 @@ function App() {
         }),
         sortBy,
       ),
-    [activeActivity, activeLocation, allCompanions, deferredSearchTerm, sortBy],
+    [activeActivity, activeLocation, allListings, deferredSearchTerm, sortBy],
   );
 
   const clearFilters = () => {
@@ -529,6 +579,22 @@ function App() {
         )}
       />
       <Route
+        path="/matching"
+        element={(
+          <Suspense fallback={<div className="page-shell-loading">Loading paper…</div>}>
+            <MatchingPaper />
+          </Suspense>
+        )}
+      />
+      <Route
+        path="/trends"
+        element={(
+          <Suspense fallback={<div className="page-shell-loading">Loading trends…</div>}>
+            <Trends />
+          </Suspense>
+        )}
+      />
+      <Route
         path="/admin"
         element={
           <AdminGuard session={session}>
@@ -577,7 +643,7 @@ function App() {
                   <FeedGrid
                   t={t}
                   onOpen={(card) => {
-                    setSelectedCompanion({
+                    setSelectedListing({
                       id: `feed-${card.id}`,
                       name: card.displayName || card.name,
                       location: card.channel ? `${card.channel}` : '—',
@@ -619,13 +685,13 @@ function App() {
                   intakeSummary={intakeSummary}
                 />
 
-                <FunFacts listings={filteredCompanions} metrics={metrics} />
+                <FunFacts listings={filteredListings} metrics={metrics} />
                 <ProximityFinder
-                  listings={allCompanions}
-                  onSelect={setSelectedCompanion}
+                  listings={allListings}
+                  onSelect={setSelectedListing}
                 />
 
-                <MarketSnapshot listings={allCompanions} />
+                <MarketSnapshot listings={allListings} />
 
                 <section id="live-listings" className="listing-section">
                   <div className="section-header">
@@ -634,7 +700,7 @@ function App() {
                       <h2>{t.featured.title}</h2>
                     </div>
                     <div className="section-meta">
-                      <span>{filteredCompanions.length} {t.featured.countLabel}</span>
+                      <span>{filteredListings.length} {t.featured.countLabel}</span>
                       <span>{displayDataState.sourceLabel}</span>
                     </div>
                   </div>
@@ -660,14 +726,14 @@ function App() {
                       activeActivity !== ALL_TAGS_VALUE ||
                       sortBy !== SORT_OPTIONS[0]
                     }
-                    resultCount={filteredCompanions.length}
+                    resultCount={filteredListings.length}
                     t={t}
                   />
 
                   <ErrorBoundary>
-                  <CompanionGrid
-                    companions={filteredCompanions}
-                    onCardClick={setSelectedCompanion}
+                  <ListingGrid
+                    listings={filteredListings}
+                    onCardClick={setSelectedListing}
                     t={t}
                     metrics={metrics}
                     intakeSummary={intakeSummary}
@@ -700,11 +766,14 @@ function App() {
               >
                 <Suspense fallback={<section className="section-shell-loading">Loading map…</section>}>
                   <ListingMap
-                    listings={filteredCompanions}
-                    onCardClick={setSelectedCompanion}
+                    listings={filteredListings}
+                    onCardClick={setSelectedListing}
                     t={t}
                     viewKey={`${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
                     theme={theme}
+                    lastUpdatedAt={dataState.lastLoadedAt}
+                    isRefreshing={dataState.isRefreshing}
+                    dataSource={displayDataState.sourceLabel}
                   />
                 </Suspense>
               </div>
@@ -712,10 +781,10 @@ function App() {
 
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
 
-            {selectedCompanion && (
-              <CompanionModal
-                companion={selectedCompanion}
-                onClose={() => setSelectedCompanion(null)}
+            {selectedListing && (
+              <ListingModal
+                listing={selectedListing}
+                onClose={() => setSelectedListing(null)}
                 t={t}
               />
             )}

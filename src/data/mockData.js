@@ -1,4 +1,4 @@
-export const companions = [
+export const listings = [
   {
     id: 1,
     name: 'Mali',

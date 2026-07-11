@@ -9,8 +9,8 @@ import './FeedGrid.css';
  * channel_messages joined to photo_archive. 800 cards available; the
  * default reveal is 90, "More" loads 60 at a time.
  *
- * Distinct from CompanionGrid (which renders the deduplicated canonical
- * companions). The feed shows the firehose; the directory shows the
+ * Distinct from ListingGrid (which renders the deduplicated canonical
+ * listings). The feed shows the firehose; the directory shows the
  * curated set. Both live on the home page.
  */
 

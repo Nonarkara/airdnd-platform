@@ -18,7 +18,13 @@ import {
 } from './listing_pipeline.js';
 import { notifyListings } from './notify.js';
 import { exportToGoogle } from './google_export.js';
-import { ensureLocalPhotosDir, downloadAndStorePhoto, archivePhotoMetadata } from './photo_storage.js';
+import {
+  archivePhotoMetadata,
+  downloadAndStorePhoto,
+  ensureLocalPhotosDir,
+  setPhotoStorageSupabaseEnabled,
+} from './photo_storage.js';
+import { syncListingsToFirestore } from './firestore_sync.js';
 
 import { cleanDisplayText, normalizeText } from '../src/lib/normalization.js';
 const __filename = fileURLToPath(import.meta.url);
@@ -51,7 +57,7 @@ const configuredTargetTokens = (
   .split(',')
   .map((value) => value.trim())
   .filter(Boolean);
-const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '2000', 10);
+const fetchLimit = Number.parseInt(process.env.TELEGRAM_FETCH_LIMIT || '200', 10);
 const pollIntervalMs = Number.parseInt(process.env.TELEGRAM_POLL_INTERVAL_MS || '30000', 10);
 const snapshotLimit = Number.parseInt(process.env.SNAPSHOT_LISTING_LIMIT || '2000', 10);
 const parseTimeoutMs = Number.parseInt(process.env.GEMINI_PARSE_TIMEOUT_MS || '15000', 10);
@@ -80,13 +86,52 @@ const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
 const stringSession = new StringSession(process.env.TELEGRAM_SESSION);
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-const supabase =
+const configuredSupabase =
   supabaseUrl && supabaseServiceRoleKey
     ? createClient(supabaseUrl, supabaseServiceRoleKey)
     : null;
 
+const domainConfigPath = path.join(__dirname, '../domain.config.json');
+let domainConfig = {};
+if (fs.existsSync(domainConfigPath)) {
+  domainConfig = JSON.parse(fs.readFileSync(domainConfigPath, 'utf-8'));
+} else {
+  console.warn('No domain.config.json found, using empty configuration.');
+}
+let supabase = configuredSupabase;
+
+async function refreshSupabaseAvailability() {
+  if (!configuredSupabase) {
+    supabase = null;
+    setPhotoStorageSupabaseEnabled(false);
+    return;
+  }
+
+  const abortController = new AbortController();
+  const timeoutId = setTimeout(() => abortController.abort(), 4_000);
+
+  try {
+    const { error } = await configuredSupabase
+      .from('companions')
+      .select('id')
+      .limit(1)
+      .abortSignal(abortController.signal);
+
+    supabase = error ? null : configuredSupabase;
+  } catch {
+    supabase = null;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+
+  setPhotoStorageSupabaseEnabled(Boolean(supabase));
+  if (!supabase) {
+    console.warn('Supabase is unavailable; continuing with snapshot and Firestore sync.');
+  }
+}
+
 function buildEnrichmentPrompt(rawText) {
-  return `
+  const defaultPrompt = `
 Enrich the following already-detected Thailand wellness, massage, or spa listings.
 Each message group is labelled with a [CLUSTER <id>] tag. Return only data that is clearly present in that cluster.
 Return only a JSON array with this shape:
@@ -134,10 +179,16 @@ User feedback & ratings extraction:
 - Extract service quality keywords into service_quality array: "clean", "friendly", "skilled", "professional", "relaxing", "value", "private", "late_night", "new_staff", "experienced".
 - If the text contains genuine user reviews or experience reports (not ads), summarize them briefly in user_feedback_summary.
 - Do NOT invent ratings or feedback. Only extract what users explicitly stated.
-
-Messages:
-${rawText}
 `;
+
+  const promptBody = domainConfig?.ai_enrichment?.system_prompt || defaultPrompt;
+  const availabilityContract = `
+Availability metrics (required inside the metrics object):
+- availability_status: "available" only when the post explicitly says a slot/person is free now or today; "unavailable" only when it explicitly says full/not available; otherwise "unknown".
+- availability_evidence: the shortest exact phrase supporting that status, or null.
+- available_staff_count: the explicit count of currently available staff, or null.
+- Never infer slot availability merely because the business is open.`;
+  return `${promptBody}\n\n${availabilityContract}\n\nMessages:\n${rawText}`;
 }
 
 function sanitizeTargetToken(value) {
@@ -563,8 +614,8 @@ function extractTagsFromText(text, location) {
 function isSpamOrPornContent(text) {
   const lowered = text.toLowerCase();
 
-  // Reject clickbait / porn / video selling / escort-style content
-  const pornSignals = [
+  // Load from domain configuration if available, otherwise fallback to defaults
+  let pornSignals = [
     /(?:คลิป|clip|vdo|video|วิดีโอ|หนัง)\s*(?:โป้|โป๊|18\+|xxx|เสียว|ลับ|หลุด|sex|เซ็ก)/i,
     /(?:โป้|โป๊|xxx|18\+|porn|nude|naked|onlyfans|เสียว|หลุด|ลับเฉพาะ|เซ็กส์|เย็ด)/i,
     /(?:ขาย\s*(?:คลิป|clip|vdo|video)|sell\s*(?:clip|video|content))/i,
@@ -573,17 +624,17 @@ function isSpamOrPornContent(text) {
     /(?:ดูฟรี|free\s*vid|watch\s*free|คลิปฟรี)/i,
     /(?:ทักซื้อ|ทักเลย|dm\s*(?:me|for)|inbox)\s*(?:คลิป|clip|vdo|video)/i,
     /(?:แอบถ่าย|hidden\s*cam|spy\s*cam)/i,
-    // Escort / companion / "special service" signals
     /(?:บริการพิเศษ|บริการถึงที่|ถึงห้อง|out\s*call|in\s*call|service.*room)/i,
     /(?:ตัวจริง|ตัวเป็นๆ|รูปจริง|ไม่ผิดหวัง|งานดี|เด็ด|แซ่บ|ฟิน|sexy|hot\s*girl)/i,
     /(?:dream\s*girl|สาวสวย|สาวเซ็กซี่|สาวน่ารัก.*บริการ|companion|escort)/i,
-    // Reject content focused on choosing girls / individual masseuses by appearance
     /(?:เลือกน้อง|เลือกหมอ|เลือกคน|เลือกสาว|choose.*girl|pick.*girl)/i,
-    // Reject "update on girls" / girl lineup / staff showcase posts
     /(?:อัพเดต.*สาว|อัพเดท.*สาว|update.*girl|แจ้งเข้า|รอยดึก|น้องๆ.*วันนี้|สาว.*วันนี้|line.*up|lineup)/i,
-    // Reject individual girl profiles (not business listings)
     /(?:น้อง\s*\S{1,12}\s*(?:อายุ|age|สูง|ผิว|หน้าอก|น้ำหนัก|weight|height))/i,
   ];
+
+  if (domainConfig?.content_screening?.spam_signals) {
+    pornSignals = domainConfig.content_screening.spam_signals.map(s => new RegExp(s, 'i'));
+  }
 
   if (pornSignals.some((pattern) => pattern.test(text))) {
     return true;
@@ -610,6 +661,19 @@ function isVideoOnlyCluster(cluster) {
     !cluster.mediaMessages.some((m) => m.media?.photo);
 }
 
+function extractAvailabilityMetrics(text) {
+  const source = String(text || '');
+  const unavailable = source.match(/(?:คิวเต็ม|เต็มแล้ว|ไม่ว่าง|ปิดวันนี้|fully\s+booked|no\s+(?:slots?|availability)|closed\s+today)/i);
+  const available = source.match(/(?:คิวว่าง|ว่างตอนนี้|ว่างวันนี้|ว่างแล้ว|พร้อมให้บริการ|available\s*(?:now|today)|slots?\s+available|walk[ -]?ins?\s+welcome)/i);
+  const count = source.match(/(?:ว่าง|เหลือ|พร้อม)\s*(\d{1,2})\s*(?:คน|ท่าน|หมอ)?|(?:available|free)\s*(\d{1,2})\s*(?:staff|therapists?|slots?)?/i);
+
+  return {
+    availability_status: unavailable ? 'unavailable' : available ? 'available' : 'unknown',
+    availability_evidence: unavailable?.[0] || available?.[0] || null,
+    available_staff_count: count ? Number(count[1] || count[2]) : null,
+  };
+}
+
 function buildFallbackListing(cluster, clusterId, sourceLabel) {
   const text = cluster.texts.join('\n').trim();
   if (!text || text.length < 24) {
@@ -622,7 +686,12 @@ function buildFallbackListing(cluster, clusterId, sourceLabel) {
   }
 
   // Reject if the cluster has no real massage/spa business signals
-  const businessSignals = /(?:ร้าน|shop|spa|สปา|นวด|massage|clinic|คลินิก|health|สุขภาพ|therap|เพื่อสุขภาพ|แผนไทย|thai\s*(?:massage|spa)|พิกัด|location|maps|เปิด.*\d|open.*\d|\d{1,2}[:.]\d{2}|หมอ|บริการ|ราคา|price|baht|บาท|฿|โทร|tel|phone|line\s*(?:id)?|จอง|booking|reservation|ซอย|soi|ถนน|road|แยก|ใกล้|near|bts|mrt)/i;
+  let businessSignals = /(?:ร้าน|shop|spa|สปา|นวด|massage|clinic|คลินิก|health|สุขภาพ|therap|เพื่อสุขภาพ|แผนไทย|thai\s*(?:massage|spa)|พิกัด|location|maps|เปิด.*\d|open.*\d|\d{1,2}[:.]\d{2}|หมอ|บริการ|ราคา|price|baht|บาท|฿|โทร|tel|phone|line\s*(?:id)?|จอง|booking|reservation|ซอย|soi|ถนน|road|แยก|ใกล้|near|bts|mrt)/i;
+
+  if (domainConfig?.content_screening?.business_signals) {
+    businessSignals = new RegExp(domainConfig.content_screening.business_signals.join('|'), 'i');
+  }
+
   if (!businessSignals.test(text)) {
     return null;
   }
@@ -663,7 +732,7 @@ function buildFallbackListing(cluster, clusterId, sourceLabel) {
     age: null,
     location: location || 'Bangkok, Thailand',
     price,
-    metrics: {},
+    metrics: extractAvailabilityMetrics(text),
     tags: extractTagsFromText(text, location),
     description: description || 'New listing captured from Telegram.',
     phone: text.match(/(?:\+?66|0)\d[\d -]{7,}/)?.[0] || null,
@@ -1247,6 +1316,14 @@ async function runTelegramScrape(client, targets, state = {}) {
   });
   const wroteSnapshot = writeSnapshotListings(mergedSnapshot);
 
+  let firestoreSynced = 0;
+  try {
+    firestoreSynced = await syncListingsToFirestore(listingsWithImages);
+    console.log(`Firestore sync complete. Synced: ${firestoreSynced}`);
+  } catch (error) {
+    console.error(`Firestore sync failed: ${error.message}`);
+  }
+
   let inserted = 0;
   let skipped = 0;
 
@@ -1286,6 +1363,7 @@ async function runTelegramScrape(client, targets, state = {}) {
     skipped,
     snapshotCount: mergedSnapshot.length,
     wroteSnapshot,
+    firestoreSynced,
   };
 }
 
@@ -1350,6 +1428,7 @@ async function main() {
       const startedAt = Date.now();
 
       try {
+        await refreshSupabaseAvailability();
         const result = await runTelegramScrape(client, resolvedTargets, state);
         savePersistedState(state);
         console.log(

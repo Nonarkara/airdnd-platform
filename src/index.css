@@ -9,7 +9,7 @@
    warm-dark values, so the whole app adopts the new aesthetic at once.
    ============================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
 @import url('./award-pass.css');
 
 :root {
@@ -52,9 +52,9 @@
   --live: #2FE0A6;  --warn: #FFD23D;  --down: #FF5C7A;
 
   /* ---- Type ------------------------------------------------------------ */
-  --font-display: 'Bricolage Grotesque','Hanken Grotesk','IBM Plex Sans Thai',system-ui,sans-serif;
+  --font-display: 'Space Grotesk','Inter','IBM Plex Sans Thai',system-ui,sans-serif;
   --font-serif:   'Instrument Serif',Georgia,serif;
-  --font-text:    'Hanken Grotesk','IBM Plex Sans Thai',system-ui,-apple-system,sans-serif;
+  --font-text:    'Inter','IBM Plex Sans Thai',system-ui,-apple-system,sans-serif;
   --font-mono:    'JetBrains Mono','IBM Plex Sans Thai',ui-monospace,'SF Mono',monospace;
 
   --fs-hero: clamp(2.8rem,6vw,5.25rem);
@@ -467,3 +467,4 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     transition-duration: 0.01ms !important;
   }
 }
+

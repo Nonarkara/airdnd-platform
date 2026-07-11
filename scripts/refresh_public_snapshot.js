@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
@@ -25,6 +26,55 @@ if (error) {
 }
 
 const publicListings = canonicalizePublicListings(data || [], { source: 'snapshot' });
+
+function createImageIndex() {
+  const imageRoot = path.join(process.cwd(), 'public', 'images');
+  const byBasename = new Map();
+
+  function visit(dir) {
+    if (!fs.existsSync(dir)) {
+      return;
+    }
+
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const entryPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        visit(entryPath);
+      } else {
+        byBasename.set(entry.name, `/${path.relative(path.join(process.cwd(), 'public'), entryPath)}`);
+      }
+    }
+  }
+
+  visit(imageRoot);
+  return byBasename;
+}
+
+const imageIndex = createImageIndex();
+
+function deployablePhotoUrl(url) {
+  if (!url || typeof url !== 'string') {
+    return null;
+  }
+
+  if (url.startsWith('/images/')) {
+    return fs.existsSync(path.join(process.cwd(), 'public', url)) ? url : null;
+  }
+
+  if (url.startsWith('/photos/')) {
+    return imageIndex.get(path.basename(url)) || null;
+  }
+
+  return url;
+}
+
+function deployablePhotoUrls(urls) {
+  if (!Array.isArray(urls)) {
+    return [];
+  }
+
+  return [...new Set(urls.map(deployablePhotoUrl).filter(Boolean))];
+}
 
 // Per-listing credibility score (see research/findings-2026-05-02.md §5).
 // Composite of mention volume, contact channel breadth, photo count,
@@ -66,7 +116,9 @@ const slimListings = publicListings.map((listing) => ({
   description: listing.description,
   tags: listing.tags,
   metrics: listing.metrics,
-  imageUrl: listing.imageUrl,
+  imageUrl: deployablePhotoUrl(listing.imageUrl),
+  allPhotoUrls: deployablePhotoUrls(listing.allPhotoUrls),
+  drivePhotoUrls: listing.drivePhotoUrls,
   rating: listing.rating,
   reviews: listing.reviews,
   updatedAt: listing.updatedAt,

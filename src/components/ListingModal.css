@@ -75,8 +75,8 @@
 }
 
 .btn-close:hover {
-  border-color: var(--color-red);
-  background: var(--color-red);
+  border-color: var(--berry);
+  background: var(--berry);
 }
 
 .modal-body {
@@ -147,7 +147,7 @@
   padding: 4px 8px;
   border: 1px solid var(--color-line);
   background: rgba(10, 10, 10, 0.85);
-  color: var(--color-action);
+  color: var(--mango);
   font-family: var(--font-mono);
   font-size: var(--text-micro);
   font-weight: 700;
@@ -294,7 +294,7 @@ a.metric-link {
 }
 
 a.metric-link .metric-value {
-  color: var(--color-red);
+  color: var(--berry);
 }
 
 .metric-value {
@@ -329,7 +329,7 @@ a.metric-link .metric-value {
   padding: 0.85rem 0.95rem;
   border-top: 1px solid var(--color-line);
   border-bottom: 1px solid var(--color-line);
-  background: rgba(255, 116, 64, 0.02);
+  background: oklch(70% 0.12 188 / 0.05);
 }
 
 .modal-signal-eyebrow {
@@ -460,8 +460,8 @@ a.metric-link .metric-value {
 }
 
 .modal-contact-line {
-  border-color: var(--color-status);
-  color: var(--color-status);
+  border-color: var(--jade);
+  color: var(--jade);
 }
 
 .modal-signal-btn {
@@ -469,19 +469,19 @@ a.metric-link .metric-value {
 }
 
 .modal-signal-btn.saved {
-  border-color: var(--color-line-hot);
-  background: var(--color-red-soft);
-  color: var(--color-red);
+  border-color: var(--berry);
+  background: oklch(58% 0.15 35 / 0.18);
+  color: var(--berry);
 }
 
 .modal-signal-btn.signal-inquire {
-  border-color: var(--color-line-hot);
-  background: var(--color-red);
-  color: #fff;
+  border-color: var(--berry);
+  background: var(--berry);
+  color: oklch(91% 0 0);
 }
 
 .modal-signal-btn.signal-inquire:hover {
-  box-shadow: var(--shadow-glow-pink);
+  box-shadow: none;
 }
 
 .modal-owner-hint {
@@ -525,7 +525,7 @@ a.metric-link .metric-value {
 
 .modal-description h3,
 .price-label {
-  color: var(--color-accent);
+  color: var(--mango);
   font-family: var(--font-mono);
   font-size: 0.58rem;
   font-weight: 700;
@@ -563,7 +563,7 @@ a.metric-link .metric-value {
   display: block;
   margin-top: 0.25rem;
   overflow: hidden;
-  color: var(--color-red);
+  color: var(--berry);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 700;
@@ -573,8 +573,8 @@ a.metric-link .metric-value {
 
 .btn-book {
   flex: 0 0 auto;
-  border-color: var(--color-line-hot);
-  color: var(--color-red);
+  border-color: var(--mango);
+  color: var(--mango);
 }
 
 @media (max-width: 800px) {
@@ -640,3 +640,106 @@ a.metric-link .metric-value {
     width: 100%;
   }
 }
+
+/* ─── Intelligence Assessment (modal) ──────────────────────────────────────── */
+.modal-intel {
+  margin-top: 1.25rem;
+  padding: 14px 16px;
+  border: 1px solid var(--line-2);
+  background: var(--surface-2);
+}
+
+.modal-intel-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--ink-4);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.modal-intel-score {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.modal-intel-badge {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  border: 1.5px solid;
+  padding: 4px 10px;
+  flex: none;
+}
+
+.modal-intel-verdict {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.modal-intel-verdict strong {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.modal-intel-verdict span {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.modal-intel-maps {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--ink-3);
+  border: 1px solid var(--line-2);
+  padding: 4px 8px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.modal-intel-maps:hover { color: var(--ink); border-color: var(--ink-3); }
+
+.modal-intel-signals {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.modal-intel-signal {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+.modal-intel-weight {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  flex: none;
+  width: 18px;
+}
+.modal-intel-signal--strong { color: var(--ink-2); }
+.modal-intel-signal--medium { color: var(--ink-2); }
+.modal-intel-signal--green  { color: #34d399; }
+
+.modal-intel-note {
+  font-size: var(--fs-2xs);
+  color: var(--ink-4);
+  margin: 0;
+  line-height: 1.6;
+}
+.modal-intel-note a {
+  color: var(--mango);
+  text-decoration: none;
+}
+.modal-intel-note a:hover { text-decoration: underline; }

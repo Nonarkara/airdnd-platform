@@ -625,7 +625,7 @@ export function useMarketAnalytics(listings, msgStats, patterns, analysisNow) {
     const messageTypeCounts = msgStats.messageTypeCounts || {};
     const rawMessageCount = patterns?.counts?.messages || msgStats.msgCount || 0;
     const archivedPhotoCount = patterns?.counts?.photos || msgStats.photoCount || 0;
-    const companionRowCount = patterns?.counts?.companions || total;
+    const listingRowCount = patterns?.counts?.listings || total;
     const listingMessageCount = messageTypeCounts.listing || 0;
     const discussionMessageCount = messageTypeCounts.discussion || 0;
     const feedbackMessageCount = messageTypeCounts.feedback || 0;
@@ -638,7 +638,7 @@ export function useMarketAnalytics(listings, msgStats, patterns, analysisNow) {
       .sort((a, b) => b[1] - a[1]);
 
     const corpusCounts = {
-      companionRows: companionRowCount,
+      listingRows: listingRowCount,
       rawMessages: rawMessageCount,
       archivedPhotos: archivedPhotoCount,
       listingMessages: listingMessageCount,
@@ -655,7 +655,7 @@ export function useMarketAnalytics(listings, msgStats, patterns, analysisNow) {
       {
         label: 'Raw Chatter Per Business',
         value: `${corpusCounts.messagesPerBusiness}×`,
-        note: `${rawMessageCount.toLocaleString()} raw Telegram messages currently resolve into ${total} companion rows.`,
+        note: `${rawMessageCount.toLocaleString()} raw Telegram messages currently resolve into ${total} listing rows.`,
         tone: 'action',
       },
       {
@@ -687,7 +687,7 @@ export function useMarketAnalytics(listings, msgStats, patterns, analysisNow) {
       {
         label: 'Dominant Source',
         value: topChannelShare,
-        note: `${topChannel[0].replace(/^@/, '')} contributes ${topChannel[1]} of ${total} current companion rows.`,
+        note: `${topChannel[0].replace(/^@/, '')} contributes ${topChannel[1]} of ${total} current listing rows.`,
         tone: 'status',
       },
       {

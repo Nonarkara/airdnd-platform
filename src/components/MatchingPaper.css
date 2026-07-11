@@ -1,0 +1,135 @@
+/* ── MatchingPaper — supplements Paper.css ────────────────────────────────── */
+/* Defines .meth-header and .meth-* so this page works standalone without     */
+/* depending on Methodology.css being loaded first.                            */
+
+.meth-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.meth-back {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-decoration: none;
+}
+
+.meth-back:hover { color: var(--mango); }
+
+.meth-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mango);
+}
+
+.meth-footer {
+  padding-block: var(--s9) var(--s11);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+
+.meth-line {
+  height: 2px;
+  background: var(--mango);
+  width: 2.5rem;
+  margin-bottom: var(--s4);
+}
+
+.meth-footer p {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  margin: 0;
+}
+
+.meth-footer-sub {
+  color: var(--ink-3) !important;
+}
+
+.meth-footer-link {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-decoration: none;
+}
+
+.meth-footer-link:hover { color: var(--mango); }
+
+/* ── Comparison table ─────────────────────────────────────────────────────── */
+
+.match-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+.match-table thead tr {
+  border-bottom: 1px solid var(--line);
+}
+
+.match-table th {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  font-weight: 400;
+}
+
+.match-table td {
+  padding: 0.55rem 0.6rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line-2);
+}
+
+.match-td-fn {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mango) !important;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.match-td-tg {
+  color: var(--ink) !important;
+}
+
+/* ── eyebrow ──────────────────────────────────────────────────────────────── */
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: var(--s3);
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .match-table th:nth-child(2),
+  .match-table td:nth-child(2) {
+    display: none;
+  }
+}

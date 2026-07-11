@@ -4,7 +4,17 @@ import {
   formatPreciseTimestamp,
   formatRelativeTimestamp,
   getSafeListingGalleryUrls,
+  computeGreyScore,
+  getMapsStatus,
 } from '../lib/listings';
+
+const GREY_META = {
+  legit:     { label: 'LIKELY LEGIT',  color: '#34d399' },
+  ambiguous: { label: 'AMBIGUOUS',     color: '#948499' },
+  grey:      { label: 'GREY SIGNAL',   color: '#f59e0b' },
+  strong:    { label: 'STRONG GREY',   color: '#ff7440' },
+};
+const SIGNAL_WEIGHT = { strong: '▲▲', medium: '▲', low: '·', green: '▼' };
 import {
   formatTelLink,
   formatTelDisplay,
@@ -13,12 +23,12 @@ import {
   formatMapsUrl,
 } from '../lib/normalization';
 import { trackSignal, isListingSaved } from '../lib/tracker';
-import './CompanionModal.css';
+import './ListingModal.css';
 
-function CompanionModal({ companion, onClose, t }) {
+function ListingModal({ listing, onClose, t }) {
   const contentRef = useRef(null);
   const [imageState, setImageState] = useState({
-    companionId: companion?.id || null,
+    listingId: listing?.id || null,
     url: null,
   });
   const [savedOverrides, setSavedOverrides] = useState({});
@@ -27,24 +37,24 @@ function CompanionModal({ companion, onClose, t }) {
   const [reported, setReported] = useState(false);
   const [phoneCopied, setPhoneCopied] = useState(false);
 
-  const galleryUrls = getSafeListingGalleryUrls(companion);
+  const galleryUrls = getSafeListingGalleryUrls(listing);
   const activeIndex = (() => {
     if (!galleryUrls.length) return -1;
-    if (imageState.companionId === companion?.id && imageState.url) {
+    if (imageState.listingId === listing?.id && imageState.url) {
       const idx = galleryUrls.indexOf(imageState.url);
       return idx >= 0 ? idx : 0;
     }
     return 0;
   })();
   const goToIndex = (idx) => {
-    if (!galleryUrls.length || !companion) return;
+    if (!galleryUrls.length || !listing) return;
     const wrapped = ((idx % galleryUrls.length) + galleryUrls.length) % galleryUrls.length;
-    setImageState({ companionId: companion.id, url: galleryUrls[wrapped] });
+    setImageState({ listingId: listing.id, url: galleryUrls[wrapped] });
     setMainImageFailed(false);
   };
 
   useEffect(() => {
-    if (!companion) return;
+    if (!listing) return;
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') { onClose(); return; }
@@ -78,24 +88,24 @@ function CompanionModal({ companion, onClose, t }) {
       document.body.style.overflow = '';
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companion, onClose, activeIndex, galleryUrls.length]);
+  }, [listing, onClose, activeIndex, galleryUrls.length]);
 
-  if (!companion) return null;
+  if (!listing) return null;
 
-  const preciseTimestamp = formatPreciseTimestamp(companion.postedAt)
-    || formatPreciseTimestamp(companion.updatedAt)
+  const preciseTimestamp = formatPreciseTimestamp(listing.postedAt)
+    || formatPreciseTimestamp(listing.updatedAt)
     || t.modal.timestampPending;
-  const sourceLabel = companion.sourceChannel || SOURCE_LABELS[companion.dataSource];
-  const activeImageUrl = imageState.companionId === companion.id
+  const sourceLabel = listing.sourceChannel || SOURCE_LABELS[listing.dataSource];
+  const activeImageUrl = imageState.listingId === listing.id
     ? imageState.url
     : galleryUrls[0];
   const displayImageUrl = activeImageUrl || galleryUrls[0] || null;
   const hasDisplayImage = Boolean(displayImageUrl);
-  const saved = companion.id
-    ? savedOverrides[companion.id] ?? isListingSaved(companion.id)
+  const saved = listing.id
+    ? savedOverrides[listing.id] ?? isListingSaved(listing.id)
     : false;
 
-  const shareUrl = `${window.location.origin}/?listing=${encodeURIComponent(companion.id)}`;
+  const shareUrl = `${window.location.origin}/?listing=${encodeURIComponent(listing.id)}`;
 
   const handleCopyLink = async () => {
     try {
@@ -117,11 +127,11 @@ function CompanionModal({ companion, onClose, t }) {
 
   const handleReportPhoto = async () => {
     setReported(true);
-    await trackSignal(companion.id, 'report_explicit', { reason: 'explicit_content' });
+    await trackSignal(listing.id, 'report_explicit', { reason: 'explicit_content' });
   };
 
   const handleCopyPhone = async () => {
-    const raw = companion.phone || '';
+    const raw = listing.phone || '';
     if (!raw) return;
     try {
       await navigator.clipboard.writeText(raw);
@@ -139,18 +149,22 @@ function CompanionModal({ companion, onClose, t }) {
     }
   };
 
-  const telHref = formatTelLink(companion.phone);
-  const telDisplay = formatTelDisplay(companion.phone) || companion.phone;
-  const lineHref = formatLineUrl(companion.lineUrl);
-  const telegramHref = formatTelegramUrl(companion.telegramUrl);
-  const mapsHref = formatMapsUrl(companion.mapsUrl, companion.latitude, companion.longitude);
+  const telHref = formatTelLink(listing.phone);
+  const telDisplay = formatTelDisplay(listing.phone) || listing.phone;
+  const lineHref = formatLineUrl(listing.lineUrl);
+  const telegramHref = formatTelegramUrl(listing.telegramUrl);
+  const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude);
 
-  const mentions = Number(companion.mentionCount) || 0;
-  const tags = Array.isArray(companion.serviceTags) ? companion.serviceTags : [];
-  const feedback = (companion.userFeedbackSummary || '').trim();
-  const channel = (companion.sourceChannel || '').replace(/^@/, '');
-  const firstSeen = companion.createdAt ? new Date(companion.createdAt) : null;
-  const lastUpdate = companion.updatedAt ? new Date(companion.updatedAt) : null;
+  const grey = computeGreyScore(listing);
+  const greyMeta = GREY_META[grey.level] || GREY_META.ambiguous;
+  const mapsStatus = getMapsStatus(listing);
+
+  const mentions = Number(listing.mentionCount) || 0;
+  const tags = Array.isArray(listing.serviceTags) ? listing.serviceTags : [];
+  const feedback = (listing.userFeedbackSummary || '').trim();
+  const channel = (listing.sourceChannel || '').replace(/^@/, '');
+  const firstSeen = listing.createdAt ? new Date(listing.createdAt) : null;
+  const lastUpdate = listing.updatedAt ? new Date(listing.updatedAt) : null;
   const fmt = (d) => d && !isNaN(d.getTime())
     ? d.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })
     : null;
@@ -163,7 +177,7 @@ function CompanionModal({ companion, onClose, t }) {
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-label={companion.name}
+        aria-label={listing.name}
       >
         <button type="button" className="btn-close" onClick={onClose} aria-label={t.modal.close}>
           ×
@@ -175,7 +189,7 @@ function CompanionModal({ companion, onClose, t }) {
               <div className="modal-gallery">
                 <img
                   src={displayImageUrl}
-                  alt={companion.name}
+                  alt={listing.name}
                   className="modal-main-image"
                   onError={() => setMainImageFailed(true)}
                 />
@@ -208,7 +222,7 @@ function CompanionModal({ companion, onClose, t }) {
                         alt=""
                         className={`modal-thumb ${url === activeImageUrl ? 'active' : ''}`}
                         onClick={() => {
-                          setImageState({ companionId: companion.id, url });
+                          setImageState({ listingId: listing.id, url });
                           setMainImageFailed(false);
                         }}
                       />
@@ -236,16 +250,16 @@ function CompanionModal({ companion, onClose, t }) {
             <div className="modal-topline">
               <span className="status-pill">{sourceLabel}</span>
               <span>
-                {companion.postedAt
-                  ? `Posted ${formatRelativeTimestamp(companion.postedAt)}`
-                  : formatRelativeTimestamp(companion.updatedAt)}
+                {listing.postedAt
+                  ? `Posted ${formatRelativeTimestamp(listing.postedAt)}`
+                  : formatRelativeTimestamp(listing.updatedAt)}
               </span>
             </div>
 
-            <h2 className="modal-name">{companion.name}</h2>
+            <h2 className="modal-name">{listing.name}</h2>
 
             <div className="modal-location">
-              <span>{companion.location}</span>
+              <span>{listing.location}</span>
             </div>
 
             {/* Metrics grid */}
@@ -262,11 +276,11 @@ function CompanionModal({ companion, onClose, t }) {
                 </div>
               )}
               <div className="metric-box">
-                <span className="metric-value">{companion.hours || '—'}</span>
+                <span className="metric-value">{listing.hours || '—'}</span>
                 <span className="metric-label">Hours</span>
               </div>
               <div className="metric-box">
-                <span className="metric-value">{companion.priceLabel || 'On request'}</span>
+                <span className="metric-value">{listing.priceLabel || 'On request'}</span>
                 <span className="metric-label">{t.modal.rate}</span>
               </div>
             </div>
@@ -311,6 +325,43 @@ function CompanionModal({ companion, onClose, t }) {
               </div>
             )}
 
+            {/* ── Intelligence Assessment ─────────────────────────── */}
+            <div className="modal-intel">
+              <span className="modal-intel-eyebrow">INTELLIGENCE ASSESSMENT</span>
+              <div className="modal-intel-score">
+                <span className="modal-intel-badge" style={{ color: greyMeta.color, borderColor: greyMeta.color }}>
+                  {grey.score}%
+                </span>
+                <div className="modal-intel-verdict">
+                  <strong style={{ color: greyMeta.color }}>{greyMeta.label}</strong>
+                  <span>probability of non-standard service</span>
+                </div>
+                <a
+                  className="modal-intel-maps"
+                  href={mapsStatus.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={mapsStatus.status === 'confirmed' ? 'Maps confirmed by operator' : mapsStatus.status === 'coords' ? 'Geocoded location' : 'Name-based search'}
+                >
+                  {mapsStatus.status === 'confirmed' ? '✓ Maps' : mapsStatus.status === 'coords' ? '⊙ Map' : '? Search'}
+                </a>
+              </div>
+              {grey.signals.length > 0 && (
+                <ul className="modal-intel-signals">
+                  {grey.signals.map((s, i) => (
+                    <li key={i} className={`modal-intel-signal modal-intel-signal--${s.w}`}>
+                      <span className="modal-intel-weight">{SIGNAL_WEIGHT[s.w] || '·'}</span>
+                      {s.t}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <p className="modal-intel-note">
+                Scored against 12 signals from the grey market research. Baseline: 35% (corpus is ambiguous by design).{' '}
+                <a href="/methodology" target="_blank" rel="noopener noreferrer">Methodology →</a>
+              </p>
+            </div>
+
             {/* Contact buttons */}
             {(telHref || lineHref || telegramHref || mapsHref) && (
               <div className="modal-contact-row">
@@ -344,9 +395,9 @@ function CompanionModal({ companion, onClose, t }) {
                 className={`modal-signal-btn${saved ? ' saved' : ''}`}
                 onClick={async () => {
                   if (saved) return;
-                  const ok = await trackSignal(companion.id, 'save');
+                  const ok = await trackSignal(listing.id, 'save');
                   if (ok) {
-                    setSavedOverrides((current) => ({ ...current, [companion.id]: true }));
+                    setSavedOverrides((current) => ({ ...current, [listing.id]: true }));
                   }
                 }}
               >
@@ -355,7 +406,7 @@ function CompanionModal({ companion, onClose, t }) {
                 </svg>
                 {saved ? (t?.signal?.saved || 'Saved') : (t?.signal?.save || 'Save')}
               </button>
-              {companion.phone && (
+              {listing.phone && (
                 <button
                   type="button"
                   className="modal-signal-btn"
@@ -389,11 +440,11 @@ function CompanionModal({ companion, onClose, t }) {
 
             <div className="modal-description">
               <h3>{t.modal.about}</h3>
-              <p>{companion.description}</p>
+              <p>{listing.description}</p>
             </div>
 
             <div className="modal-tags">
-              {(companion.tags.length > 0 ? companion.tags : [t.card.pendingTag]).map((tag) => (
+              {(listing.tags.length > 0 ? listing.tags : [t.card.pendingTag]).map((tag) => (
                 <span key={tag} className="pill-tag">
                   {tag}
                 </span>
@@ -417,4 +468,4 @@ function CompanionModal({ companion, onClose, t }) {
   );
 }
 
-export default CompanionModal;
+export default ListingModal;

@@ -1,7 +1,7 @@
 /*
  * FeedGrid — abundance-first card flow. CSS columns deliver a Pinterest-style
  * masonry without JS. Card chrome is hairline-only, photos use the same
- * radial dissolve mask as CompanionCard to keep them sitting in the dark
+ * radial dissolve mask as ListingCard to keep them sitting in the dark
  * Tron grid bg.
  */
 

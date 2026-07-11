@@ -7,6 +7,12 @@ import {
   formatLineUrl,
   formatMapsUrl,
 } from '../lib/normalization';
+import {
+  distanceKm,
+  formatDistance,
+  formatFreshness,
+  getAvailability,
+} from '../lib/mapAvailability';
 import MapMarketBar from './MapMarketBar';
 import SpatialAnalyticsPanel from './SpatialAnalyticsPanel';
 import 'leaflet.markercluster';
@@ -169,13 +175,14 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-function buildPopupHtml(listing, precision) {
+function buildPopupHtml(listing, precision, availability) {
   const lines = [];
   lines.push(`<strong style="font-size:14px">${escapeHtml(listing.name || 'Unknown')}</strong>`);
   if (listing.location) lines.push(`<div style="font-size:11px;color:#888;margin-top:2px">${escapeHtml(listing.location)}</div>`);
   if (precision === 'area') {
     lines.push('<div style="margin-top:5px;font-size:10px;color:#9fc2ff;font-family:monospace;text-transform:uppercase">Area-level pin</div>');
   }
+  lines.push(`<div class="popup-availability popup-availability--${escapeHtml(availability.state)}">${escapeHtml(availability.label)}</div>`);
 
   const meta = [];
   if (listing.priceLabel && listing.priceLabel !== 'Rate on request') meta.push(listing.priceLabel);
@@ -232,11 +239,11 @@ function getAuraClass(listing) {
   return 'aura-level-1';
 }
 
-function createPinIcon(listing) {
+function createPinIcon(listing, availability) {
   const mentions = Number(listing.mentionCount) || Number(listing.mention_count) || 1;
   const size = mentions > 10 ? 22 : mentions > 3 ? 16 : 10;
   return L.divIcon({
-    className: `listing-pin ${getAuraClass(listing)}`,
+    className: `listing-pin ${getAuraClass(listing)} availability-${availability.state}`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
     popupAnchor: [0, -(size / 2 + 3)],
@@ -244,7 +251,16 @@ function createPinIcon(listing) {
   });
 }
 
-export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', theme }) {
+export default function ListingMap({
+  listings,
+  onCardClick,
+  t,
+  viewKey = 'all',
+  theme,
+  lastUpdatedAt,
+  isRefreshing = false,
+  dataSource = 'snapshot',
+}) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef(null);
@@ -254,10 +270,16 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
   const darkLayerRef = useRef(null);
   const lightLayerRef = useRef(null);
   const heatLayerRef = useRef(null);
+  const userMarkerRef = useRef(null);
+  const accuracyCircleRef = useRef(null);
+  const reachRingsRef = useRef([]);
+  const geoWatchIdRef = useRef(null);
   const [aqiActive, setAqiActive] = useState(false);
   const [rainActive, setRainActive] = useState(false);
   const [locating, setLocating] = useState(false);
   const [locateError, setLocateError] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+  const [nowMs, setNowMs] = useState(() => Date.now());
 
   const { pins, pendingListings } = useMemo(() => {
     if (!Array.isArray(listings)) return { pins: [], pendingListings: [] };
@@ -302,9 +324,42 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
     areaPinCount > 0 ? `${areaPinCount} area pins` : null,
   ].filter(Boolean).join(' · ') || '0 mapped pins';
 
+  const nearby = useMemo(() => {
+    if (!userLocation) return null;
+    const ranked = pins
+      .map((pin) => ({
+        ...pin,
+        distance: distanceKm(userLocation.coords, pin.coords),
+        availability: getAvailability(pin.listing, nowMs),
+      }))
+      .sort((left, right) => {
+        const availabilityDelta = right.availability.rank - left.availability.rank;
+        return availabilityDelta || left.distance - right.distance;
+      });
+    const summarize = (radius) => {
+      const matches = ranked.filter((pin) => pin.distance <= radius);
+      return {
+        total: matches.length,
+        available: matches.filter((pin) => pin.availability.state === 'available').length,
+        open: matches.filter((pin) => pin.availability.state === 'open').length,
+        approximate: matches.filter((pin) => pin.precision === 'area').length,
+      };
+    };
+    return {
+      oneKm: summarize(1),
+      tenKm: summarize(10),
+      nearest: ranked.filter((pin) => pin.distance <= 10).slice(0, 5),
+    };
+  }, [nowMs, pins, userLocation]);
+
   useEffect(() => {
     listingsRef.current = listings;
   }, [listings]);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => setNowMs(Date.now()), 60_000);
+    return () => window.clearInterval(intervalId);
+  }, []);
 
   const fitMapToPins = useCallback(() => {
     if (!mapInstanceRef.current) return;
@@ -331,33 +386,39 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
 
   const handleLocate = useCallback(() => {
     if (!navigator.geolocation) {
-      setLocateError('Geolocation not supported');
+      setLocateError('Location services are not available on this device.');
       return;
     }
     setLocating(true);
     setLocateError(null);
-    navigator.geolocation.getCurrentPosition(
+    if (geoWatchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(geoWatchIdRef.current);
+    }
+    geoWatchIdRef.current = navigator.geolocation.watchPosition(
       (position) => {
         setLocating(false);
-        if (mapInstanceRef.current) {
-          const { latitude, longitude } = position.coords;
-          mapInstanceRef.current.setView([latitude, longitude], 13);
-          L.circleMarker([latitude, longitude], {
-            radius: 8,
-            fillColor: '#7aa7ff',
-            color: '#7aa7ff',
-            weight: 2,
-            opacity: 0.8,
-            fillOpacity: 0.2,
-          }).addTo(mapInstanceRef.current);
-        }
+        setLocateError(null);
+        setUserLocation({
+          coords: [position.coords.latitude, position.coords.longitude],
+          accuracy: position.coords.accuracy,
+          timestamp: position.timestamp,
+        });
       },
       (error) => {
         setLocating(false);
-        setLocateError(error.message || 'Unable to retrieve location');
+        const message = error.code === 1
+          ? 'Location access was not allowed. Enable it in your browser to use reach mode.'
+          : 'Your current location could not be found. Please try again.';
+        setLocateError(message);
       },
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 },
+      { enableHighAccuracy: true, timeout: 15_000, maximumAge: 15_000 },
     );
+  }, []);
+
+  useEffect(() => () => {
+    if (geoWatchIdRef.current !== null && navigator.geolocation) {
+      navigator.geolocation.clearWatch(geoWatchIdRef.current);
+    }
   }, []);
 
   useEffect(() => {
@@ -513,8 +574,61 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
       mapInstanceRef.current = null;
       markersRef.current = null;
       heatLayerRef.current = null;
+      userMarkerRef.current = null;
+      accuracyCircleRef.current = null;
+      reachRingsRef.current = [];
     };
   }, [onCardClick]);
+
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map || !userLocation) return;
+
+    userMarkerRef.current?.remove();
+    accuracyCircleRef.current?.remove();
+    reachRingsRef.current.forEach((ring) => ring.remove());
+
+    const [latitude, longitude] = userLocation.coords;
+    const accuracyRadius = Math.max(8, Math.min(userLocation.accuracy || 0, 500));
+    const tenKmRing = L.circle([latitude, longitude], {
+      radius: 10_000,
+      color: '#36C7FF',
+      fillColor: '#36C7FF',
+      weight: 1,
+      opacity: 0.8,
+      fillOpacity: 0.025,
+      interactive: false,
+    }).addTo(map);
+    const oneKmRing = L.circle([latitude, longitude], {
+      radius: 1_000,
+      color: '#FF3D8B',
+      fillColor: '#FF3D8B',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.065,
+      interactive: false,
+    }).addTo(map);
+    accuracyCircleRef.current = L.circle([latitude, longitude], {
+      radius: accuracyRadius,
+      color: '#F7EEF3',
+      fillColor: '#F7EEF3',
+      weight: 1,
+      opacity: 0.45,
+      fillOpacity: 0.05,
+      interactive: false,
+    }).addTo(map);
+    userMarkerRef.current = L.circleMarker([latitude, longitude], {
+      radius: 7,
+      color: '#F7EEF3',
+      fillColor: '#FF3D8B',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 1,
+      className: 'user-location-marker',
+    }).bindTooltip('You are here', { permanent: true, direction: 'top', className: 'user-location-label' }).addTo(map);
+    reachRingsRef.current = [tenKmRing, oneKmRing];
+    map.fitBounds(tenKmRing.getBounds(), { padding: [24, 24], animate: true });
+  }, [userLocation]);
 
   useEffect(() => {
     if (window.location.hash !== '#map' || !mapRef.current) return;
@@ -547,12 +661,13 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
     markersRef.current.clearLayers();
 
     for (const { listing, coords, precision } of pins) {
+      const availability = getAvailability(listing, nowMs);
       const marker = L.marker(coords, { 
-        icon: createPinIcon(listing),
+        icon: createPinIcon(listing, availability),
         alt: listing.name || 'Listing location',
         title: listing.name || 'Listing location',
       });
-      marker.bindPopup(buildPopupHtml(listing, precision), {
+      marker.bindPopup(buildPopupHtml(listing, precision, availability), {
         maxWidth: 260,
         className: 'listing-popup',
       });
@@ -574,7 +689,7 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
       });
       heatLayerRef.current.setLatLngs(heatData);
     }
-  }, [pins]);
+  }, [nowMs, pins]);
 
   useEffect(() => {
     if (!mapInstanceRef.current) return;
@@ -619,17 +734,70 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
           <button type="button" onClick={fitMapToPins} disabled={pins.length === 0}>
             Fit all
           </button>
-          <button type="button" onClick={handleLocate} disabled={locating}>
-            {locating ? 'Locating…' : 'Near me'}
+          <button
+            type="button"
+            className={userLocation ? 'is-active' : ''}
+            onClick={handleLocate}
+            disabled={locating}
+            aria-pressed={Boolean(userLocation)}
+          >
+            {locating ? 'Locating…' : userLocation ? 'Update my location' : 'Use my location'}
           </button>
         </div>
-        <span>{listings.length} listings in current view</span>
+        <span className="map-live-status" aria-live="polite">
+          <i className={isRefreshing ? 'is-refreshing' : ''} />
+          {isRefreshing ? 'Syncing live data…' : `${formatFreshness(lastUpdatedAt, nowMs)} · ${dataSource}`}
+        </span>
       </div>
-      
-      <SpatialAnalyticsPanel visiblePins={pins} totalListings={listings.length} />
-      
+
       {locateError && (
-        <div className="listing-map-locate-error">{locateError}</div>
+        <div className="listing-map-locate-error" role="alert">{locateError}</div>
+      )}
+      {nearby ? (
+        <div className="map-reach-dashboard" aria-label="Places within reach">
+          <div className="map-position-readout">
+            <span className="map-reach-label">Your position</span>
+            <strong>{userLocation.coords[0].toFixed(5)}, {userLocation.coords[1].toFixed(5)}</strong>
+            <small>±{Math.round(userLocation.accuracy || 0)} m accuracy · tracking while this page is open</small>
+          </div>
+          {[
+            { key: 'oneKm', distance: '1 KM', color: 'pink' },
+            { key: 'tenKm', distance: '10 KM', color: 'blue' },
+          ].map(({ key, distance, color }) => {
+            const summary = nearby[key];
+            return (
+              <div key={key} className={`map-reach-stat map-reach-stat--${color}`}>
+                <span className="map-reach-label">Within {distance}</span>
+                <strong>{summary.total}</strong>
+                <span>{summary.available} available now · {summary.open} open</span>
+                {summary.approximate > 0 && <small>{summary.approximate} area-estimated</small>}
+              </div>
+            );
+          })}
+          <div className="map-nearest-list">
+            <span className="map-reach-label">Best signals within 10 km</span>
+            {nearby.nearest.length > 0 ? nearby.nearest.map((pin) => (
+              <button
+                key={pin.listing.id}
+                type="button"
+                onClick={() => onCardClick?.(pin.listing)}
+                className={`map-nearest-row availability-text--${pin.availability.state}`}
+              >
+                <span>{pin.listing.name || 'Unknown'}</span>
+                <small>{pin.availability.label}</small>
+                <strong>{pin.precision === 'area' ? '~' : ''}{formatDistance(pin.distance)}</strong>
+              </button>
+            )) : <small className="map-nearest-empty">No mapped places within 10 km.</small>}
+          </div>
+        </div>
+      ) : (
+        <button type="button" className="map-location-invitation" onClick={handleLocate} disabled={locating}>
+          <span className="map-location-target" aria-hidden="true" />
+          <span>
+            <strong>{locating ? 'Finding your position…' : 'See what you can reach now'}</strong>
+            <small>Allow location access to draw 1 km and 10 km zones and rank nearby availability.</small>
+          </span>
+        </button>
       )}
       <div
         ref={mapRef}
@@ -637,6 +805,18 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
         role="application"
         aria-label="Interactive listing map"
       >
+        {userLocation && (
+          <div className="reach-ring-legend" aria-label="Distance ring legend">
+            <span><i className="ring-key ring-key--one" />1 km</span>
+            <span><i className="ring-key ring-key--ten" />10 km</span>
+          </div>
+        )}
+        <div className="availability-legend" aria-label="Availability legend">
+          <span><i className="availability-key availability-key--available" />Available now</span>
+          <span><i className="availability-key availability-key--open" />Open · check slot</span>
+          <span><i className="availability-key availability-key--unknown" />Check availability</span>
+          <span><i className="availability-key availability-key--closed" />Closed / unavailable</span>
+        </div>
         <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
           <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#00e400' }} />0–50  Good</span>
@@ -654,6 +834,7 @@ export default function ListingMap({ listings, onCardClick, t, viewKey = 'all', 
         </div>
       </div>
       <MapMarketBar />
+      <SpatialAnalyticsPanel visiblePins={pins} totalListings={listings.length} />
       {pendingListings.length > 0 && (
         <div className="listing-map-pending">
           <div className="pending-header">

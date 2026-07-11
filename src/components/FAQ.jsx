@@ -44,7 +44,7 @@ export default function FAQ() {
             <rect x="10" y="40" width="110" height="60" stroke="#ff3366" strokeWidth="1" fill="none" />
             <text x="65" y="66" textAnchor="middle" fill="#e8e6e1" fontSize="10" fontWeight="700">TELEGRAM</text>
             <text x="65" y="83" textAnchor="middle" fill="#e8e6e180" fontSize="8">12 channels · 30s poll</text>
-            <text x="65" y="95" textAnchor="middle" fill="#e8e6e180" fontSize="8">80,000+ records</text>
+            <text x="65" y="95" textAnchor="middle" fill="#e8e6e180" fontSize="8">109,000+ records</text>
 
             <line x1="120" y1="70" x2="150" y2="70" stroke="#2a2a3a" strokeWidth="1" />
             <polygon points="150,65 160,70 150,75" fill="#ff3366" />
@@ -59,7 +59,7 @@ export default function FAQ() {
 
             <rect x="320" y="30" width="130" height="80" stroke="#ff3366" strokeWidth="1" fill="none" />
             <text x="385" y="55" textAnchor="middle" fill="#e8e6e1" fontSize="10" fontWeight="700">SUPABASE</text>
-            <text x="385" y="72" textAnchor="middle" fill="#e8e6e180" fontSize="8">companions · messages</text>
+            <text x="385" y="72" textAnchor="middle" fill="#e8e6e180" fontSize="8">listings · messages</text>
             <text x="385" y="84" textAnchor="middle" fill="#e8e6e180" fontSize="8">photo_archive</text>
             <text x="385" y="96" textAnchor="middle" fill="#34d399" fontSize="8">real-time subscription</text>
 
@@ -87,7 +87,7 @@ export default function FAQ() {
       {/* Data stats strip */}
       <section className="faq-stats">
         <div className="faq-stat">
-          <span className="faq-stat-val">80,000+</span>
+          <span className="faq-stat-val">109,000+</span>
           <span className="faq-stat-label">database records</span>
         </div>
         <div className="faq-stat">
@@ -107,8 +107,8 @@ export default function FAQ() {
           <span className="faq-stat-label">unique listings</span>
         </div>
         <div className="faq-stat">
-          <span className="faq-stat-val">120:1</span>
-          <span className="faq-stat-label">raw-to-listing ratio</span>
+          <span className="faq-stat-val">1,000:1</span>
+          <span className="faq-stat-label">posts per listing</span>
         </div>
       </section>
 

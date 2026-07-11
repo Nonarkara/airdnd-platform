@@ -342,6 +342,22 @@ function normalizeMetrics(metrics) {
   if (metrics.weight) {
     nextMetrics.weight = String(metrics.weight).trim();
   }
+  const availabilityStatus = String(metrics.availability_status || metrics.availabilityStatus || '').toLowerCase();
+  if (['available', 'unavailable', 'unknown'].includes(availabilityStatus)) {
+    nextMetrics.availability_status = availabilityStatus;
+  }
+  if (metrics.availability_evidence || metrics.availabilityEvidence) {
+    nextMetrics.availability_evidence = normalizeText(
+      metrics.availability_evidence || metrics.availabilityEvidence,
+    ).slice(0, 80);
+  }
+  const availableStaffCount = Number.parseInt(
+    metrics.available_staff_count ?? metrics.availableStaffCount,
+    10,
+  );
+  if (Number.isInteger(availableStaffCount) && availableStaffCount >= 0 && availableStaffCount <= 100) {
+    nextMetrics.available_staff_count = availableStaffCount;
+  }
   return nextMetrics;
 }
 

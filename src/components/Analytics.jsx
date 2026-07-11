@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { formatTelDisplay } from '../lib/normalization';
+import { computeGreyScore } from '../lib/listings';
 import { useMarketAnalytics, MESSAGE_TYPES, MESSAGE_TYPE_LABELS, getPhotoCount, getContactChannelCount, getLatestSourceTime, formatDateShort, formatPercent, snapshotToAnalyticsListing, buildFallbackMessageStats } from '../lib/useMarketAnalytics';
 import InsightNarrative from './InsightNarrative';
 import VisualCharts from './VisualCharts';
@@ -140,7 +141,7 @@ export default function Analytics() {
         ...messageTypeRequests,
       ]);
       const [
-        companionsResponse,
+        listingsResponse,
         msgCountResponse,
         photoCountResponse,
         msgsResponse,
@@ -151,7 +152,7 @@ export default function Analytics() {
         acc[type] = messageTypeResponses[index]?.count || 0;
         return acc;
       }, {});
-      setListings(companionsResponse.data || []);
+      setListings(listingsResponse.data || []);
       setMsgStats({
         msgCount: msgCountResponse.count,
         photoCount: photoCountResponse.count,
@@ -282,6 +283,26 @@ export default function Analytics() {
     })
     .slice(0, 5);
 
+  // ── Grey Score Distribution ───────────────────────────────────────────────
+  const greyDist = listings.reduce((acc, l) => {
+    const normalized = {
+      isSafeImage: l.isSafeImage ?? l.is_safe_image,
+      tags: l.tags || [],
+      serviceTags: l.serviceTags || l.service_tags || [],
+      rawText: l.rawText || l.raw_text || l.description || '',
+      mentionCount: l.mentionCount || l.mention_count || 0,
+      mapsUrl: l.mapsUrl || l.maps_url || '',
+      priceValue: l.priceValue || l.price || 0,
+      credibility: l.credibility || 0,
+      name: l.name || '',
+      description: l.description || '',
+    };
+    const { level } = computeGreyScore(normalized);
+    acc[level] = (acc[level] || 0) + 1;
+    return acc;
+  }, { legit: 0, ambiguous: 0, grey: 0, strong: 0 });
+  const greyTotal = listings.length || 1;
+
   const maxCity = data.cities[0]?.[1] || 1;
   const maxChannel = data.channels[0]?.[1] || 1;
   const maxContact = data.contactRows[0]?.[1] || 1;
@@ -334,7 +355,7 @@ export default function Analytics() {
       <section className="an-card an-wide an-facts-panel">
         <h2>Fresh Fun Facts · Full Corpus Pass</h2>
         <p className="an-card-sub">
-          Recomputed from the latest companion rows, raw channel archive, photo archive, and pre-mined product patterns. These are deliberately plain-English facts because the statistical machinery should also be fun to read.
+          Recomputed from the latest listing rows, raw channel archive, photo archive, and pre-mined product patterns. These are deliberately plain-English facts because the statistical machinery should also be fun to read.
         </p>
         <div className="an-fact-grid">
           {data.funFacts.map((fact) => (
@@ -637,7 +658,7 @@ export default function Analytics() {
           <div className="an-corpus-notes">
             <p><strong>{data.corpusCounts.listingYield}%</strong> of all raw messages become listing candidates.</p>
             <p><strong>{data.corpusCounts.mediaRate}%</strong> of raw messages carry media.</p>
-            <p><strong>{data.corpusCounts.messagesPerBusiness} raw messages</strong> sit behind each current companion row on average.</p>
+            <p><strong>{data.corpusCounts.messagesPerBusiness} raw messages</strong> sit behind each current listing row on average.</p>
           </div>
         </div>
       </section>
@@ -1306,7 +1327,7 @@ export default function Analytics() {
             <section className="an-card">
               <h2>⑥ Whisper-Network Safety</h2>
               <p className="an-card-sub">
-                Discussion + feedback messages mined for negative idioms (อย่าไป, ไม่แนะนำ, scam, fake, overpriced…). Idioms tracked: <strong>{patterns.whisperSafety.idiomFrequency.length}</strong>. Listings flagged today: <strong style={{ color: 'var(--color-action)' }}>{patterns.whisperSafety.flaggedListings.length}</strong>. Coverage will expand once <code>linked_companion_id</code> is populated on <code>channel_messages</code> (findings §1.1) — currently using fuzzy name-match.
+                Discussion + feedback messages mined for negative idioms (อย่าไป, ไม่แนะนำ, scam, fake, overpriced…). Idioms tracked: <strong>{patterns.whisperSafety.idiomFrequency.length}</strong>. Listings flagged today: <strong style={{ color: 'var(--color-action)' }}>{patterns.whisperSafety.flaggedListings.length}</strong>. Coverage will expand once <code>linked_listing_id</code> is populated on <code>channel_messages</code> (findings §1.1) — currently using fuzzy name-match.
               </p>
               {patterns.whisperSafety.idiomFrequency.length > 0 && (
                 <div className="an-sentiment-cloud" style={{ marginTop: '0.75rem' }}>
@@ -1334,6 +1355,42 @@ export default function Analytics() {
           </>
         )}
       </div>
+
+      {/* ── Grey Score Distribution ──────────────────────────────────────── */}
+      <section className="an-card an-wide an-grey-section">
+        <h2>Grey Score Distribution · Corpus-Wide</h2>
+        <p className="an-card-sub">
+          Each of {data.total} indexed listings is scored against 12 content signals derived from the alibi research.
+          Baseline is 35%: the corpus is built on shared vocabulary — in the supply-side text, สายขาว and สายดำ are
+          indistinguishable. These are probability distributions, not verdicts.
+        </p>
+        <div className="an-grey-dist">
+          {[
+            { level: 'legit',     label: 'LIKELY LEGIT',  color: '#34d399', note: 'Traditional keywords · Maps-confirmed · full service menu' },
+            { level: 'ambiguous', label: 'AMBIGUOUS',     color: '#948499', note: 'Shared alibi vocabulary — indeterminate from text alone' },
+            { level: 'grey',      label: 'GREY SIGNAL',   color: '#f59e0b', note: 'Oil-only · outcall · high repeat-post rate · alibi price range' },
+            { level: 'strong',    label: 'STRONG GREY',   color: '#ff7440', note: 'NSFW-flagged · coded vocabulary · explicit service tags' },
+          ].map(({ level, label, color, note }) => {
+            const count = greyDist[level] || 0;
+            const pct = ((count / greyTotal) * 100).toFixed(1);
+            return (
+              <div key={level} className="an-grey-row">
+                <span className="an-grey-label" style={{ color }}>{label}</span>
+                <div className="an-grey-track">
+                  <div className="an-grey-fill" style={{ width: `${pct}%`, background: color }} />
+                </div>
+                <span className="an-grey-stat">{count}<small> / {pct}%</small></span>
+                <span className="an-grey-note">{note}</span>
+              </div>
+            );
+          })}
+        </div>
+        <p className="an-grey-caveat">
+          The same oil-and-aroma vocabulary that marks a grey listing also appears in fully legitimate spas.
+          A high score means signals are present; it does not mean the establishment is unsafe.
+          The system scores the text, not the room.
+        </p>
+      </section>
 
       <footer className="an-footer">
         <p>Every figure traces back to a specific listing. Click any row to read the source post. Data updated in real time by the Sabai Sabai AI pipeline.</p>

@@ -471,3 +471,145 @@ export function getSafeListingGalleryUrls(listing) {
   if (!isListingMediaSafe(listing)) return [];
   return getListingGalleryUrls(listing);
 }
+
+// ─── Grey Score ───────────────────────────────────────────────────────────────
+// Probability (0–100) that this listing is NOT a standard therapeutic massage.
+// Based on the alibi-structure research: the vocabulary is shared, but signal
+// combinations within it indicate which side of สายขาว/สายดำ a listing sits on.
+// Score ≤ 30 = likely legitimate | 31–54 = ambiguous | 55–74 = grey signal | ≥ 75 = strong grey
+
+export function computeGreyScore(listing) {
+  if (!listing) return { score: 35, level: 'ambiguous', signals: [] };
+
+  let points = 0;
+  const signals = [];
+
+  const allTags = [
+    ...(Array.isArray(listing.tags) ? listing.tags : []),
+    ...(Array.isArray(listing.serviceTags) ? listing.serviceTags : []),
+  ].map((t) => String(t).toLowerCase());
+
+  const raw = [
+    listing.rawText || listing.raw_text || '',
+    listing.description || '',
+    allTags.join(' '),
+    listing.name || '',
+  ].join(' ').toLowerCase();
+
+  // ── STRONG GREY signals ──────────────────────────────────────────────────
+
+  if (listing.isSafeImage === false) {
+    points += 40;
+    signals.push({ w: 'strong', t: 'NSFW content flagged' });
+  }
+
+  const EXPLICIT_TAGS = ['erotic massage', 'adult services', 'escort', 'full service', 'adult entertainment'];
+  if (allTags.some((t) => EXPLICIT_TAGS.some((e) => t.includes(e)))) {
+    points += 35;
+    signals.push({ w: 'strong', t: 'Explicit service category' });
+  }
+
+  if (/บริการพิเศษ|จบ\s*\d|อมไม่|อมได้|เสียว|โป้|โป๊|งานครบ|งานแรง/.test(raw)) {
+    points += 30;
+    signals.push({ w: 'strong', t: 'Coded vocabulary (research-identified)' });
+  }
+
+  // ── MEDIUM GREY signals ──────────────────────────────────────────────────
+
+  if (/body|บอดี้|b2b|body.to.body/.test(raw)) {
+    points += 18;
+    signals.push({ w: 'medium', t: 'Body-to-body service' });
+  }
+
+  if (/outcall|out.call|รับออก|เอ้าท์/.test(raw)) {
+    points += 12;
+    signals.push({ w: 'medium', t: 'Outcall service' });
+  }
+
+  if (/อาบน้ำให้|อาบน้ำด้วย|shower together|อาบด้วยกัน/.test(raw)) {
+    points += 15;
+    signals.push({ w: 'medium', t: 'Shared shower offered' });
+  }
+
+  const mentions = Number(listing.mentionCount || 0);
+  if (mentions >= 20) {
+    points += 15;
+    signals.push({ w: 'medium', t: `${mentions}× repeat posts` });
+  } else if (mentions >= 8) {
+    points += 7;
+    signals.push({ w: 'low', t: `${mentions}× repeat posts` });
+  }
+
+  const price = Number(listing.priceValue || 0);
+  if (price >= 400 && price <= 800) {
+    points += 7;
+    signals.push({ w: 'low', t: `฿${price} — alibi price range` });
+  }
+
+  // Oil as SOLE service (no traditional Thai / foot listed alongside)
+  const hasOil = /อโรม่า|aroma|น้ำมัน|oil massage/.test(raw);
+  const hasTrad = /แผนไทย|foot|reflexol|เท้า/.test(raw);
+  if (hasOil && !hasTrad) {
+    points += 10;
+    signals.push({ w: 'low', t: 'Oil-only (no traditional service)' });
+  }
+
+  // ── LEGITIMACY signals ───────────────────────────────────────────────────
+
+  if (listing.mapsUrl) {
+    points -= 22;
+    signals.push({ w: 'green', t: 'Maps URL — operator-confirmed listing' });
+  }
+
+  if (/แผนไทย|nuad thai|traditional thai|reflexol/.test(raw)) {
+    points -= 12;
+    signals.push({ w: 'green', t: 'Traditional Thai / reflexology' });
+  }
+
+  if (allTags.length >= 5) {
+    points -= 8;
+    signals.push({ w: 'green', t: 'Full service menu (spa profile)' });
+  }
+
+  if (Number(listing.credibility || 0) >= 75) {
+    points -= 8;
+    signals.push({ w: 'green', t: 'High credibility score' });
+  }
+
+  // Baseline 35%: the corpus is ambiguous by design (the alibi thesis)
+  const score = Math.max(8, Math.min(92, 35 + points));
+  const level =
+    score < 30 ? 'legit' :
+    score < 55 ? 'ambiguous' :
+    score < 75 ? 'grey' : 'strong';
+
+  return { score, level, signals };
+}
+
+// ─── Maps Verification Status ────────────────────────────────────────────────
+// Returns the best available Maps link and its verification tier:
+//   'confirmed' — operator provided their own Maps URL (strongest signal)
+//   'coords'    — system has geocoded coordinates, link to place on map
+//   'search'    — no location data; construct a text-search URL
+
+export function getMapsStatus(listing) {
+  if (listing?.mapsUrl) {
+    return { status: 'confirmed', link: listing.mapsUrl };
+  }
+  const lat = Number(listing?.latitude);
+  const lng = Number(listing?.longitude);
+  if (lat && lng && Math.abs(lat) > 0.01 && Math.abs(lng) > 0.01) {
+    return {
+      status: 'coords',
+      link: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+    };
+  }
+  const q = encodeURIComponent(
+    [listing?.name, listing?.location, listing?.city, 'Thailand']
+      .filter(Boolean).join(' '),
+  );
+  return {
+    status: 'search',
+    link: `https://www.google.com/maps/search/?api=1&query=${q}`,
+  };
+}

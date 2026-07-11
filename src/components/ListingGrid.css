@@ -1,16 +1,16 @@
 /*
- * CompanionGrid — single-column flight-board list. No masonry.
- * Each row is a CompanionCard; rows are separated by hairline rules
+ * ListingGrid — single-column flight-board list. No masonry.
+ * Each row is a ListingCard; rows are separated by hairline rules
  * (the rule lives on the row itself, not the grid).
  */
 
-.companion-grid-container {
+.listing-grid-container {
   display: flex;
   flex-direction: column;
   gap: var(--s7);
 }
 
-.companion-grid {
+.listing-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: var(--s5);
@@ -30,7 +30,7 @@
 .masonry-intel-item > .intel-card { height: 100%; }
 
 /*
- * Skeleton placeholder rows mirror CompanionCard's row layout so the page
+ * Skeleton placeholder rows mirror ListingCard's row layout so the page
  * does not visibly reflow when data arrives.
  */
 .skeleton-card,

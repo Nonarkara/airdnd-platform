@@ -1,0 +1,32 @@
+{
+  "domain": "massage",
+  "name": "Thailand wellness intelligence",
+  "ai_enrichment": {
+    "system_prompt": "Enrich the following already-detected Thailand wellness, massage, or spa listings.\nEach message group is labelled with a [CLUSTER <id>] tag. Return only data that is clearly present in that cluster.\nReturn only a JSON array with this shape:\n[\n  {\n    \"cluster_id\": 0,\n    \"name\": \"Business or provider name or null\",\n    \"location\": \"District or area, City/Province or null\",\n    \"price\": null,\n    \"metrics\": {\n      \"best_time_to_book\": \"Extracted time window (e.g. 'Afternoon', '14:00-18:00') or 'Unknown'\",\n      \"staff_count\": \"Extracted number of girls/staff (e.g. '5', 'Many') or 'Unknown'\",\n      \"price_assessment\": \"Extracted assessment (e.g. 'Value', 'Standard', 'Premium') or 'Unknown'\"\n    },\n    \"tags\": [\"Thai Massage\", \"Oil Massage\"],\n    \"description\": \"Short factual summary of the service, area, hours, or availability or null\",\n    \"phone\": \"0XX-XXX-XXXX or null\",\n    \"hours\": \"10:00-23:00 or null\",\n    \"lineUrl\": \"https://line.me/... or null\",\n    \"telegramUrl\": \"https://t.me/... or null\",\n    \"mapsUrl\": \"https://maps.app.goo.gl/... or null\",\n    \"user_rating\": null,\n    \"service_quality\": [],\n    \"user_feedback_summary\": null\n  }\n]\n\nRules:\n- Be EXTREMELY airtight and accurate with your full data entry.\n- Thoroughly extract location data specifically to map it accurately later.\n- **Consolidation Rule**: Return EXACTLY ONE object per cluster.\n- **Human-Centric Priority**: Focus on listings that describe people/staff availability.\n- cluster_id must match the [CLUSTER <id>] from which the listing was enriched.\n- Extract phone numbers, operating hours, LINE links, Telegram links, Google Maps links, location, price, and a short factual description.\n- Use null for unknown values.\n- Tags must be SERVICE TYPES only (e.g., \"Thai Massage\", \"Oil Massage\"). Do NOT use city names as tags."
+  },
+  "content_screening": {
+    "spam_signals": [
+      "คลิป", "clip", "vdo", "video", "วิดีโอ", "หนัง", "โป้", "โป๊", "18\\+", "xxx", "เสียว", "ลับ", "หลุด", "sex", "เซ็ก",
+      "porn", "nude", "naked", "onlyfans", "ลับเฉพาะ", "เซ็กส์", "เย็ด",
+      "ขาย\\s*(คลิป|clip|vdo|video)", "sell\\s*(clip|video|content)",
+      "group\\s*joining\\s*details", "เข้ากลุ่ม", "สนใจเข้ากลุ่ม", "กลุ่มลับ", "กลุ่มvip", "vip\\s*group",
+      "มีเดีย", "media", "ดูฟรี", "free\\s*vid", "watch\\s*free", "คลิปฟรี",
+      "ทักซื้อ", "ทักเลย", "dm\\s*(me|for)", "inbox",
+      "แอบถ่าย", "hidden\\s*cam", "spy\\s*cam",
+      "บริการพิเศษ", "บริการถึงที่", "ถึงห้อง", "out\\s*call", "in\\s*call", "service.*room",
+      "ตัวจริง", "ตัวเป็นๆ", "รูปจริง", "ไม่ผิดหวัง", "งานดี", "เด็ด", "แซ่บ", "ฟิน", "sexy", "hot\\s*girl",
+      "dream\\s*girl", "สาวสวย", "สาวเซ็กซี่", "สาวน่ารัก.*บริการ", "companion", "escort",
+      "เลือกน้อง", "เลือกหมอ", "เลือกคน", "เลือกสาว", "choose.*girl", "pick.*girl",
+      "อัพเดต.*สาว", "อัพเดท.*สาว", "update.*girl", "แจ้งเข้า", "รอยดึก", "น้องๆ.*วันนี้", "สาว.*วันนี้", "line.*up", "lineup",
+      "น้อง\\s*\\S{1,12}\\s*(อายุ|age|สูง|ผิว|หน้าอก|น้ำหนัก|weight|height)"
+    ],
+    "business_signals": [
+      "ร้าน", "shop", "spa", "สปา", "นวด", "massage", "clinic", "คลินิก", "health", "สุขภาพ", "therap", "เพื่อสุขภาพ", "แผนไทย", "thai\\s*(massage|spa)", 
+      "พิกัด", "location", "maps", "เปิด.*\\d", "open.*\\d", "\\d{1,2}[:.]\\d{2}", "หมอ", "บริการ", "ราคา", "price", "baht", "บาท", "฿", 
+      "โทร", "tel", "phone", "line\\s*(id)?", "จอง", "booking", "reservation", "ซอย", "soi", "ถนน", "road", "แยก", "ใกล้", "near", "bts", "mrt"
+    ]
+  },
+  "database": {
+    "table_name": "companions"
+  }
+}

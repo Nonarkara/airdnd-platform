@@ -83,13 +83,205 @@
   opacity: 0.45;
 }
 
+.listing-map-toolbar button.is-active {
+  border-color: var(--color-status);
+  color: var(--color-status);
+}
+
+.map-live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.map-live-status i {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--color-status);
+}
+
+.map-live-status i.is-refreshing {
+  background: var(--color-gold);
+  animation: map-status-pulse 1s steps(2, end) infinite;
+}
+
+@keyframes map-status-pulse {
+  50% { opacity: 0.25; }
+}
+
 .listing-map-locate-error {
-  padding: 0 0 clamp(1.25rem, 3vw, 2.5rem);
+  margin: 0 clamp(1.25rem, 3vw, 2.5rem) 0.65rem;
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--color-action);
+  border-bottom: 1px solid var(--color-action);
   color: var(--color-action);
   font-family: var(--font-mono);
   font-size: var(--text-micro);
   letter-spacing: 0.08em;
 }
+
+.map-location-invitation {
+  width: calc(100% - 2 * clamp(1.25rem, 3vw, 2.5rem));
+  margin: 0 clamp(1.25rem, 3vw, 2.5rem) 0.75rem;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border: 1px solid var(--color-action);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-cream);
+  text-align: left;
+  cursor: pointer;
+}
+
+.map-location-invitation:hover,
+.map-location-invitation:focus-visible {
+  background: var(--color-action-soft);
+  outline: none;
+}
+
+.map-location-invitation:disabled { opacity: 0.65; cursor: wait; }
+
+.map-location-invitation > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.map-location-invitation strong {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+}
+
+.map-location-invitation small {
+  color: var(--color-cream-soft);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.04em;
+}
+
+.map-location-target {
+  position: relative;
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid var(--color-action);
+  border-radius: 50%;
+}
+
+.map-location-target::after {
+  content: '';
+  position: absolute;
+  inset: 0.3rem;
+  border-radius: 50%;
+  background: var(--color-action);
+}
+
+.map-reach-dashboard {
+  display: grid;
+  grid-template-columns: minmax(175px, 1fr) 145px 145px minmax(260px, 1.5fr);
+  margin: 0 clamp(1.25rem, 3vw, 2.5rem) 0.75rem;
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.map-position-readout,
+.map-reach-stat,
+.map-nearest-list {
+  min-width: 0;
+  padding: 0.8rem 0.9rem;
+  border-right: 1px solid var(--color-line);
+}
+
+.map-nearest-list { border-right: 0; }
+
+.map-position-readout,
+.map-reach-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.18rem;
+}
+
+.map-position-readout strong {
+  color: var(--color-cream);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.map-position-readout small,
+.map-reach-stat small,
+.map-nearest-empty {
+  color: var(--color-cream-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  line-height: 1.4;
+}
+
+.map-reach-label {
+  color: var(--color-cream-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.map-reach-stat strong {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.map-reach-stat > span:not(.map-reach-label) {
+  color: var(--color-cream-soft);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+}
+
+.map-reach-stat--pink strong { color: var(--color-action); }
+.map-reach-stat--blue strong { color: var(--color-data); }
+
+.map-nearest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.map-nearest-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.55rem;
+  align-items: baseline;
+  padding: 0.15rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-cream);
+  font-family: var(--font-text);
+  font-size: 0.7rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.map-nearest-row:hover > span,
+.map-nearest-row:focus-visible > span {
+  color: var(--color-action);
+}
+
+.map-nearest-row:focus-visible { outline: 1px solid var(--color-action); outline-offset: 2px; }
+.map-nearest-row > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.map-nearest-row small { font-family: var(--font-mono); font-size: 0.56rem; white-space: nowrap; }
+.map-nearest-row strong { font-family: var(--font-mono); font-size: 0.62rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.availability-text--available small { color: var(--color-status); }
+.availability-text--open small { color: var(--color-data); }
+.availability-text--closed small,
+.availability-text--unavailable small { color: var(--color-danger); }
+.availability-text--unknown small { color: var(--color-cream-muted); }
 
 .listing-map-container {
   position: relative;
@@ -105,29 +297,22 @@
 
 
 
-/* Custom pin marker — radial gradient fades to transparent so overlapping pins
-   blend visually instead of stacking opaque dots. Size is set per-pin via JS
-   (iconSize scales with mention_count); the CSS just handles color/shape. */
+/* Availability is the primary map signal. Size still reflects mention volume. */
 .listing-pin {
   border-radius: 50%;
-  border: none;
+  border: 2px solid var(--color-bg);
+  background: var(--color-cream-muted);
   transition: transform 0.25s ease;
 }
 
-.aura-level-3 {
-  background: radial-gradient(circle, var(--color-action) 18%, rgba(255, 61, 139, 0.4) 55%, transparent 100%);
-  z-index: 1000 !important;
-}
-
-.aura-level-2 {
-  background: radial-gradient(circle, var(--color-data) 20%, rgba(54, 199, 255, 0.32) 60%, transparent 100%);
-  z-index: 900 !important;
-}
-
-.aura-level-1 {
-  background: radial-gradient(circle, var(--color-cream-muted) 22%, rgba(200, 195, 188, 0.18) 65%, transparent 100%);
-  opacity: 0.82;
-}
+.aura-level-3 { z-index: 1000 !important; }
+.aura-level-2 { z-index: 900 !important; }
+.aura-level-1 { opacity: 0.82; }
+.listing-pin.availability-available { background: var(--color-status); }
+.listing-pin.availability-open { background: var(--color-data); }
+.listing-pin.availability-closed,
+.listing-pin.availability-unavailable { background: var(--color-danger); }
+.listing-pin.availability-unknown { background: var(--color-cream-muted); }
 
 .listing-pin:hover {
   transform: scale(1.5);
@@ -176,6 +361,33 @@
 
 .listing-popup a:hover {
   text-decoration: underline;
+}
+
+.popup-availability {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.popup-availability--available { color: var(--color-status); }
+.popup-availability--open { color: var(--color-data); }
+.popup-availability--closed,
+.popup-availability--unavailable { color: var(--color-danger); }
+.popup-availability--unknown { color: var(--color-cream-muted); }
+
+.leaflet-tooltip.user-location-label {
+  border: 1px solid var(--color-action) !important;
+  border-radius: 0 !important;
+  background: var(--color-bg) !important;
+  color: var(--color-cream) !important;
+  box-shadow: none !important;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .popup-view-btn:hover {
@@ -332,6 +544,64 @@
   color: var(--color-data);
 }
 
+.availability-legend,
+.reach-ring-legend {
+  position: absolute;
+  z-index: 401;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-bg);
+  color: var(--color-cream-soft);
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.availability-legend {
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+}
+
+.reach-ring-legend {
+  top: 14px;
+  left: 64px;
+}
+
+.availability-legend span,
+.reach-ring-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.availability-key {
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid var(--color-bg);
+  border-radius: 50%;
+}
+
+.availability-key--available { background: var(--color-status); }
+.availability-key--open { background: var(--color-data); }
+.availability-key--unknown { background: var(--color-cream-muted); }
+.availability-key--closed { background: var(--color-danger); }
+
+.ring-key {
+  width: 1rem;
+  height: 0;
+  border-top: 2px solid;
+}
+
+.ring-key--one { border-color: var(--color-action); }
+.ring-key--ten { border-color: var(--color-data); }
+
 .leaflet-control-attribution {
   background: rgba(26, 23, 20, 0.8) !important;
   color: rgba(245, 240, 232, 0.4) !important;
@@ -352,6 +622,57 @@
   .listing-map-container {
     height: 24rem;
   }
+
+  .map-live-status { white-space: normal; }
+
+  .map-location-invitation small { line-height: 1.45; }
+
+  .map-reach-dashboard {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .map-position-readout {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .map-reach-stat:nth-child(3) { border-right: 0; }
+
+  .map-nearest-list {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .availability-legend {
+    left: 10px;
+    right: 10px;
+    bottom: 20px;
+    transform: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem 0.65rem;
+  }
+
+  .reach-ring-legend {
+    left: 60px;
+    gap: 0.45rem;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 980px) {
+  .map-reach-dashboard {
+    grid-template-columns: 1fr 130px 130px;
+  }
+
+  .map-nearest-list {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--color-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-live-status i.is-refreshing { animation: none; }
 }
 
 /* Pending location section */

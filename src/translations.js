@@ -1,6 +1,6 @@
 const en = {
   header: { tagline: 'Thailand wellness intelligence' },
-  nav: { map: 'Map', workflow: 'How it works', listings: 'Listings', analytics: 'Analytics', methodology: 'Methodology', sociology: 'Field Notes', faq: 'FAQ' },
+  nav: { map: 'Map', workflow: 'How it works', listings: 'Listings', analytics: 'Analytics', methodology: 'Methodology', sociology: 'Field Notes', faq: 'FAQ', matching: 'The Match', trends: 'Trends' },
   common: { refresh: 'Refresh', refreshing: 'Refreshing...', language: 'Language', logout: 'Logout' },
   sourceLabels: { supabase: 'Live sync', snapshot: 'Verified snapshot', backup: 'Cached fallback' },
   dataNotes: {
@@ -126,7 +126,7 @@ const en = {
     q_collect: 'How is the data collected?',
     a_collect: 'A scraper polls 12 Telegram channels every 30 seconds. When new messages arrive, they are clustered by sender and time window, then sent to Google Gemini (AI) for extraction. The AI pulls out structured fields from unstructured Thai text. Extracted records are deduplicated, quality-checked, and written to Supabase (PostgreSQL). The frontend subscribes to Supabase in real time.',
     q_80k: 'What are the "80,000 data points"?',
-    a_80k: 'The corpus contains approximately 80,000 raw records across four tables: channel_messages (every post ever received, ~60,000 rows), companions (unique business listings, ~300–500 deduplicated), photo_archive (every photo downloaded with full metadata, ~15,000 entries), and page_views (analytics events). The raw message archive is the research asset — the directory itself is a small, curated slice of a much larger dataset.',
+    a_80k: 'The corpus contains over 109,000 raw records across four tables: channel_messages (every Telegram post ever received, ~85,000 rows), listings (unique business listings, ~300–500 deduplicated), photo_archive (every photo downloaded with full metadata, ~24,000 entries), and page_views (analytics events). The raw message archive is the research asset — the directory itself is a small, curated slice of a much larger dataset.',
     q_real: 'How do you know a listing is real?',
     a_real: 'We don\'t verify listings independently — and we say so clearly on every page. The system uses a community consensus model: if a business posts regularly in an active Telegram channel and no other members dispute or flag it, the system treats it as a legitimate operator. The phone-based deduplication catches cases where the same operator posts under many different names. Appearance in the directory is descriptive of public posting behaviour, not a verification of legality or quality.',
     q_dedup: 'How does deduplication work?',
@@ -138,7 +138,7 @@ const en = {
     q_cost: 'The system costs $0 per month. Is that actually true?',
     a_cost: 'Yes. The stack runs entirely on free tiers: Telegram API (free), Google Gemini (free tier), Supabase (free tier for small databases), Cloudflare Pages (free). The scraper runs locally on a MacBook via macOS launchd. The only thing that isn\'t free is the MacBook itself, which was already there. A production version would cost ~$25/month on Render for a persistent worker.',
     q_tech: 'What technologies does the system use?',
-    a_tech: 'Frontend: React + Vite + TypeScript, hosted on Cloudflare Pages. Database: Supabase (PostgreSQL) with real-time subscriptions. AI extraction: Google Gemini 2.5 Flash. Scraper: Node.js (MTProto via telegram library). Maps: Leaflet. Analytics: custom SVG charts, no charting library. Total external dependencies: minimal by design.',
+    a_tech: 'Frontend: React + Vite (JavaScript), hosted on Cloudflare Pages. Database: Supabase (PostgreSQL) with real-time subscriptions. AI extraction: Google Gemini 2.5 Flash. Scraper: Node.js (MTProto via telegram library). Maps: Leaflet. Analytics: custom SVG charts, no charting library. Total external dependencies: minimal by design.',
     q_update: 'How often is the data updated?',
     a_update: 'The scraper polls every 30 seconds while running. New listings typically appear in the directory within 60–90 seconds of being posted to Telegram. The scraper runs on a local machine, so it pauses when the machine sleeps. A "stale feed" indicator appears when no new data has arrived for over an hour.',
     q_who: 'Who built this?',
@@ -155,7 +155,7 @@ const en = {
 const th = {
   ...en,
   header: { tagline: 'ข้อมูลสุขภาพและสปาของไทยแบบเรียลไทม์' },
-  nav: { map: 'แผนที่', workflow: 'วิธีการทำงาน', listings: 'รายการ', analytics: 'วิเคราะห์', methodology: 'วิธีวิจัย', sociology: 'บันทึกภาคสนาม', faq: 'คำถามที่พบบ่อย' },
+  nav: { map: 'แผนที่', workflow: 'วิธีการทำงาน', listings: 'รายการ', analytics: 'วิเคราะห์', methodology: 'วิธีวิจัย', sociology: 'บันทึกภาคสนาม', faq: 'คำถามที่พบบ่อย', matching: 'การจับคู่', trends: 'เทรนด์' },
   common: { refresh: 'รีเฟรช', refreshing: 'กำลังโหลด...', language: 'ภาษา', logout: 'ออกจากระบบ' },
   sourceLabels: { supabase: 'ซิงก์สด', snapshot: 'ภาพรวมที่ตรวจแล้ว', backup: 'ข้อมูลสำรอง' },
   dataNotes: {
@@ -237,7 +237,7 @@ const th = {
   },
   proximity: {
     ...en.proximity,
-    kicker: '// ช่วยตัดสินใจให้ผม',
+    kicker: '// ช่วยตัดสินใจหน่อย',
     title: 'ผมจะได้นวดที่ไหนตอนนี้?',
     subtitle: 'บอกตำแหน่งและงบประมาณของคุณ ระบบจะจัดอันดับสถานที่ที่ใกล้ที่สุดตามระยะทาง',
     locating: 'กำลังระบุตำแหน่ง…',
@@ -278,7 +278,7 @@ const th = {
 const zh = {
   ...en,
   header: { tagline: '泰国健康与水疗实时情报' },
-  nav: { map: '地图', workflow: '工作原理', listings: '场所列表', analytics: '分析', methodology: '方法', sociology: '田野笔记', faq: '常见问题' },
+  nav: { map: '地图', workflow: '工作原理', listings: '场所列表', analytics: '分析', methodology: '方法', sociology: '田野笔记', faq: '常见问题', matching: '匹配机制', trends: '趋势' },
   common: { refresh: '刷新', refreshing: '加载中...', language: '语言', logout: '退出' },
   sourceLabels: { supabase: '实时同步', snapshot: '已验证快照', backup: '缓存备用' },
   dataNotes: {
@@ -365,7 +365,7 @@ const zh = {
     subtitle: '告诉我们您的位置和预算，系统按距离排序最近的场所。',
     locating: '定位中…',
     useMyLocation: '使用我的位置',
-    searchPlaceholder: '…或输入区域：Ladprao, Sukhumvit, Silom',
+    searchPlaceholder: '……或输入区域：拉普劳/Ladprao、素坤逸/Sukhumvit、是隆/Silom',
     find: '查找',
     maxBudget: '最高预算 ฿ / 小时',
     nearestTo: '最近：',
@@ -399,7 +399,7 @@ const zh = {
 const ko = {
   ...en,
   header: { tagline: '태국 웰니스 실시간 정보' },
-  nav: { map: '지도', workflow: '작동 방식', listings: '목록', analytics: '분석', methodology: '방법론', sociology: '현장 노트', faq: '자주 묻는 질문' },
+  nav: { map: '지도', workflow: '작동 방식', listings: '목록', analytics: '분석', methodology: '방법론', sociology: '현장 노트', faq: '자주 묻는 질문', matching: '매칭 구조', trends: '트렌드' },
   common: { refresh: '새로 고침', refreshing: '로딩 중...', language: '언어', logout: '로그아웃' },
   sourceLabels: { supabase: '실시간 동기화', snapshot: '검증된 스냅샷', backup: '캐시 백업' },
   dataNotes: {
@@ -486,7 +486,7 @@ const ko = {
     subtitle: '위치와 예산을 알려주세요. 거리 순으로 가장 가까운 장소를 안내합니다.',
     locating: '위치 확인 중…',
     useMyLocation: '내 위치 사용',
-    searchPlaceholder: '…또는 지역 입력: Ladprao, Sukhumvit, Silom',
+    searchPlaceholder: '…또는 지역 입력: 랏프라오(Ladprao), 수쿰윗(Sukhumvit), 실롬(Silom)',
     find: '찾기',
     maxBudget: '최대 예산 ฿ / 시간',
     nearestTo: '가장 가까운 곳',

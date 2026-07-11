@@ -31,6 +31,7 @@ token.json
 
 # Scraped photos (downloaded from Telegram)
 public/photos/
+public/posters/
 
 # Large files
 *.docx
@@ -51,3 +52,6 @@ supabase/.temp/
 .maps_cache.json
 offline-packages/
 ~/
+
+# Scraped/listing images (local cache; too large for git)
+public/images/

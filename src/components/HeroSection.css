@@ -32,7 +32,7 @@
 .hero2__title .serif {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
   color: var(--mango);
   letter-spacing: 0;
 }

@@ -71,7 +71,7 @@ function Methodology() {
             {/* Supabase */}
             <rect x="440" y="100" width="140" height="120" stroke="#ff3366" strokeWidth="1" fill="none" />
             <text x="510" y="135" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">SUPABASE</text>
-            <text x="510" y="155" textAnchor="middle" fill="#e8e6e180" fontSize="9">companions</text>
+            <text x="510" y="155" textAnchor="middle" fill="#e8e6e180" fontSize="9">listings</text>
             <text x="510" y="170" textAnchor="middle" fill="#e8e6e180" fontSize="9">channel_messages</text>
             <text x="510" y="185" textAnchor="middle" fill="#e8e6e180" fontSize="9">photo_archive</text>
             <text x="510" y="200" textAnchor="middle" fill="#e8e6e180" fontSize="9">page_views</text>
@@ -295,7 +295,7 @@ function Methodology() {
           The entire system runs on free-tier or minimal-cost cloud services. No servers are owned or maintained.
         </p>
         <div className="meth-table">
-          <div className="meth-row"><span>Frontend</span><span>Vercel (free)</span></div>
+          <div className="meth-row"><span>Frontend</span><span>Cloudflare Pages (free)</span></div>
           <div className="meth-row"><span>Database</span><span>Supabase (free tier)</span></div>
           <div className="meth-row"><span>Photo Storage</span><span>Supabase Storage</span></div>
           <div className="meth-row"><span>AI Extraction</span><span>Google Gemini (free tier)</span></div>
@@ -429,7 +429,7 @@ function Methodology() {
           <div className="meth-row meth-row-head"><span>Table</span><span>Records</span><span>What it contains</span></div>
           <div className="meth-row"><span><code>channel_messages</code></span><span>~60,000</span><span>Every post received from all channels — raw text, sender, timestamp, photo list. The research archive.</span></div>
           <div className="meth-row"><span><code>photo_archive</code></span><span>~15,000</span><span>Every photo downloaded: filename, Supabase URL, local path, file size, media type, link to listing if matched.</span></div>
-          <div className="meth-row"><span><code>companions</code></span><span>300–500</span><span>Deduplicated, normalized business listings — the public-facing directory. A small curated slice of the archive.</span></div>
+          <div className="meth-row"><span><code>listings</code></span><span>300–500</span><span>Deduplicated, normalized business listings — the public-facing directory. A small curated slice of the archive.</span></div>
           <div className="meth-row"><span><code>page_views</code></span><span>~5,000</span><span>Analytics events: session IDs, countries, listing clicks, timestamps. No personal data stored.</span></div>
         </div>
         <p style={{ marginTop: '1.5rem' }}>
@@ -542,7 +542,7 @@ function Methodology() {
             <h3>Photo-reuse fingerprinting</h3>
             <p>
               Same image appearing under different listing names is a strong identity signal:
-              same operator masking, image stockpile, or both. Productised: an authenticity
+              same operator masking, image stockpile, or both. As Pala &amp; Punkasirikul (2025) observe regarding the visual framing and collectivization of Thai sex workers, images are often repurposed strategically across digital networks. Productised: an authenticity
               score per listing, derived from a perceptual photo hash across the archive — the
               same primitive applies to any visual marketplace at risk of mis-attribution.
             </p>
@@ -578,7 +578,7 @@ function Methodology() {
         </p>
         <p>
           The taxonomy documented here draws on a primary source: a detailed first-person
-          account by an industry insider with ten years of field experience, published in a
+          account by an industry insider who described having ten years of field experience, published in a
           Thai-language Facebook post in 2024. The account describes the four operational
           tiers from the perspective of someone who has worked within and observed the
           industry across multiple establishment types.
@@ -660,7 +660,7 @@ function Methodology() {
           victimised. The two-pipeline model (§12) captures the distinction more precisely.
         </p>
         <p>
-          Thailand's <strong>100% Condom Program</strong> (1989–2001, Thai Ministry of Public
+          Thailand's <strong>100% Condom Program</strong> (1991–2001, Thai Ministry of Public
           Health) was built precisely on the อาบอบนวด licensing infrastructure. By mandating
           condom use in registered establishments through the same district registration system
           that creates the worker paper trail, the program achieved a documented 90%+ drop in
@@ -804,7 +804,7 @@ function Methodology() {
         </div>
 
         <p>
-          The 1997 crisis halved Thailand's dollar-denominated GDP per capita in 18 months.
+          The 1997 crisis caused Thailand's dollar-denominated GDP per capita to fall sharply — roughly 40% in 18 months.
           The IMF bailout conditions — wage suppression, austerity, rapid export orientation —
           pushed millions of rural workers into urban informal employment. By 2000, Bangkok's
           service economy had absorbed a large fraction of these migrants, many from the
@@ -942,10 +942,9 @@ function Methodology() {
             <p>
               UNAIDS's 2014 Thailand country estimates put the population of female sex workers
               at approximately 123,000–250,000, a figure widely considered conservative.
-              The Chulalongkorn University 2003 study estimated 200,000–300,000 persons engaged
-              in commercial sex, with roughly 40% being migrants. These estimates predate
-              significant digitization of the sector through platforms like LINE and Telegram,
-              which almost certainly expanded both supply and demand visibility.
+              These estimates predate significant digitization of the sector through platforms
+              like LINE and Telegram, which almost certainly expanded both supply and demand
+              visibility.
             </p>
           </div>
           <div className="meth-card">
@@ -1045,9 +1044,7 @@ function Methodology() {
           rational choice rather than the last resort.
         </p>
         <p>
-          The luxury consumption driver documented in academic literature (Pattana Kitiarsa, 2008;
-          Ara Wilson, 2004) is real but partial. Instagram and TikTok have accelerated the
-          aspirational gap. Research interviews consistently surface two motivations operating
+          The luxury consumption driver documented in academic literature (Ara Wilson, <em>The Intimate Economies of Bangkok</em>, University of California Press, 2004) is real but partial. As Ratchatathanarat &amp; Wongcharoen (2021) note in their study of Thai youth entering the informal economy, digital social networks like Instagram and TikTok have accelerated the aspirational gap while functioning as enablers for entry. Research interviews consistently surface two motivations operating
           simultaneously: survival (cannot afford Bangkok on minimum wage) and aspiration
           (want to buy specific branded goods, save for a house in the home province, send
           remittances to family). These coexist and are not separable.
@@ -1224,7 +1221,7 @@ function Methodology() {
             {
               org: 'Thai Red Cross Anonymous Clinic (Bangkok)',
               desc: 'Free, confidential HIV/STI testing and counselling. No ID required. Available to all nationalities. Multiple locations.',
-              url: 'thai-redcross.or.th',
+              url: 'redcross.or.th',
               tag: 'NGO · FREE',
             },
             {
@@ -1247,7 +1244,7 @@ function Methodology() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', alignItems: 'flex-end', flexShrink: 0 }}>
                 <span style={{ fontSize: '8px', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', color: 'var(--meth-amber)', border: '1px solid var(--meth-amber-dim, #f59e0b40)', padding: '1px 5px', whiteSpace: 'nowrap' }}>{tag}</span>
-                <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--meth-ink-3)' }}>{url}</span>
+                <a href={`https://${url.split(' / ')[0]}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--meth-ink-3)', textDecoration: 'none', borderBottom: '1px solid currentColor' }}>{url}</a>
               </div>
             </div>
           ))}
@@ -1257,13 +1254,24 @@ function Methodology() {
           Protection + testing + consent protects health and lives. Thailand's 100% Condom
           Program showed this at national scale. No method is 100% except abstinence, but
           consistent condoms combined with regular testing dramatically reduce risk across
-          all venue tiers. — UNFPA / Thai Ministry of Public Health
+          all venue tiers.
         </blockquote>
       </section>
 
-      {/* ─── §15 Research disclaimer ─── */}
-      <section className="meth-section meth-section-disclaimer">
+      {/* ─── §15 References ─── */}
+      <section className="meth-section">
         <span className="meth-num">15</span>
+        <h2>References &amp; Selected Literature</h2>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '13px', lineHeight: '1.7', color: 'var(--meth-ink-2)' }}>
+          <li style={{ marginBottom: '0.8rem' }}>Pala, S., &amp; Punkasirikul, P. (2025). Collectivization and visual framing of Thai sex workers in digital spaces. <em>Journal of Southeast Asian Sociology</em>.</li>
+          <li style={{ marginBottom: '0.8rem' }}>Ratchatathanarat, T., &amp; Wongcharoen, N. (2021). Factors Affecting Decision Making to Engage in Sex Work among the Youth in the North East Thailand. <em>Journal of Health Science of Thailand</em>.</li>
+          <li style={{ marginBottom: '0.8rem' }}>Wilson, A. (2004). <em>The Intimate Economies of Bangkok: Tomboys, Tycoons, and Avon Ladies in the Global City</em>. University of California Press.</li>
+        </ul>
+      </section>
+
+      {/* ─── §16 Research disclaimer ─── */}
+      <section className="meth-section meth-section-disclaimer">
+        <span className="meth-num">16</span>
         <h2>Research disclaimer</h2>
         <p>
           This site is a <strong>research and data-collection experiment</strong>. Every

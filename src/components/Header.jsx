@@ -13,7 +13,7 @@ function Header({
   activeView,
   setActiveView,
 }) {
-  const isLive = !sourceLabel?.includes('fallback') && !sourceLabel?.includes('backup');
+  const isLive = sourceLabel?.toLowerCase().includes('live');
 
   const viewTabs = [
     { id: 'directory', label: t.nav?.listings || 'Listings' },
@@ -26,6 +26,8 @@ function Header({
     { id: 'sociology', label: t.nav?.sociology || 'Field Notes', href: '/sociology' },
     { id: 'paper', label: t.pageChrome?.researchPaper || t.pageChrome?.workingPaper || 'Paper', href: '/paper' },
     { id: 'faq', label: t.nav?.faq || 'FAQ', href: '/faq' },
+    { id: 'matching', label: t.nav?.matching || 'The Match', href: '/matching' },
+    { id: 'trends', label: t.nav?.trends || 'Trends', href: '/trends' },
   ];
 
   return (
@@ -33,7 +35,7 @@ function Header({
       {/* TOPBAR TICKER — the data heartbeat as editorial dateline */}
       <div className="topbar">
         <div className="topbar__track">
-          <span><span className="live-dot" />&nbsp; Pipeline live</span>
+          <span><span className="live-dot" style={!isLive ? { background: 'var(--gold)' } : undefined} />&nbsp; {isLive ? 'Pipeline live' : 'Cached view'}</span>
           <span className="sep">/</span>
           <span>Telegram → AI → Directory</span>
           <span className="sep">/</span>
