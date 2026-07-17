@@ -19,12 +19,22 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
-import { formatTelLink, formatLineUrl, formatTelegramUrl, formatMapsUrl } from '../src/lib/normalization.js';
+import { formatTelLink, formatLineUrl, formatTelegramUrl, formatMapsUrl, inferCityFromLocation } from '../src/lib/normalization.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.join(__dirname, '..');
 dotenv.config({ path: path.join(ROOT, '.env') });
+
+const CACHE_FILE = path.join(ROOT, '.maps_cache.json');
+let mapsCache = {};
+try {
+  if (fs.existsSync(CACHE_FILE)) {
+    mapsCache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8')) || {};
+  }
+} catch (e) {
+  console.warn('[GEO FEED] Could not load .maps_cache.json:', e.message);
+}
 
 const FEED_LIMIT = 800;        // pull recent N listing-classified messages
 const PAGE = 1000;
@@ -305,6 +315,16 @@ async function main() {
         .map((p) => p.url);
       const name = extractName(m.message_text) || `Post ${m.telegram_message_id}`;
       const contacts = extractContacts(m.message_text);
+      const inferredCity = inferCityFromLocation(m.message_text) || 'Bangkok';
+      let latitude = null;
+      let longitude = null;
+      if (contacts.mapsUrl && mapsCache[contacts.mapsUrl]) {
+        const cached = mapsCache[contacts.mapsUrl];
+        if (cached && !cached.failed && cached.latitude && cached.longitude) {
+          latitude = cached.latitude;
+          longitude = cached.longitude;
+        }
+      }
       return {
         id: m.id,                              // channel_messages.id (always unique)
         telegramMessageId: m.telegram_message_id,
@@ -319,6 +339,9 @@ async function main() {
         primaryPhoto: photoUrls[0] || null,
         hours: extractHours(m.message_text),
         priceLabel: extractPriceLabel(m.message_text),
+        city: inferredCity,
+        latitude,
+        longitude,
         ...contacts,
       };
     })

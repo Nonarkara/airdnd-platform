@@ -14,9 +14,10 @@ import ListingModal from './components/ListingModal';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import { listings as backupListings } from './data/mockData';
-import { auth } from './lib/firebase';
+import { auth, db } from './lib/firebase';
 import { supabase } from './lib/supabase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { initSession } from './lib/tracker';
 import {
   SOURCE_LABELS,
@@ -59,11 +60,13 @@ const SORT_OPTIONS = [
 const DATA_SOURCE_NOTES = {
   automatic: {
     supabase: 'Directory is up to date with the latest listings.',
+    firestore: 'Directory is up to date with the latest listings (via Firestore).',
     snapshot: 'Showing a recent snapshot while the live connection catches up.',
     backup: 'Showing cached listings. Live updates will resume shortly.',
   },
   manual: {
     supabase: 'Directory refreshed with the latest listings.',
+    firestore: 'Directory refreshed with the latest listings (via Firestore).',
     snapshot: 'Refreshed with the most recent snapshot.',
     backup: 'Refreshed with cached listings.',
   },
@@ -171,6 +174,36 @@ async function fetchLiveListings() {
     { source: 'supabase', isFallback: false },
   );
 }
+async function fetchLiveListingsFromFirestore() {
+  const q = query(
+    collection(db, 'companions'),
+    orderBy('updatedAt', 'desc'),
+    limit(LIVE_QUERY_LIMIT)
+  );
+  const querySnapshot = await getDocs(q);
+  const data = [];
+  querySnapshot.forEach((doc) => {
+    const docData = doc.data();
+    data.push({
+      ...docData,
+      id: docData.id || doc.id,
+    });
+  });
+
+  if (data.length === 0) {
+    throw new Error('No live Firestore data available.');
+  }
+
+  const validatedData = validateListingsPayload(data);
+  if (validatedData.length === 0) {
+    throw new Error('Live Firestore data failed validation.');
+  }
+
+  return normalizeListings(
+    validatedData,
+    { source: 'firestore', isFallback: false },
+  );
+}
 async function fetchSnapshotListings() {
   const response = await fetch(`/data.json?ts=${Date.now()}`, {
     cache: 'no-store',
@@ -212,6 +245,25 @@ async function loadListingsWithFallback(mode = 'automatic') {
     };
   } catch (error) {
     liveError = new Error(sanitizeLoadError(error, 'Live Supabase request timed out.'));
+    try {
+      console.log('Supabase failed, attempting Firestore fetch...');
+      const firestoreListings = await withTimeout(
+        fetchLiveListingsFromFirestore(),
+        LIVE_FETCH_TIMEOUT_MS,
+        'Live Firestore request timed out.',
+      );
+      liveResult = {
+        listings: firestoreListings,
+        source: 'firestore',
+        note: notes.firestore,
+        warning: null,
+      };
+      liveError = null;
+    } catch (fsError) {
+      liveError = new Error(
+        `Supabase failed (${liveError.message}) and Firestore failed (${sanitizeLoadError(fsError, 'Live Firestore request timed out.')})`
+      );
+    }
   }
 
   try {
@@ -275,6 +327,8 @@ function App() {
   const { language, setLanguage, t: tCtx } = useLanguage();
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
   const [activeView, setActiveView] = useState('directory');
+  const [mapSource, setMapSource] = useState('directory');
+  const [feedListings, setFeedListings] = useState([]);
   const [dataState, setDataState] = useState({
     source: 'backup',
     sourceLabel: SOURCE_LABELS.backup,
@@ -353,6 +407,61 @@ function App() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  // Load feed.json when user switches map to Live Activity mode
+  useEffect(() => {
+    if (activeView === 'map' && mapSource === 'feed' && feedListings.length === 0) {
+      fetch(`/feed.json?ts=${Date.now()}`, { cache: 'no-store' })
+        .then((res) => (res.ok ? res.json() : []))
+        .then((data) => {
+          const normalized = (data || []).map((card) => ({
+            id: `feed-${card.id}`,
+            name: card.displayName || card.name,
+            location: card.channel ? `${card.channel}` : '—',
+            city: card.city || 'Bangkok',
+            description: card.displayDescription || card.description,
+            sourceChannel: card.channel,
+            postedAt: card.messageDate,
+            updatedAt: card.messageDate,
+            createdAt: card.messageDate,
+            phone: card.phone,
+            lineUrl: card.lineUrl,
+            telegramUrl: card.telegramUrl,
+            mapsUrl: card.mapsUrl,
+            hours: card.hours,
+            priceLabel: card.priceLabel || 'Rate on request',
+            imageUrl: card.requiresReview ? null : card.displayPrimaryPhoto || card.primaryPhoto,
+            allPhotoUrls: card.requiresReview ? [] : card.displayPhotoUrls || card.photoUrls,
+            isSafeImage: !card.requiresReview,
+            latitude: card.latitude,
+            longitude: card.longitude,
+            mentionCount: 1,
+            serviceTags: [],
+            tags: [],
+            metrics: {},
+            dataSource: 'feed',
+          }));
+          setFeedListings(normalized);
+        })
+        .catch((err) => console.error('Failed to load feed for map:', err));
+    }
+  }, [activeView, mapSource, feedListings.length]);
+
+  const filteredFeedListings = useMemo(() => {
+    return feedListings.filter((listing) => {
+      // Location filter
+      if (activeLocation !== ALL_LOCATIONS_VALUE) {
+        if (listing.city !== activeLocation) return false;
+      }
+      // Search term filter
+      if (searchTerm.trim()) {
+        const query = searchTerm.toLowerCase();
+        const text = `${listing.name} ${listing.location} ${listing.description}`.toLowerCase();
+        if (!text.includes(query)) return false;
+      }
+      return true;
+    });
+  }, [feedListings, activeLocation, searchTerm]);
 
   useEffect(() => {
     isActiveRef.current = true;
@@ -764,16 +873,59 @@ function App() {
                   padding: '0 var(--gutter)',
                 }}
               >
+                <div className="map-view-selector" style={{
+                  display: 'flex',
+                  borderBottom: '1px solid var(--color-border)',
+                  marginBottom: '12px',
+                  width: '100%',
+                }}>
+                  <button
+                    onClick={() => setMapSource('directory')}
+                    style={{
+                      padding: '8px 16px',
+                      background: mapSource === 'directory' ? 'var(--color-bg-alt)' : 'transparent',
+                      color: mapSource === 'directory' ? 'var(--color-action)' : 'var(--color-cream-muted)',
+                      border: 'none',
+                      borderBottom: mapSource === 'directory' ? '2px solid var(--color-action)' : 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '14px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Directory ({filteredListings.length})
+                  </button>
+                  <button
+                    onClick={() => setMapSource('feed')}
+                    style={{
+                      padding: '8px 16px',
+                      background: mapSource === 'feed' ? 'var(--color-bg-alt)' : 'transparent',
+                      color: mapSource === 'feed' ? 'var(--color-action)' : 'var(--color-cream-muted)',
+                      border: 'none',
+                      borderBottom: mapSource === 'feed' ? '2px solid var(--color-action)' : 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '14px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Live Activity ({filteredFeedListings.length})
+                  </button>
+                </div>
                 <Suspense fallback={<section className="section-shell-loading">Loading map…</section>}>
                   <ListingMap
-                    listings={filteredListings}
+                    listings={mapSource === 'directory' ? filteredListings : filteredFeedListings}
                     onCardClick={setSelectedListing}
                     t={t}
-                    viewKey={`${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
+                    viewKey={`${mapSource}|${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
                     theme={theme}
                     lastUpdatedAt={dataState.lastLoadedAt}
                     isRefreshing={dataState.isRefreshing}
-                    dataSource={displayDataState.sourceLabel}
+                    dataSource={mapSource === 'directory' ? displayDataState.sourceLabel : 'Feed Activity'}
                   />
                 </Suspense>
               </div>

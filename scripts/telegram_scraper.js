@@ -841,6 +841,11 @@ async function enrichListingsWithAi(listings, clusters, sourceLabel) {
     return listings;
   }
 
+  // Respect Gemini Free Tier RPM limits (max 15/20 RPM).
+  // Enforce a 4.5s delay before calling the API.
+  console.log(`${sourceLabel}: Throttling Gemini API request to respect rate limits (4.5s)...`);
+  await new Promise((resolve) => setTimeout(resolve, 4500));
+
   let response = null;
   const MAX_RETRIES = 2;
   let attempts = 0;

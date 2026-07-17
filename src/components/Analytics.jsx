@@ -5,6 +5,8 @@ import { computeGreyScore } from '../lib/listings';
 import { useMarketAnalytics, MESSAGE_TYPES, MESSAGE_TYPE_LABELS, getPhotoCount, getContactChannelCount, getLatestSourceTime, formatDateShort, formatPercent, snapshotToAnalyticsListing, buildFallbackMessageStats } from '../lib/useMarketAnalytics';
 import InsightNarrative from './InsightNarrative';
 import VisualCharts from './VisualCharts';
+import { db } from '../lib/firebase';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import './Analytics.css';
 
 // ==========================================
@@ -129,40 +131,32 @@ export default function Analytics() {
   const load = async () => {
     setIsRefreshing(true);
     try {
-      const messageTypeRequests = MESSAGE_TYPES.map((type) =>
-        Promise.resolve({count: 0}),
-      );
-      const liveRequest = Promise.all([
-        Promise.resolve({data: []}),
-        Promise.resolve({count: 0}),
-        Promise.resolve({count: 0}),
-        Promise.resolve({data: []}),
-        Promise.resolve({count: 0}).eq('has_media', true),
-        ...messageTypeRequests,
-      ]);
-      const [
-        listingsResponse,
-        msgCountResponse,
-        photoCountResponse,
-        msgsResponse,
-        mediaMessageResponse,
-        ...messageTypeResponses
-      ] = await withTimeout(liveRequest, ANALYTICS_TIMEOUT_MS, 'Analytics live data');
-      const messageTypeCounts = MESSAGE_TYPES.reduce((acc, type, index) => {
-        acc[type] = messageTypeResponses[index]?.count || 0;
-        return acc;
-      }, {});
-      setListings(listingsResponse.data || []);
-      setMsgStats({
-        msgCount: msgCountResponse.count,
-        photoCount: photoCountResponse.count,
-        mediaMessageCount: mediaMessageResponse.count,
-        messageTypeCounts,
-        msgs: msgsResponse.data || [],
+      console.log('Fetching live listings from Firestore for analytics...');
+      const q = query(collection(db, 'companions'), orderBy('updatedAt', 'desc'), limit(400));
+      const querySnapshot = await getDocs(q);
+      const liveListings = [];
+      querySnapshot.forEach((doc) => {
+        const docData = doc.data();
+        liveListings.push({
+          ...docData,
+          id: docData.id || doc.id,
+        });
       });
+
+      const [patternResponse, feedResponse] = await Promise.all([
+        fetch('/patterns.json', { cache: 'no-store' }),
+        fetch('/feed.json', { cache: 'no-store' }),
+      ]);
+      const patternData = patternResponse.ok ? await patternResponse.json() : null;
+      const feedRows = feedResponse.ok ? await feedResponse.json() : [];
+
+      if (patternData) setPatterns(patternData);
+      setListings(liveListings.map(snapshotToAnalyticsListing));
+      setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
       setAnalysisNow(Date.now());
       setLastRefreshed(new Date());
-    } catch {
+    } catch (error) {
+      console.warn('Live Firestore analytics failed, falling back to snapshots:', error);
       const [snapshotResponse, patternResponse, feedResponse] = await Promise.all([
         fetch('/data.json', { cache: 'no-store' }),
         fetch('/patterns.json', { cache: 'no-store' }),

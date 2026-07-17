@@ -15,6 +15,7 @@ const DEFAULT_LOCATION = 'Bangkok, Thailand';
 
 export const SOURCE_LABELS = {
   supabase: 'Live sync',
+  firestore: 'Live sync (Firestore)',
   snapshot: 'Verified snapshot',
   backup: 'Cached fallback',
 };
