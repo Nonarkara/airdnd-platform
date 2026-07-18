@@ -152,6 +152,10 @@ node -e "... (pull from companions table, write to public/data.json)"
 # Build
 npx vite build
 
+# Prune images to displayable set — REQUIRED, the full archive exceeds
+# Cloudflare's 20,000-file limit (pass a Firestore export path if available)
+node scripts/prune_dist_images.js
+
 # Add SPA redirect
 echo "/*    /index.html   200" > dist/_redirects
 
