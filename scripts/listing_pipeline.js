@@ -812,7 +812,9 @@ export async function insertListingsIfPossible(supabase, listings) {
           updatePayload.metrics = nextMetrics;
         }
 
-        if (hasMatchedMedia(listing) && (!existingImageUrl || existingImageUrl.startsWith('/mockups/'))) {
+        // Latest photo wins: every fresh post rotates the hero image so the
+        // directory never shows the same photo forever for an active business.
+        if (hasMatchedMedia(listing) && listing.imageUrl !== existingImageUrl) {
           updatePayload.image_url = listing.imageUrl;
         }
 

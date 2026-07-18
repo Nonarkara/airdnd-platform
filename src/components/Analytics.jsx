@@ -4,6 +4,7 @@ import { formatTelDisplay } from '../lib/normalization';
 import { computeGreyScore } from '../lib/listings';
 import { useMarketAnalytics, MESSAGE_TYPES, MESSAGE_TYPE_LABELS, getPhotoCount, getContactChannelCount, getLatestSourceTime, formatDateShort, formatPercent, snapshotToAnalyticsListing, buildFallbackMessageStats } from '../lib/useMarketAnalytics';
 import InsightNarrative from './InsightNarrative';
+import FieldIntelligence from './FieldIntelligence';
 import VisualCharts from './VisualCharts';
 import { db } from '../lib/firebase';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
@@ -132,7 +133,7 @@ export default function Analytics() {
     setIsRefreshing(true);
     try {
       console.log('Fetching live listings from Firestore for analytics...');
-      const q = query(collection(db, 'companions'), orderBy('updatedAt', 'desc'), limit(400));
+      const q = query(collection(db, 'companions'), orderBy('updatedAt', 'desc'), limit(1200));
       const querySnapshot = await getDocs(q);
       const liveListings = [];
       querySnapshot.forEach((doc) => {
@@ -338,6 +339,7 @@ export default function Analytics() {
         </p>
       </div>
       <InsightNarrative analytics={data} mode="global" />
+      <FieldIntelligence listings={listings} />
       <VisualCharts analytics={data} />
       <section className="an-stats-grid">
         <Stat label="Active Businesses" value={data.total} />

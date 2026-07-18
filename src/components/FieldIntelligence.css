@@ -1,0 +1,219 @@
+/* ── Field Intelligence — flagship findings ──────────────────────────────── */
+/* Rams discipline: hairlines only, zero radius, zero gradients, one accent.  */
+
+.fi {
+  margin: 0 0 var(--s8, 2.5rem);
+  border: 1px solid var(--line, rgba(255,255,255,0.12));
+}
+
+.fi-head {
+  padding: var(--s6, 1.5rem);
+  border-bottom: 2px solid var(--mango, #ff7440);
+}
+
+.fi-kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mango, #ff7440);
+  margin-bottom: var(--s3, 0.75rem);
+}
+
+.fi-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink, #f2ecf4);
+  margin: 0 0 var(--s3, 0.75rem);
+}
+
+.fi-lede {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink-2, rgba(242,236,244,0.78));
+  max-width: 64ch;
+  margin: 0;
+}
+
+/* ── Findings grid ───────────────────────────────────────────────────────── */
+
+.fi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line, rgba(255,255,255,0.12));
+}
+
+.fi-finding {
+  background: var(--bg, #141017);
+  padding: var(--s6, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4, 1rem);
+}
+
+.fi-finding__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3, 0.75rem);
+}
+
+.fi-finding__code {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--mango, #ff7440);
+  flex: none;
+}
+
+.fi-finding__title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--ink, #f2ecf4);
+  margin: 0;
+}
+
+/* Big numbers */
+
+.fi-bignum-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3, 0.75rem);
+  flex-wrap: wrap;
+}
+
+.fi-bignum {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink, #f2ecf4);
+  font-variant-numeric: tabular-nums;
+}
+
+.fi-bignum--accent { color: var(--mango, #ff7440); }
+
+.fi-bignum-arrow {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  color: var(--ink-4, rgba(242,236,244,0.4));
+}
+
+.fi-bignum-unit {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3, rgba(242,236,244,0.6));
+}
+
+.fi-body {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--ink-2, rgba(242,236,244,0.78));
+  margin: 0;
+  max-width: 58ch;
+}
+
+/* Alias networks */
+
+.fi-networks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2, 0.5rem);
+  border-top: 1px solid var(--line, rgba(255,255,255,0.12));
+  padding-top: var(--s3, 0.75rem);
+}
+
+.fi-network {
+  display: flex;
+  gap: var(--s3, 0.75rem);
+  align-items: baseline;
+  min-width: 0;
+}
+
+.fi-network__count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold, #FFD23D);
+  flex: none;
+}
+
+.fi-network__names {
+  font-size: 0.78rem;
+  color: var(--ink-3, rgba(242,236,244,0.6));
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Posting clock */
+
+.fi-clock {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 76px;
+  padding-top: var(--s2, 0.5rem);
+}
+
+.fi-clock__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  min-width: 0;
+  height: 100%;
+}
+
+.fi-clock__bar {
+  width: 100%;
+  background: var(--ink-4, rgba(242,236,244,0.35));
+  transition: height 0.4s ease;
+}
+
+.fi-clock__bar.is-peak { background: var(--mango, #ff7440); }
+
+.fi-clock__tick {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--ink-4, rgba(242,236,244,0.4));
+  letter-spacing: 0.05em;
+}
+
+/* Source / limitation line — the reflexivity footer of every finding */
+
+.fi-source {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--ink-4, rgba(242,236,244,0.45));
+  margin: auto 0 0;
+  padding-top: var(--s3, 0.75rem);
+  border-top: 1px solid var(--line, rgba(255,255,255,0.12));
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+
+@media (max-width: 760px) {
+  .fi-grid { grid-template-columns: 1fr; }
+  .fi-head { padding: var(--s5, 1.25rem); }
+  .fi-finding { padding: var(--s5, 1.25rem); }
+  .fi-body { max-width: 100%; }
+}

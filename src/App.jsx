@@ -31,7 +31,9 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { validateListingsPayload } from './lib/schema';
 
 const REFRESH_INTERVAL_MS = 30_000;
-const LIVE_QUERY_LIMIT = 400;
+// High enough that alias-aware dedup sees most persona-posts (corpus ≈ 2,800
+// docs → ~90 real businesses); Firestore reads at this scale are effectively free.
+const LIVE_QUERY_LIMIT = 1200;
 const LIVE_FETCH_TIMEOUT_MS = 6_500;
 const REALTIME_REFRESH_DEBOUNCE_MS = 1_200;
 const ALL_LOCATIONS_VALUE = 'all-locations';
@@ -231,37 +233,39 @@ async function loadListingsWithFallback(mode = 'automatic') {
   let liveResult = null;
   let liveError = null;
 
+  // Firestore first — it is the scraper's direct sync target and stays fresh
+  // even when the free-tier Supabase instance pauses or its REST API stalls.
   try {
-    const liveListings = await withTimeout(
-      fetchLiveListings(),
+    const firestoreListings = await withTimeout(
+      fetchLiveListingsFromFirestore(),
       LIVE_FETCH_TIMEOUT_MS,
-      'Live Supabase request timed out.',
+      'Live Firestore request timed out.',
     );
     liveResult = {
-      listings: liveListings,
-      source: 'supabase',
-      note: notes.supabase,
+      listings: firestoreListings,
+      source: 'firestore',
+      note: notes.firestore,
       warning: null,
     };
   } catch (error) {
-    liveError = new Error(sanitizeLoadError(error, 'Live Supabase request timed out.'));
+    liveError = new Error(sanitizeLoadError(error, 'Live Firestore request timed out.'));
     try {
-      console.log('Supabase failed, attempting Firestore fetch...');
-      const firestoreListings = await withTimeout(
-        fetchLiveListingsFromFirestore(),
+      console.log('Firestore failed, attempting Supabase fetch...');
+      const liveListings = await withTimeout(
+        fetchLiveListings(),
         LIVE_FETCH_TIMEOUT_MS,
-        'Live Firestore request timed out.',
+        'Live Supabase request timed out.',
       );
       liveResult = {
-        listings: firestoreListings,
-        source: 'firestore',
-        note: notes.firestore,
+        listings: liveListings,
+        source: 'supabase',
+        note: notes.supabase,
         warning: null,
       };
       liveError = null;
-    } catch (fsError) {
+    } catch (sbError) {
       liveError = new Error(
-        `Supabase failed (${liveError.message}) and Firestore failed (${sanitizeLoadError(fsError, 'Live Firestore request timed out.')})`
+        `Firestore failed (${liveError.message}) and Supabase failed (${sanitizeLoadError(sbError, 'Live Supabase request timed out.')})`
       );
     }
   }

@@ -5,6 +5,7 @@ import {
   isListingNew,
   computeGreyScore,
   getMapsStatus,
+  formatTimeAgo,
 } from '../lib/listings';
 import { trackListingClick, trackSignal, isListingSaved } from '../lib/tracker';
 import { useLanguage } from '../context/LanguageContext';
@@ -81,6 +82,8 @@ function ListingCard({ listing, onClick, priority = false }) {
   const maps = getMapsStatus(listing);
   const mapsMeta = MAPS_ICON[maps.status] || MAPS_ICON.search;
   const mentions = Number(listing.mentionCount || 0);
+  const aliasCount = Number(listing.aliasCount || 1);
+  const freshness = formatTimeAgo(listing.postedAt || listing.updatedAt);
 
   return (
     <article
@@ -161,6 +164,11 @@ function ListingCard({ listing, onClick, priority = false }) {
           <span className="lcard__price">
             {price.prefix && `${price.prefix} `}<b>{price.value}</b>
           </span>
+          {freshness && (
+            <span className="lcard__fresh" title={`Last activity: ${freshness}`}>
+              {freshness}
+            </span>
+          )}
           {sourceName && (
             <span className="lcard__src">
               <svg className="icon icon-sm" viewBox="0 0 24 24"><path d="M21 4 3 11l6 2.5L12 20l3-7.5L21 4Z" /></svg>
@@ -232,6 +240,16 @@ function ListingCard({ listing, onClick, priority = false }) {
               </a>
             )}
           </div>
+
+          {/* Identity network: this business posts under multiple persona names */}
+          {aliasCount > 1 && (
+            <span
+              className="intel__aliases"
+              title={`Posts under ${aliasCount} identities: ${[listing.name, ...(listing.aliasNames || [])].filter(Boolean).slice(0, 8).join(' · ')}`}
+            >
+              {aliasCount}<span className="intel__x">&nbsp;IDs</span>
+            </span>
+          )}
 
           {/* Mention count */}
           {mentions > 1 && (

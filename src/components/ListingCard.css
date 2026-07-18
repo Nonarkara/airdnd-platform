@@ -90,6 +90,14 @@
 }
 .lcard__src .icon { flex: none; }
 
+.lcard__fresh {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--jade);
+  white-space: nowrap;
+  flex: none;
+}
+
 /* ─── Intelligence Strip ───────────────────────────────────────────────────── */
 
 .intel {
@@ -183,6 +191,18 @@
   font-size: 10px;
   font-weight: 700;
   color: var(--ink-3, #888);
+  cursor: default;
+  white-space: nowrap;
+}
+
+.intel__aliases {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gold);
+  border: 1px solid var(--line-2);
+  padding: 1px 5px;
   cursor: default;
   white-space: nowrap;
 }

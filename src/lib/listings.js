@@ -291,9 +291,14 @@ export function normalizeListings(listings, options = {}) {
   return visualDeduplication(canonicalized);
 }
 
+// Alias-aware dedup: one business = one phone number. The corpus shows a 31×
+// duplication factor (2,770 persona-posts → ~90 real phones; one operator used
+// 38 names), so instead of silently dropping duplicates we merge them — the
+// canonical card is the freshest post, and the identities/photos/mentions of
+// every other persona roll up into it.
 function visualDeduplication(listings) {
   const seenImages = new Set();
-  const seenPhones = new Set();
+  const byPhone = new Map();
   const deduped = [];
 
   for (const listing of listings) {
@@ -301,13 +306,37 @@ function visualDeduplication(listings) {
     const phone = normalizePhone(listing.phone);
     const isMock = !imageUrl || imageUrl.startsWith('/mockups/');
 
-    // If we have a phone, use that as primary dedup key
     if (phone) {
-      if (seenPhones.has(phone)) continue;
-      seenPhones.add(phone);
+      const canonical = byPhone.get(phone);
+      if (canonical) {
+        // Roll this persona up into the canonical business
+        const name = (listing.name || '').trim();
+        if (name && name !== canonical.name && !canonical.aliasNames.includes(name)) {
+          canonical.aliasNames.push(name);
+        }
+        canonical.aliasCount = canonical.aliasNames.length + 1;
+        canonical.mentionCount =
+          (Number(canonical.mentionCount) || 1) + (Number(listing.mentionCount) || 1);
+        // Merge photo archives (newest-first canonical set stays in front)
+        const extraPhotos = Array.isArray(listing.allPhotoUrls) ? listing.allPhotoUrls : [];
+        if (extraPhotos.length) {
+          const merged = [...new Set([...(canonical.allPhotoUrls || []), ...extraPhotos])];
+          canonical.allPhotoUrls = merged.slice(0, 24);
+        }
+        // Keep contact fields the canonical post lacks
+        for (const field of ['hours', 'lineUrl', 'telegramUrl', 'mapsUrl', 'priceValue', 'priceLabel']) {
+          if (!canonical[field] && listing[field]) canonical[field] = listing[field];
+        }
+        continue;
+      }
+      const entry = { ...listing, aliasNames: [], aliasCount: 1 };
+      byPhone.set(phone, entry);
+      deduped.push(entry);
+      if (!isMock) seenImages.add(imageUrl);
+      continue;
     }
 
-    // If we have a real image, dedup by image URL too
+    // No phone: dedup by image only
     if (!isMock) {
       if (seenImages.has(imageUrl)) continue;
       seenImages.add(imageUrl);
@@ -375,6 +404,23 @@ export function createMetrics(listings) {
   };
 }
 
+// True relative time for the realtime feel: "12m ago", "3h ago", "2d ago".
+export function formatTimeAgo(value) {
+  const date = parseTimestamp(value);
+  if (!date) return null;
+  const diffMs = Date.now() - date.getTime();
+  if (diffMs < 0) return 'now';
+  const mins = Math.floor(diffMs / 60_000);
+  if (mins < 1) return 'now';
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 30) return `${days}d ago`;
+  const months = Math.floor(days / 30);
+  return `${months}mo ago`;
+}
+
 export function formatRelativeTimestamp(value) {
   const date = parseTimestamp(value);
   if (!date) {
@@ -426,11 +472,14 @@ export function getListingMediaCount(listing) {
 export function getListingGalleryUrls(listing) {
   if (!listing) return [];
 
+  // Hero image first (pipeline rotates it to the latest post's photo), then the
+  // archived photo arrays reversed so newest uploads lead — never the same
+  // first-ever photo forever.
   const urls = [
-    ...(Array.isArray(listing.allPhotoUrls) ? listing.allPhotoUrls : []),
-    ...(Array.isArray(listing.photo_urls) ? listing.photo_urls : []),
     listing.imageUrl,
     listing.image_url,
+    ...(Array.isArray(listing.allPhotoUrls) ? [...listing.allPhotoUrls].reverse() : []),
+    ...(Array.isArray(listing.photo_urls) ? [...listing.photo_urls].reverse() : []),
   ];
 
   return [...new Set(
