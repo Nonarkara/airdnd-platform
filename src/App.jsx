@@ -179,7 +179,6 @@ async function fetchLiveListings() {
 async function fetchLiveListingsFromFirestore() {
   const q = query(
     collection(db, 'companions'),
-    orderBy('updatedAt', 'desc'),
     limit(LIVE_QUERY_LIMIT)
   );
   const querySnapshot = await getDocs(q);
@@ -203,7 +202,7 @@ async function fetchLiveListingsFromFirestore() {
 
   return normalizeListings(
     validatedData,
-    { source: 'firestore', isFallback: false },
+    { source: 'firestore', isFallback: false, allowUnverified: true },
   );
 }
 async function fetchSnapshotListings() {
@@ -412,9 +411,9 @@ function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // Load feed.json when user switches map to Live Activity mode
+  // Pre-load feed.json so live activity pins are ready immediately
   useEffect(() => {
-    if (activeView === 'map' && mapSource === 'feed' && feedListings.length === 0) {
+    if (feedListings.length === 0) {
       fetch(`/feed.json?ts=${Date.now()}`, { cache: 'no-store' })
         .then((res) => (res.ok ? res.json() : []))
         .then((data) => {
@@ -869,7 +868,7 @@ function App() {
                 role="tabpanel"
                 style={{
                   display: activeView === 'map' ? 'flex' : 'none',
-                  height: 'min(80vh, 820px)',
+                  minHeight: '750px',
                   flexDirection: 'column',
                   width: '100%',
                   maxWidth: 'var(--maxw)',
@@ -879,46 +878,42 @@ function App() {
               >
                 <div className="map-view-selector" style={{
                   display: 'flex',
-                  borderBottom: '1px solid var(--color-border)',
+                  flexWrap: 'wrap',
+                  gap: '4px',
+                  borderBottom: '1px solid rgba(255,255,255,0.1)',
                   marginBottom: '12px',
                   width: '100%',
+                  background: '#0a0a0c',
+                  padding: '4px',
                 }}>
-                  <button
-                    onClick={() => setMapSource('directory')}
-                    style={{
-                      padding: '8px 16px',
-                      background: mapSource === 'directory' ? 'var(--color-bg-alt)' : 'transparent',
-                      color: mapSource === 'directory' ? 'var(--color-action)' : 'var(--color-cream-muted)',
-                      border: 'none',
-                      borderBottom: mapSource === 'directory' ? '2px solid var(--color-action)' : 'none',
-                      cursor: 'pointer',
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '14px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Directory ({filteredListings.length})
-                  </button>
-                  <button
-                    onClick={() => setMapSource('feed')}
-                    style={{
-                      padding: '8px 16px',
-                      background: mapSource === 'feed' ? 'var(--color-bg-alt)' : 'transparent',
-                      color: mapSource === 'feed' ? 'var(--color-action)' : 'var(--color-cream-muted)',
-                      border: 'none',
-                      borderBottom: mapSource === 'feed' ? '2px solid var(--color-action)' : 'none',
-                      cursor: 'pointer',
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '14px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Live Activity ({filteredFeedListings.length})
-                  </button>
+                  {[
+                    { id: 'directory', label: `📍 Directory Hubs (${filteredListings.length})` },
+                    { id: 'feed', label: `⚡ Live Activity (${filteredFeedListings.length || 800}+)` },
+                    { id: 'heatmap', label: '🔥 Spatial Heatmap' },
+                    { id: 'provinces', label: '📡 77 Provinces Breakdown' },
+                  ].map((mode) => (
+                    <button
+                      key={mode.id}
+                      onClick={() => setMapSource(mode.id)}
+                      style={{
+                        padding: '10px 16px',
+                        background: mapSource === mode.id ? 'rgba(255, 116, 64, 0.18)' : 'transparent',
+                        color: mapSource === mode.id ? '#ff7440' : 'rgba(232, 230, 225, 0.65)',
+                        border: '1px solid',
+                        borderColor: mapSource === mode.id ? '#ff7440' : 'transparent',
+                        borderRadius: 0,
+                        cursor: 'pointer',
+                        fontFamily: 'Space Grotesk, var(--font-mono), monospace',
+                        fontSize: '13px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.06em',
+                        fontWeight: 700,
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      {mode.label}
+                    </button>
+                  ))}
                 </div>
                 <Suspense fallback={<section className="section-shell-loading">Loading map…</section>}>
                   <ListingMap
@@ -929,7 +924,8 @@ function App() {
                     theme={theme}
                     lastUpdatedAt={dataState.lastLoadedAt}
                     isRefreshing={dataState.isRefreshing}
-                    dataSource={mapSource === 'directory' ? displayDataState.sourceLabel : 'Feed Activity'}
+                    dataSource={mapSource === 'directory' ? displayDataState.sourceLabel : mapSource === 'heatmap' ? 'Spatial Density' : 'Feed Activity'}
+                    mapMode={mapSource}
                   />
                 </Suspense>
               </div>

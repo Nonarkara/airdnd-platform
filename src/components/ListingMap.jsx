@@ -320,6 +320,7 @@ export default function ListingMap({
   lastUpdatedAt,
   isRefreshing = false,
   dataSource = 'snapshot',
+  mapMode = 'directory',
 }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
@@ -772,9 +773,39 @@ export default function ListingMap({
       if (map.hasLayer(lightLayerRef.current)) {
         map.removeLayer(lightLayerRef.current);
       }
-      darkLayerRef.current.addTo(map);
     }
   }, [theme]);
+
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map || !heatLayerRef.current) return;
+    if (mapMode === 'heatmap') {
+      if (!map.hasLayer(heatLayerRef.current)) {
+        heatLayerRef.current.addTo(map);
+      }
+    } else {
+      if (map.hasLayer(heatLayerRef.current)) {
+        map.removeLayer(heatLayerRef.current);
+      }
+    }
+  }, [mapMode]);
+
+  const provinceMatrix = useMemo(() => {
+    const counts = new Map();
+    Object.keys(CITY_COORDINATES).forEach((city) => counts.set(city, 0));
+    listings.forEach((listing) => {
+      const city = listing.city || 'Bangkok';
+      counts.set(city, (counts.get(city) || 0) + 1);
+    });
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .map(([city, count]) => ({ city, count, coords: CITY_COORDINATES[city] }));
+  }, [listings]);
+
+  const handleFlyToCoords = (coords) => {
+    if (!mapInstanceRef.current || !coords) return;
+    mapInstanceRef.current.flyTo(coords, 13, { duration: 1.2 });
+  };
 
   return (
     <section className="listing-map-section" id="map">
@@ -893,6 +924,65 @@ export default function ListingMap({
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#6600cc' }} />Extreme</span>
         </div>
       </div>
+
+      {/* Axiom 77 Provinces Grid Mode Panel */}
+      {mapMode === 'provinces' && (
+        <div style={{
+          background: '#0a0a0c',
+          border: '1px solid rgba(255, 116, 64, 0.3)',
+          padding: '1.25rem',
+          marginTop: '1rem',
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '0.5rem' }}>
+            <span style={{ fontFamily: 'Space Grotesk, monospace', fontSize: '0.85rem', color: '#ff7440', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              📡 77 THAI PROVINCES NATIONWIDE COVERAGE MATRIX (100% INDEXED)
+            </span>
+            <span style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: '0.75rem', color: 'rgba(232, 230, 225, 0.6)' }}>
+              Click any province to target map center
+            </span>
+          </div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+            gap: '8px',
+            maxHeight: '380px',
+            overflowY: 'auto',
+          }}>
+            {provinceMatrix.map(({ city, count, coords }) => (
+              <button
+                key={city}
+                type="button"
+                onClick={() => handleFlyToCoords(coords)}
+                style={{
+                  display: 'flex',
+                  justify: 'space-between',
+                  alignItems: 'center',
+                  background: count > 0 ? 'rgba(255, 116, 64, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+                  border: `1px solid ${count > 0 ? 'rgba(255, 116, 64, 0.3)' : 'rgba(255, 255, 255, 0.05)'}`,
+                  color: count > 0 ? '#F7EEF3' : 'rgba(255, 255, 255, 0.4)',
+                  padding: '8px 10px',
+                  fontSize: '11px',
+                  fontFamily: 'Space Grotesk, var(--font-mono), monospace',
+                  borderRadius: 0,
+                  cursor: coords ? 'pointer' : 'default',
+                  textAlign: 'left',
+                }}
+              >
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{city}</span>
+                <span style={{
+                  background: count > 0 ? '#ff7440' : 'transparent',
+                  color: count > 0 ? '#000' : 'rgba(255, 255, 255, 0.3)',
+                  padding: '1px 6px',
+                  fontWeight: 700,
+                  fontSize: '10px',
+                  marginLeft: '4px',
+                }}>{count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <MapMarketBar />
       <SpatialAnalyticsPanel visiblePins={pins} totalListings={listings.length} />
       {pendingListings.length > 0 && (

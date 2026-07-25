@@ -36,7 +36,7 @@ function getDocumentId(listing) {
 }
 
 export async function syncListingsToFirestore(listings) {
-  const publicListings = canonicalizePublicListings(listings, { source: 'supabase' })
+  const publicListings = canonicalizePublicListings(listings, { source: 'supabase', allowUnverified: true })
     .map(stripUndefined)
     .filter((listing) => getDocumentId(listing));
 
@@ -55,3 +55,21 @@ export async function syncListingsToFirestore(listings) {
 
   return synced;
 }
+
+export async function syncFeedToFirestore(feedCards) {
+  if (!Array.isArray(feedCards) || feedCards.length === 0) return 0;
+  const cleaned = feedCards.slice(0, 400).map(stripUndefined);
+  let synced = 0;
+  for (let offset = 0; offset < cleaned.length; offset += 400) {
+    const batch = writeBatch(db);
+    const chunk = cleaned.slice(offset, offset + 400);
+    chunk.forEach((card) => {
+      const docId = encodeURIComponent(String(card.id));
+      batch.set(doc(db, 'feed_activity', docId), card, { merge: true });
+    });
+    await batch.commit();
+    synced += chunk.length;
+  }
+  return synced;
+}
+

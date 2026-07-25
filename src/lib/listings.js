@@ -3,13 +3,13 @@ import {
   hasMatchedPublicMedia,
   normalizePublicListing,
   validatePublicListing,
-} from './listing_contract';
+} from './listing_contract.js';
 import {
   cleanDisplayText,
   inferCityFromLocation as inferCityFromText,
   normalizePhone,
   normalizeText,
-} from './normalization';
+} from './normalization.js';
 
 const DEFAULT_LOCATION = 'Bangkok, Thailand';
 

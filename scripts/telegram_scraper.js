@@ -1323,7 +1323,7 @@ async function runTelegramScrape(client, targets, state = {}) {
 
   let firestoreSynced = 0;
   try {
-    firestoreSynced = await syncListingsToFirestore(listingsWithImages);
+    firestoreSynced = await syncListingsToFirestore(mergedSnapshot);
     console.log(`Firestore sync complete. Synced: ${firestoreSynced}`);
   } catch (error) {
     console.error(`Firestore sync failed: ${error.message}`);

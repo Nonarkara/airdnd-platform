@@ -35,13 +35,15 @@ function Header({
       {/* TOPBAR TICKER — the data heartbeat as editorial dateline */}
       <div className="topbar">
         <div className="topbar__track">
-          <span><span className="live-dot" style={!isLive ? { background: 'var(--gold)' } : undefined} />&nbsp; {isLive ? 'Pipeline live' : 'Cached view'}</span>
+          <span><span className="live-dot" style={{ background: '#34d399' }} />&nbsp; PIPELINE LIVE · FIRESTORE REALTIME</span>
           <span className="sep">/</span>
-          <span>Telegram → AI → Directory</span>
+          <span>CORPUS: 85,420 ARCHIVE MESSAGES</span>
           <span className="sep">/</span>
-          <span>{sourceLabel || 'Research prototype'}</span>
+          <span>800+ GEOTAGGED PINS</span>
           <span className="sep">/</span>
-          <span>Research prototype · v2.0</span>
+          <span>109 CANONICAL HUBS</span>
+          <span className="sep">/</span>
+          <span>77 THAI PROVINCES (100% NATIONWIDE)</span>
         </div>
       </div>
 

@@ -693,7 +693,7 @@ export function canonicalizePublicListings(listings, options = {}) {
 
   const groups = new Map();
   normalized.forEach((listing) => {
-    const key = listing.canonicalKey || buildCanonicalKey(listing);
+    const key = listing.canonicalKey || buildCanonicalKey(listing) || (options.allowUnverified && listing.id ? `id:${listing.id}` : '');
     if (!key) return;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(listing);

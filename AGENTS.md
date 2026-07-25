@@ -243,3 +243,6 @@ What judges should notice:
 - Thai script mixed with Western typographic precision
 - The `/methodology` page explaining the AI-as-a-Service concept
 - Zero decoration — every pixel earns its place
+
+---
+> **Workspace core:** also obey `/Users/nonarkara/Projects/AGENTS.md` — the one-page shared law for every agent (anti-regression, design non-negotiables, Thai rules, CDPT, commit attribution). This project file adds detail; it never loosens those laws.

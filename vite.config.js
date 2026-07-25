@@ -5,7 +5,7 @@ import path from 'path'
 
 // Keep heavy local photo backups out of the production bundle.
 // They are served from Supabase Storage; local copies are backups only.
-function excludeHeavyPublicDirs(dirs = ['posters', 'photos']) {
+function excludeHeavyPublicDirs(dirs = ['posters', 'photos', 'images']) {
   let outDir = 'dist'
   return {
     name: 'exclude-heavy-public',

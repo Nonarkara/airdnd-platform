@@ -64,7 +64,7 @@ function mineWindow(listings) {
     const t = l.posted_at || l.updated_at;
     if (t) postHours[(new Date(t).getUTCHours() + 7) % 24] += 1;
 
-    const hm = String(l.hours || '').match(/[-–ถึง]\s*(\d{1,2})[.:]?(\d{2})?/);
+    const hm = String(l.hours || '').match(/(?:-|–|ถึง)\s*(\d{1,2})[.:]?(\d{2})?/);
     if (hm) {
       const hh = parseInt(hm[1], 10);
       if (hh >= 21 && hh <= 23) closeBuckets.evening += 1;
