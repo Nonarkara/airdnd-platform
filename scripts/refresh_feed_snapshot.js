@@ -241,8 +241,38 @@ async function main() {
   const t0 = Date.now();
 
   console.log('pulling recent listing-classified messages...');
-  const messages = await pullRecentListingMessages();
-  console.log(`  ${messages.length} messages pulled`);
+  let messages = [];
+  try {
+    messages = await pullRecentListingMessages();
+    console.log(`  ${messages.length} messages pulled`);
+  } catch (err) {
+    console.warn(`Supabase query failed (${err.message}). Generating feed snapshot from public/data.json fallback...`);
+    const dataJsonPath = path.join(__dirname, '../public/data.json');
+    if (fs.existsSync(dataJsonPath)) {
+      const dataListings = JSON.parse(fs.readFileSync(dataJsonPath, 'utf8'));
+      const fallbackCards = dataListings.map(l => ({
+        id: `feed_${l.id}`,
+        name: l.name,
+        channel: l.sourceChannel || '@relaxsocietymassage',
+        messageDate: l.postedAt || l.updatedAt || new Date().toISOString(),
+        description: l.description,
+        priceLabel: l.price || l.priceLabel,
+        hours: l.hours,
+        phone: l.phone,
+        lineUrl: l.lineUrl,
+        mapsUrl: l.mapsUrl,
+        photoUrls: Array.isArray(l.photoUrls) && l.photoUrls.length > 0 ? l.photoUrls : (l.imageUrl ? [l.imageUrl] : []),
+        location: l.location || l.city,
+        city: l.city,
+      })).sort((a, b) => new Date(b.messageDate) - new Date(a.messageDate));
+
+      const feedOutPath = path.join(__dirname, '../public/feed.json');
+      fs.writeFileSync(feedOutPath, JSON.stringify(fallbackCards, null, 2));
+      console.log(`Wrote ${fallbackCards.length} fallback feed cards to ${feedOutPath} in ${Date.now() - t0}ms`);
+      return;
+    }
+    throw err;
+  }
 
   // Group by album (grouped_id) when present, else by single-message id
   const groupIds = new Set();
