@@ -13,19 +13,44 @@ const supabase = createClient(supabaseUrl, key, {
   auth: { persistSession: false },
 });
 
-const { data, error } = await supabase
-  .from('companions')
-  .select('*')
-  .order('updated_at', { ascending: false, nullsFirst: false })
-  .order('created_at', { ascending: false, nullsFirst: false })
-  .limit(2000);
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
-if (error) {
-  console.error(`Could not refresh snapshot: ${error.message}`);
-  process.exit(1);
+const firebaseConfig = {
+  projectId: "sub-i-platform-v3",
+  appId: "1:190320143184:web:3ee20b36c95e0e856f5a55",
+  storageBucket: "sub-i-platform-v3.firebasestorage.app",
+  apiKey: "AIzaSyDeleUD1kuPIY4ibNhHMOHQ08QhLGnp7NI",
+  authDomain: "sub-i-platform-v3.firebaseapp.com",
+};
+
+let rawData = [];
+
+try {
+  console.log('Fetching companions from Firestore...');
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const snap = await getDocs(collection(db, 'companions'));
+  rawData = snap.docs.map(d => d.data());
+  console.log(`Pulled ${rawData.length} raw docs from Firestore`);
+} catch (fsErr) {
+  console.warn(`Firestore pull failed (${fsErr.message}), falling back to Supabase...`);
+  const { data, error } = await supabase
+    .from('companions')
+    .select('*')
+    .order('updated_at', { ascending: false, nullsFirst: false })
+    .order('created_at', { ascending: false, nullsFirst: false })
+    .limit(2000);
+
+  if (error) {
+    console.error(`Could not refresh snapshot: ${error.message}`);
+    process.exit(1);
+  }
+  rawData = data || [];
 }
 
-const publicListings = canonicalizePublicListings(data || [], { source: 'snapshot' });
+const publicListings = canonicalizePublicListings(rawData, { source: 'snapshot', allowUnverified: true });
+console.log(`Canonicalized ${publicListings.length} unique parlour listings`);
 
 function createImageIndex() {
   const imageRoot = path.join(process.cwd(), 'public', 'images');

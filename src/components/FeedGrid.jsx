@@ -14,8 +14,8 @@ import './FeedGrid.css';
  * curated set. Both live on the home page.
  */
 
-const INITIAL_REVEAL = 12;
-const MORE_INCREMENT = 12;
+const INITIAL_REVEAL = 36;
+const MORE_INCREMENT = 36;
 const FEED_REFRESH_INTERVAL_MS = 60_000;
 const REVIEW_NAME = '__review__';
 
