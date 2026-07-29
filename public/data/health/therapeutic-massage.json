@@ -1,0 +1,90 @@
+{
+  "source": {
+    "package": "ttamc_op_12_02",
+    "url": "https://data.go.th/dataset/ttamc_op_12_02",
+    "publisher": "กรมการแพทย์แผนไทยและการแพทย์ทางเลือก",
+    "note": "Patient visit counts for massage / herbal steam / compress in MoPH traditional-medicine clinics. Therapeutic public-system volume — not Telegram parlour inventory."
+  },
+  "yearGregorian": 2026,
+  "nationalTotal": 65630,
+  "provinceCount": 11,
+  "provinces": [
+    {
+      "name": "Bangkok",
+      "code": "10",
+      "lat": 13.7563,
+      "lng": 100.5018,
+      "visits": 32732
+    },
+    {
+      "name": "Nonthaburi",
+      "code": "12",
+      "lat": 13.8621,
+      "lng": 100.5144,
+      "visits": 25875
+    },
+    {
+      "name": "Udon Thani",
+      "code": "41",
+      "lat": 17.4138,
+      "lng": 102.7872,
+      "visits": 3628
+    },
+    {
+      "name": "Chumphon",
+      "code": "86",
+      "lat": 10.493,
+      "lng": 99.18,
+      "visits": 1051
+    },
+    {
+      "name": "Samut Prakan",
+      "code": "11",
+      "lat": 13.599,
+      "lng": 100.5968,
+      "visits": 1000
+    },
+    {
+      "name": "Lampang",
+      "code": "52",
+      "lat": 18.2888,
+      "lng": 99.4909,
+      "visits": 542
+    },
+    {
+      "name": "Chachoengsao",
+      "code": "24",
+      "lat": 13.6904,
+      "lng": 101.078,
+      "visits": 320
+    },
+    {
+      "name": "Sukhothai",
+      "code": "64",
+      "lat": 17.0056,
+      "lng": 99.826,
+      "visits": 281
+    },
+    {
+      "name": "Phatthalung",
+      "code": "93",
+      "lat": 7.617,
+      "lng": 100.074,
+      "visits": 131
+    },
+    {
+      "name": "Khon Kaen",
+      "code": "40",
+      "lat": 16.4419,
+      "lng": 102.836,
+      "visits": 69
+    },
+    {
+      "name": "Nakhon Pathom",
+      "code": "73",
+      "lat": 13.819,
+      "lng": 100.062,
+      "visits": 1
+    }
+  ]
+}

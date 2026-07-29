@@ -15,7 +15,7 @@ import {
 } from '../lib/mapAvailability';
 import MapMarketBar from './MapMarketBar';
 import SpatialAnalyticsPanel from './SpatialAnalyticsPanel';
-import { buildHealthMatrix, loadProvinceHiv } from '../lib/health';
+import { buildHealthMatrix, loadFormalization, loadProvinceHiv } from '../lib/health';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
@@ -782,10 +782,13 @@ export default function ListingMap({
 
   useEffect(() => {
     let cancelled = false;
-    loadProvinceHiv()
-      .then((payload) => {
+    Promise.all([
+      loadProvinceHiv(),
+      loadFormalization().catch(() => null),
+    ])
+      .then(([payload, formalization]) => {
         if (cancelled) return;
-        const matrix = buildHealthMatrix(payload, listingsRef.current || []);
+        const matrix = buildHealthMatrix(payload, listingsRef.current || [], formalization);
         setEpidemicMeta(matrix.meta);
         setEpidemicRows(matrix.provinces.filter((row) => row.lat != null && row.lng != null));
       })
@@ -835,6 +838,7 @@ export default function ListingMap({
         `<strong>${row.name}</strong><br/>`
         + `New-in-care 2566: <b>${cases.toLocaleString()}</b><br/>`
         + `Inventory venues: <b>${venues}</b><br/>`
+        + `HSS certified นวด สปา: <b>${(Number(row.certifiedProviders) || 0).toLocaleString()}</b><br/>`
         + `Co-locate index: <b>${row.colocation || 0}</b><br/>`
         + `<span style="opacity:.7">Public epidemic context — not a venue risk score</span>`,
       );
@@ -996,10 +1000,10 @@ export default function ListingMap({
           <p>
             Circle size = new HIV/AIDS cases entering care by domicile (Buddhist 2566 / data.go.th s_tuc2).
             Amber outline = our inventory also has venues in that province.
-            Not a risk score for any shop or person.
+            Popup includes HSS certified นวด สปา counts — not a risk score for any shop or person.
           </p>
           {epidemicMeta?.caveat && <p className="epidemic-caveat">{epidemicMeta.caveat}</p>}
-          <a href="/health">Open three-lens research →</a>
+          <a href="/health">Open four-lens research →</a>
         </div>
       )}
 

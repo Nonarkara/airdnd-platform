@@ -27,6 +27,7 @@
     "userbot:daemon": "chmod +x scripts/daemon.sh && ./scripts/daemon.sh",
     "sociology:compute": "node scripts/compute_sociology.js",
     "research:compute": "node scripts/compute_research.js",
+    "health:research": "node scripts/build_health_research.js",
     "verify:maps": "node scripts/gmaps_verify.js",
     "verify:maps:dry": "node scripts/gmaps_verify.js --dry-run",
     "start": "node server.js"

@@ -216,6 +216,130 @@
   text-transform: uppercase;
 }
 
+.health-subhead {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: var(--s7) 0 var(--s3);
+}
+
+.health-chart {
+  margin: var(--s6) 0;
+  border: 1px solid var(--line-2);
+  padding: var(--s5);
+}
+
+.health-chart h3 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--s4);
+}
+
+.health-bars {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.health-bars > li {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  gap: 10px;
+  align-items: center;
+  font-size: var(--fs-body);
+}
+
+.health-bar-track {
+  display: block;
+  height: 8px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  position: relative;
+}
+
+.health-bar-track i {
+  display: block;
+  height: 100%;
+  background: var(--mango);
+  max-width: 100%;
+}
+
+.health-bars em {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  min-width: 6rem;
+  text-align: right;
+}
+
+.health-bars--multi .health-bars-year {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: 10px;
+  align-items: start;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.health-bars-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.health-bars-row {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr auto;
+  gap: 8px;
+  align-items: center;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.health-hypotheses {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin: var(--s5) 0 var(--s6);
+}
+
+.health-hypotheses article {
+  background: var(--surface);
+  padding: var(--s5);
+}
+
+.health-hypotheses h3 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mango);
+  margin-bottom: var(--s3);
+}
+
+.health-hypotheses p {
+  margin: 0;
+  font-size: var(--fs-body);
+  color: var(--ink-2);
+  line-height: 1.55;
+  max-width: none;
+}
+
+.health-copy a {
+  color: var(--navy, var(--ink));
+  border-bottom: 1px solid var(--mango);
+}
+
 @media (max-width: 800px) {
   .health-stats { grid-template-columns: 1fr 1fr; }
+  .health-hypotheses { grid-template-columns: 1fr; }
+  .health-bars-row { grid-template-columns: 5rem 1fr auto; }
 }

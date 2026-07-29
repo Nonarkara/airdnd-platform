@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { formatTelDisplay } from '../lib/normalization';
 import { computeGreyScore } from '../lib/listings';
@@ -8,6 +9,7 @@ import FieldIntelligence from './FieldIntelligence';
 import VisualCharts from './VisualCharts';
 import { db } from '../lib/firebase';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { loadFormalization, loadStiScreeningRoiet } from '../lib/health';
 import './Analytics.css';
 
 // ==========================================
@@ -117,6 +119,7 @@ export default function Analytics() {
   const [patterns, setPatterns] = useState(null);
   const [analysisNow, setAnalysisNow] = useState(() => Date.now());
   const [lastRefreshed, setLastRefreshed] = useState(null);
+  const [healthSnap, setHealthSnap] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Pull the precomputed product-patterns dataset (Methodology §08).
@@ -126,6 +129,19 @@ export default function Analytics() {
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => { if (!cancelled) setPatterns(data); })
       .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  // Formalization + Roi Et STI screening snapshot for Public Health panel.
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([
+      loadFormalization().catch(() => null),
+      loadStiScreeningRoiet().catch(() => null),
+    ]).then(([formalization, sti]) => {
+      if (cancelled || (!formalization && !sti)) return;
+      setHealthSnap({ formalization, sti });
+    });
     return () => { cancelled = true; };
   }, []);
 
@@ -485,7 +501,62 @@ export default function Analytics() {
           <div className="an-upgrade-panel card-resources">
             <h3>Public Health &amp; Harm Reduction</h3>
             <p className="panel-desc">
-              Evidence-based resources for NGO workers, outreach teams, and at-risk individuals. Thailand's 100% Condom Program (1989–2001) achieved 90%+ STI reduction by working through the licensed อาบอบนวด tier — the same registration chain visible in this corpus.
+              Formalization gap (HSS certified นวด สปา vs Telegram inventory) and STI screening
+              uptake sit beside the market ledger. Client-side recklessness vs worker-side
+              protection remains a hypothesis — open data does not prove either. Thailand&apos;s
+              100% Condom Program worked through the licensed อาบอบนวด tier.
+            </p>
+            {healthSnap && (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                gap: '1px',
+                background: 'var(--color-line, var(--line))',
+                border: '1px solid var(--color-line, var(--line))',
+                marginTop: '0.85rem',
+              }}
+              >
+                {[
+                  {
+                    label: 'HSS certified',
+                    value: (healthSnap.formalization?.hss?.nationalTotal || 0).toLocaleString(),
+                    note: 'นวด สปา registry',
+                  },
+                  {
+                    label: 'Excise latest',
+                    value: healthSnap.formalization?.excise?.latest?.taxNetBaht != null
+                      ? `฿${Math.round(healthSnap.formalization.excise.latest.taxNetBaht / 1e6)}M`
+                      : '—',
+                    note: `BE ${healthSnap.formalization?.excise?.latest?.yearBuddhist || '—'}`,
+                  },
+                  {
+                    label: 'Roi Et SW screened',
+                    value: (healthSnap.sti?.latest?.sexWorkerTotal || 0).toLocaleString(),
+                    note: 'uptake · not incidence',
+                  },
+                ].map((cell) => (
+                  <div key={cell.label} style={{ background: 'var(--color-surface, var(--surface))', padding: '12px' }}>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-cream-muted, var(--ink-3))' }}>{cell.label}</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.25rem', fontWeight: 600, marginTop: '6px', color: 'var(--color-cream, var(--ink))' }}>{cell.value}</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', marginTop: '4px', color: 'var(--color-cream-muted, var(--ink-3))' }}>{cell.note}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <p style={{ marginTop: '0.75rem' }}>
+              <Link
+                to="/health"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '10px',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-action, var(--mango))',
+                  borderBottom: '1px solid var(--color-action, var(--mango))',
+                }}
+              >
+                Open four-lens research →
+              </Link>
             </p>
             <div style={{ marginTop: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {[

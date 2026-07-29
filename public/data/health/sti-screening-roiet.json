@@ -1,0 +1,93 @@
+{
+  "source": {
+    "package": "sasuk01",
+    "url": "https://data.go.th/dataset/sasuk01",
+    "publisher": "สำนักงานจังหวัดร้อยเอ็ด",
+    "scope": "Roi Et province only",
+    "note": "Key-population STI screening service counts — uptake, not incidence or prevalence."
+  },
+  "unit": "persons screened",
+  "yearsBuddhist": [
+    2564,
+    2565,
+    2566,
+    2567,
+    2568,
+    2569
+  ],
+  "series": [
+    {
+      "yearBuddhist": 2564,
+      "yearGregorian": 2021,
+      "msm": 523,
+      "transgenderWomen": 0,
+      "sexWorkerMale": 10,
+      "sexWorkerFemale": 1,
+      "sexWorkerTransgender": 0,
+      "pwid": 0,
+      "sexWorkerTotal": 11
+    },
+    {
+      "yearBuddhist": 2565,
+      "yearGregorian": 2022,
+      "msm": 671,
+      "transgenderWomen": 14,
+      "sexWorkerMale": 1,
+      "sexWorkerFemale": 1,
+      "sexWorkerTransgender": 0,
+      "pwid": 0,
+      "sexWorkerTotal": 2
+    },
+    {
+      "yearBuddhist": 2566,
+      "yearGregorian": 2023,
+      "msm": 1139,
+      "transgenderWomen": 7,
+      "sexWorkerMale": 1,
+      "sexWorkerFemale": 0,
+      "sexWorkerTransgender": 0,
+      "pwid": 1,
+      "sexWorkerTotal": 1
+    },
+    {
+      "yearBuddhist": 2567,
+      "yearGregorian": 2024,
+      "msm": 803,
+      "transgenderWomen": 58,
+      "sexWorkerMale": 2,
+      "sexWorkerFemale": 3,
+      "sexWorkerTransgender": 1,
+      "pwid": 1,
+      "sexWorkerTotal": 6
+    },
+    {
+      "yearBuddhist": 2568,
+      "yearGregorian": 2025,
+      "msm": 2251,
+      "transgenderWomen": 184,
+      "sexWorkerMale": 30,
+      "sexWorkerFemale": 0,
+      "sexWorkerTransgender": 0,
+      "pwid": 0,
+      "sexWorkerTotal": 30
+    },
+    {
+      "yearBuddhist": 2569,
+      "yearGregorian": 2026,
+      "msm": 773,
+      "transgenderWomen": 116,
+      "sexWorkerMale": 21,
+      "sexWorkerFemale": 94,
+      "sexWorkerTransgender": 0,
+      "pwid": 0,
+      "sexWorkerTotal": 115
+    }
+  ],
+  "latest": {
+    "yearBuddhist": 2569,
+    "yearGregorian": 2026,
+    "sexWorkerTotal": 115,
+    "msm": 773,
+    "transgenderWomen": 116
+  }
+}

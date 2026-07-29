@@ -1,0 +1,970 @@
+{
+  "generatedAt": "2026-07-29T20:03:17.397Z",
+  "source": {
+    "hss": {
+      "package": "hss_11_49",
+      "url": "https://data.go.th/dataset/hss_11_49",
+      "publisher": "กรมสนับสนุนบริการสุขภาพ",
+      "note": "Registered providers in certified health establishments (นวด สปา only). Aggregated by province — certificate codes and birth years are not published.",
+      "serviceTypeFilter": "นวด สปา"
+    },
+    "excise": {
+      "package": "03_1201",
+      "url": "https://data.go.th/dataset/03_1201",
+      "publisher": "กรมสรรพสามิต",
+      "note": "National excise tax collection on bath / body steam / massage establishments and related service revenue. Proxy for the tax-paying licensed sector — not a count of Telegram venues."
+    },
+    "caveat": "Formalization gap joins inventory venue density to HSS certified counts. It is not a legality verdict for any shop, worker, or listing."
+  },
+  "hss": {
+    "nationalTotal": 74382,
+    "byGender": {
+      "F": 67706,
+      "M": 6676
+    },
+    "provinceCount": 77
+  },
+  "excise": {
+    "source": {
+      "package": "03_1201",
+      "url": "https://data.go.th/dataset/03_1201",
+      "publisher": "กรมสรรพสามิต",
+      "note": "National excise tax collection on bath / body steam / massage establishments and related service revenue. Proxy for the tax-paying licensed sector — not a count of Telegram venues."
+    },
+    "series": [
+      {
+        "yearBuddhist": 2563,
+        "yearGregorian": 2020,
+        "taxNetBaht": 56168411,
+        "byLine": {
+          "service_provider_revenue": 55893806,
+          "establishment": 245951,
+          "beauty_wellness_venue": 27440,
+          "hospital": 1214
+        }
+      },
+      {
+        "yearBuddhist": 2564,
+        "yearGregorian": 2021,
+        "taxNetBaht": 18295261,
+        "byLine": {
+          "service_provider_revenue": 18170443,
+          "beauty_wellness_venue": 15645,
+          "establishment": 109173
+        }
+      },
+      {
+        "yearBuddhist": 2565,
+        "yearGregorian": 2022,
+        "taxNetBaht": 9258841,
+        "byLine": {
+          "service_provider_revenue": 9181877,
+          "establishment": 60164,
+          "beauty_wellness_venue": 16800
+        }
+      },
+      {
+        "yearBuddhist": 2566,
+        "yearGregorian": 2023,
+        "taxNetBaht": 48676932,
+        "byLine": {
+          "service_provider_revenue": 48621209,
+          "beauty_wellness_venue": 24920,
+          "establishment": 30803
+        }
+      },
+      {
+        "yearBuddhist": 2567,
+        "yearGregorian": 2024,
+        "taxNetBaht": 62119642,
+        "byLine": {
+          "service_provider_revenue": 61666771,
+          "beauty_wellness_venue": 24815,
+          "establishment": 381736,
+          "hospital": 46320
+        }
+      },
+      {
+        "yearBuddhist": 2568,
+        "yearGregorian": 2025,
+        "taxNetBaht": 62673704,
+        "byLine": {
+          "service_provider_revenue": 62327619,
+          "establishment": 83397,
+          "beauty_wellness_venue": 262687
+        }
+      },
+      {
+        "yearBuddhist": 2569,
+        "yearGregorian": 2026,
+        "taxNetBaht": 47056633,
+        "byLine": {
+          "service_provider_revenue": 46783712,
+          "beauty_wellness_venue": 5617,
+          "establishment": 266429,
+          "hospital": 875
+        }
+      }
+    ],
+    "latest": {
+      "yearBuddhist": 2569,
+      "yearGregorian": 2026,
+      "taxNetBaht": 47056633,
+      "byLine": {
+        "service_provider_revenue": 46783712,
+        "beauty_wellness_venue": 5617,
+        "establishment": 266429,
+        "hospital": 875
+      }
+    }
+  },
+  "provinces": [
+    {
+      "name": "Bangkok",
+      "code": "10",
+      "lat": 13.7563,
+      "lng": 100.5018,
+      "certifiedProviders": 7077,
+      "byGender": {
+        "F": 6035,
+        "M": 1042
+      }
+    },
+    {
+      "name": "Udon Thani",
+      "code": "41",
+      "lat": 17.4138,
+      "lng": 102.7872,
+      "certifiedProviders": 4025,
+      "byGender": {
+        "F": 3709,
+        "M": 316
+      }
+    },
+    {
+      "name": "Chiang Rai",
+      "code": "57",
+      "lat": 19.9105,
+      "lng": 99.8406,
+      "certifiedProviders": 3766,
+      "byGender": {
+        "F": 3442,
+        "M": 324
+      }
+    },
+    {
+      "name": "Nakhon Ratchasima",
+      "code": "30",
+      "lat": 14.9799,
+      "lng": 102.0978,
+      "certifiedProviders": 3332,
+      "byGender": {
+        "F": 3107,
+        "M": 225
+      }
+    },
+    {
+      "name": "Chonburi",
+      "code": "20",
+      "lat": 13.3611,
+      "lng": 100.9847,
+      "certifiedProviders": 2939,
+      "byGender": {
+        "F": 2689,
+        "M": 250
+      }
+    },
+    {
+      "name": "Buriram",
+      "code": "31",
+      "lat": 14.993,
+      "lng": 103.1029,
+      "certifiedProviders": 2510,
+      "byGender": {
+        "F": 2341,
+        "M": 169
+      }
+    },
+    {
+      "name": "Chiang Mai",
+      "code": "50",
+      "lat": 18.7883,
+      "lng": 98.9853,
+      "certifiedProviders": 2441,
+      "byGender": {
+        "F": 2160,
+        "M": 281
+      }
+    },
+    {
+      "name": "Khon Kaen",
+      "code": "40",
+      "lat": 16.4419,
+      "lng": 102.836,
+      "certifiedProviders": 2263,
+      "byGender": {
+        "F": 2119,
+        "M": 144
+      }
+    },
+    {
+      "name": "Roi Et",
+      "code": "45",
+      "lat": 16.0538,
+      "lng": 103.652,
+      "certifiedProviders": 2137,
+      "byGender": {
+        "F": 1914,
+        "M": 223
+      }
+    },
+    {
+      "name": "Sakon Nakhon",
+      "code": "47",
+      "lat": 17.154,
+      "lng": 104.134,
+      "certifiedProviders": 2109,
+      "byGender": {
+        "F": 1955,
+        "M": 154
+      }
+    },
+    {
+      "name": "Ubon Ratchathani",
+      "code": "34",
+      "lat": 15.2287,
+      "lng": 104.8564,
+      "certifiedProviders": 1962,
+      "byGender": {
+        "F": 1809,
+        "M": 153
+      }
+    },
+    {
+      "name": "Surin",
+      "code": "32",
+      "lat": 14.882,
+      "lng": 103.4937,
+      "certifiedProviders": 1647,
+      "byGender": {
+        "F": 1566,
+        "M": 81
+      }
+    },
+    {
+      "name": "Chaiyaphum",
+      "code": "36",
+      "lat": 15.806,
+      "lng": 102.031,
+      "certifiedProviders": 1615,
+      "byGender": {
+        "F": 1522,
+        "M": 93
+      }
+    },
+    {
+      "name": "Nonthaburi",
+      "code": "12",
+      "lat": 13.8621,
+      "lng": 100.5144,
+      "certifiedProviders": 1558,
+      "byGender": {
+        "F": 1351,
+        "M": 207
+      }
+    },
+    {
+      "name": "Samut Prakan",
+      "code": "11",
+      "lat": 13.599,
+      "lng": 100.5968,
+      "certifiedProviders": 1521,
+      "byGender": {
+        "F": 1398,
+        "M": 123
+      }
+    },
+    {
+      "name": "Si Sa Ket",
+      "code": "33",
+      "lat": 15.118,
+      "lng": 104.322,
+      "certifiedProviders": 1519,
+      "byGender": {
+        "F": 1419,
+        "M": 100
+      }
+    },
+    {
+      "name": "Pathum Thani",
+      "code": "13",
+      "lat": 14.0208,
+      "lng": 100.525,
+      "certifiedProviders": 1507,
+      "byGender": {
+        "F": 1377,
+        "M": 130
+      }
+    },
+    {
+      "name": "Kalasin",
+      "code": "46",
+      "lat": 16.432,
+      "lng": 103.506,
+      "certifiedProviders": 1460,
+      "byGender": {
+        "F": 1331,
+        "M": 129
+      }
+    },
+    {
+      "name": "Phetchabun",
+      "code": "67",
+      "lat": 16.419,
+      "lng": 101.16,
+      "certifiedProviders": 1416,
+      "byGender": {
+        "F": 1310,
+        "M": 106
+      }
+    },
+    {
+      "name": "Maha Sarakham",
+      "code": "44",
+      "lat": 16.1851,
+      "lng": 103.3025,
+      "certifiedProviders": 1173,
+      "byGender": {
+        "F": 1087,
+        "M": 86
+      }
+    },
+    {
+      "name": "Nong Khai",
+      "code": "43",
+      "lat": 17.878,
+      "lng": 102.742,
+      "certifiedProviders": 1102,
+      "byGender": {
+        "F": 1021,
+        "M": 81
+      }
+    },
+    {
+      "name": "Nong Bua Lamphu",
+      "code": "39",
+      "lat": 17.204,
+      "lng": 102.426,
+      "certifiedProviders": 1056,
+      "byGender": {
+        "F": 993,
+        "M": 63
+      }
+    },
+    {
+      "name": "Nakhon Phanom",
+      "code": "48",
+      "lat": 17.407,
+      "lng": 104.78,
+      "certifiedProviders": 997,
+      "byGender": {
+        "F": 931,
+        "M": 66
+      }
+    },
+    {
+      "name": "Phayao",
+      "code": "56",
+      "lat": 19.192,
+      "lng": 99.879,
+      "certifiedProviders": 986,
+      "byGender": {
+        "F": 890,
+        "M": 96
+      }
+    },
+    {
+      "name": "Bueng Kan",
+      "code": "38",
+      "lat": 18.3609,
+      "lng": 103.646,
+      "certifiedProviders": 909,
+      "byGender": {
+        "F": 856,
+        "M": 53
+      }
+    },
+    {
+      "name": "Phitsanulok",
+      "code": "65",
+      "lat": 16.8211,
+      "lng": 100.2659,
+      "certifiedProviders": 897,
+      "byGender": {
+        "F": 814,
+        "M": 83
+      }
+    },
+    {
+      "name": "Nakhon Sawan",
+      "code": "60",
+      "lat": 15.7047,
+      "lng": 100.137,
+      "certifiedProviders": 880,
+      "byGender": {
+        "F": 824,
+        "M": 56
+      }
+    },
+    {
+      "name": "Nakhon Pathom",
+      "code": "73",
+      "lat": 13.819,
+      "lng": 100.062,
+      "certifiedProviders": 843,
+      "byGender": {
+        "F": 751,
+        "M": 92
+      }
+    },
+    {
+      "name": "Kamphaeng Phet",
+      "code": "62",
+      "lat": 16.4827,
+      "lng": 99.522,
+      "certifiedProviders": 771,
+      "byGender": {
+        "F": 718,
+        "M": 53
+      }
+    },
+    {
+      "name": "Sa Kaeo",
+      "code": "27",
+      "lat": 13.824,
+      "lng": 102.064,
+      "certifiedProviders": 766,
+      "byGender": {
+        "F": 726,
+        "M": 40
+      }
+    },
+    {
+      "name": "Yasothon",
+      "code": "35",
+      "lat": 15.794,
+      "lng": 104.145,
+      "certifiedProviders": 698,
+      "byGender": {
+        "F": 656,
+        "M": 42
+      }
+    },
+    {
+      "name": "Lampang",
+      "code": "52",
+      "lat": 18.2888,
+      "lng": 99.4909,
+      "certifiedProviders": 688,
+      "byGender": {
+        "F": 628,
+        "M": 60
+      }
+    },
+    {
+      "name": "Rayong",
+      "code": "21",
+      "lat": 12.6833,
+      "lng": 101.2372,
+      "certifiedProviders": 676,
+      "byGender": {
+        "F": 613,
+        "M": 63
+      }
+    },
+    {
+      "name": "Suphan Buri",
+      "code": "72",
+      "lat": 14.474,
+      "lng": 100.118,
+      "certifiedProviders": 615,
+      "byGender": {
+        "F": 561,
+        "M": 54
+      }
+    },
+    {
+      "name": "Chachoengsao",
+      "code": "24",
+      "lat": 13.6904,
+      "lng": 101.078,
+      "certifiedProviders": 604,
+      "byGender": {
+        "F": 553,
+        "M": 51
+      }
+    },
+    {
+      "name": "Phichit",
+      "code": "66",
+      "lat": 16.441,
+      "lng": 100.348,
+      "certifiedProviders": 593,
+      "byGender": {
+        "F": 548,
+        "M": 45
+      }
+    },
+    {
+      "name": "Surat Thani",
+      "code": "84",
+      "lat": 9.1382,
+      "lng": 99.3331,
+      "certifiedProviders": 567,
+      "byGender": {
+        "F": 497,
+        "M": 70
+      }
+    },
+    {
+      "name": "Loei",
+      "code": "42",
+      "lat": 17.49,
+      "lng": 101.722,
+      "certifiedProviders": 566,
+      "byGender": {
+        "F": 527,
+        "M": 39
+      }
+    },
+    {
+      "name": "Ratchaburi",
+      "code": "70",
+      "lat": 13.528,
+      "lng": 99.813,
+      "certifiedProviders": 547,
+      "byGender": {
+        "F": 472,
+        "M": 75
+      }
+    },
+    {
+      "name": "Sukhothai",
+      "code": "64",
+      "lat": 17.0056,
+      "lng": 99.826,
+      "certifiedProviders": 547,
+      "byGender": {
+        "F": 493,
+        "M": 54
+      }
+    },
+    {
+      "name": "Mukdahan",
+      "code": "49",
+      "lat": 16.543,
+      "lng": 104.724,
+      "certifiedProviders": 526,
+      "byGender": {
+        "F": 489,
+        "M": 37
+      }
+    },
+    {
+      "name": "Phra Nakhon Si Ayutthaya",
+      "code": "14",
+      "lat": 14.369,
+      "lng": 100.587,
+      "certifiedProviders": 517,
+      "byGender": {
+        "F": 464,
+        "M": 53
+      }
+    },
+    {
+      "name": "Kanchanaburi",
+      "code": "71",
+      "lat": 14.022,
+      "lng": 99.532,
+      "certifiedProviders": 514,
+      "byGender": {
+        "F": 470,
+        "M": 44
+      }
+    },
+    {
+      "name": "Amnat Charoen",
+      "code": "37",
+      "lat": 15.865,
+      "lng": 104.626,
+      "certifiedProviders": 514,
+      "byGender": {
+        "F": 475,
+        "M": 39
+      }
+    },
+    {
+      "name": "Tak",
+      "code": "63",
+      "lat": 16.884,
+      "lng": 99.125,
+      "certifiedProviders": 484,
+      "byGender": {
+        "F": 390,
+        "M": 94
+      }
+    },
+    {
+      "name": "Lopburi",
+      "code": "16",
+      "lat": 14.7995,
+      "lng": 100.653,
+      "certifiedProviders": 481,
+      "byGender": {
+        "F": 435,
+        "M": 46
+      }
+    },
+    {
+      "name": "Songkhla",
+      "code": "90",
+      "lat": 7.1898,
+      "lng": 100.5954,
+      "certifiedProviders": 477,
+      "byGender": {
+        "F": 430,
+        "M": 47
+      }
+    },
+    {
+      "name": "Nakhon Si Thammarat",
+      "code": "80",
+      "lat": 8.4304,
+      "lng": 99.9631,
+      "certifiedProviders": 458,
+      "byGender": {
+        "F": 405,
+        "M": 53
+      }
+    },
+    {
+      "name": "Phuket",
+      "code": "83",
+      "lat": 7.8804,
+      "lng": 98.3923,
+      "certifiedProviders": 437,
+      "byGender": {
+        "F": 406,
+        "M": 31
+      }
+    },
+    {
+      "name": "Phrae",
+      "code": "54",
+      "lat": 18.145,
+      "lng": 100.141,
+      "certifiedProviders": 437,
+      "byGender": {
+        "F": 387,
+        "M": 50
+      }
+    },
+    {
+      "name": "Samut Sakhon",
+      "code": "74",
+      "lat": 13.547,
+      "lng": 100.274,
+      "certifiedProviders": 429,
+      "byGender": {
+        "F": 385,
+        "M": 44
+      }
+    },
+    {
+      "name": "Prachinburi",
+      "code": "25",
+      "lat": 14.05,
+      "lng": 101.37,
+      "certifiedProviders": 422,
+      "byGender": {
+        "F": 380,
+        "M": 42
+      }
+    },
+    {
+      "name": "Prachuap Khiri Khan",
+      "code": "77",
+      "lat": 11.812,
+      "lng": 99.798,
+      "certifiedProviders": 418,
+      "byGender": {
+        "F": 387,
+        "M": 31
+      }
+    },
+    {
+      "name": "Uttaradit",
+      "code": "53",
+      "lat": 17.62,
+      "lng": 100.099,
+      "certifiedProviders": 392,
+      "byGender": {
+        "F": 354,
+        "M": 38
+      }
+    },
+    {
+      "name": "Saraburi",
+      "code": "19",
+      "lat": 14.5289,
+      "lng": 100.91,
+      "certifiedProviders": 389,
+      "byGender": {
+        "F": 360,
+        "M": 29
+      }
+    },
+    {
+      "name": "Uthai Thani",
+      "code": "61",
+      "lat": null,
+      "lng": null,
+      "certifiedProviders": 363,
+      "byGender": {
+        "F": 333,
+        "M": 30
+      }
+    },
+    {
+      "name": "Chumphon",
+      "code": "86",
+      "lat": 10.493,
+      "lng": 99.18,
+      "certifiedProviders": 336,
+      "byGender": {
+        "F": 300,
+        "M": 36
+      }
+    },
+    {
+      "name": "Nan",
+      "code": "55",
+      "lat": 18.783,
+      "lng": 100.779,
+      "certifiedProviders": 334,
+      "byGender": {
+        "F": 295,
+        "M": 39
+      }
+    },
+    {
+      "name": "Lamphun",
+      "code": "51",
+      "lat": 18.58,
+      "lng": 99.007,
+      "certifiedProviders": 327,
+      "byGender": {
+        "F": 285,
+        "M": 42
+      }
+    },
+    {
+      "name": "Trang",
+      "code": "92",
+      "lat": 7.556,
+      "lng": 99.611,
+      "certifiedProviders": 307,
+      "byGender": {
+        "F": 281,
+        "M": 26
+      }
+    },
+    {
+      "name": "Chai Nat",
+      "code": "18",
+      "lat": 15.185,
+      "lng": 100.125,
+      "certifiedProviders": 278,
+      "byGender": {
+        "F": 253,
+        "M": 25
+      }
+    },
+    {
+      "name": "Chanthaburi",
+      "code": "22",
+      "lat": 12.611,
+      "lng": 102.104,
+      "certifiedProviders": 277,
+      "byGender": {
+        "F": 257,
+        "M": 20
+      }
+    },
+    {
+      "name": "Phetchaburi",
+      "code": "76",
+      "lat": 13.111,
+      "lng": 99.94,
+      "certifiedProviders": 214,
+      "byGender": {
+        "F": 195,
+        "M": 19
+      }
+    },
+    {
+      "name": "Mae Hong Son",
+      "code": "58",
+      "lat": 19.302,
+      "lng": 97.965,
+      "certifiedProviders": 213,
+      "byGender": {
+        "F": 198,
+        "M": 15
+      }
+    },
+    {
+      "name": "Krabi",
+      "code": "81",
+      "lat": 8.0863,
+      "lng": 98.9063,
+      "certifiedProviders": 212,
+      "byGender": {
+        "F": 187,
+        "M": 25
+      }
+    },
+    {
+      "name": "Phatthalung",
+      "code": "93",
+      "lat": 7.617,
+      "lng": 100.074,
+      "certifiedProviders": 160,
+      "byGender": {
+        "F": 144,
+        "M": 16
+      }
+    },
+    {
+      "name": "Nakhon Nayok",
+      "code": "26",
+      "lat": 14.207,
+      "lng": 101.213,
+      "certifiedProviders": 143,
+      "byGender": {
+        "F": 124,
+        "M": 19
+      }
+    },
+    {
+      "name": "Yala",
+      "code": "95",
+      "lat": 6.541,
+      "lng": 101.281,
+      "certifiedProviders": 134,
+      "byGender": {
+        "F": 117,
+        "M": 17
+      }
+    },
+    {
+      "name": "Ranong",
+      "code": "85",
+      "lat": 9.96,
+      "lng": 98.635,
+      "certifiedProviders": 126,
+      "byGender": {
+        "F": 118,
+        "M": 8
+      }
+    },
+    {
+      "name": "Ang Thong",
+      "code": "15",
+      "lat": 14.5896,
+      "lng": 100.455,
+      "certifiedProviders": 125,
+      "byGender": {
+        "F": 113,
+        "M": 12
+      }
+    },
+    {
+      "name": "Trat",
+      "code": "23",
+      "lat": 12.242,
+      "lng": 102.517,
+      "certifiedProviders": 118,
+      "byGender": {
+        "F": 106,
+        "M": 12
+      }
+    },
+    {
+      "name": "Sing Buri",
+      "code": "17",
+      "lat": 14.891,
+      "lng": 100.405,
+      "certifiedProviders": 116,
+      "byGender": {
+        "F": 108,
+        "M": 8
+      }
+    },
+    {
+      "name": "Phang Nga",
+      "code": "82",
+      "lat": 8.45,
+      "lng": 98.525,
+      "certifiedProviders": 113,
+      "byGender": {
+        "F": 103,
+        "M": 10
+      }
+    },
+    {
+      "name": "Samut Songkhram",
+      "code": "75",
+      "lat": 13.414,
+      "lng": 100.002,
+      "certifiedProviders": 83,
+      "byGender": {
+        "F": 70,
+        "M": 13
+      }
+    },
+    {
+      "name": "Satun",
+      "code": "91",
+      "lat": 6.623,
+      "lng": 100.067,
+      "certifiedProviders": 81,
+      "byGender": {
+        "F": 72,
+        "M": 9
+      }
+    },
+    {
+      "name": "Narathiwat",
+      "code": "96",
+      "lat": 6.426,
+      "lng": 101.823,
+      "certifiedProviders": 79,
+      "byGender": {
+        "F": 64,
+        "M": 15
+      }
+    },
+    {
+      "name": "Pattani",
+      "code": "94",
+      "lat": 6.869,
+      "lng": 101.25,
+      "certifiedProviders": 63,
+      "byGender": {
+        "F": 53,
+        "M": 10
+      }
+    }
+  ]
+}
