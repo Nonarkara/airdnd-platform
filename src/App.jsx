@@ -48,6 +48,7 @@ const FAQ = lazy(() => import('./components/FAQ'));
 const MatchingPaper = lazy(() => import('./components/MatchingPaper'));
 const Trends = lazy(() => import('./components/Trends'));
 const Health = lazy(() => import('./components/Health'));
+const Insights = lazy(() => import('./components/Insights'));
 const SORT_OPTIONS = [
   'Most Active Broadcasters',
   'Most Promotions',
@@ -758,6 +759,32 @@ function App() {
             <main className="app-main">
               <Suspense fallback={<div className="page-shell-loading">Loading health research…</div>}>
                 <Health listings={allListings} />
+              </Suspense>
+            </main>
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+          </div>
+        )}
+      />
+      <Route
+        path="/insights"
+        element={(
+          <div className="app-shell">
+            <Header
+              language={language}
+              setLanguage={setLanguage}
+              t={t}
+              theme={theme}
+              setTheme={setTheme}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
+              sourceLabel={displayDataState.sourceLabel}
+              activeView="directory"
+              setActiveView={setActiveView}
+              metrics={metrics}
+            />
+            <main className="app-main">
+              <Suspense fallback={<div className="page-shell-loading">Loading the reading room…</div>}>
+                <Insights />
               </Suspense>
             </main>
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />

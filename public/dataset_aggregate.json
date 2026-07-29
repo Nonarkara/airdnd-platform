@@ -1,0 +1,2270 @@
+{
+  "title": "Sabai Sabai — per-business aggregate dataset",
+  "license": "Research use. Source: public Telegram channel posts. Phones masked; person-style persona names excluded — business-style names only.",
+  "generatedAt": "2026-07-29T15:19:16.828Z",
+  "method": "Phone-number dedup of persona-posts; see /methodology.",
+  "row_count": 91,
+  "rows": [
+    {
+      "phone_masked": "099•••9693",
+      "identity_count": 4,
+      "business_names": [
+        "Malee Aromaoil Healthmassage",
+        "มาลี อโรม่าออยล์ นวดเพื่อสุขภาพ Malee Aromaoil H",
+        "มาลี อโรม่าออยล์ นวดเพื่อสุขภาพ",
+        "มาลี อโรม่าออยล์ นวดเพื่อสุขภาพ (Malee Aromaoil"
+      ],
+      "first_seen": "2026-06-02T08:10:07.000Z",
+      "last_seen": "2026-07-25T05:25:09.000Z",
+      "post_mentions": 616,
+      "photo_count": 3781,
+      "channels": [
+        "@relaxsocietymassage",
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": "10:00-22:00"
+    },
+    {
+      "phone_masked": "094•••4563",
+      "identity_count": 5,
+      "business_names": [
+        "Phoenix Spa Rangsit Klong 4",
+        "ร้านฟีนิกซ์ รังสิต คลอง 4",
+        "PHOENIX SPA คลอง 4 ( มีสาขาเดียว )"
+      ],
+      "first_seen": "2026-06-02T06:38:57.000Z",
+      "last_seen": "2026-07-24T12:45:01.000Z",
+      "post_mentions": 365,
+      "photo_count": 2305,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Pathum Thani"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "086•••9154",
+      "identity_count": 45,
+      "business_names": [
+        "Massage Listing บางใหญ",
+        "สาวเหนือ นวดลงศอกได้ คุยเก่ง",
+        "Louis Spa Bangyai",
+        "ดูแลดี ฟิลร่วมจัดเต็ม นวดได้จริงจัง",
+        "นวดได้ฟิลแฟน เซอร์วิสด",
+        "@ Louis Spa Bangyai"
+      ],
+      "first_seen": "2026-06-02T02:53:43.000Z",
+      "last_seen": "2026-07-25T04:54:01.000Z",
+      "post_mentions": 312,
+      "photo_count": 417,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Nonthaburi"
+      ],
+      "price_mentions_thb": [
+        100,
+        150,
+        100
+      ],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10.00-03.00"
+    },
+    {
+      "phone_masked": "064•••8886",
+      "identity_count": 2,
+      "business_names": [
+        "นันตา นวดเพื่อสุขภาพ",
+        "ร้าน นันตา นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-02T04:50:58.000Z",
+      "last_seen": "2026-07-25T04:37:39.000Z",
+      "post_mentions": 298,
+      "photo_count": 313,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11:00-23:00"
+    },
+    {
+      "phone_masked": "095•••7756",
+      "identity_count": 2,
+      "business_names": [
+        "หมอนวดดี มีประสบการณ",
+        "ร้านชวนชม"
+      ],
+      "first_seen": "2026-06-02T06:48:25.000Z",
+      "last_seen": "2026-07-25T03:24:32.000Z",
+      "post_mentions": 228,
+      "photo_count": 1247,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "11.00-23.00"
+    },
+    {
+      "phone_masked": "082•••6015",
+      "identity_count": 3,
+      "business_names": [
+        "#ชโนทัยนวดเพื่อสุขภาพ",
+        "ชโนทัยนวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-12T10:03:16.000Z",
+      "last_seen": "2026-07-25T03:00:51.000Z",
+      "post_mentions": 221,
+      "photo_count": 1563,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage",
+        "ชโนทัย นวดเพื่อสุขภาพ พระราม2"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00-23:00"
+    },
+    {
+      "phone_masked": "099•••5062",
+      "identity_count": 4,
+      "business_names": [
+        "Tanyaluck Spa",
+        "ร้านธัญญลักษณ"
+      ],
+      "first_seen": "2026-05-30T10:45:10+00:00",
+      "last_seen": "2026-07-24T04:47:12.000Z",
+      "post_mentions": 220,
+      "photo_count": 656,
+      "channels": [
+        "@relaxsocietymassage",
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Pathum Thani",
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00-24:00 daily"
+    },
+    {
+      "phone_masked": "094•••5328",
+      "identity_count": 3,
+      "business_names": [
+        "Keawjaojorm Massage",
+        "Relax Society Massage",
+        "Massage Listing เสรีไทย 4"
+      ],
+      "first_seen": "2026-06-02T02:59:01.000Z",
+      "last_seen": "2026-07-25T04:56:49.000Z",
+      "post_mentions": 210,
+      "photo_count": 1544,
+      "channels": [
+        "@keawjaojormmassage",
+        "@relaxsocietymassage",
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10.00-23.00"
+    },
+    {
+      "phone_masked": "098•••6441",
+      "identity_count": 2,
+      "business_names": [
+        "ร้านกุหลาบ นวดเพื่อสุขภาพ",
+        "กุหลาบ นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-02T07:39:34.000Z",
+      "last_seen": "2026-07-25T05:19:00.000Z",
+      "post_mentions": 208,
+      "photo_count": 378,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Nonthaburi"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11:00-23:00"
+    },
+    {
+      "phone_masked": "062•••4747",
+      "identity_count": 4,
+      "business_names": [
+        "sabaispa by michel)",
+        "Sabaispa by Michel (SBM)",
+        "Welcome to SABAISPA by michel",
+        "SBM (sabaispa by michel)"
+      ],
+      "first_seen": "2026-06-01T13:38:16.000Z",
+      "last_seen": "2026-07-23T18:11:51.000Z",
+      "post_mentions": 172,
+      "photo_count": 1050,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11.00-02.00"
+    },
+    {
+      "phone_masked": "098•••9888",
+      "identity_count": 1,
+      "business_names": [
+        "CHANEL MASSAGE"
+      ],
+      "first_seen": "2026-06-02T03:09:29.000Z",
+      "last_seen": "2026-07-25T02:50:52.000Z",
+      "post_mentions": 161,
+      "photo_count": 485,
+      "channels": [
+        "@chanelmassage",
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10.00 - 23:00"
+    },
+    {
+      "phone_masked": "083•••6969",
+      "identity_count": 20,
+      "business_names": [
+        "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
+        "นวดเก่ง ชำนาญการใช้มือ",
+        "คำหอม นวดเพื่อสุขภาพ",
+        "LOUISSPA",
+        "www.massagehotelbangkok.com",
+        "นวดผ่อนคลาย💖ดีสุดๆ เลย เช็คว่าง"
+      ],
+      "first_seen": "2026-06-01T14:35:42.000Z",
+      "last_seen": "2026-07-24T02:14:52.000Z",
+      "post_mentions": 148,
+      "photo_count": 254,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10.00-03.00"
+    },
+    {
+      "phone_masked": "082•••3887",
+      "identity_count": 2,
+      "business_names": [
+        "ร้านวิถีไท รามคำแหง164"
+      ],
+      "first_seen": "2026-06-02T06:22:54.000Z",
+      "last_seen": "2026-07-25T02:41:54.000Z",
+      "post_mentions": 133,
+      "photo_count": 943,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11.00-23.00"
+    },
+    {
+      "phone_masked": "096•••8271",
+      "identity_count": 2,
+      "business_names": [
+        "นวดเล็ก ๆ ที่อบอุ่น เราดูแลคุณด้วยความใส่ใจ คว",
+        "Kirista Massage"
+      ],
+      "first_seen": "2026-06-02T05:14:11.000Z",
+      "last_seen": "2026-07-22T11:07:57.000Z",
+      "post_mentions": 131,
+      "photo_count": 391,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Nonthaburi"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "10:00 - 22:00"
+    },
+    {
+      "phone_masked": "083•••2869",
+      "identity_count": 3,
+      "business_names": [
+        "เอมมิกานวดเพื่อสุขภาพ รามอินทรา14",
+        "#นวดใกล้ฉัน"
+      ],
+      "first_seen": "2026-06-02T03:43:45.000Z",
+      "last_seen": "2026-07-25T03:23:20.000Z",
+      "post_mentions": 130,
+      "photo_count": 598,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "10:00-23:00"
+    },
+    {
+      "phone_masked": "094•••4024",
+      "identity_count": 4,
+      "business_names": [
+        "www.massagehotelbangkok.com",
+        "Massage Delivery Bangkok",
+        "บริการนวดนอกสถานที่ (On-site Massage Service)",
+        "กุหลาบ นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-01T17:08:33.000Z",
+      "last_seen": "2026-07-25T04:54:08.000Z",
+      "post_mentions": 120,
+      "photo_count": 740,
+      "channels": [
+        "@relaxsocietymassage",
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "24 Hours"
+    },
+    {
+      "phone_masked": "083•••6938",
+      "identity_count": 6,
+      "business_names": [
+        "นวดดี บิ้วเก่ง เป็นกันเอง",
+        "www.massagehotelbangkok.com",
+        "@ Louis Spa Bangyai"
+      ],
+      "first_seen": "2026-06-01T12:50:59.000Z",
+      "last_seen": "2026-07-25T05:15:31.000Z",
+      "post_mentions": 112,
+      "photo_count": 232,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Nonthaburi"
+      ],
+      "price_mentions_thb": [
+        399
+      ],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11:00-23:00"
+    },
+    {
+      "phone_masked": "062•••8774",
+      "identity_count": 1,
+      "business_names": [
+        "#หมอนวดแนะนำ"
+      ],
+      "first_seen": "2026-06-02T02:47:05.000Z",
+      "last_seen": "2026-07-25T03:24:28.000Z",
+      "post_mentions": 93,
+      "photo_count": 373,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "081•••9558",
+      "identity_count": 1,
+      "business_names": [
+        "ละมัย นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-02T02:47:05.000Z",
+      "last_seen": "2026-07-25T03:24:35.000Z",
+      "post_mentions": 90,
+      "photo_count": 409,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "064•••2795",
+      "identity_count": 3,
+      "business_names": [
+        "ร้านวินวดเพื่อสุขภาพ",
+        "วินวดเพื่อสุขภาพ พิกัด ซอยวัดลาดปลาดุก",
+        "วินวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-05-29T03:48:13+00:00",
+      "last_seen": "2026-07-25T05:05:22.000Z",
+      "post_mentions": 79,
+      "photo_count": 87,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Nonthaburi"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00-22:00"
+    },
+    {
+      "phone_masked": "063•••8684",
+      "identity_count": 3,
+      "business_names": [
+        "win win massage udomsuk soi 5 วินวิน นวดเพื่อสุข",
+        "นวด วินวิน นวดเพื่อสุขภาพ Winwin Massage อุดมสุข",
+        "ดีเอ็นนวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-05-04T02:44:13.000Z",
+      "last_seen": "2026-07-25T03:54:04.000Z",
+      "post_mentions": 78,
+      "photo_count": 93,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10.00 - 22.00"
+    },
+    {
+      "phone_masked": "064•••5965",
+      "identity_count": 1,
+      "business_names": [
+        "#หมอนวดแนะนำ"
+      ],
+      "first_seen": "2026-06-25T02:09:40.000Z",
+      "last_seen": "2026-07-25T03:24:30.000Z",
+      "post_mentions": 71,
+      "photo_count": 310,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Pathum Thani"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "061•••9296",
+      "identity_count": 2,
+      "business_names": [
+        "Yesika Spa @ ลาดพร้าว 71",
+        "Yesika Spa"
+      ],
+      "first_seen": "2026-05-29T01:09:21+00:00",
+      "last_seen": "2026-07-25T03:12:50.000Z",
+      "post_mentions": 69,
+      "photo_count": 86,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10.00-02.00"
+    },
+    {
+      "phone_masked": "063•••9444",
+      "identity_count": 5,
+      "business_names": [
+        "Asian Massage",
+        "Asianmassage Latphrao",
+        "Asianmassage",
+        "Asian Massage Latphrao"
+      ],
+      "first_seen": "2026-06-01T07:34:07.000Z",
+      "last_seen": "2026-06-28T11:35:35.000Z",
+      "post_mentions": 64,
+      "photo_count": 73,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399
+      ],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00-02:00"
+    },
+    {
+      "phone_masked": "095•••9639",
+      "identity_count": 8,
+      "business_names": [
+        "RELAXO SPA✅สนามบินน้ำ",
+        "RELAXO SPA",
+        "RELAXO SPA✅สนามบินน้ำ นนทบุร",
+        "บริการดีมาก นวดเก่งทุกคน",
+        "ไม่สามารถเลือกพนักงานนวดได"
+      ],
+      "first_seen": "2026-06-01T05:08:26.000Z",
+      "last_seen": "2026-07-25T03:42:02.000Z",
+      "post_mentions": 62,
+      "photo_count": 319,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Nonthaburi",
+        "Pathum Thani"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11.00 - 20.00"
+    },
+    {
+      "phone_masked": "080•••4296",
+      "identity_count": 6,
+      "business_names": [
+        "PP Spa พระราม 2",
+        "ห้องนวด ห้องอาบน้ำส่วนตัว",
+        "Caviar Spa (คาเวียร์ สปา )",
+        "Caviar Spa (พระราม2 ซอย 60)",
+        "Relax Society Massage"
+      ],
+      "first_seen": "2026-05-28T09:06:34+00:00",
+      "last_seen": "2026-07-25T04:02:21.000Z",
+      "post_mentions": 57,
+      "photo_count": 107,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11:00-23:00"
+    },
+    {
+      "phone_masked": "064•••9545",
+      "identity_count": 1,
+      "business_names": [
+        "นวดแก้ว มาซซาส 📍สาขาลาดปลาดุก"
+      ],
+      "first_seen": "2026-06-02T03:08:36.000Z",
+      "last_seen": "2026-07-25T03:25:57.000Z",
+      "post_mentions": 48,
+      "photo_count": 367,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": "10:00-24:00"
+    },
+    {
+      "phone_masked": "•••",
+      "identity_count": 2,
+      "business_names": [
+        "A5 Massage",
+        "The Bank Massage Club"
+      ],
+      "first_seen": "2026-04-11T00:45:06+00:00",
+      "last_seen": "2026-07-06T00:45:13.000Z",
+      "post_mentions": 44,
+      "photo_count": 44,
+      "channels": [
+        "@relaxsocietymassage",
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700,
+        700
+      ],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00-22:00"
+    },
+    {
+      "phone_masked": "098•••2150",
+      "identity_count": 1,
+      "business_names": [],
+      "first_seen": "2026-06-02T03:08:36.000Z",
+      "last_seen": "2026-07-25T03:25:51.000Z",
+      "post_mentions": 42,
+      "photo_count": 299,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "095•••5454",
+      "identity_count": 2,
+      "business_names": [
+        "นวดใกล้ฉัน",
+        "นันตา นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-02T07:07:05.000Z",
+      "last_seen": "2026-07-23T06:59:59.000Z",
+      "post_mentions": 41,
+      "photo_count": 197,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "11:00-23:00"
+    },
+    {
+      "phone_masked": "065•••4992",
+      "identity_count": 1,
+      "business_names": [],
+      "first_seen": "2026-06-01T03:25:17.000Z",
+      "last_seen": "2026-07-24T03:35:31.000Z",
+      "post_mentions": 40,
+      "photo_count": 205,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "092•••1692",
+      "identity_count": 1,
+      "business_names": [
+        "คำหอม นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-07-20T10:46:37.000Z",
+      "last_seen": "2026-07-24T11:04:18.000Z",
+      "post_mentions": 33,
+      "photo_count": 77,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "021•••0230",
+      "identity_count": 3,
+      "business_names": [
+        "โนอาห์ สปา - NOAH SPA",
+        "ดีเอ็นนวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-05-24T03:34:50+00:00",
+      "last_seen": "2026-07-22T03:04:01.000Z",
+      "post_mentions": 31,
+      "photo_count": 40,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00-22:00"
+    },
+    {
+      "phone_masked": "083•••8633",
+      "identity_count": 2,
+      "business_names": [
+        "นิว นวดเพื่อสุขภาพ",
+        "นิวนวดเพื่อสุขภาพ พระราม5"
+      ],
+      "first_seen": "2026-05-29T03:47:38+00:00",
+      "last_seen": "2026-07-25T03:26:01.000Z",
+      "post_mentions": 30,
+      "photo_count": 225,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00-22:00"
+    },
+    {
+      "phone_masked": "098•••3625",
+      "identity_count": 4,
+      "business_names": [
+        "ชโนทัยนวดเพื่อสุขภาพ",
+        "#ชโนทัยนวดเพื่อสุขภาพ",
+        "นวดนนทบุรี #นวดบางใหญ่ #ซอยกันตนา",
+        "ชโนทัยนวดเพื่อสุขภาพ บางใหญ"
+      ],
+      "first_seen": "2026-07-10T08:47:25.000Z",
+      "last_seen": "2026-07-25T03:03:46.000Z",
+      "post_mentions": 26,
+      "photo_count": 192,
+      "channels": [
+        "@relaxsociety2020",
+        "ชโนทัย นวดเพื่อสุขภาพ พระราม2",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Nonthaburi"
+      ],
+      "price_mentions_thb": [
+        900
+      ],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "080•••9979",
+      "identity_count": 4,
+      "business_names": [
+        "ฟ้ารุ่งเรือง นวดเพื่อสุขภาพ เชียงราย",
+        "ฟ้ารุ่งเรือง นวดเพื่อสุขภาพ",
+        "ห้องนวดส่วนตัว ทักจองคิว",
+        "นันตา นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-01T11:52:04.000Z",
+      "last_seen": "2026-06-23T05:15:14.000Z",
+      "post_mentions": 25,
+      "photo_count": 29,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Chiang Rai"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00 - 24:00"
+    },
+    {
+      "phone_masked": "082•••2684",
+      "identity_count": 2,
+      "business_names": [
+        "ดีเอ็นนวดเพื่อสุขภาพ",
+        "นวดและสปาที่ตอบโจทย์คุณที่สุด ไม่ว่าจะเป็นสายผ่อ"
+      ],
+      "first_seen": "2026-05-29T03:46:47+00:00",
+      "last_seen": "2026-07-21T05:10:53.000Z",
+      "post_mentions": 24,
+      "photo_count": 71,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Chonburi",
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00-22:00"
+    },
+    {
+      "phone_masked": "081•••4964",
+      "identity_count": 1,
+      "business_names": [
+        "นวดไทย • นวดไทยผสมออยล์ • นวดน้ำมันผ่อนคลาย • นว"
+      ],
+      "first_seen": "2026-07-13T14:34:37.000Z",
+      "last_seen": "2026-07-25T03:25:53.000Z",
+      "post_mentions": 23,
+      "photo_count": 177,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": "10:30–22:30"
+    },
+    {
+      "phone_masked": "081•••6842",
+      "identity_count": 2,
+      "business_names": [
+        "Baannine Massage Spa",
+        "Relax Society Massage"
+      ],
+      "first_seen": "2026-05-19T08:37:30+00:00",
+      "last_seen": "2026-07-23T11:59:38.000Z",
+      "post_mentions": 22,
+      "photo_count": 28,
+      "channels": [
+        "Baannine Massage Spa",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10.00-03.00"
+    },
+    {
+      "phone_masked": "098•••1655",
+      "identity_count": 3,
+      "business_names": [
+        "ฟลอร่า มาสสาจ (Flora Massage)"
+      ],
+      "first_seen": "2026-05-29T08:08:31+00:00",
+      "last_seen": "2026-07-24T06:12:51.000Z",
+      "post_mentions": 21,
+      "photo_count": 20,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Nonthaburi"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00 - 22:00"
+    },
+    {
+      "phone_masked": "092•••2677",
+      "identity_count": 4,
+      "business_names": [
+        "พร้อมพนักงานมืออาชีพ ให้บริการนวดไทย นวดน้ำมัน น"
+      ],
+      "first_seen": "2026-05-31T09:51:44+00:00",
+      "last_seen": "2026-07-17T05:15:48.000Z",
+      "post_mentions": 21,
+      "photo_count": 38,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11:00-3:00"
+    },
+    {
+      "phone_masked": "065•••4492",
+      "identity_count": 1,
+      "business_names": [
+        "Clubhouse Exclusive Club"
+      ],
+      "first_seen": "2026-06-02T04:08:52.000Z",
+      "last_seen": "2026-07-20T03:35:13.000Z",
+      "post_mentions": 21,
+      "photo_count": 109,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "082•••3640",
+      "identity_count": 2,
+      "business_names": [
+        "@monta spa"
+      ],
+      "first_seen": "2026-05-31T02:34:59+00:00",
+      "last_seen": "2026-06-29T02:04:03.000Z",
+      "post_mentions": 20,
+      "photo_count": 87,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "094•••1202",
+      "identity_count": 4,
+      "business_names": [
+        "นวดดีตามใจไม่หวงตัว ดูเเลดีสุด",
+        "Relax Society Massage"
+      ],
+      "first_seen": "2026-06-20T10:01:33.000Z",
+      "last_seen": "2026-07-08T09:07:32.000Z",
+      "post_mentions": 18,
+      "photo_count": 18,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "18.30-21.00"
+    },
+    {
+      "phone_masked": "082•••3491",
+      "identity_count": 1,
+      "business_names": [
+        "นวดเกล้ากมล. Pro ลดแรง"
+      ],
+      "first_seen": "2026-06-02T02:47:05.000Z",
+      "last_seen": "2026-06-18T03:11:01.000Z",
+      "post_mentions": 12,
+      "photo_count": 52,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "065•••9556",
+      "identity_count": 4,
+      "business_names": [
+        "Relax Society Massage",
+        "นวดอโรม่า ผ่อนคลายทั้งตัว",
+        "นันตา นวดเพื่อสุขภาพ",
+        "นวดน้ำมัน 60 นาที 450"
+      ],
+      "first_seen": "2026-06-18T09:39:30.000Z",
+      "last_seen": "2026-07-25T03:13:13.000Z",
+      "post_mentions": 12,
+      "photo_count": 26,
+      "channels": [
+        "@relaxsocietymassage",
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "09.00-22.00"
+    },
+    {
+      "phone_masked": "083•••0641",
+      "identity_count": 1,
+      "business_names": [
+        "แผนที่ รมณีย์ นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-17T00:59:09.000Z",
+      "last_seen": "2026-07-22T03:07:04.000Z",
+      "post_mentions": 11,
+      "photo_count": 26,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": "09:30-22:00"
+    },
+    {
+      "phone_masked": "094•••5397",
+      "identity_count": 3,
+      "business_names": [
+        "Zinnia Spa"
+      ],
+      "first_seen": "2026-06-15T02:17:34.000Z",
+      "last_seen": "2026-07-16T02:06:17.000Z",
+      "post_mentions": 10,
+      "photo_count": 24,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "10.00-03.00"
+    },
+    {
+      "phone_masked": "064•••2633",
+      "identity_count": 2,
+      "business_names": [
+        "RELAX Laundry Detergent",
+        "คำหอม นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-05-28T10:15:33+00:00",
+      "last_seen": "2026-07-22T02:08:29.000Z",
+      "post_mentions": 9,
+      "photo_count": 27,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "098•••3062",
+      "identity_count": 2,
+      "business_names": [
+        "ร้านกุหลาบ นวดเพื่อสุขภาพ",
+        "กุหลาบ นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-17T15:32:29.000Z",
+      "last_seen": "2026-06-25T07:48:46.000Z",
+      "post_mentions": 8,
+      "photo_count": 28,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok",
+        "Nonthaburi"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "082•••0943",
+      "identity_count": 2,
+      "business_names": [
+        "เฌอกาญจน์ นวดเพื่อสุขภาพ",
+        "เฌอกาญจน์ นวดเพื่อสุขภาพ(บางใหญ่)"
+      ],
+      "first_seen": "2026-06-28T06:02:22.000Z",
+      "last_seen": "2026-06-29T06:01:04.000Z",
+      "post_mentions": 8,
+      "photo_count": 22,
+      "channels": [
+        "@relaxsocietymassage",
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Nonthaburi",
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "10:00 - 22:00"
+    },
+    {
+      "phone_masked": "098•••2899",
+      "identity_count": 3,
+      "business_names": [
+        "GPS ฮัลโหล Massage & Spa",
+        "Relax Society Massage",
+        "Hello massage"
+      ],
+      "first_seen": "2026-07-12T02:20:20.000Z",
+      "last_seen": "2026-07-12T11:26:19.000Z",
+      "post_mentions": 8,
+      "photo_count": 10,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "has_line": false,
+      "has_telegram": true,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "095•••8969",
+      "identity_count": 1,
+      "business_names": [
+        "ณภัสสา นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-05-31T07:35:58+00:00",
+      "last_seen": "2026-06-18T07:39:18.000Z",
+      "post_mentions": 7,
+      "photo_count": 14,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "091•••2334",
+      "identity_count": 4,
+      "business_names": [
+        "ซุปเปอร์ไทย นวดเพื่อสุขภาพ 96",
+        "นวดใกล้ฉัน",
+        "นันตา นวดเพื่อสุขภาพ",
+        "กุหลาบ นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-05-31T10:20:56+00:00",
+      "last_seen": "2026-07-14T10:23:54.000Z",
+      "post_mentions": 7,
+      "photo_count": 8,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11:00-23:00"
+    },
+    {
+      "phone_masked": "062•••1626",
+      "identity_count": 1,
+      "business_names": [
+        "หอมจันทร์นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-05-28T09:38:08+00:00",
+      "last_seen": "2026-06-23T08:47:44.000Z",
+      "post_mentions": 7,
+      "photo_count": 19,
+      "channels": [
+        "@relaxsocietymassage",
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "11:00-23:00"
+    },
+    {
+      "phone_masked": "094•••5615",
+      "identity_count": 1,
+      "business_names": [
+        "นวดบ้านเรือนงาม คลองหลวง ตลาดไท รังสิต ปทุมธาน"
+      ],
+      "first_seen": "2026-07-12T02:47:39.000Z",
+      "last_seen": "2026-07-22T11:20:18.000Z",
+      "post_mentions": 7,
+      "photo_count": 17,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "064•••4265",
+      "identity_count": 2,
+      "business_names": [
+        "Bella Spa",
+        "Bella Spa (สาขาทาวน์อินทาวน์)"
+      ],
+      "first_seen": "2026-05-30T06:20:24+00:00",
+      "last_seen": "2026-06-20T02:45:32.000Z",
+      "post_mentions": 6,
+      "photo_count": 10,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "11.00-24.00"
+    },
+    {
+      "phone_masked": "095•••4409",
+      "identity_count": 4,
+      "business_names": [
+        "THE SWAN SPA",
+        "Relax Society Massage"
+      ],
+      "first_seen": "2026-05-03T05:18:34.000Z",
+      "last_seen": "2026-07-08T15:01:56.000Z",
+      "post_mentions": 6,
+      "photo_count": 5,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "12:00-03:00"
+    },
+    {
+      "phone_masked": "064•••7992",
+      "identity_count": 3,
+      "business_names": [
+        "ดีเอ็นนวดเพื่อสุขภาพ",
+        "คำหอม นวดเพื่อสุขภาพ",
+        "Yesika Spa @ ลาดพร้าว 71"
+      ],
+      "first_seen": "2026-06-02T03:07:25.000Z",
+      "last_seen": "2026-07-14T03:27:44.000Z",
+      "post_mentions": 6,
+      "photo_count": 17,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10.00-23.00"
+    },
+    {
+      "phone_masked": "096•••5554",
+      "identity_count": 2,
+      "business_names": [
+        "Issaya Massage"
+      ],
+      "first_seen": "2026-06-02T07:30:55.000Z",
+      "last_seen": "2026-06-19T15:43:52.000Z",
+      "post_mentions": 6,
+      "photo_count": 12,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [
+        990
+      ],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "11:00-22:00"
+    },
+    {
+      "phone_masked": "061•••5545",
+      "identity_count": 1,
+      "business_names": [
+        "นวดฝั่งธนฯ ย่านพระราม2"
+      ],
+      "first_seen": "2026-05-03T05:00:48+00:00",
+      "last_seen": "2026-06-29T07:15:53.000Z",
+      "post_mentions": 4,
+      "photo_count": 3,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11.00 - 22.00"
+    },
+    {
+      "phone_masked": "080•••6297",
+      "identity_count": 1,
+      "business_names": [
+        "ห้องนวดส่วนตัว ทักจองคิว"
+      ],
+      "first_seen": "2026-05-30T03:33:15+00:00",
+      "last_seen": "2026-06-13T12:46:04.000Z",
+      "post_mentions": 4,
+      "photo_count": 5,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok",
+        "Nonthaburi"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00 - 22:00"
+    },
+    {
+      "phone_masked": "093•••4824",
+      "identity_count": 1,
+      "business_names": [
+        "ธนาภรณ์ นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-07-05T08:41:27.000Z",
+      "last_seen": "2026-07-06T04:05:17.000Z",
+      "post_mentions": 4,
+      "photo_count": 13,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10:00-23:00"
+    },
+    {
+      "phone_masked": "083•••4562",
+      "identity_count": 3,
+      "business_names": [
+        "The nicha spa",
+        "นวด วินวิน นวดเพื่อสุขภาพ Winwin Massage อุดมสุข"
+      ],
+      "first_seen": "2026-05-31T12:12:01+00:00",
+      "last_seen": "2026-07-09T03:52:30.000Z",
+      "post_mentions": 3,
+      "photo_count": 7,
+      "channels": [
+        "The​ nicha​ spa",
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "10.00 - 22.00"
+    },
+    {
+      "phone_masked": "098•••2398",
+      "identity_count": 1,
+      "business_names": [],
+      "first_seen": "2026-05-25T16:48:10+00:00",
+      "last_seen": "2026-07-10T00:27:16.000Z",
+      "post_mentions": 3,
+      "photo_count": 3,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "11.00-00.00"
+    },
+    {
+      "phone_masked": "061•••9456",
+      "identity_count": 2,
+      "business_names": [
+        "Relax Society Massage"
+      ],
+      "first_seen": "2026-05-15T06:04:09+00:00",
+      "last_seen": "2026-07-22T06:57:44.000Z",
+      "post_mentions": 2,
+      "photo_count": 1,
+      "channels": [
+        "@relaxsociety2020",
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": "12:00-24:00"
+    },
+    {
+      "phone_masked": "062•••3462",
+      "identity_count": 2,
+      "business_names": [
+        "นวดเลิฟลี่2 โ(ปรโมชั่นทุกคอร์สลด 100 บาท)",
+        "ร้านนวดเลิฟลี่2"
+      ],
+      "first_seen": "2026-06-16T04:16:36.000Z",
+      "last_seen": "2026-06-21T07:17:01.000Z",
+      "post_mentions": 2,
+      "photo_count": 5,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [
+        100,
+        100,
+        100,
+        100
+      ],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "097•••6462",
+      "identity_count": 1,
+      "business_names": [
+        "Relax Society Massage"
+      ],
+      "first_seen": "2026-06-25T08:48:37.000Z",
+      "last_seen": "2026-07-12T06:56:32.000Z",
+      "post_mentions": 2,
+      "photo_count": 9,
+      "channels": [
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "092•••2590",
+      "identity_count": 1,
+      "business_names": [
+        "ลักซ์ชัวรี่ นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-07-06T01:25:10.000Z",
+      "last_seen": "2026-07-06T01:25:10.000Z",
+      "post_mentions": 2,
+      "photo_count": 10,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Nakhon Pathom"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "10:00 - 22:00"
+    },
+    {
+      "phone_masked": "061•••9297",
+      "identity_count": 1,
+      "business_names": [
+        "นวดมารีน่า ลำปาง"
+      ],
+      "first_seen": "2026-07-06T03:51:25.000Z",
+      "last_seen": "2026-07-06T03:51:25.000Z",
+      "post_mentions": 2,
+      "photo_count": 2,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "095•••2964",
+      "identity_count": 1,
+      "business_names": [],
+      "first_seen": "2026-07-08T06:51:58.000Z",
+      "last_seen": "2026-07-08T06:51:58.000Z",
+      "post_mentions": 2,
+      "photo_count": 2,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11:00 – 02:00"
+    },
+    {
+      "phone_masked": "098•••3618",
+      "identity_count": 1,
+      "business_names": [
+        "Honey69massage"
+      ],
+      "first_seen": "2026-04-12T05:35:04.000Z",
+      "last_seen": "2026-04-12T05:35:04.000Z",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "082•••6293",
+      "identity_count": 1,
+      "business_names": [
+        "น้ำเหนือ มาจสาจแอนด์สปา"
+      ],
+      "first_seen": "2026-05-25T10:40:30+00:00",
+      "last_seen": "2026-05-25T10:40:30+00:00",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "082•••6346",
+      "identity_count": 1,
+      "business_names": [
+        "นวด กรุงเทพมหานคร"
+      ],
+      "first_seen": "2026-04-23T16:19:03.000Z",
+      "last_seen": "2026-04-23T16:19:03.000Z",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "09:30-03:00"
+    },
+    {
+      "phone_masked": "080•••2874",
+      "identity_count": 1,
+      "business_names": [
+        "พราวฟ้านวดเพื่อสุขภาพ สระบุร"
+      ],
+      "first_seen": "2026-04-04T03:15:53+00:00",
+      "last_seen": "2026-04-04T03:15:53+00:00",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "09:00-22:00"
+    },
+    {
+      "phone_masked": "095•••5183",
+      "identity_count": 1,
+      "business_names": [],
+      "first_seen": "2026-04-04T03:17:47+00:00",
+      "last_seen": "2026-04-04T03:17:47+00:00",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "093•••4220",
+      "identity_count": 1,
+      "business_names": [],
+      "first_seen": "2026-04-20T05:40:23.000Z",
+      "last_seen": "2026-04-20T05:40:23.000Z",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "093•••9894",
+      "identity_count": 1,
+      "business_names": [],
+      "first_seen": "2026-04-13T05:24:11.000Z",
+      "last_seen": "2026-04-13T05:24:11.000Z",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": "10:00 - 21:30"
+    },
+    {
+      "phone_masked": "090•••3261",
+      "identity_count": 1,
+      "business_names": [
+        "มูนเรสต์ นวด&สปา"
+      ],
+      "first_seen": "2026-04-18T04:23:53.000Z",
+      "last_seen": "2026-04-18T04:23:53.000Z",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "098•••0887",
+      "identity_count": 1,
+      "business_names": [
+        "area51 spa"
+      ],
+      "first_seen": "2026-05-26T07:53:58+00:00",
+      "last_seen": "2026-05-26T07:53:58+00:00",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsocietymassage"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "021•••4971",
+      "identity_count": 1,
+      "business_names": [
+        "ณัฐธนิสชา สปา"
+      ],
+      "first_seen": "2026-05-05T03:32:24.000Z",
+      "last_seen": "2026-05-05T03:32:24.000Z",
+      "post_mentions": 1,
+      "photo_count": 1,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "11:00-22:00"
+    },
+    {
+      "phone_masked": "064•••1999",
+      "identity_count": 1,
+      "business_names": [
+        "นวดผ่อนคลาย"
+      ],
+      "first_seen": "2026-04-21T12:25:00+00:00",
+      "last_seen": "2026-04-21T12:25:00+00:00",
+      "post_mentions": 1,
+      "photo_count": 0,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "096•••8869",
+      "identity_count": 1,
+      "business_names": [
+        "นวดเฟรนด์เฮาช"
+      ],
+      "first_seen": "2026-05-19T07:34:08+00:00",
+      "last_seen": "2026-05-19T07:34:08+00:00",
+      "post_mentions": 1,
+      "photo_count": 1,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "083•••1359",
+      "identity_count": 1,
+      "business_names": [
+        "#นวดระยอง"
+      ],
+      "first_seen": "2026-05-31T03:03:43+00:00",
+      "last_seen": "2026-05-31T03:03:43+00:00",
+      "post_mentions": 1,
+      "photo_count": 1,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Rayong"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "10:00-23:00"
+    },
+    {
+      "phone_masked": "089•••3632",
+      "identity_count": 1,
+      "business_names": [
+        "ธาร Thai Massage"
+      ],
+      "first_seen": "2026-06-01T05:27:16.000Z",
+      "last_seen": "2026-06-01T05:27:16.000Z",
+      "post_mentions": 1,
+      "photo_count": 1,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "065•••8588",
+      "identity_count": 1,
+      "business_names": [
+        "Pls Massage & Spa"
+      ],
+      "first_seen": "2026-06-02T04:44:33.000Z",
+      "last_seen": "2026-06-02T04:44:33.000Z",
+      "post_mentions": 1,
+      "photo_count": 1,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "11.00-24.00"
+    },
+    {
+      "phone_masked": "082•••2663",
+      "identity_count": 1,
+      "business_names": [],
+      "first_seen": "2026-06-02T06:15:01.000Z",
+      "last_seen": "2026-06-02T06:15:01.000Z",
+      "post_mentions": 1,
+      "photo_count": 1,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": false,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "095•••2909",
+      "identity_count": 1,
+      "business_names": [
+        "เอมมิกานวดเพื่อสุขภาพ รามอินทรา14"
+      ],
+      "first_seen": "2026-06-12T11:41:58.000Z",
+      "last_seen": "2026-06-12T11:41:58.000Z",
+      "post_mentions": 1,
+      "photo_count": 5,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "10:00-23:00"
+    },
+    {
+      "phone_masked": "097•••6015",
+      "identity_count": 1,
+      "business_names": [
+        "ศิวะพร นวดเพื่อสุขภาพ"
+      ],
+      "first_seen": "2026-06-13T07:20:22.000Z",
+      "last_seen": "2026-06-13T07:20:22.000Z",
+      "post_mentions": 1,
+      "photo_count": 6,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": false,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": null
+    },
+    {
+      "phone_masked": "096•••9877",
+      "identity_count": 1,
+      "business_names": [
+        "POOL CLUB"
+      ],
+      "first_seen": "2026-06-15T03:53:12.000Z",
+      "last_seen": "2026-06-15T03:53:12.000Z",
+      "post_mentions": 1,
+      "photo_count": 1,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Bangkok"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": true,
+      "has_maps": true,
+      "stated_hours": "11:00-24:00"
+    },
+    {
+      "phone_masked": "061•••0088",
+      "identity_count": 1,
+      "business_names": [
+        "MIYABI CLUB"
+      ],
+      "first_seen": "2026-06-22T07:55:46.000Z",
+      "last_seen": "2026-06-22T07:55:46.000Z",
+      "post_mentions": 1,
+      "photo_count": 2,
+      "channels": [
+        "@relaxsociety2020"
+      ],
+      "cities": [
+        "Chiang Mai"
+      ],
+      "price_mentions_thb": [],
+      "has_line": true,
+      "has_telegram": false,
+      "has_maps": true,
+      "stated_hours": "12:00-04:00"
+    }
+  ]
+}

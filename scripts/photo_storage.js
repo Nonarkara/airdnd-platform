@@ -14,9 +14,16 @@ const bucketName = process.env.SUPABASE_PHOTO_BUCKET || 'listing-photos';
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
+// Fail-fast fetch — see telegram_scraper.js: a stalled Supabase must never
+// block photo processing (uploads simply skip while it is down).
 const configuredSupabase =
   supabaseUrl && supabaseServiceRoleKey
-    ? createClient(supabaseUrl, supabaseServiceRoleKey)
+    ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+        global: {
+          fetch: (url, opts = {}) =>
+            fetch(url, { ...opts, signal: AbortSignal.timeout(8_000) }),
+        },
+      })
     : null;
 let supabase = configuredSupabase;
 

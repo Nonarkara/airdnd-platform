@@ -86,9 +86,16 @@ const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
 const stringSession = new StringSession(process.env.TELEGRAM_SESSION);
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+// Fail-fast fetch: Supabase free tier can stall for days (522s) — without a
+// timeout every pipeline call blocks serially and the whole scraper hangs.
 const configuredSupabase =
   supabaseUrl && supabaseServiceRoleKey
-    ? createClient(supabaseUrl, supabaseServiceRoleKey)
+    ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+        global: {
+          fetch: (url, opts = {}) =>
+            fetch(url, { ...opts, signal: AbortSignal.timeout(8_000) }),
+        },
+      })
     : null;
 
 const domainConfigPath = path.join(__dirname, '../domain.config.json');
