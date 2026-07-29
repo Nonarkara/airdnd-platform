@@ -53,6 +53,8 @@ const MatchingPaper = lazy(() => import('./components/MatchingPaper'));
 const Trends = lazy(() => import('./components/Trends'));
 const SORT_OPTIONS = [
   'Newest',
+  'Most Active Broadcasters',
+  'Latest Intake Post',
   'Most credible',
   'Lowest price',
   'Highest price',
@@ -109,9 +111,18 @@ function sortListings(listings, sortBy) {
   const nextListings = [...listings];
 
   nextListings.sort((left, right) => {
-    // Default lens: composite credibility (mention volume × contact channel
-    // breadth × photo count × text quality × recency, less image-reuse
-    // penalty). See research/findings-2026-05-02.md §5.
+    if (sortBy === 'Most Active Broadcasters') {
+      const lm = Number(left.mentionCount || left.mention_count || 1);
+      const rm = Number(right.mentionCount || right.mention_count || 1);
+      if (lm !== rm) return rm - lm;
+    }
+
+    if (sortBy === 'Latest Intake Post' || sortBy === 'Newest') {
+      const leftTime = getListingTimestampValue(left);
+      const rightTime = getListingTimestampValue(right);
+      if (leftTime !== rightTime) return rightTime - leftTime;
+    }
+
     if (sortBy === 'Most credible') {
       const lc = Number.isFinite(left.credibility) ? left.credibility : 0;
       const rc = Number.isFinite(right.credibility) ? right.credibility : 0;
@@ -704,6 +715,84 @@ function App() {
           <Suspense fallback={<div className="page-shell-loading">Loading trends…</div>}>
             <Trends />
           </Suspense>
+        )}
+      />
+      <Route
+        path="/map"
+        element={(
+          <div className="app-shell">
+            <Header
+              activeView="map"
+              onViewChange={(v) => setActiveView(v)}
+              t={t}
+              sourceLabel={displayDataState.sourceLabel}
+              isLive={displayDataState.isLive}
+            />
+            <main className="app-main" style={{ padding: 'var(--gutter)' }}>
+              <Suspense fallback={<div className="page-shell-loading">Loading nationwide map…</div>}>
+                <div style={{ maxWidth: 'var(--maxw)', margin: '0 auto' }}>
+                  <div className="map-view-selector" style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '4px',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                    marginBottom: '12px',
+                    width: '100%',
+                    background: '#0a0a0c',
+                    padding: '4px',
+                  }}>
+                    {[
+                      { id: 'directory', label: `📍 Directory Hubs (${filteredListings.length})` },
+                      { id: 'feed', label: `⚡ Live Activity (${filteredFeedListings.length || 800}+)` },
+                      { id: 'heatmap', label: '🔥 Spatial Heatmap' },
+                      { id: 'provinces', label: '📡 77 Provinces Breakdown' },
+                    ].map((mode) => (
+                      <button
+                        key={mode.id}
+                        onClick={() => setMapSource(mode.id)}
+                        style={{
+                          padding: '10px 16px',
+                          background: mapSource === mode.id ? 'rgba(255, 116, 64, 0.18)' : 'transparent',
+                          color: mapSource === mode.id ? '#ff7440' : 'rgba(232, 230, 225, 0.65)',
+                          border: '1px solid',
+                          borderColor: mapSource === mode.id ? '#ff7440' : 'transparent',
+                          borderRadius: 0,
+                          cursor: 'pointer',
+                          fontFamily: 'Space Grotesk, var(--font-mono), monospace',
+                          fontSize: '13px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.06em',
+                          fontWeight: 700,
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        {mode.label}
+                      </button>
+                    ))}
+                  </div>
+                  <ListingMap
+                    listings={mapSource === 'directory' ? filteredListings : filteredFeedListings}
+                    onCardClick={setSelectedListing}
+                    t={t}
+                    viewKey={`dedicated-map|${mapSource}|${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
+                    theme={theme}
+                    lastUpdatedAt={dataState.lastLoadedAt}
+                    isRefreshing={dataState.isRefreshing}
+                    dataSource={mapSource === 'directory' ? displayDataState.sourceLabel : mapSource === 'heatmap' ? 'Spatial Density' : 'Feed Activity'}
+                    mapMode={mapSource}
+                  />
+                </div>
+              </Suspense>
+            </main>
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+            {selectedListing && (
+              <ListingModal
+                listing={selectedListing}
+                onClose={() => setSelectedListing(null)}
+                t={t}
+              />
+            )}
+          </div>
         )}
       />
       <Route

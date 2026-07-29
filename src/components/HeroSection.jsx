@@ -52,16 +52,18 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
       <div className="wrap">
       <div className="hero2__grid">
         <div className="hero2__copy">
-          <span className="eyebrow">{heroText.kicker || 'COMMUNITY INTELLIGENCE · THAILAND WELLNESS PLATFORM'}</span>
+          <span className="eyebrow">{heroText.kicker || 'NATIONWIDE INVENTORY · IN-HOUSE COMMUNITY INTELLIGENCE'}</span>
           <h1 className="hero2__title">
-            What operators post.<br />
-            Where they are.<br />
-            <span className="serif">What it means.</span>
+            Complete inventory.<br />
+            Real-time activity.<br />
+            <span className="serif">Zero noise.</span>
           </h1>
-          <p className="hero2__sub">{heroText.subtitle || summary}</p>
+          <p className="hero2__sub">
+            This is the complete inventory of all massage parlours in Thailand mined in real time. Running updates capture promotions, availabilities, and new staff faces directly from community broadsheets — deduplicated with zero repetitive spam.
+          </p>
           <div className="hero2__cta">
-            <a className="btn btn-primary btn-lg" href="#map-panel">
-              Explore Nationwide Map
+            <a className="btn btn-primary btn-lg" href="/map">
+              Explore Dedicated Map
               <svg className="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </a>
             <a className="btn btn-outline btn-lg" href="/analytics">Analytics & Insights</a>
