@@ -149,6 +149,9 @@ The daemon runs locally via macOS launchd (`~/Library/LaunchAgents/com.sabai.scr
 # Refresh snapshot from Supabase
 node -e "... (pull from companions table, write to public/data.json)"
 
+# Rebuild deep-insight aggregates (insights.json + dataset_aggregate.json)
+node scripts/build_insights.js
+
 # Build
 npx vite build
 
