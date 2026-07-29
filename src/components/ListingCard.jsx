@@ -156,6 +156,11 @@ function ListingCard({ listing, onClick, priority = false }) {
               {t.card?.verifiedTag || 'Verified'}
             </span>
           )}
+          {mentions > 1 && (
+            <span className="tag" style={{ background: 'rgba(54, 199, 255, 0.15)', color: '#36C7FF', borderColor: '#36C7FF' }}>
+              📡 {mentions}× ads logged
+            </span>
+          )}
           {isNew && <span className="tag-mango tag">{t.card?.newBadge || 'New'}</span>}
           {tag && <span className="tag">{tag}</span>}
         </div>
