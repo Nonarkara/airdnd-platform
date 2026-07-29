@@ -266,8 +266,9 @@
 }
 
 .section-header {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr) auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 1rem;
   align-items: end;
   padding: 1rem 0 0.5rem;
@@ -275,9 +276,10 @@
 
 .section-header h2 {
   margin-top: 0.25rem;
-  font-size: var(--text-title);
-  line-height: 1.1;
-  font-weight: 500;
+  font-size: var(--fs-body);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .section-subtitle {

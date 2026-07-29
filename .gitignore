@@ -55,3 +55,4 @@ offline-packages/
 
 # Scraped/listing images (local cache; too large for git)
 public/images/
+.firecrawl/

@@ -1,287 +1,104 @@
 /*
- * ListingGrid — single-column flight-board list. No masonry.
- * Each row is a ListingCard; rows are separated by hairline rules
- * (the rule lives on the row itself, not the grid).
+ * ListingGrid — single-column national inventory ledger.
+ * Hairline rows only. No masonry. No intercalated intel cards.
  */
 
 .listing-grid-container {
   display: flex;
   flex-direction: column;
-  gap: var(--s7);
-}
-
-.listing-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: var(--s5);
 }
 
-.card-entrance {
-  display: block;
-  width: 100%;
-  height: 100%;
+.ledger-head {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1.6fr) minmax(5rem, 0.7fr) minmax(4rem, 0.45fr) minmax(4.5rem, 0.55fr) minmax(3.5rem, 0.4fr) auto;
+  gap: var(--s4);
+  padding: 0 12px 8px;
+  border-bottom: 1px solid var(--mango);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
-.card-entrance > .lcard { height: 100%; display: flex; flex-direction: column; }
-.card-entrance > .lcard .lcard__body { flex: 1; display: flex; flex-direction: column; }
-.card-entrance > .lcard .lcard__foot { margin-top: auto; }
-
-.masonry-intel-item { display: block; height: 100%; }
-.masonry-intel-item > .intel-card { height: 100%; }
-
-/*
- * Skeleton placeholder rows mirror ListingCard's row layout so the page
- * does not visibly reflow when data arrives.
- */
-.skeleton-card,
-.intel-card,
-.grid-state-card {
-  border: 1px solid var(--color-line);
-  border-radius: var(--r-md);
-  background: var(--color-surface);
-}
-
-.skeleton-card {
+.listing-ledger {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 0;
-  overflow: hidden;
+  border-top: 1px solid var(--line);
 }
 
-.skeleton-media {
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  background: var(--color-bg-inset);
-  border-radius: 0;
+.skeleton-row-ledger {
+  display: grid;
+  grid-template-columns: 56px 1fr 0.5fr 0.4fr;
+  gap: var(--s4);
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
 }
 
-.skeleton-title,
-.skeleton-line,
-.skeleton-row { margin-inline: var(--s4); }
-.skeleton-row { margin-bottom: var(--s4); }
+.skeleton-thumb {
+  width: 56px;
+  height: 56px;
+}
 
 .skeleton-title,
 .skeleton-line,
 .skeleton-row {
-  height: 12px;
+  height: 11px;
   background: var(--color-surface-strong);
-}
-
-.skeleton-line {
-  width: 70%;
-}
-
-.skeleton-row {
-  width: 50%;
-}
-
-/*
- * Intel cards (insights / mentions / channel bars) — used elsewhere in the
- * dashboard intelligence section. Keep functional, no decoration.
- */
-.intel-card {
-  position: relative;
-  overflow: hidden;
-  padding: 1rem;
-  background: var(--color-surface);
-}
-
-.intel-card::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  background: var(--color-action);
-}
-
-.intel-card-pink::before {
-  background: var(--color-action);
-}
-
-.intel-card-lime::before {
-  background: var(--color-status);
-}
-
-.intel-card-purple::before,
-.intel-card-channel::before {
-  background: var(--color-data);
-}
-
-.intel-label {
-  display: block;
-  color: var(--color-action);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.intel-card strong {
-  display: block;
-  margin-top: 0.55rem;
-  color: var(--color-cream);
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.intel-card p {
-  margin-top: 0.55rem;
-  color: var(--color-cream-soft);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  line-height: 1.55;
-}
-
-.intel-card-lime .intel-label,
-.intel-card-lime strong {
-  color: var(--color-status);
-}
-
-.intel-card-pink .intel-label,
-.intel-card-pink strong {
-  color: var(--color-action);
-}
-
-.intel-card-purple .intel-label,
-.intel-card-purple strong {
-  color: var(--color-data);
-}
-
-.mini-bars {
-  display: none;
-}
-
-.channel-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  margin-top: 1rem;
-}
-
-.channel-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(4rem, 7rem) 2.5rem;
-  gap: 0.5rem;
-  align-items: center;
-  color: var(--color-cream-soft);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-}
-
-.channel-row span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.channel-row div,
-.source-meter {
-  height: 4px;
-  overflow: hidden;
-  border: 1px solid var(--color-line);
-  background: var(--color-bg-inset);
-}
-
-.channel-row i,
-.source-meter span {
-  display: block;
-  height: 100%;
-  background: var(--color-data);
-}
-
-.channel-row em {
-  color: var(--color-data);
-  font-style: normal;
-  text-align: right;
-}
-
-.flow-stack {
-  display: grid;
-  gap: 0;
-  margin-top: 1rem;
-}
-
-.flow-stack div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.65rem;
-  border: 0;
-  border-top: 1px solid var(--color-line);
-  background: var(--color-bg);
-}
-
-.flow-stack div:last-child {
-  border-bottom: 1px solid var(--color-line);
-}
-
-.flow-stack strong {
   margin: 0;
-  color: var(--color-action);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  text-transform: uppercase;
-}
-
-.flow-stack span {
-  color: var(--color-cream-soft);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  text-align: right;
-}
-
-.source-meter {
-  margin-top: 1rem;
 }
 
 .grid-state-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-3xl) var(--spacing-xl);
-  text-align: center;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  padding: var(--s7);
 }
 
 .grid-state-card h3 {
-  font-family: var(--font-display);
-  font-size: var(--text-title);
-  font-weight: 500;
+  margin: var(--s3) 0;
+  font-size: var(--fs-body);
 }
 
 .grid-state-card p {
-  max-width: 40ch;
-  color: var(--color-cream-soft);
-  font-size: var(--text-body);
+  color: var(--ink-3);
+  font-size: var(--fs-body);
 }
 
 .load-more-container {
   display: flex;
   justify-content: center;
-  padding: var(--spacing-lg) 0;
+  padding-block: var(--s6);
 }
 
 .btn-load-more {
   min-height: 44px;
-  padding: 0 1rem;
-  border: 1px solid var(--color-action);
-  background: transparent;
-  color: var(--color-action);
+  padding: 0 20px;
+  border: 1px solid var(--mango);
+  color: var(--mango);
   font-family: var(--font-mono);
-  font-size: var(--text-micro);
+  font-size: var(--fs-xs);
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  background: transparent;
 }
 
 .btn-load-more:hover {
-  background: var(--color-action);
-  color: #000;
+  background: var(--mango);
+  color: #1a1006;
+}
+
+.intel-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mango);
+}
+
+@media (max-width: 860px) {
+  .ledger-head { display: none; }
 }

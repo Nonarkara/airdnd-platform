@@ -9,63 +9,64 @@
    warm-dark values, so the whole app adopts the new aesthetic at once.
    ============================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
 @import url('./award-pass.css');
 
 :root {
   color-scheme: dark;
 
-  /* ---- Surfaces · deep plum-black stage so crayon colours pop ---------- */
-  --bg:        #141017;
-  --bg-2:      #1A141F;
-  --surface:   #221A29;
-  --surface-2: #2C2235;
-  --surface-3: #382C44;
-  --line:      #352A40;
-  --line-2:    #4C3C5A;
+  /* ---- Surfaces · Oppenheimer film stock (warm charcoal, not plum/pink) - */
+  --bg:        #0c0b09;
+  --bg-2:      #12110e;
+  --surface:   #161411;
+  --surface-2: #1c1a16;
+  --surface-3: #242119;
+  --line:      #2a271f;
+  --line-2:    #3d392e;
 
-  /* ---- Text · warm white with a faint pink-cream warmth ---------------- */
-  --ink:       #F7EEF3;
-  --ink-2:     #CBBCC9;
-  --ink-3:     #948499;
-  --ink-4:     #64586E;
+  /* ---- Text · archival cream on film ------------------------------------ */
+  --ink:       #ebe6dc;
+  --ink-2:     #b8b2a6;
+  --ink-3:     #7a756c;
+  --ink-4:     #524e47;
 
-  /* ---- Brand / accents · jazzy pink star + a box of crayons ------------ */
-  --mango:     #FF3D8B;   /* JAZZY PINK — the one star accent */
-  --mango-2:   #FF63A4;
-  --mango-dim: #5E1538;
-  --jade:      #2FE0A6;   /* crayon mint */
-  --jade-dim:  #0E4636;
-  --gold:      #FFD23D;   /* crayon sunshine */
-  --gold-dim:  #4A3A10;
-  --berry:     #FF5C7A;   /* crayon coral */
-  --sky:       #36C7FF;   /* crayon electric blue */
-  --violet:    #B073FF;   /* crayon grape */
+  /* ---- ONE amber. Always. Only. (Braun ET66 / Rams) --------------------- */
+  --mango:     #f59e0b;
+  --mango-2:   #fbbf24;
+  --mango-dim: #3a2a0a;
+  --jade:      #34d399;
+  --jade-dim:  #0e2f24;
+  --gold:      #f59e0b;
+  --gold-dim:  #3a2a0a;
+  --berry:     #f59e0b;
+  --sky:       #b8b2a6;
+  --violet:    #7a756c;
 
-  /* ---- Categorical data palette (charts) · the crayon box ------------- */
-  --d1: #FF3D8B;  --d2: #36C7FF;  --d3: #FFD23D;
-  --d4: #5CE08A;  --d5: #FF8A3D;  --d6: #B073FF;
-  --d1-dim: rgba(255,61,139,.18);  --d2-dim: rgba(54,199,255,.18);
-  --d3-dim: rgba(255,210,61,.18);  --d4-dim: rgba(92,224,138,.18);
+  /* ---- Categorical data · amber-led, no crayon rainbow ----------------- */
+  --d1: #f59e0b;  --d2: #b8b2a6;  --d3: #34d399;
+  --d4: #ebe6dc;  --d5: #7a756c;  --d6: #fbbf24;
+  --d1-dim: rgba(245,158,11,.18);  --d2-dim: rgba(184,178,166,.14);
+  --d3-dim: rgba(52,211,153,.16);  --d4-dim: rgba(235,230,220,.10);
 
   /* ---- Status ---------------------------------------------------------- */
-  --live: #2FE0A6;  --warn: #FFD23D;  --down: #FF5C7A;
+  --live: #34d399;  --warn: #f59e0b;  --down: #c45c3a;
 
-  /* ---- Type ------------------------------------------------------------ */
-  --font-display: 'Space Grotesk','Inter','IBM Plex Sans Thai',system-ui,sans-serif;
-  --font-serif:   'Instrument Serif',Georgia,serif;
-  --font-text:    'Inter','IBM Plex Sans Thai',system-ui,-apple-system,sans-serif;
+  /* ---- Type · Josefin (display) + Source Sans 3 (body) + JetBrains ------ */
+  --font-display: 'Josefin Sans','IBM Plex Sans Thai',system-ui,sans-serif;
+  --font-serif:   'Josefin Sans','IBM Plex Sans Thai',system-ui,sans-serif;
+  --font-text:    'Source Sans 3','IBM Plex Sans Thai',system-ui,-apple-system,sans-serif;
   --font-mono:    'JetBrains Mono','IBM Plex Sans Thai',ui-monospace,'SF Mono',monospace;
 
-  --fs-hero: clamp(2.8rem,6vw,5.25rem);
-  --fs-h1:   clamp(2.1rem,4vw,3.25rem);
-  --fs-h2:   clamp(1.6rem,2.8vw,2.35rem);
-  --fs-h3:   1.45rem;
-  --fs-h4:   1.15rem;
-  --fs-body: 1.0625rem;
-  --fs-sm:   0.9375rem;
-  --fs-xs:   0.8125rem;
-  --fs-2xs:  0.6875rem;
+  /* Three sizes only: display / body / micro (§11.7) */
+  --fs-hero: clamp(2rem,5vw,3.25rem);
+  --fs-h1:   clamp(2rem,5vw,3.25rem);
+  --fs-h2:   15px;
+  --fs-h3:   15px;
+  --fs-h4:   15px;
+  --fs-body: 15px;
+  --fs-sm:   15px;
+  --fs-xs:   11px;
+  --fs-2xs:  11px;
 
   /* ---- Spacing (4px) --------------------------------------------------- */
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px;
@@ -169,11 +170,11 @@
    is the canonical default. */
 [data-theme='light'] {
   color-scheme: light;
-  --bg: #FCF4F8;  --bg-2: #F4E7EF;  --surface: #FFFFFF;  --surface-2: #F4E7EF;  --surface-3: #ECDAE5;
-  --line: #E8D5E1;  --line-2: #D0B2C4;
-  --ink: #1F1320;  --ink-2: #4E3A48;  --ink-3: #7C6675;  --ink-4: #AB91A2;
-  --mango: #E61E73;  --mango-2: #FF3D8B;  --mango-dim: #FBD9E7;
-  --jade-dim: #CFF2E6;  --gold-dim: #F8EEC8;
+  --bg: #f4f0e8;  --bg-2: #ebe6dc;  --surface: #ffffff;  --surface-2: #f4f0e8;  --surface-3: #e4dfd4;
+  --line: #d4cec2;  --line-2: #b8b2a6;
+  --ink: #1a1814;  --ink-2: #3d392e;  --ink-3: #6b655a;  --ink-4: #9a9488;
+  --mango: #c47a00;  --mango-2: #f59e0b;  --mango-dim: #f5e6c8;
+  --jade-dim: #d4f5e8;  --gold-dim: #f5e6c8;
 }
 
 /* HIGH CONTRAST — accessibility theme for low vision (WCAG AAA-leaning).
@@ -302,8 +303,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .site-header__in { max-width: var(--maxw); margin: 0 auto; min-height: var(--header-h); padding-inline: var(--gutter); display: flex; align-items: center; gap: var(--s6); }
 .brand { display: inline-flex; align-items: center; gap: 10px; }
-.brand__mark { width: 30px; height: 30px; flex: none; }
-.brand__name { font-family: var(--font-display); font-weight: 700; font-size: 1.18rem; letter-spacing: -.02em; line-height: 1; }
+.brand__mark {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  background: var(--mango);
+  border: 0;
+}
+.brand__name { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; letter-spacing: 0.06em; line-height: 1; text-transform: lowercase; }
 .brand__name em { font-style: normal; color: var(--mango); }
 .nav { display: flex; align-items: center; gap: 2px; }
 .nav a, .nav-link-btn { font-family: var(--font-text); font-weight: 600; font-size: var(--fs-sm); color: var(--ink-3); padding: 8px 13px; border-radius: var(--r-pill); transition: all .15s var(--ease); }
@@ -403,13 +410,45 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .rating { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .rating .icon { color: var(--gold); }
 
-.lcard { background: #0e0b12; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 0; overflow: hidden; cursor: pointer; transition: border-color .16s var(--ease), background .16s var(--ease), transform .16s var(--ease); }
-.lcard:hover { border-color: #ff7440; background: #16121c; transform: translateY(-2px); }
-.lcard__media { position: relative; aspect-ratio: 3/2; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+/* Horizontal inventory ledger — flight-board row, not a photo card */
+.lcard {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1.6fr) minmax(5rem, 0.7fr) minmax(4rem, 0.45fr) minmax(4.5rem, 0.55fr) minmax(3.5rem, 0.4fr) auto;
+  align-items: center;
+  gap: var(--s4);
+  padding: 10px 12px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  cursor: pointer;
+  transition: background .14s var(--ease);
+}
+.lcard:hover { background: var(--surface); }
+.lcard:active { transform: scale(0.997); }
+.lcard__media {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  flex: none;
+}
 .photo { width: 100%; height: 100%; position: relative; overflow: hidden; display: grid; place-items: center; border-radius: 0; }
-.photo__glyph { font-family: 'Space Grotesk', var(--font-display); font-weight: 700; font-size: 2.6rem; color: rgba(255,255,255,.9); }
-.photo__tag { position: absolute; left: 8px; bottom: 8px; z-index: 1; font-family: 'Space Grotesk', var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #F7EEF3; background: rgba(10, 8, 14, 0.88); padding: 4px 8px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0; }
-.lcard__body { padding: 1.1rem; }
+.photo__glyph { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; color: var(--ink); letter-spacing: 0.04em; }
+.photo__tag { display: none; }
+.lcard__body { display: contents; }
+.lcard__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+@media (max-width: 860px) {
+  .lcard {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    gap: 8px 12px;
+    padding: 12px 8px;
+  }
+  .lcard__media { width: 48px; height: 48px; grid-row: 1 / 3; }
+}
 
 /* ============================================================================
    FOOTER

@@ -4,11 +4,8 @@ import './App.css';
 import AtomicClock from './components/AtomicClock';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
-import ProximityFinder from './components/ProximityFinder';
-import MarketSnapshot from './components/MarketSnapshot';
 import FeedGrid from './components/FeedGrid';
 import FilterBar from './components/FilterBar';
-import FunFacts from './components/FunFacts';
 import ListingGrid from './components/ListingGrid';
 import ListingModal from './components/ListingModal';
 import Footer from './components/Footer';
@@ -52,15 +49,33 @@ const FAQ = lazy(() => import('./components/FAQ'));
 const MatchingPaper = lazy(() => import('./components/MatchingPaper'));
 const Trends = lazy(() => import('./components/Trends'));
 const SORT_OPTIONS = [
-  'Newest',
   'Most Active Broadcasters',
+  'Most Promotions',
   'Latest Intake Post',
+  'Newest',
   'Most credible',
   'Lowest price',
   'Highest price',
   'Highest rating',
   'Alphabetical',
 ];
+const DEFAULT_SORT = SORT_OPTIONS[0];
+
+function promotionScore(listing) {
+  const blob = [
+    listing?.description,
+    listing?.rawText,
+    listing?.raw_text,
+    ...(Array.isArray(listing?.tags) ? listing.tags : []),
+    ...(Array.isArray(listing?.serviceTags) ? listing.serviceTags : []),
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+  const hits = (blob.match(/promo|promotion|ส่วนลด|ลดราคา|พิเศษ|new face|ใหม่|available|ว่าง|เปิดรับ|discount|offer/g) || []).length;
+  const mentions = Number(listing?.mentionCount || listing?.mention_count || 0);
+  return hits * 10 + mentions;
+}
 const DATA_SOURCE_NOTES = {
   automatic: {
     supabase: 'Directory is up to date with the latest listings.',
@@ -115,6 +130,12 @@ function sortListings(listings, sortBy) {
       const lm = Number(left.mentionCount || left.mention_count || 1);
       const rm = Number(right.mentionCount || right.mention_count || 1);
       if (lm !== rm) return rm - lm;
+    }
+
+    if (sortBy === 'Most Promotions') {
+      const lp = promotionScore(left);
+      const rp = promotionScore(right);
+      if (lp !== rp) return rp - lp;
     }
 
     if (sortBy === 'Latest Intake Post' || sortBy === 'Newest') {
@@ -336,7 +357,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeLocation, setActiveLocation] = useState(ALL_LOCATIONS_VALUE);
   const [activeActivity, setActiveActivity] = useState(ALL_TAGS_VALUE);
-  const [sortBy, setSortBy] = useState(SORT_OPTIONS[0]);
+  const [sortBy, setSortBy] = useState(DEFAULT_SORT);
   const [selectedListing, setSelectedListing] = useState(null);
   const { language, setLanguage, t: tCtx } = useLanguage();
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
@@ -654,7 +675,7 @@ function App() {
     setSearchTerm('');
     setActiveLocation(ALL_LOCATIONS_VALUE);
     setActiveActivity(ALL_TAGS_VALUE);
-    setSortBy(SORT_OPTIONS[0]);
+    setSortBy(DEFAULT_SORT);
   };
 
   const handleRefresh = async () => manualLoadRef.current('manual');
@@ -723,10 +744,16 @@ function App() {
           <div className="app-shell">
             <Header
               activeView="map"
-              onViewChange={(v) => setActiveView(v)}
+              setActiveView={setActiveView}
+              language={language}
+              setLanguage={setLanguage}
               t={t}
+              theme={theme}
+              setTheme={setTheme}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
               sourceLabel={displayDataState.sourceLabel}
-              isLive={displayDataState.isLive}
+              metrics={metrics}
             />
             <main className="app-main" style={{ padding: 'var(--gutter)' }}>
               <Suspense fallback={<div className="page-shell-loading">Loading nationwide map…</div>}>
@@ -735,35 +762,36 @@ function App() {
                     display: 'flex',
                     flexWrap: 'wrap',
                     gap: '4px',
-                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                    borderBottom: '1px solid var(--line)',
                     marginBottom: '12px',
                     width: '100%',
-                    background: '#0a0a0c',
+                    background: 'var(--bg-2)',
                     padding: '4px',
                   }}>
                     {[
-                      { id: 'directory', label: `📍 Directory Hubs (${filteredListings.length})` },
-                      { id: 'feed', label: `⚡ Live Activity (${filteredFeedListings.length || 800}+)` },
-                      { id: 'heatmap', label: '🔥 Spatial Heatmap' },
-                      { id: 'provinces', label: '📡 77 Provinces Breakdown' },
+                      { id: 'directory', label: `Directory hubs (${filteredListings.length})` },
+                      { id: 'feed', label: `Live activity (${filteredFeedListings.length || 0})` },
+                      { id: 'heatmap', label: 'Spatial heatmap' },
+                      { id: 'provinces', label: 'Province breakdown' },
                     ].map((mode) => (
                       <button
                         key={mode.id}
                         onClick={() => setMapSource(mode.id)}
                         style={{
                           padding: '10px 16px',
-                          background: mapSource === mode.id ? 'rgba(255, 116, 64, 0.18)' : 'transparent',
-                          color: mapSource === mode.id ? '#ff7440' : 'rgba(232, 230, 225, 0.65)',
+                          background: mapSource === mode.id ? 'var(--mango-dim)' : 'transparent',
+                          color: mapSource === mode.id ? 'var(--mango)' : 'var(--ink-3)',
                           border: '1px solid',
-                          borderColor: mapSource === mode.id ? '#ff7440' : 'transparent',
+                          borderColor: mapSource === mode.id ? 'var(--mango)' : 'transparent',
                           borderRadius: 0,
                           cursor: 'pointer',
-                          fontFamily: 'Space Grotesk, var(--font-mono), monospace',
-                          fontSize: '13px',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '11px',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.06em',
-                          fontWeight: 700,
+                          letterSpacing: '0.08em',
+                          fontWeight: 600,
                           transition: 'all 0.15s ease',
+                          minHeight: '44px',
                         }}
                       >
                         {mode.label}
@@ -826,6 +854,7 @@ function App() {
               sourceLabel={displayDataState.sourceLabel}
               activeView={activeView}
               setActiveView={setActiveView}
+              metrics={metrics}
             />
 
             <main className="main-content dashboard-content">
@@ -886,19 +915,12 @@ function App() {
                   intakeSummary={intakeSummary}
                 />
 
-                <FunFacts listings={filteredListings} metrics={metrics} />
-                <ProximityFinder
-                  listings={allListings}
-                  onSelect={setSelectedListing}
-                />
-
-                <MarketSnapshot listings={allListings} />
-
                 <section id="live-listings" className="listing-section">
                   <div className="section-header">
                     <div>
                       <span className="section-kicker">{t.featured.kicker}</span>
                       <h2>{t.featured.title}</h2>
+                      <p className="section-subtitle">{t.featured.subtitle}</p>
                     </div>
                     <div className="section-meta">
                       <span>{filteredListings.length} {t.featured.countLabel}</span>
@@ -922,10 +944,10 @@ function App() {
                     isRefreshing={dataState.isRefreshing}
                     onClearFilters={clearFilters}
                     hasActiveFilters={
-                      searchTerm.trim() ||
+                      Boolean(searchTerm.trim()) ||
                       activeLocation !== ALL_LOCATIONS_VALUE ||
                       activeActivity !== ALL_TAGS_VALUE ||
-                      sortBy !== SORT_OPTIONS[0]
+                      sortBy !== DEFAULT_SORT
                     }
                     resultCount={filteredListings.length}
                     t={t}
@@ -936,15 +958,13 @@ function App() {
                     listings={filteredListings}
                     onCardClick={setSelectedListing}
                     t={t}
-                    metrics={metrics}
-                    intakeSummary={intakeSummary}
                     dataState={displayDataState}
                     onClearFilters={clearFilters}
                     hasActiveFilters={
-                      searchTerm.trim() ||
+                      Boolean(searchTerm.trim()) ||
                       activeLocation !== ALL_LOCATIONS_VALUE ||
                       activeActivity !== ALL_TAGS_VALUE ||
-                      sortBy !== SORT_OPTIONS[0]
+                      sortBy !== DEFAULT_SORT
                     }
                     isLoading={dataState.isLoading}
                   />
@@ -969,35 +989,36 @@ function App() {
                   display: 'flex',
                   flexWrap: 'wrap',
                   gap: '4px',
-                  borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  borderBottom: '1px solid var(--line)',
                   marginBottom: '12px',
                   width: '100%',
-                  background: '#0a0a0c',
+                  background: 'var(--bg-2)',
                   padding: '4px',
                 }}>
                   {[
-                    { id: 'directory', label: `📍 Directory Hubs (${filteredListings.length})` },
-                    { id: 'feed', label: `⚡ Live Activity (${filteredFeedListings.length || 800}+)` },
-                    { id: 'heatmap', label: '🔥 Spatial Heatmap' },
-                    { id: 'provinces', label: '📡 77 Provinces Breakdown' },
+                    { id: 'directory', label: `Directory hubs (${filteredListings.length})` },
+                    { id: 'feed', label: `Live activity (${filteredFeedListings.length || 0})` },
+                    { id: 'heatmap', label: 'Spatial heatmap' },
+                    { id: 'provinces', label: 'Province breakdown' },
                   ].map((mode) => (
                     <button
                       key={mode.id}
                       onClick={() => setMapSource(mode.id)}
                       style={{
                         padding: '10px 16px',
-                        background: mapSource === mode.id ? 'rgba(255, 116, 64, 0.18)' : 'transparent',
-                        color: mapSource === mode.id ? '#ff7440' : 'rgba(232, 230, 225, 0.65)',
+                        background: mapSource === mode.id ? 'var(--mango-dim)' : 'transparent',
+                        color: mapSource === mode.id ? 'var(--mango)' : 'var(--ink-3)',
                         border: '1px solid',
-                        borderColor: mapSource === mode.id ? '#ff7440' : 'transparent',
+                        borderColor: mapSource === mode.id ? 'var(--mango)' : 'transparent',
                         borderRadius: 0,
                         cursor: 'pointer',
-                        fontFamily: 'Space Grotesk, var(--font-mono), monospace',
-                        fontSize: '13px',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '11px',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.06em',
-                        fontWeight: 700,
+                        letterSpacing: '0.08em',
+                        fontWeight: 600,
                         transition: 'all 0.15s ease',
+                        minHeight: '44px',
                       }}
                     >
                       {mode.label}

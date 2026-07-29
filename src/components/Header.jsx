@@ -12,49 +12,41 @@ function Header({
   setTheme,
   activeView,
   setActiveView,
+  metrics,
 }) {
   const isLive = sourceLabel?.toLowerCase().includes('live');
+  const venueCount = metrics?.total || 0;
+  const provinceCount = metrics?.cityCount || 0;
 
   const viewTabs = [
-    { id: 'directory', label: t.nav?.listings || 'Listings' },
+    { id: 'directory', label: t.nav?.listings || 'Inventory' },
+    { id: 'feed', label: t.nav?.feed || 'Live Feed' },
     { id: 'map', label: t.nav?.map || 'Map' },
-    { id: 'feed', label: 'Live Feed' },
   ];
   const linkTabs = [
     { id: 'analytics', label: t.nav?.analytics || 'Analytics', href: '/analytics' },
-    { id: 'methodology', label: t.nav?.methodology || 'Methodology', href: '/methodology' },
-    { id: 'sociology', label: t.nav?.sociology || 'Field Notes', href: '/sociology' },
-    { id: 'paper', label: t.pageChrome?.researchPaper || t.pageChrome?.workingPaper || 'Paper', href: '/paper' },
+    { id: 'methodology', label: t.nav?.methodology || 'Method', href: '/methodology' },
     { id: 'faq', label: t.nav?.faq || 'FAQ', href: '/faq' },
-    { id: 'matching', label: t.nav?.matching || 'The Match', href: '/matching' },
-    { id: 'trends', label: t.nav?.trends || 'Trends', href: '/trends' },
   ];
 
   return (
     <>
-      {/* TOPBAR TICKER — the data heartbeat as editorial dateline */}
       <div className="topbar">
         <div className="topbar__track">
-          <span><span className="live-dot" style={{ background: '#34d399' }} />&nbsp; PIPELINE LIVE · FIRESTORE REALTIME</span>
+          <span><span className="live-dot" />&nbsp; TELEGRAM INTAKE · IN-HOUSE PIPELINE</span>
           <span className="sep">/</span>
-          <span>CORPUS: 85,420 ARCHIVE MESSAGES</span>
+          <span>{venueCount > 0 ? `${venueCount} VENUES` : 'INVENTORY LOADING'}</span>
           <span className="sep">/</span>
-          <span>800+ GEOTAGGED PINS</span>
+          <span>{provinceCount > 0 ? `${provinceCount} PROVINCES` : 'PROVINCE INDEX'}</span>
           <span className="sep">/</span>
-          <span>109 CANONICAL HUBS</span>
-          <span className="sep">/</span>
-          <span>77 THAI PROVINCES (100% NATIONWIDE)</span>
+          <span>RANK BY BROADCAST ACTIVITY · PROMOTIONS · SIGNAL</span>
         </div>
       </div>
 
       <header className="site-header" id="overview">
         <div className="site-header__in">
           <a className="brand" href="#overview" aria-label="Sabai Sabai">
-            <svg className="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <rect width="32" height="32" style={{ fill: 'var(--mango)' }} />
-              <circle cx="16" cy="12.5" r="4.8" style={{ fill: 'var(--bg)' }} />
-              <path d="M6 21.5c2.5-2.3 5-2.3 7.5 0s5 2.3 7.5 0 3.6-1.6 3.6-1.6" style={{ stroke: 'var(--bg)' }} strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <span className="brand__mark" aria-hidden="true" />
             <span className="brand__name">sabai<em>·</em>sabai</span>
           </a>
 

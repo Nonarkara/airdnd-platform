@@ -1,93 +1,90 @@
-.hero2 {
-  position: relative;
-  overflow: hidden;
-  padding-block: var(--s9) var(--s7);
+.masthead {
+  padding-block: var(--s7) var(--s5);
+  border-bottom: 1px solid var(--line);
 }
 
-/* No decorative glow — clean lines only. A single hairline rule under the
-   hero does the dividing instead of a soft radial wash. */
-.hero2__glow { display: none; }
-
-.hero2__grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 1.02fr 0.98fr;
-  gap: var(--s9);
-  align-items: center;
+.masthead__in {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
 }
 
-.hero2__copy { min-width: 0; }
-
-.hero2__title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(2.5rem, 5.4vw, 4.6rem);
-  line-height: 0.98;
-  letter-spacing: -0.03em;
-  margin: var(--s5) 0 0;
-  color: var(--ink);
-}
-
-.hero2__title .serif {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-style: normal;
+.masthead__eyebrow {
   color: var(--mango);
-  letter-spacing: 0;
 }
 
-.hero2__sub {
-  margin: var(--s6) 0 var(--s7);
-  max-width: 48ch;
-  font-size: 1.2rem;
+.masthead__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--s7);
+  align-items: end;
+}
+
+.masthead__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-hero);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  line-height: 1;
+  margin: 0;
+}
+
+.masthead__dot {
+  color: var(--mango);
+  font-style: normal;
+}
+
+.masthead__sub {
+  margin: var(--s4) 0 0;
+  max-width: 52ch;
+  font-size: var(--fs-body);
   line-height: 1.5;
   color: var(--ink-2);
 }
 
-.hero2__cta { display: flex; gap: var(--s3); flex-wrap: wrap; }
-
-.hero2__chart {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-top: 2px solid var(--mango);
-  padding: var(--s6);
-}
-
-.hero2__chart-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--s4);
-  margin-bottom: var(--s5);
-}
-
-.hero2__svg { width: 100%; height: auto; }
-
-/* Instrument strip, not six template cards: one bold pink rule on top, hairline
-   grid dividers (the 1px gaps over a line-coloured backing), flat tiles. */
-.hero2__kpis {
-  position: relative;
-  z-index: 1;
+.masthead__stats {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
-  margin-top: var(--s8);
   background: var(--line);
   border: 1px solid var(--line);
-  border-top: 2px solid var(--mango);
-}
-.hero2__kpis .kpi {
-  border: 0;
-  background: var(--bg);
+  margin: 0;
 }
 
-@media (max-width: 1000px) {
-  .hero2__kpis { grid-template-columns: repeat(3, 1fr); }
+.masthead__stats > div {
+  background: var(--bg);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
+
+.masthead__stats dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.masthead__stats dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.masthead__sync {
+  font-size: var(--fs-body) !important;
+  color: var(--live) !important;
+}
+
 @media (max-width: 860px) {
-  .hero2__grid { grid-template-columns: 1fr; gap: var(--s7); }
-}
-@media (max-width: 560px) {
-  .hero2__kpis { grid-template-columns: repeat(2, 1fr); }
+  .masthead__row {
+    grid-template-columns: 1fr;
+    gap: var(--s5);
+  }
 }
