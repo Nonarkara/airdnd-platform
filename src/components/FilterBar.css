@@ -1,6 +1,6 @@
 .filter-bar {
   position: sticky;
-  top: calc(var(--header-h) + 30px);
+  top: var(--header-h);
   z-index: 40;
   display: grid;
   grid-template-columns: minmax(14rem, 1.4fr) repeat(3, minmax(8.5rem, 0.55fr)) auto;
@@ -9,10 +9,9 @@
   padding: 0.75rem 1rem;
   margin-bottom: 0.85rem;
   border: 1px solid var(--line-2);
-  border-top: 2px solid var(--mango);
+  border-top: 2px solid var(--navy, var(--ink));
   border-radius: 0;
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(12px);
+  background: var(--bg);
   box-shadow: none;
 }
 
@@ -24,7 +23,7 @@
 }
 
 .filter-field label {
-  color: var(--mango);
+  color: var(--ink-3);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 600;
@@ -49,7 +48,7 @@
 
 .filter-field input:focus,
 .filter-field select:focus {
-  border-color: var(--mango);
+  border-color: var(--navy, var(--ink));
   background: var(--surface-2);
 }
 
@@ -72,14 +71,14 @@
   height: 1.8rem;
   border: none;
   background: transparent;
-  color: var(--color-cream-muted);
+  color: var(--ink-3);
   font-size: 1.1rem;
   line-height: 1;
   cursor: pointer;
 }
 
 .filter-search-clear:hover {
-  color: var(--color-ink);
+  color: var(--ink);
 }
 
 .filter-actions {
@@ -102,18 +101,17 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border-radius: 0;
-  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .filter-refresh {
-  border: 1px solid var(--mango);
+  border: 1px solid var(--navy, var(--ink));
   background: transparent;
-  color: var(--mango);
+  color: var(--navy, var(--ink));
 }
 
 .filter-refresh:hover {
-  background: var(--mango);
-  color: #1a1006;
+  background: var(--navy, var(--ink));
+  color: var(--bg);
 }
 
 .filter-refresh:disabled {
@@ -153,10 +151,6 @@
   .filter-actions,
   .filter-results-count {
     grid-column: 1 / -1;
-  }
-
-  .filter-actions {
-    justify-content: flex-start;
   }
 }
 

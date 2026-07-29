@@ -1,7 +1,6 @@
 import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import AtomicClock from './components/AtomicClock';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import FeedGrid from './components/FeedGrid';
@@ -48,6 +47,7 @@ const Paper = lazy(() => import('./components/Paper'));
 const FAQ = lazy(() => import('./components/FAQ'));
 const MatchingPaper = lazy(() => import('./components/MatchingPaper'));
 const Trends = lazy(() => import('./components/Trends'));
+const Health = lazy(() => import('./components/Health'));
 const SORT_OPTIONS = [
   'Most Active Broadcasters',
   'Most Promotions',
@@ -360,7 +360,7 @@ function App() {
   const [sortBy, setSortBy] = useState(DEFAULT_SORT);
   const [selectedListing, setSelectedListing] = useState(null);
   const { language, setLanguage, t: tCtx } = useLanguage();
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const [activeView, setActiveView] = useState('directory');
   const [mapSource, setMapSource] = useState('directory');
   const [feedListings, setFeedListings] = useState([]);
@@ -739,6 +739,32 @@ function App() {
         )}
       />
       <Route
+        path="/health"
+        element={(
+          <div className="app-shell">
+            <Header
+              language={language}
+              setLanguage={setLanguage}
+              t={t}
+              theme={theme}
+              setTheme={setTheme}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
+              sourceLabel={displayDataState.sourceLabel}
+              activeView="directory"
+              setActiveView={setActiveView}
+              metrics={metrics}
+            />
+            <main className="app-main">
+              <Suspense fallback={<div className="page-shell-loading">Loading health research…</div>}>
+                <Health listings={allListings} />
+              </Suspense>
+            </main>
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+          </div>
+        )}
+      />
+      <Route
         path="/map"
         element={(
           <div className="app-shell">
@@ -769,8 +795,9 @@ function App() {
                     padding: '4px',
                   }}>
                     {[
-                      { id: 'directory', label: `Directory hubs (${filteredListings.length})` },
+                      { id: 'directory', label: `Directory (${filteredListings.length})` },
                       { id: 'feed', label: `Live activity (${filteredFeedListings.length || 0})` },
+                      { id: 'epidemic', label: 'HIV / STI context' },
                       { id: 'heatmap', label: 'Spatial heatmap' },
                       { id: 'provinces', label: 'Province breakdown' },
                     ].map((mode) => (
@@ -838,9 +865,6 @@ function App() {
         element={
           <div className="app-shell">
             <div className="app-backdrop" aria-hidden="true" />
-            <div className="grain-overlay" aria-hidden="true" />
-
-            <AtomicClock />
 
             <Header
               language={language}
@@ -996,8 +1020,9 @@ function App() {
                   padding: '4px',
                 }}>
                   {[
-                    { id: 'directory', label: `Directory hubs (${filteredListings.length})` },
+                    { id: 'directory', label: `Directory (${filteredListings.length})` },
                     { id: 'feed', label: `Live activity (${filteredFeedListings.length || 0})` },
+                    { id: 'epidemic', label: 'HIV / STI context' },
                     { id: 'heatmap', label: 'Spatial heatmap' },
                     { id: 'provinces', label: 'Province breakdown' },
                   ].map((mode) => (

@@ -9,62 +9,60 @@
    warm-dark values, so the whole app adopts the new aesthetic at once.
    ============================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import url('./award-pass.css');
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* ---- Surfaces · Oppenheimer film stock (warm charcoal, not plum/pink) - */
-  --bg:        #0c0b09;
-  --bg-2:      #12110e;
-  --surface:   #161411;
-  --surface-2: #1c1a16;
-  --surface-3: #242119;
-  --line:      #2a271f;
-  --line-2:    #3d392e;
+  /* ---- Axiom Core × Dieter Rams operating surface (axiom/public/rams.css) - */
+  --bg:        #faf9f7;
+  --bg-2:      #f3f1eb;
+  --surface:   #fcfbf9;
+  --surface-2: #f3f1eb;
+  --surface-3: #e7e5dd;
+  --line:      #e7e5dd;
+  --line-2:    #d2cfc5;
 
-  /* ---- Text · archival cream on film ------------------------------------ */
-  --ink:       #ebe6dc;
-  --ink-2:     #b8b2a6;
-  --ink-3:     #7a756c;
-  --ink-4:     #524e47;
+  /* ---- Warm ink on paper ------------------------------------------------- */
+  --ink:       #191712;
+  --ink-2:     #5c5a54;
+  --ink-3:     #736f66;
+  --ink-4:     #9a968c;
 
-  /* ---- ONE amber. Always. Only. (Braun ET66 / Rams) --------------------- */
+  /* ---- ONE decision accent (amber = Braun ET66). Navy holds structure. --- */
   --mango:     #f59e0b;
-  --mango-2:   #fbbf24;
-  --mango-dim: #3a2a0a;
-  --jade:      #34d399;
-  --jade-dim:  #0e2f24;
+  --mango-2:   #d97706;
+  --mango-dim: #f5e6c8;
+  --navy:      #0e1e3c;
+  --jade:      #0e1e3c;
+  --jade-dim:  #e7e5dd;
   --gold:      #f59e0b;
-  --gold-dim:  #3a2a0a;
-  --berry:     #f59e0b;
-  --sky:       #b8b2a6;
-  --violet:    #7a756c;
+  --gold-dim:  #f5e6c8;
+  --berry:     #a51931;
+  --sky:       #5c5a54;
+  --violet:    #736f66;
 
-  /* ---- Categorical data · amber-led, no crayon rainbow ----------------- */
-  --d1: #f59e0b;  --d2: #b8b2a6;  --d3: #34d399;
-  --d4: #ebe6dc;  --d5: #7a756c;  --d6: #fbbf24;
-  --d1-dim: rgba(245,158,11,.18);  --d2-dim: rgba(184,178,166,.14);
-  --d3-dim: rgba(52,211,153,.16);  --d4-dim: rgba(235,230,220,.10);
+  --d1: #0e1e3c;  --d2: #8f8b80;  --d3: #f59e0b;
+  --d4: #a51931;  --d5: #bdb9ad;  --d6: #d2cfc5;
+  --d1-dim: rgba(14,30,60,.10);  --d2-dim: rgba(143,139,128,.14);
+  --d3-dim: rgba(245,158,11,.16);  --d4-dim: rgba(165,25,49,.10);
 
-  /* ---- Status ---------------------------------------------------------- */
-  --live: #34d399;  --warn: #f59e0b;  --down: #c45c3a;
+  --live: #0e1e3c;  --warn: #f59e0b;  --down: #a51931;
 
-  /* ---- Type · Josefin (display) + Source Sans 3 (body) + JetBrains ------ */
-  --font-display: 'Josefin Sans','IBM Plex Sans Thai',system-ui,sans-serif;
-  --font-serif:   'Josefin Sans','IBM Plex Sans Thai',system-ui,sans-serif;
-  --font-text:    'Source Sans 3','IBM Plex Sans Thai',system-ui,-apple-system,sans-serif;
-  --font-mono:    'JetBrains Mono','IBM Plex Sans Thai',ui-monospace,'SF Mono',monospace;
+  /* Type — Helvetica Neue path (Rams) + Josefin wordmark + mono data ------ */
+  --font-display: 'Josefin Sans','IBM Plex Sans Thai',Helvetica Neue,Helvetica,Arial,sans-serif;
+  --font-serif:   'Josefin Sans','IBM Plex Sans Thai',Helvetica Neue,Helvetica,Arial,sans-serif;
+  --font-text:    Helvetica Neue,Helvetica,Arial,'IBM Plex Sans Thai',system-ui,sans-serif;
+  --font-mono:    'JetBrains Mono',ui-monospace,'SF Mono',monospace;
 
-  /* Three sizes only: display / body / micro (§11.7) */
-  --fs-hero: clamp(2rem,5vw,3.25rem);
-  --fs-h1:   clamp(2rem,5vw,3.25rem);
-  --fs-h2:   15px;
-  --fs-h3:   15px;
-  --fs-h4:   15px;
-  --fs-body: 15px;
-  --fs-sm:   15px;
+  --fs-hero: clamp(2rem,4.5vw,2.75rem);
+  --fs-h1:   clamp(2rem,4.5vw,2.75rem);
+  --fs-h2:   14px;
+  --fs-h3:   14px;
+  --fs-h4:   14px;
+  --fs-body: 14px;
+  --fs-sm:   14px;
   --fs-xs:   11px;
   --fs-2xs:  11px;
 
@@ -170,11 +168,18 @@
    is the canonical default. */
 [data-theme='light'] {
   color-scheme: light;
-  --bg: #f4f0e8;  --bg-2: #ebe6dc;  --surface: #ffffff;  --surface-2: #f4f0e8;  --surface-3: #e4dfd4;
-  --line: #d4cec2;  --line-2: #b8b2a6;
-  --ink: #1a1814;  --ink-2: #3d392e;  --ink-3: #6b655a;  --ink-4: #9a9488;
-  --mango: #c47a00;  --mango-2: #f59e0b;  --mango-dim: #f5e6c8;
-  --jade-dim: #d4f5e8;  --gold-dim: #f5e6c8;
+  /* Paper is the default — light theme is identity, not a toggle skin */
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0c0b09; --bg-2: #12110e; --surface: #161411; --surface-2: #1c1a16; --surface-3: #242119;
+  --line: #2a271f; --line-2: #3d392e;
+  --ink: #ebe6dc; --ink-2: #b8b2a6; --ink-3: #7a756c; --ink-4: #524e47;
+  --mango: #f59e0b; --mango-2: #fbbf24; --mango-dim: #3a2a0a;
+  --jade: #f59e0b; --jade-dim: #3a2a0a;
+  --navy: #ebe6dc;
+  --live: #f59e0b;
 }
 
 /* HIGH CONTRAST — accessibility theme for low vision (WCAG AAA-leaning).
@@ -288,34 +293,28 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
    TOPBAR / HEADER / NAV  (new component classes)
    ============================================================================ */
 .topbar {
-  background: #0A0805; color: var(--ink-3);
-  font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: .14em; text-transform: uppercase;
-  height: 30px; display: flex; align-items: center; overflow: hidden; border-bottom: 1px solid var(--line);
+  display: none;
 }
-.topbar__track { display: flex; gap: var(--s6); white-space: nowrap; padding-inline: var(--gutter); align-items: center; }
-.topbar b { color: var(--mango); font-weight: 500; }
-.topbar .sep { color: var(--line-2); }
-
 .site-header {
   position: sticky; top: 0; z-index: 50; min-height: var(--header-h);
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: blur(16px) saturate(1.3); border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  backdrop-filter: none; border-bottom: 1px solid var(--line);
 }
 .site-header__in { max-width: var(--maxw); margin: 0 auto; min-height: var(--header-h); padding-inline: var(--gutter); display: flex; align-items: center; gap: var(--s6); }
 .brand { display: inline-flex; align-items: center; gap: 10px; }
 .brand__mark {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   flex: none;
-  background: var(--mango);
+  background: var(--navy, var(--ink));
   border: 0;
 }
-.brand__name { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; letter-spacing: 0.06em; line-height: 1; text-transform: lowercase; }
+.brand__name { font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter-spacing: 0.14em; line-height: 1; text-transform: lowercase; color: var(--navy, var(--ink)); }
 .brand__name em { font-style: normal; color: var(--mango); }
 .nav { display: flex; align-items: center; gap: 2px; }
-.nav a, .nav-link-btn { font-family: var(--font-text); font-weight: 600; font-size: var(--fs-sm); color: var(--ink-3); padding: 8px 13px; border-radius: var(--r-pill); transition: all .15s var(--ease); }
-.nav a:hover, .nav-link-btn:hover { color: var(--ink); background: var(--surface); }
-.nav a.is-active, .nav-link-btn.is-active { color: var(--ink); background: var(--surface-2); }
+.nav a, .nav-link-btn { font-family: var(--font-text); font-weight: 500; font-size: var(--fs-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); padding: 10px 12px; border-radius: 0; transition: color .15s var(--ease), border-color .15s var(--ease); border-bottom: 1px solid transparent; }
+.nav a:hover, .nav-link-btn:hover { color: var(--ink); background: transparent; border-bottom-color: var(--line-2); }
+.nav a.is-active, .nav-link-btn.is-active { color: var(--ink); background: transparent; border-bottom-color: var(--mango); }
 .spacer { flex: 1; }
 .header-actions { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
 .header-select { display: inline-flex; }
@@ -327,8 +326,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
    ============================================================================ */
 .btn { font-family: var(--font-text); font-weight: 600; font-size: var(--fs-sm); display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); padding: 12px 20px; border-radius: var(--r-pill); border: 1.5px solid transparent; cursor: pointer; white-space: nowrap; line-height: 1; transition: transform .14s var(--ease-out), background .16s var(--ease), box-shadow .16s var(--ease), border-color .16s; }
 .btn:active { transform: translateY(1px); }
-.btn-primary { background: var(--mango); color: #1a1006; box-shadow: var(--glow-mango); }
-.btn-primary:hover { background: var(--mango-2); }
+.btn-primary { background: var(--navy, var(--ink)); color: var(--bg); box-shadow: none; }
+.btn-primary:hover { background: var(--ink); }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mango); box-shadow: none; animation: none; display: inline-block; flex: none; }
+.site-footer { background: var(--bg-2); border-top: 1px solid var(--line); padding-block: var(--s10) var(--s7); }
+.grain-overlay { display: none; }
 .btn-outline { background: transparent; color: var(--ink); border-color: var(--line-2); }
 .btn-outline:hover { border-color: var(--ink-3); background: var(--surface); }
 .btn-ghost { background: transparent; color: var(--ink-2); }
@@ -350,8 +352,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: var(--r-pill); border: 1px solid var(--line-2); font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
 
-.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 0 rgba(52,199,158,.6); animation: pulse 2s infinite; display: inline-block; flex: none; }
-@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(52,199,158,.5)} 70%{box-shadow:0 0 0 6px rgba(52,199,158,0)} 100%{box-shadow:0 0 0 0 rgba(52,199,158,0)} }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mango); box-shadow: none; animation: none; display: inline-block; flex: none; }
 
 /* legacy utility kickers/pills used across existing components */
 .section-kicker { font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--mango); }

@@ -1,0 +1,1112 @@
+{
+  "source": {
+    "national": "data.go.th package s_tuc2 — New HIV/AIDS in care system by domicile, Buddhist year 2566 (2023)",
+    "nationalUrl": "https://data.go.th/dataset/678a125b-0a46-4064-93ff-c7e8c958ce1f",
+    "bangkok": "data.bangkok.go.th msd018 — New HIV patients by facility/age/sex (through mid-2024)",
+    "bangkokUrl": "https://data.bangkok.go.th/dataset/f583feae-81a3-4755-b175-d059d23b8b2e",
+    "hub": "https://hivhub.ddc.moph.go.th/",
+    "note": "Province totals are domicile of new cases entering care — not prevalence, not sex-worker-specific. Use as public-epidemic context only.",
+    "caveat": "Province totals come from facility/domicile microdata and can concentrate around referral hubs (e.g. Eastern Seaboard). Treat relative rank and co-location with venue density as the signal, not absolute precision."
+  },
+  "yearBuddhist": 2566,
+  "yearGregorian": 2023,
+  "nationalTotal": 52096,
+  "provinceCount": 77,
+  "provinces": [
+    {
+      "code": "20",
+      "name": "Chonburi",
+      "newCases2566": 15488,
+      "lat": 13.3611,
+      "lng": 100.9847,
+      "nationGroups": {
+        "10": 13993,
+        "07": 255,
+        "08": 461,
+        "02": 558,
+        "11": 132,
+        "12": 3,
+        "99": 75,
+        "01": 3,
+        "03": 8
+      }
+    },
+    {
+      "code": "30",
+      "name": "Nakhon Ratchasima",
+      "newCases2566": 2269,
+      "lat": 14.9799,
+      "lng": 102.0978,
+      "nationGroups": {
+        "10": 1854,
+        "99": 376,
+        "02": 15,
+        "08": 11,
+        "07": 12,
+        "11": 1
+      }
+    },
+    {
+      "code": "10",
+      "name": "Bangkok",
+      "newCases2566": 1929,
+      "lat": 13.7563,
+      "lng": 100.5018,
+      "nationGroups": {
+        "99": 566,
+        "10": 1226,
+        "11": 4,
+        "08": 6,
+        "07": 6,
+        "02": 121
+      }
+    },
+    {
+      "code": "55",
+      "name": "Nan",
+      "newCases2566": 1644,
+      "lat": 18.783,
+      "lng": 100.779,
+      "nationGroups": {
+        "10": 1630,
+        "08": 2,
+        "99": 1,
+        "07": 8,
+        "02": 1,
+        "12": 1,
+        "11": 1
+      }
+    },
+    {
+      "code": "60",
+      "name": "Nakhon Sawan",
+      "newCases2566": 1577,
+      "lat": 15.7047,
+      "lng": 100.137,
+      "nationGroups": {
+        "10": 1532,
+        "99": 4,
+        "02": 27,
+        "12": 3,
+        "08": 2,
+        "07": 9
+      }
+    },
+    {
+      "code": "22",
+      "name": "Chanthaburi",
+      "newCases2566": 1109,
+      "lat": 12.611,
+      "lng": 102.104,
+      "nationGroups": {
+        "10": 908,
+        "08": 180,
+        "07": 17,
+        "02": 2,
+        "11": 1,
+        "99": 1
+      }
+    },
+    {
+      "code": "47",
+      "name": "Sakon Nakhon",
+      "newCases2566": 1059,
+      "lat": 17.154,
+      "lng": 104.134,
+      "nationGroups": {
+        "10": 1028,
+        "07": 22,
+        "99": 3,
+        "11": 4,
+        "08": 1,
+        "03": 1
+      }
+    },
+    {
+      "code": "80",
+      "name": "Nakhon Si Thammarat",
+      "newCases2566": 1013,
+      "lat": 8.4304,
+      "lng": 99.9631,
+      "nationGroups": {
+        "10": 945,
+        "02": 56,
+        "08": 3,
+        "07": 4,
+        "11": 1,
+        "99": 3,
+        "03": 1
+      }
+    },
+    {
+      "code": "86",
+      "name": "Chumphon",
+      "newCases2566": 1005,
+      "lat": 10.493,
+      "lng": 99.18,
+      "nationGroups": {
+        "10": 632,
+        "11": 3,
+        "02": 349,
+        "08": 5,
+        "07": 13,
+        "99": 3
+      }
+    },
+    {
+      "code": "21",
+      "name": "Rayong",
+      "newCases2566": 904,
+      "lat": 12.6833,
+      "lng": 101.2372,
+      "nationGroups": {
+        "10": 763,
+        "11": 9,
+        "08": 39,
+        "02": 27,
+        "99": 57,
+        "07": 9
+      }
+    },
+    {
+      "code": "34",
+      "name": "Ubon Ratchathani",
+      "newCases2566": 893,
+      "lat": 15.2287,
+      "lng": 104.8564,
+      "nationGroups": {
+        "10": 748,
+        "07": 13,
+        "99": 108,
+        "11": 2,
+        "08": 20,
+        "02": 2
+      }
+    },
+    {
+      "code": "57",
+      "name": "Chiang Rai",
+      "newCases2566": 854,
+      "lat": 19.9105,
+      "lng": 99.8406,
+      "nationGroups": {
+        "10": 613,
+        "02": 47,
+        "99": 13,
+        "12": 12,
+        "11": 155,
+        "07": 14
+      }
+    },
+    {
+      "code": "11",
+      "name": "Samut Prakan",
+      "newCases2566": 840,
+      "lat": 13.599,
+      "lng": 100.5968,
+      "nationGroups": {
+        "10": 742,
+        "99": 33,
+        "02": 38,
+        "08": 16,
+        "07": 8,
+        "11": 2,
+        "12": 1
+      }
+    },
+    {
+      "code": "46",
+      "name": "Kalasin",
+      "newCases2566": 822,
+      "lat": 16.432,
+      "lng": 103.506,
+      "nationGroups": {
+        "10": 806,
+        "99": 4,
+        "07": 4,
+        "08": 3,
+        "11": 5
+      }
+    },
+    {
+      "code": "50",
+      "name": "Chiang Mai",
+      "newCases2566": 808,
+      "lat": 18.7883,
+      "lng": 98.9853,
+      "nationGroups": {
+        "10": 540,
+        "02": 155,
+        "11": 80,
+        "12": 20,
+        "99": 8,
+        "07": 2,
+        "03": 2,
+        "01": 1
+      }
+    },
+    {
+      "code": "45",
+      "name": "Roi Et",
+      "newCases2566": 783,
+      "lat": 16.0538,
+      "lng": 103.652,
+      "nationGroups": {
+        "10": 762,
+        "07": 5,
+        "99": 7,
+        "08": 3,
+        "02": 1,
+        "11": 4,
+        "03": 1
+      }
+    },
+    {
+      "code": "41",
+      "name": "Udon Thani",
+      "newCases2566": 749,
+      "lat": 17.4138,
+      "lng": 102.7872,
+      "nationGroups": {
+        "10": 744,
+        "07": 1,
+        "11": 1,
+        "03": 1,
+        "99": 2
+      }
+    },
+    {
+      "code": "32",
+      "name": "Surin",
+      "newCases2566": 688,
+      "lat": 14.882,
+      "lng": 103.4937,
+      "nationGroups": {
+        "10": 626,
+        "07": 13,
+        "99": 7,
+        "11": 7,
+        "08": 7,
+        "04": 1,
+        "02": 26,
+        "03": 1
+      }
+    },
+    {
+      "code": "84",
+      "name": "Surat Thani",
+      "newCases2566": 683,
+      "lat": 9.1382,
+      "lng": 99.3331,
+      "nationGroups": {
+        "02": 97,
+        "10": 564,
+        "11": 11,
+        "07": 7,
+        "99": 2,
+        "08": 2
+      }
+    },
+    {
+      "code": "24",
+      "name": "Chachoengsao",
+      "newCases2566": 647,
+      "lat": 13.6904,
+      "lng": 101.078,
+      "nationGroups": {
+        "10": 614,
+        "02": 11,
+        "11": 1,
+        "07": 8,
+        "08": 9,
+        "99": 4
+      }
+    },
+    {
+      "code": "33",
+      "name": "Si Sa Ket",
+      "newCases2566": 645,
+      "lat": 15.118,
+      "lng": 104.322,
+      "nationGroups": {
+        "10": 640,
+        "99": 5
+      }
+    },
+    {
+      "code": "31",
+      "name": "Buriram",
+      "newCases2566": 643,
+      "lat": 14.993,
+      "lng": 103.1029,
+      "nationGroups": {
+        "10": 633,
+        "08": 1,
+        "99": 5,
+        "11": 1,
+        "07": 2,
+        "03": 1
+      }
+    },
+    {
+      "code": "12",
+      "name": "Nonthaburi",
+      "newCases2566": 633,
+      "lat": 13.8621,
+      "lng": 100.5144,
+      "nationGroups": {
+        "10": 575,
+        "07": 12,
+        "99": 11,
+        "02": 25,
+        "12": 2,
+        "08": 6,
+        "11": 2
+      }
+    },
+    {
+      "code": "13",
+      "name": "Pathum Thani",
+      "newCases2566": 620,
+      "lat": 14.0208,
+      "lng": 100.525,
+      "nationGroups": {
+        "10": 570,
+        "11": 2,
+        "02": 22,
+        "08": 15,
+        "99": 6,
+        "07": 5
+      }
+    },
+    {
+      "code": "73",
+      "name": "Nakhon Pathom",
+      "newCases2566": 553,
+      "lat": 13.819,
+      "lng": 100.062,
+      "nationGroups": {
+        "11": 7,
+        "10": 435,
+        "99": 46,
+        "02": 54,
+        "07": 8,
+        "08": 3
+      }
+    },
+    {
+      "code": "44",
+      "name": "Maha Sarakham",
+      "newCases2566": 520,
+      "lat": 16.1851,
+      "lng": 103.3025,
+      "nationGroups": {
+        "10": 513,
+        "07": 4,
+        "99": 2,
+        "08": 1
+      }
+    },
+    {
+      "code": "90",
+      "name": "Songkhla",
+      "newCases2566": 516,
+      "lat": 7.1898,
+      "lng": 100.5954,
+      "nationGroups": {
+        "08": 4,
+        "10": 466,
+        "99": 21,
+        "03": 2,
+        "02": 16,
+        "07": 5,
+        "11": 1,
+        "12": 1
+      }
+    },
+    {
+      "code": "36",
+      "name": "Chaiyaphum",
+      "newCases2566": 470,
+      "lat": 15.806,
+      "lng": 102.031,
+      "nationGroups": {
+        "10": 465,
+        "99": 4,
+        "07": 1
+      }
+    },
+    {
+      "code": "14",
+      "name": "Phra Nakhon Si Ayutthaya",
+      "newCases2566": 461,
+      "lat": 14.369,
+      "lng": 100.587,
+      "nationGroups": {
+        "10": 450,
+        "02": 4,
+        "08": 5,
+        "07": 2
+      }
+    },
+    {
+      "code": "71",
+      "name": "Kanchanaburi",
+      "newCases2566": 444,
+      "lat": 14.022,
+      "lng": 99.532,
+      "nationGroups": {
+        "10": 373,
+        "07": 1,
+        "02": 62,
+        "11": 7,
+        "99": 1
+      }
+    },
+    {
+      "code": "83",
+      "name": "Phuket",
+      "newCases2566": 422,
+      "lat": 7.8804,
+      "lng": 98.3923,
+      "nationGroups": {
+        "02": 91,
+        "10": 301,
+        "11": 18,
+        "07": 4,
+        "03": 2,
+        "08": 1,
+        "99": 5
+      }
+    },
+    {
+      "code": "67",
+      "name": "Phetchabun",
+      "newCases2566": 417,
+      "lat": 16.419,
+      "lng": 101.16,
+      "nationGroups": {
+        "10": 407,
+        "02": 7,
+        "99": 1,
+        "07": 2
+      }
+    },
+    {
+      "code": "70",
+      "name": "Ratchaburi",
+      "newCases2566": 389,
+      "lat": 13.528,
+      "lng": 99.813,
+      "nationGroups": {
+        "10": 357,
+        "02": 24,
+        "99": 3,
+        "11": 4,
+        "07": 1
+      }
+    },
+    {
+      "code": "19",
+      "name": "Saraburi",
+      "newCases2566": 381,
+      "lat": 14.5289,
+      "lng": 100.91,
+      "nationGroups": {
+        "10": 366,
+        "02": 7,
+        "08": 1,
+        "99": 4,
+        "07": 3
+      }
+    },
+    {
+      "code": "72",
+      "name": "Suphan Buri",
+      "newCases2566": 347,
+      "lat": 14.474,
+      "lng": 100.118,
+      "nationGroups": {
+        "10": 334,
+        "02": 5,
+        "99": 7,
+        "08": 1
+      }
+    },
+    {
+      "code": "63",
+      "name": "Tak",
+      "newCases2566": 343,
+      "lat": 16.884,
+      "lng": 99.125,
+      "nationGroups": {
+        "10": 200,
+        "11": 15,
+        "02": 125,
+        "12": 3
+      }
+    },
+    {
+      "code": "15",
+      "name": "Ang Thong",
+      "newCases2566": 328,
+      "lat": 14.5896,
+      "lng": 100.455,
+      "nationGroups": {
+        "10": 316,
+        "02": 7,
+        "08": 2,
+        "07": 2,
+        "99": 1
+      }
+    },
+    {
+      "code": "16",
+      "name": "Lopburi",
+      "newCases2566": 316,
+      "lat": 14.7995,
+      "lng": 100.653,
+      "nationGroups": {
+        "10": 308,
+        "99": 2,
+        "02": 1,
+        "07": 3,
+        "08": 2
+      }
+    },
+    {
+      "code": "77",
+      "name": "Prachuap Khiri Khan",
+      "newCases2566": 312,
+      "lat": 11.812,
+      "lng": 99.798,
+      "nationGroups": {
+        "10": 262,
+        "02": 32,
+        "12": 1,
+        "11": 9,
+        "07": 6,
+        "08": 1,
+        "99": 1
+      }
+    },
+    {
+      "code": "43",
+      "name": "Nong Khai",
+      "newCases2566": 308,
+      "lat": 17.878,
+      "lng": 102.742,
+      "nationGroups": {
+        "10": 273,
+        "11": 4,
+        "07": 30,
+        "99": 1
+      }
+    },
+    {
+      "code": "62",
+      "name": "Kamphaeng Phet",
+      "newCases2566": 305,
+      "lat": 16.4827,
+      "lng": 99.522,
+      "nationGroups": {
+        "10": 298,
+        "02": 5,
+        "08": 1,
+        "07": 1
+      }
+    },
+    {
+      "code": "25",
+      "name": "Prachinburi",
+      "newCases2566": 296,
+      "lat": 14.05,
+      "lng": 101.37,
+      "nationGroups": {
+        "10": 288,
+        "08": 1,
+        "02": 3,
+        "99": 3,
+        "07": 1
+      }
+    },
+    {
+      "code": "65",
+      "name": "Phitsanulok",
+      "newCases2566": 294,
+      "lat": 16.8211,
+      "lng": 100.2659,
+      "nationGroups": {
+        "10": 289,
+        "99": 1,
+        "02": 2,
+        "07": 2
+      }
+    },
+    {
+      "code": "27",
+      "name": "Sa Kaeo",
+      "newCases2566": 290,
+      "lat": 13.824,
+      "lng": 102.064,
+      "nationGroups": {
+        "10": 266,
+        "08": 21,
+        "99": 1,
+        "07": 1,
+        "02": 1
+      }
+    },
+    {
+      "code": "40",
+      "name": "Khon Kaen",
+      "newCases2566": 288,
+      "lat": 16.4419,
+      "lng": 102.836,
+      "nationGroups": {
+        "10": 283,
+        "07": 2,
+        "99": 3
+      }
+    },
+    {
+      "code": "52",
+      "name": "Lampang",
+      "newCases2566": 286,
+      "lat": 18.2888,
+      "lng": 99.4909,
+      "nationGroups": {
+        "10": 272,
+        "02": 12,
+        "99": 1,
+        "11": 1
+      }
+    },
+    {
+      "code": "35",
+      "name": "Yasothon",
+      "newCases2566": 271,
+      "lat": 15.794,
+      "lng": 104.145,
+      "nationGroups": {
+        "10": 264,
+        "07": 3,
+        "99": 4
+      }
+    },
+    {
+      "code": "42",
+      "name": "Loei",
+      "newCases2566": 269,
+      "lat": 17.49,
+      "lng": 101.722,
+      "nationGroups": {
+        "10": 260,
+        "99": 1,
+        "11": 2,
+        "07": 6
+      }
+    },
+    {
+      "code": "53",
+      "name": "Uttaradit",
+      "newCases2566": 265,
+      "lat": 17.62,
+      "lng": 100.099,
+      "nationGroups": {
+        "10": 261,
+        "11": 2,
+        "07": 1,
+        "08": 1
+      }
+    },
+    {
+      "code": "76",
+      "name": "Phetchaburi",
+      "newCases2566": 258,
+      "lat": 13.111,
+      "lng": 99.94,
+      "nationGroups": {
+        "10": 228,
+        "02": 18,
+        "99": 1,
+        "11": 8,
+        "07": 3
+      }
+    },
+    {
+      "code": "74",
+      "name": "Samut Sakhon",
+      "newCases2566": 252,
+      "lat": 13.547,
+      "lng": 100.274,
+      "nationGroups": {
+        "02": 31,
+        "10": 216,
+        "11": 2,
+        "99": 2,
+        "07": 1
+      }
+    },
+    {
+      "code": "38",
+      "name": "Bueng Kan",
+      "newCases2566": 251,
+      "lat": 18.3609,
+      "lng": 103.646,
+      "nationGroups": {
+        "10": 241,
+        "99": 2,
+        "07": 5,
+        "08": 1,
+        "11": 2
+      }
+    },
+    {
+      "code": "66",
+      "name": "Phichit",
+      "newCases2566": 249,
+      "lat": 16.441,
+      "lng": 100.348,
+      "nationGroups": {
+        "10": 245,
+        "99": 2,
+        "11": 1,
+        "08": 1
+      }
+    },
+    {
+      "code": "64",
+      "name": "Sukhothai",
+      "newCases2566": 240,
+      "lat": 17.0056,
+      "lng": 99.826,
+      "nationGroups": {
+        "10": 236,
+        "11": 1,
+        "99": 3
+      }
+    },
+    {
+      "code": "93",
+      "name": "Phatthalung",
+      "newCases2566": 236,
+      "lat": 7.617,
+      "lng": 100.074,
+      "nationGroups": {
+        "10": 233,
+        "99": 2,
+        "11": 1
+      }
+    },
+    {
+      "code": "85",
+      "name": "Ranong",
+      "newCases2566": 232,
+      "lat": 9.96,
+      "lng": 98.635,
+      "nationGroups": {
+        "02": 91,
+        "10": 134,
+        "11": 3,
+        "99": 4
+      }
+    },
+    {
+      "code": "92",
+      "name": "Trang",
+      "newCases2566": 229,
+      "lat": 7.556,
+      "lng": 99.611,
+      "nationGroups": {
+        "10": 216,
+        "02": 11,
+        "03": 1,
+        "11": 1
+      }
+    },
+    {
+      "code": "56",
+      "name": "Phayao",
+      "newCases2566": 212,
+      "lat": 19.192,
+      "lng": 99.879,
+      "nationGroups": {
+        "10": 194,
+        "11": 2,
+        "02": 6,
+        "07": 6,
+        "03": 1,
+        "99": 3
+      }
+    },
+    {
+      "code": "48",
+      "name": "Nakhon Phanom",
+      "newCases2566": 207,
+      "lat": 17.407,
+      "lng": 104.78,
+      "nationGroups": {
+        "10": 191,
+        "07": 12,
+        "99": 3,
+        "03": 1
+      }
+    },
+    {
+      "code": "39",
+      "name": "Nong Bua Lamphu",
+      "newCases2566": 197,
+      "lat": 17.204,
+      "lng": 102.426,
+      "nationGroups": {
+        "10": 194,
+        "07": 1,
+        "02": 2
+      }
+    },
+    {
+      "code": "81",
+      "name": "Krabi",
+      "newCases2566": 182,
+      "lat": 8.0863,
+      "lng": 98.9063,
+      "nationGroups": {
+        "10": 174,
+        "02": 7,
+        "03": 1
+      }
+    },
+    {
+      "code": "82",
+      "name": "Phang Nga",
+      "newCases2566": 177,
+      "lat": 8.45,
+      "lng": 98.525,
+      "nationGroups": {
+        "02": 36,
+        "10": 135,
+        "11": 3,
+        "08": 1,
+        "99": 1,
+        "03": 1
+      }
+    },
+    {
+      "code": "51",
+      "name": "Lamphun",
+      "newCases2566": 173,
+      "lat": 18.58,
+      "lng": 99.007,
+      "nationGroups": {
+        "11": 6,
+        "10": 138,
+        "02": 26,
+        "99": 1,
+        "03": 1,
+        "07": 1
+      }
+    },
+    {
+      "code": "54",
+      "name": "Phrae",
+      "newCases2566": 171,
+      "lat": 18.145,
+      "lng": 100.141,
+      "nationGroups": {
+        "10": 168,
+        "99": 2,
+        "02": 1
+      }
+    },
+    {
+      "code": "18",
+      "name": "Chai Nat",
+      "newCases2566": 170,
+      "lat": 15.185,
+      "lng": 100.125,
+      "nationGroups": {
+        "10": 165,
+        "02": 3,
+        "99": 1,
+        "07": 1
+      }
+    },
+    {
+      "code": "23",
+      "name": "Trat",
+      "newCases2566": 156,
+      "lat": 12.242,
+      "lng": 102.517,
+      "nationGroups": {
+        "10": 114,
+        "08": 30,
+        "03": 1,
+        "02": 3,
+        "12": 2,
+        "11": 3,
+        "07": 3
+      }
+    },
+    {
+      "code": "26",
+      "name": "Nakhon Nayok",
+      "newCases2566": 143,
+      "lat": 14.207,
+      "lng": 101.213,
+      "nationGroups": {
+        "10": 135,
+        "02": 5,
+        "07": 1,
+        "99": 1,
+        "08": 1
+      }
+    },
+    {
+      "code": "61",
+      "name": "Uthai Thani",
+      "newCases2566": 138,
+      "lat": null,
+      "lng": null,
+      "nationGroups": {
+        "10": 136,
+        "08": 1,
+        "07": 1
+      }
+    },
+    {
+      "code": "96",
+      "name": "Narathiwat",
+      "newCases2566": 128,
+      "lat": 6.426,
+      "lng": 101.823,
+      "nationGroups": {
+        "02": 2,
+        "03": 1,
+        "10": 124,
+        "99": 1
+      }
+    },
+    {
+      "code": "37",
+      "name": "Amnat Charoen",
+      "newCases2566": 119,
+      "lat": 15.865,
+      "lng": 104.626,
+      "nationGroups": {
+        "10": 115,
+        "99": 1,
+        "07": 1,
+        "08": 1,
+        "03": 1
+      }
+    },
+    {
+      "code": "75",
+      "name": "Samut Songkhram",
+      "newCases2566": 109,
+      "lat": 13.414,
+      "lng": 100.002,
+      "nationGroups": {
+        "10": 91,
+        "99": 1,
+        "02": 15,
+        "11": 1,
+        "08": 1
+      }
+    },
+    {
+      "code": "94",
+      "name": "Pattani",
+      "newCases2566": 109,
+      "lat": 6.869,
+      "lng": 101.25,
+      "nationGroups": {
+        "02": 4,
+        "07": 1,
+        "08": 2,
+        "10": 101,
+        "99": 1
+      }
+    },
+    {
+      "code": "49",
+      "name": "Mukdahan",
+      "newCases2566": 106,
+      "lat": 16.543,
+      "lng": 104.724,
+      "nationGroups": {
+        "10": 103,
+        "07": 2,
+        "11": 1
+      }
+    },
+    {
+      "code": "95",
+      "name": "Yala",
+      "newCases2566": 101,
+      "lat": 6.541,
+      "lng": 101.281,
+      "nationGroups": {
+        "10": 99,
+        "02": 2
+      }
+    },
+    {
+      "code": "58",
+      "name": "Mae Hong Son",
+      "newCases2566": 73,
+      "lat": 19.302,
+      "lng": 97.965,
+      "nationGroups": {
+        "10": 40,
+        "02": 21,
+        "11": 8,
+        "12": 3,
+        "99": 1
+      }
+    },
+    {
+      "code": "91",
+      "name": "Satun",
+      "newCases2566": 67,
+      "lat": 6.623,
+      "lng": 100.067,
+      "nationGroups": {
+        "02": 1,
+        "10": 65,
+        "99": 1
+      }
+    },
+    {
+      "code": "17",
+      "name": "Sing Buri",
+      "newCases2566": 15,
+      "lat": 14.891,
+      "lng": 100.405,
+      "nationGroups": {
+        "10": 13,
+        "99": 2
+      }
+    }
+  ],
+  "bangkokFacility2024": {
+    "totalNewCases": 27062,
+    "byAge": {
+      "age0_12": 84,
+      "age13_19": 772,
+      "age20_39": 13840,
+      "age40_59": 10250,
+      "age60_above": 2116
+    },
+    "bySex": {
+      "1": 18069,
+      "2": 8993
+    }
+  },
+  "lenses": {
+    "public": "New HIV cases entering the national care system by province of domicile (2566). Shows where the epidemic is being detected and treated — not where transmission occurred.",
+    "parlour": "Overlay parlour broadcast density (our inventory) against provincial case load. High parlour activity + high case load = priority corridor for harm-reduction messaging, not stigma.",
+    "worker": "No open dataset names massage/sex-work venues. Worker-side reading: concentrate testing/PrEP access where both venue density and case load are high; protect anonymity; avoid identifying individuals from inventory data."
+  }
+}

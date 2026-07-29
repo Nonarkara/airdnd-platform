@@ -1,0 +1,221 @@
+.health-page {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: var(--s8) var(--gutter) var(--s11);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.health-mast {
+  border-bottom: 1px solid var(--line-2);
+  padding-bottom: var(--s7);
+  margin-bottom: var(--s7);
+}
+
+.health-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: var(--s4);
+}
+
+.health-mast h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-hero);
+  letter-spacing: 0.02em;
+  max-width: 18ch;
+  line-height: 1.1;
+  color: var(--navy, var(--ink));
+}
+
+.health-lead {
+  margin-top: var(--s5);
+  max-width: 62ch;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.health-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: var(--s5);
+}
+
+.health-links a {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--navy, var(--ink));
+  border-bottom: 1px solid var(--mango);
+  padding-bottom: 2px;
+}
+
+.health-lenses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border: 1px solid var(--line-2);
+  margin-bottom: var(--s7);
+}
+
+.health-lenses button {
+  flex: 1 1 8rem;
+  min-height: 44px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: transparent;
+  border: 0;
+  border-right: 1px solid var(--line);
+}
+
+.health-lenses button:last-child { border-right: 0; }
+.health-lenses button.is-on {
+  color: var(--bg);
+  background: var(--navy, var(--ink));
+}
+
+.health-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: var(--s8);
+}
+
+.health-stats > div {
+  background: var(--surface);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.health-stats span,
+.health-stats em {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-style: normal;
+}
+
+.health-stats strong {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.health-copy h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--s4);
+}
+
+.health-copy p {
+  max-width: 68ch;
+  color: var(--ink-2);
+  margin-bottom: var(--s4);
+  line-height: 1.55;
+}
+
+.health-caveat {
+  border-left: 2px solid var(--mango);
+  padding-left: 12px;
+  color: var(--ink-3) !important;
+}
+
+.health-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--s5);
+  font-size: var(--fs-body);
+}
+
+.health-table th,
+.health-table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.health-table th {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+.health-bullets {
+  max-width: 68ch;
+  padding-left: 1.1rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+.health-bullets li { margin-bottom: 8px; }
+
+.health-bkk {
+  margin-top: var(--s6);
+  border: 1px solid var(--line-2);
+  padding: var(--s5);
+}
+
+.health-bkk h3 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--s4);
+}
+
+.health-bkk ul { list-style: none; }
+.health-bkk li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-body);
+}
+
+.health-foot {
+  margin-top: var(--s9);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+
+.health-error,
+.health-loading {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 800px) {
+  .health-stats { grid-template-columns: 1fr 1fr; }
+}

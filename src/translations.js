@@ -1,6 +1,6 @@
 const en = {
   header: { tagline: 'Thailand wellness intelligence' },
-  nav: { map: 'Map', workflow: 'How it works', listings: 'Inventory', feed: 'Live Feed', analytics: 'Analytics', methodology: 'Method', sociology: 'Field Notes', faq: 'FAQ', matching: 'The Match', trends: 'Trends' },
+  nav: { map: 'Map', workflow: 'How it works', listings: 'Inventory', feed: 'Live', health: 'HIV / STI', analytics: 'Analytics', methodology: 'Method', sociology: 'Field Notes', faq: 'FAQ', matching: 'The Match', trends: 'Trends' },
   common: { refresh: 'Refresh', refreshing: 'Refreshing...', language: 'Language', logout: 'Logout' },
   sourceLabels: { supabase: 'Live sync', snapshot: 'Verified snapshot', backup: 'Cached fallback' },
   dataNotes: {

@@ -15,6 +15,7 @@ import {
 } from '../lib/mapAvailability';
 import MapMarketBar from './MapMarketBar';
 import SpatialAnalyticsPanel from './SpatialAnalyticsPanel';
+import { buildHealthMatrix, loadProvinceHiv } from '../lib/health';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
@@ -331,6 +332,7 @@ export default function ListingMap({
   const darkLayerRef = useRef(null);
   const lightLayerRef = useRef(null);
   const heatLayerRef = useRef(null);
+  const epidemicLayerRef = useRef(null);
   const userMarkerRef = useRef(null);
   const accuracyCircleRef = useRef(null);
   const reachRingsRef = useRef([]);
@@ -341,6 +343,8 @@ export default function ListingMap({
   const [locateError, setLocateError] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [nowMs, setNowMs] = useState(() => Date.now());
+  const [epidemicRows, setEpidemicRows] = useState([]);
+  const [epidemicMeta, setEpidemicMeta] = useState(null);
 
   const { pins, pendingListings } = useMemo(() => {
     if (!Array.isArray(listings)) return { pins: [], pendingListings: [] };
@@ -777,18 +781,79 @@ export default function ListingMap({
   }, [theme]);
 
   useEffect(() => {
+    let cancelled = false;
+    loadProvinceHiv()
+      .then((payload) => {
+        if (cancelled) return;
+        const matrix = buildHealthMatrix(payload, listingsRef.current || []);
+        setEpidemicMeta(matrix.meta);
+        setEpidemicRows(matrix.provinces.filter((row) => row.lat != null && row.lng != null));
+      })
+      .catch(() => {
+        if (!cancelled) setEpidemicRows([]);
+      });
+    return () => { cancelled = true; };
+  }, [listings]);
+
+  useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !heatLayerRef.current) return;
     if (mapMode === 'heatmap') {
       if (!map.hasLayer(heatLayerRef.current)) {
         heatLayerRef.current.addTo(map);
       }
-    } else {
-      if (map.hasLayer(heatLayerRef.current)) {
-        map.removeLayer(heatLayerRef.current);
-      }
+    } else if (map.hasLayer(heatLayerRef.current)) {
+      map.removeLayer(heatLayerRef.current);
     }
   }, [mapMode]);
+
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    if (epidemicLayerRef.current) {
+      map.removeLayer(epidemicLayerRef.current);
+      epidemicLayerRef.current = null;
+    }
+
+    if (mapMode !== 'epidemic' || epidemicRows.length === 0) return;
+
+    const maxCases = Math.max(...epidemicRows.map((row) => row.newCases2566 || 0), 1);
+    const layer = L.layerGroup();
+    epidemicRows.forEach((row) => {
+      const cases = Number(row.newCases2566) || 0;
+      const venues = Number(row.venueCount) || 0;
+      const radius = 8 + Math.sqrt(cases / maxCases) * 28;
+      const circle = L.circleMarker([row.lat, row.lng], {
+        radius,
+        color: venues > 0 ? '#f59e0b' : '#0e1e3c',
+        weight: 1.5,
+        fillColor: venues > 0 ? '#f59e0b' : '#0e1e3c',
+        fillOpacity: 0.18 + (cases / maxCases) * 0.35,
+      });
+      circle.bindPopup(
+        `<strong>${row.name}</strong><br/>`
+        + `New-in-care 2566: <b>${cases.toLocaleString()}</b><br/>`
+        + `Inventory venues: <b>${venues}</b><br/>`
+        + `Co-locate index: <b>${row.colocation || 0}</b><br/>`
+        + `<span style="opacity:.7">Public epidemic context — not a venue risk score</span>`,
+      );
+      circle.on('click', () => {
+        map.flyTo([row.lat, row.lng], 9, { duration: 0.8 });
+      });
+      layer.addLayer(circle);
+    });
+    layer.addTo(map);
+    epidemicLayerRef.current = layer;
+    map.setView([13.5, 101.2], 6);
+
+    return () => {
+      if (epidemicLayerRef.current && mapInstanceRef.current) {
+        mapInstanceRef.current.removeLayer(epidemicLayerRef.current);
+        epidemicLayerRef.current = null;
+      }
+    };
+  }, [mapMode, epidemicRows]);
 
   const provinceMatrix = useMemo(() => {
     const counts = new Map();
@@ -925,58 +990,37 @@ export default function ListingMap({
         </div>
       </div>
 
+      {mapMode === 'epidemic' && (
+        <div className="epidemic-panel">
+          <p className="section-kicker">HIV / STI · open data</p>
+          <p>
+            Circle size = new HIV/AIDS cases entering care by domicile (Buddhist 2566 / data.go.th s_tuc2).
+            Amber outline = our inventory also has venues in that province.
+            Not a risk score for any shop or person.
+          </p>
+          {epidemicMeta?.caveat && <p className="epidemic-caveat">{epidemicMeta.caveat}</p>}
+          <a href="/health">Open three-lens research →</a>
+        </div>
+      )}
+
       {/* Axiom 77 Provinces Grid Mode Panel */}
       {mapMode === 'provinces' && (
-        <div style={{
-          background: '#0a0a0c',
-          border: '1px solid rgba(255, 116, 64, 0.3)',
-          padding: '1.25rem',
-          marginTop: '1rem',
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '0.5rem' }}>
-            <span style={{ fontFamily: 'Space Grotesk, monospace', fontSize: '0.85rem', color: '#ff7440', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              📡 77 THAI PROVINCES NATIONWIDE COVERAGE MATRIX (100% INDEXED)
-            </span>
-            <span style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: '0.75rem', color: 'rgba(232, 230, 225, 0.6)' }}>
-              Click any province to target map center
-            </span>
+        <div className="province-panel">
+          <div className="province-panel__head">
+            <span>Province coverage</span>
+            <span>Click to fly</span>
           </div>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-            gap: '8px',
-            maxHeight: '380px',
-            overflowY: 'auto',
-          }}>
+          <div className="province-panel__grid">
             {provinceMatrix.map(({ city, count, coords }) => (
               <button
                 key={city}
                 type="button"
                 onClick={() => handleFlyToCoords(coords)}
-                style={{
-                  display: 'flex',
-                  justify: 'space-between',
-                  alignItems: 'center',
-                  background: count > 0 ? 'rgba(255, 116, 64, 0.08)' : 'rgba(255, 255, 255, 0.02)',
-                  border: `1px solid ${count > 0 ? 'rgba(255, 116, 64, 0.3)' : 'rgba(255, 255, 255, 0.05)'}`,
-                  color: count > 0 ? '#F7EEF3' : 'rgba(255, 255, 255, 0.4)',
-                  padding: '8px 10px',
-                  fontSize: '11px',
-                  fontFamily: 'Space Grotesk, var(--font-mono), monospace',
-                  borderRadius: 0,
-                  cursor: coords ? 'pointer' : 'default',
-                  textAlign: 'left',
-                }}
+                className={count > 0 ? 'has-venues' : ''}
+                disabled={!coords}
               >
-                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{city}</span>
-                <span style={{
-                  background: count > 0 ? '#ff7440' : 'transparent',
-                  color: count > 0 ? '#000' : 'rgba(255, 255, 255, 0.3)',
-                  padding: '1px 6px',
-                  fontWeight: 700,
-                  fontSize: '10px',
-                  marginLeft: '4px',
-                }}>{count}</span>
+                <span>{city}</span>
+                <em className="mono">{count}</em>
               </button>
             ))}
           </div>

@@ -12,7 +12,7 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
     <section className="masthead" aria-labelledby="masthead-title">
       <div className="wrap masthead__in">
         <p className="eyebrow masthead__eyebrow">
-          {heroText.kicker || 'NATIONAL INVENTORY · TELEGRAM INTAKE'}
+          {heroText.kicker || '01 — NATIONAL INVENTORY'}
         </p>
         <div className="masthead__row">
           <div className="masthead__copy">
@@ -20,8 +20,9 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
               sabai<span className="masthead__dot">·</span>sabai
             </h1>
             <p className="masthead__sub">
-              Complete inventory of massage parlours in Thailand that reach our channels.
-              Live posts carry promotions, availability, and new faces — ranked by who broadcasts most.
+              Complete inventory of massage parlours that reach our channels.
+              Rank by who broadcasts. Read health context on the map — public epidemic,
+              parlour corridor, worker access.
             </p>
           </div>
           <dl className="masthead__stats" aria-label="Inventory snapshot">
