@@ -49,54 +49,54 @@ function Methodology() {
         <div className="meth-diagram">
           <svg viewBox="0 0 800 320" fill="none" xmlns="http://www.w3.org/2000/svg" className="meth-svg">
             {/* Telegram Sources */}
-            <rect x="20" y="120" width="140" height="80" stroke="#ff3366" strokeWidth="1" fill="none" />
-            <text x="90" y="155" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">TELEGRAM</text>
-            <text x="90" y="175" textAnchor="middle" fill="#e8e6e180" fontSize="9">12 channels</text>
-            <text x="90" y="190" textAnchor="middle" fill="#e8e6e180" fontSize="9">80,000+ records</text>
+            <rect x="20" y="120" width="140" height="80" stroke="var(--mango)" strokeWidth="1" fill="none" />
+            <text x="90" y="155" textAnchor="middle" fill="var(--ink)" fontSize="11" fontWeight="700">TELEGRAM</text>
+            <text x="90" y="175" textAnchor="middle" fill="var(--ink-3)" fontSize="9">12 channels</text>
+            <text x="90" y="190" textAnchor="middle" fill="var(--ink-3)" fontSize="9">80,000+ records</text>
 
             {/* Arrow */}
-            <line x1="160" y1="160" x2="220" y2="160" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="220,155 230,160 220,165" fill="#ff3366" />
+            <line x1="160" y1="160" x2="220" y2="160" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="220,155 230,160 220,165" fill="var(--mango)" />
 
             {/* Gemini AI */}
-            <rect x="230" y="120" width="140" height="80" stroke="#34d399" strokeWidth="1" fill="none" />
-            <text x="300" y="155" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">GEMINI AI</text>
-            <text x="300" y="175" textAnchor="middle" fill="#e8e6e180" fontSize="9">Extract, classify,</text>
-            <text x="300" y="190" textAnchor="middle" fill="#e8e6e180" fontSize="9">enrich listings</text>
+            <rect x="230" y="120" width="140" height="80" stroke="var(--navy)" strokeWidth="1" fill="none" />
+            <text x="300" y="155" textAnchor="middle" fill="var(--ink)" fontSize="11" fontWeight="700">GEMINI AI</text>
+            <text x="300" y="175" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Extract, classify,</text>
+            <text x="300" y="190" textAnchor="middle" fill="var(--ink-3)" fontSize="9">enrich listings</text>
 
             {/* Arrow */}
-            <line x1="370" y1="160" x2="430" y2="160" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="430,155 440,160 430,165" fill="#ff3366" />
+            <line x1="370" y1="160" x2="430" y2="160" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="430,155 440,160 430,165" fill="var(--mango)" />
 
             {/* Supabase */}
-            <rect x="440" y="100" width="140" height="120" stroke="#ff3366" strokeWidth="1" fill="none" />
-            <text x="510" y="135" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">SUPABASE</text>
-            <text x="510" y="155" textAnchor="middle" fill="#e8e6e180" fontSize="9">listings</text>
-            <text x="510" y="170" textAnchor="middle" fill="#e8e6e180" fontSize="9">channel_messages</text>
-            <text x="510" y="185" textAnchor="middle" fill="#e8e6e180" fontSize="9">photo_archive</text>
-            <text x="510" y="200" textAnchor="middle" fill="#e8e6e180" fontSize="9">page_views</text>
+            <rect x="440" y="100" width="140" height="120" stroke="var(--mango)" strokeWidth="1" fill="none" />
+            <text x="510" y="135" textAnchor="middle" fill="var(--ink)" fontSize="11" fontWeight="700">SUPABASE</text>
+            <text x="510" y="155" textAnchor="middle" fill="var(--ink-3)" fontSize="9">listings</text>
+            <text x="510" y="170" textAnchor="middle" fill="var(--ink-3)" fontSize="9">channel_messages</text>
+            <text x="510" y="185" textAnchor="middle" fill="var(--ink-3)" fontSize="9">photo_archive</text>
+            <text x="510" y="200" textAnchor="middle" fill="var(--ink-3)" fontSize="9">page_views</text>
 
             {/* Arrow */}
-            <line x1="580" y1="160" x2="640" y2="160" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="640,155 650,160 640,165" fill="#ff3366" />
+            <line x1="580" y1="160" x2="640" y2="160" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="640,155 650,160 640,165" fill="var(--mango)" />
 
             {/* Frontend */}
-            <rect x="650" y="120" width="130" height="80" stroke="#34d399" strokeWidth="1" fill="none" />
-            <text x="715" y="155" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">FRONTEND</text>
-            <text x="715" y="175" textAnchor="middle" fill="#e8e6e180" fontSize="9">Real-time directory</text>
-            <text x="715" y="190" textAnchor="middle" fill="#e8e6e180" fontSize="9">Interactive map</text>
+            <rect x="650" y="120" width="130" height="80" stroke="var(--navy)" strokeWidth="1" fill="none" />
+            <text x="715" y="155" textAnchor="middle" fill="var(--ink)" fontSize="11" fontWeight="700">FRONTEND</text>
+            <text x="715" y="175" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Real-time directory</text>
+            <text x="715" y="190" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Interactive map</text>
 
             {/* Side outputs */}
-            <line x1="510" y1="220" x2="510" y2="270" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="505,270 510,280 515,270" fill="#34d399" />
-            <text x="510" y="300" textAnchor="middle" fill="#34d399" fontSize="10" fontWeight="600">Google Sheets BI</text>
+            <line x1="510" y1="220" x2="510" y2="270" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="505,270 510,280 515,270" fill="var(--navy)" />
+            <text x="510" y="300" textAnchor="middle" fill="var(--navy)" fontSize="10" fontWeight="600">Google Sheets BI</text>
 
-            <line x1="300" y1="200" x2="300" y2="260" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="295,260 300,270 305,260" fill="#34d399" />
-            <text x="300" y="290" textAnchor="middle" fill="#34d399" fontSize="10" fontWeight="600">Telegram Bot</text>
+            <line x1="300" y1="200" x2="300" y2="260" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="295,260 300,270 305,260" fill="var(--navy)" />
+            <text x="300" y="290" textAnchor="middle" fill="var(--navy)" fontSize="10" fontWeight="600">Telegram Bot</text>
 
             {/* Title */}
-            <text x="400" y="30" textAnchor="middle" fill="#e8e6e130" fontSize="10" fontWeight="500" letterSpacing="3">DATA PIPELINE ARCHITECTURE</text>
+            <text x="400" y="30" textAnchor="middle" fill="var(--ink-4)" fontSize="10" fontWeight="500" letterSpacing="3">DATA PIPELINE ARCHITECTURE</text>
           </svg>
         </div>
       </section>
@@ -155,70 +155,70 @@ function Methodology() {
           <svg viewBox="0 0 820 360" className="meth-svg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three-layer deduplication decision tree">
             <defs>
               <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF3D8B" />
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--mango)" />
               </marker>
             </defs>
             {/* Input */}
-            <rect x="20" y="20" width="200" height="56" stroke="#FF3D8B" strokeWidth="1" fill="none" />
-            <text x="120" y="46" textAnchor="middle" fill="#f0f0f0" fontFamily="ChakraPetch, sans-serif" fontWeight="700" fontSize="14">Telegram cluster</text>
-            <text x="120" y="64" textAnchor="middle" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="11">name · phone · LINE · maps</text>
+            <rect x="20" y="20" width="200" height="56" stroke="var(--mango)" strokeWidth="1" fill="none" />
+            <text x="120" y="46" textAnchor="middle" fill="var(--ink)" fontFamily="Josefin Sans, sans-serif" fontWeight="700" fontSize="14">Telegram cluster</text>
+            <text x="120" y="64" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="11">name · phone · LINE · maps</text>
 
             {/* Layer 1: phone */}
-            <line x1="120" y1="76" x2="120" y2="105" stroke="#2a2a2a" markerEnd="url(#arrow-orange)" />
-            <rect x="20" y="110" width="200" height="80" stroke="#34d399" strokeWidth="1" fill="none" />
-            <text x="120" y="132" textAnchor="middle" fill="#34d399" fontFamily="Share Tech Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.1em">LAYER 1 — PHONE</text>
-            <text x="120" y="152" textAnchor="middle" fill="#f0f0f0" fontFamily="ChakraPetch, sans-serif" fontSize="13">normalize → E.164</text>
-            <text x="120" y="170" textAnchor="middle" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="10">match if cleaned digits equal</text>
-            <text x="120" y="183" textAnchor="middle" fill="#9fc2ff" fontFamily="Share Tech Mono, monospace" fontSize="10">strongest signal · low entropy</text>
+            <line x1="120" y1="76" x2="120" y2="105" stroke="var(--line-2)" markerEnd="url(#arrow-orange)" />
+            <rect x="20" y="110" width="200" height="80" stroke="var(--navy)" strokeWidth="1" fill="none" />
+            <text x="120" y="132" textAnchor="middle" fill="var(--navy)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.1em">LAYER 1 — PHONE</text>
+            <text x="120" y="152" textAnchor="middle" fill="var(--ink)" fontFamily="Josefin Sans, sans-serif" fontSize="13">normalize → E.164</text>
+            <text x="120" y="170" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">match if cleaned digits equal</text>
+            <text x="120" y="183" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">strongest signal · low entropy</text>
 
             {/* Yes branch from Layer 1 */}
-            <line x1="220" y1="150" x2="320" y2="150" stroke="#2a2a2a" markerEnd="url(#arrow-orange)" />
-            <text x="270" y="143" textAnchor="middle" fill="#34d399" fontFamily="Share Tech Mono, monospace" fontSize="10">match → MERGE</text>
+            <line x1="220" y1="150" x2="320" y2="150" stroke="var(--line-2)" markerEnd="url(#arrow-orange)" />
+            <text x="270" y="143" textAnchor="middle" fill="var(--navy)" fontFamily="JetBrains Mono, monospace" fontSize="10">match → MERGE</text>
 
             {/* Layer 2: name+location */}
-            <line x1="120" y1="190" x2="120" y2="215" stroke="#2a2a2a" markerEnd="url(#arrow-orange)" />
-            <text x="138" y="207" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="10">no phone</text>
-            <rect x="20" y="220" width="200" height="80" stroke="#9fc2ff" strokeWidth="1" fill="none" />
-            <text x="120" y="242" textAnchor="middle" fill="#9fc2ff" fontFamily="Share Tech Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.1em">LAYER 2 — NAME + LOCATION</text>
-            <text x="120" y="262" textAnchor="middle" fill="#f0f0f0" fontFamily="ChakraPetch, sans-serif" fontSize="13">canonicalise both fields</text>
-            <text x="120" y="280" textAnchor="middle" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="10">match if exact equality after</text>
-            <text x="120" y="293" textAnchor="middle" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="10">strip ‘ร้าน’ · diacritics · case</text>
+            <line x1="120" y1="190" x2="120" y2="215" stroke="var(--line-2)" markerEnd="url(#arrow-orange)" />
+            <text x="138" y="207" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">no phone</text>
+            <rect x="20" y="220" width="200" height="80" stroke="var(--ink-3)" strokeWidth="1" fill="none" />
+            <text x="120" y="242" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.1em">LAYER 2 — NAME + LOCATION</text>
+            <text x="120" y="262" textAnchor="middle" fill="var(--ink)" fontFamily="Josefin Sans, sans-serif" fontSize="13">canonicalise both fields</text>
+            <text x="120" y="280" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">match if exact equality after</text>
+            <text x="120" y="293" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">strip ‘ร้าน’ · diacritics · case</text>
 
             {/* Yes branch from Layer 2 */}
-            <line x1="220" y1="260" x2="320" y2="260" stroke="#2a2a2a" markerEnd="url(#arrow-orange)" />
-            <text x="270" y="253" textAnchor="middle" fill="#9fc2ff" fontFamily="Share Tech Mono, monospace" fontSize="10">match → MERGE</text>
+            <line x1="220" y1="260" x2="320" y2="260" stroke="var(--line-2)" markerEnd="url(#arrow-orange)" />
+            <text x="270" y="253" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">match → MERGE</text>
 
             {/* Layer 3: fuzzy */}
-            <line x1="120" y1="300" x2="120" y2="325" stroke="#2a2a2a" markerEnd="url(#arrow-orange)" />
-            <text x="138" y="318" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="10">distinct</text>
-            <rect x="20" y="330" width="200" height="20" stroke="#FF3D8B" strokeWidth="1" fill="none" />
-            <text x="120" y="345" textAnchor="middle" fill="#FF3D8B" fontFamily="Share Tech Mono, monospace" fontSize="11" letterSpacing="0.1em">LAYER 3 — FUZZY (≥ 10 char substring)</text>
+            <line x1="120" y1="300" x2="120" y2="325" stroke="var(--line-2)" markerEnd="url(#arrow-orange)" />
+            <text x="138" y="318" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">distinct</text>
+            <rect x="20" y="330" width="200" height="20" stroke="var(--mango)" strokeWidth="1" fill="none" />
+            <text x="120" y="345" textAnchor="middle" fill="var(--mango)" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="0.1em">LAYER 3 — FUZZY (≥ 10 char substring)</text>
 
             {/* Right column: outcomes */}
-            <rect x="320" y="120" width="220" height="60" stroke="#34d399" strokeWidth="1" fill="none" />
-            <text x="430" y="142" textAnchor="middle" fill="#34d399" fontFamily="Share Tech Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.1em">PHONE-CLUSTER MERGE</text>
-            <text x="430" y="160" textAnchor="middle" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="10">e.g. one operator → many</text>
-            <text x="430" y="172" textAnchor="middle" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="10">staff aliases · single record</text>
+            <rect x="320" y="120" width="220" height="60" stroke="var(--navy)" strokeWidth="1" fill="none" />
+            <text x="430" y="142" textAnchor="middle" fill="var(--navy)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.1em">PHONE-CLUSTER MERGE</text>
+            <text x="430" y="160" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">e.g. one operator → many</text>
+            <text x="430" y="172" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">staff aliases · single record</text>
 
-            <rect x="320" y="230" width="220" height="60" stroke="#9fc2ff" strokeWidth="1" fill="none" />
-            <text x="430" y="252" textAnchor="middle" fill="#9fc2ff" fontFamily="Share Tech Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.1em">CANONICAL MERGE</text>
-            <text x="430" y="270" textAnchor="middle" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="10">same shop, different scribes</text>
+            <rect x="320" y="230" width="220" height="60" stroke="var(--ink-3)" strokeWidth="1" fill="none" />
+            <text x="430" y="252" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.1em">CANONICAL MERGE</text>
+            <text x="430" y="270" textAnchor="middle" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="10">same shop, different scribes</text>
 
             {/* Far right: scoring formula */}
-            <rect x="580" y="80" width="220" height="240" stroke="#2a2a2a" strokeWidth="1" fill="none" />
-            <text x="690" y="105" textAnchor="middle" fill="#FF3D8B" fontFamily="Share Tech Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.12em">CANONICAL SCORE</text>
-            <text x="600" y="135" fill="#f0f0f0" fontFamily="Share Tech Mono, monospace" fontSize="11">score(L) =</text>
-            <text x="610" y="155" fill="#34d399" fontFamily="Share Tech Mono, monospace" fontSize="11">  35 · I[maps]</text>
-            <text x="610" y="172" fill="#34d399" fontFamily="Share Tech Mono, monospace" fontSize="11">+ 25 · I[phone]</text>
-            <text x="610" y="189" fill="#9fc2ff" fontFamily="Share Tech Mono, monospace" fontSize="11">+ 15 · I[line]</text>
-            <text x="610" y="206" fill="#9fc2ff" fontFamily="Share Tech Mono, monospace" fontSize="11">+ 10 · I[hours]</text>
-            <text x="610" y="223" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="11">+ 10 · I[price]</text>
-            <text x="610" y="240" fill="#a0a0a0" fontFamily="Share Tech Mono, monospace" fontSize="11">+ min(10, mention)</text>
-            <line x1="600" y1="252" x2="780" y2="252" stroke="#2a2a2a" />
-            <text x="600" y="272" fill="#a0a0a0" fontFamily="ChakraPetch, sans-serif" fontSize="11">When two candidates merge,</text>
-            <text x="600" y="288" fill="#a0a0a0" fontFamily="ChakraPetch, sans-serif" fontSize="11">the higher-score record wins;</text>
-            <text x="600" y="304" fill="#a0a0a0" fontFamily="ChakraPetch, sans-serif" fontSize="11">missing fields are filled from</text>
-            <text x="600" y="320" fill="#a0a0a0" fontFamily="ChakraPetch, sans-serif" fontSize="11">the loser. Indicators I[·] ∈ {`{0,1}`}.</text>
+            <rect x="580" y="80" width="220" height="240" stroke="var(--line-2)" strokeWidth="1" fill="none" />
+            <text x="690" y="105" textAnchor="middle" fill="var(--mango)" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="11" letterSpacing="0.12em">CANONICAL SCORE</text>
+            <text x="600" y="135" fill="var(--ink)" fontFamily="JetBrains Mono, monospace" fontSize="11">score(L) =</text>
+            <text x="610" y="155" fill="var(--navy)" fontFamily="JetBrains Mono, monospace" fontSize="11">  35 · I[maps]</text>
+            <text x="610" y="172" fill="var(--navy)" fontFamily="JetBrains Mono, monospace" fontSize="11">+ 25 · I[phone]</text>
+            <text x="610" y="189" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="11">+ 15 · I[line]</text>
+            <text x="610" y="206" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="11">+ 10 · I[hours]</text>
+            <text x="610" y="223" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="11">+ 10 · I[price]</text>
+            <text x="610" y="240" fill="var(--ink-3)" fontFamily="JetBrains Mono, monospace" fontSize="11">+ min(10, mention)</text>
+            <line x1="600" y1="252" x2="780" y2="252" stroke="var(--line-2)" />
+            <text x="600" y="272" fill="var(--ink-3)" fontFamily="Josefin Sans, sans-serif" fontSize="11">When two candidates merge,</text>
+            <text x="600" y="288" fill="var(--ink-3)" fontFamily="Josefin Sans, sans-serif" fontSize="11">the higher-score record wins;</text>
+            <text x="600" y="304" fill="var(--ink-3)" fontFamily="Josefin Sans, sans-serif" fontSize="11">missing fields are filled from</text>
+            <text x="600" y="320" fill="var(--ink-3)" fontFamily="Josefin Sans, sans-serif" fontSize="11">the loser. Indicators I[·] ∈ {`{0,1}`}.</text>
           </svg>
         </div>
 
@@ -318,43 +318,43 @@ function Methodology() {
         <div className="meth-diagram">
           <svg viewBox="0 0 800 240" fill="none" xmlns="http://www.w3.org/2000/svg" className="meth-svg" role="img" aria-label="Temporal State Diagram">
             {/* Input Node */}
-            <rect x="20" y="80" width="140" height="60" stroke="#ff3366" strokeWidth="1" fill="none" />
-            <text x="90" y="110" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">TELEGRAM WEBHOOK</text>
-            <text x="90" y="125" textAnchor="middle" fill="#e8e6e180" fontSize="9">Raw Cluster</text>
+            <rect x="20" y="80" width="140" height="60" stroke="var(--mango)" strokeWidth="1" fill="none" />
+            <text x="90" y="110" textAnchor="middle" fill="var(--ink)" fontSize="11" fontWeight="700">TELEGRAM WEBHOOK</text>
+            <text x="90" y="125" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Raw Cluster</text>
 
-            <line x1="160" y1="110" x2="220" y2="110" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="220,105 230,110 220,115" fill="#ff3366" />
+            <line x1="160" y1="110" x2="220" y2="110" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="220,105 230,110 220,115" fill="var(--mango)" />
 
             {/* Semantic Engine Box */}
-            <rect x="230" y="40" width="300" height="140" stroke="#34d399" strokeWidth="1" strokeDasharray="4 4" fill="none" />
-            <text x="380" y="60" textAnchor="middle" fill="#34d399" fontSize="10" fontWeight="700" letterSpacing="2">SEMANTIC ENGINE (LLM)</text>
+            <rect x="230" y="40" width="300" height="140" stroke="var(--navy)" strokeWidth="1" strokeDasharray="4 4" fill="none" />
+            <text x="380" y="60" textAnchor="middle" fill="var(--navy)" fontSize="10" fontWeight="700" letterSpacing="2">SEMANTIC ENGINE (LLM)</text>
 
             {/* LLM Steps */}
-            <rect x="250" y="80" width="80" height="40" stroke="#34d399" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
-            <text x="290" y="103" textAnchor="middle" fill="#e8e6e1" fontSize="9">Tokenize</text>
+            <rect x="250" y="80" width="80" height="40" stroke="var(--navy)" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
+            <text x="290" y="103" textAnchor="middle" fill="var(--ink)" fontSize="9">Tokenize</text>
 
-            <line x1="330" y1="100" x2="350" y2="100" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="350,97 355,100 350,103" fill="#34d399" />
+            <line x1="330" y1="100" x2="350" y2="100" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="350,97 355,100 350,103" fill="var(--navy)" />
 
-            <rect x="355" y="80" width="80" height="40" stroke="#34d399" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
-            <text x="395" y="98" textAnchor="middle" fill="#e8e6e1" fontSize="9">Sentiment</text>
-            <text x="395" y="110" textAnchor="middle" fill="#e8e6e180" fontSize="8">Extraction</text>
+            <rect x="355" y="80" width="80" height="40" stroke="var(--navy)" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
+            <text x="395" y="98" textAnchor="middle" fill="var(--ink)" fontSize="9">Sentiment</text>
+            <text x="395" y="110" textAnchor="middle" fill="var(--ink-3)" fontSize="8">Extraction</text>
 
-            <line x1="435" y1="100" x2="455" y2="100" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="455,97 460,100 455,103" fill="#34d399" />
+            <line x1="435" y1="100" x2="455" y2="100" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="455,97 460,100 455,103" fill="var(--navy)" />
 
-            <rect x="460" y="80" width="60" height="40" stroke="#34d399" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
-            <text x="490" y="98" textAnchor="middle" fill="#e8e6e1" fontSize="9">Temporal</text>
-            <text x="490" y="110" textAnchor="middle" fill="#e8e6e180" fontSize="8">Scoring</text>
+            <rect x="460" y="80" width="60" height="40" stroke="var(--navy)" strokeWidth="1" fill="rgba(52, 211, 153, 0.1)" />
+            <text x="490" y="98" textAnchor="middle" fill="var(--ink)" fontSize="9">Temporal</text>
+            <text x="490" y="110" textAnchor="middle" fill="var(--ink-3)" fontSize="8">Scoring</text>
 
             {/* Output Arrow */}
-            <line x1="530" y1="110" x2="590" y2="110" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="590,105 600,110 590,115" fill="#34d399" />
+            <line x1="530" y1="110" x2="590" y2="110" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="590,105 600,110 590,115" fill="var(--navy)" />
 
             {/* Heatmap Node */}
-            <rect x="600" y="80" width="140" height="60" stroke="#FF3D8B" strokeWidth="1" fill="none" />
-            <text x="670" y="110" textAnchor="middle" fill="#e8e6e1" fontSize="11" fontWeight="700">ACTIVITY HEATMAP</text>
-            <text x="670" y="125" textAnchor="middle" fill="#e8e6e180" fontSize="9">Predictive Indicator</text>
+            <rect x="600" y="80" width="140" height="60" stroke="var(--mango)" strokeWidth="1" fill="none" />
+            <text x="670" y="110" textAnchor="middle" fill="var(--ink)" fontSize="11" fontWeight="700">ACTIVITY HEATMAP</text>
+            <text x="670" y="125" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Predictive Indicator</text>
           </svg>
         </div>
         <p style={{ marginTop: '1.5rem' }}>
@@ -585,51 +585,51 @@ function Methodology() {
         </p>
 
         {/* Tier table */}
-        <div className="meth-tier-table" style={{ marginBlock: '1.75rem' }}>
+        <div className="meth-tier-table">
           {[
             {
               num: '01', th: 'อาบอบนวด', en: 'Licensed Bath & Massage',
-              reg: 'Government-registered', color: '#34d399',
+              reg: 'Government-registered',
               price: '฿1,500–5,000+ all-inclusive',
               compliance: 'Mandatory VD testing (blood + physical) every 2–3 months. Valid medical certificate required. Workers formally registered with district government (ส่งปกครองอำเภอ). Pricing declared all-inclusive at the door.',
               risk: 'LOWEST',
+              riskClass: 'is-low',
             },
             {
               num: '02', th: 'สปา', en: 'Day Spa',
-              reg: 'TAT-licensed (voluntary)', color: '#9fc2ff',
+              reg: 'TAT-licensed (voluntary)',
               price: '฿800–3,000 per session',
               compliance: 'Operating under the Tourism Authority of Thailand spa licensing framework. Voluntary health standards. Compliance varies: hotel-branded spas at one end, informal walk-in operations at the other.',
               risk: 'LOW',
+              riskClass: 'is-low',
             },
             {
               num: '03', th: 'นวดแผนไทย', en: 'Traditional Thai Massage',
-              reg: 'Informal / unregistered', color: '#f59e0b',
+              reg: 'Informal / unregistered',
               price: '฿200–600/hr + add-ons',
               compliance: 'No certification required to operate. Dominant category in the corpus by volume. Runs a full continuum from legitimate therapeutic wellness to grey-service provision. Sub-฿300 pricing is the primary statistical risk signal in the dataset.',
               risk: 'MODERATE',
+              riskClass: 'is-high',
             },
             {
               num: '04', th: 'ไซด์ไลน์', en: 'Freelance / Sideline',
-              reg: 'No registration', color: '#ff3366',
+              reg: 'No registration',
               price: 'Privately negotiated',
               compliance: 'Self-employed workers with no establishment oversight, no VD certification, no district registration. No paper trail at any level. Highest trafficking-risk tier per the insider framework. Rarely self-identifies by this term in postings.',
               risk: 'HIGHEST',
+              riskClass: 'is-high',
             },
-          ].map(({ num, th, en, reg, color, price, compliance, risk }) => (
-            <div key={num} style={{
-              display: 'grid', gridTemplateColumns: '2.5rem 1fr',
-              gap: '0 1.25rem', marginBottom: '1.25rem',
-              borderLeft: `2px solid ${color}`, paddingLeft: '1rem',
-            }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color, paddingTop: '2px', gridRow: 'span 3' }}>{num}</span>
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                <strong style={{ fontSize: '14px', color }}>{th}</strong>
-                <span style={{ fontSize: '12px', color: 'var(--meth-ink-2)' }}>· {en}</span>
-                <span style={{ fontSize: '9px', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', padding: '1px 5px', border: `1px solid ${color}50`, color, marginLeft: 'auto' }}>{risk}</span>
+          ].map(({ num, th, en, reg, price, compliance, risk, riskClass }) => (
+            <article key={num} className="meth-tier">
+              <span className="meth-tier__num">{num}</span>
+              <div className="meth-tier__head">
+                <strong className="meth-tier__th">{th}</strong>
+                <span className="meth-tier__en">· {en}</span>
+                <span className={`meth-tier__risk ${riskClass}`}>{risk}</span>
               </div>
-              <p style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--meth-ink-2)', margin: '0.2rem 0' }}>{reg} · {price}</p>
-              <p style={{ fontSize: '12px', color: 'var(--meth-ink-3)', lineHeight: '1.7', margin: '0.25rem 0 0' }}>{compliance}</p>
-            </div>
+              <p className="meth-tier__meta">{reg} · {price}</p>
+              <p className="meth-tier__body">{compliance}</p>
+            </article>
           ))}
         </div>
 
@@ -716,7 +716,7 @@ function Methodology() {
             className="meth-svg" role="img" aria-label="Thailand GDP per capita 1996–2024">
 
             {/* Title */}
-            <text x="390" y="18" textAnchor="middle" fill="#e8e6e130" fontSize="9"
+            <text x="390" y="18" textAnchor="middle" fill="var(--ink-4)" fontSize="9"
               fontWeight="500" letterSpacing="3">THAILAND GDP PER CAPITA (USD) · 1996–2024</text>
 
             {/* Y-axis grid lines & labels */}
@@ -724,40 +724,40 @@ function Methodology() {
               const y = 200 - (val / 8000) * 160;
               return (
                 <g key={val}>
-                  <line x1="60" y1={y} x2="760" y2={y} stroke="#1e1e2e" strokeWidth="1" />
-                  <text x="52" y={y + 4} textAnchor="end" fill="#e8e6e150" fontSize="8"
+                  <line x1="60" y1={y} x2="760" y2={y} stroke="var(--line)" strokeWidth="1" />
+                  <text x="52" y={y + 4} textAnchor="end" fill="var(--ink)50" fontSize="8"
                     fontFamily="monospace">${(val / 1000).toFixed(0)}k</text>
                 </g>
               );
             })}
 
             {/* TIP Tier bands at bottom */}
-            <rect x="183" y="205" width="77" height="10" fill="#ff336640" />
-            <text x="221" y="219" textAnchor="middle" fill="#ff3366" fontSize="7"
+            <rect x="183" y="205" width="77" height="10" fill="var(--mango)40" />
+            <text x="221" y="219" textAnchor="middle" fill="var(--mango)" fontSize="7"
               fontFamily="monospace">TIER 3</text>
 
             <rect x="260" y="205" width="175" height="10" fill="#f59e0b30" />
             <text x="347" y="219" textAnchor="middle" fill="#f59e0b" fontSize="7"
               fontFamily="monospace">TIER 2 WATCH</text>
 
-            <rect x="435" y="205" width="75" height="10" fill="#34d39930" />
-            <text x="472" y="219" textAnchor="middle" fill="#34d399" fontSize="7"
+            <rect x="435" y="205" width="75" height="10" fill="var(--navy)30" />
+            <text x="472" y="219" textAnchor="middle" fill="var(--navy)" fontSize="7"
               fontFamily="monospace">T2</text>
 
-            <rect x="510" y="205" width="25" height="10" fill="#ff336640" />
+            <rect x="510" y="205" width="25" height="10" fill="var(--mango)40" />
 
             <rect x="535" y="205" width="200" height="10" fill="#f59e0b30" />
             <text x="635" y="219" textAnchor="middle" fill="#f59e0b" fontSize="7"
               fontFamily="monospace">TIER 2 WATCH LIST / TIER 2</text>
 
             {/* TIP axis label */}
-            <text x="52" y="213" textAnchor="end" fill="#e8e6e150" fontSize="7"
+            <text x="52" y="213" textAnchor="end" fill="var(--ink)50" fontSize="7"
               fontFamily="monospace">TIP</text>
 
             {/* Crisis event lines */}
-            <line x1="85" y1="30" x2="85" y2="202" stroke="#ff3366" strokeWidth="1"
+            <line x1="85" y1="30" x2="85" y2="202" stroke="var(--mango)" strokeWidth="1"
               strokeDasharray="3 3" opacity="0.5" />
-            <text x="87" y="40" fill="#ff3366" fontSize="8" fontFamily="monospace">1997 CRISIS</text>
+            <text x="87" y="40" fill="var(--mango)" fontSize="8" fontFamily="monospace">1997 CRISIS</text>
 
             <line x1="385" y1="30" x2="385" y2="202" stroke="#f59e0b" strokeWidth="1"
               strokeDasharray="3 3" opacity="0.4" />
@@ -767,9 +767,9 @@ function Methodology() {
               strokeDasharray="3 3" opacity="0.4" />
             <text x="512" y="40" fill="#f59e0b" fontSize="8" fontFamily="monospace">COUP</text>
 
-            <line x1="660" y1="30" x2="660" y2="202" stroke="#ff3366" strokeWidth="1"
+            <line x1="660" y1="30" x2="660" y2="202" stroke="var(--mango)" strokeWidth="1"
               strokeDasharray="3 3" opacity="0.5" />
-            <text x="662" y="40" fill="#ff3366" fontSize="8" fontFamily="monospace">COVID</text>
+            <text x="662" y="40" fill="var(--mango)" fontSize="8" fontFamily="monospace">COVID</text>
 
             {/* GDP line */}
             <polyline
@@ -782,21 +782,21 @@ function Methodology() {
               fill="#f59e0b" opacity="0.04" />
 
             {/* Key annotations */}
-            <circle cx="85" cy="145" r="3" fill="#ff3366" />
-            <text x="76" y="158" textAnchor="middle" fill="#e8e6e180" fontSize="8"
+            <circle cx="85" cy="145" r="3" fill="var(--mango)" />
+            <text x="76" y="158" textAnchor="middle" fill="var(--ink-3)" fontSize="8"
               fontFamily="monospace">$2.2k</text>
 
-            <circle cx="635" cy="41" r="3" fill="#34d399" />
-            <text x="635" y="35" textAnchor="middle" fill="#e8e6e180" fontSize="8"
+            <circle cx="635" cy="41" r="3" fill="var(--navy)" />
+            <text x="635" y="35" textAnchor="middle" fill="var(--ink-3)" fontSize="8"
               fontFamily="monospace">$7.8k</text>
 
-            <circle cx="660" cy="60" r="3" fill="#ff3366" />
+            <circle cx="660" cy="60" r="3" fill="var(--mango)" />
 
             {/* X-axis year labels */}
             {[1996, 2000, 2005, 2010, 2015, 2020, 2024].map(yr => {
               const x = 60 + (yr - 1996) / 28 * 700;
               return (
-                <text key={yr} x={x} y="230" textAnchor="middle" fill="#e8e6e140" fontSize="8"
+                <text key={yr} x={x} y="230" textAnchor="middle" fill="var(--ink)40" fontSize="8"
                   fontFamily="monospace">{yr}</text>
               );
             })}
@@ -888,22 +888,22 @@ function Methodology() {
           <svg viewBox="0 0 700 240" fill="none" xmlns="http://www.w3.org/2000/svg"
             className="meth-svg" role="img" aria-label="Trafficking victim nationalities — Thailand">
 
-            <text x="350" y="18" textAnchor="middle" fill="#e8e6e130" fontSize="9"
+            <text x="350" y="18" textAnchor="middle" fill="var(--ink-4)" fontSize="9"
               fontWeight="500" letterSpacing="3">IDENTIFIED TRAFFICKING VICTIMS IN THAILAND · NATIONALITY BREAKDOWN</text>
 
             {[
-              { label: 'Myanmar', pct: 58, color: '#ff3366' },
+              { label: 'Myanmar', pct: 58, color: 'var(--mango)' },
               { label: 'Thai', pct: 22, color: '#f59e0b' },
-              { label: 'Lao PDR', pct: 10, color: '#9fc2ff' },
-              { label: 'Cambodian', pct: 6, color: '#34d399' },
-              { label: 'Vietnamese', pct: 2, color: '#e8e6e180' },
-              { label: 'Other', pct: 2, color: '#e8e6e140' },
+              { label: 'Lao PDR', pct: 10, color: 'var(--ink-3)' },
+              { label: 'Cambodian', pct: 6, color: 'var(--navy)' },
+              { label: 'Vietnamese', pct: 2, color: 'var(--ink-3)' },
+              { label: 'Other', pct: 2, color: 'var(--ink)40' },
             ].map(({ label, pct, color }, i) => {
               const y = 38 + i * 32;
               const barW = pct / 60 * 480;
               return (
                 <g key={label}>
-                  <text x="95" y={y + 13} textAnchor="end" fill="#e8e6e180" fontSize="10"
+                  <text x="95" y={y + 13} textAnchor="end" fill="var(--ink-3)" fontSize="10"
                     fontFamily="monospace">{label}</text>
                   <rect x="100" y={y} width={barW} height="20" fill={color} opacity="0.7" />
                   <text x={100 + barW + 6} y={y + 13} fill={color} fontSize="10"
@@ -912,7 +912,7 @@ function Methodology() {
               );
             })}
 
-            <text x="350" y="230" textAnchor="middle" fill="#e8e6e130" fontSize="8"
+            <text x="350" y="230" textAnchor="middle" fill="var(--ink-4)" fontSize="8"
               fontFamily="monospace">SOURCE: THAI DEPARTMENT OF SPECIAL INVESTIGATION (DSI) MULTI-YEAR AVERAGE · ILLUSTRATIVE</text>
           </svg>
         </div>
@@ -988,47 +988,47 @@ function Methodology() {
           <svg viewBox="0 0 780 220" fill="none" xmlns="http://www.w3.org/2000/svg"
             className="meth-svg" role="img" aria-label="Two entry pipelines into the massage economy">
 
-            <text x="390" y="18" textAnchor="middle" fill="#e8e6e130" fontSize="9"
+            <text x="390" y="18" textAnchor="middle" fill="var(--ink-4)" fontSize="9"
               fontWeight="500" letterSpacing="3">TWO ENTRY PIPELINES · SAME VISIBLE INDUSTRY</text>
 
             {/* Pipeline 1 — Thai women */}
             <rect x="20" y="35" width="280" height="150" stroke="#f59e0b" strokeWidth="1" fill="none" />
             <text x="160" y="54" textAnchor="middle" fill="#f59e0b" fontSize="10"
               fontFamily="monospace" fontWeight="700" letterSpacing="0.1em">PIPELINE 1 · ECONOMIC ACTOR</text>
-            <text x="160" y="74" textAnchor="middle" fill="#e8e6e1" fontSize="11"
+            <text x="160" y="74" textAnchor="middle" fill="var(--ink)" fontSize="11"
               fontWeight="700">Thai women, primarily Isan</text>
-            <text x="160" y="96" textAnchor="middle" fill="#e8e6e180" fontSize="9">Rural-urban migration</text>
-            <text x="160" y="112" textAnchor="middle" fill="#e8e6e180" fontSize="9">Wage gap vs. Bangkok cost of living</text>
-            <text x="160" y="128" textAnchor="middle" fill="#e8e6e180" fontSize="9">Luxury consumption aspiration</text>
-            <text x="160" y="144" textAnchor="middle" fill="#e8e6e180" fontSize="9">Voluntary entry, exit possible</text>
+            <text x="160" y="96" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Rural-urban migration</text>
+            <text x="160" y="112" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Wage gap vs. Bangkok cost of living</text>
+            <text x="160" y="128" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Luxury consumption aspiration</text>
+            <text x="160" y="144" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Voluntary entry, exit possible</text>
             <text x="160" y="163" textAnchor="middle" fill="#f59e0b" fontSize="9">Economic coercion via inequality</text>
             <text x="160" y="176" textAnchor="middle" fill="#f59e0b" fontSize="9">not trafficking per se</text>
 
             {/* Pipeline 2 — Migrant workers */}
-            <rect x="480" y="35" width="280" height="150" stroke="#ff3366" strokeWidth="1" fill="none" />
-            <text x="620" y="54" textAnchor="middle" fill="#ff3366" fontSize="10"
+            <rect x="480" y="35" width="280" height="150" stroke="var(--mango)" strokeWidth="1" fill="none" />
+            <text x="620" y="54" textAnchor="middle" fill="var(--mango)" fontSize="10"
               fontFamily="monospace" fontWeight="700" letterSpacing="0.1em">PIPELINE 2 · COERCIVE</text>
-            <text x="620" y="74" textAnchor="middle" fill="#e8e6e1" fontSize="11"
+            <text x="620" y="74" textAnchor="middle" fill="var(--ink)" fontSize="11"
               fontWeight="700">Myanmar, Lao, Cambodian migrants</text>
-            <text x="620" y="96" textAnchor="middle" fill="#e8e6e180" fontSize="9">Broker recruitment with false promises</text>
-            <text x="620" y="112" textAnchor="middle" fill="#e8e6e180" fontSize="9">Document confiscation on arrival</text>
-            <text x="620" y="128" textAnchor="middle" fill="#e8e6e180" fontSize="9">Debt bondage ($2k–$10k fees)</text>
-            <text x="620" y="144" textAnchor="middle" fill="#e8e6e180" fontSize="9">Language barrier as control</text>
-            <text x="620" y="163" textAnchor="middle" fill="#ff3366" fontSize="9">Forced labor / trafficking</text>
-            <text x="620" y="176" textAnchor="middle" fill="#ff3366" fontSize="9">exit requires external intervention</text>
+            <text x="620" y="96" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Broker recruitment with false promises</text>
+            <text x="620" y="112" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Document confiscation on arrival</text>
+            <text x="620" y="128" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Debt bondage ($2k–$10k fees)</text>
+            <text x="620" y="144" textAnchor="middle" fill="var(--ink-3)" fontSize="9">Language barrier as control</text>
+            <text x="620" y="163" textAnchor="middle" fill="var(--mango)" fontSize="9">Forced labor / trafficking</text>
+            <text x="620" y="176" textAnchor="middle" fill="var(--mango)" fontSize="9">exit requires external intervention</text>
 
             {/* Converging arrows */}
-            <line x1="300" y1="110" x2="355" y2="110" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="355,105 365,110 355,115" fill="#e8e6e160" />
+            <line x1="300" y1="110" x2="355" y2="110" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="355,105 365,110 355,115" fill="var(--ink)60" />
 
-            <line x1="480" y1="110" x2="425" y2="110" stroke="#2a2a3a" strokeWidth="1" />
-            <polygon points="425,105 415,110 425,115" fill="#e8e6e160" />
+            <line x1="480" y1="110" x2="425" y2="110" stroke="var(--line-2)" strokeWidth="1" />
+            <polygon points="425,105 415,110 425,115" fill="var(--ink)60" />
 
             {/* Convergence box */}
-            <rect x="365" y="88" width="50" height="44" stroke="#e8e6e140" strokeWidth="1" fill="none" />
-            <text x="390" y="107" textAnchor="middle" fill="#e8e6e180" fontSize="8"
+            <rect x="365" y="88" width="50" height="44" stroke="var(--ink)40" strokeWidth="1" fill="none" />
+            <text x="390" y="107" textAnchor="middle" fill="var(--ink-3)" fontSize="8"
               fontFamily="monospace">SAME</text>
-            <text x="390" y="120" textAnchor="middle" fill="#e8e6e180" fontSize="8"
+            <text x="390" y="120" textAnchor="middle" fill="var(--ink-3)" fontSize="8"
               fontFamily="monospace">VENUE</text>
           </svg>
         </div>
@@ -1081,7 +1081,7 @@ function Methodology() {
           <svg viewBox="0 0 700 200" fill="none" xmlns="http://www.w3.org/2000/svg"
             className="meth-svg" role="img" aria-label="Price tier distribution and trafficking risk correlation">
 
-            <text x="350" y="18" textAnchor="middle" fill="#e8e6e130" fontSize="9"
+            <text x="350" y="18" textAnchor="middle" fill="var(--ink-4)" fontSize="9"
               fontWeight="500" letterSpacing="3">PRICE TIER DISTRIBUTION · CORPUS VS. TRAFFICKING RISK LITERATURE</text>
 
             {[
@@ -1093,21 +1093,21 @@ function Methodology() {
               const y = 35 + i * 38;
               return (
                 <g key={tier}>
-                  <text x="128" y={y + 13} textAnchor="end" fill="#e8e6e180" fontSize="9"
+                  <text x="128" y={y + 13} textAnchor="end" fill="var(--ink-3)" fontSize="9"
                     fontFamily="monospace">{tier}</text>
                   {/* Corpus bar */}
                   <rect x="133" y={y} width={pct * 3.5} height="14" fill="#f59e0b" opacity="0.6" />
                   <text x={133 + pct * 3.5 + 4} y={y + 11} fill="#f59e0b" fontSize="9"
                     fontFamily="monospace">{pct}% of corpus</text>
                   {/* Risk indicator */}
-                  <rect x="133" y={y + 16} width={risk * 3.5} height="8" fill="#ff3366" opacity="0.35" />
-                  <text x={133 + risk * 3.5 + 4} y={y + 23} fill="#ff336680" fontSize="8"
+                  <rect x="133" y={y + 16} width={risk * 3.5} height="8" fill="var(--mango)" opacity="0.35" />
+                  <text x={133 + risk * 3.5 + 4} y={y + 23} fill="var(--mango)80" fontSize="8"
                     fontFamily="monospace">{riskLabel} trafficking risk</text>
                 </g>
               );
             })}
 
-            <text x="350" y="190" textAnchor="middle" fill="#e8e6e130" fontSize="8"
+            <text x="350" y="190" textAnchor="middle" fill="var(--ink-4)" fontSize="8"
               fontFamily="monospace">RISK CORRELATION BASED ON UNODC / ILO SECTOR ANALYSIS · NOT INDIVIDUAL LISTING DETERMINATION</text>
           </svg>
         </div>
