@@ -427,19 +427,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .lcard:hover { background: var(--surface); }
 .lcard:active { transform: scale(0.997); }
-.lcard__media {
-  position: relative;
-  width: 56px;
-  height: 56px;
-  aspect-ratio: 1;
-  border: 1px solid var(--line);
-  flex: none;
-}
+.lcard__media { position: relative; aspect-ratio: 3/2; border-bottom: 1px solid rgba(255, 255, 255, 0.1); background: #050407; }
+.lcard__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
 .photo { width: 100%; height: 100%; position: relative; overflow: hidden; display: grid; place-items: center; border-radius: 0; }
 .photo__glyph { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; color: var(--ink); letter-spacing: 0.04em; }
 .photo__tag { display: none; }
 .lcard__body { display: contents; }
-.lcard__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 @media (max-width: 860px) {
   .lcard {
