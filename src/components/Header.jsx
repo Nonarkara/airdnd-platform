@@ -1,5 +1,12 @@
 import { Link } from 'react-router-dom';
 
+/**
+ * Sticky chrome is navigation + status only.
+ * NEVER put "sabai·sabai" (or any brand wordmark) in this header when the
+ * page hero already carries the brand — stacked duplicate logos on one
+ * viewport read amateur. Brand lives in the hero. See tasks/lessons.md
+ * 2026-08-03 · Duplicate brand wordmark.
+ */
 function Header({
   language,
   setLanguage,
@@ -16,6 +23,8 @@ function Header({
 }) {
   const isLive = sourceLabel?.toLowerCase().includes('live');
   const venueCount = metrics?.total || 0;
+  const status = t.status || {};
+  const themes = t.themes || {};
 
   const viewTabs = [
     { id: 'directory', label: t.nav?.listings || 'Inventory' },
@@ -31,13 +40,8 @@ function Header({
 
   return (
     <header className="site-header" id="overview">
-      <div className="site-header__in">
-        <a className="brand" href="#overview" aria-label="Sabai Sabai">
-          <span className="brand__mark" aria-hidden="true" />
-          <span className="brand__name">sabai<em>·</em>sabai</span>
-        </a>
-
-        <nav className="nav" aria-label="Primary" role="tablist">
+      <div className="site-header__in site-header__in--nav-first">
+        <nav className="nav" aria-label={t.nav?.primary || 'Primary'} role="tablist">
           {viewTabs.map((tab) => (
             <button
               key={tab.id}
@@ -68,11 +72,13 @@ function Header({
 
         <div className="header-actions">
           {venueCount > 0 && (
-            <span className="status-pill mono">{venueCount} venues</span>
+            <span className="status-pill mono">
+              {venueCount} {status.venues || 'venues'}
+            </span>
           )}
           <span className="status-pill" title={sourceLabel}>
             <span className="live-dot" style={!isLive ? { background: 'var(--ink-3)' } : undefined} />
-            {isLive ? 'Live' : 'Cached'}
+            {isLive ? (status.live || 'Live') : (status.cached || 'Cached')}
           </span>
 
           <button
@@ -96,14 +102,14 @@ function Header({
             </select>
           </label>
 
-          <label className="header-select" aria-label="Theme">
+          <label className="header-select" aria-label={themes.label || 'Theme'}>
             <select
               value={theme}
               onChange={(event) => setTheme(event.target.value)}
             >
-              <option value="light">Paper</option>
-              <option value="dark">Dark</option>
-              <option value="high-contrast">High Contrast</option>
+              <option value="light">{themes.paper || 'Paper'}</option>
+              <option value="dark">{themes.dark || 'Dark'}</option>
+              <option value="high-contrast">{themes.highContrast || 'High Contrast'}</option>
             </select>
           </label>
 

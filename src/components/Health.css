@@ -1,9 +1,25 @@
 .health-page {
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: var(--s8) var(--gutter) var(--s11);
+  max-width: none;
+  margin: 0;
+  padding: 0 0 var(--s11);
   background: var(--bg);
   color: var(--ink);
+}
+
+.health-page > .page-banner {
+  margin-bottom: var(--s7);
+}
+
+.health-page > .health-lenses,
+.health-page > .health-error,
+.health-page > .health-loading,
+.health-page > section,
+.health-page > .health-stats {
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
 }
 
 .health-mast {
@@ -54,6 +70,13 @@
   color: var(--navy, var(--ink));
   border-bottom: 1px solid var(--mango);
   padding-bottom: 2px;
+}
+
+.page-banner .health-links a,
+.page-banner--dark .health-links a {
+  color: inherit;
+  border-bottom-color: var(--mango);
+  opacity: 0.92;
 }
 
 .health-lenses {

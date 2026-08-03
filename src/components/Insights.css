@@ -2,11 +2,26 @@
 /* Paper surface, navy ink, one amber accent, hairlines, zero radius.        */
 
 .ins-page {
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: var(--s8) var(--gutter) var(--s11);
+  max-width: none;
+  margin: 0;
+  padding: 0 0 var(--s11);
   background: var(--bg);
   color: var(--ink);
+}
+
+.ins-page > .page-banner {
+  margin-bottom: var(--s7);
+}
+
+.ins-page > .ins-lenses,
+.ins-page > .ins-who,
+.ins-page > .ins-grid,
+.ins-page > .ins-loading {
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
 }
 
 .ins-loading {

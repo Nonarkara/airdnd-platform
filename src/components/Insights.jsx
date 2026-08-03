@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
+import PageBanner from './PageBanner';
 import './Insights.css';
 
 // ─── Deep Insights — four ways to read the archive ───────────────────────────
@@ -71,6 +73,8 @@ function HourClock({ hours }) {
 }
 
 export default function Insights() {
+  const { t } = useLanguage();
+  const page = t.pages?.insights || {};
   const [data, setData] = useState(null);
   const [lens, setLens] = useState('seeker');
 
@@ -113,22 +117,22 @@ export default function Insights() {
 
   return (
     <div className="ins-page">
-      <header className="ins-mast">
-        <p className="ins-eyebrow">02 — Reading room</p>
-        <h1>One archive, four professions</h1>
+      <PageBanner image="/heroes/insights.jpg" tone="light" compact ariaLabelledBy="insights-title">
+        <p className="ins-eyebrow">{page.kicker || '02 — Reading room'}</p>
+        <h1 id="insights-title">{page.title || 'One archive, four professions'}</h1>
         <p className="ins-lead">
-          {d.corpus.messagesTotal?.toLocaleString()} Telegram messages, distilled to
-          {' '}{d.corpus.personaPosts.toLocaleString()} listings from {d.corpus.uniqueBusinesses} real businesses.
-          The same data answers different questions depending on who is asking. Choose your profession —
-          every figure below states its source and what it cannot claim.
+          {(page.lead || '{messages} Telegram messages, distilled to {posts} listings from {businesses} real businesses. The same data answers different questions depending on who is asking. Choose your profession — every figure below states its source and what it cannot claim.')
+            .replace('{messages}', d.corpus.messagesTotal?.toLocaleString() || '—')
+            .replace('{posts}', d.corpus.personaPosts?.toLocaleString() || '—')
+            .replace('{businesses}', String(d.corpus.uniqueBusinesses ?? '—'))}
         </p>
         <div className="ins-links">
-          <Link to="/">Inventory</Link>
-          <Link to="/methodology">Method</Link>
-          <Link to="/health">HIV / STI layer</Link>
-          <a href="/dataset_aggregate.json" download>Download dataset · 91 rows</a>
+          <Link to="/">{page.inventory || 'Inventory'}</Link>
+          <Link to="/methodology">{page.method || 'Method'}</Link>
+          <Link to="/health">{page.health || 'HIV / STI layer'}</Link>
+          <a href="/dataset_aggregate.json" download>{page.download || 'Download dataset · 91 rows'}</a>
         </div>
-      </header>
+      </PageBanner>
 
       <nav className="ins-lenses" aria-label="Audience lenses">
         {LENSES.map(l => (

@@ -4,6 +4,8 @@ import {
   buildHealthMatrix,
   loadHealthResearchBundle,
 } from '../lib/health';
+import { useLanguage } from '../context/LanguageContext';
+import PageBanner from './PageBanner';
 import './Health.css';
 
 function formatBaht(n) {
@@ -12,6 +14,8 @@ function formatBaht(n) {
 }
 
 function Health({ listings = [] }) {
+  const { t } = useLanguage();
+  const page = t.pages?.health || {};
   const [bundle, setBundle] = useState(null);
   const [error, setError] = useState(null);
   const [lens, setLens] = useState('public');
@@ -46,13 +50,11 @@ function Health({ listings = [] }) {
 
   return (
     <div className="health-page">
-      <header className="health-mast">
-        <p className="health-eyebrow">01 — Concurrent research</p>
-        <h1>HIV, STI &amp; legitimacy beside the inventory</h1>
+      <PageBanner image="/heroes/health.jpg" tone="dark" compact ariaLabelledBy="health-title">
+        <p className="health-eyebrow">{page.kicker || '01 — Concurrent research'}</p>
+        <h1 id="health-title">{page.title || 'HIV, STI & legitimacy beside the inventory'}</h1>
         <p className="health-lead">
-          Open government case data, certified-provider registries, and excise tax on licensed
-          bath &amp; massage — read next to parlour broadcast density from our Telegram pipeline.
-          Four lenses. One map. No stigma theatre — geography for harm reduction.
+          {page.lead || 'Open government case data, certified-provider registries, and excise tax on licensed bath & massage — read next to parlour broadcast density from our Telegram pipeline. Four lenses. One map. No stigma theatre — geography for harm reduction.'}
         </p>
         <div className="health-links">
           <a href="https://data.go.th/dataset/sasuk01" target="_blank" rel="noreferrer">sasuk01 · STI screening</a>
@@ -62,7 +64,7 @@ function Health({ listings = [] }) {
           <Link to="/map">Open map · Epidemic layer</Link>
           <Link to="/methodology">Methodology · Four tiers</Link>
         </div>
-      </header>
+      </PageBanner>
 
       <nav className="health-lenses" aria-label="Research lenses">
         {[

@@ -301,7 +301,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   backdrop-filter: none; border-bottom: 1px solid var(--line);
 }
 .site-header__in { max-width: var(--maxw); margin: 0 auto; min-height: var(--header-h); padding-inline: var(--gutter); display: flex; align-items: center; gap: var(--s6); }
-.brand { display: inline-flex; align-items: center; gap: 10px; }
+.site-header__in--nav-first { gap: var(--s4); }
+/* Brand mark reserved for hero only — do not reintroduce beside a page wordmark. */
+.brand { display: none; }
 .brand__mark {
   width: 14px;
   height: 14px;

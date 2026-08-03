@@ -4,6 +4,15 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-08-03 · Duplicate brand wordmark = amateur chrome
+
+- **What went wrong:** Sticky header showed `sabai·sabai` directly above the hero title `sabai·sabai`. Two identical wordmarks stacked in one viewport. Reads unfinished — like a template that forgot the logo already lived in the masthead.
+- **Correct behaviour:** Brand appears once per first viewport. On pages with a branded hero (`HeroSection` / `PageBanner`), the header is **nav + status only**. Never reintroduce `.brand` in `Header.jsx` beside a hero wordmark. If a page has no hero brand, a compact header mark may return — but never both.
+- **How to recognise:** Screenshot the top 200px. If you can read the product name twice without scrolling, delete one. Prefer deleting the header mark; heroes earn the brand.
+- **Hardwired in:** `Header.jsx` comment, `.brand { display: none }` in `index.css`, `AGENTS.md` Design Philosophy.
+
+---
+
 ## 2026-06-06 · Airtight audit — AI-fraud, concurrent-session hazards
 
 - **AI-generated "VISUAL EVIDENCE" is the worst regression class.** A concurrent session added three AI images to the research-paper page, stamped "VISUAL EVIDENCE" and captioned as real field photographs. This violates §0 (no AI imagery, ever), §11.4 (no fabricated content), and would disqualify the research outright. **Catch:** audit every new image asset — is it a real curated photo or AI-generated? Grep new `public/**/*.png|jpg` against the components that reference them; read the captions. Remove on sight unless Dr Non asked in-session. Keep the legitimate siblings (a hand-coded SVG diagram, real prose) — surgical, not scorched-earth (§11.1).

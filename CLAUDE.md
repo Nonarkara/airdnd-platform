@@ -83,21 +83,27 @@ Cloudflare Pages (static deploy)
 The design evolved through several phases: 1964 Olympics → Coen Brothers → Tesla → Dieter Rams. The current and final direction is radical reduction:
 
 - **Zero border-radius** on any non-circular element. Sharp edges communicate precision.
-- **Zero gradients**. Flat colors only. No cosmetic decoration.
+- **Zero gradients** as chrome decoration. Flat colors only. (Allowed: dark-to-transparent photo veil for text legibility on themed hero banners.)
 - **Zero box-shadows** (except modal overlay which needs functional depth).
 - **Lines only where they divide, direct, or communicate**. No decorative borders.
 - **Typography and whitespace create hierarchy**, not boxes or backgrounds.
-- **Color for meaning only**: orange (#ff7440) = action/accent, blue (#9fc2ff) = secondary data, green (#34d399) = status/success.
+- **Color for meaning only**: one amber accent `#f59e0b`. Banner-derived teal/lotus may tint hero panels only — never a second UI accent.
+- **ONE brand wordmark per viewport.** The sticky header must never repeat `sabai·sabai` when the hero already carries it. Stacked duplicate logos read amateur. Brand lives in the hero (`PageBanner` / `HeroSection`); header is nav + status only. See `tasks/lessons.md` · 2026-08-03.
 
 ### Typography
 
-- Display: **Space Grotesk** — geometric with distinctive numerals that feel like instrument panels
-- Body: **Inter** — industry standard for UI text
+- Display: **Josefin Sans** + IBM Plex Sans Thai (non-looped)
+- Body: Helvetica Neue / system + IBM Plex Sans Thai
+- Mono: **JetBrains Mono** for instrument numerals
 - The Thai script mixed with the instrument-panel layout creates unexpected beauty
 
 ### The Singular Design Move
 
 Horizontal data rows instead of photo cards. Each listing is a single scannable line — like a flight departure board, not Airbnb. This is the thing a Red Dot judge would remember. "This is intelligence, not a catalog."
+
+### Themed hero banners
+
+Key pages (directory, health, insights, analytics, methodology) use handcrafted collage banners under `public/heroes/`. Type sits on a **translucent panel** (`PageBanner`) — never slap bare text on busy art.
 
 ---
 

@@ -7,6 +7,7 @@ import { useMarketAnalytics, MESSAGE_TYPES, MESSAGE_TYPE_LABELS, getPhotoCount, 
 import InsightNarrative from './InsightNarrative';
 import FieldIntelligence from './FieldIntelligence';
 import VisualCharts from './VisualCharts';
+import PageBanner from './PageBanner';
 import { db } from '../lib/firebase';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { loadFormalization, loadStiScreeningRoiet } from '../lib/health';
@@ -344,16 +345,20 @@ export default function Analytics() {
           >
             {isRefreshing ? 'Refreshing…' : 'Refresh'}
           </button>
-          <span className="an-badge">Industry Intelligence</span>
+          <span className="an-badge">{t.pages?.analytics?.badge || 'Industry Intelligence'}</span>
         </div>
       </header>
 
-      <div className="an-hero">
-        <h1>Thailand Massage<br />& Spa Industry</h1>
+      <PageBanner image="/heroes/analytics.jpg" tone="light" compact className="an-hero-banner" ariaLabelledBy="an-title">
+        <h1 id="an-title">{t.pages?.analytics?.title || 'Thailand Massage & Spa Industry'}</h1>
         <p>
-          Real-time market intelligence from {data.total} businesses across {data.cities.length}+ cities. Mined from {data.msgCount?.toLocaleString() || '—'} community messages and {data.photoCount?.toLocaleString() || '—'} archived photos. Every figure on this page traces back to a specific listing — click any row to read the source.
+          {(t.pages?.analytics?.lead || 'Real-time market intelligence from {total} businesses across {cities}+ cities. Mined from {messages} community messages and {photos} archived photos. Every figure on this page traces back to a specific listing — click any row to read the source.')
+            .replace('{total}', String(data.total ?? '—'))
+            .replace('{cities}', String(data.cities?.length ?? '—'))
+            .replace('{messages}', data.msgCount?.toLocaleString?.() || String(data.msgCount || '—'))
+            .replace('{photos}', data.photoCount?.toLocaleString?.() || String(data.photoCount || '—'))}
         </p>
-      </div>
+      </PageBanner>
       <InsightNarrative analytics={data} mode="global" />
       <FieldIntelligence listings={listings} />
       <VisualCharts analytics={data} />

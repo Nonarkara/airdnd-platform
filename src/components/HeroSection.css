@@ -1,34 +1,27 @@
-.masthead {
-  padding-block: var(--s9) var(--s6);
-  border-bottom: 1px solid var(--line-2);
-  background: var(--bg);
-}
+/* Directory masthead — sits inside PageBanner translucent panel. */
 
-.masthead__in {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s5);
+.masthead.page-banner {
+  /* PageBanner owns outer chrome; keep class for a11y/selectors. */
 }
 
 .masthead__eyebrow {
-  color: var(--ink-3);
   letter-spacing: 0.18em;
 }
 
 .masthead__row {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.9fr);
-  gap: var(--s8);
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: var(--s6);
   align-items: end;
 }
 
 .masthead__title {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: var(--fs-hero);
-  letter-spacing: 0.12em;
+  font-size: clamp(2.4rem, 6.5vw, 3.75rem);
+  letter-spacing: 0.1em;
   text-transform: lowercase;
-  line-height: 1;
+  line-height: 0.95;
   margin: 0;
   color: var(--navy, var(--ink));
 }
@@ -39,33 +32,48 @@
 }
 
 .masthead__sub {
-  margin: var(--s5) 0 0;
-  max-width: 48ch;
+  margin: var(--s4) 0 0;
+  max-width: 46ch;
   font-size: var(--fs-body);
   line-height: 1.55;
   color: var(--ink-2);
+}
+
+.masthead__pulse {
+  margin: var(--s3) 0 0;
+  max-width: 46ch;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.06em;
+  line-height: 1.45;
+  color: var(--banner-teal, #0d7377);
+  text-transform: uppercase;
 }
 
 .masthead__stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line-2);
+  background: rgba(14, 30, 60, 0.14);
+  border: 1px solid rgba(14, 30, 60, 0.14);
   margin: 0;
 }
 
 .masthead__stats > div {
-  background: var(--surface);
-  padding: 14px 16px;
+  background: rgba(252, 251, 247, 0.72);
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+}
+
+.masthead__stats-wide {
+  /* still 1 cell in 2-col grid */
 }
 
 .masthead__stats dt {
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
+  font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-3);
@@ -74,16 +82,25 @@
 .masthead__stats dd {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 1.35rem;
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
   font-weight: 600;
-  color: var(--ink);
+  color: var(--mango);
+  line-height: 1.1;
 }
 
 .masthead__sync {
   font-size: var(--fs-body) !important;
   color: var(--navy, var(--ink)) !important;
+  font-weight: 500 !important;
 }
 
 @media (max-width: 860px) {
-  .masthead__row { grid-template-columns: 1fr; gap: var(--s5); }
+  .masthead__row {
+    grid-template-columns: 1fr;
+    gap: var(--s5);
+  }
+
+  .masthead__title {
+    font-size: clamp(2.1rem, 11vw, 2.8rem);
+  }
 }

@@ -381,6 +381,16 @@ export function createMetrics(listings) {
   const withContact = normalizedListings.filter((listing) =>
     listing.phone || listing.lineUrl || listing.telegramUrl || listing.mapsUrl,
   ).length;
+  const uniquePhones = new Set(
+    normalizedListings
+      .map((listing) => String(listing.phone || '').replace(/\D/g, ''))
+      .filter((phone) => phone.length >= 8),
+  ).size;
+  const uniqueNames = new Set(
+    normalizedListings
+      .map((listing) => String(listing.name || '').trim().toLowerCase())
+      .filter((name) => name.length >= 2),
+  ).size;
 
   return {
     total: normalizedListings.length,
@@ -390,6 +400,8 @@ export function createMetrics(listings) {
     matchedMediaCount,
     withPhone,
     withContact,
+    uniquePhones,
+    uniqueNames,
     mediaRate: normalizedListings.length
       ? Math.round((matchedMediaCount / normalizedListings.length) * 100)
       : 0,

@@ -50,16 +50,30 @@
 }
 
 .meth-hero {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(13rem, 0.6fr);
-  gap: clamp(1rem, 3vw, 3rem);
-  align-items: stretch;
+  display: none; /* replaced by PageBanner .meth-hero-banner */
+}
+
+.meth-hero-banner.page-banner {
   margin: 0.9rem 0 0;
-  padding: clamp(1rem, 2.5vw, 1.6rem);
-  border: 1px solid var(--line);
-  background: var(--bg-2);
-  overflow: hidden;
+}
+
+.meth-hero-banner .meth-title {
+  color: inherit;
+  font-size: var(--fs-hero);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+.meth-hero-banner .meth-author,
+.meth-hero-banner .meth-date {
+  margin: var(--s3) 0 0;
+  color: inherit;
+  opacity: 0.8;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .meth-hero::after {

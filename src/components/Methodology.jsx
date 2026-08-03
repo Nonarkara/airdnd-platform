@@ -1,9 +1,11 @@
 import { useLanguage } from '../context/LanguageContext';
+import PageBanner from './PageBanner';
 import './Methodology.css';
 
 function Methodology() {
   const { t, language } = useLanguage();
   const pc = t.pageChrome || {};
+  const page = t.pages?.methodology || {};
   return (
     <article className="methodology">
       <header className="meth-header">
@@ -14,16 +16,15 @@ function Methodology() {
         <p className="meth-lang-note">{pc.languageNote || 'This paper is available in English only.'}</p>
       )}
 
-      <div className="meth-hero">
-        <div className="meth-title-glow" aria-hidden="true" />
-        <h1 className="meth-title">
-          Community Intelligence<br />
-          <span className="meth-title-accent">at Zero Marginal Cost</span>
+      <PageBanner image="/heroes/methodology.jpg" tone="light" compact className="meth-hero-banner" ariaLabelledBy="meth-title">
+        <h1 id="meth-title" className="meth-title">
+          {page.title || 'Community Intelligence'}
+          <br />
+          <span className="meth-title-accent">{page.accent || 'at Zero Marginal Cost'}</span>
         </h1>
-        <div className="meth-line" aria-hidden="true" />
-        <p className="meth-author">Peter Karl Risk</p>
-        <p className="meth-date">Working Paper, March 2026</p>
-      </div>
+        <p className="meth-author">{page.author || 'Peter Karl Risk'}</p>
+        <p className="meth-date">{page.date || 'Working Paper, March 2026'}</p>
+      </PageBanner>
 
       <section className="meth-section">
         <span className="meth-num">01</span>

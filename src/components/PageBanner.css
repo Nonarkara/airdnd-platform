@@ -1,0 +1,129 @@
+/* Themed page heroes — collage banners + translucent type panels.
+   Palette borrows from the handcrafted banners: cream paper, temple amber,
+   lotus magenta, river teal. Accent remains one amber (#f59e0b). */
+
+.page-banner {
+  --banner-lotus: #c2185b;
+  --banner-teal: #0d7377;
+  --banner-cream: rgba(252, 251, 247, 0.88);
+  --banner-cream-ink: #0e1e3c;
+  --banner-dark: rgba(10, 12, 18, 0.78);
+  --banner-dark-ink: #faf9f7;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(280px, 42vw, 420px);
+  border-bottom: 1px solid var(--line-2);
+  background: var(--bg-2);
+}
+
+.page-banner--compact {
+  min-height: clamp(220px, 32vw, 320px);
+}
+
+.page-banner__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.page-banner__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* Legibility plane only — dark-to-transparent on photo is allowed. */
+  background:
+    linear-gradient(90deg, rgba(250, 249, 247, 0.55) 0%, rgba(250, 249, 247, 0.18) 42%, rgba(250, 249, 247, 0.05) 70%, transparent 100%),
+    linear-gradient(180deg, rgba(250, 249, 247, 0.2) 0%, transparent 35%, rgba(14, 30, 60, 0.12) 100%);
+}
+
+.page-banner--dark .page-banner__veil {
+  background:
+    linear-gradient(90deg, rgba(8, 10, 16, 0.72) 0%, rgba(8, 10, 16, 0.35) 48%, rgba(8, 10, 16, 0.15) 100%),
+    linear-gradient(180deg, rgba(8, 10, 16, 0.35) 0%, transparent 40%, rgba(8, 10, 16, 0.45) 100%);
+}
+
+.page-banner__frame {
+  position: relative;
+  z-index: 2;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  min-height: inherit;
+  padding: clamp(28px, 5vw, 56px) var(--gutter);
+  display: flex;
+  align-items: flex-end;
+}
+
+.page-banner__panel {
+  width: min(100%, 720px);
+  padding: clamp(18px, 3vw, 28px) clamp(18px, 3vw, 28px);
+  background: var(--banner-cream);
+  border: 1px solid rgba(14, 30, 60, 0.12);
+  color: var(--banner-cream-ink);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.page-banner--dark .page-banner__panel {
+  background: var(--banner-dark);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: var(--banner-dark-ink);
+}
+
+.page-banner__panel .eyebrow,
+.page-banner__panel .masthead__eyebrow,
+.page-banner__panel .health-eyebrow,
+.page-banner__panel .ins-eyebrow,
+.page-banner__panel .meth-label {
+  color: var(--banner-teal);
+  margin: 0 0 var(--s3);
+}
+
+.page-banner--dark .page-banner__panel .eyebrow,
+.page-banner--dark .page-banner__panel .masthead__eyebrow,
+.page-banner--dark .page-banner__panel .health-eyebrow,
+.page-banner--dark .page-banner__panel .ins-eyebrow {
+  color: var(--mango);
+}
+
+.page-banner__panel h1,
+.page-banner__panel .masthead__title,
+.page-banner__panel .meth-title {
+  margin: 0;
+  color: inherit;
+}
+
+.page-banner__panel p,
+.page-banner__panel .masthead__sub,
+.page-banner__panel .health-lead,
+.page-banner__panel .ins-lead,
+.page-banner__panel .meth-author,
+.page-banner__panel .meth-date {
+  color: inherit;
+  opacity: 0.88;
+}
+
+@media (max-width: 720px) {
+  .page-banner {
+    min-height: clamp(260px, 70vw, 360px);
+  }
+
+  .page-banner__panel {
+    width: 100%;
+  }
+
+  .page-banner__veil {
+    background:
+      linear-gradient(180deg, rgba(250, 249, 247, 0.35) 0%, rgba(250, 249, 247, 0.55) 55%, rgba(250, 249, 247, 0.82) 100%);
+  }
+
+  .page-banner--dark .page-banner__veil {
+    background:
+      linear-gradient(180deg, rgba(8, 10, 16, 0.35) 0%, rgba(8, 10, 16, 0.62) 50%, rgba(8, 10, 16, 0.88) 100%);
+  }
+}
