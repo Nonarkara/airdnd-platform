@@ -1,6 +1,8 @@
 import {
   canonicalizePublicListings,
   hasMatchedPublicMedia,
+  isBadPublicName,
+  buildPhoneKey,
   normalizePublicListing,
   validatePublicListing,
 } from './listing_contract.js';
@@ -266,6 +268,9 @@ export function normalizeListings(listings, options = {}) {
     return [];
   }
 
+  // Normalize every persona-post first — including ones with junk titles —
+  // then merge by phone. Filtering quality *before* merge drops staff aliases
+  // and can erase the only post that carried a real phone number.
   const normalized = listings
     .map((listing, index) =>
       normalizeListing(
@@ -273,22 +278,22 @@ export function normalizeListings(listings, options = {}) {
           ...listing,
           id: listing?.id ?? `${options.source || 'backup'}-${index + 1}`,
         },
-        options,
+        { ...options, allowUnverified: true },
       ),
     )
-    .filter(Boolean)
-    .filter((listing) => options.source === 'backup' || validatePublicListing(listing).ok);
+    .filter(Boolean);
 
   const canonicalized = canonicalizePublicListings(normalized, {
     source: options.source || 'backup',
     isFallback: options.isFallback,
-    allowUnverified: options.source === 'backup',
+    allowUnverified: true,
   });
 
-  // Apply visual deduplication: if multiple listings have the same image,
-  // we either hide the duplicate images or spread them out.
-  // For the "Newest" view, we prioritize the first occurrence of an image.
-  return visualDeduplication(canonicalized);
+  const gated = canonicalized.filter(
+    (listing) => options.source === 'backup' || validatePublicListing(listing).ok,
+  );
+
+  return visualDeduplication(gated);
 }
 
 // Alias-aware dedup: one business = one phone number. The corpus shows a 31×
@@ -307,7 +312,8 @@ function visualDeduplication(listings) {
     const isMock = !imageUrl || imageUrl.startsWith('/mockups/');
 
     if (phone) {
-      const canonical = byPhone.get(phone);
+      const phoneKey = buildPhoneKey(listing.phone) || phone;
+      const canonical = byPhone.get(phoneKey);
       if (canonical) {
         // Roll this persona up into the canonical business
         const name = (listing.name || '').trim();
@@ -329,8 +335,12 @@ function visualDeduplication(listings) {
         }
         continue;
       }
-      const entry = { ...listing, aliasNames: [], aliasCount: 1 };
-      byPhone.set(phone, entry);
+      const entry = {
+        ...listing,
+        aliasNames: Array.isArray(listing.aliasNames) ? [...listing.aliasNames] : [],
+        aliasCount: listing.aliasCount || 1,
+      };
+      byPhone.set(phoneKey, entry);
       deduped.push(entry);
       if (!isMock) seenImages.add(imageUrl);
       continue;
@@ -383,14 +393,21 @@ export function createMetrics(listings) {
   ).length;
   const uniquePhones = new Set(
     normalizedListings
-      .map((listing) => String(listing.phone || '').replace(/\D/g, ''))
-      .filter((phone) => phone.length >= 8),
+      .map((listing) => buildPhoneKey(listing.phone))
+      .filter(Boolean),
   ).size;
-  const uniqueNames = new Set(
-    normalizedListings
-      .map((listing) => String(listing.name || '').trim().toLowerCase())
-      .filter((name) => name.length >= 2),
-  ).size;
+  // Named faces = every advertised identity on the card, not only the
+  // canonical title. Phone-dedup collapses LOUISSPA-style chains to one
+  // venue; the minister still needs the labour-surface count of names aired.
+  const uniqueNames = new Set();
+  for (const listing of normalizedListings) {
+    const candidates = [listing.name, ...(listing.aliasNames || [])];
+    for (const candidate of candidates) {
+      const name = String(candidate || '').trim();
+      if (name.length < 2 || isBadPublicName(name)) continue;
+      uniqueNames.add(name.toLowerCase());
+    }
+  }
 
   return {
     total: normalizedListings.length,
@@ -401,7 +418,7 @@ export function createMetrics(listings) {
     withPhone,
     withContact,
     uniquePhones,
-    uniqueNames,
+    uniqueNames: uniqueNames.size,
     mediaRate: normalizedListings.length
       ? Math.round((matchedMediaCount / normalizedListings.length) * 100)
       : 0,

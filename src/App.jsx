@@ -14,7 +14,7 @@ import { listings as backupListings } from './data/mockData';
 import { auth, db } from './lib/firebase';
 import { supabase } from './lib/supabase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { initSession } from './lib/tracker';
 import {
   SOURCE_LABELS,
@@ -28,9 +28,10 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { validateListingsPayload } from './lib/schema';
 
 const REFRESH_INTERVAL_MS = 30_000;
-// High enough that alias-aware dedup sees most persona-posts (corpus ≈ 2,800
-// docs → ~90 real businesses); Firestore reads at this scale are effectively free.
-const LIVE_QUERY_LIMIT = 1200;
+// Full inventory — never truncate. Phone-canonical set is ~100 cards, but the
+// raw Firestore archive is thousands of persona-posts that must all be merged
+// before we know we have every operator. A 1200-doc cap silently dropped venues.
+const LIVE_QUERY_LIMIT = 10000;
 const LIVE_FETCH_TIMEOUT_MS = 6_500;
 const REALTIME_REFRESH_DEBOUNCE_MS = 1_200;
 const ALL_LOCATIONS_VALUE = 'all-locations';
@@ -211,11 +212,9 @@ async function fetchLiveListings() {
   );
 }
 async function fetchLiveListingsFromFirestore() {
-  const q = query(
-    collection(db, 'companions'),
-    limit(LIVE_QUERY_LIMIT)
-  );
-  const querySnapshot = await getDocs(q);
+  // Full collection — persona-posts must be merged before the phone inventory
+  // is complete. Truncation silently drops operators.
+  const querySnapshot = await getDocs(collection(db, 'companions'));
   const data = [];
   querySnapshot.forEach((doc) => {
     const docData = doc.data();

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
-import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
+import { canonicalizePublicListings, validatePublicListing } from '../src/lib/listing_contract.js';
 
 dotenv.config();
 
@@ -49,7 +49,8 @@ try {
   rawData = data || [];
 }
 
-const publicListings = canonicalizePublicListings(rawData, { source: 'snapshot', allowUnverified: true });
+const publicListings = canonicalizePublicListings(rawData, { source: 'snapshot', allowUnverified: true })
+  .filter((listing) => validatePublicListing(listing).ok);
 console.log(`Canonicalized ${publicListings.length} unique parlour listings`);
 
 function createImageIndex() {
@@ -164,6 +165,8 @@ const slimListings = publicListings.map((listing) => ({
   longitude: listing.longitude,
   isSafeImage: listing.isSafeImage,
   mentionCount: listing.mentionCount,
+  aliasNames: Array.isArray(listing.aliasNames) ? listing.aliasNames : [],
+  aliasCount: listing.aliasCount || ((listing.aliasNames?.length || 0) + 1),
   credibility: computeCredibility(listing),
 })).sort((left, right) => {
   const timestampDelta = getSnapshotFreshnessValue(right) - getSnapshotFreshnessValue(left);

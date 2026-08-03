@@ -4,6 +4,14 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-08-04 · Maps-first identity undercounted the parlour inventory
+
+- **What went wrong:** `buildCanonicalKey` preferred Google Maps short-links over phone numbers. Distinct booking phones that reused a Maps URL (or a channel Maps pin) were merged into one card — venues vanished from the public count. Live Firestore fetch also capped at 1,200 of ~4,011 persona-posts, so some phones never reached the merge step. Hero "Named faces" counted only card titles, not rolled-up aliases.
+- **Correct behaviour:** Phone-first identity (`phone:` before `maps:`). Fetch/merge the full companions archive before gating quality. Count named faces across `name + aliasNames`, skipping `isBadPublicName`. Hero **Venues** = unique phones (minister-defensible); directory cards = quality-gated merged set. Never trust a stored `canonical_key` that predates phone-first.
+- **How to recognise:** Firestore phone count ≫ public `data.json` phone count; LOUISSPA/Yesika/กุหลาบ missing while their Maps link sits on another shop; hero faces ≈ card count instead of ≫ venues.
+
+---
+
 ## 2026-08-03 · Methodology section grid trapped content in the 4rem gutter
 
 - **What went wrong:** `.meth-section` is `display:grid` with columns `4rem | 1fr`. Only a hard-coded list of tags (`h2`, `p`, …) had `grid-column: 2`. The §14 principles/resources `<div>`s auto-placed into the 4rem number column, so CONSENT/CONDOMS text spilled over the resource list.

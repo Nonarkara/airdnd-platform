@@ -6,10 +6,10 @@ import './HeroSection.css';
 function HeroSection({ t, metrics, dataState, intakeSummary }) {
   const heroText = t?.hero || {};
   const labels = heroText.statLabels || {};
-  const total = metrics?.total > 0 ? metrics.total : 0;
+  const total = metrics?.uniquePhones > 0 ? metrics.uniquePhones : (metrics?.total > 0 ? metrics.total : 0);
   const provinces = metrics?.cityCount > 0 ? metrics.cityCount : 0;
   const faces = metrics?.uniqueNames > 0 ? metrics.uniqueNames : 0;
-  const operators = metrics?.uniquePhones > 0 ? metrics.uniquePhones : 0;
+  const operators = metrics?.total > 0 ? metrics.total : 0;
   const channels = intakeSummary?.channelCount || metrics?.sourceChannelCount || 0;
   const photosMatched = metrics?.matchedMediaCount || 0;
   const lastSync = formatRelativeTimestamp(metrics?.latestTimestamp || dataState?.lastLoadedAt) || '—';

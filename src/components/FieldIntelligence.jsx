@@ -13,11 +13,11 @@ import './FieldIntelligence.css';
 // Full-archive audit constants (computed from the complete Firestore export,
 // 2026-07-19; the live window below re-derives its own versions).
 const AUDIT = {
-  totalPersonaPosts: 2770,
-  uniquePhones: 90,
-  duplicationFactor: 30.8,
-  maxAliases: 38,
-  photosArchived: 16468,
+  totalPersonaPosts: 4011,
+  uniquePhones: 89,
+  duplicationFactor: 45.1,
+  maxAliases: 49,
+  photosArchived: 25202,
 };
 
 // Outside research anchors (year + source named for every figure).

@@ -320,14 +320,18 @@ export function hasAdultOrSpamSignal(listing) {
 }
 
 export function buildCanonicalKey(listing) {
-  const mapsKey = buildMapsKey(listing?.mapsUrl || listing?.maps_url);
-  if (mapsKey) {
-    return `maps:${mapsKey}`;
-  }
-
+  // Phone is the strongest identity signal (same number = same operator,
+  // regardless of staff aliases or recycled Maps links). Maps-first merging
+  // previously absorbed distinct booking phones into one card and undercounted
+  // the inventory — fatal for any official brief.
   const phoneKey = buildPhoneKey(listing?.phone);
   if (phoneKey) {
     return `phone:${phoneKey}`;
+  }
+
+  const mapsKey = buildMapsKey(listing?.mapsUrl || listing?.maps_url);
+  if (mapsKey) {
+    return `maps:${mapsKey}`;
   }
 
   const lineKey = buildLineKey(listing?.lineUrl || listing?.line_url);
@@ -569,6 +573,12 @@ export function validatePublicListing(listing) {
     return { ok: false, reason: 'no identifiable location or contact' };
   }
 
+  // A public card without a phone must still look like a shop — otherwise
+  // channel chrome ("Teleg", "สอบถามและจองคิว") pads the inventory.
+  if (!buildPhoneKey(listing.phone) && !SERVICE_NAME_RE.test(listing.name || '')) {
+    return { ok: false, reason: 'no phone and no shop name' };
+  }
+
   if (!buildCanonicalKey(listing)) {
     return { ok: false, reason: 'missing canonical identity' };
   }
@@ -671,6 +681,16 @@ export function mergeCanonicalGroup(listings) {
     isSafeImage: normalized.every((listing) => listing.isSafeImage !== false),
   };
 
+  const primaryName = String(merged.name || '').trim();
+  merged.aliasNames = [
+    ...new Set(
+      normalized
+        .map((listing) => String(listing.name || '').trim())
+        .filter((name) => name.length >= 2 && name !== primaryName),
+    ),
+  ];
+  merged.aliasCount = merged.aliasNames.length + (primaryName ? 1 : 0);
+
   const coordSource = normalized.find((listing) => hasStoredCoordinates(listing));
   if (coordSource) {
     merged.latitude = coordSource.latitude;
@@ -693,7 +713,9 @@ export function canonicalizePublicListings(listings, options = {}) {
 
   const groups = new Map();
   normalized.forEach((listing) => {
-    const key = listing.canonicalKey || buildCanonicalKey(listing) || (options.allowUnverified && listing.id ? `id:${listing.id}` : '');
+    // Always recompute identity. Stored canonical_key values may predate
+    // phone-first dedup and would silently re-merge distinct booking numbers.
+    const key = buildCanonicalKey(listing) || (options.allowUnverified && listing.id ? `id:${listing.id}` : '');
     if (!key) return;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(listing);

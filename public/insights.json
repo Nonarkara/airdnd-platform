@@ -1,103 +1,103 @@
 {
-  "generatedAt": "2026-07-29T15:19:16.828Z",
+  "generatedAt": "2026-08-03T20:04:40.042Z",
   "corpus": {
-    "personaPosts": 3639,
-    "uniqueBusinesses": 91,
-    "duplicationFactor": 40,
-    "maxAliases": 45,
+    "personaPosts": 4011,
+    "uniqueBusinesses": 92,
+    "duplicationFactor": 43.6,
+    "maxAliases": 49,
     "aliasDist": {
       "1": 43,
-      "2-4": 41,
-      "5-9": 5,
-      "10-19": 0,
+      "2-4": 40,
+      "5-9": 6,
+      "10-19": 1,
       "20+": 2
     },
-    "photosArchived": 21879,
+    "photosArchived": 25202,
     "messagesTotal": 85646,
     "channels": 7
   },
   "prices": {
-    "mentions": 322,
+    "mentions": 313,
     "median": 200,
     "p25": 200,
     "p75": 200,
     "p95": 700,
     "hist": {
-      "100": 7,
-      "200": 248,
+      "100": 6,
+      "200": 246,
       "300": 17,
       "500": 1,
-      "700": 47,
-      "900": 2
+      "700": 42,
+      "900": 1
     }
   },
   "postingHours": [
-    48,
-    27,
-    33,
-    5,
+    51,
+    31,
+    34,
+    7,
     0,
-    14,
+    17,
     33,
-    60,
-    173,
-    416,
-    417,
-    319,
-    251,
-    241,
-    229,
-    174,
+    63,
+    202,
+    461,
+    456,
+    373,
+    272,
+    260,
+    260,
     195,
-    199,
-    229,
-    200,
-    136,
-    99,
-    81,
-    60
+    208,
+    213,
+    251,
+    220,
+    142,
+    109,
+    90,
+    63
   ],
   "postingDays": [
-    515,
-    580,
-    580,
+    587,
+    661,
+    581,
     478,
-    477,
-    481,
-    528
+    541,
+    553,
+    610
   ],
   "closing": {
     "byHour": {
-      "0": 20,
-      "2": 197,
-      "3": 255,
+      "0": 21,
+      "2": 217,
+      "3": 286,
       "4": 1,
-      "20": 4,
+      "20": 6,
       "21": 2,
-      "22": 613,
-      "23": 1292,
-      "24": 50
+      "22": 679,
+      "23": 1416,
+      "24": 52
     },
-    "evening": 1907,
-    "afterMidnight": 453
+    "evening": 2097,
+    "afterMidnight": 504
   },
   "channels": {
     "shares": [
       [
         "@relaxsociety2020",
-        2829
+        3118
       ],
       [
         "@relaxsocietymassage",
-        647
+        714
       ],
       [
         "@keawjaojormmassage",
-        71
+        81
       ],
       [
         "@chanelmassage",
-        49
+        54
       ],
       [
         "ชโนทัย นวดเพื่อสุขภาพ พระราม2",
@@ -105,7 +105,7 @@
       ],
       [
         "Baannine Massage Spa",
-        4
+        5
       ],
       [
         "The​ nicha​ spa",
@@ -115,38 +115,38 @@
     "hhi": 6367
   },
   "activity": {
-    "active7d": 35,
-    "active30d": 58,
-    "avgLifespanDays": 30.9,
-    "maxLifespanDays": 86
+    "active7d": 42,
+    "active30d": 62,
+    "avgLifespanDays": 36.5,
+    "maxLifespanDays": 102.9
   },
   "euphemisms": {
-    "aroma": 810,
+    "aroma": 857,
     "oil": 161,
-    "b2b": 176,
-    "shower": 32,
+    "b2b": 197,
+    "shower": 33,
     "freestyle": 0
   },
   "contact": {
     "phone": 97,
-    "line": 39,
+    "line": 40,
     "telegram": 40,
-    "maps": 76
+    "maps": 75
   },
   "topNetworks": [
     {
       "phoneMasked": "086•••9154",
-      "identities": 45,
+      "identities": 49,
       "businessNames": [
+        "The Bank Massage Club",
         "Massage Listing บางใหญ",
         "สาวเหนือ นวดลงศอกได้ คุยเก่ง",
-        "Louis Spa Bangyai",
-        "ดูแลดี ฟิลร่วมจัดเต็ม นวดได้จริงจัง"
+        "Louis Spa Bangyai"
       ]
     },
     {
       "phoneMasked": "083•••6969",
-      "identities": 20,
+      "identities": 21,
       "businessNames": [
         "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
         "นวดเก่ง ชำนาญการใช้มือ",
@@ -155,23 +155,23 @@
       ]
     },
     {
+      "phoneMasked": "080•••4296",
+      "identities": 14,
+      "businessNames": [
+        "PP Spa พระราม 2",
+        "Relax Society Massage",
+        "ห้องนวด ห้องอาบน้ำส่วนตัว",
+        "Caviar Spa (คาเวียร์ สปา )"
+      ]
+    },
+    {
       "phoneMasked": "095•••9639",
-      "identities": 8,
+      "identities": 9,
       "businessNames": [
         "RELAXO SPA✅สนามบินน้ำ",
         "RELAXO SPA",
         "RELAXO SPA✅สนามบินน้ำ นนทบุร",
         "บริการดีมาก นวดเก่งทุกคน"
-      ]
-    },
-    {
-      "phoneMasked": "080•••4296",
-      "identities": 6,
-      "businessNames": [
-        "PP Spa พระราม 2",
-        "ห้องนวด ห้องอาบน้ำส่วนตัว",
-        "Caviar Spa (คาเวียร์ สปา )",
-        "Caviar Spa (พระราม2 ซอย 60)"
       ]
     },
     {
@@ -184,13 +184,12 @@
       ]
     },
     {
-      "phoneMasked": "063•••9444",
-      "identities": 5,
+      "phoneMasked": "094•••1202",
+      "identities": 6,
       "businessNames": [
-        "Asian Massage",
-        "Asianmassage Latphrao",
-        "Asianmassage",
-        "Asian Massage Latphrao"
+        "นวดดีตามใจไม่หวงตัว ดูเเลดีสุด",
+        "the SWAN spa",
+        "Relax Society Massage"
       ]
     }
   ]

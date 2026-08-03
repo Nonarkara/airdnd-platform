@@ -28,7 +28,7 @@ function Header({
   const navigate = useNavigate();
   const location = useLocation();
   const isLive = sourceLabel?.toLowerCase().includes('live');
-  const venueCount = metrics?.total || 0;
+  const venueCount = metrics?.uniquePhones || metrics?.total || 0;
   const status = t.status || {};
   const themes = t.themes || {};
 
