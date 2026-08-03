@@ -6,11 +6,43 @@
 /* ── Page shell ─────────────────────────────────────────────────────────── */
 
 .trends-page {
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding-inline: var(--gutter);
-  padding-bottom: var(--s11);
+  max-width: none;
+  margin: 0;
+  padding: 0 0 var(--s11);
   color: var(--ink);
+}
+
+.trends-page > .page-banner {
+  margin-bottom: var(--s6);
+}
+
+.trends-page > .trends-header,
+.trends-page > .trends-filters,
+.trends-page > .trends-loading,
+.trends-page > .trends-empty,
+.trends-page > .trends-arena,
+.trends-page > .trends-legend,
+.trends-page > .trends-footer {
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: var(--gutter);
+}
+
+.page-banner .trends-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  margin: 0 0 var(--s4);
+}
+
+.page-banner .trends-subtitle {
+  font-size: var(--fs-sm);
+  margin: 0;
+  font-family: var(--font-text);
+  opacity: 0.88;
 }
 
 /* ── Header nav ─────────────────────────────────────────────────────────── */

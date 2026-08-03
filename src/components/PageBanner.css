@@ -79,6 +79,8 @@
 .page-banner__panel .masthead__eyebrow,
 .page-banner__panel .health-eyebrow,
 .page-banner__panel .ins-eyebrow,
+.page-banner__panel .faq-kicker,
+.page-banner__panel .trends-masthead-kicker,
 .page-banner__panel .meth-label {
   color: var(--banner-teal);
   margin: 0 0 var(--s3);
@@ -87,7 +89,9 @@
 .page-banner--dark .page-banner__panel .eyebrow,
 .page-banner--dark .page-banner__panel .masthead__eyebrow,
 .page-banner--dark .page-banner__panel .health-eyebrow,
-.page-banner--dark .page-banner__panel .ins-eyebrow {
+.page-banner--dark .page-banner__panel .ins-eyebrow,
+.page-banner--dark .page-banner__panel .faq-kicker,
+.page-banner--dark .page-banner__panel .trends-masthead-kicker {
   color: var(--mango);
 }
 

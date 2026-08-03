@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import PageBanner from './PageBanner';
 import './Sociology.css';
 
 // ── SVG Hour Chart ────────────────────────────────────────────────────────────
@@ -79,6 +80,11 @@ export default function Sociology() {
       <header className="meth-header">
         <span className="meth-label">{pc.fieldNotes || 'Field Notes'}</span>
       </header>
+      <PageBanner image="/heroes/sociology.jpg" tone="light" compact ariaLabelledBy="soc-title">
+        <p className="eyebrow">{pc.fieldNotes || 'Field Notes'}</p>
+        <h1 id="soc-title">The Anxiety <span>Economy</span></h1>
+        <p>Working notes, 2026 — waiting for the archive to load.</p>
+      </PageBanner>
       {children}
     </article>
   );
@@ -103,35 +109,23 @@ export default function Sociology() {
   return (
     <article className="sociology">
       <header className="meth-header">
-        <span className="meth-label">Field Notes</span>
+        <span className="meth-label">{pc.fieldNotes || 'Field Notes'}</span>
       </header>
 
-      {/* ── Hero ── */}
-      <div className="meth-hero">
-        <div>
-          <h1 className="meth-title">
-            The Anxiety<br />
-            <span className="meth-title-accent">Economy</span>
-          </h1>
-          <p className="meth-author">Non Arkaraprasertkul</p>
-          <p className="meth-date">Working Notes, 2026 · {fmt(corpus.totalMessages)} messages, read by machine</p>
-          <p className="meth-date"><a href="/paper" style={{ color: 'var(--mango)', borderBottom: '1px solid currentColor' }}>Read the formal working paper →</a></p>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', justifyContent: 'center' }}>
-          <div className="soc-stat" style={{ background: 'transparent', padding: 0 }}>
-            <span className="soc-stat-value">{fmt(corpus.totalMessages)}</span>
-            <span className="soc-stat-label">Messages analyzed{years ? ` · ${years} years` : ''}</span>
-          </div>
-          <div className="soc-stat" style={{ background: 'transparent', padding: 0 }}>
-            <span className="soc-stat-value">{Math.round(repeat.repeatRate)}%</span>
-            <span className="soc-stat-label">Of every post is a repeat</span>
-          </div>
-          <div className="soc-stat" style={{ background: 'transparent', padding: 0 }}>
-            <span className="soc-stat-value">{queries.bookingToPriceRatio}×</span>
-            <span className="soc-stat-label">More booking-questions than price-questions</span>
-          </div>
-        </div>
-      </div>
+      <PageBanner image="/heroes/sociology.jpg" tone="light" compact ariaLabelledBy="soc-title">
+        <p className="eyebrow">{pc.fieldNotes || 'Field Notes'}</p>
+        <h1 id="soc-title">
+          The Anxiety<br />
+          <span>Economy</span>
+        </h1>
+        <p>
+          Non Arkaraprasertkul · {fmt(corpus.totalMessages)} messages, read by machine
+          {years ? ` · ${years} years` : ''}
+        </p>
+        <p className="soc-banner-link">
+          <a href="/paper">Read the formal working paper →</a>
+        </p>
+      </PageBanner>
 
       {/* ── 01 The Anxiety Clock ── */}
       <section className="soc-section">

@@ -1,14 +1,31 @@
 /* FAQ page — Dieter Rams aesthetic, Methodology.css sibling */
 
 .faq-page {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 0 1.5rem 6rem;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 6rem;
   color: var(--ink, #e8e6e1);
   font-family: var(--font-ui, 'Space Grotesk', system-ui, sans-serif);
 }
 
-/* Hero */
+.faq-page > .page-banner {
+  margin-bottom: 2.5rem;
+}
+
+.faq-page > .meth-header,
+.faq-page > .faq-diagram-section,
+.faq-page > .faq-stats,
+.faq-page > .faq-qa,
+.faq-page > .meth-footer,
+.faq-page > section {
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Hero (legacy — PageBanner now owns the masthead) */
 .faq-hero {
   padding: 4rem 0 2.5rem;
   border-bottom: 1px solid var(--line, #2a2a3a);
@@ -23,6 +40,21 @@
   text-transform: uppercase;
   color: var(--mango, #f59e0b);
   margin-bottom: 1rem;
+}
+
+.page-banner .faq-title {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+.page-banner .faq-subtitle {
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0;
+  opacity: 0.88;
 }
 
 .faq-title {

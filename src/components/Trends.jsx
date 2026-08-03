@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import PageBanner from './PageBanner';
 import './Trends.css';
 
 const CATEGORIES = ['ALL', 'MARKET', 'CULTURAL', 'POLITICAL', 'ECONOMIC', 'INTERNATIONAL'];
@@ -381,11 +382,11 @@ export default function Trends() {
         <span className="trends-header-label">Signal Intelligence</span>
       </header>
 
-      <div className="trends-masthead">
-        <span className="trends-masthead-kicker">Sabai Sabai · Intelligence Engine</span>
-        <h1 className="trends-title">Market Intelligence</h1>
+      <PageBanner image="/heroes/trends.jpg" tone="dark" compact ariaLabelledBy="trends-title">
+        <p className="trends-masthead-kicker eyebrow">Sabai Sabai · Intelligence Engine</p>
+        <h1 id="trends-title" className="trends-title">Market Intelligence</h1>
         <p className="trends-subtitle">Swarm signals from the community — click a node to read the signal</p>
-      </div>
+      </PageBanner>
 
       <div className="trends-filters" role="group">
         <div className="trends-chips" aria-label="Filter by category">

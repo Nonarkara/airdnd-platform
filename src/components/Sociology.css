@@ -26,10 +26,36 @@
 .meth-label { color: var(--color-red); }
 
 .sociology {
-  width: min(100%, 1220px);
-  margin: 0 auto;
-  padding: 0 clamp(0.75rem, 2vw, 1.35rem);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 6rem;
   color: var(--color-cream);
+}
+
+.sociology > .page-banner {
+  margin-bottom: 1.5rem;
+}
+
+.sociology > .meth-header,
+.sociology > .soc-section,
+.sociology > .soc-loading {
+  width: min(100%, 1220px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(0.75rem, 2vw, 1.35rem);
+  padding-right: clamp(0.75rem, 2vw, 1.35rem);
+}
+
+.page-banner .soc-banner-link {
+  margin: 0.75rem 0 0;
+}
+
+.page-banner .soc-banner-link a {
+  color: var(--mango, #f59e0b);
+  border-bottom: 1px solid currentColor;
+  text-decoration: none;
+  font-size: var(--text-body, 14px);
 }
 
 /* ── Section shell ──────────────────────────────────────────────────────── */

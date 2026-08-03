@@ -1,4 +1,5 @@
 import { useLanguage } from '../context/LanguageContext';
+import PageBanner from './PageBanner';
 import './Methodology.css';
 import './FAQ.css';
 
@@ -27,11 +28,11 @@ export default function FAQ() {
         <span className="meth-label">FAQ</span>
       </header>
 
-      <div className="faq-hero">
-        <span className="faq-kicker">{tf.kicker || 'Frequently Asked Questions'}</span>
-        <h1 className="faq-title">{tf.title || 'How does Sabai Sabai work?'}</h1>
+      <PageBanner image="/heroes/faq.jpg" tone="light" compact ariaLabelledBy="faq-title">
+        <p className="faq-kicker eyebrow">{tf.kicker || 'Frequently Asked Questions'}</p>
+        <h1 id="faq-title" className="faq-title">{tf.title || 'How does Sabai Sabai work?'}</h1>
         <p className="faq-subtitle">{tf.subtitle || 'Everything you wanted to know about the system, the data, and the research behind it.'}</p>
-      </div>
+      </PageBanner>
 
       {/* Architecture diagram */}
       <section className="faq-diagram-section">
