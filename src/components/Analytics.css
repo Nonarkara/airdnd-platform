@@ -254,49 +254,207 @@
 
 .an-card-sub {
   margin: -0.3rem 0 0.75rem;
-  color: var(--color-cream-muted);
+  color: var(--ink-2);
   font-size: var(--text-body);
+  line-height: 1.55;
 }
 
 .an-bars {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.65rem;
 }
 
 .an-bar-row {
   display: grid;
-  grid-template-columns: minmax(5rem, 8rem) minmax(0, 1fr) 2.5rem;
+  grid-template-columns: minmax(11rem, 18rem) minmax(0, 1fr) 3.25rem;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.75rem;
+  min-height: 28px;
 }
 
 .an-bar-label,
 .an-bar-val {
-  overflow: hidden;
-  color: var(--color-cream-soft);
+  color: var(--ink);
   font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: var(--fs-xs);
+  line-height: 1.35;
+}
+
+.an-bar-label {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
 }
 
 .an-bar-val {
-  color: var(--color-action);
+  color: var(--mango);
+  font-weight: 600;
   text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .an-bar-track {
-  height: 4px;
+  height: 10px;
   overflow: hidden;
-  border: 1px solid var(--color-line);
-  background: var(--color-bg-inset);
+  border: 1px solid var(--line-2);
+  background: var(--bg-2);
 }
 
 .an-bar-fill {
   height: 100%;
-  background: var(--color-action);
-  transition: width var(--transition-slow);
+  min-width: 0;
+  background: var(--mango);
+}
+
+/* Venue taxonomy — paper-legible ladder + cards */
+.an-tier-ladder {
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+}
+
+.an-tier-ladder__kicker,
+.an-venue-bars__kicker {
+  display: block;
+  margin: 0 0 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mango);
+}
+
+.an-tier-ladder__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.an-tier-ladder__card {
+  position: relative;
+  min-height: 96px;
+  padding: 0.85rem 0.75rem;
+  border: 1px solid var(--line-2);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  justify-content: center;
+}
+
+.an-tier-ladder__card strong {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.an-tier-ladder__card span,
+.an-tier-ladder__card em {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-style: normal;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
+.an-tier-ladder__arrow {
+  display: none;
+}
+
+.an-tier-ladder__scale {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.85rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.an-tier-ladder__rule {
+  flex: 1;
+  height: 1px;
+  background: var(--line-2);
+}
+
+.an-venue-bars {
+  margin-bottom: 1.5rem;
+}
+
+.an-tier-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 1.25rem;
+}
+
+.an-tier-card {
+  background: var(--surface);
+  padding: 1rem;
+}
+
+.an-tier-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.an-tier-card__head > span:first-child {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.an-tier-card__badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.an-tier-card__price {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-2);
+  margin-bottom: 0.5rem;
+}
+
+.an-tier-card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.an-insider-note {
+  padding: 1rem;
+  border: 1px solid var(--line-2);
+  background: var(--bg-2);
+}
+
+.an-insider-note .section-kicker {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--mango);
+}
+
+.an-insider-note p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink);
 }
 
 .an-sentiment-cloud {
@@ -709,7 +867,16 @@
   }
 
   .an-bar-row {
-    grid-template-columns: 4.8rem 1fr 2rem;
+    grid-template-columns: minmax(0, 1fr) 3rem;
+    gap: 0.45rem 0.65rem;
+  }
+
+  .an-bar-label {
+    grid-column: 1 / -1;
+  }
+
+  .an-tier-ladder__row {
+    grid-template-columns: 1fr;
   }
 
   .an-table-head,
