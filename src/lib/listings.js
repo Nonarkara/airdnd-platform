@@ -15,6 +15,20 @@ import {
 
 const DEFAULT_LOCATION = 'Bangkok, Thailand';
 
+// Softer than isBadPublicName: น้อง… nicknames are named faces for labour
+// counts even when they are too thin to be a directory card title.
+function isCountableFaceName(name) {
+  const value = String(name || '').trim();
+  if (value.length < 2) return false;
+  if (/^https?:\/\//i.test(value) || /^www\./i.test(value)) return false;
+  if (/^@[\w.-]{3,}$/i.test(value)) return false;
+  if (/^\d{1,2}[:.]\d{2}/.test(value)) return false;
+  if (/^(?:teleg|telegram|openchat|location|gps|line|update|facebook\s*page)$/i.test(value)) return false;
+  if (/group joining details|คำเชิญให้เข้าร่วม/i.test(value)) return false;
+  if (isBadPublicName(value) && !/^น้อง[\p{L}\p{N}_-]{1,16}$/u.test(value)) return false;
+  return true;
+}
+
 export const SOURCE_LABELS = {
   supabase: 'Live sync',
   firestore: 'Live sync (Firestore)',
@@ -399,12 +413,15 @@ export function createMetrics(listings) {
   // Named faces = every advertised identity on the card, not only the
   // canonical title. Phone-dedup collapses LOUISSPA-style chains to one
   // venue; the minister still needs the labour-surface count of names aired.
+  // Soft filter only: keep น้อง… staff nicknames (those ARE faces); drop
+  // channel chrome, URLs, hours, and pure spam that isBadPublicName catches
+  // for card titles.
   const uniqueNames = new Set();
   for (const listing of normalizedListings) {
     const candidates = [listing.name, ...(listing.aliasNames || [])];
     for (const candidate of candidates) {
       const name = String(candidate || '').trim();
-      if (name.length < 2 || isBadPublicName(name)) continue;
+      if (!isCountableFaceName(name)) continue;
       uniqueNames.add(name.toLowerCase());
     }
   }

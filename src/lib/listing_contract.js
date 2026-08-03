@@ -536,6 +536,10 @@ export function normalizePublicListing(rawListing, options = {}) {
     userFeedbackSummary: normalizeText(rawListing.userFeedbackSummary || rawListing.user_feedback_summary || rawListing.discussion_notes, null),
     isSafeImage,
     mentionCount,
+    aliasNames: normalizeArray(rawListing.aliasNames || rawListing.alias_names)
+      .map((name) => cleanDisplayText(name))
+      .filter(Boolean),
+    aliasCount: normalizeInteger(rawListing.aliasCount || rawListing.alias_count) || 0,
     credibility: Number.isFinite(rawListing.credibility) ? Number(rawListing.credibility) : null,
     dataSource: source,
     isFallback: Boolean(options.isFallback),
@@ -684,8 +688,11 @@ export function mergeCanonicalGroup(listings) {
   const primaryName = String(merged.name || '').trim();
   merged.aliasNames = [
     ...new Set(
-      normalized
-        .map((listing) => String(listing.name || '').trim())
+      [
+        ...normalized.flatMap((listing) => normalizeArray(listing.aliasNames)),
+        ...normalized.map((listing) => String(listing.name || '').trim()),
+      ]
+        .map((name) => String(name || '').trim())
         .filter((name) => name.length >= 2 && name !== primaryName),
     ),
   ];
