@@ -1188,6 +1188,35 @@ export default function Paper() {
             The evidence is not the obstacle. The obstacle is what acknowledging the evidence requires admitting.
           </p>
         </section>
+
+        <section className="paper-sec">
+          <span className="paper-num">XX</span>
+          <h2 className="paper-h">What the Surveillance Data Says Now</h2>
+          <p className="paper-lead">
+            The engagement-based framework developed in Section XIX has a test it cannot avoid: what happens to the public health indicators when the framework is implemented, and what happens when it is abandoned. The data on this question exists, and it is, in the most literal sense, a before-and-after experiment conducted on the population of Thailand over the past four decades.
+          </p>
+          <p className="paper-lead">
+            The 100% Condom Programme era — 1989 to 2001 — produced the most comprehensive STI reduction data in any Southeast Asian country. Sexually transmitted infection rates among sex workers and their clients fell by over 90 percent during the programme's operational period. Syphilis seroprevalence, gonococcal infection, and chlamydia incidence all declined to levels comparable to those in countries with formalised, regulated sex work. The intervention did not criminalise supply or demand. It operated <em>with</em> the institutional structure of the market — district-level licensing registration (ส่งปกครองอำเภอ) as the distribution and enforcement channel — and used that structure to make condom use the path of least resistance. The licensing chain was the leverage point. Compliance was the outcome. The 90 percent reduction was the return.
+          </p>
+          <p className="paper-lead">
+            When the programme was discontinued under political pressure in the early 2000s, STI rates began to rise. Thailand's Division of Communicable Disease Control surveillance data documents steady increases in syphilis, gonorrhea, and chlamydia incidence across the subsequent two decades. The reversal was not instantaneous — it was structural, accumulating as the engagement infrastructure was dismantled and the licensing leverage disappeared. The MOPH epidemiological surveillance reports describing this reversal are published annually and rarely cited in the policy discourse on the topic they describe.
+          </p>
+          <p className="paper-lead">
+            The global picture is consistent. The World Health Organization's 2024 report on sexually transmitted infections documented what it termed "a concerning global surge" across four pathogens: syphilis (with documented resurgences in multiple countries, including congenital syphilis, after years of decline), gonorrhea (with rising minimum inhibitory concentrations against last-line antibiotics and increasing reports of extensively drug-resistant strains, classifying <em>Neisseria gonorrhoeae</em> as a priority pathogen), chlamydia (the most commonly reported bacterial STI globally, with consistent year-over-year increases across the WHO European Region, the Americas, and the Western Pacific), and trichomoniasis. The US Centers for Disease Control and Prevention's parallel surveillance reports describe the same trend in US data. The European Centre for Disease Prevention and Control reports describe the same trend in European data. The Mpox public health emergency of 2022–2024 demonstrated a related phenomenon: the surveillance gap between the populations most at risk and the institutional mechanisms for monitoring risk in those populations. The Mpox response was, in operational terms, an improvised engagement exercise — public health authorities working <em>with</em> informal community networks, gay and bisexual men's health organisations, sex worker advocacy groups — because the formal surveillance systems had no signal in the populations where the outbreak was first detected.
+          </p>
+          <p className="paper-lead">
+            The pattern across these data points is not a moral argument. It is a measurement observation: engagement-based public health produces measurable reductions in disease burden. Suppression-based public health produces measurable rebounds. The data exists, has existed for decades, and the institutional response to the data has been to update the presentation of the data without updating the policy implications of the data.
+          </p>
+          <p className="paper-lead">
+            There is, however, a layer underneath the policy disagreement that this paper is structurally required to address. The engagement-based approach requires data. The data requires surveillance. The surveillance requires, at minimum, a working signal in the populations where the disease burden sits. The current surveillance architecture in Thailand — and in most countries with comparable informal-market structures — has the formal reporting chain (public hospitals, district health offices, MOPH epidemiological reports) but lacks the informal-market signal. The listings that constitute the corpus of this paper — their pricing, their hours, their channel of communication, their geographic distribution, their temporal patterns — are a partial mirror of the population the surveillance system needs to reach. The mirror is incomplete: it captures supply; it does not directly capture health outcomes. But the supply-side mirror is the necessary input to a working engagement intervention, and the cost of producing that mirror is now low enough that the reason it does not exist is not economic.
+          </p>
+          <p className="paper-lead">
+            The architecture of the platform described in this paper does not need modification to address this question. The same Telegram channels, the same AI extraction layer, the same deduplication logic, the same real-time subscription system — applied to a different set of public health signals (clinic postings, anonymous STI screening announcements, community outreach channel activity, anonymous sexual health hotline transcripts) — would produce a working engagement-side surveillance layer at the same marginal cost. The pivot is not from commerce to public health. The pivot is <em>into</em> the question the engagement framework is supposed to address. The pivot requires, in engineering terms, approximately one working day. The pivot produces a class of intelligence that does not currently exist in any institutional data system.
+          </p>
+          <div className="paper-coda">
+            <p>The surveillance infrastructure question is the one the engagement-based framework is required to answer. The cost of answering it is now low. The question is who builds it, and on whose terms.</p>
+          </div>
+        </section>
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════ */}
@@ -1196,7 +1225,7 @@ export default function Paper() {
       <div className={`paper-tab-panel${activeTab === 'platform' ? ' is-active' : ''}`}>
 
         <section className="paper-sec">
-          <span className="paper-num">XX</span>
+          <span className="paper-num">XXI</span>
           <h2 className="paper-h">The Pipeline That Doesn't Know Its Domain</h2>
           <p className="paper-lead">
             The system that produced this paper has five stages. Telegram sources deliver raw messages. A deterministic text parser identifies structured fields — name, phone, hours, price, photos. A Gemini AI call enriches, classifies, and describes. A deduplication engine consolidates by phone number, then name similarity. A React frontend displays the result. At no point in this sequence does any component contain a value — a hardcoded string, a model weight, a database constraint — that refers specifically to massage.
@@ -1213,7 +1242,7 @@ export default function Paper() {
         </section>
 
         <section className="paper-sec">
-          <span className="paper-num">XXI</span>
+          <span className="paper-num">XXII</span>
           <h2 className="paper-h">OTOP: One Tambon, No Discovery Layer</h2>
           <p className="paper-lead">
             Thailand's One Tambon One Product (OTOP) programme, launched in 2001 under Prime Minister Thaksin Shinawatra following the model of Japan's One Village One Product (OVOP) movement, identifies a signature product for each of Thailand's approximately 7,700 sub-districts (tambons) and provides production support, quality certification, and government procurement pathways. By 2024, the programme covers over 85,000 registered products across five categories — food, beverages, herbs, textiles, and decoratives — generating approximately ฿200 billion in annual sales through government-facilitated channels.
@@ -1230,7 +1259,7 @@ export default function Paper() {
         </section>
 
         <section className="paper-sec">
-          <span className="paper-num">XXII</span>
+          <span className="paper-num">XXIII</span>
           <h2 className="paper-h">What Changes When You Pivot, and What Does Not</h2>
           <p className="paper-lead">
             A pivot from the massage directory to an OTOP producer marketplace requires, in engineering terms, four changes. Listed with effort estimates derived from the actual build time of the original system:
@@ -1268,7 +1297,7 @@ export default function Paper() {
         </section>
 
         <section className="paper-sec">
-          <span className="paper-num">XXIII</span>
+          <span className="paper-num">XXIV</span>
           <h2 className="paper-h">Zero-Marginal-Cost Intelligence</h2>
           <p className="paper-lead">
             Jeremy Rifkin (2014) argues that the defining economic characteristic of the digital era is the collapse of marginal cost: the cost of producing and distributing one additional unit of information goods approaches zero once the fixed infrastructure is in place. Rochet and Tirole's canonical work on platform economics (2003) identifies the matching of fragmented supply with distributed demand as the fundamental value proposition of digital platforms — the reason Airbnb could become the world's largest accommodation provider without owning a single room, and why Uber became the world's largest taxi company without owning a car.
@@ -1285,7 +1314,7 @@ export default function Paper() {
         </section>
 
         <section className="paper-sec">
-          <span className="paper-num">XXIV</span>
+          <span className="paper-num">XXV</span>
           <h2 className="paper-h">Any Community That Talks Can Become a Platform</h2>
           <p className="paper-lead">
             The massage directory is a proof-of-concept. The proof: any community that communicates through a messaging platform about supply and demand — whether for services, goods, labour, or information — can be turned into a real-time intelligence platform at marginal cost approaching zero. The limiting factors are not engineering. They are judgment: identifying the right channels (social research), constructing the extraction prompt (domain knowledge), and deciding what a listing should contain (product design). None of these require institutional resources. All of them require understanding a community from the inside.
@@ -1314,6 +1343,11 @@ export default function Paper() {
             <li>Salganik, M. J. (2018). <em>Bit by Bit: Social Research in the Digital Age.</em> Princeton University Press.</li>
             <li>Amnesty International (2016). <em>Amnesty International Policy on State Obligations to Respect, Protect and Fulfil the Human Rights of Sex Workers.</em></li>
             <li>Thailand Ministry of Public Health / MOPH (2001). <em>100% Condom Use Programme: Final Evaluation Report 1989–2001.</em></li>
+            <li>Thailand Division of Communicable Disease Control / DDC (annual). <em>Annual Epidemiological Surveillance Report.</em> Bureau of Epidemiology, Ministry of Public Health.</li>
+            <li>World Health Organization (2024). <em>Sexually Transmitted Infections (STIs) — Global Surveillance Data and Trends.</em> Department of Global HIV, Hepatitis and STIs Programmes.</li>
+            <li>World Health Organization (2024). <em>Multi-Drug-Resistant <em>Neisseria gonorrhoeae</em>: Threat Assessment and Response Framework.</em></li>
+            <li>US Centers for Disease Control and Prevention (annual). <em>Sexually Transmitted Disease Surveillance Report.</em> National Center for HIV, Viral Hepatitis, STD, and TB Prevention.</li>
+            <li>European Centre for Disease Prevention and Control / ECDC (annual). <em>Sexually Transmitted Infections Surveillance Report — Annual Epidemiological Report for the EU/EEA.</em></li>
             <li>OSMEP / Ministry of Industry (2024). <em>OTOP Programme Annual Report.</em> Office of SMEs Promotion.</li>
             <li>UNAIDS (2018). <em>UNAIDS Guidance Note on HIV and Sex Work.</em></li>
             <li>World Bank Thailand (2024). <em>Thailand Economic Monitor: Navigating Uncertainty.</em></li>
@@ -1326,7 +1360,7 @@ export default function Paper() {
       {/* ═══════════════════════════════════════════════════════════════════ */}
       <div className={`paper-tab-panel${activeTab === 'ethics' ? ' is-active' : ''}`}>
         <section className="paper-sec">
-          <span className="paper-num">XXV</span>
+          <span className="paper-num">XXVI</span>
           <h2 className="paper-h">Sampling Limitations: The Aggregator Concentration Bias</h2>
           <p className="paper-lead">
             A primary methodological limitation of this study is its reliance on high-volume Telegram aggregator channels. The dataset is derived from <strong>{corpus.channels} specific channels</strong>, where a single dominant channel, <code>@relaxsociety2020</code>, contributes a disproportionate share of listings. Consequently, the spatial and pricing distributions mapped in this paper represent the posting habits of these digital aggregators rather than a representative census of the offline Thai massage market.
@@ -1337,7 +1371,7 @@ export default function Paper() {
         </section>
 
         <section className="paper-sec">
-          <span className="paper-num">XXVI</span>
+          <span className="paper-num">XXVII</span>
           <h2 className="paper-h">Linguistic Action vs. Private Intent: Reframing the Booking Metric</h2>
           <p className="paper-lead">
             The finding that booking-related phrases occur <strong>{queries.bookingToPriceRatio}× more frequently</strong> than pricing inquiries must be interpreted with caution. Because the corpus consists of public Telegram broadcasts rather than private customer-provider chat transcripts, this metric reflects <strong>operator marketing strategies</strong> (e.g., promotional calls-to-action urging users to "reserve a slot now") rather than actual customer transaction velocity.
@@ -1348,7 +1382,7 @@ export default function Paper() {
         </section>
 
         <section className="paper-sec">
-          <span className="paper-num">XXVII</span>
+          <span className="paper-num">XXVIII</span>
           <h2 className="paper-h">Photo-Matching: AI Computer Vision Boundaries</h2>
           <p className="paper-lead">
             The assertion that <strong>{repeat.repeatRate}% of the index is photo-matched</strong> defines a technical extraction metric rather than an identity verification. The system's Gemini AI pipeline performs two tasks: it downloads media and runs a classification model to confirm that the images contain contextual wellness signals (e.g., massage tables, spa interiors, or themed uniforms) rather than generic web assets or unrelated spam.
@@ -1359,7 +1393,7 @@ export default function Paper() {
         </section>
 
         <section className="paper-sec">
-          <span className="paper-num">XXVIII</span>
+          <span className="paper-num">XXIX</span>
           <h2 className="paper-h">Ethical Considerations, Anonymization, and PDPA Compliance</h2>
           <p className="paper-lead">
             Aggregating and publishing data from public Telegram channels used by informal wellness workers poses significant ethical and legal challenges under Thailand's <strong>Personal Data Protection Act (PDPA)</strong>. Although these posts are broadcast in public channels, their aggregation in a central directory increases the searchability of contact details (such as LINE IDs and telephone numbers) and associated media.
