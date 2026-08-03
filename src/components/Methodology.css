@@ -132,18 +132,12 @@
   padding-top: 0.25rem;
 }
 
-.meth-section h2,
-.meth-section h3,
-.meth-section p,
-.meth-section ul,
-.meth-section ol,
-.meth-section blockquote,
-.meth-diagram,
-.meth-grid,
-.meth-quote,
-.meth-table,
-.meth-tier-table {
+/* Every block except the section number must sit in the content column.
+   Unlisted children (inline grids, resource lists) used to auto-place into
+   the 4rem gutter and spill across the page — that is the §14 overlap. */
+.meth-section > *:not(.meth-num) {
   grid-column: 2;
+  min-width: 0;
 }
 
 .meth-section h2 {
@@ -438,17 +432,7 @@
     grid-template-columns: 1fr;
   }
 
-  .meth-section h2,
-  .meth-section h3,
-  .meth-section p,
-  .meth-section ul,
-  .meth-section ol,
-  .meth-section blockquote,
-  .meth-diagram,
-  .meth-grid,
-  .meth-quote,
-  .meth-table,
-  .meth-tier-table {
+  .meth-section > *:not(.meth-num) {
     grid-column: 1;
   }
 
@@ -465,6 +449,117 @@
   padding: 0.35rem 0.75rem;
   margin: 0 0 2rem;
   opacity: 0.8;
+}
+
+/* §14 Public health — principles + resource rows (never leave these unclassed
+   inside the section grid; they must stay in the content column). */
+.meth-principles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--meth-line);
+  border: 1px solid var(--meth-line);
+  margin-block: 1.5rem;
+}
+
+.meth-principle {
+  background: var(--meth-bg);
+  padding: 1rem;
+  min-width: 0;
+}
+
+.meth-principle__label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--meth-amber);
+  margin-bottom: 0.4rem;
+}
+
+.meth-principle__body {
+  font-size: var(--fs-body);
+  color: var(--meth-ink-2);
+  line-height: 1.55;
+  margin: 0;
+  max-width: none;
+}
+
+.meth-resources {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.meth-resource {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1rem;
+  border-bottom: 1px solid var(--meth-line);
+  padding: 0.85rem 0;
+  align-items: start;
+}
+
+.meth-resource__org {
+  display: block;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--meth-ink);
+  margin-bottom: 0.25rem;
+}
+
+.meth-resource__desc {
+  font-size: var(--fs-body);
+  color: var(--meth-ink-3);
+  line-height: 1.55;
+  margin: 0;
+  max-width: none;
+}
+
+.meth-resource__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.meth-resource__tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--meth-amber);
+  border: 1px solid var(--mango-dim, rgba(245, 158, 11, 0.35));
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.meth-resource__url {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--meth-ink-3);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.meth-resource__url:hover {
+  color: var(--meth-amber);
+}
+
+@media (max-width: 720px) {
+  .meth-principles {
+    grid-template-columns: 1fr;
+  }
+
+  .meth-resource {
+    grid-template-columns: 1fr;
+  }
+
+  .meth-resource__meta {
+    align-items: flex-start;
+  }
 }
 
 .meth-row-head {

@@ -4,7 +4,11 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
-## 2026-08-03 · No in-page “Back to Directory” — browser Back is the control
+## 2026-08-03 · Methodology section grid trapped content in the 4rem gutter
+
+- **What went wrong:** `.meth-section` is `display:grid` with columns `4rem | 1fr`. Only a hard-coded list of tags (`h2`, `p`, …) had `grid-column: 2`. The §14 principles/resources `<div>`s auto-placed into the 4rem number column, so CONSENT/CONDOMS text spilled over the resource list.
+- **Correct behaviour:** `.meth-section > *:not(.meth-num) { grid-column: 2; min-width: 0; }`. Never leave unclassed blocks as naked section children without that rule. Prefer named classes (`.meth-principles`, `.meth-resources`).
+- **How to recognise:** Amber labels from a “sidebar” overlapping body copy on Methodology; inspect computed grid-column on the overlapping node — if it is 1 and width ~4rem, this is the bug.
 
 - **What went wrong:** Secondary pages showed `กลับไปยังไดเรกทอรี` / “Back to Directory” next to the real browser chrome. Fake back buttons fight the history stack and look amateur when the header already has Inventory.
 - **Correct behaviour:** Never add an in-page back-to-directory control. Inventory / Live / Map push real routes (`/`, `/?view=feed`, `/map`) so **browser Back** restores the prior page and view. Secondary papers keep only their section label in the page chrome.

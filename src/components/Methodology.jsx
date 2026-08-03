@@ -6,13 +6,18 @@ function Methodology() {
   const { t, language } = useLanguage();
   const pc = t.pageChrome || {};
   const page = t.pages?.methodology || {};
+  const health = page.health || {};
+  const principles = Array.isArray(health.principles) ? health.principles : [];
+  const resources = Array.isArray(health.resources) ? health.resources : [];
   return (
     <article className="methodology">
       <header className="meth-header">
         <span className="meth-label">{pc.researchPaper || 'Research Paper'}</span>
       </header>
       {language !== 'en' && (
-        <p className="meth-lang-note">{pc.languageNote || 'This paper is available in English only.'}</p>
+        <p className="meth-lang-note">
+          {page.languageNote || pc.languageNote || 'Working-paper body is English. Health resources and page chrome follow your language.'}
+        </p>
       )}
 
       <PageBanner image="/heroes/methodology.jpg" tone="light" compact className="meth-hero-banner" ariaLabelledBy="meth-title">
@@ -1179,82 +1184,44 @@ function Methodology() {
       {/* ─── §14 Public health resources ─── */}
       <section className="meth-section">
         <span className="meth-num">14</span>
-        <h2>Public Health &amp; Harm Reduction Resources</h2>
+        <h2>{health.title || 'Public Health & Harm Reduction Resources'}</h2>
         <p>
-          The following organisations provide evidence-based sexual health information,
-          STI/HIV testing services, and harm reduction support in Thailand and globally.
-          Consistent condom use combined with regular testing remains the most effective
-          documented intervention — as Thailand's own 100% Condom Program demonstrated
-          at national scale in the 1990s.
+          {health.lead || 'The following organisations provide evidence-based sexual health information, STI/HIV testing services, and harm reduction support in Thailand and globally.'}
         </p>
 
-        {/* Key principles strip */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1px', background: 'var(--meth-line)', border: '1px solid var(--meth-line)', marginBlock: '1.5rem' }}>
-          {[
-            { label: 'Consent', body: 'Clear, ongoing, enthusiastic agreement. Alcohol and substances impair capacity to consent.' },
-            { label: 'Condoms', body: 'Most effective barrier against HIV, gonorrhea, and chlamydia when used correctly and consistently. Use water-based lube with latex.' },
-            { label: 'Testing', body: 'Every 3–6 months if higher risk. Many STIs have no symptoms. Thailand has free/anonymous options via the Thai Red Cross and government clinics.' },
-            { label: 'PrEP', body: 'Daily oral PrEP is highly effective HIV prevention for high-risk individuals. Available through Thai hospitals and clinics; discuss with a doctor.' },
-          ].map(({ label, body }) => (
-            <div key={label} style={{ background: 'var(--meth-bg)', padding: '1rem' }}>
-              <span style={{ display: 'block', fontSize: '9px', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', color: 'var(--meth-amber)', marginBottom: '0.4rem' }}>{label.toUpperCase()}</span>
-              <p style={{ fontSize: '12px', color: 'var(--meth-ink-2)', lineHeight: '1.65', margin: 0 }}>{body}</p>
+        <div className="meth-principles">
+          {principles.map(({ label, body }) => (
+            <div key={label} className="meth-principle">
+              <span className="meth-principle__label">{label}</span>
+              <p className="meth-principle__body">{body}</p>
             </div>
           ))}
         </div>
 
-        {/* Resource links */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-          {[
-            {
-              org: 'UNFPA Thailand',
-              desc: 'UN Population Fund — sexual and reproductive health, HIV/STI prevention, comprehensive sexuality education. Thai-language materials available.',
-              url: 'unfpa.org',
-              tag: 'UN AGENCY',
-            },
-            {
-              org: 'Thai Ministry of Public Health / Department of Disease Control',
-              desc: 'National STI strategy, 100% Condom Program history, anonymous testing clinic network, HIV/AIDS national response.',
-              url: 'ddc.moph.go.th',
-              tag: 'THAILAND GOV',
-            },
-            {
-              org: 'Thai Red Cross Anonymous Clinic (Bangkok)',
-              desc: 'Free, confidential HIV/STI testing and counselling. No ID required. Available to all nationalities. Multiple locations.',
-              url: 'redcross.or.th',
-              tag: 'NGO · FREE',
-            },
-            {
-              org: 'CDC STI Treatment Guidelines',
-              desc: 'Evidence-based treatment and prevention protocols. Condom effectiveness data. Covers HIV, gonorrhea, chlamydia, syphilis, herpes, HPV.',
-              url: 'cdc.gov/std',
-              tag: 'US CDC',
-            },
-            {
-              org: 'WHO/UNAIDS — Thailand HIV Response',
-              desc: 'Thailand country profile, 100% Condom Program evaluation, trafficking-in-persons and HIV intersection data.',
-              url: 'who.int / unaids.org',
-              tag: 'UN AGENCY',
-            },
-          ].map(({ org, desc, url, tag }) => (
-            <div key={org} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem 1rem', borderBottom: '1px solid var(--meth-line)', paddingBottom: '0.85rem' }}>
+        <div className="meth-resources">
+          {resources.map(({ org, desc, url, tag, href }) => (
+            <div key={org} className="meth-resource">
               <div>
-                <span style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: 'var(--meth-ink)', marginBottom: '0.2rem' }}>{org}</span>
-                <p style={{ fontSize: '12px', color: 'var(--meth-ink-3)', lineHeight: '1.6', margin: 0 }}>{desc}</p>
+                <span className="meth-resource__org">{org}</span>
+                <p className="meth-resource__desc">{desc}</p>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', alignItems: 'flex-end', flexShrink: 0 }}>
-                <span style={{ fontSize: '8px', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', color: 'var(--meth-amber)', border: '1px solid var(--meth-amber-dim, #f59e0b40)', padding: '1px 5px', whiteSpace: 'nowrap' }}>{tag}</span>
-                <a href={`https://${url.split(' / ')[0]}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--meth-ink-3)', textDecoration: 'none', borderBottom: '1px solid currentColor' }}>{url}</a>
+              <div className="meth-resource__meta">
+                <span className="meth-resource__tag">{tag}</span>
+                <a
+                  className="meth-resource__url"
+                  href={href || `https://${String(url || '').split(/[·\s]/)[0]}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {url}
+                </a>
               </div>
             </div>
           ))}
         </div>
 
         <blockquote className="meth-quote" style={{ marginTop: '1.75rem' }}>
-          Protection + testing + consent protects health and lives. Thailand's 100% Condom
-          Program showed this at national scale. No method is 100% except abstinence, but
-          consistent condoms combined with regular testing dramatically reduce risk across
-          all venue tiers.
+          {health.quote || 'Protection + testing + consent protects health and lives.'}
         </blockquote>
       </section>
 
