@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import './Trends.css';
 
 const CATEGORIES = ['ALL', 'MARKET', 'CULTURAL', 'POLITICAL', 'ECONOMIC', 'INTERNATIONAL'];
@@ -379,7 +378,6 @@ export default function Trends() {
   return (
     <div className="trends-page">
       <header className="trends-header">
-        <Link to="/" className="trends-back">← Directory</Link>
         <span className="trends-header-label">Signal Intelligence</span>
       </header>
 
@@ -468,7 +466,6 @@ export default function Trends() {
 
       <footer className="trends-footer">
         <span className="trends-footer-note">Sabai Sabai · Community Intelligence Platform</span>
-        <Link to="/" className="trends-footer-link">← Back to Directory</Link>
       </footer>
     </div>
   );

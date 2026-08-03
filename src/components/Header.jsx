@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 /**
  * Sticky chrome is navigation + status only.
@@ -6,6 +6,10 @@ import { Link } from 'react-router-dom';
  * page hero already carries the brand — stacked duplicate logos on one
  * viewport read amateur. Brand lives in the hero. See tasks/lessons.md
  * 2026-08-03 · Duplicate brand wordmark.
+ *
+ * View tabs push real history (/, /?view=feed, /map) so the browser Back
+ * button returns to the prior page. Do not invent an in-page
+ * "Back to Directory" control — that is the browser's job.
  */
 function Header({
   language,
@@ -21,15 +25,17 @@ function Header({
   setActiveView,
   metrics,
 }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const isLive = sourceLabel?.toLowerCase().includes('live');
   const venueCount = metrics?.total || 0;
   const status = t.status || {};
   const themes = t.themes || {};
 
   const viewTabs = [
-    { id: 'directory', label: t.nav?.listings || 'Inventory' },
-    { id: 'feed', label: t.nav?.feed || 'Live' },
-    { id: 'map', label: t.nav?.map || 'Map' },
+    { id: 'directory', label: t.nav?.listings || 'Inventory', to: '/' },
+    { id: 'feed', label: t.nav?.feed || 'Live', to: '/?view=feed' },
+    { id: 'map', label: t.nav?.map || 'Map', to: '/map' },
   ];
   const linkTabs = [
     { id: 'insights', label: t.nav?.insights || 'Insights', href: '/insights' },
@@ -37,6 +43,33 @@ function Header({
     { id: 'analytics', label: t.nav?.analytics || 'Analytics', href: '/analytics' },
     { id: 'methodology', label: t.nav?.methodology || 'Method', href: '/methodology' },
   ];
+
+  const goView = (tab) => {
+    const run = () => {
+      setActiveView?.(tab.id);
+      const target = tab.to;
+      const alreadyHome = location.pathname === '/' || location.pathname === '';
+      if (tab.id === 'map') {
+        if (location.pathname !== '/map') navigate('/map');
+        return;
+      }
+      if (tab.id === 'feed') {
+        if (!(alreadyHome && location.search === '?view=feed')) navigate('/?view=feed');
+        return;
+      }
+      if (!(alreadyHome && (location.search === '' || location.search === '?'))) {
+        navigate('/');
+      }
+    };
+    if (document.startViewTransition) {
+      document.startViewTransition(run);
+    } else {
+      run();
+    }
+  };
+
+  const currentPath = location.pathname;
+  const isLinkActive = (href) => currentPath === href || currentPath.startsWith(`${href}/`);
 
   return (
     <header className="site-header" id="overview">
@@ -47,13 +80,7 @@ function Header({
               key={tab.id}
               type="button"
               className={`nav-link-btn${activeView === tab.id ? ' is-active' : ''}`}
-              onClick={() => {
-                if (document.startViewTransition) {
-                  document.startViewTransition(() => setActiveView(tab.id));
-                } else {
-                  setActiveView(tab.id);
-                }
-              }}
+              onClick={() => goView(tab)}
               role="tab"
               aria-selected={activeView === tab.id}
               aria-controls={`${tab.id}-panel`}
@@ -62,7 +89,14 @@ function Header({
             </button>
           ))}
           {linkTabs.map((tab) => (
-            <Link key={tab.id} to={tab.href} viewTransition role="tab" aria-selected={false}>
+            <Link
+              key={tab.id}
+              to={tab.href}
+              viewTransition
+              role="tab"
+              aria-selected={isLinkActive(tab.href)}
+              className={isLinkActive(tab.href) ? 'is-active' : undefined}
+            >
               {tab.label}
             </Link>
           ))}

@@ -9,7 +9,6 @@ function Methodology() {
   return (
     <article className="methodology">
       <header className="meth-header">
-        <a href="/" className="meth-back">{pc.backToDirectory || 'Back to Directory'}</a>
         <span className="meth-label">{pc.researchPaper || 'Research Paper'}</span>
       </header>
       {language !== 'en' && (

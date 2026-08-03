@@ -113,7 +113,6 @@ function withTimeout(promise, ms, label) {
 
 export default function Analytics() {
   const { t } = useLanguage();
-  const pc = t.pageChrome || {};
   const [listings, setListings] = useState([]);
   const [msgStats, setMsgStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -330,7 +329,6 @@ export default function Analytics() {
   return (
     <div className="an-page">
       <header className="an-header">
-        <a href="/" className="an-back">← {pc.backToDirectory || 'Back to Directory'}</a>
         <div className="an-header-meta">
           {lastRefreshed && (
             <span className="an-refresh-time">
@@ -343,7 +341,7 @@ export default function Analytics() {
             onClick={load}
             disabled={isRefreshing}
           >
-            {isRefreshing ? 'Refreshing…' : 'Refresh'}
+            {isRefreshing ? (t.common?.refreshing || 'Refreshing…') : (t.common?.refresh || 'Refresh')}
           </button>
           <span className="an-badge">{t.pages?.analytics?.badge || 'Industry Intelligence'}</span>
         </div>
@@ -1466,7 +1464,6 @@ export default function Analytics() {
 
       <footer className="an-footer">
         <p>Every figure traces back to a specific listing. Click any row to read the source post. Data updated in real time by the Sabai Sabai AI pipeline.</p>
-        <a href="/">← {pc.backToDirectory || 'Back to Directory'}</a>
       </footer>
     </div>
   );

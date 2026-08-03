@@ -20,12 +20,10 @@ const FAQ_KEYS = [
 export default function FAQ() {
   const { t } = useLanguage();
   const tf = t.faq || {};
-  const pc = t.pageChrome || {};
 
   return (
     <article className="faq-page">
       <header className="meth-header">
-        <a href="/" className="meth-back">{pc.backToDirectory || 'Back to Directory'}</a>
         <span className="meth-label">FAQ</span>
       </header>
 
@@ -133,7 +131,6 @@ export default function FAQ() {
         <p className="meth-footer-sub">
           <a href="/methodology" className="faq-footer-link">Read the full methodology paper →</a>
         </p>
-        <a href="/" className="meth-footer-link">{pc.backToDirectory || 'Back to Directory'}</a>
       </footer>
     </article>
   );

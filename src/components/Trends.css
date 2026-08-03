@@ -18,7 +18,7 @@
 .trends-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: var(--s4);
   min-height: var(--header-h);
   border-bottom: 1px solid var(--line);

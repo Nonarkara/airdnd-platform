@@ -77,7 +77,6 @@ export default function Sociology() {
   const shell = (children) => (
     <article className="sociology">
       <header className="meth-header">
-        <a href="/" className="meth-back">{pc.backToDirectoryArrow || '← Directory'}</a>
         <span className="meth-label">{pc.fieldNotes || 'Field Notes'}</span>
       </header>
       {children}
@@ -104,7 +103,6 @@ export default function Sociology() {
   return (
     <article className="sociology">
       <header className="meth-header">
-        <a href="/" className="meth-back">← Directory</a>
         <span className="meth-label">Field Notes</span>
       </header>
 

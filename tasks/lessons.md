@@ -4,7 +4,11 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
-## 2026-08-03 · Duplicate brand wordmark = amateur chrome
+## 2026-08-03 · No in-page “Back to Directory” — browser Back is the control
+
+- **What went wrong:** Secondary pages showed `กลับไปยังไดเรกทอรี` / “Back to Directory” next to the real browser chrome. Fake back buttons fight the history stack and look amateur when the header already has Inventory.
+- **Correct behaviour:** Never add an in-page back-to-directory control. Inventory / Live / Map push real routes (`/`, `/?view=feed`, `/map`) so **browser Back** restores the prior page and view. Secondary papers keep only their section label in the page chrome.
+- **How to recognise:** Grep for `backToDirectory`, `an-back`, `meth-back` pointing at `/`, or Thai `กลับไปยังไดเรกทอรี`. Remove them; wire navigation through `navigate()` / `<Link>`.
 
 - **What went wrong:** Sticky header showed `sabai·sabai` directly above the hero title `sabai·sabai`. Two identical wordmarks stacked in one viewport. Reads unfinished — like a template that forgot the logo already lived in the masthead.
 - **Correct behaviour:** Brand appears once per first viewport. On pages with a branded hero (`HeroSection` / `PageBanner`), the header is **nav + status only**. Never reintroduce `.brand` in `Header.jsx` beside a hero wordmark. If a page has no hero brand, a compact header mark may return — but never both.

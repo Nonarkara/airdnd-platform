@@ -1,5 +1,5 @@
 import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -353,6 +353,7 @@ function createDataState(result) {
 }
 
 function App() {
+  const location = useLocation();
   const [session, setSession] = useState(null);
   const [allListings, setAllListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -362,7 +363,12 @@ function App() {
   const [selectedListing, setSelectedListing] = useState(null);
   const { language, setLanguage, t: tCtx } = useLanguage();
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
-  const [activeView, setActiveView] = useState('directory');
+  const [activeView, setActiveView] = useState(() => {
+    if (typeof window === 'undefined') return 'directory';
+    if (window.location.pathname === '/map') return 'map';
+    const view = new URLSearchParams(window.location.search).get('view');
+    return view === 'feed' ? 'feed' : 'directory';
+  });
   const [mapSource, setMapSource] = useState('directory');
   const [feedListings, setFeedListings] = useState([]);
   const [dataState, setDataState] = useState({
@@ -410,6 +416,18 @@ function App() {
   useEffect(() => {
     initSession();
   }, []);
+
+  // Keep home tabs aligned with the URL so browser Back/Forward restore the view.
+  useEffect(() => {
+    if (location.pathname === '/map') {
+      setActiveView('map');
+      return;
+    }
+    if (location.pathname === '/' || location.pathname === '') {
+      const view = new URLSearchParams(location.search).get('view');
+      setActiveView(view === 'feed' ? 'feed' : 'directory');
+    }
+  }, [location.pathname, location.search]);
 
   // Deep-link: ?listing=<id> auto-opens that listing's modal once data has
   // loaded. If the id isn't in the filtered allListings set (some listings

@@ -378,7 +378,6 @@ export default function Insights() {
 
       <footer className="ins-foot">
         <span>Computed {new Date(d.generatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })} from the full archive · rebuilt at every deploy</span>
-        <Link to="/">← Inventory</Link>
       </footer>
     </div>
   );

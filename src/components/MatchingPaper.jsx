@@ -429,7 +429,7 @@ export default function MatchingPaper() {
           {' · '}
           <a href="/paper" style={{ color: 'var(--mango)', borderBottom: '1px solid currentColor' }}>Working Paper I →</a>
         </p>
-        <a href="/" className="meth-footer-link">← Back to Directory</a>
+        <a href="/sociology" className="meth-footer-link">← Field Notes</a>
       </footer>
     </article>
   );
