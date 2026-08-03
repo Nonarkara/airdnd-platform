@@ -287,6 +287,100 @@ function PlatformPivotDiagram() {
   );
 }
 
+// ── Global comparative phenomenon diagram ─────────────────────────────────────
+function GlobalPhenomenonDiagram() {
+  return (
+    <div className="paper-fig paper-diagram-container">
+      <div className="paper-fig-cap">Diagram IV · Global Comparative Typology of Informal Sex Work &amp; Massage Markets</div>
+      <div className="paper-diagram-scroll">
+        <svg viewBox="0 0 760 220" className="paper-diagram-svg">
+          <rect x={10} y={10} width={235} height={195} fill="var(--surface)" stroke="var(--line-2)" />
+          <text x={127} y={32} textAnchor="middle" fill="#ff7440" fontSize="11" fontWeight="700">TOKYO · KABUKI-CHO</text>
+          <text x={127} y={48} textAnchor="middle" fill="var(--ink-3)" fontSize="8">Physical Muryo Annaisho → X / Telegram</text>
+          <line x1={25} y1={58} x2={230} y2={58} stroke="var(--line)" />
+          <text x={25} y={78} fill="var(--ink-2)" fontSize="8">• Legal: Fueiho (Entertainment Law)</text>
+          <text x={25} y={94} fill="var(--ink-2)" fontSize="8">• Touting: Ban on street touting (Kyobatta)</text>
+          <text x={25} y={110} fill="var(--ink-2)" fontSize="8">• Shift: Street booths → X / LINE brooms</text>
+          <text x={25} y={126} fill="var(--ink-2)" fontSize="8">• Risks: Bottakuri scam bars, debt-bondage</text>
+          <text x={25} y={142} fill="var(--ink-2)" fontSize="8">• Police: Metro Police Dept. raids</text>
+          <rect x={25} y={155} width={205} height={35} fill="rgba(255, 116, 64, 0.1)" stroke="#ff7440" />
+          <text x={127} y={176} textAnchor="middle" fill="#ff7440" fontSize="8" fontWeight="700">Informal Touting → Digital Broadsheet</text>
+
+          <rect x={262} y={10} width={235} height={195} fill="var(--surface)" stroke="var(--line-2)" />
+          <text x={379} y={32} textAnchor="middle" fill="#36C7FF" fontSize="11" fontWeight="700">AMSTERDAM · DE WALLEN</text>
+          <text x={379} y={48} textAnchor="middle" fill="var(--ink-3)" fontSize="8">Window Brothels → Erotic Centre &amp; Web</text>
+          <line x1={277} y1={58} x2={482} y2={58} stroke="var(--line)" />
+          <text x={277} y={78} fill="var(--ink-2)" fontSize="8">• Legal: 2000 Brothel Ban Lift (ZZP-er)</text>
+          <text x={277} y={94} fill="var(--ink-2)" fontSize="8">• Oversight: Municipal Licensing (Project 1012)</text>
+          <text x={277} y={110} fill="var(--ink-2)" fontSize="8">• Shift: Window display → Private online appt</text>
+          <text x={277} y={126} fill="var(--ink-2)" fontSize="8">• Rights: GAATW / ILO labor protection</text>
+          <text x={277} y={142} fill="var(--ink-2)" fontSize="8">• Friction: Tourism nuisance &amp; relocations</text>
+          <rect x={277} y={155} width={205} height={35} fill="rgba(54, 199, 255, 0.1)" stroke="#36C7FF" />
+          <text x={379} y={176} textAnchor="middle" fill="#36C7FF" fontSize="8" fontWeight="700">Municipal Licensing → Web Directories</text>
+
+          <rect x={515} y={10} width={235} height={195} fill="var(--surface)" stroke="var(--line-2)" />
+          <text x={632} y={32} textAnchor="middle" fill="#34d399" fontSize="11" fontWeight="700">BANGKOK · TELEGRAM</text>
+          <text x={632} y={48} textAnchor="middle" fill="var(--ink-3)" fontSize="8">Forum Posts → Real-Time Telegram Pipeline</text>
+          <line x1={530} y1={58} x2={735} y2={58} stroke="var(--line)" />
+          <text x={530} y={78} fill="var(--ink-2)" fontSize="8">• Dual: Nuad Thai (UNESCO) vs Grey Spa</text>
+          <text x={530} y={94} fill="var(--ink-2)" fontSize="8">• Law: Prostitution Suppression Act (1996)</text>
+          <text x={530} y={110} fill="var(--ink-2)" fontSize="8">• Alibi: Health Establishment Act (2016)</text>
+          <text x={530} y={126} fill="var(--ink-2)" fontSize="8">• Economy: Monthly protection fees ("Tua")</text>
+          <text x={530} y={142} fill="var(--ink-2)" fontSize="8">• Tech: Zero-cost AI community pipeline</text>
+          <rect x={530} y={155} width={205} height={35} fill="rgba(52, 211, 153, 0.1)" stroke="#34d399" />
+          <text x={632} y={176} textAnchor="middle" fill="#34d399" fontSize="8" fontWeight="700">Unstructured Feed → Public Intelligence</text>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+// ── Grey economy and police oversight diagram ─────────────────────────────────
+function GreyEconomyPoliceFlowDiagram() {
+  return (
+    <div className="paper-fig paper-diagram-container">
+      <div className="paper-fig-cap">Diagram V · Financial &amp; Regulatory Protection Fee Flow ("Tua" Ticket System)</div>
+      <div className="paper-diagram-scroll">
+        <svg viewBox="0 0 720 180" className="paper-diagram-svg">
+          <defs>
+            <marker id="arrow-g" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#ff7440" />
+            </marker>
+          </defs>
+          <rect x={15} y={30} width={130} height={50} fill="var(--surface)" stroke="var(--line-2)" />
+          <text x={80} y={52} textAnchor="middle" fill="var(--ink)" fontSize="9" fontWeight="700">CLIENT DEMAND</text>
+          <text x={80} y={67} textAnchor="middle" fill="var(--ink-3)" fontSize="8">Cash / PromptPay</text>
+
+          <rect x={190} y={30} width={140} height={50} fill="var(--surface)" stroke="#ff7440" />
+          <text x={260} y={52} textAnchor="middle" fill="#ff7440" fontSize="9" fontWeight="700">PARLOUR OPERATOR</text>
+          <text x={260} y={67} textAnchor="middle" fill="var(--ink-3)" fontSize="8">Shophouse / Wellness Spa</text>
+
+          <rect x={375} y={15} width={140} height={40} fill="var(--surface-2)" stroke="#34d399" />
+          <text x={445} y={34} textAnchor="middle" fill="#34d399" fontSize="9" fontWeight="700">WORKER WAGE</text>
+          <text x={445} y={46} textAnchor="middle" fill="var(--ink-3)" fontSize="7">Commission + Tips</text>
+
+          <rect x={375} y={75} width={140} height={40} fill="var(--surface-2)" stroke="#FFD23D" />
+          <text x={445} y={93} textAnchor="middle" fill="#FFD23D" fontSize="9" fontWeight="700">POLICE "TUA" FEE</text>
+          <text x={445} y={106} textAnchor="middle" fill="var(--ink-3)" fontSize="7">฿5,000–฿50,000 / mo</text>
+
+          <rect x={560} y={30} width={145} height={50} fill="var(--surface)" stroke="#36C7FF" />
+          <text x={632} y={50} textAnchor="middle" fill="#36C7FF" fontSize="9" fontWeight="700">HEALTH MINISTRY ALIBI</text>
+          <text x={632} y={65} textAnchor="middle" fill="var(--ink-3)" fontSize="7">Health Establishment License</text>
+
+          <path d="M 145 55 L 185 55" stroke="#ff7440" strokeWidth="1.2" markerEnd="url(#arrow-g)" />
+          <path d="M 330 45 L 370 35" stroke="#34d399" strokeWidth="1.2" markerEnd="url(#arrow-g)" />
+          <path d="M 330 65 L 370 85" stroke="#FFD23D" strokeWidth="1.2" markerEnd="url(#arrow-g)" />
+          <path d="M 515 55 L 555 55" stroke="#36C7FF" strokeWidth="1.2" markerEnd="url(#arrow-g)" />
+
+          <text x={360} y={155} textAnchor="middle" fill="var(--ink-4)" fontSize="8">
+            The legal alibi of the 2016 Health Act permits parlours to operate bodywork spas while paying monthly protection fees ("Tua") to local precinct inspectors.
+          </text>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Paper() {
   const { t } = useLanguage();
@@ -349,10 +443,11 @@ export default function Paper() {
 
   const TABS = [
     { id: 'system', label: 'System · I–IX' },
-    { id: 'origin', label: 'Origin · X–XIV' },
-    { id: 'economy', label: 'Economy · XV–XIX' },
-    { id: 'platform', label: 'Platform · XX–XXIV' },
-    { id: 'ethics', label: 'Ethics & Methods · XXV–XXVIII' },
+    { id: 'global', label: 'Global Phenomena & Rights · X–XIV' },
+    { id: 'origin', label: 'Origin · XV–XIX' },
+    { id: 'economy', label: 'Economy · XX–XXIV' },
+    { id: 'platform', label: 'Platform · XXV–XXVIII' },
+    { id: 'ethics', label: 'Ethics & Methods · XXIX–XXXII' },
   ];
 
   return (
@@ -774,6 +869,72 @@ export default function Paper() {
             <li>Pantip.com community forums (n.d.). Anonymous user testimony, topic/38519086 — male client assaulted by male masseuse at a legitimate Thai massage shop; cited for bidirectional vulnerability analysis.</li>
             <li>นพ. กิตติพัชญ์ รัศมีจารุกิตติ์ / Reverie Clinic (2024). "นวดกษัยเห็นผลจริงไหม ทำแล้วกลับมาแข็งจริงรึเปล่า?" [Does Karsai massage really work? Does it actually improve erectile function?]. reveriebkk.com. <em>Category: UPSIZE | สุขภาพเพศชาย.</em></li>
           </ul>
+        </section>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* TAB: GLOBAL PHENOMENA & RIGHTS — Kabuki-cho, Amsterdam RLD, Tua      */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      <div className={`paper-tab-panel${activeTab === 'global' ? ' is-active' : ''}`}>
+        <section className="paper-sec">
+          <span className="paper-num">X</span>
+          <h2 className="paper-h">Global Comparative Typology: Tokyo, Amsterdam, and Bangkok</h2>
+          <p className="paper-lead">
+            The digital transition of informal entertainment and bodywork services is not an isolated Thai phenomenon. It is a global structural shift driven by urban enforcement friction, municipal regulation, and the universal adoption of encrypted mobile messaging. Across major metropolitan hubs, informal markets adapt to local policing by moving from physical street touting to digital broadsheet networks.
+          </p>
+
+          <GlobalPhenomenonDiagram />
+
+          <p className="paper-lead">
+            In <strong>Tokyo's Kabuki-cho (Shinjuku)</strong>, physical <em>Muryo Annaisho</em> (free information booths) historically brokered nightlife referrals. Following strict enforcement of Japan's <em>Fueiho</em> (Entertainment Business Law) and crackdowns on street touting (<em>kyobatta</em>), operators migrated their real-time advertising onto X (Twitter), LINE official accounts, and Telegram broadsheets. In <strong>Amsterdam's De Wallen (Red Light District)</strong>, the 2000 legalisation framework recognized sex workers as self-employed sole traders (<em>ZZP-ers</em>). However, municipal window license reductions under "Project 1012" and proposals for a centralized Erotic Centre pushed independent operators toward private web directories and encrypted booking channels.
+          </p>
+          <p className="paper-lead">
+            Bangkok's market represents a third configuration: a dual economy where <strong>UNESCO-recognized *Nuad Thai*</strong> (Traditional Thai Massage) coexists alongside grey-market wellness parlours that utilize real-time Telegram broadsheets to maintain high-velocity urban discovery without formal directory exposure.
+          </p>
+        </section>
+
+        <section className="paper-sec">
+          <span className="paper-num">XI</span>
+          <h2 className="paper-h">Worker Rights, Labor Protection, and GAATW / ILO Frameworks</h2>
+          <p className="paper-lead">
+            A central flaw in prohibitionist discourse is the conflation of voluntary informal labor with human trafficking. International human rights organizations—including the <strong>Global Alliance Against Traffic in Women (GAATW)</strong> and the <strong>International Labour Organization (ILO)</strong>—emphasize that criminalising informal bodywork exacerbates worker vulnerability, degrades safety, and denies workers legal recourse against violence or wage theft.
+          </p>
+          <p className="paper-lead">
+            In Thailand, informal massage workers operate outside the formal Social Security Section 33 safety net. Most rely on voluntary Section 40 registration, which provides minimal medical coverage but zero unemployment protection. By operating within grey-market parlours, workers gain economic autonomy (earning 3–4× the daily minimum wage of ฿370) while enduring systemic legal insecurity under the 1996 Prostitution Suppression Act.
+          </p>
+        </section>
+
+        <section className="paper-sec">
+          <span className="paper-num">XII</span>
+          <h2 className="paper-h">The Grey Economy and Police Oversight ("Tua" Protection Fee System)</h2>
+          <p className="paper-lead">
+            The grey massage economy in Bangkok does not exist in opposition to law enforcement; it exists in a state of negotiated equilibrium with local precinct inspectors (*Nok Phra*).
+          </p>
+
+          <GreyEconomyPoliceFlowDiagram />
+
+          <p className="paper-lead">
+            Establishments pay monthly informal protection fees—known locally as <strong>"Tua" (tickets)</strong>—ranging from ฿5,000 to ฿50,000 per month depending on venue size, staff volume, and district location density. In exchange, local precincts maintain informal tolerance, reserving formal enforcement raids for un-ticketed venues, minor involvement cases, or high-profile operations led by the Anti-Trafficking in Persons Division (ATAPD).
+          </p>
+        </section>
+
+        <section className="paper-sec">
+          <span className="paper-num">XIII</span>
+          <h2 className="paper-h">Regulatory Alibis: Health Establishment Act (2016) vs Prostitution Act (1996)</h2>
+          <p className="paper-lead">
+            The legal alibi of the Bangkok market relies on a statutory statutory contradiction between the <strong>Prevention and Suppression of Prostitution Act (B.E. 2539 / 1996)</strong> and the <strong>Health Establishment Act (B.E. 2559 / 2016)</strong> administered by the Ministry of Public Health.
+          </p>
+          <p className="paper-lead">
+            Parlours register formally as health wellness spas or traditional Thai massage venues under the 2016 Health Act. This registration grants the venue a legal business license and commercial legitimacy, while the informal service split takes place privately behind closed treatment room doors—shielding both operator and client under the statutory alibi of therapeutic bodywork.
+          </p>
+        </section>
+
+        <section className="paper-sec">
+          <span className="paper-num">XIV</span>
+          <h2 className="paper-h">The Platform as Public Value</h2>
+          <p className="paper-lead">
+            The ultimate purpose of the Sabai Sabai platform is to convert hidden broadsheets into transparent, empirical public intelligence. By providing objective data on pricing, geographic density, and operator ad frequency at zero marginal cost, the platform equips researchers, advocates, and policymakers with the empirical tools necessary to advance worker rights and policy reform.
+          </p>
         </section>
       </div>
 
