@@ -7,6 +7,7 @@ import FeedGrid from './components/FeedGrid';
 import FilterBar from './components/FilterBar';
 import ListingGrid from './components/ListingGrid';
 import ListingModal from './components/ListingModal';
+import DistrictComparisonDrawer from './components/DistrictComparisonDrawer';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import { listings as backupListings } from './data/mockData';
@@ -359,6 +360,9 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeLocation, setActiveLocation] = useState(ALL_LOCATIONS_VALUE);
   const [activeActivity, setActiveActivity] = useState(ALL_TAGS_VALUE);
+  const [activePriceTier, setActivePriceTier] = useState('all');
+  const [activeOpenStatus, setActiveOpenStatus] = useState('all');
+  const [isDistrictDrawerOpen, setIsDistrictDrawerOpen] = useState(false);
   const [sortBy, setSortBy] = useState(DEFAULT_SORT);
   const [selectedListing, setSelectedListing] = useState(null);
   const { language, setLanguage, t: tCtx } = useLanguage();
@@ -683,17 +687,30 @@ function App() {
               .filter(Boolean)
               .some((value) => String(value).toLowerCase().includes(normalizedSearch));
 
-          return matchesLocation && matchesActivity && matchesSearch;
+          const matchesPriceTier =
+            activePriceTier === 'all' ||
+            (activePriceTier === 'economy' && listing.priceValue > 0 && listing.priceValue < 1000) ||
+            (activePriceTier === 'mid' && listing.priceValue >= 1000 && listing.priceValue <= 2000) ||
+            (activePriceTier === 'premium' && listing.priceValue > 2000);
+
+          const matchesOpenStatus =
+            activeOpenStatus === 'all' ||
+            (activeOpenStatus === '247' && /24\s*ชั่วโมง|24\s*hrs|24\s*hours/i.test(listing.hours || '')) ||
+            (activeOpenStatus === 'open' && (listing.isOpenNow || /24|เปิด|open/i.test(listing.hours || '')));
+
+          return matchesLocation && matchesActivity && matchesSearch && matchesPriceTier && matchesOpenStatus;
         }),
         sortBy,
       ),
-    [activeActivity, activeLocation, allListings, deferredSearchTerm, sortBy],
+    [activeActivity, activeLocation, activePriceTier, activeOpenStatus, allListings, deferredSearchTerm, sortBy],
   );
 
   const clearFilters = () => {
     setSearchTerm('');
     setActiveLocation(ALL_LOCATIONS_VALUE);
     setActiveActivity(ALL_TAGS_VALUE);
+    setActivePriceTier('all');
+    setActiveOpenStatus('all');
     setSortBy(DEFAULT_SORT);
   };
 
@@ -885,6 +902,13 @@ function App() {
               </Suspense>
             </main>
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+            <DistrictComparisonDrawer
+              listings={allListings}
+              isOpen={isDistrictDrawerOpen}
+              onClose={() => setIsDistrictDrawerOpen(false)}
+              onSelectDistrict={(dist) => setActiveLocation(dist)}
+              t={t}
+            />
             {selectedListing && (
               <ListingModal
                 listing={selectedListing}
@@ -1006,6 +1030,11 @@ function App() {
                     activityOptions={activityOptions}
                     activeActivity={activeActivity}
                     setActiveActivity={setActiveActivity}
+                    activePriceTier={activePriceTier}
+                    setActivePriceTier={setActivePriceTier}
+                    activeOpenStatus={activeOpenStatus}
+                    setActiveOpenStatus={setActiveOpenStatus}
+                    onOpenDistrictDrawer={() => setIsDistrictDrawerOpen(true)}
                     sortOptions={SORT_OPTIONS}
                     sortBy={sortBy}
                     setSortBy={setSortBy}
@@ -1016,6 +1045,8 @@ function App() {
                       Boolean(searchTerm.trim()) ||
                       activeLocation !== ALL_LOCATIONS_VALUE ||
                       activeActivity !== ALL_TAGS_VALUE ||
+                      activePriceTier !== 'all' ||
+                      activeOpenStatus !== 'all' ||
                       sortBy !== DEFAULT_SORT
                     }
                     resultCount={filteredListings.length}
@@ -1111,7 +1142,13 @@ function App() {
               </div>
             </main>
 
-            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+            <DistrictComparisonDrawer
+              listings={allListings}
+              isOpen={isDistrictDrawerOpen}
+              onClose={() => setIsDistrictDrawerOpen(false)}
+              onSelectDistrict={(dist) => setActiveLocation(dist)}
+              t={t}
+            />
 
             {selectedListing && (
               <ListingModal

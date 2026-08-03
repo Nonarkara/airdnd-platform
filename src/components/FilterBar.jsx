@@ -12,6 +12,11 @@ function FilterBar({
   sortOptions,
   sortBy,
   setSortBy,
+  activePriceTier = 'all',
+  setActivePriceTier,
+  activeOpenStatus = 'all',
+  setActiveOpenStatus,
+  onOpenDistrictDrawer,
   onRefresh,
   isRefreshing,
   onClearFilters,
@@ -35,7 +40,7 @@ function FilterBar({
             type="button"
             className="filter-search-clear"
             onClick={() => setSearchTerm('')}
-            aria-label="Clear search"
+            aria-label={t.filters.searchLabel}
           >
             ×
           </button>
@@ -73,6 +78,33 @@ function FilterBar({
       </div>
 
       <div className="filter-field">
+        <label htmlFor="filter-price">{t.filters.priceTier}</label>
+        <select
+          id="filter-price"
+          value={activePriceTier}
+          onChange={(event) => setActivePriceTier && setActivePriceTier(event.target.value)}
+        >
+          <option value="all">{t.filters.allPrices}</option>
+          <option value="economy">{t.filters.economy}</option>
+          <option value="mid">{t.filters.mid}</option>
+          <option value="premium">{t.filters.premium}</option>
+        </select>
+      </div>
+
+      <div className="filter-field">
+        <label htmlFor="filter-status">{t.filters.openStatus}</label>
+        <select
+          id="filter-status"
+          value={activeOpenStatus}
+          onChange={(event) => setActiveOpenStatus && setActiveOpenStatus(event.target.value)}
+        >
+          <option value="all">{t.filters.allStatuses}</option>
+          <option value="open">{t.filters.openNow}</option>
+          <option value="247">{t.filters.open247}</option>
+        </select>
+      </div>
+
+      <div className="filter-field">
         <label htmlFor="filter-sort">{t.filters.sortBy}</label>
         <select
           id="filter-sort"
@@ -88,6 +120,16 @@ function FilterBar({
       </div>
 
       <div className="filter-actions">
+        {onOpenDistrictDrawer && (
+          <button
+            type="button"
+            className="filter-district-matrix-btn"
+            onClick={onOpenDistrictDrawer}
+            title={t.districtDrawer?.title || t.filters.districtMatrix}
+          >
+            {t.filters.districtMatrix}
+          </button>
+        )}
         <button
           type="button"
           className="filter-refresh"
