@@ -8,6 +8,7 @@ import FilterBar from './components/FilterBar';
 import ListingGrid from './components/ListingGrid';
 import ListingModal from './components/ListingModal';
 import DistrictComparisonDrawer from './components/DistrictComparisonDrawer';
+import LiveIntakeStrip from './components/LiveIntakeStrip';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import { listings as backupListings } from './data/mockData';
@@ -961,6 +962,12 @@ function App() {
                   padding: '0 var(--gutter)',
                 }}
               >
+                <LiveIntakeStrip
+                  t={t}
+                  listings={allListings}
+                  intakeSummary={intakeSummary}
+                  lastLoadedAt={dataState.lastLoadedAt}
+                />
                 <ErrorBoundary>
                   <FeedGrid
                   t={t}
@@ -1005,6 +1012,12 @@ function App() {
                   metrics={metrics}
                   dataState={displayDataState}
                   intakeSummary={intakeSummary}
+                />
+                <LiveIntakeStrip
+                  t={t}
+                  listings={allListings}
+                  intakeSummary={intakeSummary}
+                  lastLoadedAt={dataState.lastLoadedAt}
                 />
 
                 <section id="live-listings" className="listing-section">

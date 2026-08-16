@@ -14,7 +14,7 @@ import {
   validatePublicListing,
 } from '../src/lib/listing_contract.js';
 
-test('canonical key prefers Google Maps over phone and LINE', () => {
+test('canonical key prefers phone over Google Maps and LINE', () => {
   const listing = {
     name: 'CHANEL MASSAGE',
     location: 'Lat Phrao 71, Bangkok',
@@ -25,7 +25,7 @@ test('canonical key prefers Google Maps over phone and LINE', () => {
 
   assert.equal(
     buildCanonicalKey(listing),
-    'maps:maps.app.goo.gl/azdsabsc81aukerh9',
+    'phone:0987989888',
   );
 });
 
@@ -141,7 +141,7 @@ test('canonicalize removes duplicate public business rows', () => {
   ], { source: 'snapshot' });
 
   assert.equal(rows.length, 1);
-  assert.equal(rows[0].canonicalKey, 'maps:maps.app.goo.gl/qanboe8gemvd4qq67');
+  assert.equal(rows[0].canonicalKey, 'phone:0948964563');
 });
 
 test('maps coordinate parser handles common Google redirect shapes', () => {

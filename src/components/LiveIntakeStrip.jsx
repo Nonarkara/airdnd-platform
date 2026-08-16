@@ -25,15 +25,16 @@ function formatTickerName(listing, t) {
 
 function LiveIntakeStrip({ t, listings, intakeSummary, lastLoadedAt }) {
   const intake = intakeSummary || createIntakeSummary(listings);
+  const sourceTimestamp = intake.latestSourceTimestamp || intake.latestIngestTimestamp || lastLoadedAt;
   const tickerItems = intake.newestListings.length > 0
     ? [...intake.newestListings, ...intake.newestListings]
     : [];
 
   return (
-    <section className="live-intake-strip" aria-label={t.intake.tickerLabel}>
+    <section className="live-intake-strip" aria-label={t.intake.tickerLabel} aria-live="polite">
       <div className="live-intake-label">
         <span>{t.intake.kicker}</span>
-        <strong>{lastLoadedAt ? formatRelativeTimestamp(lastLoadedAt) : t.intake.pending}</strong>
+        <strong>{sourceTimestamp ? formatRelativeTimestamp(sourceTimestamp) : t.intake.pending}</strong>
       </div>
 
       <div className="live-intake-marquee">

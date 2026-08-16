@@ -3,16 +3,16 @@
  * Sabai Sabai — overnight heartbeat.
  *
  * Runs every 30 min via launchd. Three jobs in priority order:
- *   1. Pull a fresh snapshot from Supabase → public/data.json
- *   2. Compute pipeline-health metrics (data freshness, listing count,
- *      coordinate coverage, signal/noise per channel) and append them to
- *      logs/heartbeat.jsonl as one JSON line per run.
- *   3. If the freshest listing in Supabase is more than 4 hours old, write
- *      a stall flag to logs/heartbeat.stall — the launchd job's stderr is
- *      tee'd into Console so the operator can spot it after sleep.
+ *   1. Pull a fresh snapshot from Supabase, falling back to the snapshot
+ *      written by the Telegram collector when Supabase is unavailable.
+ *   2. Compute pipeline-health metrics (collector pulse, data freshness,
+ *      listing count, coordinate coverage, signal/noise per channel) and
+ *      append them to logs/heartbeat.jsonl as one JSON line per run.
+ *   3. If the Telegram collector pulse is stale, write a stall flag to
+ *      logs/heartbeat.stall. Quiet source channels are not a system failure.
  *
- * Stays on the side of doing-no-harm: only inserts to logs/, only reads
- * from Supabase, never touches `companions` or migrations.
+ * Stays on the side of doing-no-harm: reads remote stores, writes only local
+ * snapshots and logs, and never touches `companions` or migrations.
  */
 
 import fs from 'fs';
@@ -26,11 +26,14 @@ import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.join(__dirname, '..');
-dotenv.config({ path: path.join(ROOT, '.env') });
+dotenv.config({ path: path.join(ROOT, '.env'), quiet: true });
 
 const STALL_THRESHOLD_MS = 4 * 60 * 60 * 1000;   // 4 hours
+const COLLECTOR_STALE_MS = 5 * 60 * 1000;          // 5 missed 30s cycles
 const CHILD_JOB_TIMEOUT_MS = 60 * 1000;
 const LOG_DIR = path.join(ROOT, 'logs');
+const SNAPSHOT_FILE = path.join(ROOT, 'public', 'data.json');
+const COLLECTOR_STATE_FILE = path.join(ROOT, '.sabai-scraper-state.json');
 fs.mkdirSync(LOG_DIR, { recursive: true });
 
 const supabase = createClient(
@@ -92,25 +95,42 @@ function writeSnapshot(rows) {
   return slim.length;
 }
 
-function computeHealth(rows) {
+function readLocalSnapshot() {
+  const rows = JSON.parse(fs.readFileSync(SNAPSHOT_FILE, 'utf8'));
+  if (!Array.isArray(rows) || rows.length === 0) {
+    throw new Error('local snapshot is empty');
+  }
+  return rows;
+}
+
+function summarizeError(error) {
+  return String(error?.message || error || 'unknown error')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 240);
+}
+
+export function computeHealth(rows, nowMs = Date.now()) {
   const total = rows.length;
   if (total === 0) return { total: 0, ok: false };
   const newest = rows.reduce((latest, r) => {
-    const t = new Date(r.updated_at || r.created_at).getTime();
+    const t = new Date(
+      r.postedAt || r.posted_at || r.updatedAt || r.updated_at || r.createdAt || r.created_at,
+    ).getTime();
     return Number.isFinite(t) && t > latest ? t : latest;
   }, 0);
-  const ageMs = Date.now() - newest;
+  const ageMs = nowMs - newest;
   const withCoords = rows.filter((r) => r.latitude && r.longitude).length;
   const withPhone = rows.filter((r) => r.phone).length;
-  const stale = ageMs > STALL_THRESHOLD_MS;
+  const dataStale = ageMs > STALL_THRESHOLD_MS;
   // Per-channel signal-to-noise approximation: ratio of unique listings to
   // total mentions on that channel — higher = more genuine discovery.
   const channelStats = new Map();
   rows.forEach((r) => {
-    const ch = r.source_channel || 'unknown';
+    const ch = r.sourceChannel || r.source_channel || 'unknown';
     const stat = channelStats.get(ch) || { listings: 0, mentions: 0 };
     stat.listings += 1;
-    stat.mentions += Number(r.mention_count) || 1;
+    stat.mentions += Number(r.mentionCount || r.mention_count) || 1;
     channelStats.set(ch, stat);
   });
   const channelSnr = [...channelStats.entries()]
@@ -118,25 +138,66 @@ function computeHealth(rows) {
     .sort((a, b) => b.listings - a.listings)
     .slice(0, 6);
   return {
-    ok: !stale,
+    ok: total > 0 && newest > 0,
     total,
     newestAt: new Date(newest).toISOString(),
     ageHours: +(ageMs / 3_600_000).toFixed(2),
     coordRate: +(withCoords / total).toFixed(3),
     phoneRate: +(withPhone / total).toFixed(3),
     channelSnr,
-    stale,
+    dataStale,
   };
+}
+
+export function computeCollectorHealth(
+  stateFile = COLLECTOR_STATE_FILE,
+  nowMs = Date.now(),
+  staleAfterMs = COLLECTOR_STALE_MS,
+) {
+  try {
+    const stat = fs.statSync(stateFile);
+    const ageMs = Math.max(0, nowMs - stat.mtimeMs);
+    return {
+      ok: ageMs <= staleAfterMs,
+      pulseAt: stat.mtime.toISOString(),
+      pulseAgeMinutes: +(ageMs / 60_000).toFixed(2),
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      pulseAt: null,
+      pulseAgeMinutes: null,
+      error: error.message,
+    };
+  }
 }
 
 async function main() {
   const startedAt = new Date().toISOString();
-  let entry = { startedAt, snapshotCount: null, error: null };
+  let entry = { startedAt, snapshotCount: null, error: null, warning: null };
   try {
-    const rows = await pullSnapshot();
-    const written = writeSnapshot(rows);
-    entry.snapshotCount = written;
-    entry = { ...entry, ...computeHealth(rows) };
+    let rows;
+    try {
+      rows = await pullSnapshot();
+      entry.snapshotCount = writeSnapshot(rows);
+      entry.dataSource = 'supabase';
+    } catch (error) {
+      rows = readLocalSnapshot();
+      entry.snapshotCount = rows.length;
+      entry.dataSource = 'telegram-snapshot';
+      entry.warning = `Supabase unavailable; using Telegram snapshot: ${summarizeError(error)}`;
+    }
+
+    const dataHealth = computeHealth(rows);
+    const collector = computeCollectorHealth();
+    entry = {
+      ...entry,
+      ...dataHealth,
+      collector,
+      ok: dataHealth.ok && collector.ok,
+      stale: !collector.ok,
+    };
+
     if (entry.stale) {
       fs.writeFileSync(
         path.join(LOG_DIR, 'heartbeat.stall'),
@@ -193,7 +254,9 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error('FATAL:', err);
-  process.exit(1);
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  main().catch((err) => {
+    console.error('FATAL:', err);
+    process.exit(1);
+  });
+}
