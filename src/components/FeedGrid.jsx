@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
+import { coverVariant, venueInitial } from '../lib/listings';
+import { useCardPhoto } from '../lib/useCardPhoto';
 import './FeedGrid.css';
 
 /*
@@ -124,8 +126,15 @@ function FeedCard({ card, onOpen, isFreshest, t }) {
   const channel = (card.channel || '').replace(/^@/, '');
   const photos = displayCard.displayPhotoUrls;
   const primary = displayCard.displayPrimaryPhoto;
+  const localFallback = primary ? `/images/${primary.split('/').pop()}` : null;
+  const photoCandidates = useMemo(
+    () => [primary, localFallback].filter((u, i, arr) => u && arr.indexOf(u) === i),
+    [primary, localFallback],
+  );
+  const photo = useCardPhoto(photoCandidates);
   const extraCount = Math.max(0, photos.length - 1);
   const postCount = card.postCount || 1;
+  const variant = coverVariant(card.id || displayCard.displayName);
 
   return (
     <article
@@ -135,10 +144,29 @@ function FeedCard({ card, onOpen, isFreshest, t }) {
       role="button"
       tabIndex={0}
     >
-      {primary ? (
-        <div className="feed-card-photo-wrap">
-          <img src={primary} alt="" loading="lazy" className="feed-card-photo" />
+      {photo.src && !photo.isFailed ? (
+        <div className={`feed-card-photo-wrap${photo.isLoading ? ' photo--pending' : ''}`}>
+          <img
+            src={photo.src}
+            alt=""
+            loading="lazy"
+            className="feed-card-photo"
+            onLoad={photo.onLoad}
+            onError={photo.onError}
+          />
           {extraCount > 0 && <span className="feed-card-photo-count">+{extraCount}</span>}
+          {postCount > 1 && <span className="feed-card-post-count">{postCount}×</span>}
+          {(fresh || isFreshest) && (
+            <span className={`feed-card-fresh-stamp${isFreshest ? ' is-just-in' : ''}`}>
+              {isFreshest ? 'JUST IN' : 'NEW'}
+            </span>
+          )}
+        </div>
+      ) : photo.isFailed && !displayCard.requiresReview ? (
+        // A photo was expected but failed to load — a full letter-avatar
+        // reads as "this venue, no photo right now," never as a broken image.
+        <div className={`feed-card-photo-wrap is-avatar ${variant}`}>
+          <span className="feed-card-glyph">{venueInitial(displayCard.displayName)}</span>
           {postCount > 1 && <span className="feed-card-post-count">{postCount}×</span>}
           {(fresh || isFreshest) && (
             <span className={`feed-card-fresh-stamp${isFreshest ? ' is-just-in' : ''}`}>
@@ -221,23 +249,30 @@ export default function FeedGrid({ onOpen, t }) {
     };
   }, []);
 
-  // Deduplicate by business name — keep the most recent post per unique name,
-  // carry a postCount so the card can show how active this place is in the feed.
+  // Collapse only literal reposts of the same name within a short window —
+  // NOT the entire history. A whole-history collapse (the previous behavior)
+  // turned "every post that arrives" into a second directory — one card per
+  // business, ever — which is exactly what made this tab feel redundant with
+  // the curated grid. A 2h window still absorbs channel-crosspost spam while
+  // keeping the feed genuinely chronological: a shop posting again today
+  // shows again today.
+  const DEDUPE_WINDOW_MS = 2 * 60 * 60 * 1000;
   const deduped = useMemo(() => {
-    const seen = new Map();
-    for (const item of feed) {
+    const sorted = [...feed].sort((a, b) => new Date(b.messageDate) - new Date(a.messageDate));
+    const lastSeenAt = new Map();
+    const out = [];
+    for (const item of sorted) {
       const key = (item.name || '').toLowerCase().trim().replace(/[\s\u200B]+/g, ' ');
-      if (!key || key.length < 2) continue;
-      const existing = seen.get(key);
-      if (!existing) {
-        seen.set(key, { ...item, postCount: 1 });
-      } else if (new Date(item.messageDate) > new Date(existing.messageDate)) {
-        seen.set(key, { ...item, postCount: (existing.postCount || 1) + 1 });
-      } else {
-        existing.postCount = (existing.postCount || 1) + 1;
+      if (!key || key.length < 2) { out.push({ ...item, postCount: 1 }); continue; }
+      const prevTime = lastSeenAt.get(key);
+      const thisTime = new Date(item.messageDate).getTime();
+      if (prevTime != null && prevTime - thisTime < DEDUPE_WINDOW_MS) {
+        continue; // repost within the window — the newer card already represents it
       }
+      lastSeenAt.set(key, thisTime);
+      out.push({ ...item, postCount: 1 });
     }
-    return [...seen.values()].sort((a, b) => new Date(b.messageDate) - new Date(a.messageDate));
+    return out;
   }, [feed]);
 
   const visible = useMemo(() => deduped.slice(0, visibleCount), [deduped, visibleCount]);

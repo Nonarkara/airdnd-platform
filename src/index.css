@@ -436,6 +436,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .photo__tag { display: none; }
 .lcard__body { display: contents; }
 
+/* Pending-photo pulse — a still-loading lazy image was previously the same
+   near-black flat fill as the surrounding page, so a thumbnail waiting on
+   its network request was visually identical to "no photo." This pulse is a
+   flat color-opacity animation (no gradient) so it stays inside the
+   zero-gradient rule while still being visibly distinct from both the
+   loaded and the empty state. */
+.photo--pending::before,
+.feed-card-photo-wrap.photo--pending::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--surface-3, #242119);
+  animation: photo-pulse 1.3s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes photo-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.75; }
+}
+
 @media (max-width: 860px) {
   .lcard {
     grid-template-columns: 48px minmax(0, 1fr) auto;

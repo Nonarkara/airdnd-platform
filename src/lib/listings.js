@@ -515,6 +515,23 @@ export function getListingMediaCount(listing) {
   return getListingGalleryUrls(listing).length;
 }
 
+// ─── Venue identity (shared by ListingCard + FeedCard) ─────────────────────
+// One implementation instead of two — previously ListingCard alone had this
+// letter-avatar fallback and FeedCard had none, so a broken feed photo just
+// rendered as a browser broken-image icon forever.
+
+export function coverVariant(identity) {
+  const key = String(identity || '');
+  let hash = 0;
+  for (let i = 0; i < key.length; i += 1) hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  return `cv${(hash % 6) + 1}`;
+}
+
+export function venueInitial(name) {
+  const clean = String(name || '').replace(/^[^A-Za-z฀-๿]+/, '').trim();
+  return (clean[0] || '·').toUpperCase();
+}
+
 export function getListingGalleryUrls(listing) {
   if (!listing) return [];
 

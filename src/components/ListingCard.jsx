@@ -4,22 +4,13 @@ import {
   getSafeListingGalleryUrls,
   isListingNew,
   formatTimeAgo,
+  coverVariant,
+  venueInitial,
 } from '../lib/listings';
+import { useCardPhoto } from '../lib/useCardPhoto';
 import { trackListingClick, trackSignal, isListingSaved } from '../lib/tracker';
 import { useLanguage } from '../context/LanguageContext';
 import './ListingCard.css';
-
-function coverVariant(listing) {
-  const key = String(listing?.id || listing?.name || '');
-  let hash = 0;
-  for (let i = 0; i < key.length; i += 1) hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
-  return `cv${(hash % 6) + 1}`;
-}
-
-function venueInitial(name) {
-  const clean = String(name || '').replace(/^[^A-Za-z\u0E00-\u0E7F]+/, '').trim();
-  return (clean[0] || '·').toUpperCase();
-}
 
 function priceDisplay(listing) {
   if (Number.isFinite(listing?.priceValue) && listing.priceValue > 0) {
@@ -35,17 +26,12 @@ function ListingCard({ listing, onClick, priority = false }) {
   const { t } = useLanguage();
   const galleryUrls = getSafeListingGalleryUrls(listing);
   const primaryImage = galleryUrls[0] || null;
-  const [imageFailed, setImageFailed] = useState(false);
-  const [useLocalFallback, setUseLocalFallback] = useState(false);
-  const imgSrc = useLocalFallback
-    ? `/images/${primaryImage?.split('/').pop()}`
-    : primaryImage;
-  const showPhoto = primaryImage && !imageFailed;
-
-  const handleImgError = () => {
-    if (!useLocalFallback && primaryImage) setUseLocalFallback(true);
-    else setImageFailed(true);
-  };
+  const localFallback = primaryImage ? `/images/${primaryImage.split('/').pop()}` : null;
+  const photoCandidates = useMemo(
+    () => [primaryImage, localFallback].filter((u, i, arr) => u && arr.indexOf(u) === i),
+    [primaryImage, localFallback],
+  );
+  const photo = useCardPhoto(photoCandidates);
 
   const sourceName = formatSourceChannelName(listing.sourceChannel) || listing.sourceChannel || '';
   const isNew = isListingNew(listing);
@@ -54,7 +40,7 @@ function ListingCard({ listing, onClick, priority = false }) {
     || (Array.isArray(listing.serviceTags) && listing.serviceTags[0])
     || null;
   const price = priceDisplay(listing);
-  const variant = coverVariant(listing);
+  const variant = coverVariant(listing?.id || listing?.name);
   const [cardSaved, setCardSaved] = useState(() => isListingSaved(listing.id));
   const mentions = Number(listing.mentionCount || 0);
   const freshness = formatTimeAgo(listing.postedAt || listing.updatedAt);
@@ -68,20 +54,21 @@ function ListingCard({ listing, onClick, priority = false }) {
       }}
     >
       <div className="lcard__media">
-        {showPhoto ? (
-          <div className="photo">
+        {photo.isFailed || !photo.src ? (
+          <div className={`photo ${variant}`}>
+            <span className="photo__glyph">{venueInitial(listing.name)}</span>
+          </div>
+        ) : (
+          <div className={`photo${photo.isLoading ? ' photo--pending' : ''}`}>
             <img
-              src={imgSrc}
+              src={photo.src}
               alt=""
               loading={priority ? 'eager' : 'lazy'}
               decoding="async"
               className="lcard__img"
-              onError={handleImgError}
+              onLoad={photo.onLoad}
+              onError={photo.onError}
             />
-          </div>
-        ) : (
-          <div className={`photo ${variant}`}>
-            <span className="photo__glyph">{venueInitial(listing.name)}</span>
           </div>
         )}
       </div>

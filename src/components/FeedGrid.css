@@ -101,6 +101,21 @@
   border-top-color: var(--color-cream-muted);
 }
 
+/* A photo was expected (the post had one) but the URL failed — a letter
+   avatar at full card height, matching ListingCard's fallback treatment,
+   so a load failure reads as "no photo right now" not "broken image." */
+.feed-card-photo-wrap.is-avatar {
+  display: grid;
+  place-items: center;
+}
+.feed-card-glyph {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
+  color: var(--ink, #f2ecf4);
+}
+
 .feed-card-photo {
   width: 100%;
   height: 100%;
