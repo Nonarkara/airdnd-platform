@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { coverVariant, venueInitial } from '../lib/listings';
 import { useCardPhoto } from '../lib/useCardPhoto';
+import { dedupeFeed } from '../lib/dedupeFeed';
 import './FeedGrid.css';
 
 /*
@@ -249,31 +250,7 @@ export default function FeedGrid({ onOpen, t }) {
     };
   }, []);
 
-  // Collapse only literal reposts of the same name within a short window —
-  // NOT the entire history. A whole-history collapse (the previous behavior)
-  // turned "every post that arrives" into a second directory — one card per
-  // business, ever — which is exactly what made this tab feel redundant with
-  // the curated grid. A 2h window still absorbs channel-crosspost spam while
-  // keeping the feed genuinely chronological: a shop posting again today
-  // shows again today.
-  const DEDUPE_WINDOW_MS = 2 * 60 * 60 * 1000;
-  const deduped = useMemo(() => {
-    const sorted = [...feed].sort((a, b) => new Date(b.messageDate) - new Date(a.messageDate));
-    const lastSeenAt = new Map();
-    const out = [];
-    for (const item of sorted) {
-      const key = (item.name || '').toLowerCase().trim().replace(/[\s\u200B]+/g, ' ');
-      if (!key || key.length < 2) { out.push({ ...item, postCount: 1 }); continue; }
-      const prevTime = lastSeenAt.get(key);
-      const thisTime = new Date(item.messageDate).getTime();
-      if (prevTime != null && prevTime - thisTime < DEDUPE_WINDOW_MS) {
-        continue; // repost within the window — the newer card already represents it
-      }
-      lastSeenAt.set(key, thisTime);
-      out.push({ ...item, postCount: 1 });
-    }
-    return out;
-  }, [feed]);
+  const deduped = useMemo(() => dedupeFeed(feed), [feed]);
 
   const visible = useMemo(() => deduped.slice(0, visibleCount), [deduped, visibleCount]);
   const freshestId = useMemo(() => deduped[0]?.id || null, [deduped]);
