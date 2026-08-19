@@ -111,3 +111,8 @@ Read at the start of every session. The same mistake never happens twice.
 **What went wrong — `~` directory:**
 - An accidental `mkdir ~` created a literal directory named `~` inside the project. Not harmful but confusing in `git status`. Still unresolved.
 - **Correct behaviour:** Delete it with `rm -rf '~/Projects/air-dnd/~'` (must quote to avoid shell expansion).
+
+## 2026-08-19 · A green `vite build` does not prove a React component renders
+- **What went wrong:** Refactored `ListingCard.jsx` to use `useMemo` but left the import line as `import { useState } from 'react'`. `npx vite build` succeeded, so it was committed (`c86428b`) and deployed to production. Every `ListingCard` then threw `ReferenceError: useMemo is not defined`; `ErrorBoundary` caught it and replaced the entire directory grid — the core product — with "Component Error". The site was broken live until `8fd4607`.
+- **Correct behaviour:** A bundler resolves *module* imports, not *identifier* scope inside a function body. Missing named imports from an already-imported module are runtime errors it will never catch. After ANY edit that introduces a new hook or helper into an existing component, verify the component actually renders in a browser — not just that the build is green. CDPT's "T" means load the page and assert the changed thing is present, which is exactly what would have caught this.
+- **How to recognise:** Whenever a diff adds `useMemo`/`useCallback`/`useRef`/`useEffect` to a file that previously used only some hooks, re-read line 1 of that file before committing. Symptom in the wild: an `ErrorBoundary` fallback where content should be, with a clean build log.
