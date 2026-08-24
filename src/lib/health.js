@@ -27,14 +27,21 @@ export async function loadTherapeuticMassage() {
   return res.json();
 }
 
+export async function loadHivServices() {
+  const res = await fetch('/data/health/hiv-services.json', { cache: 'no-store' });
+  if (!res.ok) throw new Error('HIV service dataset unavailable');
+  return res.json();
+}
+
 export async function loadHealthResearchBundle() {
-  const [hiv, formalization, sti, therapeutic] = await Promise.all([
+  const [hiv, formalization, sti, therapeutic, services] = await Promise.all([
     loadProvinceHiv(),
     loadFormalization().catch(() => null),
     loadStiScreeningRoiet().catch(() => null),
     loadTherapeuticMassage().catch(() => null),
+    loadHivServices().catch(() => null),
   ]);
-  return { hiv, formalization, sti, therapeutic };
+  return { hiv, formalization, sti, therapeutic, services };
 }
 
 function normalizeProvinceName(name) {
@@ -179,5 +186,102 @@ export function buildHealthMatrix(hivPayload, listings, formalizationPayload = n
     harmReductionPriority,
     topVenues,
     topCases,
+  };
+}
+
+// ─── Service-delivery layer (BE 2568 / 2025) ───────────────────────────────
+// province-hiv.json answers "where are new cases entering care?" (BE 2566).
+// This answers the operational question a social worker actually has: where
+// is testing and treatment actually being delivered, who can I refer to, and
+// which provinces are thin relative to the venue population they serve.
+
+/**
+ * Join the BE 2568 service dataset to venue density.
+ *
+ * The gap score is deliberately simple and legible: venues per 1,000 people
+ * tested. High score = a lot of advertised venue activity per unit of testing
+ * effort. It is a PROGRAMME COVERAGE ratio for prioritising outreach, never a
+ * statement about infection risk at any venue.
+ */
+export function buildServiceMatrix(servicesPayload, listings) {
+  if (!servicesPayload?.provinces?.length) return null;
+  const venues = venueDensityByProvince(listings);
+
+  const provinces = servicesPayload.provinces.map((row) => {
+    const venueCount = lookupVenueCount(venues, row.name);
+    const tested = row.services?.lab?.tested || 0;
+    const positive = row.services?.lab?.positive || 0;
+    const stiPeople = row.services?.sti?.people || 0;
+    const vctPeople = row.services?.vct?.people || 0;
+    const onArv = row.services?.vct?.onArv || 0;
+    const condomPeople = row.services?.condom?.people || 0;
+    const orgs = row.civilSociety?.orgs?.length || 0;
+    const currentCerts = row.civilSociety?.current || 0;
+
+    // Testing yield, expressed per 1,000 so small numbers stay readable.
+    const positivityPer1k = tested > 0 ? Math.round((positive / tested) * 100000) / 100 : null;
+    // Venues per 1,000 tested — the outreach-coverage ratio.
+    const venuesPer1kTested = tested > 0 && venueCount > 0
+      ? Math.round((venueCount / tested) * 1000 * 100) / 100
+      : null;
+
+    return {
+      ...row,
+      venueCount,
+      tested,
+      positive,
+      positivityPer1k,
+      stiPeople,
+      vctPeople,
+      onArv,
+      condomPeople,
+      orgs,
+      currentCerts,
+      venuesPer1kTested,
+      // A province with venues, no registered CSO, and no VCT report is the
+      // sharpest referral gap: advertised supply with no visible service hook.
+      referralGap: venueCount > 0 && orgs === 0 && vctPeople === 0,
+    };
+  });
+
+  const withVenues = provinces.filter((p) => p.venueCount > 0);
+
+  const totals = provinces.reduce((acc, p) => ({
+    tested: acc.tested + p.tested,
+    positive: acc.positive + p.positive,
+    stiPeople: acc.stiPeople + p.stiPeople,
+    condomPeople: acc.condomPeople + p.condomPeople,
+    onArv: acc.onArv + p.onArv,
+  }), { tested: 0, positive: 0, stiPeople: 0, condomPeople: 0, onArv: 0 });
+
+  return {
+    meta: servicesPayload.meta,
+    totals: {
+      ...totals,
+      nationalPositivityPer1k: totals.tested > 0
+        ? Math.round((totals.positive / totals.tested) * 100000) / 100
+        : null,
+      provincesWithOrgs: provinces.filter((p) => p.orgs > 0).length,
+      totalOrgs: provinces.reduce((n, p) => n + p.orgs, 0),
+    },
+    provinces,
+    // Highest testing volume — where the programme is actually working.
+    topTesting: [...provinces].sort((a, b) => b.tested - a.tested).slice(0, 10),
+    // Highest yield among provinces doing meaningful volume. The floor keeps a
+    // province that tested 12 people and found 1 out of the headline.
+    topYield: provinces
+      .filter((p) => p.tested >= 500 && p.positivityPer1k != null)
+      .sort((a, b) => b.positivityPer1k - a.positivityPer1k)
+      .slice(0, 10),
+    // Outreach priority: venue activity per unit of testing effort.
+    coverageGap: withVenues
+      .filter((p) => p.venuesPer1kTested != null)
+      .sort((a, b) => b.venuesPer1kTested - a.venuesPer1kTested)
+      .slice(0, 10),
+    // Referral directory, richest first.
+    referralDirectory: provinces
+      .filter((p) => p.orgs > 0)
+      .sort((a, b) => b.orgs - a.orgs || b.currentCerts - a.currentCerts),
+    referralGaps: withVenues.filter((p) => p.referralGap),
   };
 }

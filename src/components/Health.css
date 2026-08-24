@@ -150,6 +150,24 @@
   margin-bottom: var(--s4);
 }
 
+/* Sub-heading inside a lens. Uses the micro tier, not a new size — the page
+   stays on display / body / micro (CLAUDE.md §11.7). */
+.health-copy h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  /* Amber carries the rule, not the glyphs: #f59e0b on this cream surface
+     measures 2.04:1, well under the 4.5:1 floor (CLAUDE.md §11.10). Ink for
+     the text keeps it readable while the accent still marks the section. */
+  color: var(--ink-1, #191712);
+  margin-top: var(--s6);
+  margin-bottom: var(--s3);
+  padding-top: var(--s4);
+  border-top: 2px solid var(--accent, #f59e0b);
+}
+
 .health-copy p {
   max-width: 68ch;
   color: var(--ink-2);

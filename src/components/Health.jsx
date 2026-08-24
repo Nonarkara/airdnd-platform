@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   buildHealthMatrix,
+  buildServiceMatrix,
   loadHealthResearchBundle,
 } from '../lib/health';
 import { useLanguage } from '../context/LanguageContext';
@@ -35,6 +36,11 @@ function Health({ listings = [] }) {
     [bundle, listings],
   );
 
+  const services = useMemo(
+    () => (bundle?.services ? buildServiceMatrix(bundle.services, listings) : null),
+    [bundle, listings],
+  );
+
   const sti = bundle?.sti || null;
   const maxStiBar = useMemo(() => {
     if (!sti?.series?.length) return 1;
@@ -54,9 +60,11 @@ function Health({ listings = [] }) {
         <p className="health-eyebrow">{page.kicker || '01 — Concurrent research'}</p>
         <h1 id="health-title">{page.title || 'HIV, STI & legitimacy beside the inventory'}</h1>
         <p className="health-lead">
-          {page.lead || 'Open government case data, certified-provider registries, and excise tax on licensed bath & massage — read next to parlour broadcast density from our Telegram pipeline. Four lenses. One map. No stigma theatre — geography for harm reduction.'}
+          {page.lead || 'Open government case data, BE 2568 service-delivery returns, certified-provider registries, and excise tax on licensed bath & massage — read next to parlour broadcast density from our Telegram pipeline. Five lenses. One map. No stigma theatre — geography for harm reduction.'}
         </p>
         <div className="health-links">
+          <a href="https://data.go.th/dataset/s_tuc_sent2" target="_blank" rel="noreferrer">s_tuc_sent2 · Lab results 2568</a>
+          <a href="https://opendata.ddc.moph.go.th/dataset/gdpublish-das-01" target="_blank" rel="noreferrer">das-01 · CSO register</a>
           <a href="https://data.go.th/dataset/sasuk01" target="_blank" rel="noreferrer">sasuk01 · STI screening</a>
           <a href="https://data.go.th/dataset/03_1201" target="_blank" rel="noreferrer">03_1201 · Excise</a>
           <a href="https://data.go.th/dataset/hss_11_49" target="_blank" rel="noreferrer">hss_11_49 · Certified</a>
@@ -69,6 +77,7 @@ function Health({ listings = [] }) {
       <nav className="health-lenses" aria-label="Research lenses">
         {[
           { id: 'public', label: 'Public epidemic' },
+          { id: 'services', label: 'Services · BE 2568' },
           { id: 'parlour', label: 'Parlour corridor' },
           { id: 'legitimacy', label: 'Legitimacy' },
           { id: 'worker', label: 'Worker side' },
@@ -113,6 +122,121 @@ function Health({ listings = [] }) {
           </section>
 
           <section className="health-copy">
+            {lens === 'services' && (services ? (
+              <>
+                <h2>Where the service actually is — BE 2568 / 2025</h2>
+                <p>
+                  The case series above counts people entering care in BE 2566. It cannot tell you
+                  where to send someone this afternoon. This layer is the service side, two years
+                  newer: {services.totals.tested.toLocaleString()} people had an Anti-HIV test
+                  recorded across {services.meta.provincesReporting} provinces,
+                  {' '}{services.totals.positive.toLocaleString()} were positive
+                  ({services.totals.nationalPositivityPer1k} per 1,000 tested), and
+                  {' '}{services.totals.totalOrgs} registered civil-society organisations work on HIV
+                  across {services.totals.provincesWithOrgs} provinces.
+                </p>
+                <p className="health-caveat">
+                  Read the counts as reporting, not as a census. A facility that filed no return for
+                  BE 2568 is invisible here — a low number means thin reporting or thin service,
+                  never absence of need. Positivity is testing yield among recorded results: it is
+                  not prevalence, and it says nothing about any venue or any worker.
+                </p>
+
+                <h3>Testing volume · top provinces</h3>
+                <table className="health-table">
+                  <thead>
+                    <tr>
+                      <th>Province</th><th>Tested</th><th>Positive</th>
+                      <th>Per 1,000</th><th>Sites</th><th>Venues</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {services.topTesting.map((row) => (
+                      <tr key={row.code}>
+                        <td>{row.name}</td>
+                        <td className="mono">{row.tested.toLocaleString()}</td>
+                        <td className="mono">{row.positive.toLocaleString()}</td>
+                        <td className="mono">{row.positivityPer1k ?? '—'}</td>
+                        <td className="mono">{row.services?.lab?.facilities ?? '—'}</td>
+                        <td className="mono">{row.venueCount || '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                <h3>Outreach priority · venues per 1,000 tested</h3>
+                <p>
+                  Advertised venue activity measured against testing effort in the same province.
+                  A high ratio means the venue population is large relative to how much testing the
+                  province recorded — a prompt to look, not a finding.
+                </p>
+                <table className="health-table">
+                  <thead>
+                    <tr><th>Province</th><th>Venues</th><th>Tested</th><th>Venues / 1k tested</th></tr>
+                  </thead>
+                  <tbody>
+                    {services.coverageGap.map((row) => (
+                      <tr key={row.code}>
+                        <td>{row.name}</td>
+                        <td className="mono">{row.venueCount}</td>
+                        <td className="mono">{row.tested.toLocaleString()}</td>
+                        <td className="mono">{row.venuesPer1kTested}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                <h3>Referral directory · registered organisations</h3>
+                <p>
+                  From the Department of Disease Control register of volunteers and civil-society
+                  organisations working on HIV (BE 2568). &ldquo;Current&rdquo; counts registrations
+                  whose certificate has not expired. These are the people to call.
+                </p>
+                <table className="health-table">
+                  <thead>
+                    <tr><th>Province</th><th>Organisations</th><th>Current regs</th><th>Named</th></tr>
+                  </thead>
+                  <tbody>
+                    {services.referralDirectory.slice(0, 14).map((row) => (
+                      <tr key={row.code}>
+                        <td>{row.name}</td>
+                        <td className="mono">{row.orgs}</td>
+                        <td className="mono">{row.currentCerts}</td>
+                        <td>{row.civilSociety.orgs.slice(0, 3).join(' · ')}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {services.referralGaps.length > 0 && (
+                  <>
+                    <h3>Referral gaps</h3>
+                    <p>
+                      Provinces carrying advertised venues with no registered civil-society
+                      organisation and no voluntary-testing return for BE 2568:
+                      {' '}<strong>{services.referralGaps.map((p) => p.name).join(', ')}</strong>.
+                      Advertised supply with no visible service hook is where a referral chain has
+                      to be built rather than used.
+                    </p>
+                  </>
+                )}
+
+                <p className="health-caveat">
+                  Sources — {Object.values(services.meta.sources).map((s) => s.id).join(', ')}.
+                  {' '}Built {new Date(services.meta.builtAt).toISOString().slice(0, 10)}.
+                </p>
+                <div className="health-links">
+                  {Object.values(services.meta.sources).map((s) => (
+                    <a key={s.id} href={s.page} target="_blank" rel="noreferrer">{s.id} · {s.label}</a>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <p className="health-caveat">
+                Service dataset not built yet — run <code>node scripts/build_hiv_services.js</code>.
+              </p>
+            ))}
+
             {lens === 'public' && (
               <>
                 <h2>Public epidemic</h2>

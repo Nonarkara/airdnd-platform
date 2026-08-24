@@ -223,6 +223,7 @@ export default function FeedGrid({ onOpen, t }) {
   const [feed, setFeed] = useState([]);
   const [visibleCount, setVisibleCount] = useState(INITIAL_REVEAL);
   const [loading, setLoading] = useState(true);
+  const [feedMeta, setFeedMeta] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -240,6 +241,11 @@ export default function FeedGrid({ onOpen, t }) {
           if (!cancelled) setLoading(false);
         });
     };
+
+    fetch(`/feed_meta.json?ts=${Date.now()}`, { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((m) => { if (!cancelled) setFeedMeta(m); })
+      .catch(() => { /* sidecar is optional — absence just means "no claim" */ });
 
     loadFeed();
     const intervalId = window.setInterval(loadFeed, FEED_REFRESH_INTERVAL_MS);
@@ -268,6 +274,16 @@ export default function FeedGrid({ onOpen, t }) {
             ? subtitle
             : t?.feed?.empty || 'No screened source posts are available yet.'}
         </p>
+        {feedMeta?.degraded && (
+          // The per-post stream is unavailable, so this list is the deduplicated
+          // directory — one card per business. Saying so beats letting the tab
+          // pass itself off as a live firehose.
+          <p className="feed-grid-degraded" role="status">
+            Per-post stream unavailable — showing one card per business from the
+            directory snapshot, not every individual post. Rebuilt{' '}
+            {new Date(feedMeta.builtAt).toISOString().slice(0, 16).replace('T', ' ')} UTC.
+          </p>
+        )}
       </header>
 
       {loading ? (

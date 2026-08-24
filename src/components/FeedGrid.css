@@ -359,3 +359,16 @@
   .feed-card-photo-wrap { aspect-ratio: 16 / 11; }
   .feed-grid-header h2 { font-size: 26px; }
 }
+
+/* Degraded-feed notice. Amber rule carries the warning; text stays ink so it
+   passes the 4.5:1 contrast floor on both surfaces (CLAUDE.md §11.10). */
+.feed-grid-degraded {
+  margin-top: var(--s3, 12px);
+  padding: var(--s3, 12px) var(--s4, 16px);
+  border-left: 2px solid var(--accent, #f59e0b);
+  background: var(--surface-2, rgba(245, 158, 11, 0.06));
+  color: var(--ink-1, #191712);
+  font-size: var(--fs-micro, 11px);
+  line-height: 1.5;
+  max-width: 68ch;
+}

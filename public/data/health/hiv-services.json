@@ -1,0 +1,3066 @@
+{
+  "meta": {
+    "yearBuddhist": 2568,
+    "yearGregorian": 2025,
+    "builtAt": "2026-08-24T03:25:45.898Z",
+    "provincesReporting": 77,
+    "provinceCount": 77,
+    "sources": {
+      "lab": {
+        "id": "s_tuc_sent2",
+        "label": "LABFU-HIV — laboratory results",
+        "labelTh": "ข้อมูลการตรวจทางห้องปฏิบัติการ (LABFU-HIV)",
+        "page": "https://data.go.th/dataset/s_tuc_sent2"
+      },
+      "sti": {
+        "id": "s_harm6",
+        "label": "STI screening, diagnosis and treatment",
+        "labelTh": "การคัดกรอง ตรวจวินิจฉัย และ/หรือ รักษาโรคติดต่อทางเพศสัมพันธ์",
+        "page": "https://data.go.th/dataset/s_harm6"
+      },
+      "condom": {
+        "id": "s_harm5",
+        "label": "Correct condom-use support",
+        "labelTh": "การสนับสนุนให้ใช้ถุงยางอนามัยอย่างถูกวิธี",
+        "page": "https://data.go.th/dataset/s_harm5"
+      },
+      "vct": {
+        "id": "s_harm3",
+        "label": "Voluntary counselling, HIV testing and ARV referral",
+        "labelTh": "การให้คำปรึกษา และ/หรือ ตรวจการติดเชื้อเอชไอวีโดยสมัครใจ และ/หรือ ส่งต่อรับยาต้านไวรัส",
+        "page": "https://data.go.th/dataset/s_harm3"
+      },
+      "cbo": {
+        "id": "gdpublish-das-01",
+        "label": "Registered volunteers and civil-society organisations working on HIV",
+        "labelTh": "การขึ้นทะเบียนอาสาสมัครและองค์กรภาคประชาสังคมที่ทำงานด้านเอชไอวี",
+        "page": "https://opendata.ddc.moph.go.th/dataset/gdpublish-das-01"
+      }
+    },
+    "caveats": [
+      "Facility counts are distinct reporting units that filed a return for BE 2568 — not a census of every facility offering the service. A facility that did not report is invisible here; read a low number as under-reporting, never as absence of need.",
+      "Positivity is positive Anti-HIV results divided by people tested, among records where a lab result was captured. It measures testing yield, not population prevalence and not an infection rate.",
+      "A province with no reported row is null, not zero.",
+      "Service data is BE 2568 (2025). The new-cases-in-care series (province-hiv.json) is BE 2566 (2023) — the newest year MoPH publishes for it. The two years are not directly comparable; read them as separate layers.",
+      "Venue counts come from public Telegram advertising and are a floor on advertised supply, not a register of businesses."
+    ]
+  },
+  "provinces": [
+    {
+      "code": "20",
+      "name": "Chonburi",
+      "nameTh": "ชลบุรี",
+      "lat": 13.3611,
+      "lng": 100.9847,
+      "newCases2566": 15488,
+      "services": {
+        "lab": {
+          "facilities": 15,
+          "people": 20181,
+          "visits": 0,
+          "tested": 13676,
+          "positive": 194,
+          "inconclusive": 4027,
+          "viralLoadTests": 5198
+        },
+        "sti": {
+          "facilities": 10,
+          "people": 593,
+          "visits": 650
+        },
+        "condom": {
+          "facilities": 39,
+          "people": 462,
+          "visits": 478
+        },
+        "vct": {
+          "facilities": 6,
+          "people": 54,
+          "visits": 65,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 74,
+        "certified": 52,
+        "current": 36,
+        "orgs": [
+          "มูลนิธิซิสเตอร์",
+          "มูลนิธิรักษ์ไทย",
+          "มูลนิธิเพื่อนพนักงานบริการ (SWING)",
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สำนักงานป้องกันควบคุมโรคที่ 6 จังหวัดชลบุรี",
+          "สํานักงานสาธารณสุขจังหวัด",
+          "เครือข่ายสายชล",
+          "เครือข่ายสุขภาพและโอกาส"
+        ]
+      }
+    },
+    {
+      "code": "30",
+      "name": "Nakhon Ratchasima",
+      "nameTh": "นครราชสีมา",
+      "lat": 14.9799,
+      "lng": 102.0978,
+      "newCases2566": 2269,
+      "services": {
+        "lab": {
+          "facilities": 35,
+          "people": 6171,
+          "visits": 0,
+          "tested": 5375,
+          "positive": 27,
+          "inconclusive": 4,
+          "viralLoadTests": 693
+        },
+        "sti": {
+          "facilities": 13,
+          "people": 97,
+          "visits": 97
+        },
+        "condom": {
+          "facilities": 98,
+          "people": 1142,
+          "visits": 1218
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 6,
+          "visits": 6,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 14,
+        "certified": 10,
+        "current": 4,
+        "orgs": [
+          "Mplus",
+          "กลุ่มสื่อสายใย",
+          "สำนักงานป้องกันและควบคุมโรค",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "10",
+      "name": "Bangkok",
+      "nameTh": "กรุงเทพมหานคร",
+      "lat": 13.7563,
+      "lng": 100.5018,
+      "newCases2566": 1929,
+      "services": {
+        "lab": {
+          "facilities": 4,
+          "people": 6739,
+          "visits": 0,
+          "tested": 5278,
+          "positive": 173,
+          "inconclusive": 22,
+          "viralLoadTests": 1102
+        },
+        "sti": null,
+        "condom": {
+          "facilities": 1,
+          "people": 42,
+          "visits": 44
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 125,
+        "certified": 83,
+        "current": 49,
+        "orgs": [
+          "APASS",
+          "มูลนิธิรักษ์ไทย",
+          "มูลนิธิศุภนิมิตแห่งประเทศไทย",
+          "มูลนิธิส่งเสริมการพัฒนาบุคคล",
+          "มูลนิธิเข้าถึงเอดส์",
+          "มูลนิธิเพื่อนพนักงานบริการ (SWING)",
+          "มูลนิธิเอชไอวี เอเชีย",
+          "ศูนย์ประสานความร่วมมือ ระหว่างไทย-ออสเตรเลีย-เนเธอแลนด์เพื่อการศึกษาวิจัยทางคลินิกด้านโรคเอดส์",
+          "สถาบันเพื่อการวิจัยและนวัตกรรมด้านเอชไอวี",
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สมาคมส่งเสริมพัฒนาการสังคม",
+          "สมาคมส่งเสริมสุขภาพที่ยั่งยืน",
+          "สมาคมแนวร่วมภาคธุรกิจไทยต้านภันเอดส์",
+          "สำนักงานป้องกันและควบคุมโรค",
+          "สำนักงานโรคติดต่อทางสาธารณสุข สำนักอนามัย",
+          "สํานักงานสาธารณสุขจังหวัด",
+          "องค์กร สมาคมพัฒนาอนามัยแห่งประเทศไทย"
+        ]
+      }
+    },
+    {
+      "code": "55",
+      "name": "Nan",
+      "nameTh": "น่าน",
+      "lat": 18.783,
+      "lng": 100.779,
+      "newCases2566": 1644,
+      "services": {
+        "lab": {
+          "facilities": 12,
+          "people": 1771,
+          "visits": 0,
+          "tested": 1616,
+          "positive": 78,
+          "inconclusive": 0,
+          "viralLoadTests": 149
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 28,
+          "visits": 29
+        },
+        "condom": {
+          "facilities": 21,
+          "people": 132,
+          "visits": 140
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "60",
+      "name": "Nakhon Sawan",
+      "nameTh": "นครสวรรค์",
+      "lat": 15.7047,
+      "lng": 100.137,
+      "newCases2566": 1577,
+      "services": {
+        "lab": {
+          "facilities": 13,
+          "people": 2224,
+          "visits": 0,
+          "tested": 2013,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 266
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 142,
+          "visits": 142
+        },
+        "condom": {
+          "facilities": 46,
+          "people": 348,
+          "visits": 361
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 14,
+        "certified": 8,
+        "current": 6,
+        "orgs": [
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สำนักงานป้องกันควบคุมโรคที่ 3 จังหวัดนครสวรรค์",
+          "สำนักงานสาธารณสุขจังหวัดนครสรรค์",
+          "เครือข่ายผู้อยู่ร่วมกับเชื้อเอชไอวี เขต 3",
+          "เครือชมรมศูนย์ร่วมใจนครสวรรค์"
+        ]
+      }
+    },
+    {
+      "code": "22",
+      "name": "Chanthaburi",
+      "nameTh": "จันทบุรี",
+      "lat": 12.611,
+      "lng": 102.104,
+      "newCases2566": 1109,
+      "services": {
+        "lab": {
+          "facilities": 12,
+          "people": 1776,
+          "visits": 0,
+          "tested": 1120,
+          "positive": 6,
+          "inconclusive": 0,
+          "viralLoadTests": 551
+        },
+        "sti": {
+          "facilities": 4,
+          "people": 76,
+          "visits": 79
+        },
+        "condom": {
+          "facilities": 34,
+          "people": 203,
+          "visits": 211
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "47",
+      "name": "Sakon Nakhon",
+      "nameTh": "สกลนคร",
+      "lat": 17.154,
+      "lng": 104.134,
+      "newCases2566": 1059,
+      "services": {
+        "lab": {
+          "facilities": 14,
+          "people": 2732,
+          "visits": 0,
+          "tested": 2470,
+          "positive": 5,
+          "inconclusive": 0,
+          "viralLoadTests": 250
+        },
+        "sti": {
+          "facilities": 13,
+          "people": 268,
+          "visits": 297
+        },
+        "condom": {
+          "facilities": 104,
+          "people": 778,
+          "visits": 814
+        },
+        "vct": {
+          "facilities": 6,
+          "people": 61,
+          "visits": 75,
+          "onArv": 0
+        }
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "80",
+      "name": "Nakhon Si Thammarat",
+      "nameTh": "นครศรีธรรมราช",
+      "lat": 8.4304,
+      "lng": 99.9631,
+      "newCases2566": 1013,
+      "services": {
+        "lab": {
+          "facilities": 21,
+          "people": 12201,
+          "visits": 0,
+          "tested": 11537,
+          "positive": 85,
+          "inconclusive": 40,
+          "viralLoadTests": 594
+        },
+        "sti": {
+          "facilities": 8,
+          "people": 121,
+          "visits": 124
+        },
+        "condom": {
+          "facilities": 98,
+          "people": 590,
+          "visits": 603
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 1,
+          "visits": 1,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 32,
+        "certified": 17,
+        "current": 15,
+        "orgs": [
+          "กลุ่มเครือข่ายเอ็มมูน (M-Moon)",
+          "มูลนิธิรักษ์ไทย",
+          "สำนักงานป้องกันควบคุมโรคที่ 11 จังหวัดนครศรีธรรมราช",
+          "สํานักงานสาธารณสุขจังหวัด",
+          "เครือข่าย​ผู้ใช้​ยา​ประเทศไทย​"
+        ]
+      }
+    },
+    {
+      "code": "86",
+      "name": "Chumphon",
+      "nameTh": "ชุมพร",
+      "lat": 10.493,
+      "lng": 99.18,
+      "newCases2566": 1005,
+      "services": {
+        "lab": {
+          "facilities": 11,
+          "people": 2462,
+          "visits": 0,
+          "tested": 2058,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 426
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 398,
+          "visits": 429
+        },
+        "condom": {
+          "facilities": 26,
+          "people": 120,
+          "visits": 120
+        },
+        "vct": {
+          "facilities": 2,
+          "people": 35,
+          "visits": 35,
+          "onArv": 0
+        }
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "21",
+      "name": "Rayong",
+      "nameTh": "ระยอง",
+      "lat": 12.6833,
+      "lng": 101.2372,
+      "newCases2566": 904,
+      "services": {
+        "lab": {
+          "facilities": 7,
+          "people": 2224,
+          "visits": 0,
+          "tested": 1694,
+          "positive": 28,
+          "inconclusive": 0,
+          "viralLoadTests": 495
+        },
+        "sti": {
+          "facilities": 8,
+          "people": 1313,
+          "visits": 1359
+        },
+        "condom": {
+          "facilities": 21,
+          "people": 209,
+          "visits": 215
+        },
+        "vct": {
+          "facilities": 2,
+          "people": 11,
+          "visits": 11,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 26,
+        "certified": 19,
+        "current": 12,
+        "orgs": [
+          "คามิลเลียน โซเชียล เซนเตอร์ ระยอง",
+          "ชมรม แกลงก้าวหน้า",
+          "ชมรมเกาะแก้ว",
+          "มูลนิธิซิสเตอร์",
+          "มูลนิธิรักษ์ไทย",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "34",
+      "name": "Ubon Ratchathani",
+      "nameTh": "อุบลราชธานี",
+      "lat": 15.2287,
+      "lng": 104.8564,
+      "newCases2566": 893,
+      "services": {
+        "lab": {
+          "facilities": 18,
+          "people": 1926,
+          "visits": 0,
+          "tested": 1495,
+          "positive": 5,
+          "inconclusive": 0,
+          "viralLoadTests": 75
+        },
+        "sti": {
+          "facilities": 11,
+          "people": 157,
+          "visits": 159
+        },
+        "condom": {
+          "facilities": 82,
+          "people": 450,
+          "visits": 460
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 15,
+        "certified": 11,
+        "current": 4,
+        "orgs": [
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สำนักงานป้องกันและควบคุมโรค",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "57",
+      "name": "Chiang Rai",
+      "nameTh": "เชียงราย",
+      "lat": 19.9105,
+      "lng": 99.8406,
+      "newCases2566": 854,
+      "services": {
+        "lab": {
+          "facilities": 18,
+          "people": 15930,
+          "visits": 0,
+          "tested": 13202,
+          "positive": 102,
+          "inconclusive": 2,
+          "viralLoadTests": 1960
+        },
+        "sti": {
+          "facilities": 13,
+          "people": 140,
+          "visits": 144
+        },
+        "condom": {
+          "facilities": 76,
+          "people": 506,
+          "visits": 520
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 1,
+          "visits": 1,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 29,
+        "certified": 17,
+        "current": 12,
+        "orgs": [
+          "Mplus",
+          "กลุ่ม ฅ ฅน เพื่อการเปลี่ยนแปลง ( P Change)",
+          "กลุ่มผลัดใบเพื่อการพัฒนา",
+          "มูลนิธิศุภนิมิตแห่งประเทศไทย",
+          "สมาคมวางแผนครอบครัวแห่งประเทศไทยฯ สำนักงานภูมิภาค (ภาคเหนือ)",
+          "สํานักงานสาธารณสุขจังหวัด",
+          "หมวดคริสเตียนสุดสยามแห่งพระพร แม่สาย"
+        ]
+      }
+    },
+    {
+      "code": "11",
+      "name": "Samut Prakan",
+      "nameTh": "สมุทรปราการ",
+      "lat": 13.599,
+      "lng": 100.5968,
+      "newCases2566": 840,
+      "services": {
+        "lab": {
+          "facilities": 6,
+          "people": 1147,
+          "visits": 0,
+          "tested": 914,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 228
+        },
+        "sti": {
+          "facilities": 7,
+          "people": 90,
+          "visits": 136
+        },
+        "condom": {
+          "facilities": 20,
+          "people": 284,
+          "visits": 306
+        },
+        "vct": {
+          "facilities": 2,
+          "people": 38,
+          "visits": 40,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 9,
+        "certified": 8,
+        "current": 1,
+        "orgs": [
+          "มูลนิธิรักษ์ไทย",
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "46",
+      "name": "Kalasin",
+      "nameTh": "กาฬสินธุ์",
+      "lat": 16.432,
+      "lng": 103.506,
+      "newCases2566": 822,
+      "services": {
+        "lab": {
+          "facilities": 17,
+          "people": 1314,
+          "visits": 0,
+          "tested": 918,
+          "positive": 3,
+          "inconclusive": 113,
+          "viralLoadTests": 136
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 76,
+          "visits": 83
+        },
+        "condom": {
+          "facilities": 53,
+          "people": 293,
+          "visits": 313
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "50",
+      "name": "Chiang Mai",
+      "nameTh": "เชียงใหม่",
+      "lat": 18.7883,
+      "lng": 98.9853,
+      "newCases2566": 808,
+      "services": {
+        "lab": {
+          "facilities": 22,
+          "people": 5695,
+          "visits": 0,
+          "tested": 4156,
+          "positive": 6,
+          "inconclusive": 3,
+          "viralLoadTests": 1376
+        },
+        "sti": {
+          "facilities": 9,
+          "people": 30,
+          "visits": 30
+        },
+        "condom": {
+          "facilities": 75,
+          "people": 400,
+          "visits": 406
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 2,
+          "visits": 2,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 93,
+        "certified": 60,
+        "current": 38,
+        "orgs": [
+          "MAP Foundation",
+          "Mplus",
+          "V Power",
+          "มูลนิธิบ้านสงเคราะห์เด็กครูอ๋อยเพื่อเด็กและผู้สูงอายุ",
+          "สมาคมวางแผนครอบครัวแห่งประเทศไทย สำนักงานภูมิภาค (ภาคเหนือ)",
+          "สำนักงานป้องกันควบคุมโรคที่ 1 เชียงใหม่",
+          "สำนักงานป้องกันและควบคุมโรค",
+          "สํานักงานสาธารณสุขจังหวัด",
+          "องค์กรแคร์แมท",
+          "เครือข่ายผู้ใช้ยาแห่งประเทศไทย (TDN)",
+          "เครือข่าย​ผู้ใช้​ยา​ประเทศไทย​"
+        ]
+      }
+    },
+    {
+      "code": "45",
+      "name": "Roi Et",
+      "nameTh": "ร้อยเอ็ด",
+      "lat": 16.0538,
+      "lng": 103.652,
+      "newCases2566": 783,
+      "services": {
+        "lab": {
+          "facilities": 18,
+          "people": 1445,
+          "visits": 0,
+          "tested": 1329,
+          "positive": 4,
+          "inconclusive": 0,
+          "viralLoadTests": 106
+        },
+        "sti": {
+          "facilities": 11,
+          "people": 66,
+          "visits": 67
+        },
+        "condom": {
+          "facilities": 73,
+          "people": 519,
+          "visits": 542
+        },
+        "vct": {
+          "facilities": 3,
+          "people": 5,
+          "visits": 5,
+          "onArv": 0
+        }
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "41",
+      "name": "Udon Thani",
+      "nameTh": "อุดรธานี",
+      "lat": 17.4138,
+      "lng": 102.7872,
+      "newCases2566": 749,
+      "services": {
+        "lab": {
+          "facilities": 19,
+          "people": 5341,
+          "visits": 0,
+          "tested": 4419,
+          "positive": 43,
+          "inconclusive": 0,
+          "viralLoadTests": 469
+        },
+        "sti": {
+          "facilities": 11,
+          "people": 119,
+          "visits": 124
+        },
+        "condom": {
+          "facilities": 90,
+          "people": 664,
+          "visits": 731
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 11,
+        "certified": 7,
+        "current": 4,
+        "orgs": [
+          "M-Friends",
+          "สำนักงานป้องกันและควบคุมโรค",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "32",
+      "name": "Surin",
+      "nameTh": "สุรินทร์",
+      "lat": 14.882,
+      "lng": 103.4937,
+      "newCases2566": 688,
+      "services": {
+        "lab": {
+          "facilities": 17,
+          "people": 3627,
+          "visits": 0,
+          "tested": 3009,
+          "positive": 3,
+          "inconclusive": 0,
+          "viralLoadTests": 519
+        },
+        "sti": {
+          "facilities": 9,
+          "people": 74,
+          "visits": 75
+        },
+        "condom": {
+          "facilities": 97,
+          "people": 618,
+          "visits": 638
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "84",
+      "name": "Surat Thani",
+      "nameTh": "สุราษฎร์ธานี",
+      "lat": 9.1382,
+      "lng": 99.3331,
+      "newCases2566": 683,
+      "services": {
+        "lab": {
+          "facilities": 22,
+          "people": 12786,
+          "visits": 0,
+          "tested": 10698,
+          "positive": 31,
+          "inconclusive": 1,
+          "viralLoadTests": 1590
+        },
+        "sti": {
+          "facilities": 8,
+          "people": 227,
+          "visits": 228
+        },
+        "condom": {
+          "facilities": 49,
+          "people": 356,
+          "visits": 371
+        },
+        "vct": {
+          "facilities": 5,
+          "people": 53,
+          "visits": 53,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 16,
+        "certified": 14,
+        "current": 5,
+        "orgs": [
+          "มูลนิธิรักษ์ไทย",
+          "สำนักงานสาธารณสุขจังหวัดสุราษฏร์ธานี"
+        ]
+      }
+    },
+    {
+      "code": "24",
+      "name": "Chachoengsao",
+      "nameTh": "ฉะเชิงเทรา",
+      "lat": 13.6904,
+      "lng": 101.078,
+      "newCases2566": 647,
+      "services": {
+        "lab": {
+          "facilities": 10,
+          "people": 2743,
+          "visits": 0,
+          "tested": 2375,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 335
+        },
+        "sti": {
+          "facilities": 8,
+          "people": 108,
+          "visits": 112
+        },
+        "condom": {
+          "facilities": 31,
+          "people": 203,
+          "visits": 209
+        },
+        "vct": {
+          "facilities": 4,
+          "people": 44,
+          "visits": 44,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 9,
+        "certified": 5,
+        "current": 4,
+        "orgs": [
+          "กลุ่มพลังเพื่อนหญิง",
+          "ชมรมตะวันฉาย โรงพยาบาลพนมสารคาม",
+          "มูลนิธิรักษ์ไทย",
+          "ศูนย์ให้คำปรึกษาตำบลหนองไม้แก่น",
+          "สำนักงานสาธารณสุขจังหวัดฉะเชิงเทรา",
+          "เครือข่ายผู้ติดเชื้อเอชไอวี/เอดส์ ประเทศไทย"
+        ]
+      }
+    },
+    {
+      "code": "33",
+      "name": "Si Sa Ket",
+      "nameTh": "ศรีสะเกษ",
+      "lat": 15.118,
+      "lng": 104.322,
+      "newCases2566": 645,
+      "services": {
+        "lab": {
+          "facilities": 10,
+          "people": 2067,
+          "visits": 0,
+          "tested": 1684,
+          "positive": 21,
+          "inconclusive": 1,
+          "viralLoadTests": 190
+        },
+        "sti": {
+          "facilities": 12,
+          "people": 55,
+          "visits": 56
+        },
+        "condom": {
+          "facilities": 99,
+          "people": 606,
+          "visits": 664
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "31",
+      "name": "Buriram",
+      "nameTh": "บุรีรัมย์",
+      "lat": 14.993,
+      "lng": 103.1029,
+      "newCases2566": 643,
+      "services": {
+        "lab": {
+          "facilities": 17,
+          "people": 1063,
+          "visits": 0,
+          "tested": 1011,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 51
+        },
+        "sti": {
+          "facilities": 12,
+          "people": 465,
+          "visits": 485
+        },
+        "condom": {
+          "facilities": 113,
+          "people": 960,
+          "visits": 988
+        },
+        "vct": {
+          "facilities": 6,
+          "people": 131,
+          "visits": 245,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 5,
+        "certified": 0,
+        "current": 5,
+        "orgs": [
+          "คลีนิคแสงส่องใจ",
+          "ชมรมแสงทองส่องทาง",
+          "สำนักงานสาธารณสุขจังหวัดบุรีรัมย์"
+        ]
+      }
+    },
+    {
+      "code": "12",
+      "name": "Nonthaburi",
+      "nameTh": "นนทบุรี",
+      "lat": 13.8621,
+      "lng": 100.5144,
+      "newCases2566": 633,
+      "services": {
+        "lab": {
+          "facilities": 7,
+          "people": 2017,
+          "visits": 0,
+          "tested": 1112,
+          "positive": 28,
+          "inconclusive": 0,
+          "viralLoadTests": 874
+        },
+        "sti": {
+          "facilities": 9,
+          "people": 77,
+          "visits": 77
+        },
+        "condom": {
+          "facilities": 46,
+          "people": 242,
+          "visits": 247
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 16,
+        "certified": 10,
+        "current": 6,
+        "orgs": [
+          "APASS",
+          "กองโรคเอดส์และโรคติดต่อทางเพศสัมพันธ์",
+          "มูลนิธิโอโซน (OZONE)",
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สำนักงานสาธารณสุขจังหวัดนนทบุรี",
+          "สํานักงานสาธารณสุขจังหวัด",
+          "องค์กร สมาคมพัฒนาอนามัยแห่งประเทศไทย"
+        ]
+      }
+    },
+    {
+      "code": "13",
+      "name": "Pathum Thani",
+      "nameTh": "ปทุมธานี",
+      "lat": 14.0208,
+      "lng": 100.525,
+      "newCases2566": 620,
+      "services": {
+        "lab": {
+          "facilities": 8,
+          "people": 2321,
+          "visits": 0,
+          "tested": 2117,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 169
+        },
+        "sti": {
+          "facilities": 7,
+          "people": 605,
+          "visits": 630
+        },
+        "condom": {
+          "facilities": 25,
+          "people": 298,
+          "visits": 309
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 14,
+        "certified": 10,
+        "current": 5,
+        "orgs": [
+          "APASS",
+          "Home Friend",
+          "มูลนิธิศุภนิมิตแห่งประเทศไทย",
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "73",
+      "name": "Nakhon Pathom",
+      "nameTh": "นครปฐม",
+      "lat": 13.819,
+      "lng": 100.062,
+      "newCases2566": 553,
+      "services": {
+        "lab": {
+          "facilities": 7,
+          "people": 1033,
+          "visits": 0,
+          "tested": 920,
+          "positive": 3,
+          "inconclusive": 0,
+          "viralLoadTests": 113
+        },
+        "sti": {
+          "facilities": 4,
+          "people": 50,
+          "visits": 51
+        },
+        "condom": {
+          "facilities": 53,
+          "people": 576,
+          "visits": 605
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 16,
+        "certified": 11,
+        "current": 5,
+        "orgs": [
+          "คณะบุครบกลุ่มFriendly club จังหวัดนครปฐม",
+          "มูลนิธิรักษ์ไทย",
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "44",
+      "name": "Maha Sarakham",
+      "nameTh": "มหาสารคาม",
+      "lat": 16.1851,
+      "lng": 103.3025,
+      "newCases2566": 520,
+      "services": {
+        "lab": {
+          "facilities": 12,
+          "people": 1025,
+          "visits": 0,
+          "tested": 820,
+          "positive": 3,
+          "inconclusive": 0,
+          "viralLoadTests": 171
+        },
+        "sti": {
+          "facilities": 9,
+          "people": 929,
+          "visits": 943
+        },
+        "condom": {
+          "facilities": 60,
+          "people": 382,
+          "visits": 408
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 3,
+        "certified": 0,
+        "current": 3,
+        "orgs": [
+          "HUG Sarakham",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "90",
+      "name": "Songkhla",
+      "nameTh": "สงขลา",
+      "lat": 7.1898,
+      "lng": 100.5954,
+      "newCases2566": 516,
+      "services": {
+        "lab": {
+          "facilities": 16,
+          "people": 3248,
+          "visits": 0,
+          "tested": 2838,
+          "positive": 30,
+          "inconclusive": 2,
+          "viralLoadTests": 278
+        },
+        "sti": {
+          "facilities": 9,
+          "people": 456,
+          "visits": 456
+        },
+        "condom": {
+          "facilities": 62,
+          "people": 423,
+          "visits": 434
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 37,
+        "certified": 26,
+        "current": 16,
+        "orgs": [
+          "CARE TEAM SONGKHlA",
+          "ศูนย์อภิบาลผู้เดินทางทะเลสงขลา",
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สมาคมวางแผนครอบครัวแห่งประเทศไทย สำนักภูมิภาค (สวท.)",
+          "สำนักงานป้องกันและควบคุมโรค",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "36",
+      "name": "Chaiyaphum",
+      "nameTh": "ชัยภูมิ",
+      "lat": 15.806,
+      "lng": 102.031,
+      "newCases2566": 470,
+      "services": {
+        "lab": {
+          "facilities": 16,
+          "people": 2460,
+          "visits": 0,
+          "tested": 2264,
+          "positive": 2,
+          "inconclusive": 0,
+          "viralLoadTests": 164
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 73,
+          "visits": 73
+        },
+        "condom": {
+          "facilities": 58,
+          "people": 518,
+          "visits": 543
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 3,
+        "certified": 2,
+        "current": 1,
+        "orgs": [
+          "สำนักงานสาธารณสุขจังหวัดชัยภูมิ",
+          "โครงการสนับสนุนการพัฒนาท้องถิ่น"
+        ]
+      }
+    },
+    {
+      "code": "14",
+      "name": "Phra Nakhon Si Ayutthaya",
+      "nameTh": "พระนครศรีอยุธยา",
+      "lat": 14.369,
+      "lng": 100.587,
+      "newCases2566": 461,
+      "services": {
+        "lab": {
+          "facilities": 15,
+          "people": 5651,
+          "visits": 0,
+          "tested": 5179,
+          "positive": 43,
+          "inconclusive": 1,
+          "viralLoadTests": 144
+        },
+        "sti": {
+          "facilities": 9,
+          "people": 31,
+          "visits": 31
+        },
+        "condom": {
+          "facilities": 26,
+          "people": 155,
+          "visits": 165
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 4,
+        "certified": 2,
+        "current": 2,
+        "orgs": [
+          "สมาคมฟ้าสีรุ้งแห่งประเทศไทย",
+          "สมาคมส่งเสริมพัฒนาการสังคม",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "71",
+      "name": "Kanchanaburi",
+      "nameTh": "กาญจนบุรี",
+      "lat": 14.022,
+      "lng": 99.532,
+      "newCases2566": 444,
+      "services": {
+        "lab": {
+          "facilities": 15,
+          "people": 4129,
+          "visits": 0,
+          "tested": 3788,
+          "positive": 4,
+          "inconclusive": 0,
+          "viralLoadTests": 270
+        },
+        "sti": {
+          "facilities": 5,
+          "people": 175,
+          "visits": 177
+        },
+        "condom": {
+          "facilities": 31,
+          "people": 242,
+          "visits": 294
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 13,
+        "certified": 8,
+        "current": 5,
+        "orgs": [
+          "มูลนิธิพัฒนรักษ์",
+          "สำนักงานสาธารณสุขจังหวัดกาญจนบุรี",
+          "องค์กรคณะทำงานเพื่อสุขภาพชุมชน CHC"
+        ]
+      }
+    },
+    {
+      "code": "83",
+      "name": "Phuket",
+      "nameTh": "ภูเก็ต",
+      "lat": 7.8804,
+      "lng": 98.3923,
+      "newCases2566": 422,
+      "services": {
+        "lab": {
+          "facilities": 4,
+          "people": 4194,
+          "visits": 0,
+          "tested": 3350,
+          "positive": 76,
+          "inconclusive": 2,
+          "viralLoadTests": 796
+        },
+        "sti": {
+          "facilities": 2,
+          "people": 42,
+          "visits": 42
+        },
+        "condom": {
+          "facilities": 15,
+          "people": 136,
+          "visits": 139
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 7,
+        "certified": 1,
+        "current": 6,
+        "orgs": [
+          "มูลนิธิศุภนิมิตแห่งประเทศไทย",
+          "สำนักงานสาธารณสุขจังหวัดภูเก็ต",
+          "อันดามันพาวเวอร์"
+        ]
+      }
+    },
+    {
+      "code": "67",
+      "name": "Phetchabun",
+      "nameTh": "เพชรบูรณ์",
+      "lat": 16.419,
+      "lng": 101.16,
+      "newCases2566": 417,
+      "services": {
+        "lab": {
+          "facilities": 10,
+          "people": 2638,
+          "visits": 0,
+          "tested": 2377,
+          "positive": 4,
+          "inconclusive": 0,
+          "viralLoadTests": 231
+        },
+        "sti": {
+          "facilities": 8,
+          "people": 300,
+          "visits": 302
+        },
+        "condom": {
+          "facilities": 49,
+          "people": 293,
+          "visits": 306
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "70",
+      "name": "Ratchaburi",
+      "nameTh": "ราชบุรี",
+      "lat": 13.528,
+      "lng": 99.813,
+      "newCases2566": 389,
+      "services": {
+        "lab": {
+          "facilities": 13,
+          "people": 2102,
+          "visits": 0,
+          "tested": 1770,
+          "positive": 2,
+          "inconclusive": 0,
+          "viralLoadTests": 320
+        },
+        "sti": {
+          "facilities": 4,
+          "people": 13,
+          "visits": 14
+        },
+        "condom": {
+          "facilities": 33,
+          "people": 248,
+          "visits": 261
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 17,
+        "certified": 7,
+        "current": 11,
+        "orgs": [
+          "ALIGHT",
+          "กลุ่มสายรุ้งราชบุรี",
+          "ชมรมสายธาร",
+          "สำนักงานป้องกันควบคุมโรคที่ 5 จังหวัดราชบุรี",
+          "สำนักงานสาธารณสุขจังหวัดราชบุรี"
+        ]
+      }
+    },
+    {
+      "code": "19",
+      "name": "Saraburi",
+      "nameTh": "สระบุรี",
+      "lat": 14.5289,
+      "lng": 100.91,
+      "newCases2566": 381,
+      "services": {
+        "lab": {
+          "facilities": 9,
+          "people": 752,
+          "visits": 0,
+          "tested": 676,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 67
+        },
+        "sti": {
+          "facilities": 4,
+          "people": 14,
+          "visits": 15
+        },
+        "condom": {
+          "facilities": 19,
+          "people": 160,
+          "visits": 170
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 2,
+        "certified": 0,
+        "current": 2,
+        "orgs": [
+          "สำนักงานป้องกันควบคุมโรคที่4 จังหวัดสระบุรี",
+          "สำนักงานป้องกันและควบคุมโรค"
+        ]
+      }
+    },
+    {
+      "code": "72",
+      "name": "Suphan Buri",
+      "nameTh": "สุพรรณบุรี",
+      "lat": 14.474,
+      "lng": 100.118,
+      "newCases2566": 347,
+      "services": {
+        "lab": {
+          "facilities": 10,
+          "people": 5403,
+          "visits": 0,
+          "tested": 4681,
+          "positive": 3,
+          "inconclusive": 0,
+          "viralLoadTests": 489
+        },
+        "sti": {
+          "facilities": 10,
+          "people": 392,
+          "visits": 393
+        },
+        "condom": {
+          "facilities": 34,
+          "people": 279,
+          "visits": 335
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "63",
+      "name": "Tak",
+      "nameTh": "ตาก",
+      "lat": 16.884,
+      "lng": 99.125,
+      "newCases2566": 343,
+      "services": {
+        "lab": {
+          "facilities": 7,
+          "people": 4482,
+          "visits": 0,
+          "tested": 4334,
+          "positive": 56,
+          "inconclusive": 0,
+          "viralLoadTests": 34
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 98,
+          "visits": 98
+        },
+        "condom": {
+          "facilities": 31,
+          "people": 313,
+          "visits": 345
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 22,
+        "certified": 12,
+        "current": 10,
+        "orgs": [
+          "กลุ่มมอบความหวัง Give Hope Group",
+          "มูลนิธิศุภนิมิตแห่งประเทศไทย",
+          "สมาคมวางแผนครอบครัวแห่งประเทศไทย สำนักงานภูมิภาค (ภาคเหนือ)",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "15",
+      "name": "Ang Thong",
+      "nameTh": "อ่างทอง",
+      "lat": 14.5896,
+      "lng": 100.455,
+      "newCases2566": 328,
+      "services": {
+        "lab": {
+          "facilities": 5,
+          "people": 2456,
+          "visits": 0,
+          "tested": 2172,
+          "positive": 14,
+          "inconclusive": 19,
+          "viralLoadTests": 232
+        },
+        "sti": {
+          "facilities": 5,
+          "people": 241,
+          "visits": 261
+        },
+        "condom": {
+          "facilities": 12,
+          "people": 112,
+          "visits": 112
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "16",
+      "name": "Lopburi",
+      "nameTh": "ลพบุรี",
+      "lat": 14.7995,
+      "lng": 100.653,
+      "newCases2566": 316,
+      "services": {
+        "lab": {
+          "facilities": 10,
+          "people": 2422,
+          "visits": 0,
+          "tested": 2389,
+          "positive": 3,
+          "inconclusive": 0,
+          "viralLoadTests": 30
+        },
+        "sti": {
+          "facilities": 4,
+          "people": 32,
+          "visits": 32
+        },
+        "condom": {
+          "facilities": 36,
+          "people": 299,
+          "visits": 319
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "77",
+      "name": "Prachuap Khiri Khan",
+      "nameTh": "ประจวบคีรีขันธ์",
+      "lat": 11.812,
+      "lng": 99.798,
+      "newCases2566": 312,
+      "services": {
+        "lab": {
+          "facilities": 8,
+          "people": 3146,
+          "visits": 0,
+          "tested": 1948,
+          "positive": 11,
+          "inconclusive": 0,
+          "viralLoadTests": 25
+        },
+        "sti": {
+          "facilities": 4,
+          "people": 89,
+          "visits": 94
+        },
+        "condom": {
+          "facilities": 17,
+          "people": 166,
+          "visits": 170
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "43",
+      "name": "Nong Khai",
+      "nameTh": "หนองคาย",
+      "lat": 17.878,
+      "lng": 102.742,
+      "newCases2566": 308,
+      "services": {
+        "lab": {
+          "facilities": 8,
+          "people": 2332,
+          "visits": 0,
+          "tested": 2307,
+          "positive": 6,
+          "inconclusive": 0,
+          "viralLoadTests": 2
+        },
+        "sti": {
+          "facilities": 7,
+          "people": 46,
+          "visits": 62
+        },
+        "condom": {
+          "facilities": 30,
+          "people": 271,
+          "visits": 290
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 9,
+          "visits": 9,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 5,
+        "certified": 1,
+        "current": 4,
+        "orgs": [
+          "มูลนิธิภคินีศรีชุมพาบาลหนองคาย",
+          "สำนักงานสาธารณสุขจังหวัดหนองคาย"
+        ]
+      }
+    },
+    {
+      "code": "62",
+      "name": "Kamphaeng Phet",
+      "nameTh": "กำแพงเพชร",
+      "lat": 16.4827,
+      "lng": 99.522,
+      "newCases2566": 305,
+      "services": {
+        "lab": {
+          "facilities": 11,
+          "people": 1046,
+          "visits": 0,
+          "tested": 1046,
+          "positive": 4,
+          "inconclusive": 0,
+          "viralLoadTests": 0
+        },
+        "sti": {
+          "facilities": 5,
+          "people": 76,
+          "visits": 90
+        },
+        "condom": {
+          "facilities": 67,
+          "people": 536,
+          "visits": 570
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "25",
+      "name": "Prachinburi",
+      "nameTh": "ปราจีนบุรี",
+      "lat": 14.05,
+      "lng": 101.37,
+      "newCases2566": 296,
+      "services": {
+        "lab": {
+          "facilities": 7,
+          "people": 1540,
+          "visits": 0,
+          "tested": 1437,
+          "positive": 11,
+          "inconclusive": 2,
+          "viralLoadTests": 92
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 146,
+          "visits": 152
+        },
+        "condom": {
+          "facilities": 19,
+          "people": 182,
+          "visits": 191
+        },
+        "vct": {
+          "facilities": 4,
+          "people": 61,
+          "visits": 69,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 2,
+        "certified": 0,
+        "current": 2,
+        "orgs": [
+          "ศูนย์ประสานงานเครือข่ายภาคประชาชนจังหวัดปราจีนบุรี",
+          "สำนักงานสาธารณสุขจังหวัดปราจีนบุรี"
+        ]
+      }
+    },
+    {
+      "code": "65",
+      "name": "Phitsanulok",
+      "nameTh": "พิษณุโลก",
+      "lat": 16.8211,
+      "lng": 100.2659,
+      "newCases2566": 294,
+      "services": {
+        "lab": {
+          "facilities": 9,
+          "people": 4506,
+          "visits": 0,
+          "tested": 3522,
+          "positive": 24,
+          "inconclusive": 0,
+          "viralLoadTests": 31
+        },
+        "sti": {
+          "facilities": 7,
+          "people": 92,
+          "visits": 97
+        },
+        "condom": {
+          "facilities": 35,
+          "people": 245,
+          "visits": 252
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 24,
+        "certified": 16,
+        "current": 9,
+        "orgs": [
+          "Mplus",
+          "กลุ่มจิตอาสารักษ์ท่าช้าง",
+          "กลุ่มตะวัน",
+          "มูลนิธิเพิร์ล เอส. บัค (ประเทศไทย) สาขาพิษณุโลก",
+          "สำนักงานป้องกันและควบคุมโรค",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "27",
+      "name": "Sa Kaeo",
+      "nameTh": "สระแก้ว",
+      "lat": 13.824,
+      "lng": 102.064,
+      "newCases2566": 290,
+      "services": {
+        "lab": {
+          "facilities": 9,
+          "people": 2884,
+          "visits": 0,
+          "tested": 2815,
+          "positive": 10,
+          "inconclusive": 3,
+          "viralLoadTests": 68
+        },
+        "sti": {
+          "facilities": 5,
+          "people": 72,
+          "visits": 102
+        },
+        "condom": {
+          "facilities": 26,
+          "people": 314,
+          "visits": 333
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 10,
+          "visits": 10,
+          "onArv": 0
+        }
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "40",
+      "name": "Khon Kaen",
+      "nameTh": "ขอนแก่น",
+      "lat": 16.4419,
+      "lng": 102.836,
+      "newCases2566": 288,
+      "services": {
+        "lab": {
+          "facilities": 27,
+          "people": 4198,
+          "visits": 0,
+          "tested": 3737,
+          "positive": 2,
+          "inconclusive": 0,
+          "viralLoadTests": 449
+        },
+        "sti": {
+          "facilities": 21,
+          "people": 225,
+          "visits": 228
+        },
+        "condom": {
+          "facilities": 116,
+          "people": 1082,
+          "visits": 1126
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 31,
+        "certified": 22,
+        "current": 9,
+        "orgs": [
+          "ACTTEAM",
+          "M-REACH",
+          "M.queer",
+          "มูลนิธิพัฒนาเครือข่ายสุขภาพ",
+          "สมาคมวางแผนครอบครัวแห่งประเทศไทย สำนักภูมิภาค (สวท.)",
+          "สำนักงานป้องกันและควบคุมโรค",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "52",
+      "name": "Lampang",
+      "nameTh": "ลำปาง",
+      "lat": 18.2888,
+      "lng": 99.4909,
+      "newCases2566": 286,
+      "services": {
+        "lab": {
+          "facilities": 10,
+          "people": 1759,
+          "visits": 0,
+          "tested": 1669,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 64
+        },
+        "sti": {
+          "facilities": 10,
+          "people": 57,
+          "visits": 57
+        },
+        "condom": {
+          "facilities": 22,
+          "people": 131,
+          "visits": 133
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 6,
+        "certified": 1,
+        "current": 5,
+        "orgs": [
+          "กลุ่มสร้างสรรค์สุข",
+          "กลุ่มเพื่อนเพื่อเด็กและเยาวชน",
+          "สมาคมวางแผนครอบครัวแห่งประเทศไทยฯ สำนักงานภูมิภาค (ภาคเหนือ)",
+          "สำนักงานสาธารณสุขจังหวัดลำปาง",
+          "เครือข่ายลำปางหนา ภาคประชาชน"
+        ]
+      }
+    },
+    {
+      "code": "35",
+      "name": "Yasothon",
+      "nameTh": "ยโสธร",
+      "lat": 15.794,
+      "lng": 104.145,
+      "newCases2566": 271,
+      "services": {
+        "lab": {
+          "facilities": 9,
+          "people": 990,
+          "visits": 0,
+          "tested": 797,
+          "positive": 5,
+          "inconclusive": 0,
+          "viralLoadTests": 99
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 45,
+          "visits": 45
+        },
+        "condom": {
+          "facilities": 40,
+          "people": 246,
+          "visits": 252
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 2,
+          "visits": 2,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 1,
+        "certified": 0,
+        "current": 1,
+        "orgs": [
+          "คลินิกทอฝัน"
+        ]
+      }
+    },
+    {
+      "code": "42",
+      "name": "Loei",
+      "nameTh": "เลย",
+      "lat": 17.49,
+      "lng": 101.722,
+      "newCases2566": 269,
+      "services": {
+        "lab": {
+          "facilities": 12,
+          "people": 926,
+          "visits": 0,
+          "tested": 884,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 26
+        },
+        "sti": {
+          "facilities": 7,
+          "people": 103,
+          "visits": 103
+        },
+        "condom": {
+          "facilities": 38,
+          "people": 218,
+          "visits": 223
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 4,
+          "visits": 4,
+          "onArv": 0
+        }
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "53",
+      "name": "Uttaradit",
+      "nameTh": "อุตรดิตถ์",
+      "lat": 17.62,
+      "lng": 100.099,
+      "newCases2566": 265,
+      "services": {
+        "lab": {
+          "facilities": 9,
+          "people": 1340,
+          "visits": 0,
+          "tested": 1114,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 188
+        },
+        "sti": {
+          "facilities": 5,
+          "people": 137,
+          "visits": 139
+        },
+        "condom": {
+          "facilities": 25,
+          "people": 153,
+          "visits": 156
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "76",
+      "name": "Phetchaburi",
+      "nameTh": "เพชรบุรี",
+      "lat": 13.111,
+      "lng": 99.94,
+      "newCases2566": 258,
+      "services": {
+        "lab": {
+          "facilities": 6,
+          "people": 2637,
+          "visits": 0,
+          "tested": 2002,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 617
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 38,
+          "visits": 40
+        },
+        "condom": {
+          "facilities": 18,
+          "people": 136,
+          "visits": 148
+        },
+        "vct": {
+          "facilities": 2,
+          "people": 8,
+          "visits": 8,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 2,
+        "certified": 0,
+        "current": 2,
+        "orgs": [
+          "ชมรมไดมอนด์เฟรนด์"
+        ]
+      }
+    },
+    {
+      "code": "74",
+      "name": "Samut Sakhon",
+      "nameTh": "สมุทรสาคร",
+      "lat": 13.547,
+      "lng": 100.274,
+      "newCases2566": 252,
+      "services": {
+        "lab": {
+          "facilities": 4,
+          "people": 5567,
+          "visits": 0,
+          "tested": 4958,
+          "positive": 32,
+          "inconclusive": 1,
+          "viralLoadTests": 411
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 80,
+          "visits": 83
+        },
+        "condom": {
+          "facilities": 24,
+          "people": 314,
+          "visits": 328
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 27,
+        "certified": 7,
+        "current": 22,
+        "orgs": [
+          "มูลนิธิรักษ์ไทย",
+          "สำนักงานสาธารณสุขจังหวัดสมุทรสาคร"
+        ]
+      }
+    },
+    {
+      "code": "38",
+      "name": "Bueng Kan",
+      "nameTh": "บึงกาฬ",
+      "lat": 18.3609,
+      "lng": 103.646,
+      "newCases2566": 251,
+      "services": {
+        "lab": {
+          "facilities": 6,
+          "people": 963,
+          "visits": 0,
+          "tested": 889,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 75
+        },
+        "sti": {
+          "facilities": 5,
+          "people": 209,
+          "visits": 216
+        },
+        "condom": {
+          "facilities": 29,
+          "people": 189,
+          "visits": 201
+        },
+        "vct": {
+          "facilities": 2,
+          "people": 73,
+          "visits": 75,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 1,
+        "certified": 0,
+        "current": 1,
+        "orgs": [
+          "สำนักงานสาธารณสุขจังหวัดบึงกาฬ"
+        ]
+      }
+    },
+    {
+      "code": "66",
+      "name": "Phichit",
+      "nameTh": "พิจิตร",
+      "lat": 16.441,
+      "lng": 100.348,
+      "newCases2566": 249,
+      "services": {
+        "lab": {
+          "facilities": 12,
+          "people": 928,
+          "visits": 0,
+          "tested": 827,
+          "positive": 5,
+          "inconclusive": 0,
+          "viralLoadTests": 102
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 21,
+          "visits": 22
+        },
+        "condom": {
+          "facilities": 43,
+          "people": 249,
+          "visits": 266
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 2,
+        "certified": 0,
+        "current": 2,
+        "orgs": [
+          "ศูนย์คุ้มครองสิทธิผู้บริโภคจังหวัดพิจิตร",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "64",
+      "name": "Sukhothai",
+      "nameTh": "สุโขทัย",
+      "lat": 17.0056,
+      "lng": 99.826,
+      "newCases2566": 240,
+      "services": {
+        "lab": {
+          "facilities": 8,
+          "people": 2663,
+          "visits": 0,
+          "tested": 2444,
+          "positive": 9,
+          "inconclusive": 11,
+          "viralLoadTests": 171
+        },
+        "sti": {
+          "facilities": 5,
+          "people": 177,
+          "visits": 179
+        },
+        "condom": {
+          "facilities": 32,
+          "people": 115,
+          "visits": 119
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "93",
+      "name": "Phatthalung",
+      "nameTh": "พัทลุง",
+      "lat": 7.617,
+      "lng": 100.074,
+      "newCases2566": 236,
+      "services": {
+        "lab": {
+          "facilities": 9,
+          "people": 935,
+          "visits": 0,
+          "tested": 812,
+          "positive": 0,
+          "inconclusive": 1,
+          "viralLoadTests": 110
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 84,
+          "visits": 85
+        },
+        "condom": {
+          "facilities": 41,
+          "people": 162,
+          "visits": 170
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 15,
+        "certified": 8,
+        "current": 8,
+        "orgs": [
+          "มูลนิธิสกายสีม่วงพัทลุง",
+          "สํานักงานสาธารณสุขจังหวัด",
+          "เครือข่าย​ผู้ใช้​ยา​ประเทศไทย​"
+        ]
+      }
+    },
+    {
+      "code": "85",
+      "name": "Ranong",
+      "nameTh": "ระนอง",
+      "lat": 9.96,
+      "lng": 98.635,
+      "newCases2566": 232,
+      "services": {
+        "lab": {
+          "facilities": 5,
+          "people": 2014,
+          "visits": 0,
+          "tested": 1669,
+          "positive": 2,
+          "inconclusive": 0,
+          "viralLoadTests": 196
+        },
+        "sti": {
+          "facilities": 1,
+          "people": 2,
+          "visits": 2
+        },
+        "condom": {
+          "facilities": 12,
+          "people": 49,
+          "visits": 51
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 1,
+          "visits": 1,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 4,
+        "certified": 2,
+        "current": 2,
+        "orgs": [
+          "มูลนิธิศุภนิมิตแห่งประเทศไทย",
+          "สำนักงานสาธารณสุขจังหวัดระนอง"
+        ]
+      }
+    },
+    {
+      "code": "92",
+      "name": "Trang",
+      "nameTh": "ตรัง",
+      "lat": 7.556,
+      "lng": 99.611,
+      "newCases2566": 229,
+      "services": {
+        "lab": {
+          "facilities": 9,
+          "people": 899,
+          "visits": 0,
+          "tested": 713,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 71
+        },
+        "sti": {
+          "facilities": 2,
+          "people": 15,
+          "visits": 15
+        },
+        "condom": {
+          "facilities": 43,
+          "people": 331,
+          "visits": 349
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 1,
+          "visits": 1,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 29,
+        "certified": 15,
+        "current": 16,
+        "orgs": [
+          "กลุ่มท่าพญาสัมพันธ์",
+          "กลุ่มพะยูนศรีตรัง จังหวัดตรัง",
+          "สำนักงานสาธารณสุขจังหวัดตรัง",
+          "สํานักงานสาธารณสุขจังหวัด",
+          "องค์กรเฝ้าระวังป้องกันและควบคุมโรค(ภาคประชาชน)",
+          "เครือข่ายผู้ใช้ยาแห่งประเทศไทย (TDN)",
+          "เครือข่าย​ผู้ใช้​ยา​ประเทศไทย​"
+        ]
+      }
+    },
+    {
+      "code": "56",
+      "name": "Phayao",
+      "nameTh": "พะเยา",
+      "lat": 19.192,
+      "lng": 99.879,
+      "newCases2566": 212,
+      "services": {
+        "lab": {
+          "facilities": 6,
+          "people": 662,
+          "visits": 0,
+          "tested": 200,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 426
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 55,
+          "visits": 58
+        },
+        "condom": {
+          "facilities": 26,
+          "people": 146,
+          "visits": 175
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 12,
+        "certified": 6,
+        "current": 6,
+        "orgs": [
+          "มูลนิธิพะเยาเพื่อการพัฒนา",
+          "ศูนย์บริการสุขภาพที่เป็นมิตรน้ำกว๊านสีรุ้ง",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "48",
+      "name": "Nakhon Phanom",
+      "nameTh": "นครพนม",
+      "lat": 17.407,
+      "lng": 104.78,
+      "newCases2566": 207,
+      "services": {
+        "lab": {
+          "facilities": 12,
+          "people": 2727,
+          "visits": 0,
+          "tested": 2410,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 164
+        },
+        "sti": {
+          "facilities": 10,
+          "people": 58,
+          "visits": 58
+        },
+        "condom": {
+          "facilities": 54,
+          "people": 366,
+          "visits": 374
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "39",
+      "name": "Nong Bua Lamphu",
+      "nameTh": "หนองบัวลำภู",
+      "lat": 17.204,
+      "lng": 102.426,
+      "newCases2566": 197,
+      "services": {
+        "lab": {
+          "facilities": 3,
+          "people": 850,
+          "visits": 0,
+          "tested": 850,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 0
+        },
+        "sti": {
+          "facilities": 1,
+          "people": 47,
+          "visits": 47
+        },
+        "condom": {
+          "facilities": 40,
+          "people": 215,
+          "visits": 227
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "81",
+      "name": "Krabi",
+      "nameTh": "กระบี่",
+      "lat": 8.0863,
+      "lng": 98.9063,
+      "newCases2566": 182,
+      "services": {
+        "lab": {
+          "facilities": 5,
+          "people": 3077,
+          "visits": 0,
+          "tested": 3012,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 6
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 279,
+          "visits": 280
+        },
+        "condom": {
+          "facilities": 28,
+          "people": 149,
+          "visits": 152
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "82",
+      "name": "Phang Nga",
+      "nameTh": "พังงา",
+      "lat": 8.45,
+      "lng": 98.525,
+      "newCases2566": 177,
+      "services": {
+        "lab": {
+          "facilities": 7,
+          "people": 695,
+          "visits": 0,
+          "tested": 695,
+          "positive": 0,
+          "inconclusive": 9,
+          "viralLoadTests": 0
+        },
+        "sti": {
+          "facilities": 2,
+          "people": 17,
+          "visits": 17
+        },
+        "condom": {
+          "facilities": 11,
+          "people": 55,
+          "visits": 55
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 1,
+        "certified": 0,
+        "current": 1,
+        "orgs": [
+          "กลุ่มเอ็มสตาร์พังงา"
+        ]
+      }
+    },
+    {
+      "code": "51",
+      "name": "Lamphun",
+      "nameTh": "ลำพูน",
+      "lat": 18.58,
+      "lng": 99.007,
+      "newCases2566": 173,
+      "services": {
+        "lab": {
+          "facilities": 6,
+          "people": 409,
+          "visits": 0,
+          "tested": 391,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 18
+        },
+        "sti": {
+          "facilities": 2,
+          "people": 27,
+          "visits": 28
+        },
+        "condom": {
+          "facilities": 17,
+          "people": 80,
+          "visits": 87
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 4,
+        "certified": 3,
+        "current": 1,
+        "orgs": [
+          "VCAP",
+          "สำนักงานสาธารณสุขจังหวัดลำพูน"
+        ]
+      }
+    },
+    {
+      "code": "54",
+      "name": "Phrae",
+      "nameTh": "แพร่",
+      "lat": 18.145,
+      "lng": 100.141,
+      "newCases2566": 171,
+      "services": {
+        "lab": {
+          "facilities": 6,
+          "people": 418,
+          "visits": 0,
+          "tested": 248,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 74
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 18,
+          "visits": 18
+        },
+        "condom": {
+          "facilities": 14,
+          "people": 89,
+          "visits": 90
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 3,
+        "certified": 0,
+        "current": 3,
+        "orgs": [
+          "กลุ่ม Mโกศัยนคร",
+          "สำนักงานสาธารณสุขจังหวัดแพร่"
+        ]
+      }
+    },
+    {
+      "code": "18",
+      "name": "Chai Nat",
+      "nameTh": "ชัยนาท",
+      "lat": 15.185,
+      "lng": 100.125,
+      "newCases2566": 170,
+      "services": {
+        "lab": {
+          "facilities": 7,
+          "people": 921,
+          "visits": 0,
+          "tested": 835,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 69
+        },
+        "sti": {
+          "facilities": 4,
+          "people": 24,
+          "visits": 28
+        },
+        "condom": {
+          "facilities": 17,
+          "people": 142,
+          "visits": 149
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "23",
+      "name": "Trat",
+      "nameTh": "ตราด",
+      "lat": 12.242,
+      "lng": 102.517,
+      "newCases2566": 156,
+      "services": {
+        "lab": {
+          "facilities": 7,
+          "people": 1014,
+          "visits": 0,
+          "tested": 472,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 0
+        },
+        "sti": {
+          "facilities": 2,
+          "people": 23,
+          "visits": 26
+        },
+        "condom": {
+          "facilities": 18,
+          "people": 136,
+          "visits": 138
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 28,
+          "visits": 30,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 5,
+        "certified": 3,
+        "current": 2,
+        "orgs": [
+          "ชมรมกำลังใจเพื่อน",
+          "ชมรมกำลังใจเพื่อนโรงพยาบาลแลมงอบ",
+          "ชมรมเพื่อนพึ่งเพื่อน",
+          "มูลนิธิรักษ์ไทย",
+          "สำนักงานสาธารณสุขจังหวัดตราด"
+        ]
+      }
+    },
+    {
+      "code": "26",
+      "name": "Nakhon Nayok",
+      "nameTh": "นครนายก",
+      "lat": 14.207,
+      "lng": 101.213,
+      "newCases2566": 143,
+      "services": {
+        "lab": {
+          "facilities": 4,
+          "people": 325,
+          "visits": 0,
+          "tested": 323,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 2
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 864,
+          "visits": 921
+        },
+        "condom": {
+          "facilities": 10,
+          "people": 126,
+          "visits": 129
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 12,
+          "visits": 12,
+          "onArv": 0
+        }
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "61",
+      "name": "Uthai Thani",
+      "nameTh": "อุทัยธานี",
+      "lat": 15.3835,
+      "lng": 100.0246,
+      "newCases2566": 138,
+      "services": {
+        "lab": {
+          "facilities": 8,
+          "people": 1673,
+          "visits": 0,
+          "tested": 1442,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 0
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 75,
+          "visits": 85
+        },
+        "condom": {
+          "facilities": 14,
+          "people": 161,
+          "visits": 163
+        },
+        "vct": {
+          "facilities": 1,
+          "people": 33,
+          "visits": 36,
+          "onArv": 0
+        }
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "96",
+      "name": "Narathiwat",
+      "nameTh": "นราธิวาส",
+      "lat": 6.426,
+      "lng": 101.823,
+      "newCases2566": 128,
+      "services": {
+        "lab": {
+          "facilities": 11,
+          "people": 2474,
+          "visits": 0,
+          "tested": 2327,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 148
+        },
+        "sti": {
+          "facilities": 2,
+          "people": 12,
+          "visits": 12
+        },
+        "condom": {
+          "facilities": 36,
+          "people": 290,
+          "visits": 307
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 15,
+        "certified": 6,
+        "current": 9,
+        "orgs": [
+          "กลุ่ม Together",
+          "มูลนิธิโอโซน (OZONE)",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "37",
+      "name": "Amnat Charoen",
+      "nameTh": "อำนาจเจริญ",
+      "lat": 15.865,
+      "lng": 104.626,
+      "newCases2566": 119,
+      "services": {
+        "lab": {
+          "facilities": 7,
+          "people": 1092,
+          "visits": 0,
+          "tested": 666,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 329
+        },
+        "sti": {
+          "facilities": 2,
+          "people": 238,
+          "visits": 256
+        },
+        "condom": {
+          "facilities": 16,
+          "people": 151,
+          "visits": 163
+        },
+        "vct": {
+          "facilities": 2,
+          "people": 14,
+          "visits": 16,
+          "onArv": 0
+        }
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "75",
+      "name": "Samut Songkhram",
+      "nameTh": "สมุทรสงคราม",
+      "lat": 13.414,
+      "lng": 100.002,
+      "newCases2566": 109,
+      "services": {
+        "lab": {
+          "facilities": 2,
+          "people": 127,
+          "visits": 0,
+          "tested": 77,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 49
+        },
+        "sti": {
+          "facilities": 1,
+          "people": 1,
+          "visits": 1
+        },
+        "condom": {
+          "facilities": 13,
+          "people": 101,
+          "visits": 104
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    },
+    {
+      "code": "94",
+      "name": "Pattani",
+      "nameTh": "ปัตตานี",
+      "lat": 6.869,
+      "lng": 101.25,
+      "newCases2566": 109,
+      "services": {
+        "lab": {
+          "facilities": 10,
+          "people": 1090,
+          "visits": 0,
+          "tested": 1059,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 7
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 4,
+          "visits": 4
+        },
+        "condom": {
+          "facilities": 54,
+          "people": 222,
+          "visits": 234
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 17,
+        "certified": 8,
+        "current": 9,
+        "orgs": [
+          "APASS",
+          "สํานักงานสาธารณสุขจังหวัด"
+        ]
+      }
+    },
+    {
+      "code": "49",
+      "name": "Mukdahan",
+      "nameTh": "มุกดาหาร",
+      "lat": 16.543,
+      "lng": 104.724,
+      "newCases2566": 106,
+      "services": {
+        "lab": {
+          "facilities": 6,
+          "people": 383,
+          "visits": 0,
+          "tested": 272,
+          "positive": 0,
+          "inconclusive": 0,
+          "viralLoadTests": 25
+        },
+        "sti": {
+          "facilities": 6,
+          "people": 169,
+          "visits": 184
+        },
+        "condom": {
+          "facilities": 33,
+          "people": 187,
+          "visits": 209
+        },
+        "vct": {
+          "facilities": 2,
+          "people": 16,
+          "visits": 18,
+          "onArv": 0
+        }
+      },
+      "civilSociety": {
+        "total": 5,
+        "certified": 4,
+        "current": 1,
+        "orgs": [
+          "สํานักงานสาธารณสุขจังหวัด",
+          "หอแก้วสีรุ้ง จ.มุกดาหาร"
+        ]
+      }
+    },
+    {
+      "code": "95",
+      "name": "Yala",
+      "nameTh": "ยะลา",
+      "lat": 6.541,
+      "lng": 101.281,
+      "newCases2566": 101,
+      "services": {
+        "lab": {
+          "facilities": 8,
+          "people": 2026,
+          "visits": 0,
+          "tested": 1987,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 3
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 5,
+          "visits": 5
+        },
+        "condom": {
+          "facilities": 27,
+          "people": 108,
+          "visits": 114
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 11,
+        "certified": 7,
+        "current": 4,
+        "orgs": [
+          "APASS",
+          "ศูนย์ประสานงานการป้องกันและแก้ไขปัญหาเอดส์ จังหวัดยะลา",
+          "สำนักงานสาธารณสุขจังหวัดยะลา (สสจ.ยะลา)"
+        ]
+      }
+    },
+    {
+      "code": "58",
+      "name": "Mae Hong Son",
+      "nameTh": "แม่ฮ่องสอน",
+      "lat": 19.302,
+      "lng": 97.965,
+      "newCases2566": 73,
+      "services": {
+        "lab": {
+          "facilities": 6,
+          "people": 1016,
+          "visits": 0,
+          "tested": 954,
+          "positive": 28,
+          "inconclusive": 0,
+          "viralLoadTests": 13
+        },
+        "sti": {
+          "facilities": 2,
+          "people": 49,
+          "visits": 49
+        },
+        "condom": {
+          "facilities": 23,
+          "people": 104,
+          "visits": 107
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 13,
+        "certified": 7,
+        "current": 7,
+        "orgs": [
+          "สำนักงานสาธารณสุขจังหวัดแม่ฮ่องสอน",
+          "เครือข่าย​ผู้ใช้​ยา​ประเทศไทย​"
+        ]
+      }
+    },
+    {
+      "code": "91",
+      "name": "Satun",
+      "nameTh": "สตูล",
+      "lat": 6.623,
+      "lng": 100.067,
+      "newCases2566": 67,
+      "services": {
+        "lab": {
+          "facilities": 6,
+          "people": 514,
+          "visits": 0,
+          "tested": 428,
+          "positive": 1,
+          "inconclusive": 0,
+          "viralLoadTests": 86
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 24,
+          "visits": 25
+        },
+        "condom": {
+          "facilities": 18,
+          "people": 154,
+          "visits": 161
+        },
+        "vct": null
+      },
+      "civilSociety": {
+        "total": 12,
+        "certified": 4,
+        "current": 8,
+        "orgs": [
+          "ศูนย์ลดอันตรายจากยาเสพติดจังหวัดสตูล",
+          "สํานักงานสาธารณสุขจังหวัด",
+          "เครือข่าย​ผู้ใช้​ยา​ประเทศไทย​"
+        ]
+      }
+    },
+    {
+      "code": "17",
+      "name": "Sing Buri",
+      "nameTh": "สิงห์บุรี",
+      "lat": 14.891,
+      "lng": 100.405,
+      "newCases2566": 15,
+      "services": {
+        "lab": {
+          "facilities": 3,
+          "people": 868,
+          "visits": 0,
+          "tested": 810,
+          "positive": 7,
+          "inconclusive": 0,
+          "viralLoadTests": 11
+        },
+        "sti": {
+          "facilities": 3,
+          "people": 66,
+          "visits": 70
+        },
+        "condom": {
+          "facilities": 9,
+          "people": 130,
+          "visits": 135
+        },
+        "vct": null
+      },
+      "civilSociety": null
+    }
+  ]
+}

@@ -236,6 +236,29 @@ function shortDescription(text) {
     .slice(0, 220);
 }
 
+/**
+ * Supabase edge failures arrive as a full Cloudflare HTML error page, which is
+ * useless in a log and worse in a JSON field. Pull out the status if there is
+ * one, otherwise the first line of real text.
+ */
+function summarizeError(err) {
+  const msg = String(err?.message || err || '').trim();
+  if (!/<!DOCTYPE|<html/i.test(msg)) return msg.slice(0, 160);
+  const title = msg.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1];
+  const code = msg.match(/\b(5\d{2}|4\d{2})\b/)?.[1];
+  const clean = (title || '').replace(/\s+/g, ' ').trim();
+  return clean ? `${clean}${code && !clean.includes(code) ? ` (${code})` : ''}`.slice(0, 160)
+    : `edge error page${code ? ` (${code})` : ''}`;
+}
+
+/** Provenance sidecar for feed.json. Kept separate so feed.json stays an array. */
+function writeFeedMeta(meta) {
+  fs.writeFileSync(
+    path.join(ROOT, 'public', 'feed_meta.json'),
+    JSON.stringify({ ...meta, builtAt: new Date().toISOString() }, null, 2),
+  );
+}
+
 async function main() {
   console.log('=== Feed snapshot ===');
   const t0 = Date.now();
@@ -268,7 +291,18 @@ async function main() {
 
       const feedOutPath = path.join(__dirname, '../public/feed.json');
       fs.writeFileSync(feedOutPath, JSON.stringify(fallbackCards, null, 2));
+      // Say so. This fallback is the deduplicated directory wearing the feed's
+      // clothes — one card per business, not the per-post firehose the tab
+      // claims to be. Without this marker the LIVE tab silently becomes a
+      // second copy of the directory and nothing on screen admits it.
+      writeFeedMeta({
+        degraded: true,
+        source: 'data.json',
+        reason: `Supabase unavailable: ${summarizeError(err)}`,
+        cards: fallbackCards.length,
+      });
       console.log(`Wrote ${fallbackCards.length} fallback feed cards to ${feedOutPath} in ${Date.now() - t0}ms`);
+      console.warn('  NOTE: feed is DEGRADED — mirroring data.json, not the per-post stream.');
       return;
     }
     throw err;
@@ -422,6 +456,7 @@ async function main() {
   })();
 
   fs.writeFileSync(path.join(ROOT, 'public', 'feed.json'), JSON.stringify(finalCards, null, 0));
+  writeFeedMeta({ degraded: false, source: 'channel_messages', cards: finalCards.length });
 
   const withPhotos = finalCards.filter((c) => c.primaryPhoto).length;
   const withContacts = finalCards.filter((c) => c.phone || c.lineUrl).length;

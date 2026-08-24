@@ -61,7 +61,7 @@ const en = {
     health: {
       kicker: '01 — Concurrent research',
       title: 'HIV, STI & legitimacy beside the inventory',
-      lead: 'Open government case data, certified-provider registries, and excise tax on licensed bath & massage — read next to parlour broadcast density from our Telegram pipeline. Four lenses. One map. No stigma theatre — geography for harm reduction.',
+      lead: 'Open government case data, BE 2568 service-delivery returns, certified-provider registries, and excise tax on licensed bath & massage — read next to parlour broadcast density from our Telegram pipeline. Five lenses. One map. No stigma theatre — geography for harm reduction.',
     },
     insights: {
       kicker: '02 — Reading room',
@@ -323,7 +323,7 @@ const th = {
     health: {
       kicker: '01 — งานวิจัยคู่ขนาน',
       title: 'HIV, STI และความชอบธรรมข้างคลังรายการ',
-      lead: 'ข้อมูลเคสภาครัฐ ทะเบียนผู้ให้บริการที่รับรอง และภาษีสรรพสามิตบนอาบอบนวดที่ถูกกฎหมาย — อ่านคู่กับความหนาแน่นการออกอากาศของร้านจากไปป์ไลน์ Telegram สี่เลนส์ แผนที่เดียว ไม่ใช่การแสดงตราบาป — ภูมิศาสตร์เพื่อลดอันตราย',
+      lead: 'ข้อมูลเคสภาครัฐ ผลการให้บริการปี 2568 ทะเบียนผู้ให้บริการที่รับรอง และภาษีสรรพสามิตบนอาบอบนวดที่ถูกกฎหมาย — อ่านคู่กับความหนาแน่นการออกอากาศของร้านจากไปป์ไลน์ Telegram ห้าเลนส์ แผนที่เดียว ไม่ใช่การแสดงตราบาป — ภูมิศาสตร์เพื่อลดอันตราย',
     },
     insights: {
       kicker: '02 — ห้องอ่าน',
@@ -550,7 +550,7 @@ const zh = {
     health: {
       kicker: '01 — 并行研究',
       title: 'HIV、性病与合法性，与名录并置',
-      lead: '公开的政府病例数据、认证服务商登记、以及对持牌浴场与按摩的消费税——与我们 Telegram 流水线中的场所广播密度对照阅读。四个镜头。一张地图。不是污名表演——为减害服务的地理。',
+      lead: '公开的政府病例数据、佛历 2568 年服务提供记录、认证服务商登记、以及对持牌浴场与按摩的消费税——与我们 Telegram 流水线中的场所广播密度对照阅读。五个镜头。一张地图。不是污名表演——为减害服务的地理。',
     },
     insights: {
       kicker: '02 — 阅览室',
@@ -775,7 +775,7 @@ const ko = {
     health: {
       kicker: '01 — 병행 연구',
       title: '인벤토리 옆의 HIV, STI, 정당성',
-      lead: '공개 정부 사례 데이터, 인증 제공자 등록부, 면허 목욕·마사지 소비세 — Telegram 파이프라인의 업소 방송 밀도와 함께 읽습니다. 네 렌즈. 한 지도. 낙인 연극이 아니라 위해 감소를 위한 지리.',
+      lead: '공개 정부 사례 데이터, 불기 2568년 서비스 제공 실적, 인증 제공자 등록부, 면허 목욕·마사지 소비세 — Telegram 파이프라인의 업소 방송 밀도와 함께 읽습니다. 다섯 렌즈. 한 지도. 낙인 연극이 아니라 위해 감소를 위한 지리.',
     },
     insights: {
       kicker: '02 — 열람실',

@@ -1217,6 +1217,35 @@ export default function Paper() {
             <p>The surveillance infrastructure question is the one the engagement-based framework is required to answer. The cost of answering it is now low. The question is who builds it, and on whose terms.</p>
           </div>
         </section>
+
+        <section className="paper-sec">
+          <span className="paper-num">XXX</span>
+          <h2 className="paper-h">The Service Layer, and What the Reporting Gap Reveals</h2>
+          <p className="paper-lead">
+            Section XX ended on a question about who builds the engagement-side layer. This section is the answer in its smallest honest form, because the question stopped being theoretical: two social workers who track HIV in this sector asked what the platform could tell them that they did not already have. The answer was, at that moment, nothing. The health page held a single national series — new HIV cases entering care by province of domicile, Buddhist year 2566 — which is a real number about a real epidemic and is useless for the thing a social worker does on a Tuesday afternoon. It says where cases surfaced two years ago. It does not say where a person can be tested this week, who runs outreach in that province, or whether anyone is running outreach there at all.
+          </p>
+          <p className="paper-lead">
+            That question has an answer in the open data, and the answer had simply not been assembled. Thailand's Ministry of Public Health publishes service-delivery returns under the 43-folder health information standard, and the Department of Disease Control publishes a register of the volunteers and civil-society organisations accredited to work on HIV. Five of these series were joined for this paper: laboratory results (LABFU-HIV), screening and treatment for sexually transmitted infections, support for correct condom use, voluntary counselling with testing and antiretroviral referral, and the civil-society register. Four of the five carry an <code>areacode</code> — a Ministry of Interior geographic code whose leading digits are the province — which means they can be joined to the case series and to venue density without any geocoding step and without any inference. The most recent complete year for all five is Buddhist 2568. The case series most recently published is Buddhist 2566. The service side of the Thai health system is, in published form, two years ahead of the case side.
+          </p>
+          <p className="paper-lead">
+            The assembled figures for Buddhist 2568 are these: 187,882 people had an Anti-HIV test recorded across 810 reporting facilities; 1,251 of those results were positive, a testing yield of 6.66 per thousand. Every one of the 77 provinces filed a return for condom-use support. Seventy-six filed for STI screening and treatment. Twenty-seven filed for voluntary counselling and testing. Not one province reported a single person referred onward to antiretroviral treatment through that channel — the field exists in the schema, it is defined in the data dictionary, and it is empty nationwide.
+          </p>
+          <p className="paper-lead">
+            That last sequence is the finding, and it should be read carefully, because the tempting reading is wrong. It does not mean nobody in Thailand started treatment in 2568; the national treatment programme is large, well documented, and works through other reporting channels. What the sequence measures is which interventions the reporting system is built to capture. Condom support is counted everywhere. Testing with counselling is counted in roughly a third of provinces. The referral into treatment — the step that converts a positive result into a treated person, and the only step in the chain that costs real money over years — is counted nowhere in this series. The instrument is most complete where the intervention is cheapest and disappears entirely where the intervention is most expensive. A metric regime shaped this way will reliably report success at the top of the funnel while remaining structurally blind to whether anyone reached the bottom of it.
+          </p>
+          <p className="paper-lead">
+            The civil-society register carries a second finding of the same kind. Eight hundred and seventy-three registrations are recorded across fifty provinces. Twenty-seven provinces have none — no accredited organisation, no registered volunteer. Several of those provinces carry advertised venue activity in this platform's own inventory. Where a province has venues and no registered organisation and no counselling-and-testing return, a referral chain does not exist to be used; it has to be built. That is a different operational problem from a thin one, and until these three series were placed beside each other there was no cheap way to tell the two apart.
+          </p>
+          <p className="paper-lead">
+            The limits have to be stated as plainly as the findings. A facility that filed no return is invisible in this data, so a low count is evidence about reporting before it is evidence about service, and it is never evidence that a population does not need care. The testing yield is a programme measure — positives among people who were tested, in records where a result was captured — and it is not prevalence, not incidence, and not a statement about any venue, any worker, or any client. Venue counts derive from public advertising and are a floor on advertised supply rather than a register of businesses. Placing venue density beside service volume produces a prompt to look, not a finding about risk, and the distinction is the whole ethical load-bearing wall of this section.
+          </p>
+          <p className="paper-lead">
+            What the exercise demonstrates is narrower than the pivot described in Section XX and more useful than the argument for it. No new collection was required. No new instrument was deployed. Nobody was surveyed, tracked, or identified. Five files that the Thai state already publishes were joined on a code the Thai state already assigns, and the result answers an operational question that neither file answers alone — which is the same claim this platform makes about Telegram, applied to open government data instead. The cost was an afternoon. The reason it had not been done is not that it was hard or expensive. It is that assembling it requires someone to hold the case series, the service returns, the civil-society register, and the supply-side mirror in one view at the same time, and no institution is organised to do that.
+          </p>
+          <div className="paper-coda">
+            <p>The state already publishes where the service is. It publishes where the cases were, two years later. It does not publish the two together, and the gap between them is where a social worker actually stands.</p>
+          </div>
+        </section>
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════ */}
