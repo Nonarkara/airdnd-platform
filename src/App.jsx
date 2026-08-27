@@ -52,6 +52,7 @@ const MatchingPaper = lazy(() => import('./components/MatchingPaper'));
 const Trends = lazy(() => import('./components/Trends'));
 const Health = lazy(() => import('./components/Health'));
 const Insights = lazy(() => import('./components/Insights'));
+const PublicWorks = lazy(() => import('./components/PublicWorks'));
 const SORT_OPTIONS = [
   'Most Active Broadcasters',
   'Most Promotions',
@@ -771,6 +772,14 @@ function App() {
         element={(
           <Suspense fallback={<div className="page-shell-loading">Loading trends…</div>}>
             <Trends />
+          </Suspense>
+        )}
+      />
+      <Route
+        path="/public-works"
+        element={(
+          <Suspense fallback={<div className="page-shell-loading">Loading public works…</div>}>
+            <PublicWorks />
           </Suspense>
         )}
       />

@@ -566,13 +566,56 @@ export default function ListingMap({
     });
     heatLayerRef.current = heatLayer;
 
-    L.control
+    const layerControl = L.control
       .layers(
         { 'Dark Map': dark, 'Light Map': light, Satellite: satellite },
         { 'Air Quality (PM2.5)': aqi, 'Precipitation (IMERG)': rain, 'Demand Heatmap': heatLayer },
         { position: 'topright', collapsed: true },
       )
       .addTo(map);
+
+    // Fetch infrastructure data and add layers
+    fetch('/data/infrastructure.json')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (!data) return;
+        
+        // Transit Corridors
+        const transitGroup = L.featureGroup();
+        data.transitCorridors.forEach(corridor => {
+          const latlngs = corridor.stations.map(s => [s.lat, s.lng]);
+          L.polyline(latlngs, {
+            color: corridor.color,
+            weight: 4,
+            opacity: 0.8
+          }).bindPopup(`<b>${corridor.line}</b><br/>${corridor.stations.length} stations`).addTo(transitGroup);
+          
+          corridor.stations.forEach(s => {
+            L.circleMarker([s.lat, s.lng], {
+              radius: 4,
+              color: corridor.color,
+              fillColor: '#fff',
+              fillOpacity: 1,
+              weight: 2
+            }).bindPopup(`<b>${s.name}</b><br/>${corridor.line}`).addTo(transitGroup);
+          });
+        });
+        layerControl.addOverlay(transitGroup, 'Transit Corridors');
+
+        // Zoning Districts
+        const zoningGroup = L.featureGroup();
+        data.zoningDistricts.forEach(zone => {
+          L.polygon(zone.polygon.map(p => [p.lat, p.lng]), {
+            color: zone.type === 'Commercial' ? '#f59e0b' : '#3b82f6',
+            weight: 2,
+            opacity: 0.6,
+            fillOpacity: 0.1
+          }).bindPopup(`<b>${zone.name}</b><br/>${zone.type} (${zone.code})`).addTo(zoningGroup);
+        });
+        layerControl.addOverlay(zoningGroup, 'Municipal Zoning');
+      })
+      .catch(console.error);
+
 
     // Sync legend visibility with overlay toggles.
     map.on('overlayadd', (e) => {
