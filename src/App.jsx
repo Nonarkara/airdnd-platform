@@ -1,5 +1,5 @@
 import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -59,7 +59,6 @@ const Trends = lazy(() => import('./components/Trends'));
 const Health = lazy(() => import('./components/Health'));
 const Insights = lazy(() => import('./components/Insights'));
 const PublicWorks = lazy(() => import('./components/PublicWorks'));
-const IndustryIntel = lazy(() => import('./components/IndustryIntel'));
 const SORT_OPTIONS = [
   'Most Active Broadcasters',
   'Most Promotions',
@@ -817,29 +816,7 @@ function App() {
       />
       <Route
         path="/intel"
-        element={(
-          <div className="app-shell">
-            <Header
-              language={language}
-              setLanguage={setLanguage}
-              t={t}
-              theme={theme}
-              setTheme={setTheme}
-              onRefresh={handleRefresh}
-              isRefreshing={dataState.isRefreshing}
-              sourceLabel={displayDataState.sourceLabel}
-              activeView="directory"
-              setActiveView={setActiveView}
-              metrics={metrics}
-            />
-            <main className="app-main">
-              <Suspense fallback={<div className="page-shell-loading">Loading industry intelligence…</div>}>
-                <IndustryIntel />
-              </Suspense>
-            </main>
-            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
-          </div>
-        )}
+        element={<Navigate to="/insights" replace />}
       />
       <Route
         path="/health"
