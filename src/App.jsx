@@ -54,6 +54,7 @@ const Trends = lazy(() => import('./components/Trends'));
 const Health = lazy(() => import('./components/Health'));
 const Insights = lazy(() => import('./components/Insights'));
 const PublicWorks = lazy(() => import('./components/PublicWorks'));
+const IndustryIntel = lazy(() => import('./components/IndustryIntel'));
 const SORT_OPTIONS = [
   'Most Active Broadcasters',
   'Most Promotions',
@@ -785,6 +786,32 @@ function App() {
         )}
       />
       <Route
+        path="/intel"
+        element={(
+          <div className="app-shell">
+            <Header
+              language={language}
+              setLanguage={setLanguage}
+              t={t}
+              theme={theme}
+              setTheme={setTheme}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
+              sourceLabel={displayDataState.sourceLabel}
+              activeView="directory"
+              setActiveView={setActiveView}
+              metrics={metrics}
+            />
+            <main className="app-main">
+              <Suspense fallback={<div className="page-shell-loading">Loading industry intelligence…</div>}>
+                <IndustryIntel />
+              </Suspense>
+            </main>
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+          </div>
+        )}
+      />
+      <Route
         path="/health"
         element={(
           <div className="app-shell">
@@ -1123,15 +1150,16 @@ function App() {
                   padding: '4px',
                 }}>
                   {[
-                    { id: 'directory', label: `Directory (${filteredListings.length})` },
-                    { id: 'feed', label: `Live activity (${filteredFeedListings.length || 0})` },
-                    { id: 'epidemic', label: 'HIV / STI context' },
-                    { id: 'heatmap', label: 'Spatial heatmap' },
-                    { id: 'provinces', label: 'Province breakdown' },
+                    { id: 'directory', label: `Directory (${filteredListings.length})`, hint: 'Pinned listings, by province' },
+                    { id: 'feed', label: `Live activity (${filteredFeedListings.length || 0})`, hint: 'Most recent Telegram posts' },
+                    { id: 'epidemic', label: 'HIV / STI context', hint: 'Provincial case data overlaid on inventory' },
+                    { id: 'heatmap', label: 'Spatial heatmap', hint: 'Density by venue cluster' },
+                    { id: 'provinces', label: 'Province breakdown', hint: 'Click to fly, sorted by supply' },
                   ].map((mode) => (
                     <button
                       key={mode.id}
                       onClick={() => setMapSource(mode.id)}
+                      title={mode.hint}
                       style={{
                         padding: '10px 16px',
                         background: mapSource === mode.id ? 'var(--mango-dim)' : 'transparent',
