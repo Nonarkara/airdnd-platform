@@ -41,7 +41,10 @@ function ListingCard({ listing, onClick, priority = false }) {
     return /ว่าง|พร้อม|available|walk[ -]?in|คิวว่าง/i.test(textBlob);
   }, [listing]);
 
-  const sourceName = formatSourceChannelName(listing.sourceChannel) || listing.sourceChannel || '';
+  const isLongdo = listing.source === 'longdo';
+  const sourceName = isLongdo
+    ? (t.filters?.sourceLongdo || 'Longdo Map')
+    : (formatSourceChannelName(listing.sourceChannel) || listing.sourceChannel || '');
   const isNew = isListingNew(listing);
   const province = listing.city || listing.location || '—';
   const tag = (Array.isArray(listing.tags) && listing.tags[0])
@@ -84,8 +87,9 @@ function ListingCard({ listing, onClick, priority = false }) {
       <div className="lcard__venue">
         <div className="lcard__name-row">
           <span className="lcard__name">{listing.name}</span>
-          {isAvailableNow && <span className="tag-available tag" style={{ background: '#059669', color: '#fff', fontSize: '10px', padding: '2px 6px', fontWeight: 700 }}>⚡ Ready</span>}
-          {isNew && !isAvailableNow && <span className="tag-mango tag">{t.card?.newBadge || 'New'}</span>}
+          {isLongdo && <span className="tag tag-longdo">{t.filters?.sourceLongdo || 'Longdo'}</span>}
+          {isAvailableNow && !isLongdo && <span className="tag tag-available">{t.card?.readyBadge || 'Ready'}</span>}
+          {isNew && !isAvailableNow && !isLongdo && <span className="tag-mango tag">{t.card?.newBadge || 'New'}</span>}
         </div>
         <div className="lcard__meta">
           {tag && <span>{tag}</span>}
@@ -99,11 +103,11 @@ function ListingCard({ listing, onClick, priority = false }) {
       </div>
 
       <div
-        className={`lcard__ads${mentions > 1 ? ' is-hot' : ''}`}
-        title={`${mentions} ads logged across tracked channels`}
+        className={`lcard__ads${isLongdo ? '' : mentions > 1 ? ' is-hot' : ''}`}
+        title={isLongdo ? 'Longdo Map POI · CC BY-SA 4.0' : `${mentions} ads logged across tracked channels`}
       >
-        <span className="mono">{mentions > 0 ? mentions : 1}</span>
-        <span className="lcard__ads-unit">× ads</span>
+        <span className="mono">{isLongdo ? 'POI' : (mentions > 0 ? mentions : 1)}</span>
+        {!isLongdo && <span className="lcard__ads-unit">× ads</span>}
       </div>
 
       <div className="lcard__price mono">{price}</div>
@@ -130,6 +134,17 @@ function ListingCard({ listing, onClick, priority = false }) {
             aria-label="LINE"
           >
             LINE
+          </a>
+        )}
+        {isLongdo && listing.mapsUrl && (
+          <a
+            href={listing.mapsUrl}
+            className="lcard__action"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Longdo Map"
+          >
+            Map
           </a>
         )}
         <button

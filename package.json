@@ -19,6 +19,7 @@
     "feed:refresh": "node scripts/refresh_feed_snapshot.js",
     "patterns:compute": "node scripts/compute_patterns.js",
     "audit:data": "node scripts/audit_public_data.js",
+    "longdo:refresh": "node scripts/build_longdo_pois.js",
     "cleanup:companions": "node scripts/cleanup_public_companions.js",
     "visitors:sync": "node scripts/sync_visitor_logs.js",
     "test": "node --test",

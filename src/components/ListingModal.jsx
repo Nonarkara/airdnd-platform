@@ -171,6 +171,7 @@ function ListingModal({ listing, onClose, t }) {
   const channel = (listing.sourceChannel || '').replace(/^@/, '');
   const firstSeen = listing.createdAt ? new Date(listing.createdAt) : null;
   const lastUpdate = listing.updatedAt ? new Date(listing.updatedAt) : null;
+  const isLongdo = listing.source === 'longdo';
   const fmt = (d) => d && !isNaN(d.getTime())
     ? d.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })
     : null;
@@ -256,9 +257,11 @@ function ListingModal({ listing, onClose, t }) {
             <div className="modal-topline">
               <span className="status-pill">{sourceLabel}</span>
               <span>
-                {listing.postedAt
-                  ? `Posted ${formatRelativeTimestamp(listing.postedAt)}`
-                  : formatRelativeTimestamp(listing.updatedAt)}
+                {isLongdo
+                  ? (listing.city || 'Thailand')
+                  : listing.postedAt
+                    ? `Posted ${formatRelativeTimestamp(listing.postedAt)}`
+                    : formatRelativeTimestamp(listing.updatedAt)}
               </span>
             </div>
 
@@ -337,6 +340,29 @@ function ListingModal({ listing, onClose, t }) {
             )}
 
             {/* ── Intelligence Assessment ─────────────────────────── */}
+            {isLongdo ? (
+              <div className="modal-intel">
+                <span className="modal-intel-eyebrow">LONGDO MAP · CC BY-SA 4.0</span>
+                <div className="modal-intel-score">
+                  <div className="modal-intel-verdict">
+                    <strong>Public directory listing</strong>
+                    <span>Not from Telegram intake. Coordinates and contact come from Longdo Map.</span>
+                  </div>
+                  <a
+                    className="modal-intel-maps"
+                    href={mapsHref || listing.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Longdo ↗
+                  </a>
+                </div>
+                <p className="modal-intel-note">
+                  POI data © Longdo Map contributors, licensed{' '}
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.
+                </p>
+              </div>
+            ) : (
             <div className="modal-intel">
               <span className="modal-intel-eyebrow">INTELLIGENCE ASSESSMENT</span>
               <div className="modal-intel-score">
@@ -372,8 +398,10 @@ function ListingModal({ listing, onClose, t }) {
                 <a href="/methodology" target="_blank" rel="noopener noreferrer">Methodology →</a>
               </p>
             </div>
+            )}
 
             {/* 1-Tap Booking Inquiry Assistant */}
+            {!isLongdo && (
             <div className="modal-booking-assistant" style={{ margin: '16px 0', padding: '12px 14px', background: 'var(--bg-2)', border: '1px solid var(--line)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="eyebrow" style={{ fontSize: '10px', color: 'var(--mango)', fontWeight: 700 }}>💬 1-TAP INQUIRY SCRIPT (FOR LINE / CHAT)</span>
@@ -404,6 +432,7 @@ function ListingModal({ listing, onClose, t }) {
                 Copy Thai Inquiry Script 📋
               </button>
             </div>
+            )}
 
             {/* Contact buttons */}
             {(telHref || lineHref || telegramHref || mapsHref) && (

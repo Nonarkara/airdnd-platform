@@ -28,6 +28,11 @@ import {
 import { useLanguage } from './context/LanguageContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { validateListingsPayload } from './lib/schema';
+import {
+  fetchLongdoPois,
+  listingMatchesFilters,
+  mergeDirectory,
+} from './lib/longdoListings';
 
 const REFRESH_INTERVAL_MS = 30_000;
 // Full inventory — never truncate. Phone-canonical set is ~100 cards, but the
@@ -360,6 +365,8 @@ function App() {
   const location = useLocation();
   const [session, setSession] = useState(null);
   const [allListings, setAllListings] = useState([]);
+  const [longdoListings, setLongdoListings] = useState([]);
+  const [activeSource, setActiveSource] = useState('both');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeLocation, setActiveLocation] = useState(ALL_LOCATIONS_VALUE);
   const [activeActivity, setActiveActivity] = useState(ALL_TAGS_VALUE);
@@ -395,7 +402,11 @@ function App() {
 
   const t = tCtx;
   const deferredSearchTerm = useDeferredValue(searchTerm);
-  const metrics = useMemo(() => createMetrics(allListings), [allListings]);
+  const mergedListings = useMemo(
+    () => mergeDirectory(allListings, longdoListings),
+    [allListings, longdoListings],
+  );
+  const metrics = useMemo(() => createMetrics(mergedListings), [mergedListings]);
   const intakeSummary = useMemo(() => createIntakeSummary(allListings), [allListings]);
   const displayDataState = useMemo(() => ({
     ...dataState,
@@ -436,16 +447,31 @@ function App() {
     }
   }, [location.pathname, location.search]);
 
+  useEffect(() => {
+    let cancelled = false;
+    fetchLongdoPois()
+      .then((result) => {
+        if (cancelled) return;
+        setLongdoListings(result.listings);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setLongdoListings([]);
+        }
+      });
+    return () => { cancelled = true; };
+  }, []);
+
   // Deep-link: ?listing=<id> auto-opens that listing's modal once data has
   // loaded. If the id isn't in the filtered allListings set (some listings
   // are dropped by visualDeduplication or validation but are still legitimate
   // shares), fetch from public/data.json — the broader 75-listing snapshot.
   useEffect(() => {
-    if (allListings.length === 0) return;
+    if (mergedListings.length === 0) return;
     const params = new URLSearchParams(window.location.search);
     const targetId = params.get('listing');
     if (!targetId) return;
-    const match = allListings.find((listing) => String(listing.id) === String(targetId));
+    const match = mergedListings.find((listing) => String(listing.id) === String(targetId));
     if (match) {
       setSelectedListing(match);
       return;
@@ -462,7 +488,7 @@ function App() {
       })
       .catch(() => {});
     return () => { cancelled = true; };
-  }, [allListings]);
+  }, [mergedListings]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -643,70 +669,73 @@ function App() {
     };
   }, []);
 
+  const filterState = useMemo(() => ({
+    location: activeLocation,
+    activity: activeActivity,
+    search: deferredSearchTerm,
+    priceTier: activePriceTier,
+    openStatus: activeOpenStatus,
+  }), [activeActivity, activeLocation, activeOpenStatus, activePriceTier, deferredSearchTerm]);
+
   const locationOptions = useMemo(
     () => [
       { value: ALL_LOCATIONS_VALUE, label: t.filters.allLocations },
-      ...[...new Set(allListings.map((listing) => listing.city))]
+      ...[...new Set(mergedListings.map((listing) => listing.city))]
         .filter(Boolean)
         .sort((left, right) => left.localeCompare(right))
         .map((city) => ({ value: city, label: city })),
     ],
-    [allListings, t.filters.allLocations],
+    [mergedListings, t.filters.allLocations],
   );
 
   const activityOptions = useMemo(
     () => [
       { value: ALL_TAGS_VALUE, label: t.filters.allTags },
-      ...[...new Set(allListings.flatMap((listing) => listing.tags))]
+      ...[...new Set(mergedListings.flatMap((listing) => listing.tags || []))]
         .filter(Boolean)
         .sort((left, right) => left.localeCompare(right))
         .map((tag) => ({ value: tag, label: tag })),
     ],
-    [allListings, t.filters.allTags],
+    [mergedListings, t.filters.allTags],
   );
 
-  const filteredListings = useMemo(
-    () =>
-      sortListings(
-        allListings.filter((listing) => {
-          const matchesLocation =
-            activeLocation === ALL_LOCATIONS_VALUE || listing.city === activeLocation;
-          const matchesActivity =
-            activeActivity === ALL_TAGS_VALUE || listing.tags.includes(activeActivity);
-
-          const normalizedSearch = deferredSearchTerm.trim().toLowerCase();
-          const matchesSearch =
-            !normalizedSearch ||
-            [
-              listing.name,
-              listing.location,
-              listing.description,
-              listing.phone,
-              listing.hours,
-              listing.sourceChannel,
-              ...(Array.isArray(listing.tags) ? listing.tags : []),
-              ...(Array.isArray(listing.serviceTags) ? listing.serviceTags : []),
-            ]
-              .filter(Boolean)
-              .some((value) => String(value).toLowerCase().includes(normalizedSearch));
-
-          const matchesPriceTier =
-            activePriceTier === 'all' ||
-            (activePriceTier === 'economy' && listing.priceValue > 0 && listing.priceValue < 1000) ||
-            (activePriceTier === 'mid' && listing.priceValue >= 1000 && listing.priceValue <= 2000) ||
-            (activePriceTier === 'premium' && listing.priceValue > 2000);
-
-          const matchesOpenStatus =
-            activeOpenStatus === 'all' ||
-            (activeOpenStatus === '247' && /24\s*ชั่วโมง|24\s*hrs|24\s*hours/i.test(listing.hours || '')) ||
-            (activeOpenStatus === 'open' && (listing.isOpenNow || /24|เปิด|open/i.test(listing.hours || '')));
-
-          return matchesLocation && matchesActivity && matchesSearch && matchesPriceTier && matchesOpenStatus;
-        }),
-        sortBy,
-      ),
-    [activeActivity, activeLocation, activePriceTier, activeOpenStatus, allListings, deferredSearchTerm, sortBy],
+  const telegramFiltered = useMemo(
+    () => allListings.filter((listing) => listingMatchesFilters(listing, filterState)),
+    [allListings, filterState],
   );
+  const longdoFiltered = useMemo(
+    () => (activeSource === 'telegram'
+      ? []
+      : longdoListings.filter((listing) => listingMatchesFilters(listing, filterState))),
+    [activeSource, filterState, longdoListings],
+  );
+
+  const filteredListings = useMemo(() => {
+    let rows;
+    if (activeSource === 'telegram') rows = telegramFiltered;
+    else if (activeSource === 'longdo') rows = longdoFiltered;
+    else rows = mergeDirectory(telegramFiltered, longdoFiltered);
+    return sortListings(rows, sortBy);
+  }, [activeSource, longdoFiltered, sortBy, telegramFiltered]);
+
+  const mapTelegramListings = useMemo(() => {
+    if (mapSource === 'feed') return filteredFeedListings;
+    if (activeSource === 'longdo') return [];
+    return telegramFiltered;
+  }, [activeSource, filteredFeedListings, mapSource, telegramFiltered]);
+
+  const mapLongdoPois = useMemo(() => {
+    if (mapSource === 'feed' || activeSource === 'telegram') return [];
+    return longdoFiltered;
+  }, [activeSource, longdoFiltered, mapSource]);
+
+  const directoryFiltersActive = Boolean(searchTerm.trim())
+    || activeLocation !== ALL_LOCATIONS_VALUE
+    || activeActivity !== ALL_TAGS_VALUE
+    || activePriceTier !== 'all'
+    || activeOpenStatus !== 'all'
+    || activeSource !== 'both'
+    || sortBy !== DEFAULT_SORT;
 
   const clearFilters = () => {
     setSearchTerm('');
@@ -714,6 +743,7 @@ function App() {
     setActiveActivity(ALL_TAGS_VALUE);
     setActivePriceTier('all');
     setActiveOpenStatus('all');
+    setActiveSource('both');
     setSortBy(DEFAULT_SORT);
   };
 
@@ -925,10 +955,11 @@ function App() {
                     ))}
                   </div>
                   <ListingMap
-                    listings={mapSource === 'directory' ? filteredListings : filteredFeedListings}
+                    listings={mapTelegramListings}
+                    longdoPois={mapLongdoPois}
                     onCardClick={setSelectedListing}
                     t={t}
-                    viewKey={`dedicated-map|${mapSource}|${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
+                    viewKey={`dedicated-map|${mapSource}|${activeLocation}|${activeActivity}|${activeSource}|${deferredSearchTerm.trim()}`}
                     theme={theme}
                     lastUpdatedAt={dataState.lastLoadedAt}
                     isRefreshing={dataState.isRefreshing}
@@ -940,7 +971,7 @@ function App() {
             </main>
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
             <DistrictComparisonDrawer
-              listings={allListings}
+              listings={mergedListings}
               isOpen={isDistrictDrawerOpen}
               onClose={() => setIsDistrictDrawerOpen(false)}
               onSelectDistrict={(dist) => setActiveLocation(dist)}
@@ -1058,7 +1089,7 @@ function App() {
                 />
 
                 <ProximityFinder
-                  listings={allListings}
+                  listings={mergedListings}
                   onSelect={setSelectedListing}
                 />
 
@@ -1088,6 +1119,8 @@ function App() {
                     setActivePriceTier={setActivePriceTier}
                     activeOpenStatus={activeOpenStatus}
                     setActiveOpenStatus={setActiveOpenStatus}
+                    activeSource={activeSource}
+                    setActiveSource={setActiveSource}
                     onOpenDistrictDrawer={() => setIsDistrictDrawerOpen(true)}
                     sortOptions={SORT_OPTIONS}
                     sortBy={sortBy}
@@ -1095,14 +1128,7 @@ function App() {
                     onRefresh={handleRefresh}
                     isRefreshing={dataState.isRefreshing}
                     onClearFilters={clearFilters}
-                    hasActiveFilters={
-                      Boolean(searchTerm.trim()) ||
-                      activeLocation !== ALL_LOCATIONS_VALUE ||
-                      activeActivity !== ALL_TAGS_VALUE ||
-                      activePriceTier !== 'all' ||
-                      activeOpenStatus !== 'all' ||
-                      sortBy !== DEFAULT_SORT
-                    }
+                    hasActiveFilters={directoryFiltersActive}
                     resultCount={filteredListings.length}
                     t={t}
                   />
@@ -1114,12 +1140,7 @@ function App() {
                     t={t}
                     dataState={displayDataState}
                     onClearFilters={clearFilters}
-                    hasActiveFilters={
-                      Boolean(searchTerm.trim()) ||
-                      activeLocation !== ALL_LOCATIONS_VALUE ||
-                      activeActivity !== ALL_TAGS_VALUE ||
-                      sortBy !== DEFAULT_SORT
-                    }
+                    hasActiveFilters={directoryFiltersActive}
                     isLoading={dataState.isLoading}
                   />
                 </ErrorBoundary>
@@ -1183,10 +1204,11 @@ function App() {
                 </div>
                 <Suspense fallback={<section className="section-shell-loading">Loading map…</section>}>
                   <ListingMap
-                    listings={mapSource === 'directory' ? filteredListings : filteredFeedListings}
+                    listings={mapTelegramListings}
+                    longdoPois={mapLongdoPois}
                     onCardClick={setSelectedListing}
                     t={t}
-                    viewKey={`${mapSource}|${activeLocation}|${activeActivity}|${deferredSearchTerm.trim()}`}
+                    viewKey={`${mapSource}|${activeLocation}|${activeActivity}|${activeSource}|${deferredSearchTerm.trim()}`}
                     theme={theme}
                     lastUpdatedAt={dataState.lastLoadedAt}
                     isRefreshing={dataState.isRefreshing}
@@ -1198,7 +1220,7 @@ function App() {
             </main>
 
             <DistrictComparisonDrawer
-              listings={allListings}
+              listings={mergedListings}
               isOpen={isDistrictDrawerOpen}
               onClose={() => setIsDistrictDrawerOpen(false)}
               onSelectDistrict={(dist) => setActiveLocation(dist)}

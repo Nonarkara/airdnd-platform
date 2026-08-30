@@ -298,7 +298,6 @@
   width: 14px;
   height: 14px;
   box-sizing: border-box;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .longdo-pin:hover {
@@ -322,7 +321,6 @@
   font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .longdo-cluster span {
