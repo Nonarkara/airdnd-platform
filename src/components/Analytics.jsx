@@ -126,6 +126,7 @@ export default function Analytics() {
   const [analysisNow, setAnalysisNow] = useState(() => Date.now());
   const [lastRefreshed, setLastRefreshed] = useState(null);
   const [healthSnap, setHealthSnap] = useState(null);
+  const [economyData, setEconomyData] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Pull the precomputed product-patterns dataset (Methodology §08).
@@ -134,6 +135,16 @@ export default function Analytics() {
     fetch('/patterns.json')
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => { if (!cancelled) setPatterns(data); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  // Pull macro-economy data
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/data/economy.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => { if (!cancelled) setEconomyData(data); })
       .catch(() => {});
     return () => { cancelled = true; };
   }, []);
@@ -865,6 +876,40 @@ export default function Analytics() {
             ))}
           </div>
         </section>
+
+        {/* Macro-Economy Lens */}
+        {economyData && (
+          <section className="an-card an-wide">
+            <h2>Macro-Economy Context</h2>
+            <p className="an-card-sub">
+              Contextualizing the grey economy against provincial GDP (GPP) and minimum wage.
+            </p>
+            <div className="an-table">
+              <div className="an-table-head">
+                <span>Province</span>
+                <span>GPP / Capita</span>
+                <span>Minimum Wage (Daily)</span>
+                <span>Avg Massage Price (Est.)</span>
+                <span>Wage-to-Service Gap</span>
+              </div>
+              {economyData.provinces.map((prov) => {
+                const estPrice = data.priceMean || 600; // Use overall mean or specific if mapped
+                const gap = (estPrice / prov.minimumWage).toFixed(1);
+                return (
+                  <div key={prov.code} className="an-table-row">
+                    <span>{prov.name}</span>
+                    <span>฿{prov.gppPerCapita.toLocaleString()}/yr</span>
+                    <span>฿{prov.minimumWage}/day</span>
+                    <span>฿{estPrice.toLocaleString()}</span>
+                    <strong style={{ color: gap > 1.5 ? 'var(--color-status)' : 'var(--color-data)' }}>
+                      {gap}x daily wage
+                    </strong>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         <section className="an-card an-wide">
           <h2>Market Extremes · Outlier Board</h2>

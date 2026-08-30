@@ -23,6 +23,7 @@ import {
   formatMapsUrl,
 } from '../lib/normalization';
 import { trackSignal, isListingSaved } from '../lib/tracker';
+import { listingCoords, getNearestTransit } from '../lib/geo';
 import './ListingModal.css';
 
 function ListingModal({ listing, onClose, t }) {
@@ -36,6 +37,11 @@ function ListingModal({ listing, onClose, t }) {
   const [mainImageFailed, setMainImageFailed] = useState(false);
   const [reported, setReported] = useState(false);
   const [phoneCopied, setPhoneCopied] = useState(false);
+  const [copiedScript, setCopiedScript] = useState(false);
+
+  const coordsInfo = listingCoords(listing);
+  const transit = coordsInfo ? getNearestTransit(coordsInfo.coords) : null;
+  const thaiScript = `สวัสดีครับ สอบถามคิวว่างช่วงเวลานี้ครับ มีน้องคนไหนพร้อมให้บริการบ้างครับ? (จาก Sabai Sabai - ${listing?.name || ''})`;
 
   const galleryUrls = getSafeListingGalleryUrls(listing);
   const activeIndex = (() => {
@@ -165,6 +171,7 @@ function ListingModal({ listing, onClose, t }) {
   const channel = (listing.sourceChannel || '').replace(/^@/, '');
   const firstSeen = listing.createdAt ? new Date(listing.createdAt) : null;
   const lastUpdate = listing.updatedAt ? new Date(listing.updatedAt) : null;
+  const isLongdo = listing.source === 'longdo';
   const fmt = (d) => d && !isNaN(d.getTime())
     ? d.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })
     : null;
@@ -250,9 +257,11 @@ function ListingModal({ listing, onClose, t }) {
             <div className="modal-topline">
               <span className="status-pill">{sourceLabel}</span>
               <span>
-                {listing.postedAt
-                  ? `Posted ${formatRelativeTimestamp(listing.postedAt)}`
-                  : formatRelativeTimestamp(listing.updatedAt)}
+                {isLongdo
+                  ? (listing.city || 'Thailand')
+                  : listing.postedAt
+                    ? `Posted ${formatRelativeTimestamp(listing.postedAt)}`
+                    : formatRelativeTimestamp(listing.updatedAt)}
               </span>
             </div>
 
@@ -260,6 +269,11 @@ function ListingModal({ listing, onClose, t }) {
 
             <div className="modal-location">
               <span>{listing.location}</span>
+              {transit && (
+                <span className="modal-transit-badge" style={{ color: 'var(--data)', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', marginLeft: '8px' }}>
+                  {transit.tag}
+                </span>
+              )}
             </div>
 
             {/* Metrics grid */}
@@ -326,6 +340,29 @@ function ListingModal({ listing, onClose, t }) {
             )}
 
             {/* ── Intelligence Assessment ─────────────────────────── */}
+            {isLongdo ? (
+              <div className="modal-intel">
+                <span className="modal-intel-eyebrow">LONGDO MAP · CC BY-SA 4.0</span>
+                <div className="modal-intel-score">
+                  <div className="modal-intel-verdict">
+                    <strong>Public directory listing</strong>
+                    <span>Not from Telegram intake. Coordinates and contact come from Longdo Map.</span>
+                  </div>
+                  <a
+                    className="modal-intel-maps"
+                    href={mapsHref || listing.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Longdo ↗
+                  </a>
+                </div>
+                <p className="modal-intel-note">
+                  POI data © Longdo Map contributors, licensed{' '}
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.
+                </p>
+              </div>
+            ) : (
             <div className="modal-intel">
               <span className="modal-intel-eyebrow">INTELLIGENCE ASSESSMENT</span>
               <div className="modal-intel-score">
@@ -361,6 +398,41 @@ function ListingModal({ listing, onClose, t }) {
                 <a href="/methodology" target="_blank" rel="noopener noreferrer">Methodology →</a>
               </p>
             </div>
+            )}
+
+            {/* 1-Tap Booking Inquiry Assistant */}
+            {!isLongdo && (
+            <div className="modal-booking-assistant" style={{ margin: '16px 0', padding: '12px 14px', background: 'var(--bg-2)', border: '1px solid var(--line)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span className="eyebrow" style={{ fontSize: '10px', color: 'var(--mango)', fontWeight: 700 }}>💬 1-TAP INQUIRY SCRIPT (FOR LINE / CHAT)</span>
+                {copiedScript && <span style={{ fontSize: '11px', color: '#34d399', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>✓ Copied!</span>}
+              </div>
+              <p style={{ margin: '0 0 8px', fontSize: '0.85rem', color: 'var(--ink-2)', lineHeight: 1.4 }}>"{thaiScript}"</p>
+              <button
+                type="button"
+                className="btn btn-outline btn-sm"
+                style={{ width: '100%', borderRadius: 0, fontSize: '11px', padding: '6px 12px' }}
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(thaiScript);
+                    setCopiedScript(true);
+                    setTimeout(() => setCopiedScript(false), 2500);
+                  } catch {
+                    const el = document.createElement('textarea');
+                    el.value = thaiScript;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                    setCopiedScript(true);
+                    setTimeout(() => setCopiedScript(false), 2500);
+                  }
+                }}
+              >
+                Copy Thai Inquiry Script 📋
+              </button>
+            </div>
+            )}
 
             {/* Contact buttons */}
             {(telHref || lineHref || telegramHref || mapsHref) && (

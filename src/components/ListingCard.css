@@ -48,6 +48,19 @@
 
 .lcard__src { color: var(--ink-4); }
 
+.tag-longdo {
+  background: #2DD4BF;
+  color: #0a0a0c;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.tag-available {
+  background: var(--mango-dim);
+  color: var(--mango-2);
+}
+
 .lcard__province {
   font-size: var(--fs-body);
   color: var(--ink-2);

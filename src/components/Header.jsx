@@ -28,7 +28,7 @@ function Header({
   const navigate = useNavigate();
   const location = useLocation();
   const isLive = sourceLabel?.toLowerCase().includes('live');
-  const venueCount = metrics?.uniquePhones || metrics?.total || 0;
+  const venueCount = metrics?.total || metrics?.uniquePhones || 0;
   const status = t.status || {};
   const themes = t.themes || {};
 
@@ -40,6 +40,7 @@ function Header({
   const linkTabs = [
     { id: 'insights', label: t.nav?.insights || 'Insights', href: '/insights' },
     { id: 'health', label: t.nav?.health || 'HIV / STI', href: '/health' },
+    { id: 'publicworks', label: t.nav?.publicWorks || 'Public Works', href: '/public-works' },
     { id: 'analytics', label: t.nav?.analytics || 'Analytics', href: '/analytics' },
     { id: 'methodology', label: t.nav?.methodology || 'Method', href: '/methodology' },
   ];

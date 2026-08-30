@@ -400,24 +400,22 @@ export function createMetrics(listings) {
       .map((listing) => listing.sourceChannel)
       .filter(Boolean),
   ).size;
-  const matchedMediaCount = normalizedListings.filter((listing) => hasMatchedMedia(listing)).length;
+  const telegramListings = normalizedListings.filter((listing) => listing.source !== 'longdo');
+  const longdoCount = normalizedListings.length - telegramListings.length;
+  const matchedMediaCount = telegramListings.filter((listing) => hasMatchedMedia(listing)).length;
   const withPhone = normalizedListings.filter((listing) => listing.phone).length;
   const withContact = normalizedListings.filter((listing) =>
     listing.phone || listing.lineUrl || listing.telegramUrl || listing.mapsUrl,
   ).length;
   const uniquePhones = new Set(
-    normalizedListings
+    telegramListings
       .map((listing) => buildPhoneKey(listing.phone))
       .filter(Boolean),
   ).size;
-  // Named faces = every advertised identity on the card, not only the
-  // canonical title. Phone-dedup collapses LOUISSPA-style chains to one
-  // venue; the minister still needs the labour-surface count of names aired.
-  // Soft filter only: keep น้อง… staff nicknames (those ARE faces); drop
-  // channel chrome, URLs, hours, and pure spam that isBadPublicName catches
-  // for card titles.
+  // Named faces = Telegram labour surface only. Longdo spa titles are
+  // venues, not advertised identities.
   const uniqueNames = new Set();
-  for (const listing of normalizedListings) {
+  for (const listing of telegramListings) {
     const candidates = [listing.name, ...(listing.aliasNames || [])];
     for (const candidate of candidates) {
       const name = String(candidate || '').trim();
@@ -428,6 +426,8 @@ export function createMetrics(listings) {
 
   return {
     total: normalizedListings.length,
+    telegramCount: telegramListings.length,
+    longdoCount,
     bangkokCount,
     cityCount,
     sourceChannelCount,
@@ -436,8 +436,8 @@ export function createMetrics(listings) {
     withContact,
     uniquePhones,
     uniqueNames: uniqueNames.size,
-    mediaRate: normalizedListings.length
-      ? Math.round((matchedMediaCount / normalizedListings.length) * 100)
+    mediaRate: telegramListings.length
+      ? Math.round((matchedMediaCount / telegramListings.length) * 100)
       : 0,
     contactRate: normalizedListings.length
       ? Math.round((withContact / normalizedListings.length) * 100)

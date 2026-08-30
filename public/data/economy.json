@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "lastUpdated": "2026-08-25T16:33:50.650Z",
+    "source": "NESDC (Gross Provincial Product) and Ministry of Labour (Minimum Wage) - Simulated",
+    "description": "Macro-economic indicators by province for contextualizing the grey economy."
+  },
+  "provinces": [
+    {
+      "code": "10",
+      "name": "Bangkok",
+      "gppPerCapita": 605000,
+      "minimumWage": 363,
+      "touristArrivals": 22000000
+    },
+    {
+      "code": "11",
+      "name": "Samut Prakan",
+      "gppPerCapita": 420000,
+      "minimumWage": 363,
+      "touristArrivals": 2500000
+    },
+    {
+      "code": "12",
+      "name": "Nonthaburi",
+      "gppPerCapita": 310000,
+      "minimumWage": 363,
+      "touristArrivals": 1800000
+    },
+    {
+      "code": "13",
+      "name": "Pathum Thani",
+      "gppPerCapita": 340000,
+      "minimumWage": 363,
+      "touristArrivals": 1500000
+    },
+    {
+      "code": "20",
+      "name": "Chonburi",
+      "gppPerCapita": 580000,
+      "minimumWage": 361,
+      "touristArrivals": 18000000
+    },
+    {
+      "code": "50",
+      "name": "Chiang Mai",
+      "gppPerCapita": 180000,
+      "minimumWage": 350,
+      "touristArrivals": 8000000
+    },
+    {
+      "code": "83",
+      "name": "Phuket",
+      "gppPerCapita": 390000,
+      "minimumWage": 370,
+      "touristArrivals": 14000000
+    }
+  ]
+}

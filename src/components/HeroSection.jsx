@@ -6,10 +6,11 @@ import './HeroSection.css';
 function HeroSection({ t, metrics, dataState, intakeSummary }) {
   const heroText = t?.hero || {};
   const labels = heroText.statLabels || {};
-  const total = metrics?.uniquePhones > 0 ? metrics.uniquePhones : (metrics?.total > 0 ? metrics.total : 0);
+  const total = (metrics?.telegramCount || 0) + (metrics?.longdoCount || 0) || metrics?.total || 0;
   const provinces = metrics?.cityCount > 0 ? metrics.cityCount : 0;
   const faces = metrics?.uniqueNames > 0 ? metrics.uniqueNames : 0;
-  const operators = metrics?.total > 0 ? metrics.total : 0;
+  const operators = metrics?.uniquePhones > 0 ? metrics.uniquePhones : 0;
+  const longdo = metrics?.longdoCount > 0 ? metrics.longdoCount : 0;
   const channels = intakeSummary?.channelCount || metrics?.sourceChannelCount || 0;
   const photosMatched = metrics?.matchedMediaCount || 0;
   const lastSync = formatRelativeTimestamp(metrics?.latestTimestamp || dataState?.lastLoadedAt) || '—';
@@ -30,10 +31,11 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
   const messages = corpus?.messagesTotal || 0;
 
   const stats = [
-    { id: 'venues', label: labels.venues || 'Venues', value: total },
+    { id: 'venues', label: labels.venues || 'Locations', value: total },
+    { id: 'longdo', label: labels.longdo || 'Longdo POIs', value: longdo },
     { id: 'provinces', label: labels.provinces || 'Provinces', value: provinces },
     { id: 'faces', label: labels.faces || 'Named faces', value: faces },
-    { id: 'operators', label: labels.operators || 'Operators', value: operators },
+    { id: 'operators', label: labels.operators || 'Telegram phones', value: operators },
     { id: 'photos', label: labels.photos || 'Photos archived', value: photosArchived },
     { id: 'messages', label: labels.messages || 'Channel messages', value: messages || channels },
   ];

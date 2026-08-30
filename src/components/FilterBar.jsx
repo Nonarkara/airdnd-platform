@@ -16,6 +16,8 @@ function FilterBar({
   setActivePriceTier,
   activeOpenStatus = 'all',
   setActiveOpenStatus,
+  activeSource = 'both',
+  setActiveSource,
   onOpenDistrictDrawer,
   onRefresh,
   isRefreshing,
@@ -74,6 +76,19 @@ function FilterBar({
               {option.label}
             </option>
           ))}
+        </select>
+      </div>
+
+      <div className="filter-field">
+        <label htmlFor="filter-source">{t.filters.dataSource}</label>
+        <select
+          id="filter-source"
+          value={activeSource}
+          onChange={(event) => setActiveSource && setActiveSource(event.target.value)}
+        >
+          <option value="both">{t.filters.sourceBoth}</option>
+          <option value="telegram">{t.filters.sourceTelegram}</option>
+          <option value="longdo">{t.filters.sourceLongdo}</option>
         </select>
       </div>
 

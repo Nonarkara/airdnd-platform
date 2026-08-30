@@ -75,10 +75,65 @@ export function listingCoords(listing) {
   return null;
 }
 
-// Rank listings by distance from `origin`, applying an optional budget ceiling.
-// Listings priced within budget rank first; "rate on request" listings are kept
-// (flagged askRate) but ranked after priced matches at the same distance.
-export function nearestListings(listings, origin, { maxBudget = null, limit = 12 } = {}) {
+export const TRANSIT_STATIONS = [
+  // BTS Sukhumvit Line
+  { name: 'BTS Siam', line: 'BTS', coords: [13.7456, 100.5342] },
+  { name: 'BTS Chit Lom', line: 'BTS', coords: [13.7441, 100.5431] },
+  { name: 'BTS Ploen Chit', line: 'BTS', coords: [13.7431, 100.5491] },
+  { name: 'BTS Nana', line: 'BTS', coords: [13.7401, 100.5555] },
+  { name: 'BTS Asok', line: 'BTS', coords: [13.7367, 100.5604] },
+  { name: 'BTS Phrom Phong', line: 'BTS', coords: [13.7303, 100.5698] },
+  { name: 'BTS Thong Lo', line: 'BTS', coords: [13.7242, 100.5779] },
+  { name: 'BTS Ekkamai', line: 'BTS', coords: [13.7196, 100.5852] },
+  { name: 'BTS Phra Khanong', line: 'BTS', coords: [13.7153, 100.5915] },
+  { name: 'BTS On Nut', line: 'BTS', coords: [13.7058, 100.6010] },
+  { name: 'BTS Udom Suk', line: 'BTS', coords: [13.6802, 100.6099] },
+  { name: 'BTS Bang Na', line: 'BTS', coords: [13.6682, 100.6048] },
+  { name: 'BTS Ari', line: 'BTS', coords: [13.7797, 100.5447] },
+  { name: 'BTS Saphan Khwai', line: 'BTS', coords: [13.7937, 100.5497] },
+  { name: 'BTS Mo Chit', line: 'BTS', coords: [13.8024, 100.5538] },
+  // BTS Silom Line
+  { name: 'BTS Sala Daeng', line: 'BTS', coords: [13.7285, 100.5342] },
+  { name: 'BTS Chong Nonsi', line: 'BTS', coords: [13.7237, 100.5298] },
+  // MRT Blue Line
+  { name: 'MRT Sukhumvit', line: 'MRT', coords: [13.7371, 100.5614] },
+  { name: 'MRT Phetchaburi', line: 'MRT', coords: [13.7489, 100.5636] },
+  { name: 'MRT Rama 9', line: 'MRT', coords: [13.7570, 100.5650] },
+  { name: 'MRT Thailand Cultural Centre', line: 'MRT', coords: [13.7663, 100.5714] },
+  { name: 'MRT Huai Khwang', line: 'MRT', coords: [13.7770, 100.5730] },
+  { name: 'MRT Sutthisan', line: 'MRT', coords: [13.7890, 100.5740] },
+  { name: 'MRT Lat Phrao', line: 'MRT', coords: [13.8062, 100.5724] },
+  { name: 'MRT Silom', line: 'MRT', coords: [13.7292, 100.5372] },
+  { name: 'MRT Sam Yan', line: 'MRT', coords: [13.7327, 100.5284] },
+];
+
+export function getNearestTransit(coords) {
+  if (!coords || !Array.isArray(coords)) return null;
+  let nearest = null;
+  let minDist = Infinity;
+  for (const st of TRANSIT_STATIONS) {
+    const d = haversineKm(coords, st.coords);
+    if (d < minDist) {
+      minDist = d;
+      nearest = st;
+    }
+  }
+  if (nearest && minDist <= 3.5) {
+    const distMeters = Math.round(minDist * 1000);
+    const distLabel = distMeters < 1000 ? `${distMeters}m` : `${minDist.toFixed(1)}km`;
+    return {
+      station: nearest.name,
+      line: nearest.line,
+      distanceKm: minDist,
+      distLabel,
+      tag: `🚇 ${distLabel} ${nearest.name}`
+    };
+  }
+  return null;
+}
+
+// Rank listings by distance from `origin`, applying optional budget and vibe/mood filters.
+export function nearestListings(listings, origin, { maxBudget = null, vibe = 'any', limit = 12 } = {}) {
   if (!origin || !Array.isArray(listings)) return [];
   const scored = [];
   for (const listing of listings) {
@@ -88,6 +143,19 @@ export function nearestListings(listings, origin, { maxBudget = null, limit = 12
     const price = Number.isFinite(listing.priceValue) && listing.priceValue > 0 ? listing.priceValue : null;
     const askRate = price === null;
     if (maxBudget && price !== null && price > maxBudget) continue;
+
+    // Vibe / Mood filter
+    if (vibe && vibe !== 'any') {
+      const textBlob = `${listing.name} ${listing.description || ''} ${(listing.tags || []).join(' ')} ${(listing.serviceTags || []).join(' ')}`.toLowerCase();
+      if (vibe === 'oil' && !/oil|อโรม่า|aroma|sensual|นวดน้ำมัน|ผ่อนคลาย|ผ่อนคลายสบาย|ฟิน/i.test(textBlob)) continue;
+      if (vibe === 'thai' && !/thai|แผนไทย|นวดไทย|รีดเส้น|คลายเส้น|ดัด|จับเส้น/i.test(textBlob)) continue;
+      if (vibe === 'vip' && !/vip|private|ส่วนตัว|พรีเมียม|premium|suite|หรู/i.test(textBlob)) continue;
+      if (vibe === 'latenight' && !/24|ดึก|รอบดึก|คืนนี้|ตี\d|late|open.*night/i.test(textBlob)) continue;
+      if (vibe === 'now' && !/ว่าง|พร้อม|available|walk[ -]?in|คิวว่าง/i.test(textBlob)) continue;
+    }
+
+    const transit = getNearestTransit(coordInfo.coords);
+
     scored.push({
       listing,
       distanceKm,
@@ -95,11 +163,11 @@ export function nearestListings(listings, origin, { maxBudget = null, limit = 12
       askRate,
       precision: coordInfo.precision,
       areaLabel: coordInfo.areaLabel,
+      transit,
     });
   }
-  // "Closest place I can get a massage" → rank purely by distance. The budget
-  // ceiling has already removed priced listings that are too expensive; ask-rate
-  // listings stay eligible (price unknown, not disqualifying).
+
+  // Rank by proximity
   scored.sort((a, b) => a.distanceKm - b.distanceKm);
   return scored.slice(0, limit);
 }

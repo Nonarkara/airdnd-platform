@@ -312,8 +312,45 @@ function createPinIcon(listing, availability) {
   });
 }
 
+// Longdo POI marker — small teal square with a thin amber border. The shape
+// difference (square vs circle) means even users with red-green color blindness
+// can tell the two datasets apart on the map.
+function createLongdoIcon(poi) {
+  return L.divIcon({
+    className: 'longdo-pin',
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10],
+    tooltipAnchor: [10, 0],
+  });
+}
+
+function buildLongdoPopupHtml(poi) {
+  const name = poi.name || 'Longdo POI';
+  const nameTh = poi.nameTh && poi.nameTh !== name ? `<div class="popup-sub">${escapeHtml(poi.nameTh)}</div>` : '';
+  const address = poi.addressEn || poi.addressTh || poi.location || '';
+  const phone = poi.phone ? `<a class="popup-tel" href="tel:${escapeHtml(poi.phone)}">${escapeHtml(poi.phone)}</a>` : '<span class="popup-na">—</span>';
+  const website = poi.website
+    ? `<a class="popup-link" target="_blank" rel="noreferrer" href="${escapeHtml(poi.website)}">${escapeHtml(poi.website.replace(/^https?:\/\//, ''))}</a>`
+    : '<span class="popup-na">—</span>';
+  return `
+    <div class="longdo-popup-body">
+      <div class="popup-kicker">Longdo POI · CC BY-SA 4.0</div>
+      <div class="popup-title">${escapeHtml(name)}</div>
+      ${nameTh}
+      <div class="popup-row"><span class="popup-key">Address</span>${escapeHtml(address)}</div>
+      <div class="popup-row"><span class="popup-key">Province</span>${escapeHtml(poi.city || '—')}</div>
+      <div class="popup-row"><span class="popup-key">Phone</span>${phone}</div>
+      <div class="popup-row"><span class="popup-key">Website</span>${website}</div>
+      <div class="popup-row"><span class="popup-key">Source</span><a class="popup-link" target="_blank" rel="noreferrer" href="https://map.longdo.com/p/${escapeHtml(poi.longdoId)}">Longdo Map ↗</a></div>
+      ${poi.poiType ? `<div class="popup-row"><span class="popup-key">Type</span>${escapeHtml(poi.poiType)}</div>` : ''}
+    </div>
+  `;
+}
+
 export default function ListingMap({
   listings,
+  longdoPois: longdoPoisProp,
   onCardClick,
   t,
   viewKey = 'all',
@@ -333,6 +370,7 @@ export default function ListingMap({
   const lightLayerRef = useRef(null);
   const heatLayerRef = useRef(null);
   const epidemicLayerRef = useRef(null);
+  const longdoMarkersRef = useRef(null);
   const userMarkerRef = useRef(null);
   const accuracyCircleRef = useRef(null);
   const reachRingsRef = useRef([]);
@@ -345,6 +383,19 @@ export default function ListingMap({
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [epidemicRows, setEpidemicRows] = useState([]);
   const [epidemicMeta, setEpidemicMeta] = useState(null);
+  // basemap = 'carto' (default) or 'osm' (auto-fallback when Carto tiles fail).
+  const [basemapStatus, setBasemapStatus] = useState({ mode: 'carto', errors: 0 });
+  const [overlayError, setOverlayError] = useState(null);
+  // Mirror of the basemap state for use inside the tile-error closure (avoids
+  // re-creating the map effect on every state update).
+  const basemapStatusRef = useRef({ mode: 'carto', theme: 'dark' });
+  // Longdo POI directory (CC BY-SA 4.0). Parent owns the fetch so the
+  // directory and the map share one JSON parse.
+  const [fetchedPois, setFetchedPois] = useState([]);
+  const longdoPois = longdoPoisProp !== undefined ? longdoPoisProp : fetchedPois;
+  const [showTelegram, setShowTelegram] = useState(true);
+  const [showLongdo, setShowLongdo] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { pins, pendingListings } = useMemo(() => {
     if (!Array.isArray(listings)) return { pins: [], pendingListings: [] };
@@ -384,23 +435,54 @@ export default function ListingMap({
   }, [listings]);
   const exactPinCount = pins.filter((pin) => pin.precision === 'exact').length;
   const areaPinCount = pins.length - exactPinCount;
+
+  const filteredLongdoPois = useMemo(() => {
+    const withCoords = (Array.isArray(longdoPois) ? longdoPois : []).filter((poi) => (
+      Number.isFinite(Number(poi.latitude)) && Number.isFinite(Number(poi.longitude))
+    ));
+    if (!searchQuery.trim()) return withCoords;
+    const q = searchQuery.trim().toLowerCase();
+    return withCoords.filter((poi) => {
+      const haystack = `${poi.name || ''} ${poi.nameTh || ''} ${poi.nameEn || ''} ${poi.city || ''} ${poi.addressEn || ''} ${poi.addressTh || ''} ${poi.location || ''}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [longdoPois, searchQuery]);
+
+  const visiblePins = useMemo(() => {
+    if (!showTelegram) return [];
+    if (!searchQuery.trim()) return pins;
+    const q = searchQuery.trim().toLowerCase();
+    return pins.filter((p) => {
+      const l = p.listing || {};
+      const haystack = `${l.name || ''} ${l.city || ''} ${l.location || ''} ${l.description || ''}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [pins, showTelegram, searchQuery]);
+
   const pinSummary = [
     exactPinCount > 0 ? `${exactPinCount} verified pins` : null,
     areaPinCount > 0 ? `${areaPinCount} area pins` : null,
+    filteredLongdoPois.length > 0 ? `${filteredLongdoPois.length} Longdo POIs` : null,
   ].filter(Boolean).join(' · ') || '0 mapped pins';
 
   const nearby = useMemo(() => {
     if (!userLocation) return null;
-    const ranked = pins
-      .map((pin) => ({
-        ...pin,
-        distance: distanceKm(userLocation.coords, pin.coords),
-        availability: getAvailability(pin.listing, nowMs),
-      }))
-      .sort((left, right) => {
-        const availabilityDelta = right.availability.rank - left.availability.rank;
-        return availabilityDelta || left.distance - right.distance;
-      });
+    const telegramRanked = (showTelegram ? pins : []).map((pin) => ({
+      ...pin,
+      distance: distanceKm(userLocation.coords, pin.coords),
+      availability: getAvailability(pin.listing, nowMs),
+    }));
+    const longdoRanked = (showLongdo ? filteredLongdoPois : []).map((poi) => ({
+      listing: poi,
+      coords: [Number(poi.latitude), Number(poi.longitude)],
+      precision: 'exact',
+      distance: distanceKm(userLocation.coords, [Number(poi.latitude), Number(poi.longitude)]),
+      availability: { state: 'unknown', rank: 0, label: 'Longdo POI' },
+    }));
+    const ranked = [...telegramRanked, ...longdoRanked].sort((left, right) => {
+      const availabilityDelta = right.availability.rank - left.availability.rank;
+      return availabilityDelta || left.distance - right.distance;
+    });
     const summarize = (radius) => {
       const matches = ranked.filter((pin) => pin.distance <= radius);
       return {
@@ -415,7 +497,7 @@ export default function ListingMap({
       tenKm: summarize(10),
       nearest: ranked.filter((pin) => pin.distance <= 10).slice(0, 5),
     };
-  }, [nowMs, pins, userLocation]);
+  }, [filteredLongdoPois, nowMs, pins, showLongdo, showTelegram, userLocation]);
 
   useEffect(() => {
     listingsRef.current = listings;
@@ -429,12 +511,16 @@ export default function ListingMap({
   const fitMapToPins = useCallback(() => {
     if (!mapInstanceRef.current) return;
 
-    if (pins.length === 0) {
+    const telegramCoords = (showTelegram ? pins : []).map((pin) => pin.coords);
+    const longdoCoords = (showLongdo ? filteredLongdoPois : [])
+      .map((poi) => [Number(poi.latitude), Number(poi.longitude)]);
+    const all = [...telegramCoords, ...longdoCoords];
+    if (all.length === 0) {
       mapInstanceRef.current.setView(BANGKOK_CENTER, DEFAULT_ZOOM);
       return;
     }
 
-    const bounds = L.latLngBounds(pins.map((pin) => pin.coords));
+    const bounds = L.latLngBounds(all);
     const span = Math.max(
       bounds.getNorth() - bounds.getSouth(),
       bounds.getEast() - bounds.getWest(),
@@ -442,7 +528,7 @@ export default function ListingMap({
     const tightCluster = span < 0.25;
     const maxFitZoom = tightCluster ? 11 : 13;
     mapInstanceRef.current.fitBounds(bounds.pad(0.25), { maxZoom: maxFitZoom, animate: false });
-  }, [pins]);
+  }, [filteredLongdoPois, pins, showLongdo, showTelegram]);
 
   // Keep a live ref to fitMapToPins so the (run-once) init effect's
   // ResizeObserver can call the current version without re-subscribing.
@@ -524,15 +610,60 @@ export default function ListingMap({
         maxZoom: 19,
       },
     );
+    // OSM raster fallback — used automatically if Carto tiles fail (rate-limit,
+    // network, or "API Key Required" from a corporate proxy). No key required.
+    const osmDark = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+      crossOrigin: true,
+    });
+    const osmLight = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+      crossOrigin: true,
+    });
 
     darkLayerRef.current = dark;
     lightLayerRef.current = light;
 
+    // If Carto tiles keep failing, auto-switch to OSM raster so the basemap
+    // never goes blank. Threshold: 8 errors within 30s of mount.
+    const tileErrorCounters = new Map();
+    let cartoErrors = 0;
+    const cartoErrorWindow = [];
+    const handleTileError = (label, fallback) => (e) => {
+      const now = Date.now();
+      const next = (tileErrorCounters.get(label) || 0) + 1;
+      tileErrorCounters.set(label, next);
+      if (label === 'carto') {
+        cartoErrorWindow.push(now);
+        while (cartoErrorWindow.length && now - cartoErrorWindow[0] > 30_000) cartoErrorWindow.shift();
+        cartoErrors = cartoErrorWindow.length;
+        if (cartoErrors >= 8 && basemapStatusRef.current.mode === 'carto') {
+          const currentBase = basemapStatusRef.current.theme === 'light' ? light : dark;
+          map.removeLayer(currentBase);
+          fallback.addTo(map);
+          setBasemapStatus({ mode: 'osm', errors: cartoErrors });
+        }
+      } else {
+        if (next === 5) {
+          setOverlayError(label === 'aqi' ? 'Air-quality tiles unavailable right now' : 'Precipitation tiles unavailable right now');
+        }
+      }
+      // eslint-disable-next-line no-console
+      console.warn(`[ListingMap] tile error (${label})`, e?.error || e);
+    };
+    dark.on('tileerror', handleTileError('carto', osmDark));
+    light.on('tileerror', handleTileError('carto', osmLight));
+    basemapStatusRef.current = { mode: 'carto', theme: 'dark' };
+
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     if (currentTheme === 'light') {
       light.addTo(map);
+      basemapStatusRef.current.theme = 'light';
     } else {
       dark.addTo(map);
+      basemapStatusRef.current.theme = 'dark';
     }
 
     // AQI overlay (AQICN tiles — public demo token; rate-limited but functional).
@@ -544,6 +675,7 @@ export default function ListingMap({
         opacity: 0.55,
       },
     );
+    aqi.on('tileerror', handleTileError('aqi'));
 
     // Precipitation overlay — NASA GPM/IMERG via GIBS (free, no API key).
     // Shows actual satellite-measured precipitation rate, not a forecast model.
@@ -556,6 +688,7 @@ export default function ListingMap({
         errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
       },
     );
+    rain.on('tileerror', handleTileError('rain'));
 
     // Heatmap layer for spatial mathematics
     const heatLayer = L.heatLayer([], {
@@ -566,13 +699,59 @@ export default function ListingMap({
     });
     heatLayerRef.current = heatLayer;
 
-    L.control
+    const layerControl = L.control
       .layers(
-        { 'Dark Map': dark, 'Light Map': light, Satellite: satellite },
+        { 'Dark Map': dark, 'Light Map': light, Satellite: satellite, 'OSM (fallback)': osmDark },
         { 'Air Quality (PM2.5)': aqi, 'Precipitation (IMERG)': rain, 'Demand Heatmap': heatLayer },
         { position: 'topright', collapsed: true },
       )
       .addTo(map);
+
+    // Fetch infrastructure data and add layers
+    fetch('/data/infrastructure.json')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (!data) return;
+
+        // Transit Corridors
+        const transitGroup = L.featureGroup();
+        data.transitCorridors.forEach(corridor => {
+          const latlngs = corridor.stations.map(s => [s.lat, s.lng]);
+          L.polyline(latlngs, {
+            color: corridor.color,
+            weight: 4,
+            opacity: 0.8
+          }).bindPopup(`<b>${corridor.line}</b><br/>${corridor.stations.length} stations`).addTo(transitGroup);
+
+          corridor.stations.forEach(s => {
+            L.circleMarker([s.lat, s.lng], {
+              radius: 4,
+              color: corridor.color,
+              fillColor: '#fff',
+              fillOpacity: 1,
+              weight: 2
+            }).bindPopup(`<b>${s.name}</b><br/>${corridor.line}`).addTo(transitGroup);
+          });
+        });
+        layerControl.addOverlay(transitGroup, 'Transit Corridors');
+
+        // Zoning Districts
+        const zoningGroup = L.featureGroup();
+        data.zoningDistricts.forEach(zone => {
+          // Some zones carry summary metadata without a polygon outline; skip
+          // them rather than crash the whole map effect.
+          if (!Array.isArray(zone.polygon) || zone.polygon.length === 0) return;
+          L.polygon(zone.polygon.map(p => [p.lat, p.lng]), {
+            color: zone.type === 'Commercial' ? '#f59e0b' : '#3b82f6',
+            weight: 2,
+            opacity: 0.6,
+            fillOpacity: 0.1
+          }).bindPopup(`<b>${zone.name}</b><br/>${zone.type} (${zone.code})`).addTo(zoningGroup);
+        });
+        layerControl.addOverlay(zoningGroup, 'Municipal Zoning');
+      })
+      .catch(console.error);
+
 
     // Sync legend visibility with overlay toggles.
     map.on('overlayadd', (e) => {
@@ -591,6 +770,26 @@ export default function ListingMap({
       showCoverageOnHover: false,
       zoomToBoundsOnClick: true,
       chunkedLoading: true
+    }).addTo(map);
+
+    // Second cluster group for the Longdo POI layer (CC BY-SA 4.0). Slightly
+    // larger cluster radius keeps the teal cluster bubbles visually distinct
+    // from the Telegram ones, and a teal "Longdo" icon-color so the two
+    // datasets read as different sources on the map.
+    longdoMarkersRef.current = L.markerClusterGroup({
+      maxClusterRadius: 45,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      chunkedLoading: true,
+      iconCreateFunction: (cluster) => {
+        const count = cluster.getChildCount();
+        return L.divIcon({
+          html: `<div class="longdo-cluster"><span>${count}</span></div>`,
+          className: 'longdo-cluster-wrapper',
+          iconSize: L.point(40, 40),
+        });
+      },
     }).addTo(map);
 
     // Leaflet renders at 0×0 while the Map tab is display:none. The tab-based UI
@@ -638,6 +837,7 @@ export default function ListingMap({
       map.remove();
       mapInstanceRef.current = null;
       markersRef.current = null;
+      longdoMarkersRef.current = null;
       heatLayerRef.current = null;
       userMarkerRef.current = null;
       accuracyCircleRef.current = null;
@@ -725,9 +925,9 @@ export default function ListingMap({
     if (!markersRef.current || !mapInstanceRef.current) return;
     markersRef.current.clearLayers();
 
-    for (const { listing, coords, precision } of pins) {
+    for (const { listing, coords, precision } of visiblePins) {
       const availability = getAvailability(listing, nowMs);
-      const marker = L.marker(coords, { 
+      const marker = L.marker(coords, {
         icon: createPinIcon(listing, availability),
         alt: listing.name || 'Listing location',
         title: listing.name || 'Listing location',
@@ -736,25 +936,50 @@ export default function ListingMap({
         maxWidth: 260,
         className: 'listing-popup',
       });
-      // Tooltip on hover
       marker.bindTooltip(`<strong>${escapeHtml(listing.name || 'Unknown')}</strong>`, {
         direction: 'top',
         className: 'listing-hover-tooltip',
       });
       markersRef.current.addLayer(marker);
     }
-    
-    // Update mathematical density heatmap
-    if (heatLayerRef.current) {
-      const heatData = pins.map(p => {
-        const mentions = Number(p.listing.mentionCount) || Number(p.listing.mention_count) || 1;
-        // Normalize intensity
-        const intensity = Math.min(mentions / 50, 1.0);
-        return [p.coords[0], p.coords[1], intensity];
+  }, [nowMs, visiblePins]);
+
+  useEffect(() => {
+    if (!longdoMarkersRef.current) return;
+    longdoMarkersRef.current.clearLayers();
+    if (!showLongdo) return;
+    for (const poi of filteredLongdoPois) {
+      const marker = L.marker([Number(poi.latitude), Number(poi.longitude)], {
+        icon: createLongdoIcon(poi),
+        alt: poi.name || 'Longdo POI',
+        title: poi.name || 'Longdo POI',
       });
-      heatLayerRef.current.setLatLngs(heatData);
+      marker.bindPopup(buildLongdoPopupHtml(poi), {
+        maxWidth: 280,
+        className: 'longdo-popup',
+      });
+      marker.bindTooltip(
+        `<strong>${escapeHtml(poi.name || 'Longdo POI')}</strong><br><span style="opacity:.7">${escapeHtml(poi.city || '')} · Longdo</span>`,
+        { direction: 'top', className: 'listing-hover-tooltip' },
+      );
+      longdoMarkersRef.current.addLayer(marker);
     }
-  }, [nowMs, pins]);
+  }, [filteredLongdoPois, showLongdo]);
+
+  useEffect(() => {
+    if (!heatLayerRef.current) return;
+    const heatData = [];
+    for (const p of visiblePins) {
+      const mentions = Number(p.listing.mentionCount) || Number(p.listing.mention_count) || 1;
+      heatData.push([p.coords[0], p.coords[1], Math.min(mentions / 50, 1.0)]);
+    }
+    if (showLongdo) {
+      for (const poi of filteredLongdoPois) {
+        heatData.push([Number(poi.latitude), Number(poi.longitude), 0.5]);
+      }
+    }
+    heatLayerRef.current.setLatLngs(heatData);
+  }, [filteredLongdoPois, showLongdo, visiblePins]);
 
   useEffect(() => {
     if (!mapInstanceRef.current) return;
@@ -764,6 +989,24 @@ export default function ListingMap({
       lastAutoFitKeyRef.current = viewKey;
     }
   }, [fitMapToPins, viewKey]);
+
+  // Fallback fetch only when the parent did not pass the snapshot.
+  useEffect(() => {
+    if (longdoPoisProp !== undefined) return undefined;
+    let cancelled = false;
+    fetch('/data/longdo_pois.json')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled || !data) return;
+        setFetchedPois(Array.isArray(data.pois) ? data.pois : []);
+      })
+      .catch(() => {
+        if (!cancelled) setFetchedPois([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [longdoPoisProp]);
 
   useEffect(() => {
     if (!mapInstanceRef.current || !darkLayerRef.current || !lightLayerRef.current) return;
@@ -866,15 +1109,41 @@ export default function ListingMap({
       const city = listing.city || 'Bangkok';
       counts.set(city, (counts.get(city) || 0) + 1);
     });
+    (Array.isArray(longdoPois) ? longdoPois : []).forEach((poi) => {
+      const city = poi.city || 'Thailand';
+      counts.set(city, (counts.get(city) || 0) + 1);
+    });
     return [...counts.entries()]
       .sort((a, b) => b[1] - a[1])
       .map(([city, count]) => ({ city, count, coords: CITY_COORDINATES[city] }));
-  }, [listings]);
+  }, [listings, longdoPois]);
 
   const handleFlyToCoords = (coords) => {
     if (!mapInstanceRef.current || !coords) return;
     mapInstanceRef.current.flyTo(coords, 13, { duration: 1.2 });
   };
+
+  // Quick-jump cities for the toolbar chips. Counts come from the live data so
+  // a chip with "0" gets dimmed — the user immediately knows which cities have
+  // coverage and which don't.
+  const QUICK_CITIES = [
+    { key: 'Bangkok', label: 'Bangkok', count: 0 },
+    { key: 'Nonthaburi', label: 'Nonthaburi', count: 0 },
+    { key: 'Chiang Mai', label: 'Chiang Mai', count: 0 },
+    { key: 'Chonburi', label: 'Pattaya', count: 0 },
+    { key: 'Phuket', label: 'Phuket', count: 0 },
+    { key: 'Khon Kaen', label: 'Khon Kaen', count: 0 },
+  ];
+  const quickCityCounts = [...pins, ...filteredLongdoPois].reduce((acc, item) => {
+    const city = item.listing?.city || item.city;
+    if (city) acc[city] = (acc[city] || 0) + 1;
+    return acc;
+  }, {});
+  const quickCityData = QUICK_CITIES.map((c) => ({
+    ...c,
+    coords: CITY_COORDINATES[c.key],
+    count: quickCityCounts[c.key] || 0,
+  }));
 
   return (
     <section className="listing-map-section" id="map">
@@ -891,7 +1160,7 @@ export default function ListingMap({
       </div>
       <div className="listing-map-toolbar" aria-label="Map tools">
         <div className="map-toolbar-left">
-          <button type="button" onClick={fitMapToPins} disabled={pins.length === 0}>
+          <button type="button" onClick={fitMapToPins} disabled={pins.length === 0 && filteredLongdoPois.length === 0}>
             Fit all
           </button>
           <button
@@ -909,6 +1178,82 @@ export default function ListingMap({
           {isRefreshing ? 'Syncing live data…' : `${formatFreshness(lastUpdatedAt, nowMs)} · ${dataSource}`}
         </span>
       </div>
+
+      <div className="listing-map-datasources" aria-label="Data source filter">
+        <span className="map-quickjump-label">{t.filters.dataSource || 'Source'}</span>
+        <button
+          type="button"
+          className={`map-source-chip${showTelegram ? ' is-active' : ''}`}
+          onClick={() => setShowTelegram((v) => !v)}
+          aria-pressed={showTelegram}
+        >
+          <i className="map-source-swatch map-source-swatch--telegram" />
+          {t.filters.sourceTelegram || 'Telegram broadcasts'}
+          <span className="map-source-count">{pins.length}</span>
+        </button>
+        <button
+          type="button"
+          className={`map-source-chip${showLongdo ? ' is-active' : ''}`}
+          onClick={() => setShowLongdo((v) => !v)}
+          aria-pressed={showLongdo}
+        >
+          <i className="map-source-swatch map-source-swatch--longdo" />
+          {t.filters.sourceLongdo || 'Longdo POI directory'}
+          <span className="map-source-count">{longdoPois.length}</span>
+        </button>
+        <div className="map-source-search">
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={t.filters.searchPlaceholder || 'Search name, province, address…'}
+            aria-label={t.filters.searchLabel || 'Search'}
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              className="map-source-search-clear"
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search"
+            >
+              ×
+            </button>
+          )}
+          {(searchQuery || (!showTelegram && !showLongdo)) && (
+            <span className="map-source-result-count">
+              {visiblePins.length + filteredLongdoPois.length} match{visiblePins.length + filteredLongdoPois.length === 1 ? '' : 'es'}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="listing-map-quickjump" aria-label="Quick city navigation">
+        <span className="map-quickjump-label">Jump to</span>
+        {quickCityData.map((city) => (
+          <button
+            key={city.key}
+            type="button"
+            className={`map-quickjump-chip${city.count > 0 ? ' has-data' : ''}`}
+            onClick={() => handleFlyToCoords(city.coords)}
+            disabled={!city.coords}
+            title={`${city.label} · ${city.count} venue${city.count === 1 ? '' : 's'}`}
+          >
+            <span className="map-quickjump-name">{city.label}</span>
+            <span className="map-quickjump-count">{city.count}</span>
+          </button>
+        ))}
+      </div>
+
+      {basemapStatus.mode === 'osm' && (
+        <div className="listing-map-fallback-note" role="status">
+          Carto tiles unreachable — basemap switched to <strong>OpenStreetMap</strong> automatically. No API key required for any layer shown here.
+        </div>
+      )}
+      {overlayError && (
+        <div className="listing-map-fallback-note" role="status">
+          {overlayError}. Layer turned off — base map unaffected.
+        </div>
+      )}
 
       {locateError && (
         <div className="listing-map-locate-error" role="alert">{locateError}</div>
@@ -977,6 +1322,10 @@ export default function ListingMap({
           <span><i className="availability-key availability-key--unknown" />Check availability</span>
           <span><i className="availability-key availability-key--closed" />Closed / unavailable</span>
         </div>
+        <div className="data-source-legend" aria-label="Data source legend">
+          <span><i className="map-source-swatch map-source-swatch--telegram" />Telegram broadcasts ({pins.length})</span>
+          <span><i className="map-source-swatch map-source-swatch--longdo" />Longdo POI · CC BY-SA 4.0 ({longdoPois.length})</span>
+        </div>
         <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
           <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#00e400' }} />0–50  Good</span>
@@ -991,6 +1340,31 @@ export default function ListingMap({
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#4da6ff' }} />Moderate</span>
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#0033cc' }} />Heavy</span>
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#6600cc' }} />Extreme</span>
+        </div>
+        <div className="map-architecture-strip" aria-label="Map architecture">
+          <span className="map-architecture-pill">
+            <i className="map-architecture-dot map-architecture-dot--carto" />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap (fallback)' : 'CARTO'}
+          </span>
+          <span className="map-architecture-pill" aria-live="polite">
+            <i className={`map-architecture-dot${aqiActive ? ' is-on' : ''}`} />AQI {aqiActive ? 'on' : 'off'}
+          </span>
+          <span className="map-architecture-pill" aria-live="polite">
+            <i className={`map-architecture-dot${rainActive ? ' is-on' : ''}`} />Rain {rainActive ? 'on' : 'off'}
+          </span>
+          <span className="map-architecture-pill map-architecture-reassure">
+            <i className="map-architecture-dot map-architecture-dot--ok" />No API key required for any layer
+          </span>
+          {longdoPois.length > 0 && (
+            <a
+              className="map-architecture-pill map-architecture-attrib"
+              href="https://map.longdo.com"
+              target="_blank"
+              rel="noreferrer"
+              title="POI data from Longdo Map under CC BY-SA 4.0"
+            >
+              <i className="map-source-swatch map-source-swatch--longdo" />POI data: Longdo Map · CC BY-SA 4.0
+            </a>
+          )}
         </div>
       </div>
 
