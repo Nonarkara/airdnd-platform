@@ -8,9 +8,9 @@
  * 25 MB/file cap is not hit. Official list IDs join the dump by numeric id
  * (A10048342 → 10048342) for coordinates.
  */
-import { createReadStream, createWriteStream, existsSync, mkdirSync, statSync } from 'node:fs';
-import { writeFileSync } from 'node:fs';
+import { createReadStream, createWriteStream, existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { createInterface } from 'node:readline';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { fileURLToPath } from 'node:url';
@@ -28,7 +28,9 @@ const UA = 'sabaisabai-airdnd/1.0 (community intelligence; CC BY-SA attribution)
 const THAILAND = { latMin: 5.5, latMax: 20.5, lngMin: 97.0, lngMax: 105.7 };
 const HOTEL_TYPE = /hotel|inn|resort/i;
 const SPA_TYPE = /(^|,\s*)spa(\s*,|$)/i;
-const MASSAGE_NAME = /นวด|\bmassage\b|\bspa\b|สปา/i;
+// หนวด (moustache) contains นวด as a substring — do not treat it as massage.
+const MASSAGE_NAME = /(?<!ห)นวด|\bmassage\b|\bspa\b|สปา/i;
+const MASSAGE_STRICT = /(?<!ห)นวด|\bmassage\b/i;
 const CACHE_MAX_AGE_S = 6 * 3600;
 
 const PROVINCE_FIX = {
@@ -85,44 +87,59 @@ async function fetchCsvToFile(url, target) {
   console.log(`[longdo] cached CSV → ${target} (${(statSync(target).size / 1e6).toFixed(1)} MB)`);
 }
 
-async function* iterateCsv(stream) {
+function parseCsvRecord(text) {
+  const row = [];
   let field = '';
-  let row = [];
   let inQuotes = false;
-  for await (const chunk of stream) {
-    const text = typeof chunk === 'string' ? chunk : String(chunk);
-    for (let i = 0; i < text.length; i += 1) {
-      const ch = text[i];
-      if (inQuotes) {
-        if (ch === '"') {
-          if (text[i + 1] === '"') {
-            field += '"';
-            i += 1;
-          } else {
-            inQuotes = false;
-          }
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    if (inQuotes) {
+      // Longdo mixes RFC 4180 ("") with backslash-escaped quotes (\").
+      if (ch === '\\' && text[i + 1] === '"') {
+        field += '"';
+        i += 1;
+        continue;
+      }
+      if (ch === '"') {
+        if (text[i + 1] === '"') {
+          field += '"';
+          i += 1;
         } else {
-          field += ch;
+          inQuotes = false;
         }
-      } else if (ch === '"') {
-        inQuotes = true;
-      } else if (ch === ',') {
-        row.push(field);
-        field = '';
-      } else if (ch === '\n') {
-        row.push(field);
-        if (row.some(Boolean)) yield row;
-        row = [];
-        field = '';
       } else if (ch !== '\r') {
         field += ch;
       }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      row.push(field);
+      field = '';
+    } else if (ch !== '\r' && ch !== '\n') {
+      field += ch;
     }
   }
-  if (field || row.length) {
-    row.push(field);
-    if (row.some(Boolean)) yield row;
+  row.push(field);
+  return row;
+}
+
+async function* iterateCsv(stream) {
+  const rl = createInterface({ input: stream, crlfDelay: Infinity });
+  let record = '';
+  let seenHeader = false;
+  for await (const line of rl) {
+    const isRecordStart = seenHeader
+      ? /^\d+,/.test(line)
+      : /^(?:\uFEFF)?id,/i.test(line);
+    if (isRecordStart) {
+      if (record) yield parseCsvRecord(record);
+      record = line.replace(/^\uFEFF/, '');
+      seenHeader = true;
+    } else if (record) {
+      record += `\n${line}`;
+    }
   }
+  if (record) yield parseCsvRecord(record);
 }
 
 function parseListPage(html) {
@@ -213,23 +230,39 @@ function keepCsvRow(row, officialNumeric) {
   const type = row.poi_type || '';
   if (SPA_TYPE.test(type) && !HOTEL_TYPE.test(type)) return true;
   const haystack = `${row.name_th || ''} ${row.name_en || ''}`;
-  if (MASSAGE_NAME.test(haystack) && !HOTEL_TYPE.test(type) && /นวด|\bmassage\b/i.test(haystack)) return true;
+  if (MASSAGE_NAME.test(haystack) && !HOTEL_TYPE.test(type) && MASSAGE_STRICT.test(haystack)) return true;
   return false;
+}
+
+function isJunkName(value) {
+  const s = String(value || '').trim();
+  if (s.length < 2) return true;
+  if (/^[_\-.+*=#\s\d]+$/.test(s)) return true;
+  const stripped = s.replace(/หมู่/g, '').replace(/[0-9/.\s-]/g, '');
+  return stripped.length === 0 || stripped === 'ม';
+}
+
+function pickName(en, th) {
+  const english = String(en || '').trim();
+  const thai = String(th || '').trim();
+  if (!isJunkName(english)) return english;
+  if (!isJunkName(thai)) return thai;
+  return english || thai || null;
 }
 
 function toPoi(row, official) {
   const id = numericId(row.id);
   const longdoId = official?.longdoId || `A${id}`;
-  const nameEn = official?.nameEn || row.name_en || null;
-  const nameTh = official?.nameTh || row.name_th || null;
-  const addressEn = official?.addressEn || row.address_en || null;
-  const addressTh = official?.addressTh || row.address_th || null;
+  const nameEn = (official?.nameEn || row.name_en || '').trim() || null;
+  const nameTh = (official?.nameTh || row.name_th || '').trim() || null;
+  const addressEn = (official?.addressEn || row.address_en || '').trim() || null;
+  const addressTh = (official?.addressTh || row.address_th || '').trim() || null;
   return {
     id: `longdo-${longdoId}`,
     longdoId,
-    name: nameEn || nameTh,
-    nameTh,
-    nameEn,
+    name: pickName(nameEn, nameTh),
+    nameTh: isJunkName(nameTh) ? null : nameTh,
+    nameEn: isJunkName(nameEn) ? null : nameEn,
     location: addressEn || addressTh,
     addressTh,
     addressEn,
@@ -318,7 +351,7 @@ async function main() {
   }
 
   const pois = [...byNumeric.values()]
-    .filter((p) => p.name && inThailand(p.latitude, p.longitude))
+    .filter((p) => p.name && !isJunkName(p.name) && inThailand(p.latitude, p.longitude))
     .sort((a, b) => String(a.name).localeCompare(String(b.name)));
 
   mkdirSync(OUT_DIR, { recursive: true });
