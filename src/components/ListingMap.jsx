@@ -312,6 +312,42 @@ function createPinIcon(listing, availability) {
   });
 }
 
+// Longdo POI marker — small teal square with a thin amber border. The shape
+// difference (square vs circle) means even users with red-green color blindness
+// can tell the two datasets apart on the map.
+function createLongdoIcon(poi) {
+  return L.divIcon({
+    className: 'longdo-pin',
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10],
+    tooltipAnchor: [10, 0],
+  });
+}
+
+function buildLongdoPopupHtml(poi) {
+  const name = poi.name || 'Longdo POI';
+  const nameTh = poi.nameTh && poi.nameTh !== name ? `<div class="popup-sub">${escapeHtml(poi.nameTh)}</div>` : '';
+  const address = poi.addressEn || poi.addressTh || poi.location || '';
+  const phone = poi.phone ? `<a class="popup-tel" href="tel:${escapeHtml(poi.phone)}">${escapeHtml(poi.phone)}</a>` : '<span class="popup-na">—</span>';
+  const website = poi.website
+    ? `<a class="popup-link" target="_blank" rel="noreferrer" href="${escapeHtml(poi.website)}">${escapeHtml(poi.website.replace(/^https?:\/\//, ''))}</a>`
+    : '<span class="popup-na">—</span>';
+  return `
+    <div class="longdo-popup-body">
+      <div class="popup-kicker">Longdo POI · CC BY-SA 4.0</div>
+      <div class="popup-title">${escapeHtml(name)}</div>
+      ${nameTh}
+      <div class="popup-row"><span class="popup-key">Address</span>${escapeHtml(address)}</div>
+      <div class="popup-row"><span class="popup-key">Province</span>${escapeHtml(poi.city || '—')}</div>
+      <div class="popup-row"><span class="popup-key">Phone</span>${phone}</div>
+      <div class="popup-row"><span class="popup-key">Website</span>${website}</div>
+      <div class="popup-row"><span class="popup-key">Source</span><a class="popup-link" target="_blank" rel="noreferrer" href="https://map.longdo.com/p/${escapeHtml(poi.longdoId)}">Longdo Map ↗</a></div>
+      ${poi.poiType ? `<div class="popup-row"><span class="popup-key">Type</span>${escapeHtml(poi.poiType)}</div>` : ''}
+    </div>
+  `;
+}
+
 export default function ListingMap({
   listings,
   onCardClick,
@@ -333,6 +369,7 @@ export default function ListingMap({
   const lightLayerRef = useRef(null);
   const heatLayerRef = useRef(null);
   const epidemicLayerRef = useRef(null);
+  const longdoMarkersRef = useRef(null);
   const userMarkerRef = useRef(null);
   const accuracyCircleRef = useRef(null);
   const reachRingsRef = useRef([]);
@@ -351,6 +388,13 @@ export default function ListingMap({
   // Mirror of the basemap state for use inside the tile-error closure (avoids
   // re-creating the map effect on every state update).
   const basemapStatusRef = useRef({ mode: 'carto', theme: 'dark' });
+  // Longdo POI directory (CC BY-SA 4.0): separate dataset, separate marker
+  // layer, separate color. Fetched on mount and on mapMode reset.
+  const [longdoPois, setLongdoPois] = useState([]);
+  const [longdoMeta, setLongdoMeta] = useState(null);
+  const [showTelegram, setShowTelegram] = useState(true);
+  const [showLongdo, setShowLongdo] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { pins, pendingListings } = useMemo(() => {
     if (!Array.isArray(listings)) return { pins: [], pendingListings: [] };
@@ -632,7 +676,7 @@ export default function ListingMap({
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (!data) return;
-        
+
         // Transit Corridors
         const transitGroup = L.featureGroup();
         data.transitCorridors.forEach(corridor => {
@@ -642,7 +686,7 @@ export default function ListingMap({
             weight: 4,
             opacity: 0.8
           }).bindPopup(`<b>${corridor.line}</b><br/>${corridor.stations.length} stations`).addTo(transitGroup);
-          
+
           corridor.stations.forEach(s => {
             L.circleMarker([s.lat, s.lng], {
               radius: 4,
@@ -690,6 +734,26 @@ export default function ListingMap({
       showCoverageOnHover: false,
       zoomToBoundsOnClick: true,
       chunkedLoading: true
+    }).addTo(map);
+
+    // Second cluster group for the Longdo POI layer (CC BY-SA 4.0). Slightly
+    // larger cluster radius keeps the teal cluster bubbles visually distinct
+    // from the Telegram ones, and a teal "Longdo" icon-color so the two
+    // datasets read as different sources on the map.
+    longdoMarkersRef.current = L.markerClusterGroup({
+      maxClusterRadius: 45,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      chunkedLoading: true,
+      iconCreateFunction: (cluster) => {
+        const count = cluster.getChildCount();
+        return L.divIcon({
+          html: `<div class="longdo-cluster"><span>${count}</span></div>`,
+          className: 'longdo-cluster-wrapper',
+          iconSize: L.point(40, 40),
+        });
+      },
     }).addTo(map);
 
     // Leaflet renders at 0×0 while the Map tab is display:none. The tab-based UI
@@ -820,13 +884,37 @@ export default function ListingMap({
     };
   }, [pins.length]);
 
+  // Compute the Longdo POIs that pass the active search query, and the
+  // combined "all visible pins" used for the heatmap and the fit-all action.
+  // Declared BEFORE the marker-rendering useEffect below so its closure is
+  // initialised at component-render time, not in TDZ.
+  const filteredLongdoPois = useMemo(() => {
+    if (!searchQuery.trim()) return longdoPois;
+    const q = searchQuery.trim().toLowerCase();
+    return longdoPois.filter((poi) => {
+      const haystack = `${poi.name || ''} ${poi.nameTh || ''} ${poi.city || ''} ${poi.addressEn || ''} ${poi.addressTh || ''}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [longdoPois, searchQuery]);
+
+  const visiblePins = useMemo(() => {
+    if (!showTelegram) return [];
+    if (!searchQuery.trim()) return pins;
+    const q = searchQuery.trim().toLowerCase();
+    return pins.filter((p) => {
+      const l = p.listing || {};
+      const haystack = `${l.name || ''} ${l.city || ''} ${l.location || ''} ${l.description || ''}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [pins, showTelegram, searchQuery]);
+
   useEffect(() => {
     if (!markersRef.current || !mapInstanceRef.current) return;
     markersRef.current.clearLayers();
 
-    for (const { listing, coords, precision } of pins) {
+    for (const { listing, coords, precision } of visiblePins) {
       const availability = getAvailability(listing, nowMs);
-      const marker = L.marker(coords, { 
+      const marker = L.marker(coords, {
         icon: createPinIcon(listing, availability),
         alt: listing.name || 'Listing location',
         title: listing.name || 'Listing location',
@@ -842,18 +930,48 @@ export default function ListingMap({
       });
       markersRef.current.addLayer(marker);
     }
-    
-    // Update mathematical density heatmap
+
+    // Render the Longdo POI layer (separate cluster group, teal squares).
+    if (longdoMarkersRef.current) {
+      longdoMarkersRef.current.clearLayers();
+      if (showLongdo) {
+        for (const poi of filteredLongdoPois) {
+          const marker = L.marker([poi.latitude, poi.longitude], {
+            icon: createLongdoIcon(poi),
+            alt: poi.name || 'Longdo POI',
+            title: poi.name || 'Longdo POI',
+          });
+          marker.bindPopup(buildLongdoPopupHtml(poi), {
+            maxWidth: 280,
+            className: 'longdo-popup',
+          });
+          marker.bindTooltip(
+            `<strong>${escapeHtml(poi.name || 'Longdo POI')}</strong><br><span style="opacity:.7">${escapeHtml(poi.city || '')} · Longdo</span>`,
+            { direction: 'top', className: 'listing-hover-tooltip' },
+          );
+          longdoMarkersRef.current.addLayer(marker);
+        }
+      }
+    }
+
+    // Update mathematical density heatmap — combine both data sources so the
+    // surface reflects total spatial concentration. Telegram gets a small
+    // weight boost proportional to mention count, Longdo POIs get a flat
+    // 0.5 weight (their density is the signal — we don't have mention counts).
     if (heatLayerRef.current) {
-      const heatData = pins.map(p => {
+      const heatData = [];
+      for (const p of visiblePins) {
         const mentions = Number(p.listing.mentionCount) || Number(p.listing.mention_count) || 1;
-        // Normalize intensity
-        const intensity = Math.min(mentions / 50, 1.0);
-        return [p.coords[0], p.coords[1], intensity];
-      });
+        heatData.push([p.coords[0], p.coords[1], Math.min(mentions / 50, 1.0)]);
+      }
+      if (showLongdo) {
+        for (const poi of filteredLongdoPois) {
+          heatData.push([poi.latitude, poi.longitude, 0.5]);
+        }
+      }
       heatLayerRef.current.setLatLngs(heatData);
     }
-  }, [nowMs, pins]);
+  }, [nowMs, visiblePins, filteredLongdoPois, showLongdo]);
 
   useEffect(() => {
     if (!mapInstanceRef.current) return;
@@ -863,6 +981,28 @@ export default function ListingMap({
       lastAutoFitKeyRef.current = viewKey;
     }
   }, [fitMapToPins, viewKey]);
+
+  // Fetch Longdo POI directory (CC BY-SA 4.0). The file is regenerated by
+  // scripts/build_longdo_pois.js, which pulls Longdo's nightly bulk export.
+  // Net cost on the client: one 1MB JSON parse, no API calls.
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/data/longdo_pois.json')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled || !data) return;
+        setLongdoMeta(data.meta || null);
+        setLongdoPois(Array.isArray(data.pois) ? data.pois : []);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setLongdoPois([]);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!mapInstanceRef.current || !darkLayerRef.current || !lightLayerRef.current) return;
@@ -1031,6 +1171,54 @@ export default function ListingMap({
         </span>
       </div>
 
+      <div className="listing-map-datasources" aria-label="Data source filter">
+        <span className="map-quickjump-label">{t.filters.dataSource || 'Source'}</span>
+        <button
+          type="button"
+          className={`map-source-chip${showTelegram ? ' is-active' : ''}`}
+          onClick={() => setShowTelegram((v) => !v)}
+          aria-pressed={showTelegram}
+        >
+          <i className="map-source-swatch map-source-swatch--telegram" />
+          {t.filters.sourceTelegram || 'Telegram broadcasts'}
+          <span className="map-source-count">{pins.length}</span>
+        </button>
+        <button
+          type="button"
+          className={`map-source-chip${showLongdo ? ' is-active' : ''}`}
+          onClick={() => setShowLongdo((v) => !v)}
+          aria-pressed={showLongdo}
+        >
+          <i className="map-source-swatch map-source-swatch--longdo" />
+          {t.filters.sourceLongdo || 'Longdo POI directory'}
+          <span className="map-source-count">{longdoPois.length}</span>
+        </button>
+        <div className="map-source-search">
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={t.filters.searchPlaceholder || 'Search name, province, address…'}
+            aria-label={t.filters.searchLabel || 'Search'}
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              className="map-source-search-clear"
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search"
+            >
+              ×
+            </button>
+          )}
+          {(searchQuery || (!showTelegram && !showLongdo)) && (
+            <span className="map-source-result-count">
+              {visiblePins.length + filteredLongdoPois.length} match{visiblePins.length + filteredLongdoPois.length === 1 ? '' : 'es'}
+            </span>
+          )}
+        </div>
+      </div>
+
       <div className="listing-map-quickjump" aria-label="Quick city navigation">
         <span className="map-quickjump-label">Jump to</span>
         {quickCityData.map((city) => (
@@ -1126,6 +1314,10 @@ export default function ListingMap({
           <span><i className="availability-key availability-key--unknown" />Check availability</span>
           <span><i className="availability-key availability-key--closed" />Closed / unavailable</span>
         </div>
+        <div className="data-source-legend" aria-label="Data source legend">
+          <span><i className="map-source-swatch map-source-swatch--telegram" />Telegram broadcasts ({pins.length})</span>
+          <span><i className="map-source-swatch map-source-swatch--longdo" />Longdo POI · CC BY-SA 4.0 ({longdoPois.length})</span>
+        </div>
         <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
           <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#00e400' }} />0–50  Good</span>
@@ -1154,6 +1346,17 @@ export default function ListingMap({
           <span className="map-architecture-pill map-architecture-reassure">
             <i className="map-architecture-dot map-architecture-dot--ok" />No API key required for any layer
           </span>
+          {longdoPois.length > 0 && (
+            <a
+              className="map-architecture-pill map-architecture-attrib"
+              href="https://map.longdo.com"
+              target="_blank"
+              rel="noreferrer"
+              title="POI data from Longdo Map under CC BY-SA 4.0"
+            >
+              <i className="map-source-swatch map-source-swatch--longdo" />POI data: Longdo Map · CC BY-SA 4.0
+            </a>
+          )}
         </div>
       </div>
 
