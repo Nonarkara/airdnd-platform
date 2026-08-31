@@ -2,6 +2,22 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import fs from 'fs'
 import path from 'path'
+import { handleCivicAdsbProxy } from './src/lib/civicLive.js'
+
+function civicAdsbProxy() {
+  return {
+    name: 'civic-adsb-proxy',
+    configureServer(server) {
+      server.middlewares.use('/api/civic/adsb', (req, res, next) => {
+        if (req.method !== 'GET' && req.method !== 'HEAD') {
+          next()
+          return
+        }
+        handleCivicAdsbProxy(req, res).catch(next)
+      })
+    },
+  }
+}
 
 // Keep heavy local photo backups out of the production bundle while preserving active listing photos.
 function pruneHeavyPublicDirs() {
@@ -79,5 +95,5 @@ function pruneHeavyPublicDirs() {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), pruneHeavyPublicDirs()],
+  plugins: [react(), civicAdsbProxy(), pruneHeavyPublicDirs()],
 })

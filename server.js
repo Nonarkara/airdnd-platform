@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { createHealthReport } from './src/lib/server_health.js';
+import { handleCivicAdsbProxy } from './src/lib/civicLive.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,6 +45,10 @@ app.get('/health', (req, res) => {
     const report = createHealthReport({ rootDir: __dirname, distDir, publicDir });
     res.set('Cache-Control', 'no-store');
     res.status(report.ok ? 200 : 503).json(report);
+});
+
+app.get('/api/civic/adsb', (req, res) => {
+    handleCivicAdsbProxy(req, res);
 });
 
 // Serve built assets directly, but let the SPA shell route through the fallback below.

@@ -29,6 +29,22 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-08-31 · God's Eye View is a grammar, not a cockpit
+
+- **What went wrong (avoided):** Copying https://github.com/bilawalsidhu/gods-eye-view into atlas.nonarkara.org or Sabai would import Cesium, Google Photorealistic 3D (metered), OpenAI voice, military HUD, FLIR/NVG, person-adjacent tracking, and a second visual language. Atlas already has the civic layer registry; Sabai already has Rams chips. The spy skin fights both.
+- **Correct behaviour:** Port **provenance**, not chrome. Every live overlay states `live | delayed | schematic | unavailable`, names its source, and serializes enabled layers into the URL (`?pulse=f,q,e`). First atlas-shaped layers that GEV has and atlas does not: ADS-B flights (adsb.lol, not OpenSky on a public site), USGS earthquakes (not iTIC incident labels), EONET fires for the haze story. Nearest-CCTV handoff stays on atlas (`/api/cctv`). Do not vendor GEV renderers.
+- **How to recognise:** A new overlay with no freshness label, a Google 3D / Cesium dependency, a second accent colour used as chrome, or a share link that only copies the camera.
+
+---
+
+## 2026-08-31 · Carto basemaps watermark at HTTP 200
+
+- **What went wrong:** Default Leaflet tiles were `basemaps.cartocdn.com/dark_all` / `light_all`. Carto now stamps every unauthenticated tile with **API KEY REQUIRED** / `carto.com/basemaps/apikey` while still returning HTTP 200. The tileerror → OSM fallback never fired, so the map looked keyed when the architecture strip said "No API key".
+- **Correct behaviour:** Do not use Carto raster without a key. Default to Esri Canvas (same family as the existing satellite layer) with OSM as a real error fallback. HTTP 200 watermarked tiles are not a "working" basemap.
+- **How to recognise:** Diagonal "API KEY REQUIRED" text on every tile; Carto attribution in the Leaflet credit. Grep `basemaps.cartocdn.com`.
+
+---
+
 ## 2026-06-06 · Airtight audit — AI-fraud, concurrent-session hazards
 
 - **AI-generated "VISUAL EVIDENCE" is the worst regression class.** A concurrent session added three AI images to the research-paper page, stamped "VISUAL EVIDENCE" and captioned as real field photographs. This violates §0 (no AI imagery, ever), §11.4 (no fabricated content), and would disqualify the research outright. **Catch:** audit every new image asset — is it a real curated photo or AI-generated? Grep new `public/**/*.png|jpg` against the components that reference them; read the captions. Remove on sight unless Dr Non asked in-session. Keep the legitimate siblings (a hand-coded SVG diagram, real prose) — surgical, not scorched-earth (§11.1).

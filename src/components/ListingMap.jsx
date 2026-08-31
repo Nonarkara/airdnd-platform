@@ -13,6 +13,17 @@ import {
   formatFreshness,
   getAvailability,
 } from '../lib/mapAvailability';
+import {
+  fetchCivicFlights,
+  fetchCivicQuakes,
+  fetchCivicFires,
+  formatCivicStatus,
+} from '../lib/civicLive';
+import {
+  readPulseFromHref,
+  syncPulseToWindow,
+  EMPTY_PULSE,
+} from '../lib/civicLayerShare';
 import MapMarketBar from './MapMarketBar';
 import SpatialAnalyticsPanel from './SpatialAnalyticsPanel';
 import { buildHealthMatrix, loadFormalization, loadProvinceHiv } from '../lib/health';
@@ -236,6 +247,28 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+const ESRI_ATTR =
+  'Tiles &copy; <a href="https://www.esri.com/">Esri</a> — Esri, TomTom, Garmin, FAO, NOAA, USGS';
+const OSM_ATTR =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+/** Keyless Esri canvas (same family as the satellite layer). Carto now
+ *  watermarks every unauthenticated tile with "API KEY REQUIRED" while
+ *  still returning HTTP 200, so a tileerror fallback never fires. */
+function esriCanvasLayer(kind) {
+  const base = L.tileLayer(
+    `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_${kind}_Base/MapServer/tile/{z}/{y}/{x}`,
+    { attribution: ESRI_ATTR, maxZoom: 19, maxNativeZoom: 16 },
+  );
+  const labels = L.tileLayer(
+    `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_${kind}_Reference/MapServer/tile/{z}/{y}/{x}`,
+    { attribution: ESRI_ATTR, maxZoom: 19, maxNativeZoom: 16 },
+  );
+  const group = L.layerGroup([base, labels]);
+  group._sabaiTiles = [base, labels];
+  return group;
+}
+
 function buildPopupHtml(listing, precision, availability) {
   const lines = [];
   lines.push(`<strong style="font-size:14px">${escapeHtml(listing.name || 'Unknown')}</strong>`);
@@ -348,6 +381,94 @@ function buildLongdoPopupHtml(poi) {
   `;
 }
 
+function createFlightIcon(aircraft) {
+  const heading = Number.isFinite(aircraft.headingDeg) ? aircraft.headingDeg : 0;
+  return L.divIcon({
+    className: 'civic-flight-pin',
+    html: `<span class="civic-flight-glyph" style="transform:rotate(${heading}deg)"></span>`,
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+    popupAnchor: [0, -10],
+  });
+}
+
+function createFireIcon() {
+  return L.divIcon({
+    className: 'civic-fire-pin',
+    iconSize: [12, 12],
+    iconAnchor: [6, 6],
+    popupAnchor: [0, -8],
+  });
+}
+
+function ensureCivicLayer(map, layersRef, key) {
+  let layer = layersRef.current[key];
+  if (!map) return null;
+  if (!layer || !map.hasLayer(layer)) {
+    layer = L.layerGroup().addTo(map);
+    layersRef.current[key] = layer;
+  }
+  return layer;
+}
+
+function civicStateLabel(bundle) {
+  if (!bundle) return 'off';
+  if (bundle.state === 'unavailable') return 'unavailable';
+  return bundle.state;
+}
+
+function buildFlightPopupHtml(aircraft, bundle) {
+  const altitude = aircraft.onGround
+    ? 'On the ground'
+    : Number.isFinite(aircraft.altitudeM) ? `${aircraft.altitudeM} m` : '—';
+  const speed = Number.isFinite(aircraft.speedKmh) ? `${aircraft.speedKmh} km/h` : '—';
+  return `
+    <div class="longdo-popup-body civic-popup-body">
+      <div class="popup-kicker">Civic pulse · ${escapeHtml(civicStateLabel(bundle))} · adsb.lol</div>
+      <div class="popup-title">${escapeHtml(aircraft.callsign)}</div>
+      <div class="popup-row"><span class="popup-key">Altitude</span>${escapeHtml(altitude)}</div>
+      <div class="popup-row"><span class="popup-key">Speed</span>${escapeHtml(speed)}</div>
+      <div class="popup-row"><span class="popup-key">From Bangkok</span>${escapeHtml(`${aircraft.distanceKm} km`)}</div>
+      <div class="popup-row"><span class="popup-key">Freshness</span>${escapeHtml(`${aircraft.seenSec.toFixed(0)}s behind transponder`)}</div>
+    </div>
+  `;
+}
+
+function buildQuakePopupHtml(quake, bundle) {
+  const when = quake.timeMs ? new Date(quake.timeMs).toISOString().replace('T', ' ').slice(0, 16) + ' UTC' : '—';
+  const mag = Number.isFinite(quake.mag) ? `M${quake.mag.toFixed(1)}` : 'M—';
+  const link = quake.url
+    ? `<a class="popup-link" target="_blank" rel="noreferrer" href="${escapeHtml(quake.url)}">USGS event ↗</a>`
+    : 'USGS';
+  return `
+    <div class="longdo-popup-body civic-popup-body">
+      <div class="popup-kicker">Civic pulse · ${escapeHtml(civicStateLabel(bundle))} · USGS</div>
+      <div class="popup-title">${escapeHtml(mag)} · ${escapeHtml(quake.place)}</div>
+      <div class="popup-row"><span class="popup-key">Depth</span>${escapeHtml(Number.isFinite(quake.depthKm) ? `${quake.depthKm} km` : '—')}</div>
+      <div class="popup-row"><span class="popup-key">From Bangkok</span>${escapeHtml(`${quake.distanceKm} km`)}</div>
+      <div class="popup-row"><span class="popup-key">Time</span>${escapeHtml(when)}</div>
+      <div class="popup-row"><span class="popup-key">Source</span>${link}</div>
+    </div>
+  `;
+}
+
+function buildFirePopupHtml(fire, bundle) {
+  const when = fire.date ? String(fire.date).replace('T', ' ').replace('Z', ' UTC') : '—';
+  const link = fire.link
+    ? `<a class="popup-link" target="_blank" rel="noreferrer" href="${escapeHtml(fire.link)}">EONET ↗</a>`
+    : 'NASA EONET';
+  return `
+    <div class="longdo-popup-body civic-popup-body">
+      <div class="popup-kicker">Civic pulse · ${escapeHtml(civicStateLabel(bundle))} · NASA EONET</div>
+      <div class="popup-title">${escapeHtml(fire.title)}</div>
+      <div class="popup-row"><span class="popup-key">From Bangkok</span>${escapeHtml(`${fire.distanceKm} km`)}</div>
+      <div class="popup-row"><span class="popup-key">Observed</span>${escapeHtml(when)}</div>
+      <div class="popup-row"><span class="popup-key">Source</span>${link}</div>
+      <div class="popup-row"><span class="popup-key">Note</span>Delayed satellite detections — not a live camera.</div>
+    </div>
+  `;
+}
+
 export default function ListingMap({
   listings,
   longdoPois: longdoPoisProp,
@@ -371,6 +492,7 @@ export default function ListingMap({
   const heatLayerRef = useRef(null);
   const epidemicLayerRef = useRef(null);
   const longdoMarkersRef = useRef(null);
+  const civicLayersRef = useRef({ flights: null, quakes: null, fires: null });
   const userMarkerRef = useRef(null);
   const accuracyCircleRef = useRef(null);
   const reachRingsRef = useRef([]);
@@ -383,12 +505,12 @@ export default function ListingMap({
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [epidemicRows, setEpidemicRows] = useState([]);
   const [epidemicMeta, setEpidemicMeta] = useState(null);
-  // basemap = 'carto' (default) or 'osm' (auto-fallback when Carto tiles fail).
-  const [basemapStatus, setBasemapStatus] = useState({ mode: 'carto', errors: 0 });
+  // basemap = 'esri' (default) or 'osm' (auto-fallback when Esri tiles fail).
+  const [basemapStatus, setBasemapStatus] = useState({ mode: 'esri', errors: 0 });
   const [overlayError, setOverlayError] = useState(null);
   // Mirror of the basemap state for use inside the tile-error closure (avoids
   // re-creating the map effect on every state update).
-  const basemapStatusRef = useRef({ mode: 'carto', theme: 'dark' });
+  const basemapStatusRef = useRef({ mode: 'esri', theme: 'dark' });
   // Longdo POI directory (CC BY-SA 4.0). Parent owns the fetch so the
   // directory and the map share one JSON parse.
   const [fetchedPois, setFetchedPois] = useState([]);
@@ -396,6 +518,11 @@ export default function ListingMap({
   const [showTelegram, setShowTelegram] = useState(true);
   const [showLongdo, setShowLongdo] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [mapReady, setMapReady] = useState(false);
+  const [pulse, setPulse] = useState(() => (
+    typeof window === 'undefined' ? { ...EMPTY_PULSE } : readPulseFromHref(window.location.href)
+  ));
+  const [civicBundles, setCivicBundles] = useState({ flights: null, quakes: null, fires: null });
 
   const { pins, pendingListings } = useMemo(() => {
     if (!Array.isArray(listings)) return { pins: [], pendingListings: [] };
@@ -508,6 +635,10 @@ export default function ListingMap({
     return () => window.clearInterval(intervalId);
   }, []);
 
+  const togglePulseLayer = useCallback((id) => {
+    setPulse((prev) => ({ ...prev, [id]: !prev[id] }));
+  }, []);
+
   const fitMapToPins = useCallback(() => {
     if (!mapInstanceRef.current) return;
 
@@ -594,15 +725,11 @@ export default function ListingMap({
       wheelPxPerZoomLevel: 140,
     });
 
-    // Base layers — dark vector, light vector, and satellite.
-    const dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-      maxZoom: 19,
-    });
-    const light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-      maxZoom: 19,
-    });
+    // Base layers — Esri canvas (keyless, same family as satellite). Carto
+    // Dark Matter / Positron now stamp "API KEY REQUIRED" on every tile
+    // while still returning 200, so they are no longer a valid default.
+    const dark = esriCanvasLayer('Dark_Gray');
+    const light = esriCanvasLayer('Light_Gray');
     const satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
@@ -610,15 +737,8 @@ export default function ListingMap({
         maxZoom: 19,
       },
     );
-    // OSM raster fallback — used automatically if Carto tiles fail (rate-limit,
-    // network, or "API Key Required" from a corporate proxy). No key required.
-    const osmDark = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19,
-      crossOrigin: true,
-    });
-    const osmLight = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: OSM_ATTR,
       maxZoom: 19,
       crossOrigin: true,
     });
@@ -626,24 +746,25 @@ export default function ListingMap({
     darkLayerRef.current = dark;
     lightLayerRef.current = light;
 
-    // If Carto tiles keep failing, auto-switch to OSM raster so the basemap
-    // never goes blank. Threshold: 8 errors within 30s of mount.
+    // If Esri tiles keep failing, auto-switch to OSM so the basemap never
+    // goes blank. Threshold: 8 errors within 30s of mount.
     const tileErrorCounters = new Map();
-    let cartoErrors = 0;
-    const cartoErrorWindow = [];
+    let esriErrors = 0;
+    const esriErrorWindow = [];
     const handleTileError = (label, fallback) => (e) => {
       const now = Date.now();
       const next = (tileErrorCounters.get(label) || 0) + 1;
       tileErrorCounters.set(label, next);
-      if (label === 'carto') {
-        cartoErrorWindow.push(now);
-        while (cartoErrorWindow.length && now - cartoErrorWindow[0] > 30_000) cartoErrorWindow.shift();
-        cartoErrors = cartoErrorWindow.length;
-        if (cartoErrors >= 8 && basemapStatusRef.current.mode === 'carto') {
+      if (label === 'esri') {
+        esriErrorWindow.push(now);
+        while (esriErrorWindow.length && now - esriErrorWindow[0] > 30_000) esriErrorWindow.shift();
+        esriErrors = esriErrorWindow.length;
+        if (esriErrors >= 8 && basemapStatusRef.current.mode === 'esri') {
           const currentBase = basemapStatusRef.current.theme === 'light' ? light : dark;
           map.removeLayer(currentBase);
           fallback.addTo(map);
-          setBasemapStatus({ mode: 'osm', errors: cartoErrors });
+          basemapStatusRef.current.mode = 'osm';
+          setBasemapStatus({ mode: 'osm', errors: esriErrors });
         }
       } else {
         if (next === 5) {
@@ -653,9 +774,10 @@ export default function ListingMap({
       // eslint-disable-next-line no-console
       console.warn(`[ListingMap] tile error (${label})`, e?.error || e);
     };
-    dark.on('tileerror', handleTileError('carto', osmDark));
-    light.on('tileerror', handleTileError('carto', osmLight));
-    basemapStatusRef.current = { mode: 'carto', theme: 'dark' };
+    dark._sabaiTiles.forEach((layer) => layer.on('tileerror', handleTileError('esri', osm)));
+    light._sabaiTiles.forEach((layer) => layer.on('tileerror', handleTileError('esri', osm)));
+    satellite.on('tileerror', handleTileError('esri', osm));
+    basemapStatusRef.current = { mode: 'esri', theme: 'dark' };
 
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     if (currentTheme === 'light') {
@@ -701,7 +823,7 @@ export default function ListingMap({
 
     const layerControl = L.control
       .layers(
-        { 'Dark Map': dark, 'Light Map': light, Satellite: satellite, 'OSM (fallback)': osmDark },
+        { 'Dark Map': dark, 'Light Map': light, Satellite: satellite, OpenStreetMap: osm },
         { 'Air Quality (PM2.5)': aqi, 'Precipitation (IMERG)': rain, 'Demand Heatmap': heatLayer },
         { position: 'topright', collapsed: true },
       )
@@ -776,6 +898,12 @@ export default function ListingMap({
     // larger cluster radius keeps the teal cluster bubbles visually distinct
     // from the Telegram ones, and a teal "Longdo" icon-color so the two
     // datasets read as different sources on the map.
+    civicLayersRef.current = {
+      flights: L.layerGroup().addTo(map),
+      quakes: L.layerGroup().addTo(map),
+      fires: L.layerGroup().addTo(map),
+    };
+
     longdoMarkersRef.current = L.markerClusterGroup({
       maxClusterRadius: 45,
       spiderfyOnMaxZoom: true,
@@ -829,15 +957,18 @@ export default function ListingMap({
     };
 
     mapElement.addEventListener('click', handlePopupClick);
+    setMapReady(true);
 
     return () => {
       resizeObserver.disconnect();
       settleTimers.forEach((id) => window.clearTimeout(id));
       mapElement.removeEventListener('click', handlePopupClick);
+      setMapReady(false);
       map.remove();
       mapInstanceRef.current = null;
       markersRef.current = null;
       longdoMarkersRef.current = null;
+      civicLayersRef.current = { flights: null, quakes: null, fires: null };
       heatLayerRef.current = null;
       userMarkerRef.current = null;
       accuracyCircleRef.current = null;
@@ -967,6 +1098,120 @@ export default function ListingMap({
   }, [filteredLongdoPois, showLongdo]);
 
   useEffect(() => {
+    syncPulseToWindow(pulse);
+  }, [pulse]);
+
+  useEffect(() => {
+    if (!pulse.flights) return undefined;
+    let cancelled = false;
+    const load = async () => {
+      const bundle = await fetchCivicFlights();
+      if (!cancelled) setCivicBundles((prev) => ({ ...prev, flights: bundle }));
+    };
+    load();
+    const timer = window.setInterval(load, 30_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [pulse.flights]);
+
+  useEffect(() => {
+    if (!pulse.quakes) return undefined;
+    let cancelled = false;
+    const load = async () => {
+      const bundle = await fetchCivicQuakes();
+      if (!cancelled) setCivicBundles((prev) => ({ ...prev, quakes: bundle }));
+    };
+    load();
+    const timer = window.setInterval(load, 5 * 60_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [pulse.quakes]);
+
+  useEffect(() => {
+    if (!pulse.fires) return undefined;
+    let cancelled = false;
+    const load = async () => {
+      const bundle = await fetchCivicFires();
+      if (!cancelled) setCivicBundles((prev) => ({ ...prev, fires: bundle }));
+    };
+    load();
+    const timer = window.setInterval(load, 10 * 60_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [pulse.fires]);
+
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const layer = ensureCivicLayer(map, civicLayersRef, 'flights');
+    if (!layer) return;
+    layer.clearLayers();
+    if (!pulse.flights || !civicBundles.flights?.items) return;
+    for (const aircraft of civicBundles.flights.items) {
+      const marker = L.marker([aircraft.lat, aircraft.lon], {
+        icon: createFlightIcon(aircraft),
+        alt: aircraft.callsign,
+        title: aircraft.callsign,
+        zIndexOffset: 400,
+      });
+      marker.bindPopup(buildFlightPopupHtml(aircraft, civicBundles.flights), {
+        maxWidth: 280,
+        className: 'longdo-popup',
+      });
+      layer.addLayer(marker);
+    }
+  }, [civicBundles.flights, mapReady, pulse.flights]);
+
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const layer = ensureCivicLayer(map, civicLayersRef, 'quakes');
+    if (!layer) return;
+    layer.clearLayers();
+    if (!pulse.quakes || !civicBundles.quakes?.items) return;
+    for (const quake of civicBundles.quakes.items) {
+      const mag = Number.isFinite(quake.mag) ? quake.mag : 2.5;
+      const marker = L.circleMarker([quake.lat, quake.lon], {
+        radius: Math.max(5, mag * 3),
+        color: '#A51931',
+        weight: 1,
+        fillColor: '#A51931',
+        fillOpacity: 0.35,
+      });
+      marker.bindPopup(buildQuakePopupHtml(quake, civicBundles.quakes), {
+        maxWidth: 280,
+        className: 'longdo-popup',
+      });
+      layer.addLayer(marker);
+    }
+  }, [civicBundles.quakes, mapReady, pulse.quakes]);
+
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const layer = ensureCivicLayer(map, civicLayersRef, 'fires');
+    if (!layer) return;
+    layer.clearLayers();
+    if (!pulse.fires || !civicBundles.fires?.items) return;
+    for (const fire of civicBundles.fires.items) {
+      const marker = L.marker([fire.lat, fire.lon], {
+        icon: createFireIcon(),
+        alt: fire.title,
+        title: fire.title,
+        zIndexOffset: 350,
+      });
+      marker.bindPopup(buildFirePopupHtml(fire, civicBundles.fires), {
+        maxWidth: 280,
+        className: 'longdo-popup',
+      });
+      layer.addLayer(marker);
+    }
+  }, [civicBundles.fires, mapReady, pulse.fires]);
+
+  useEffect(() => {
     if (!heatLayerRef.current) return;
     const heatData = [];
     for (const p of visiblePins) {
@@ -1010,16 +1255,24 @@ export default function ListingMap({
 
   useEffect(() => {
     if (!mapInstanceRef.current || !darkLayerRef.current || !lightLayerRef.current) return;
+    if (basemapStatusRef.current.mode === 'osm') return;
     const map = mapInstanceRef.current;
     if (theme === 'light') {
       if (map.hasLayer(darkLayerRef.current)) {
         map.removeLayer(darkLayerRef.current);
       }
-      lightLayerRef.current.addTo(map);
+      if (!map.hasLayer(lightLayerRef.current)) {
+        lightLayerRef.current.addTo(map);
+      }
+      basemapStatusRef.current.theme = 'light';
     } else {
       if (map.hasLayer(lightLayerRef.current)) {
         map.removeLayer(lightLayerRef.current);
       }
+      if (!map.hasLayer(darkLayerRef.current)) {
+        darkLayerRef.current.addTo(map);
+      }
+      basemapStatusRef.current.theme = 'dark';
     }
   }, [theme]);
 
@@ -1227,6 +1480,58 @@ export default function ListingMap({
         </div>
       </div>
 
+      <div className="listing-map-datasources listing-map-civic" aria-label="Civic live pulse">
+        <span className="map-quickjump-label">Civic pulse</span>
+        <button
+          type="button"
+          className={`map-source-chip${pulse.flights ? ' is-active' : ''}`}
+          onClick={() => togglePulseLayer('flights')}
+          aria-pressed={pulse.flights}
+          title={pulse.flights ? formatCivicStatus(civicBundles.flights) : 'Aircraft within 50 NM of Bangkok · adsb.lol'}
+        >
+          <i className="map-source-swatch map-source-swatch--flights" />
+          Flights
+          <span className="map-source-count">
+            {pulse.flights ? (civicBundles.flights ? civicBundles.flights.count : '…') : '—'}
+          </span>
+        </button>
+        <button
+          type="button"
+          className={`map-source-chip${pulse.quakes ? ' is-active' : ''}`}
+          onClick={() => togglePulseLayer('quakes')}
+          aria-pressed={pulse.quakes}
+          title={pulse.quakes ? formatCivicStatus(civicBundles.quakes) : 'USGS M2.5+ last 24h within 3,500 km'}
+        >
+          <i className="map-source-swatch map-source-swatch--quakes" />
+          Quakes
+          <span className="map-source-count">
+            {pulse.quakes ? (civicBundles.quakes ? civicBundles.quakes.count : '…') : '—'}
+          </span>
+        </button>
+        <button
+          type="button"
+          className={`map-source-chip${pulse.fires ? ' is-active' : ''}`}
+          onClick={() => togglePulseLayer('fires')}
+          aria-pressed={pulse.fires}
+          title={pulse.fires ? formatCivicStatus(civicBundles.fires) : 'NASA EONET wildfires in the haze corridor · 14 days'}
+        >
+          <i className="map-source-swatch map-source-swatch--fires" />
+          Fires
+          <span className="map-source-count">
+            {pulse.fires ? (civicBundles.fires ? civicBundles.fires.count : '…') : '—'}
+          </span>
+        </button>
+        <span className="civic-pulse-note">
+          {pulse.flights || pulse.quakes || pulse.fires
+            ? [
+              pulse.flights && `Flights ${civicBundles.flights ? formatCivicStatus(civicBundles.flights) : 'fetching'}`,
+              pulse.quakes && `Quakes ${civicBundles.quakes ? formatCivicStatus(civicBundles.quakes) : 'fetching'}${civicBundles.quakes?.count === 0 && civicBundles.quakes?.nearest ? ` · nearest M${civicBundles.quakes.nearest.mag} ${civicBundles.quakes.nearest.place}` : ''}`,
+              pulse.fires && `Fires ${civicBundles.fires ? formatCivicStatus(civicBundles.fires) : 'fetching'}${civicBundles.fires?.staleWithheld ? ` · ${civicBundles.fires.staleWithheld} stale withheld` : ''}`,
+            ].filter(Boolean).join(' · ')
+            : 'adsb.lol · USGS · NASA EONET · no API key · live / delayed / unavailable'}
+        </span>
+      </div>
+
       <div className="listing-map-quickjump" aria-label="Quick city navigation">
         <span className="map-quickjump-label">Jump to</span>
         {quickCityData.map((city) => (
@@ -1246,7 +1551,7 @@ export default function ListingMap({
 
       {basemapStatus.mode === 'osm' && (
         <div className="listing-map-fallback-note" role="status">
-          Carto tiles unreachable — basemap switched to <strong>OpenStreetMap</strong> automatically. No API key required for any layer shown here.
+          Esri canvas unreachable — basemap switched to <strong>OpenStreetMap</strong> automatically. No API key required for any layer shown here.
         </div>
       )}
       {overlayError && (
@@ -1325,6 +1630,13 @@ export default function ListingMap({
         <div className="data-source-legend" aria-label="Data source legend">
           <span><i className="map-source-swatch map-source-swatch--telegram" />Telegram broadcasts ({pins.length})</span>
           <span><i className="map-source-swatch map-source-swatch--longdo" />Longdo POI · CC BY-SA 4.0 ({longdoPois.length})</span>
+          {(pulse.flights || pulse.quakes || pulse.fires) && (
+            <>
+              {pulse.flights && <span><i className="map-source-swatch map-source-swatch--flights" />Flights · adsb.lol</span>}
+              {pulse.quakes && <span><i className="map-source-swatch map-source-swatch--quakes" />Quakes · USGS</span>}
+              {pulse.fires && <span><i className="map-source-swatch map-source-swatch--fires" />Fires · NASA EONET</span>}
+            </>
+          )}
         </div>
         <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
           <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>
@@ -1343,7 +1655,7 @@ export default function ListingMap({
         </div>
         <div className="map-architecture-strip" aria-label="Map architecture">
           <span className="map-architecture-pill">
-            <i className="map-architecture-dot map-architecture-dot--carto" />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap (fallback)' : 'CARTO'}
+            <i className="map-architecture-dot map-architecture-dot--carto" />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap (fallback)' : 'Esri'}
           </span>
           <span className="map-architecture-pill" aria-live="polite">
             <i className={`map-architecture-dot${aqiActive ? ' is-on' : ''}`} />AQI {aqiActive ? 'on' : 'off'}
@@ -1351,6 +1663,21 @@ export default function ListingMap({
           <span className="map-architecture-pill" aria-live="polite">
             <i className={`map-architecture-dot${rainActive ? ' is-on' : ''}`} />Rain {rainActive ? 'on' : 'off'}
           </span>
+          {pulse.flights && (
+            <span className="map-architecture-pill" aria-live="polite">
+              <i className="map-architecture-dot is-on" />Flights {formatCivicStatus(civicBundles.flights)}
+            </span>
+          )}
+          {pulse.quakes && (
+            <span className="map-architecture-pill" aria-live="polite">
+              <i className="map-architecture-dot is-on" />Quakes {formatCivicStatus(civicBundles.quakes)}
+            </span>
+          )}
+          {pulse.fires && (
+            <span className="map-architecture-pill" aria-live="polite">
+              <i className="map-architecture-dot is-on" />Fires {formatCivicStatus(civicBundles.fires)}
+            </span>
+          )}
           <span className="map-architecture-pill map-architecture-reassure">
             <i className="map-architecture-dot map-architecture-dot--ok" />No API key required for any layer
           </span>
