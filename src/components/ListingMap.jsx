@@ -379,6 +379,16 @@ function createFireIcon() {
   });
 }
 
+function ensureCivicLayer(map, layersRef, key) {
+  let layer = layersRef.current[key];
+  if (!map) return null;
+  if (!layer || !map.hasLayer(layer)) {
+    layer = L.layerGroup().addTo(map);
+    layersRef.current[key] = layer;
+  }
+  return layer;
+}
+
 function civicStateLabel(bundle) {
   if (!bundle) return 'off';
   if (bundle.state === 'unavailable') return 'unavailable';
@@ -1124,7 +1134,8 @@ export default function ListingMap({
   }, [pulse.fires]);
 
   useEffect(() => {
-    const layer = civicLayersRef.current.flights;
+    const map = mapInstanceRef.current;
+    const layer = ensureCivicLayer(map, civicLayersRef, 'flights');
     if (!layer) return;
     layer.clearLayers();
     if (!pulse.flights || !civicBundles.flights?.items) return;
@@ -1144,7 +1155,8 @@ export default function ListingMap({
   }, [civicBundles.flights, mapReady, pulse.flights]);
 
   useEffect(() => {
-    const layer = civicLayersRef.current.quakes;
+    const map = mapInstanceRef.current;
+    const layer = ensureCivicLayer(map, civicLayersRef, 'quakes');
     if (!layer) return;
     layer.clearLayers();
     if (!pulse.quakes || !civicBundles.quakes?.items) return;
@@ -1156,7 +1168,6 @@ export default function ListingMap({
         weight: 1,
         fillColor: '#A51931',
         fillOpacity: 0.35,
-        alt: `M${mag} ${quake.place}`,
       });
       marker.bindPopup(buildQuakePopupHtml(quake, civicBundles.quakes), {
         maxWidth: 280,
@@ -1167,7 +1178,8 @@ export default function ListingMap({
   }, [civicBundles.quakes, mapReady, pulse.quakes]);
 
   useEffect(() => {
-    const layer = civicLayersRef.current.fires;
+    const map = mapInstanceRef.current;
+    const layer = ensureCivicLayer(map, civicLayersRef, 'fires');
     if (!layer) return;
     layer.clearLayers();
     if (!pulse.fires || !civicBundles.fires?.items) return;
