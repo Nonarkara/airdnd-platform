@@ -232,7 +232,7 @@
   border: none;
   border-left: 0.32rem solid transparent;
   border-right: 0.32rem solid transparent;
-  border-bottom: 0.7rem solid #e8e4d9;
+  border-bottom: 0.7rem solid #f59e0b;
   background: transparent;
 }
 
@@ -356,7 +356,7 @@
   margin: 1px auto 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 14px solid #e8e4d9;
+  border-bottom: 14px solid #f59e0b;
   transform-origin: 50% 70%;
 }
 
