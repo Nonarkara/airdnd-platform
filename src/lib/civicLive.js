@@ -65,7 +65,10 @@ export async function handleCivicAdsbProxy(req, res) {
   }
   try {
     const upstream = await fetch(ADSB_LOL_URL(lat, lon, distNm), {
-      headers: { accept: 'application/json' },
+      headers: {
+        accept: 'application/json',
+        'user-agent': 'sabai-civic-pulse/1.0 (+https://github.com/Nonarkara/airdnd-platform)',
+      },
     });
     const body = await upstream.text();
     res.statusCode = upstream.status;
