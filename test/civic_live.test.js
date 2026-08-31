@@ -11,6 +11,9 @@ import {
   fetchCivicFires,
   haversineKm,
   BANGKOK,
+  resolveAdsbUrl,
+  handleCivicAdsbProxy,
+  ADSB_LOL_URL,
 } from '../src/lib/civicLive.js';
 import {
   encodePulseLayers,
@@ -173,4 +176,21 @@ test('fetch wrappers parse a successful mock payload', async () => {
   assert.equal(flights.count, 2);
   assert.equal(quakes.count, 1);
   assert.equal(fires.count, 1);
+});
+
+test('Node resolves adsb.lol directly; proxy rejects bad query', async () => {
+  assert.equal(
+    resolveAdsbUrl(13.7, 100.5, 50),
+    ADSB_LOL_URL(13.7, 100.5, 50),
+  );
+  const chunks = [];
+  const res = {
+    statusCode: 0,
+    headers: {},
+    setHeader(key, value) { this.headers[key] = value; },
+    end(body) { chunks.push(body); },
+  };
+  await handleCivicAdsbProxy({ url: '/api/civic/adsb' }, res);
+  assert.equal(res.statusCode, 400);
+  assert.match(chunks.join(''), /lat, lon, dist required/);
 });

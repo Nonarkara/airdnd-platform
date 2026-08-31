@@ -37,6 +37,48 @@ export const FIRE_MAX_AGE_DAYS = 14;
 
 export const ADSB_LOL_URL = (lat, lon, distNm) =>
   `https://api.adsb.lol/v2/lat/${lat}/lon/${lon}/dist/${distNm}`;
+
+/**
+ * Browser calls must go through a same-origin proxy: adsb.lol GET responses
+ * omit Access-Control-Allow-Origin (verified 2026-08-31). Atlas should use
+ * the existing Cloudflare Worker the same way; Node tests hit upstream
+ * directly.
+ */
+export function resolveAdsbUrl(lat, lon, distNm = FLIGHT_RADIUS_NM) {
+  if (typeof window !== 'undefined') {
+    return `/api/civic/adsb?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&dist=${encodeURIComponent(distNm)}`;
+  }
+  return ADSB_LOL_URL(lat, lon, distNm);
+}
+
+export async function handleCivicAdsbProxy(req, res) {
+  const url = new URL(req.url || '/', 'http://127.0.0.1');
+  const lat = finiteNumber(req.query?.lat ?? url.searchParams.get('lat'));
+  const lon = finiteNumber(req.query?.lon ?? url.searchParams.get('lon'));
+  const distNm = finiteNumber(req.query?.dist ?? url.searchParams.get('dist')) ?? FLIGHT_RADIUS_NM;
+  if (lat === null || lon === null) {
+    res.statusCode = 400;
+    res.setHeader('content-type', 'application/json');
+    res.setHeader('cache-control', 'no-store');
+    res.end(JSON.stringify({ error: 'lat, lon, dist required' }));
+    return;
+  }
+  try {
+    const upstream = await fetch(ADSB_LOL_URL(lat, lon, distNm), {
+      headers: { accept: 'application/json' },
+    });
+    const body = await upstream.text();
+    res.statusCode = upstream.status;
+    res.setHeader('content-type', 'application/json');
+    res.setHeader('cache-control', 'no-store');
+    res.end(body);
+  } catch {
+    res.statusCode = 502;
+    res.setHeader('content-type', 'application/json');
+    res.setHeader('cache-control', 'no-store');
+    res.end(JSON.stringify({ error: 'adsb.lol upstream failed' }));
+  }
+}
 export const USGS_DAY_URL =
   'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson';
 export const EONET_WILDFIRES_URL =
@@ -347,7 +389,7 @@ export async function fetchCivicFlights({
   fetchImpl,
 } = {}) {
   try {
-    const payload = await fetchJson(ADSB_LOL_URL(lat, lon, distNm), { fetchImpl });
+    const payload = await fetchJson(resolveAdsbUrl(lat, lon, distNm), { fetchImpl });
     return parseAdsbLol(payload, { origin: { lat, lon } });
   } catch (error) {
     return unavailable('adsb.lol', error, { radiusNm: distNm, radiusKm: FLIGHT_RADIUS_KM });
