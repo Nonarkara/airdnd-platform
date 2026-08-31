@@ -247,6 +247,28 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+const ESRI_ATTR =
+  'Tiles &copy; <a href="https://www.esri.com/">Esri</a> — Esri, TomTom, Garmin, FAO, NOAA, USGS';
+const OSM_ATTR =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+/** Keyless Esri canvas (same family as the satellite layer). Carto now
+ *  watermarks every unauthenticated tile with "API KEY REQUIRED" while
+ *  still returning HTTP 200, so a tileerror fallback never fires. */
+function esriCanvasLayer(kind) {
+  const base = L.tileLayer(
+    `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_${kind}_Base/MapServer/tile/{z}/{y}/{x}`,
+    { attribution: ESRI_ATTR, maxZoom: 19, maxNativeZoom: 16 },
+  );
+  const labels = L.tileLayer(
+    `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_${kind}_Reference/MapServer/tile/{z}/{y}/{x}`,
+    { attribution: ESRI_ATTR, maxZoom: 19, maxNativeZoom: 16 },
+  );
+  const group = L.layerGroup([base, labels]);
+  group._sabaiTiles = [base, labels];
+  return group;
+}
+
 function buildPopupHtml(listing, precision, availability) {
   const lines = [];
   lines.push(`<strong style="font-size:14px">${escapeHtml(listing.name || 'Unknown')}</strong>`);
@@ -483,12 +505,12 @@ export default function ListingMap({
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [epidemicRows, setEpidemicRows] = useState([]);
   const [epidemicMeta, setEpidemicMeta] = useState(null);
-  // basemap = 'carto' (default) or 'osm' (auto-fallback when Carto tiles fail).
-  const [basemapStatus, setBasemapStatus] = useState({ mode: 'carto', errors: 0 });
+  // basemap = 'esri' (default) or 'osm' (auto-fallback when Esri tiles fail).
+  const [basemapStatus, setBasemapStatus] = useState({ mode: 'esri', errors: 0 });
   const [overlayError, setOverlayError] = useState(null);
   // Mirror of the basemap state for use inside the tile-error closure (avoids
   // re-creating the map effect on every state update).
-  const basemapStatusRef = useRef({ mode: 'carto', theme: 'dark' });
+  const basemapStatusRef = useRef({ mode: 'esri', theme: 'dark' });
   // Longdo POI directory (CC BY-SA 4.0). Parent owns the fetch so the
   // directory and the map share one JSON parse.
   const [fetchedPois, setFetchedPois] = useState([]);
@@ -703,15 +725,11 @@ export default function ListingMap({
       wheelPxPerZoomLevel: 140,
     });
 
-    // Base layers — dark vector, light vector, and satellite.
-    const dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-      maxZoom: 19,
-    });
-    const light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-      maxZoom: 19,
-    });
+    // Base layers — Esri canvas (keyless, same family as satellite). Carto
+    // Dark Matter / Positron now stamp "API KEY REQUIRED" on every tile
+    // while still returning 200, so they are no longer a valid default.
+    const dark = esriCanvasLayer('Dark_Gray');
+    const light = esriCanvasLayer('Light_Gray');
     const satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
@@ -719,15 +737,8 @@ export default function ListingMap({
         maxZoom: 19,
       },
     );
-    // OSM raster fallback — used automatically if Carto tiles fail (rate-limit,
-    // network, or "API Key Required" from a corporate proxy). No key required.
-    const osmDark = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19,
-      crossOrigin: true,
-    });
-    const osmLight = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: OSM_ATTR,
       maxZoom: 19,
       crossOrigin: true,
     });
@@ -735,24 +746,25 @@ export default function ListingMap({
     darkLayerRef.current = dark;
     lightLayerRef.current = light;
 
-    // If Carto tiles keep failing, auto-switch to OSM raster so the basemap
-    // never goes blank. Threshold: 8 errors within 30s of mount.
+    // If Esri tiles keep failing, auto-switch to OSM so the basemap never
+    // goes blank. Threshold: 8 errors within 30s of mount.
     const tileErrorCounters = new Map();
-    let cartoErrors = 0;
-    const cartoErrorWindow = [];
+    let esriErrors = 0;
+    const esriErrorWindow = [];
     const handleTileError = (label, fallback) => (e) => {
       const now = Date.now();
       const next = (tileErrorCounters.get(label) || 0) + 1;
       tileErrorCounters.set(label, next);
-      if (label === 'carto') {
-        cartoErrorWindow.push(now);
-        while (cartoErrorWindow.length && now - cartoErrorWindow[0] > 30_000) cartoErrorWindow.shift();
-        cartoErrors = cartoErrorWindow.length;
-        if (cartoErrors >= 8 && basemapStatusRef.current.mode === 'carto') {
+      if (label === 'esri') {
+        esriErrorWindow.push(now);
+        while (esriErrorWindow.length && now - esriErrorWindow[0] > 30_000) esriErrorWindow.shift();
+        esriErrors = esriErrorWindow.length;
+        if (esriErrors >= 8 && basemapStatusRef.current.mode === 'esri') {
           const currentBase = basemapStatusRef.current.theme === 'light' ? light : dark;
           map.removeLayer(currentBase);
           fallback.addTo(map);
-          setBasemapStatus({ mode: 'osm', errors: cartoErrors });
+          basemapStatusRef.current.mode = 'osm';
+          setBasemapStatus({ mode: 'osm', errors: esriErrors });
         }
       } else {
         if (next === 5) {
@@ -762,9 +774,10 @@ export default function ListingMap({
       // eslint-disable-next-line no-console
       console.warn(`[ListingMap] tile error (${label})`, e?.error || e);
     };
-    dark.on('tileerror', handleTileError('carto', osmDark));
-    light.on('tileerror', handleTileError('carto', osmLight));
-    basemapStatusRef.current = { mode: 'carto', theme: 'dark' };
+    dark._sabaiTiles.forEach((layer) => layer.on('tileerror', handleTileError('esri', osm)));
+    light._sabaiTiles.forEach((layer) => layer.on('tileerror', handleTileError('esri', osm)));
+    satellite.on('tileerror', handleTileError('esri', osm));
+    basemapStatusRef.current = { mode: 'esri', theme: 'dark' };
 
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     if (currentTheme === 'light') {
@@ -810,7 +823,7 @@ export default function ListingMap({
 
     const layerControl = L.control
       .layers(
-        { 'Dark Map': dark, 'Light Map': light, Satellite: satellite, 'OSM (fallback)': osmDark },
+        { 'Dark Map': dark, 'Light Map': light, Satellite: satellite, OpenStreetMap: osm },
         { 'Air Quality (PM2.5)': aqi, 'Precipitation (IMERG)': rain, 'Demand Heatmap': heatLayer },
         { position: 'topright', collapsed: true },
       )
@@ -1242,16 +1255,24 @@ export default function ListingMap({
 
   useEffect(() => {
     if (!mapInstanceRef.current || !darkLayerRef.current || !lightLayerRef.current) return;
+    if (basemapStatusRef.current.mode === 'osm') return;
     const map = mapInstanceRef.current;
     if (theme === 'light') {
       if (map.hasLayer(darkLayerRef.current)) {
         map.removeLayer(darkLayerRef.current);
       }
-      lightLayerRef.current.addTo(map);
+      if (!map.hasLayer(lightLayerRef.current)) {
+        lightLayerRef.current.addTo(map);
+      }
+      basemapStatusRef.current.theme = 'light';
     } else {
       if (map.hasLayer(lightLayerRef.current)) {
         map.removeLayer(lightLayerRef.current);
       }
+      if (!map.hasLayer(darkLayerRef.current)) {
+        darkLayerRef.current.addTo(map);
+      }
+      basemapStatusRef.current.theme = 'dark';
     }
   }, [theme]);
 
@@ -1530,7 +1551,7 @@ export default function ListingMap({
 
       {basemapStatus.mode === 'osm' && (
         <div className="listing-map-fallback-note" role="status">
-          Carto tiles unreachable — basemap switched to <strong>OpenStreetMap</strong> automatically. No API key required for any layer shown here.
+          Esri canvas unreachable — basemap switched to <strong>OpenStreetMap</strong> automatically. No API key required for any layer shown here.
         </div>
       )}
       {overlayError && (
@@ -1634,7 +1655,7 @@ export default function ListingMap({
         </div>
         <div className="map-architecture-strip" aria-label="Map architecture">
           <span className="map-architecture-pill">
-            <i className="map-architecture-dot map-architecture-dot--carto" />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap (fallback)' : 'CARTO'}
+            <i className="map-architecture-dot map-architecture-dot--carto" />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap (fallback)' : 'Esri'}
           </span>
           <span className="map-architecture-pill" aria-live="polite">
             <i className={`map-architecture-dot${aqiActive ? ' is-on' : ''}`} />AQI {aqiActive ? 'on' : 'off'}

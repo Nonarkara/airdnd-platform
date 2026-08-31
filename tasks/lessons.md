@@ -37,6 +37,14 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-08-31 · Carto basemaps watermark at HTTP 200
+
+- **What went wrong:** Default Leaflet tiles were `basemaps.cartocdn.com/dark_all` / `light_all`. Carto now stamps every unauthenticated tile with **API KEY REQUIRED** / `carto.com/basemaps/apikey` while still returning HTTP 200. The tileerror → OSM fallback never fired, so the map looked keyed when the architecture strip said "No API key".
+- **Correct behaviour:** Do not use Carto raster without a key. Default to Esri Canvas (same family as the existing satellite layer) with OSM as a real error fallback. HTTP 200 watermarked tiles are not a "working" basemap.
+- **How to recognise:** Diagonal "API KEY REQUIRED" text on every tile; Carto attribution in the Leaflet credit. Grep `basemaps.cartocdn.com`.
+
+---
+
 ## 2026-06-06 · Airtight audit — AI-fraud, concurrent-session hazards
 
 - **AI-generated "VISUAL EVIDENCE" is the worst regression class.** A concurrent session added three AI images to the research-paper page, stamped "VISUAL EVIDENCE" and captioned as real field photographs. This violates §0 (no AI imagery, ever), §11.4 (no fabricated content), and would disqualify the research outright. **Catch:** audit every new image asset — is it a real curated photo or AI-generated? Grep new `public/**/*.png|jpg` against the components that reference them; read the captions. Remove on sight unless Dr Non asked in-session. Keep the legitimate siblings (a hand-coded SVG diagram, real prose) — surgical, not scorched-earth (§11.1).
