@@ -13,6 +13,17 @@ import {
   formatFreshness,
   getAvailability,
 } from '../lib/mapAvailability';
+import {
+  fetchCivicFlights,
+  fetchCivicQuakes,
+  fetchCivicFires,
+  formatCivicStatus,
+} from '../lib/civicLive';
+import {
+  readPulseFromHref,
+  syncPulseToWindow,
+  EMPTY_PULSE,
+} from '../lib/civicLayerShare';
 import MapMarketBar from './MapMarketBar';
 import SpatialAnalyticsPanel from './SpatialAnalyticsPanel';
 import { buildHealthMatrix, loadFormalization, loadProvinceHiv } from '../lib/health';
@@ -348,6 +359,84 @@ function buildLongdoPopupHtml(poi) {
   `;
 }
 
+function createFlightIcon(aircraft) {
+  const heading = Number.isFinite(aircraft.headingDeg) ? aircraft.headingDeg : 0;
+  return L.divIcon({
+    className: 'civic-flight-pin',
+    html: `<span class="civic-flight-glyph" style="transform:rotate(${heading}deg)"></span>`,
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+    popupAnchor: [0, -10],
+  });
+}
+
+function createFireIcon() {
+  return L.divIcon({
+    className: 'civic-fire-pin',
+    iconSize: [12, 12],
+    iconAnchor: [6, 6],
+    popupAnchor: [0, -8],
+  });
+}
+
+function civicStateLabel(bundle) {
+  if (!bundle) return 'off';
+  if (bundle.state === 'unavailable') return 'unavailable';
+  return bundle.state;
+}
+
+function buildFlightPopupHtml(aircraft, bundle) {
+  const altitude = aircraft.onGround
+    ? 'On the ground'
+    : Number.isFinite(aircraft.altitudeM) ? `${aircraft.altitudeM} m` : '—';
+  const speed = Number.isFinite(aircraft.speedKmh) ? `${aircraft.speedKmh} km/h` : '—';
+  return `
+    <div class="longdo-popup-body civic-popup-body">
+      <div class="popup-kicker">Civic pulse · ${escapeHtml(civicStateLabel(bundle))} · adsb.lol</div>
+      <div class="popup-title">${escapeHtml(aircraft.callsign)}</div>
+      <div class="popup-row"><span class="popup-key">Altitude</span>${escapeHtml(altitude)}</div>
+      <div class="popup-row"><span class="popup-key">Speed</span>${escapeHtml(speed)}</div>
+      <div class="popup-row"><span class="popup-key">From Bangkok</span>${escapeHtml(`${aircraft.distanceKm} km`)}</div>
+      <div class="popup-row"><span class="popup-key">Freshness</span>${escapeHtml(`${aircraft.seenSec.toFixed(0)}s behind transponder`)}</div>
+    </div>
+  `;
+}
+
+function buildQuakePopupHtml(quake, bundle) {
+  const when = quake.timeMs ? new Date(quake.timeMs).toISOString().replace('T', ' ').slice(0, 16) + ' UTC' : '—';
+  const mag = Number.isFinite(quake.mag) ? `M${quake.mag.toFixed(1)}` : 'M—';
+  const link = quake.url
+    ? `<a class="popup-link" target="_blank" rel="noreferrer" href="${escapeHtml(quake.url)}">USGS event ↗</a>`
+    : 'USGS';
+  return `
+    <div class="longdo-popup-body civic-popup-body">
+      <div class="popup-kicker">Civic pulse · ${escapeHtml(civicStateLabel(bundle))} · USGS</div>
+      <div class="popup-title">${escapeHtml(mag)} · ${escapeHtml(quake.place)}</div>
+      <div class="popup-row"><span class="popup-key">Depth</span>${escapeHtml(Number.isFinite(quake.depthKm) ? `${quake.depthKm} km` : '—')}</div>
+      <div class="popup-row"><span class="popup-key">From Bangkok</span>${escapeHtml(`${quake.distanceKm} km`)}</div>
+      <div class="popup-row"><span class="popup-key">Time</span>${escapeHtml(when)}</div>
+      <div class="popup-row"><span class="popup-key">Source</span>${link}</div>
+    </div>
+  `;
+}
+
+function buildFirePopupHtml(fire, bundle) {
+  const when = fire.date ? String(fire.date).replace('T', ' ').replace('Z', ' UTC') : '—';
+  const link = fire.link
+    ? `<a class="popup-link" target="_blank" rel="noreferrer" href="${escapeHtml(fire.link)}">EONET ↗</a>`
+    : 'NASA EONET';
+  return `
+    <div class="longdo-popup-body civic-popup-body">
+      <div class="popup-kicker">Civic pulse · ${escapeHtml(civicStateLabel(bundle))} · NASA EONET</div>
+      <div class="popup-title">${escapeHtml(fire.title)}</div>
+      <div class="popup-row"><span class="popup-key">From Bangkok</span>${escapeHtml(`${fire.distanceKm} km`)}</div>
+      <div class="popup-row"><span class="popup-key">Observed</span>${escapeHtml(when)}</div>
+      <div class="popup-row"><span class="popup-key">Source</span>${link}</div>
+      <div class="popup-row"><span class="popup-key">Note</span>Delayed satellite detections — not a live camera.</div>
+    </div>
+  `;
+}
+
 export default function ListingMap({
   listings,
   longdoPois: longdoPoisProp,
@@ -371,6 +460,7 @@ export default function ListingMap({
   const heatLayerRef = useRef(null);
   const epidemicLayerRef = useRef(null);
   const longdoMarkersRef = useRef(null);
+  const civicLayersRef = useRef({ flights: null, quakes: null, fires: null });
   const userMarkerRef = useRef(null);
   const accuracyCircleRef = useRef(null);
   const reachRingsRef = useRef([]);
@@ -396,6 +486,11 @@ export default function ListingMap({
   const [showTelegram, setShowTelegram] = useState(true);
   const [showLongdo, setShowLongdo] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [mapReady, setMapReady] = useState(false);
+  const [pulse, setPulse] = useState(() => (
+    typeof window === 'undefined' ? { ...EMPTY_PULSE } : readPulseFromHref(window.location.href)
+  ));
+  const [civicBundles, setCivicBundles] = useState({ flights: null, quakes: null, fires: null });
 
   const { pins, pendingListings } = useMemo(() => {
     if (!Array.isArray(listings)) return { pins: [], pendingListings: [] };
@@ -506,6 +601,10 @@ export default function ListingMap({
   useEffect(() => {
     const intervalId = window.setInterval(() => setNowMs(Date.now()), 60_000);
     return () => window.clearInterval(intervalId);
+  }, []);
+
+  const togglePulseLayer = useCallback((id) => {
+    setPulse((prev) => ({ ...prev, [id]: !prev[id] }));
   }, []);
 
   const fitMapToPins = useCallback(() => {
@@ -776,6 +875,12 @@ export default function ListingMap({
     // larger cluster radius keeps the teal cluster bubbles visually distinct
     // from the Telegram ones, and a teal "Longdo" icon-color so the two
     // datasets read as different sources on the map.
+    civicLayersRef.current = {
+      flights: L.layerGroup().addTo(map),
+      quakes: L.layerGroup().addTo(map),
+      fires: L.layerGroup().addTo(map),
+    };
+
     longdoMarkersRef.current = L.markerClusterGroup({
       maxClusterRadius: 45,
       spiderfyOnMaxZoom: true,
@@ -829,15 +934,18 @@ export default function ListingMap({
     };
 
     mapElement.addEventListener('click', handlePopupClick);
+    setMapReady(true);
 
     return () => {
       resizeObserver.disconnect();
       settleTimers.forEach((id) => window.clearTimeout(id));
       mapElement.removeEventListener('click', handlePopupClick);
+      setMapReady(false);
       map.remove();
       mapInstanceRef.current = null;
       markersRef.current = null;
       longdoMarkersRef.current = null;
+      civicLayersRef.current = { flights: null, quakes: null, fires: null };
       heatLayerRef.current = null;
       userMarkerRef.current = null;
       accuracyCircleRef.current = null;
@@ -965,6 +1073,118 @@ export default function ListingMap({
       longdoMarkersRef.current.addLayer(marker);
     }
   }, [filteredLongdoPois, showLongdo]);
+
+  useEffect(() => {
+    syncPulseToWindow(pulse);
+  }, [pulse]);
+
+  useEffect(() => {
+    if (!pulse.flights) return undefined;
+    let cancelled = false;
+    const load = async () => {
+      const bundle = await fetchCivicFlights();
+      if (!cancelled) setCivicBundles((prev) => ({ ...prev, flights: bundle }));
+    };
+    load();
+    const timer = window.setInterval(load, 30_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [pulse.flights]);
+
+  useEffect(() => {
+    if (!pulse.quakes) return undefined;
+    let cancelled = false;
+    const load = async () => {
+      const bundle = await fetchCivicQuakes();
+      if (!cancelled) setCivicBundles((prev) => ({ ...prev, quakes: bundle }));
+    };
+    load();
+    const timer = window.setInterval(load, 5 * 60_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [pulse.quakes]);
+
+  useEffect(() => {
+    if (!pulse.fires) return undefined;
+    let cancelled = false;
+    const load = async () => {
+      const bundle = await fetchCivicFires();
+      if (!cancelled) setCivicBundles((prev) => ({ ...prev, fires: bundle }));
+    };
+    load();
+    const timer = window.setInterval(load, 10 * 60_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [pulse.fires]);
+
+  useEffect(() => {
+    const layer = civicLayersRef.current.flights;
+    if (!layer) return;
+    layer.clearLayers();
+    if (!pulse.flights || !civicBundles.flights?.items) return;
+    for (const aircraft of civicBundles.flights.items) {
+      const marker = L.marker([aircraft.lat, aircraft.lon], {
+        icon: createFlightIcon(aircraft),
+        alt: aircraft.callsign,
+        title: aircraft.callsign,
+        zIndexOffset: 400,
+      });
+      marker.bindPopup(buildFlightPopupHtml(aircraft, civicBundles.flights), {
+        maxWidth: 280,
+        className: 'longdo-popup',
+      });
+      layer.addLayer(marker);
+    }
+  }, [civicBundles.flights, mapReady, pulse.flights]);
+
+  useEffect(() => {
+    const layer = civicLayersRef.current.quakes;
+    if (!layer) return;
+    layer.clearLayers();
+    if (!pulse.quakes || !civicBundles.quakes?.items) return;
+    for (const quake of civicBundles.quakes.items) {
+      const mag = Number.isFinite(quake.mag) ? quake.mag : 2.5;
+      const marker = L.circleMarker([quake.lat, quake.lon], {
+        radius: Math.max(5, mag * 3),
+        color: '#A51931',
+        weight: 1,
+        fillColor: '#A51931',
+        fillOpacity: 0.35,
+        alt: `M${mag} ${quake.place}`,
+      });
+      marker.bindPopup(buildQuakePopupHtml(quake, civicBundles.quakes), {
+        maxWidth: 280,
+        className: 'longdo-popup',
+      });
+      layer.addLayer(marker);
+    }
+  }, [civicBundles.quakes, mapReady, pulse.quakes]);
+
+  useEffect(() => {
+    const layer = civicLayersRef.current.fires;
+    if (!layer) return;
+    layer.clearLayers();
+    if (!pulse.fires || !civicBundles.fires?.items) return;
+    for (const fire of civicBundles.fires.items) {
+      const marker = L.marker([fire.lat, fire.lon], {
+        icon: createFireIcon(),
+        alt: fire.title,
+        title: fire.title,
+        zIndexOffset: 350,
+      });
+      marker.bindPopup(buildFirePopupHtml(fire, civicBundles.fires), {
+        maxWidth: 280,
+        className: 'longdo-popup',
+      });
+      layer.addLayer(marker);
+    }
+  }, [civicBundles.fires, mapReady, pulse.fires]);
 
   useEffect(() => {
     if (!heatLayerRef.current) return;
@@ -1227,6 +1447,58 @@ export default function ListingMap({
         </div>
       </div>
 
+      <div className="listing-map-datasources listing-map-civic" aria-label="Civic live pulse">
+        <span className="map-quickjump-label">Civic pulse</span>
+        <button
+          type="button"
+          className={`map-source-chip${pulse.flights ? ' is-active' : ''}`}
+          onClick={() => togglePulseLayer('flights')}
+          aria-pressed={pulse.flights}
+          title={pulse.flights ? formatCivicStatus(civicBundles.flights) : 'Aircraft within 50 NM of Bangkok · adsb.lol'}
+        >
+          <i className="map-source-swatch map-source-swatch--flights" />
+          Flights
+          <span className="map-source-count">
+            {pulse.flights ? (civicBundles.flights ? civicBundles.flights.count : '…') : '—'}
+          </span>
+        </button>
+        <button
+          type="button"
+          className={`map-source-chip${pulse.quakes ? ' is-active' : ''}`}
+          onClick={() => togglePulseLayer('quakes')}
+          aria-pressed={pulse.quakes}
+          title={pulse.quakes ? formatCivicStatus(civicBundles.quakes) : 'USGS M2.5+ last 24h within 3,500 km'}
+        >
+          <i className="map-source-swatch map-source-swatch--quakes" />
+          Quakes
+          <span className="map-source-count">
+            {pulse.quakes ? (civicBundles.quakes ? civicBundles.quakes.count : '…') : '—'}
+          </span>
+        </button>
+        <button
+          type="button"
+          className={`map-source-chip${pulse.fires ? ' is-active' : ''}`}
+          onClick={() => togglePulseLayer('fires')}
+          aria-pressed={pulse.fires}
+          title={pulse.fires ? formatCivicStatus(civicBundles.fires) : 'NASA EONET wildfires in the haze corridor · 14 days'}
+        >
+          <i className="map-source-swatch map-source-swatch--fires" />
+          Fires
+          <span className="map-source-count">
+            {pulse.fires ? (civicBundles.fires ? civicBundles.fires.count : '…') : '—'}
+          </span>
+        </button>
+        <span className="civic-pulse-note">
+          {pulse.flights || pulse.quakes || pulse.fires
+            ? [
+              pulse.flights && `Flights ${civicBundles.flights ? formatCivicStatus(civicBundles.flights) : 'fetching'}`,
+              pulse.quakes && `Quakes ${civicBundles.quakes ? formatCivicStatus(civicBundles.quakes) : 'fetching'}${civicBundles.quakes?.count === 0 && civicBundles.quakes?.nearest ? ` · nearest M${civicBundles.quakes.nearest.mag} ${civicBundles.quakes.nearest.place}` : ''}`,
+              pulse.fires && `Fires ${civicBundles.fires ? formatCivicStatus(civicBundles.fires) : 'fetching'}${civicBundles.fires?.staleWithheld ? ` · ${civicBundles.fires.staleWithheld} stale withheld` : ''}`,
+            ].filter(Boolean).join(' · ')
+            : 'adsb.lol · USGS · NASA EONET · no API key · live / delayed / unavailable'}
+        </span>
+      </div>
+
       <div className="listing-map-quickjump" aria-label="Quick city navigation">
         <span className="map-quickjump-label">Jump to</span>
         {quickCityData.map((city) => (
@@ -1325,6 +1597,13 @@ export default function ListingMap({
         <div className="data-source-legend" aria-label="Data source legend">
           <span><i className="map-source-swatch map-source-swatch--telegram" />Telegram broadcasts ({pins.length})</span>
           <span><i className="map-source-swatch map-source-swatch--longdo" />Longdo POI · CC BY-SA 4.0 ({longdoPois.length})</span>
+          {(pulse.flights || pulse.quakes || pulse.fires) && (
+            <>
+              {pulse.flights && <span><i className="map-source-swatch map-source-swatch--flights" />Flights · adsb.lol</span>}
+              {pulse.quakes && <span><i className="map-source-swatch map-source-swatch--quakes" />Quakes · USGS</span>}
+              {pulse.fires && <span><i className="map-source-swatch map-source-swatch--fires" />Fires · NASA EONET</span>}
+            </>
+          )}
         </div>
         <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
           <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>
@@ -1351,6 +1630,21 @@ export default function ListingMap({
           <span className="map-architecture-pill" aria-live="polite">
             <i className={`map-architecture-dot${rainActive ? ' is-on' : ''}`} />Rain {rainActive ? 'on' : 'off'}
           </span>
+          {pulse.flights && (
+            <span className="map-architecture-pill" aria-live="polite">
+              <i className="map-architecture-dot is-on" />Flights {formatCivicStatus(civicBundles.flights)}
+            </span>
+          )}
+          {pulse.quakes && (
+            <span className="map-architecture-pill" aria-live="polite">
+              <i className="map-architecture-dot is-on" />Quakes {formatCivicStatus(civicBundles.quakes)}
+            </span>
+          )}
+          {pulse.fires && (
+            <span className="map-architecture-pill" aria-live="polite">
+              <i className="map-architecture-dot is-on" />Fires {formatCivicStatus(civicBundles.fires)}
+            </span>
+          )}
           <span className="map-architecture-pill map-architecture-reassure">
             <i className="map-architecture-dot map-architecture-dot--ok" />No API key required for any layer
           </span>
