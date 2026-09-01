@@ -2,7 +2,7 @@
   "meta": {
     "lastUpdated": "2026-08-25T16:33:50.697Z",
     "source": "Simulated transit corridors and zoning data",
-    "description": "Public works and infrastructure context for analyzing urban density."
+    "description": "Public works and infrastructure context for analyzing urban density. Zoning polygons are indicative outlines traced around the transit corridors above, not official BMA cadastral boundaries."
   },
   "transitCorridors": [
     {
@@ -77,17 +77,131 @@
     {
       "name": "Ratchada Corridor",
       "type": "Commercial High-Density",
-      "code": "C-4"
+      "code": "C-4",
+      "polygon": [
+        {
+          "lat": 13.756,
+          "lng": 100.56
+        },
+        {
+          "lat": 13.776,
+          "lng": 100.568
+        },
+        {
+          "lat": 13.788,
+          "lng": 100.569
+        },
+        {
+          "lat": 13.798,
+          "lng": 100.569
+        },
+        {
+          "lat": 13.804,
+          "lng": 100.568
+        },
+        {
+          "lat": 13.806,
+          "lng": 100.578
+        },
+        {
+          "lat": 13.8,
+          "lng": 100.579
+        },
+        {
+          "lat": 13.79,
+          "lng": 100.579
+        },
+        {
+          "lat": 13.778,
+          "lng": 100.578
+        },
+        {
+          "lat": 13.758,
+          "lng": 100.57
+        }
+      ]
     },
     {
       "name": "Sukhumvit Core",
       "type": "Commercial High-Density",
-      "code": "C-5"
+      "code": "C-5",
+      "polygon": [
+        {
+          "lat": 13.7417,
+          "lng": 100.5594
+        },
+        {
+          "lat": 13.7353,
+          "lng": 100.5688
+        },
+        {
+          "lat": 13.7292,
+          "lng": 100.5769
+        },
+        {
+          "lat": 13.7246,
+          "lng": 100.5842
+        },
+        {
+          "lat": 13.7203,
+          "lng": 100.5905
+        },
+        {
+          "lat": 13.7108,
+          "lng": 100.6
+        },
+        {
+          "lat": 13.7008,
+          "lng": 100.602
+        },
+        {
+          "lat": 13.7103,
+          "lng": 100.5925
+        },
+        {
+          "lat": 13.7146,
+          "lng": 100.5862
+        },
+        {
+          "lat": 13.7192,
+          "lng": 100.5789
+        },
+        {
+          "lat": 13.7253,
+          "lng": 100.5708
+        },
+        {
+          "lat": 13.7317,
+          "lng": 100.5614
+        }
+      ]
     },
     {
       "name": "Lat Phrao",
       "type": "Medium-Density Residential",
-      "code": "Y-4"
+      "code": "Y-4",
+      "polygon": [
+        {
+          "lat": 13.7995,
+          "lng": 100.5685
+        },
+        {
+          "lat": 13.814,
+          "lng": 100.57
+        },
+        {
+          "lat": 13.8195,
+          "lng": 100.583
+        },
+        {
+          "lat": 13.81,
+          "lng": 100.59
+        },
+        {
+          "lat": 13.798,
+          "lng": 100.582
+        }
+      ]
     }
   ]
 }

@@ -722,7 +722,7 @@ export default function ListingMap({
           // them rather than crash the whole map effect.
           if (!Array.isArray(zone.polygon) || zone.polygon.length === 0) return;
           L.polygon(zone.polygon.map(p => [p.lat, p.lng]), {
-            color: zone.type === 'Commercial' ? '#f59e0b' : '#3b82f6',
+            color: zone.type.startsWith('Commercial') ? '#f59e0b' : '#3b82f6',
             weight: 2,
             opacity: 0.6,
             fillOpacity: 0.1
