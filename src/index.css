@@ -523,3 +523,46 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 }
 
+/* ----------------------------------------------------------------------------
+   iPad + foldable ergonomics
+   ----------------------------------------------------------------------------
+   The existing `index.css` is primarily the design-system + typography file.
+   It uses a *16px* base font size which is correct (iOS Safari zooms the
+   viewport on focus if any input is below 16px). Two global concerns for
+   tablet/foldable use that the component-level rules don't cover:
+
+   1. **No accidental double-tap zoom** — `touch-action: manipulation`
+      removes the 300ms tap delay on legacy browsers and prevents the
+      double-tap-to-zoom gesture from interfering with custom taps.
+   2. **Comfortable reading width on iPad** — the body max-width is
+      defined in JS-driven inline styles per page, but the default prose
+      width on the research / methodology / paper pages can blow out to
+      90+ characters per line at iPad landscape. The `prose` and `paper`
+      classes get a hard ceiling.
+   ---------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  html {
+    /* Honor the iOS notch / home-indicator safe areas. The header
+       already uses position: sticky so this just keeps the body
+       content from sitting under the home indicator in landscape. */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right)
+             env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
+  /* Disable the 300ms tap delay + the double-tap-to-zoom gesture
+     everywhere; the design relies on tap-to-open / tap-to-toggle
+     for cards and chips. */
+  a, button, [role="button"], .nav-links a, .filter-field, .map-source-chip,
+  .map-quickjump-chip, .place-venue-card, .lcard__action, .lcard__save {
+    touch-action: manipulation;
+  }
+
+  /* Hard reading-width ceiling for long-form pages on iPad landscape.
+     Without this, a 1024px viewport with 90ch of body text reads at
+     ~75 characters per line which is below the readability optimum. */
+  .prose, .paper, .methodology, .analytics, .health, .sociology, .faq,
+  .trends, .insights, .paper, .public-works, .field-note {
+    max-width: min(60ch, 100%);
+  }
+}
+

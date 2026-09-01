@@ -1113,6 +1113,63 @@
   }
 }
 
+/* iPad portrait + foldable open (≤1024px) — 2x2 reach dashboard instead
+   of 3-col. The third column at 130px each was too cramped for touch
+   and made the numeric cells feel like an afterthought. */
+@media (max-width: 1024px) and (min-width: 841px) {
+  .map-reach-dashboard {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .map-position-readout,
+  .map-nearest-list {
+    grid-column: 1 / -1;
+  }
+
+  /* Bump the data-source chips up to touch-target height — at 0.4rem
+     padding they were ~27px which is below the 44pt iOS minimum. */
+  .map-source-chip {
+    min-height: 44px;
+    padding: 0.6rem 0.9rem;
+    font-size: var(--text-small);
+  }
+
+  .map-quickjump-chip {
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    font-size: var(--text-small);
+  }
+}
+
+/* Foldable open (≤840px) — single-column reach dashboard, larger tap
+   targets everywhere. */
+@media (max-width: 840px) and (min-width: 601px) {
+  .map-reach-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .map-position-readout,
+  .map-nearest-list,
+  .map-airquality-readout,
+  .map-rain-readout {
+    grid-column: 1;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  /* The map needs to be a bit shorter on foldable landscape so the
+     source legend and quick-jump chips below it stay in thumb reach
+     without scrolling past the fold. */
+  .listing-map-container {
+    height: 28rem;
+  }
+
+  .map-source-chip,
+  .map-quickjump-chip {
+    min-height: 44px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .map-live-status i.is-refreshing { animation: none; }
 }

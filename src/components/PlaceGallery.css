@@ -366,3 +366,45 @@
     gap: 0.4rem;
   }
 }
+
+/* iPad portrait + foldable open (≤1024px) — slightly narrower venue
+   cards so 3 fit per row on a 7-inch display, but not so narrow that
+   the 4-photo collage becomes illegible. 260px is the floor. */
+@media (max-width: 1024px) and (min-width: 721px) {
+  .place-venue-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+
+  .place-back-btn {
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+  }
+}
+
+/* Foldable open (≤840px) — 2 venue cards per row, still wider than
+   phone so the photo collage stays visible. */
+@media (max-width: 840px) and (min-width: 601px) {
+  .place-venue-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* Foldable closed (≤360px) — venue cards go single column, photo
+   collage drops to 1:1 so the aspect ratio doesn't fight the viewport. */
+@media (max-width: 360px) {
+  .place-photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  }
+
+  .place-venue-collage {
+    aspect-ratio: 1 / 1;
+  }
+
+  .place-section-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .place-venue-hero-meta {
+    font-size: var(--text-small);
+  }
+}

@@ -163,3 +163,60 @@
     font-size: clamp(2.1rem, 11vw, 2.8rem);
   }
 }
+
+/* iPad portrait + large foldable (≤1024px) — three-column stats grid is
+   denser than 2-col at 7" widths without going full desktop. The hero
+   stays in 2-col at this width because the 4-quadrant stat grid is the
+   feature that benefits most from one extra column. */
+@media (max-width: 1024px) and (min-width: 681px) {
+  .masthead__stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* The 'CHANNELS' / 'SYNCED' pair was 1fr 1fr — keep them side-by-side
+     inside a 2-col mini-grid even when the outer grid is 3-col. */
+  .masthead__stats > div:nth-child(7),
+  .masthead__stats > div:nth-child(8) {
+    grid-column: span 1;
+  }
+
+  /* Re-flow the bottom row so the two wide cells still sit in a 2-col
+     sub-grid rather than two full-width rows. */
+  .masthead__stats {
+    grid-template-areas:
+      'a b c'
+      'd e f'
+      'g h h';
+  }
+
+  .masthead__stats > div:nth-child(1) { grid-area: a; }
+  .masthead__stats > div:nth-child(2) { grid-area: b; }
+  .masthead__stats > div:nth-child(3) { grid-area: c; }
+  .masthead__stats > div:nth-child(4) { grid-area: d; }
+  .masthead__stats > div:nth-child(5) { grid-area: e; }
+  .masthead__stats > div:nth-child(6) { grid-area: f; }
+  .masthead__stats > div:nth-child(7) { grid-area: g; }
+  .masthead__stats > div:nth-child(8) { grid-area: h; }
+}
+
+/* Foldable phone closed (≤360px) — 2-col stays, but tighten padding and
+   prevent the title from forcing a horizontal scroll on cover displays. */
+@media (max-width: 360px) {
+  .masthead__title {
+    font-size: clamp(1.8rem, 9vw, 2.2rem);
+  }
+
+  .masthead__sub,
+  .masthead__pulse {
+    max-width: 100%;
+  }
+
+  .masthead__stats > div {
+    padding: 10px 10px;
+  }
+
+  .masthead__cta {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.7rem;
+  }
+}
