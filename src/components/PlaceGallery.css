@@ -1,0 +1,368 @@
+/* src/components/PlaceGallery.css */
+
+.place-venue-wall,
+.place-venue-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.place-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+}
+
+.place-section-header h2 {
+  font-family: var(--font-display, system-ui);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.place-section-header p {
+  color: var(--ink-2, rgba(247, 238, 243, 0.7));
+  max-width: 60ch;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Venue wall — dense, photo-first grid of venue cards */
+
+.place-venue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.place-venue-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-2, #0e0b12);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+  overflow: hidden;
+}
+
+.place-venue-card:hover,
+.place-venue-card:focus-visible {
+  border-color: var(--mango, #f59e0b);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.place-venue-collage {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  aspect-ratio: 4 / 3;
+  background: var(--bg, #0a0a0c);
+  gap: 1px;
+}
+
+.place-venue-collage .place-photo-tile {
+  width: 100%;
+  height: 100%;
+}
+
+.place-venue-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.85rem 0.95rem 1rem;
+  border-top: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+}
+
+.place-venue-name-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.place-venue-name {
+  font-family: var(--font-display, system-ui);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--ink, #f7eef3);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.place-venue-channel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-3, rgba(247, 238, 243, 0.55));
+}
+
+.place-venue-stats {
+  display: flex;
+  gap: 1.25rem;
+  align-items: baseline;
+}
+
+.place-venue-stat {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.place-venue-stat strong {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink, #f7eef3);
+  letter-spacing: 0.04em;
+}
+
+.place-venue-stat small {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3, rgba(247, 238, 243, 0.55));
+}
+
+.place-venue-stat--count strong {
+  color: var(--mango, #f59e0b);
+  font-size: 1.2rem;
+}
+
+.place-venue-stat-row {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.place-venue-pill {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2, rgba(247, 238, 243, 0.7));
+  background: var(--bg, #0a0a0c);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.18));
+}
+
+/* Photo tile */
+
+.place-photo-tile {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--bg, #0a0a0c);
+  overflow: hidden;
+}
+
+.place-photo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.place-photo-tile:hover img {
+  transform: scale(1.04);
+}
+
+.place-photo-tile.is-missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.place-photo-missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3, rgba(247, 238, 243, 0.4));
+  border: 1px dashed var(--line, rgba(255, 255, 255, 0.12));
+}
+
+/* Venue detail */
+
+.place-venue-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+}
+
+.place-venue-hero h1 {
+  font-family: var(--font-display, system-ui);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.place-venue-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem 1.5rem;
+  align-items: baseline;
+  font-size: 0.85rem;
+  color: var(--ink-2, rgba(247, 238, 243, 0.7));
+}
+
+.place-venue-hero-meta strong {
+  font-family: var(--font-mono, monospace);
+  color: var(--ink, #f7eef3);
+  margin-right: 0.35rem;
+}
+
+.place-venue-source {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--mango, #f59e0b);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--mango, #f59e0b);
+  padding: 0.15rem 0.55rem;
+}
+
+.place-venue-source:hover {
+  background: var(--mango, #f59e0b);
+  color: var(--bg, #0a0a0c);
+}
+
+.place-venue-listings {
+  font-size: 0.85rem;
+  color: var(--ink-2, rgba(247, 238, 243, 0.7));
+  margin: 0;
+}
+
+.place-back-btn {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.2));
+  color: var(--ink, #f7eef3);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.place-back-btn:hover {
+  border-color: var(--mango, #f59e0b);
+  color: var(--mango, #f59e0b);
+}
+
+.place-venue-dates {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+}
+
+.place-venue-dates-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3, rgba(247, 238, 243, 0.55));
+}
+
+.place-venue-dates select {
+  background: var(--bg-2, #0e0b12);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.18));
+  color: var(--ink, #f7eef3);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+}
+
+.place-venue-archive-note {
+  font-size: 0.8rem;
+  color: var(--ink-3, rgba(247, 238, 243, 0.55));
+  line-height: 1.5;
+  margin: 0;
+  font-family: var(--font-mono, monospace);
+}
+
+.place-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+}
+
+.place-photo-grid .place-photo-tile {
+  aspect-ratio: 1 / 1;
+}
+
+.place-venue-loadmore {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.place-venue-loadmore button {
+  background: transparent;
+  border: 1px solid var(--mango, #f59e0b);
+  color: var(--mango, #f59e0b);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.place-venue-loadmore button:hover {
+  background: var(--mango, #f59e0b);
+  color: var(--bg, #0a0a0c);
+}
+
+.place-venue-loadmore-meta {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-3, rgba(247, 238, 243, 0.55));
+}
+
+.place-venue-loading,
+.place-venue-error {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 2rem 0;
+  align-items: flex-start;
+  color: var(--ink-2, rgba(247, 238, 243, 0.7));
+}
+
+@media (max-width: 720px) {
+  .place-photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  .place-venue-hero-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+}

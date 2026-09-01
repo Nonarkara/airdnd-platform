@@ -55,6 +55,7 @@ const Health = lazy(() => import('./components/Health'));
 const Insights = lazy(() => import('./components/Insights'));
 const PublicWorks = lazy(() => import('./components/PublicWorks'));
 const IndustryIntel = lazy(() => import('./components/IndustryIntel'));
+const PlaceGallery = lazy(() => import('./components/PlaceGallery'));
 const SORT_OPTIONS = [
   'Most Active Broadcasters',
   'Most Promotions',
@@ -806,6 +807,62 @@ function App() {
               <Suspense fallback={<div className="page-shell-loading">Loading industry intelligence…</div>}>
                 <IndustryIntel />
               </Suspense>
+            </main>
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+          </div>
+        )}
+      />
+      <Route
+        path="/places"
+        element={(
+          <div className="app-shell">
+            <Header
+              language={language}
+              setLanguage={setLanguage}
+              t={t}
+              theme={theme}
+              setTheme={setTheme}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
+              sourceLabel={displayDataState.sourceLabel}
+              activeView="places"
+              setActiveView={setActiveView}
+              metrics={metrics}
+            />
+            <main className="app-main" style={{ padding: 'var(--gutter)' }}>
+              <div style={{ maxWidth: 'var(--maxw)', margin: '0 auto' }}>
+                <Suspense fallback={<div className="page-shell-loading">Loading photo archive…</div>}>
+                  <PlaceGallery t={t} />
+                </Suspense>
+              </div>
+            </main>
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+          </div>
+        )}
+      />
+      <Route
+        path="/places/:slug"
+        element={(
+          <div className="app-shell">
+            <Header
+              language={language}
+              setLanguage={setLanguage}
+              t={t}
+              theme={theme}
+              setTheme={setTheme}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
+              sourceLabel={displayDataState.sourceLabel}
+              activeView="places"
+              setActiveView={setActiveView}
+              metrics={metrics}
+            />
+            <main className="app-main" style={{ padding: 'var(--gutter)' }}>
+              <div style={{ maxWidth: 'var(--maxw)', margin: '0 auto' }}>
+                <Suspense fallback={<div className="page-shell-loading">Loading photo archive…</div>}>
+                  <PlaceGallery t={t} />
+                </Suspense>
+              </div>
             </main>
             <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
           </div>

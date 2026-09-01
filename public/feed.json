@@ -1,451 +1,26 @@
 [
   {
-    "id": "feed_snapshot-1787542393176-1",
-    "name": "CHANEL MASSAGE",
-    "channel": "@chanelmassage",
-    "messageDate": "2026-08-24T03:33:02.000Z",
-    "description": "🪴CHANEL MASSAGE🪴 ⏰ร้านเปิด 10.00 - 23:00น. 🎀อัพเดท24-08-69🎀",
-    "priceLabel": "Rate on request",
-    "hours": "10.00 - 23:00",
-    "phone": "098-798-9888",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/azDSABsC81aukerH9?g_st=ic",
-    "photoUrls": [
-      "/images/chanelmassage/2026-08-24/chanelmassage_14004_photo6080255566409307305.jpg"
-    ],
-    "location": "ถ.สังคมสงเคราะห์ ซอย 15 ลาดพร้าว71",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787542339253-1",
-    "name": "นันตา นวดเพื่อสุขภาพ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T03:31:16.000Z",
-    "description": "🎈ร้าน นันตา นวดเพื่อสุขภาพ 📌พิกัด รามอินทรา ✅เปิดให้บริการทุกวัน 11:00-23:00น.",
+    "id": "feed_snapshot-1788249283080-10",
+    "name": "สาวหมวยสูงยาวเข่าด",
+    "channel": "@relaxsocietymassage",
+    "messageDate": "2026-09-01T07:32:31.000Z",
+    "description": "TOP 2🌵น้องหนูดี🌵 สาวหมวยสูงยาวเข่าดี ภายในสวยไม่มีลูก เนียนกริบ",
     "priceLabel": "Rate on request",
     "hours": "11:00-23:00",
-    "phone": "0646388886",
+    "phone": "083-0536938",
     "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/BqUZVin77QGccvce8?g_st=ipc",
+    "mapsUrl": "https://maps.app.goo.gl/GJa67ogDCdAXkQ5V9?g_st=il",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058763_photo6073180767430316483.jpg"
+      "/images/relaxsocietymassage/2026-09-01/relaxsocietymassage_1779724_photo6102552244881396485.jpg"
     ],
-    "location": "รามอินทรา",
-    "city": "Bangkok"
+    "location": "ที่ตั้งซอยวัดลาปลาดุก นนทบุร",
+    "city": "Nonthaburi"
   },
   {
-    "id": "feed_snapshot-1787542278206-1",
-    "name": "#นวดใกล้ฉัน",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T03:30:37.000Z",
-    "description": "🏢เอมมิกานวดเพื่อสุขภาพ รามอินทรา14 เปิดบริการทุกวัน จันทร์-อาทิตย์ 10:00-23:00น. 🧹ร้านสะอาด ปลอดภัย ห่วงใย",
-    "priceLabel": "Rate on request",
-    "hours": "10:00-23:00",
-    "phone": "0835182869",
-    "lineUrl": "https://line.me/ti/p/YhniJBOZOs",
-    "mapsUrl": "https://goo.gl/maps/7cqx4fBm1DvKmFwx5",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058760_photo6077933303362163143.jpg"
-    ],
-    "location": "นวดใกล้ฉัน",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787542176703-1",
-    "name": "เทเรแกรม",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T03:29:05.000Z",
-    "description": "📍ห้องส่วนตัวมีตู้อาบน้ำ 📍มีที่จอดรถ ⏰ เปิดทุกวัน 10:00 - 22:00 น.",
-    "priceLabel": "Rate on request",
-    "hours": "10:00 - 22:00",
-    "phone": "099-6142652",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/yGKCcmtK2d42Xsts8?g_st=ic",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058758_photo6080055927739454171.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787541901197-1",
-    "name": "Keawjaojorm Massage",
-    "channel": "@keawjaojormmassage",
-    "messageDate": "2026-08-24T03:23:56.000Z",
-    "description": "แก้วเจ้าจอม keawjaojorm เสรีไทย 4 เปิดบริการทุกวันเวลา 10.00-23.00น.",
-    "priceLabel": "Rate on request",
-    "hours": "10.00-23.00",
-    "phone": "094-3985328",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/sfcACWMGuSReQeCcA?g_st=al24718:0",
-    "photoUrls": [
-      "/images/keawjaojormmassage/2026-08-24/keawjaojormmassage_57042_photo6073636566539637174.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787541827189-1",
-    "name": "White house RCA",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T03:23:23.000Z",
-    "description": "🌱🌱OPEN NOW🌱🌱 UPDATE TODAY 24/08/2569 🌶🌶 IDOL🌶🌶",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "0651464992",
-    "lineUrl": "https://line.me/ti/p/SkCNaj-dJm",
-    "mapsUrl": "https://maps.app.goo.gl/rfrrq2wNpt2Rq7jS6?g_st=ic",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058745_photo6077897796867527595.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787540823924-1",
-    "name": "ลักซ์ชัวรี่ นวดเพื่อสุขภาพ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T03:06:21.000Z",
-    "description": "ลักซ์ชัวรี่ นวดเพื่อสุขภาพ💎 แวะมาผ่อนคลายกันได้ที่ ลักซ์ชัวรี่ นวดเพื่อสุขภาพ น้าาา💕 🩷 หมอน่ารัก นวดเก่ง นิสัยดี",
-    "priceLabel": "Rate on request",
-    "hours": "10:00 - 22:00",
-    "phone": "0929632590",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/PxjwzYeLD9mUxgbp9?g_st=ic",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058712_photo6080111311342735560.jpg"
-    ],
-    "location": "ร้านตั้งอยู่จ.นครปฐม ใกล้องค์พระปฐมเจดีย์ อยู่ติดกับปฐมโภชนา สาขาต้นสน ร",
-    "city": "Nakhon Pathom"
-  },
-  {
-    "id": "feed_snapshot-1787540324157-1",
-    "name": "ชโนทัยนวดเพื่อสุขภาพ บางใหญ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T02:58:15.000Z",
-    "description": "ร้านชโนทัยนวดเพื่อสุขภาพ บางใหญ่ 🎉#โปรโมชั่นส่วนลด10% มานวดผ่อนคลายคลายความเมื่อยล้าได้ทุกวัน",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "098-8953625",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/79febzFFfNCKEeAk8?g_st=ic",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058697_photo6062290491304251563.jpg"
-    ],
-    "location": "หน้าเอื้ออาทรกันตนา ซอยกันตนา บางใหญ",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787540022032-1",
-    "name": "อยู่หน้าซอย",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T02:53:12.000Z",
-    "description": "อัพเดทหมอจ้า #ชโนทัยนวดเพื่อสุขภาพ 🌼โปรโมชั่น🌼",
-    "priceLabel": "Rate on request",
-    "hours": "10:00-23:00",
-    "phone": "082-4486015",
-    "lineUrl": "https://line.me/ti/p/MfnplOHZFM",
-    "mapsUrl": "https://maps.app.goo.gl/uAVgQebiQ3VoKD386?g_st=ic",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058690_photo6068947553174099010.jpg"
-    ],
-    "location": "พระราม2 ซอย63 ร้านอยู่หน้าซอย",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787539257309-1",
-    "name": "Relax Society Massage",
-    "channel": "@relaxsocietymassage",
-    "messageDate": "2026-08-24T02:40:16.000Z",
-    "description": "🪴เดอะเซนส์ มาสสาจ🪴 🕚เปิด10.00-23.00 🚗ที่จอดรถสะดวก",
-    "priceLabel": "Rate on request",
-    "hours": "10.00-23.00",
-    "phone": "0647547992",
-    "lineUrl": "https://line.me/ti/p/tacrvwdBUh",
-    "mapsUrl": "https://maps.app.goo.gl/CPYp6ibZR2F3zPxL7",
-    "photoUrls": [
-      "/images/relaxsocietymassage/2026-08-24/relaxsocietymassage_1768660_photo6080111311342735534.jpg"
-    ],
-    "location": "มีนบุรี ซอยสามวา",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787538041285-1",
-    "name": "ชวนชม โชคชัย 4",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T02:20:20.000Z",
-    "description": "ร้านชวนชม โชคชัย 4 ยินดีต้อนรับค่ะ 🎉พิกัด โชคชัย4/ สตรีวิทยา2🎉",
-    "priceLabel": "Rate on request",
-    "hours": "11.00-23.00",
-    "phone": "0956977756",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/A34uLdYiWDKuzZsM9?g_st=al",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058621_photo6078011158234339363.jpg"
-    ],
-    "location": "โชคชัย4/ สตรีวิทยา2",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787537314290-1",
-    "name": "สนใจสอบถามเพิ่มเติม",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T02:07:47.000Z",
-    "description": "น้องเบบี๋ น้องใหม่วัยใส ลุคเรียบร้อยน่ารัก กริยามารยาทงาม รอบแรก 13.00 จองเลยจ้าา 🌹 สนใจสอบถามเพิ่มเติม🎈 📌พิกัด พระราม 2 ซอย 60",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "080-3514296",
-    "lineUrl": null,
-    "mapsUrl": null,
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058620_photo6080060287131259435.jpg"
-    ],
-    "location": "พระราม 2 ซอย 60",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787537183577-3",
-    "name": "#หมอนวดแนะนำ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T02:05:22.000Z",
-    "description": "🎉รูมเมท นวดเพื่อสุขภาพ🎉 ☎️โทร0640315965 ✅ Line Official :",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "0640315965",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/2NtWCG52PNTY4jyJA",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058600_photo6080406465790284727.jpg"
-    ],
-    "location": "รังสิตคลอง 2",
-    "city": "Pathum Thani"
-  },
-  {
-    "id": "feed_snapshot-1787537183577-2",
-    "name": "ละมัย นวดเพื่อสุขภาพ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T02:05:16.000Z",
-    "description": "ร้านละมัย นวดเพื่อสุขภาพ พิกัดเคหะร่มเกล้า 74 โทร 0817689558",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "0817689558",
-    "lineUrl": null,
-    "mapsUrl": null,
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058588_photo6080406465790284716.jpg"
-    ],
-    "location": "เคหะร่มเกล้า 74",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787537183577-1",
-    "name": "กระปุกหอม",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T02:05:11.000Z",
-    "description": "มูนไลท์ นวดเพื่อสุขภาพ ก่อนถึง ไทวัสดุ อ้อมน้อย ติดร้านกระปุกหอม",
-    "priceLabel": "Rate on request",
-    "hours": "11:00 - 23:00",
-    "phone": "090-261-6497",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/1UtHZhenxmWwMk7a6?g_st=il",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058579_photo6080381765433364663.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787537121337-1",
-    "name": "#หมอนวดแนะนำ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T02:05:09.000Z",
-    "description": "🪷ร้านเรือนเจ้าคุณ นวดเพื่อสุขภาพ ☎️โทร0628808774 ✅Line id : 0628808774",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "0628808774",
-    "lineUrl": "https://line.me/ti/p/X7JmKGcfPq",
-    "mapsUrl": "https://maps.app.goo.gl/JDey9b9ajphkx5FG9?g_st=al",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058576_photo6075681503548478424.jpg"
-    ],
-    "location": "ฉลองกรุง",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787536990637-1",
-    "name": "Malee Aromaoil Healthmassage",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T02:02:08.000Z",
-    "description": "มาลี อโรม่าออยล์ นวดเพื่อสุขภาพ Malee Aromaoil Healthmassage 🌺ยินดีให้บริการค่ะ🌺",
-    "priceLabel": "Rate on request",
-    "hours": "10:00-22:00",
-    "phone": "099-289-9693",
-    "lineUrl": null,
-    "mapsUrl": null,
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058556_photo6075481766094377365.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787536400310-1",
-    "name": "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T01:52:19.000Z",
-    "description": "🫒ถึงจะไม่แสดงออกแต่...รักมากนะรู้ใช่ไหม🫒 {☆LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ์☆} ⌛️ อัพเดทตารางพนักงานวันนี้ วันที่ 24/08/69⌛️",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "083-850-6969",
-    "lineUrl": null,
-    "mapsUrl": null,
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058531_photo6080060493289689314.jpg"
-    ],
-    "location": "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787536177270-1",
-    "name": "ธัญญาลักษณ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T01:49:07.000Z",
-    "description": "🩷สวัสดีค่า🩷 แวะมาพักผ่อนนะคะ ร้านธัญญาลักษณ์",
-    "priceLabel": "Rate on request",
-    "hours": "11:00 - 23:00",
-    "phone": "0992755062",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/zjDasTvr92bLrGkw5?g_st=ic",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058524_photo6075681503548478384.jpg"
-    ],
-    "location": "โลเคชั่น",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787535439161-1",
-    "name": "มูนเรสต์ นวด&สปา",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T01:36:30.000Z",
-    "description": "มูนเรสต์ นวด&สปา หน้าถนนใกล้ซอย นวมินทร์ 87 📞 โทร : 090-666-3261",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "090-666-3261",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/fXsDUBt4p5pGeL7n8?g_st=ic",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058518_photo6080381765433364662.jpg"
-    ],
-    "location": "หน้าถนนใกล้ซอย นวมินทร์ 87",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787533647492-1",
-    "name": "ใหม่ได้ท",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-24T01:07:13.000Z",
-    "description": "🌏วันจันทร์ มันส์เดย์ 🪲อัพเดตน้องๆ วันที่ 24.08.2026🐞 🕸พิกัด yesika spa ลาดพร้าว71🕸",
-    "priceLabel": "Rate on request",
-    "hours": "10.00-02.00",
-    "phone": "061-097-9296",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/85dFNNFLPz8kF7zE9",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-24/relaxsociety2020_2058481_photo6077692097998820247.jpg"
-    ],
-    "location": "yesika spa ลาดพร้าว71",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787503604261-1",
-    "name": "สาขาบางใหญ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T16:46:31.000Z",
-    "description": "✨สาวๆคืนนี้ยังมีรอบว่าง แวะมาหาได้น้าา✨ จองไว้ก่อนได้เลยค้าบบ จัดเต็มสุดๆ🔥 LINE :",
-    "priceLabel": "Rate on request",
-    "hours": "10.00-03.00",
-    "phone": "086-992-9154",
-    "lineUrl": null,
-    "mapsUrl": "https://goo.gl/maps/ofF9J7vAvH3W2SHq8",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2058404_photo6077863153661317436.jpg"
-    ],
-    "location": "บางใหญ",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787495939996-1",
-    "name": "Relax Society Massage",
-    "channel": "@relaxsocietymassage",
-    "messageDate": "2026-08-23T14:38:26.000Z",
-    "description": "วันนี้น้อง ๆ พร้อมต้อนรับแล้ว 💕 บรรยากาศดี บริการเป็นกันเอง มีคิวว่างสำหรับคนที่อยากมาผ่อนคลายแบบส่วนตัว🦋",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "094-8964563",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/QANboE8GEMVd4Qq67",
-    "photoUrls": [
-      "/images/relaxsocietymassage/2026-08-23/relaxsocietymassage_1768302_photo6071384199790268531.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787489905506-3",
-    "name": "เปิดใหม",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T11:32:03.000Z",
-    "description": "🍭ร้านเปิดใหม่ 🍭 💖QQ Spa \"Self-love time 💖 🫧พบกับQQ Sps🫧 🎉โปรโมชั่นมากมาย🎉 ❄️ห้องสูตรพิเศษส่วนตัว ❄️อ่างJacuzzi🛁🫧ใหญ่เต็มระบบ ❄️ห้องอโรม่าสวนตัวสวยใหญ่ 🚘ทีจอดรถส่วนตัวของจริง หน้าร้าน หลังร้าน 📍🚙 QQ Spa หน้าร",
-    "priceLabel": "Rate on request",
-    "hours": "11.00 - 02.00",
-    "phone": "096-864-5696",
-    "lineUrl": "https://line.me/ti/g/7GY_c5ZDgB",
-    "mapsUrl": "https://maps.app.goo.gl/SV3pX1Vj7NDssHG56",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2058069_photo6075769674932097951.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787489929621-2",
-    "name": "คำหอม นวดเพื่อสุขภาพ",
-    "channel": "@relaxsocietymassage",
-    "messageDate": "2026-08-23T10:38:12.000Z",
-    "description": "ขออนุญาติค่ะ คำหอม นวดเพื่อสุขภาพ โทร092-4461692",
-    "priceLabel": "Rate on request",
-    "hours": "10.00-03.00",
-    "phone": "092-4461692",
-    "lineUrl": "https://line.me/ti/p/rfbwHPRgD9",
-    "mapsUrl": "https://maps.app.goo.gl/63tZ52EG2S4hBWAK6",
-    "photoUrls": [
-      "/images/relaxsocietymassage/2026-08-23/relaxsocietymassage_1768013_photo6070928967616631196.jpg"
-    ],
-    "location": "1ตรงข้ามซอยหทัยราษ14",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787464672612-1",
-    "name": "Baannine Massage Spa",
-    "channel": "Baannine Massage Spa",
-    "messageDate": "2026-08-23T05:31:11.000Z",
-    "description": "วันนี้วันสุดท้ายสำหรับโปรโมชั่นลด 200 บาท 😘พี่ๆแวะมาใช้กันได้เลยนะคะวันนี้วันสุดท้ายเท่านั้น🔥 โปรโมชั่นดีๆแบบนี้ไม่ได้มีบ๊อยบ่อย เช็คคิวว่างสะกิดแอดมินมาเลยค่าา💕💕 📞 Tel : 0812606842 📍 GPS >>> <<<",
-    "priceLabel": "200 THB",
-    "hours": null,
-    "phone": "0812606842",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/P8J4BMqaJD2CQBT76",
-    "photoUrls": [
-      "/images/Baannine_Massage_Spa/2026-08-23/Baannine_Massage_Spa_74867_photo6077669085564048973.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787464662777-4",
+    "id": "feed_snapshot-1788249283080-9",
     "name": "sabaispa by michel)",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T05:13:45.000Z",
+    "channel": "@relaxsocietymassage",
+    "messageDate": "2026-09-01T07:32:30.000Z",
     "description": "🌸SBM🌸 (sabaispa by michel) 📌พิกัด นวมินทร์",
     "priceLabel": "Rate on request",
     "hours": "11.00-02.00",
@@ -453,16 +28,186 @@
     "lineUrl": "https://line.me/ti/p/U4q4flj8Gt",
     "mapsUrl": "https://maps.app.goo.gl/ZPsLB4EvQ8WDS7326",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057383_photo6057844341159432890.jpg"
+      "/images/relaxsocietymassage/2026-09-01/relaxsocietymassage_1779720_photo6100281452722327755.jpg"
     ],
     "location": "นวมินทร",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787464662776-2",
+    "id": "feed_snapshot-1788249283080-8",
+    "name": "คำหอม นวดเพื่อสุขภาพ",
+    "channel": "@relaxsocietymassage",
+    "messageDate": "2026-09-01T07:14:07.000Z",
+    "description": "ขออนุญาติค่ะ คำหอม นวดเพื่อสุขภาพ โทร092-4461692",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "092-4461692",
+    "lineUrl": "https://line.me/ti/p/rfbwHPRgD9",
+    "mapsUrl": "https://maps.app.goo.gl/63tZ52EG2S4hBWAK6",
+    "photoUrls": [
+      "/images/relaxsocietymassage/2026-09-01/relaxsocietymassage_1779702_photo6102866524818313836.jpg"
+    ],
+    "location": "1ตรงข้ามซอยหทัยราษ14",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788249283080-7",
+    "name": "เปิดใหม",
+    "channel": "@relaxsocietymassage",
+    "messageDate": "2026-09-01T07:09:13.000Z",
+    "description": "🍭ร้านเปิดใหม่ 🍭 💖QQ Spa \"Self-love time 💖 🫧พบกับQQ Sps🫧 🎉โปรโมชั่นมากมาย🎉 ❄️ห้องสูตรพิเศษส่วนตัว ❄️อ่างJacuzzi🛁🫧ใหญ่เต็มระบบ ❄️ห้องอโรม่าสวนตัวสวยใหญ่ 🚘ทีจอดรถส่วนตัวของจริง หน้าร้าน หลังร้าน 📍🚙 QQ Spa หน้าร",
+    "priceLabel": "Rate on request",
+    "hours": "11.00 - 02.00",
+    "phone": "096-864-5696",
+    "lineUrl": "https://line.me/ti/g/7GY_c5ZDgB",
+    "mapsUrl": "https://maps.app.goo.gl/SV3pX1Vj7NDssHG56",
+    "photoUrls": [
+      "/images/relaxsocietymassage/2026-09-01/relaxsocietymassage_1779700_photo6102794047245193838.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788249283080-6",
+    "name": "Relax Society Massage",
+    "channel": "@relaxsocietymassage",
+    "messageDate": "2026-09-01T06:58:07.000Z",
+    "description": "🔥🔥มีแต่ของดีมานำเสนอ🔥🔥 สนใจสอบถามน้อง ๆ / เช็คคิว ได้เลยค่ะ ✅LINE : @439ywwfy (มี@ด้วยนะคะ)",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "094-8964563",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/QANboE8GEMVd4Qq67",
+    "photoUrls": [
+      "/images/relaxsocietymassage/2026-09-01/relaxsocietymassage_1779673_photo6102490569151025917.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788247431542-7",
+    "name": "Malee Aromaoil Healthmassage",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T06:33:06.000Z",
+    "description": "มาลี อโรม่าออยล์ นวดเพื่อสุขภาพ Malee Aromaoil Healthmassage 🌺ยินดีให้บริการค่ะ🌺",
+    "priceLabel": "Rate on request",
+    "hours": "10:00-22:00",
+    "phone": "099-289-9693",
+    "lineUrl": null,
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071503_photo6102866524818313705.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788247431542-6",
+    "name": "www.massagehotelbangkok.com",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T06:26:41.000Z",
+    "description": "ขออนุญาตพื้นที่คะ ขอบคุณพื้นที่คะ 👉นวดนอกสถานที่ในกรุงเทพและปริมณฑล24ชม",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "0946614024",
+    "lineUrl": null,
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071486_photo6093413280324980762.jpg"
+    ],
+    "location": "ในเขต กทม ปริมณฑล",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788247431542-5",
+    "name": "นวดใกล้ฉัน",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T06:19:52.000Z",
+    "description": "เลิฟลี่ รีแลค นวดเพื่อสุขภาพ เลิฟลี่ รีแลค Pro หน้าฝน🎊 พิกัด บางนา",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "0618867752",
+    "lineUrl": "https://line.me/ti/p/FV8VgfKIyV",
+    "mapsUrl": "https://maps.app.goo.gl/sKhgFffEV3QLNMWY9",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071466_photo6095973235452219787.jpg"
+    ],
+    "location": "บางนา",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788247431542-4",
+    "name": "กุหลาบ นวดเพื่อสุขภาพ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T06:19:49.000Z",
+    "description": "🌹ร้านกุหลาบ นวดเพื่อสุขภาพ 🌹 อัพเดทน้องน้องวันนี้ค่ะ 1/9/69 เมืองทอง",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "0985693062 0948636441",
+    "lineUrl": "https://line.me/ti/p/2MBQRLJHSE",
+    "mapsUrl": "https://maps.app.goo.gl/5dw6Uei9z37tRqHYA?g_st=ic",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071460_photo6105153577723564210.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788238600955-1",
+    "name": "นันตา นวดเพื่อสุขภาพ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T04:56:06.000Z",
+    "description": "🎈ร้าน นันตา นวดเพื่อสุขภาพ 📌พิกัด รามอินทรา ✅เปิดให้บริการทุกวัน 11:00-23:00น.",
+    "priceLabel": "Rate on request",
+    "hours": "11:00-23:00",
+    "phone": "0646388886",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/BqUZVin77QGccvce8?g_st=ipc",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071291_photo6102866524818313723.jpg"
+    ],
+    "location": "รามอินทรา",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788237846003-1",
+    "name": "มูนเรสต์ นวด&สปา",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T04:43:25.000Z",
+    "description": "มูนเรสต์ นวด&สปา หน้าถนนใกล้ซอย นวมินทร์ 87 📞 โทร : 090-666-3261",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "090-666-3261",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/fXsDUBt4p5pGeL7n8?g_st=ic",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071289_photo6102794047245193874.jpg"
+    ],
+    "location": "หน้าถนนใกล้ซอย นวมินทร์ 87",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788237492288-1",
+    "name": "CHANEL MASSAGE",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T04:37:34.000Z",
+    "description": "🪴 CHANEL MASSAGE 🪴 ⏰ เปิดให้บริการ 10.00 – 23.00 น. 💖 ห้องบริการส่วนตัว พร้อมห้องน้ำในตัวทุกห้อง",
+    "priceLabel": "Rate on request",
+    "hours": "10.00 – 23.00",
+    "phone": "098-798-9888",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/azDSABsC81aukerH9",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071288_photo6102866524818313711.jpg"
+    ],
+    "location": "ถ.สังคมสงเคราะห์ ซอย 15",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788236393312-1",
     "name": "นวดเล็ก ๆ ที่อบอุ่น เราดูแลคุณด้วยความใส่ใจ คว",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T05:09:32.000Z",
+    "messageDate": "2026-09-01T04:19:20.000Z",
     "description": "Kirista Massage ✨ ยินดีให้บริการลูกค้าทุกท่านค่ะ ⭐ ร้านนวดเล็ก ๆ ที่อบอุ่น เราดูแลคุณด้วยความใส่ใจ ความสงบและใกล้ชิด เพียงคุณและเราในทุกช่วงเวลา ความผ่อนคลายที่คุณต้องการ เป็นส่วนตัว⭐🫣💆",
     "priceLabel": "Rate on request",
     "hours": "10:00 - 22:00",
@@ -470,33 +215,33 @@
     "lineUrl": "https://line.me/ti/p/2bgkzFWkWZ",
     "mapsUrl": "https://maps.app.goo.gl/M5LAbjJenNiUcfH58",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057376_photo6221829052968931397.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071265_photo6203873366662385270.jpg"
     ],
     "location": "ร้านนวดเล็ก ๆ ที่อบอุ่น เราดูแลคุณด้วยความใส่ใจ ความสงบและใกล้ชิด เพียงค",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787464662776-1",
-    "name": "วินวดเพื่อสุขภาพ พิกัด ซอยวัดลาดปลาดุก",
+    "id": "feed_snapshot-1788235748763-1",
+    "name": "อยู่หน้าซอย",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T05:05:23.000Z",
-    "description": "วินวดเพื่อสุขภาพ พิกัด ซอยวัดลาดปลาดุก นวดไทย นวดน้ำมัน สอบถามข้อมูลเพิ่มเติม โทร. 064-0152795",
+    "messageDate": "2026-09-01T04:08:30.000Z",
+    "description": "อัพเดทหมอ พระราม2ค่ะ #ชโนทัยนวดเพื่อสุขภาพ 📌พิกัด: พระราม2 ซอย63 ร้านอยู่หน้าซอย",
     "priceLabel": "Rate on request",
-    "hours": "10.00-03.00",
-    "phone": "064-0152795",
-    "lineUrl": "https://line.me/ti/p/mc9YSyGbjM",
-    "mapsUrl": "https://maps.app.goo.gl/rTXAfU13AahwNXN39",
+    "hours": "10:00-23:00",
+    "phone": "082-4486015",
+    "lineUrl": "https://line.me/ti/p/MfnplOHZFM",
+    "mapsUrl": "https://maps.app.goo.gl/uAVgQebiQ3VoKD386?g_st=ic",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057367_photo6210778849440632817.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071225_photo6102496367356875607.jpg"
     ],
-    "location": "วินวดเพื่อสุขภาพ พิกัด ซอยวัดลาดปลาดุก",
-    "city": "Nonthaburi"
+    "location": "อัพเดทหมอ พระราม2ค่ะ",
+    "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787457270467-1",
+    "id": "feed_snapshot-1788234891498-1",
     "name": "นวด วินวิน นวดเพื่อสุขภาพ Winwin Massage อุดมสุข",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T03:54:04.000Z",
+    "messageDate": "2026-09-01T03:54:04.000Z",
     "description": "ร้านนวด วินวิน นวดเพื่อสุขภาพ Winwin Massage อุดมสุขซ. 5 เปิดให้บริการทุกวัน 10.00 - 22.00 น. สอบถามรายละเอียดเพิ่มเติม",
     "priceLabel": "Rate on request",
     "hours": "10.00 - 22.00",
@@ -504,67 +249,118 @@
     "lineUrl": null,
     "mapsUrl": "https://maps.app.goo.gl/Q8ZVTBpMXqcjuuWU6",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057266_photo6168071812068085622.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071211_photo6168071812068085622.jpg"
     ],
     "location": "Bangkok, Thailand",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787455719828-1",
-    "name": "กุหลาบ นวดเพื่อสุขภาพ",
+    "id": "feed_snapshot-1788234839523-1",
+    "name": "White house RCA",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T03:27:56.000Z",
-    "description": "🌹ร้านกุหลาบ นวดเพื่อสุขภาพ 🌹 อัพเดทน้องน้องวันนี้ค่ะ 23/8/69 เมืองทอง",
+    "messageDate": "2026-09-01T03:52:56.000Z",
+    "description": "🌱🌱OPEN NOW🌱🌱 UPDATE TODAY 01/09/2569 🌶🌶 IDOL🌶🌶",
     "priceLabel": "Rate on request",
     "hours": null,
-    "phone": "0985693062 0948636441",
-    "lineUrl": "https://line.me/ti/p/2MBQRLJHSE",
-    "mapsUrl": "https://maps.app.goo.gl/5dw6Uei9z37tRqHYA?g_st=ic",
+    "phone": "0651464992",
+    "lineUrl": "https://line.me/ti/p/SkCNaj-dJm",
+    "mapsUrl": "https://maps.app.goo.gl/rfrrq2wNpt2Rq7jS6?g_st=ic",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057221_photo6075413789646983674.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071210_photo6102424877626234169.jpg"
     ],
     "location": "Bangkok, Thailand",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787452423280-1",
-    "name": "วิถีไท รามคำแหง164",
+    "id": "feed_snapshot-1788234570182-2",
+    "name": "ธัญญาลักษณ",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T02:33:18.000Z",
-    "description": "ร้านวิถีไท รามคำแหง164 🌼🌼🌼 อัพเดทน้องๆเข้าร้านวันที่ 22 สิงหาคม 🌼🌼🌼 สอบถามราคาโปรโมชั่นได้ที่ โทร 0825983887 (โทร)",
+    "messageDate": "2026-09-01T03:47:34.000Z",
+    "description": "🩷สวัสดีค่า🩷 Have a nice day ka 🙂 ร้านธัญญาลักษณ์",
     "priceLabel": "Rate on request",
-    "hours": "11.00-23.00",
-    "phone": "0825983887",
+    "hours": "11:00 - 23:00",
+    "phone": "0992755062",
     "lineUrl": null,
-    "mapsUrl": "https://goo.gl/maps/A5npYKRcX2J1Ln7p8",
+    "mapsUrl": "https://maps.app.goo.gl/zjDasTvr92bLrGkw5?g_st=ic",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057114_photo6071130985698365431.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071176_photo6102794047245193841.jpg"
     ],
-    "location": "Bangkok, Thailand",
+    "location": "โลเคชั่น",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787451015384-5",
-    "name": "นวดไทย • นวดไทยผสมออยล์ • นวดน้ำมันผ่อนคลาย • นว",
+    "id": "feed_snapshot-1788233750796-1",
+    "name": "เท่านั้น",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T02:09:10.000Z",
-    "description": "กลางกรุงสปา (Klangkrung Spa) สปาส่วนตัว บรรยากาศสงบ อบอุ่น และเป็นส่วนตัว สถานที่: นวมินทร์ 14 แยก 5",
+    "messageDate": "2026-09-01T03:35:20.000Z",
+    "description": "ต้อนรับลูกค้าสู่เพจใหม่ …. ทักแชทวันนี้รับสิทธิ์พิเศษทันที กดลิงค์ที่นี้ได้เลย 👇 📍 Monta Massage",
     "priceLabel": "Rate on request",
-    "hours": "10:30–22:30",
-    "phone": "081-730-4964",
+    "hours": null,
+    "phone": "082-828-3640",
     "lineUrl": null,
     "mapsUrl": null,
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057091_photo6323450337129337505.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071155_photo6077733565908062277.jpg"
     ],
     "location": "Bangkok, Thailand",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787451015384-4",
+    "id": "feed_snapshot-1788233412878-1",
+    "name": "เทเรแกรม",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T03:28:59.000Z",
+    "description": "📍ห้องส่วนตัวมีตู้อาบน้ำ 📍มีที่จอดรถ ⏰ เปิดทุกวัน 10:00 - 22:00 น.",
+    "priceLabel": "Rate on request",
+    "hours": "10:00 - 22:00",
+    "phone": "099-6142652",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/yGKCcmtK2d42Xsts8?g_st=ic",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071154_photo6102794047245193827.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788233175159-1",
+    "name": "#นวดใกล้ฉัน",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T03:25:23.000Z",
+    "description": "ขออนุญาตใช้พื้นที่ค่ะ 🏢เอมมิกานวดเพื่อสุขภาพ รามอินทรา14 เปิดบริการทุกวัน จันทร์-อาทิตย์ 10:00-23:00น.",
+    "priceLabel": "Rate on request",
+    "hours": "10:00-23:00",
+    "phone": "0835182869",
+    "lineUrl": "https://line.me/ti/p/YhniJBOZOs",
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071088_photo6097911021616960001.jpg"
+    ],
+    "location": "นวดใกล้ฉัน",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788232868191-1",
+    "name": "นวดได้ ดื่มได้ เนื้อตัวเนียนกริบ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T03:20:43.000Z",
+    "description": "✨มัดหมี่✨ ขาวเนียน อกแท้ บอดี้สวย นวดได้ ดื่มได้ เนื้อตัวเนียนกริบ🔥",
+    "priceLabel": "Rate on request",
+    "hours": "10.00-03.00",
+    "phone": "086-992-9154",
+    "lineUrl": null,
+    "mapsUrl": "https://goo.gl/maps/ofF9J7vAvH3W2SHq8",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071083_photo6102893638946854173.jpg"
+    ],
+    "location": "บางใหญ",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788232433272-6",
     "name": "นวดบ้านเรือนงาม คลองหลวง ตลาดไท รังสิต ปทุมธาน",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T02:09:07.000Z",
+    "messageDate": "2026-09-01T03:12:55.000Z",
     "description": "ร้านนวดบ้านเรือนงาม คลองหลวง ตลาดไท รังสิต ปทุมธานี 📌พิกัด ตลาดไท คลองหลวง ปทุมธานี สาขา 1",
     "priceLabel": "Rate on request",
     "hours": null,
@@ -572,16 +368,16 @@
     "lineUrl": null,
     "mapsUrl": "https://maps.app.goo.gl/SPtvbWRA1Hij746u7?g_st=ic",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057085_photo6300715958540114175.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071072_photo6300715958540114176.jpg"
     ],
     "location": "ตลาดไท คลองหลวง ปทุมธาน",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787451015384-2",
+    "id": "feed_snapshot-1788232433272-5",
     "name": "สปาเปิดใหม่ มนตา สปา บางนา",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T02:08:59.000Z",
+    "messageDate": "2026-09-01T03:12:53.000Z",
     "description": "ร้านสปาเปิดใหม่ มนตา สปา บางนา โปรโมชั่นส่วนลด 10% ถึงวันที่ 30 สิงหาคม เบอร์โทร 0926461046",
     "priceLabel": "Rate on request",
     "hours": null,
@@ -589,16 +385,50 @@
     "lineUrl": null,
     "mapsUrl": null,
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057063_photo6068677167802946513.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071065_photo6068677167802946514.jpg"
     ],
     "location": "Bangkok, Thailand",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787450947692-1",
+    "id": "feed_snapshot-1788232433272-3",
+    "name": "นวดไทย • นวดไทยผสมออยล์ • นวดน้ำมันผ่อนคลาย • นว",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T03:12:47.000Z",
+    "description": "กลางกรุงสปา (Klangkrung Spa) สปาส่วนตัว บรรยากาศสงบ อบอุ่น และเป็นส่วนตัว สถานที่: นวมินทร์ 14 แยก 5",
+    "priceLabel": "Rate on request",
+    "hours": "10:30–22:30",
+    "phone": "081-730-4964",
+    "lineUrl": null,
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071042_photo6323450337129337508.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788232433272-2",
+    "name": "ลักซ์ชัวรี่ นวดเพื่อสุขภาพ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T03:12:45.000Z",
+    "description": "เปิดใหม่ครับ กลุ่มไลน์โอเพ่นแชท OpenChat. ลักซ์ชัวรี่ นวดเพื่อสุขภาพ💎",
+    "priceLabel": "Rate on request",
+    "hours": "10:00 - 22:00",
+    "phone": "0929632590",
+    "lineUrl": "https://line.me/ti/g2/YnT-Ak0f1cGSTgxvQ6GlkywvGFf2f1Uoaio1rQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default",
+    "mapsUrl": "https://maps.app.goo.gl/PxjwzYeLD9mUxgbp9?g_st=ic",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071037_photo6118656787398462710.jpg"
+    ],
+    "location": "ร้านตั้งอยู่จ.นครปฐม ใกล้องค์พระปฐมเจดีย์ อยู่ติดกับปฐมโภชนา สาขาต้นสน ร",
+    "city": "Nakhon Pathom"
+  },
+  {
+    "id": "feed_snapshot-1788232433272-1",
     "name": "นิวนวดเพื่อสุขภาพ พระราม5",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-23T02:08:56.000Z",
+    "messageDate": "2026-09-01T03:12:45.000Z",
     "description": "ร้านนิวนวดเพื่อสุขภาพ พระราม5 ร้านเปิดบริการปกตินะคะ หมอเข้าวันนี้ค่ะ เปิดเวลา 10.00 - 22.00 น.",
     "priceLabel": "Rate on request",
     "hours": "10.00 - 22.00",
@@ -606,16 +436,16 @@
     "lineUrl": null,
     "mapsUrl": "https://goo.gl/maps/UeKoaZ2tnMxcjggU6",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-23/relaxsociety2020_2057056_photo6224291705612079193.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2071038_photo6224291705612079193.jpg"
     ],
     "location": "ร้านนิวนวดเพื่อสุขภาพ พระราม5",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787450961798-2",
-    "name": "Monta Massage",
+    "id": "feed_snapshot-1788232450362-2",
+    "name": "ลักซ์ชัวรี่ นวดเพื่อสุขภาพ",
     "channel": "@relaxsocietymassage",
-    "messageDate": "2026-08-23T02:08:53.000Z",
+    "messageDate": "2026-09-01T03:12:42.000Z",
     "description": "เปิดใหม่ครับ กลุ่มไลน์โอเพ่นแชท OpenChat. ✨ เปิดแล้ววันนี้! สาขาใหม่ของเรา ✨",
     "priceLabel": "Rate on request",
     "hours": "10:00 - 22:00",
@@ -623,61 +453,401 @@
     "lineUrl": "https://line.me/ti/g2/YnT-Ak0f1cGSTgxvQ6GlkywvGFf2f1Uoaio1rQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default",
     "mapsUrl": "https://maps.app.goo.gl/2KAuLLHwk7pZeUks9?g_st=al",
     "photoUrls": [
-      "/images/relaxsocietymassage/2026-08-23/relaxsocietymassage_1767219_photo6118656787398462710.jpg"
+      "/images/relaxsocietymassage/2026-09-01/relaxsocietymassage_1779239_photo6118656787398462710.jpg"
     ],
     "location": "เปิดแล้ววันนี้! สาขาใหม่ของเรา",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787414121280-1",
-    "name": "www.massagehotelbangkok.com",
+    "id": "feed_snapshot-1788231598600-3",
+    "name": "#หมอนวดแนะนำ",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-22T15:54:38.000Z",
-    "description": "ขอบคุณพื้นที่คะ 👉นวดนอกสถานที่ในกรุงเทพและปริมณฑล24ชม ☎️0946614024",
+    "messageDate": "2026-09-01T02:49:54.000Z",
+    "description": "🪷ร้านเรือนเจ้าคุณ นวดเพื่อสุขภาพ ☎️โทร0628808774 ✅Line id : 0628808774",
     "priceLabel": "Rate on request",
     "hours": null,
-    "phone": "0946614024",
-    "lineUrl": null,
-    "mapsUrl": null,
+    "phone": "0628808774",
+    "lineUrl": "https://line.me/ti/p/X7JmKGcfPq",
+    "mapsUrl": "https://maps.app.goo.gl/JDey9b9ajphkx5FG9?g_st=al",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-22/relaxsociety2020_2056800_photo6075634585325736984.jpg"
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2070957_photo6102794047245193788.jpg"
     ],
-    "location": "ในเขต กทม ปริมณฑล",
+    "location": "ฉลองกรุง",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787413708709-1",
-    "name": "Location",
+    "id": "feed_snapshot-1788229500209-5",
+    "name": "ละมัย นวดเพื่อสุขภาพ",
     "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-22T15:47:50.000Z",
-    "description": "💚วันไหนทำงานเหนื่อยๆ แวะมาผ่อนคลายกับน้องๆได้นะคะ บริการดีทุกคนเลยค่ะ 💚 ✨ Luxury. Comfort. Relaxation.Clean 🤍 Indulge in pure relaxation.",
+    "messageDate": "2026-09-01T02:14:08.000Z",
+    "description": "ร้านละมัย นวดเพื่อสุขภาพ พิกัดเคหะร่มเกล้า 74 โทร 0817689558",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "0817689558",
+    "lineUrl": null,
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2070919_photo6105153577723564169.jpg"
+    ],
+    "location": "เคหะร่มเกล้า 74",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788229500209-3",
+    "name": "#หมอนวดแนะนำ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T02:01:09.000Z",
+    "description": "🎉รูมเมท นวดเพื่อสุขภาพ🎉 ☎️โทร0640315965 ID line 0640315965",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "0640315965",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/2NtWCG52PNTY4jyJA",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2070908_photo6100485137251373567.jpg"
+    ],
+    "location": "รังสิตคลอง 2",
+    "city": "Pathum Thani"
+  },
+  {
+    "id": "feed_snapshot-1788229500209-2",
+    "name": "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-09-01T02:00:25.000Z",
+    "description": "🎠โดนแดดแล้วเธอจะร้อน โดนเราอ้อนแล้วเธอจะรัก🎠 {☆LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ์☆} ⌛️ อัพเดทตารางพนักงานวันพรุ่งนี้ วันที่ 1/09/69⌛️",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "083-850-6969",
+    "lineUrl": null,
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-09-01/relaxsociety2020_2070891_photo6102552244881396332.jpg"
+    ],
+    "location": "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788227194087-1",
+    "name": "Keawjaojorm Massage",
+    "channel": "@keawjaojormmassage",
+    "messageDate": "2026-09-01T01:46:07.000Z",
+    "description": "แก้วเจ้าจอม keawjaojorm เสรีไทย 4 เปิดบริการทุกวันเวลา 10.00-23.00น.",
+    "priceLabel": "Rate on request",
+    "hours": "10.00-23.00",
+    "phone": "094-3985328",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/sfcACWMGuSReQeCcA?g_st=al24718:0",
+    "photoUrls": [
+      "/images/keawjaojormmassage/2026-09-01/keawjaojormmassage_57431_photo6100426953329414684.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788187311227-2",
+    "name": "ชโนทัยนวดเพื่อสุขภาพ บางใหญ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-31T14:41:15.000Z",
+    "description": "อัพเดทหมอประจำ บางใหญ่ วันนี้ค่ะ ชโนทัยนวดเพื่อสุขภาพ บางใหญ่ มานวดผ่อนคลายคลายความเมื่อยล้าได้ทุกวัน",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "098-8953625",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/79febzFFfNCKEeAk8?g_st=ic",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-31/relaxsociety2020_2070639_photo6100308558260932721.jpg"
+    ],
+    "location": "หน้าเอื้ออาทรกันตนา ซอยกันตนา บางใหญ",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788184265403-1",
+    "name": "วิถีไท รามคำแหง164",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-31T13:50:44.000Z",
+    "description": "ร้านวิถีไท รามคำแหง164 🌼🌼🌼 อัพเดทน้องๆเข้าร้านวันที่ 31 สิงหาคม 🌼🌼🌼 สอบถามราคาโปรโมชั่นได้ที่ โทร 0825983887 (โทร)",
+    "priceLabel": "Rate on request",
+    "hours": "11.00-23.00",
+    "phone": "0825983887",
+    "lineUrl": null,
+    "mapsUrl": "https://goo.gl/maps/A5npYKRcX2J1Ln7p8",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-31/relaxsociety2020_2070579_photo6100485137251373608.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788181375993-2",
+    "name": "กระปุกหอม",
+    "channel": "@relaxsocietymassage",
+    "messageDate": "2026-08-31T13:02:10.000Z",
+    "description": "มูนไลท์ นวดเพื่อสุขภาพ ก่อนถึง ไทวัสดุ อ้อมน้อย ติดร้านกระปุกหอม",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "090-261-6497",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/1UtHZhenxmWwMk7a6?g_st=il",
+    "photoUrls": [
+      "/images/relaxsocietymassage/2026-08-31/relaxsocietymassage_1778805_photo6100162821430646344.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788168123596-1",
+    "name": "วินวดเพื่อสุขภาพ พิกัด ซอยวัดลาดปลาดุก",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-31T09:21:04.000Z",
+    "description": "วินวดเพื่อสุขภาพ พิกัด ซอยวัดลาดปลาดุก นวดไทย นวดน้ำมัน สอบถามข้อมูลเพิ่มเติม โทร. 064-0152795",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "064-0152795",
+    "lineUrl": "https://line.me/ti/p/mc9YSyGbjM",
+    "mapsUrl": "https://maps.app.goo.gl/rTXAfU13AahwNXN39",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-31/relaxsociety2020_2070186_photo6100426953329414763.jpg"
+    ],
+    "location": "วินวดเพื่อสุขภาพ พิกัด ซอยวัดลาดปลาดุก",
+    "city": "Nonthaburi"
+  },
+  {
+    "id": "feed_snapshot-1788167582465-1",
+    "name": "สนใจสอบถามเพิ่มเติม",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-31T09:12:02.000Z",
+    "description": "น้องชมพู่ ใช้คำว่าฟิลแฟนได้เปลืองมาก หอยหอมๆหวานๆ มาทางนี้จ้าา สนใจสอบถามเพิ่มเติม🎈 📌พิกัด พระราม 2 ซอย 60",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "080-3514296",
+    "lineUrl": null,
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-31/relaxsociety2020_2070184_photo6100126803834901355.jpg"
+    ],
+    "location": "พระราม 2 ซอย 60",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788165228893-1",
+    "name": "Relax Society Massage",
+    "channel": "@relaxsocietymassage",
+    "messageDate": "2026-08-31T08:33:04.000Z",
+    "description": "🪴เดอะเซนส์ มาสสาจ🪴 🕚เปิด10.00-23.00 🚗ที่จอดรถสะดวก",
+    "priceLabel": "Rate on request",
+    "hours": "10.00-23.00",
+    "phone": "0647547992",
+    "lineUrl": "https://line.me/ti/p/tacrvwdBUh",
+    "mapsUrl": "https://maps.app.goo.gl/CPYp6ibZR2F3zPxL7",
+    "photoUrls": [
+      "/images/relaxsocietymassage/2026-08-31/relaxsocietymassage_1778456_photo6100426953329414863.jpg"
+    ],
+    "location": "มีนบุรี ซอยสามวา",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788163232960-1",
+    "name": "นวดน้ำมันชาย นวดหินร้อน",
+    "channel": "@relaxsocietymassage",
+    "messageDate": "2026-08-31T08:00:03.000Z",
+    "description": "เอ็มที มาสสาจ พิกัด ถ. มิตรภาพ เมืองขอนแก่น คิวว่าง1,2,3,4 ก.ย. 69 เวลา 19.00-20.30",
+    "priceLabel": "Rate on request",
+    "hours": "19.00-20.30",
+    "phone": null,
+    "lineUrl": "http://line.me/ti/p/~pac44",
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsocietymassage/2026-08-31/relaxsocietymassage_1778370_photo6100426953329414849.jpg"
+    ],
+    "location": "ถ.มิตรภาพ เมืองขอนแก่น",
+    "city": "Khon Kaen"
+  },
+  {
+    "id": "feed_snapshot-1788152517927-1",
+    "name": "Vanda Massage)",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-31T05:01:25.000Z",
+    "description": "🏵️ แวนด้า นวดเพื่อสุขภาพ (Vanda Massage) 🌈 Update รายชื่อพนักงาน | จันทร์ 31 ส.ค.",
+    "priceLabel": "Rate on request",
+    "hours": "11:00–23:00",
+    "phone": "064-2278125",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/GDeWLKzx6Ubf5tqN7?g_st=ic",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-31/relaxsociety2020_2069791_photo6100426953329414749.jpg"
+    ],
+    "location": "เทพารักษ",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1788138460313-1",
+    "name": "อบอุ่น ดูแลดีและต้อนรับเป็นอย่างด",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-31T01:07:21.000Z",
+    "description": "ขอบคุณพื้นที่ค่ะ ✅RELAXO SPA รีแล็คโซ สปา สนามบินน้ำ นนทบุรี✅ ♥️การันตีสวยตรงปก บริการดีและนวดเก่งทุกคน",
     "priceLabel": "Rate on request",
     "hours": null,
     "phone": "0959429639",
     "lineUrl": null,
     "mapsUrl": null,
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-22/relaxsociety2020_2056796_photo6071096196463269659.jpg"
+      "/images/relaxsociety2020/2026-08-31/relaxsociety2020_2069382_photo6088990567816695797.jpg"
     ],
-    "location": "สถานที่ร้าน Location",
+    "location": "RELAXO SPA รีแล็คโซ สปา สนามบินน้ำ นนทบุร",
+    "city": "Nonthaburi"
+  },
+  {
+    "id": "feed_snapshot-1788067079201-2",
+    "name": "ใหม่ได้ท",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-30T05:17:28.000Z",
+    "description": "🍡🍡New star โมจิ🍡🍡 ของดีงานออริจินอลมาตราฐาน YSK หน้าสวยตรงปก100% หน้าคมอกตั้งเต้ามโหฬารงานล้นมือ Cup D งานจัดเต็มโคตะระเดือด สุดกว่านี้ไม่มีอีกแล้ว อยู่นิ่งๆเดี๋ยวหนูจัดให้ นวดเพลินเบิร์นมันส์ ช่วงล่างลองรับทุกไซส์ ง",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "061-097-9296",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/85dFNNFLPz8kF7zE9",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-30/relaxsociety2020_2068403_photo6095659221803274823.jpg"
+    ],
+    "location": "Yesika Spa @ ลาดพร้าว 71",
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787407462828-1",
-    "name": "นวดดี บิ้วเก่ง เป็นกันเอง",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-22T14:04:07.000Z",
-    "description": "🎈น้องยาหยี🎈 หลงรักเธอเข้าแล้วนะ แม่ยอดยาหยี หน้าตาเปรี้ยวหวานๆ น้องใหม่สายนัว",
+    "id": "feed_snapshot-1788057313929-1",
+    "name": "เปิด 11.00-24.00",
+    "channel": "@relaxsocietymassage",
+    "messageDate": "2026-08-30T02:34:45.000Z",
+    "description": "เช็คตารางน้อง 30-8-69 NEWน้องเอวา 11.00-00.00 [น้องใหม่ล่าสุด] NEWน้องเนส 18.00-00.00 [น้องใหม่ล่าสุด]",
     "priceLabel": "Rate on request",
-    "hours": "11:00-23:00",
-    "phone": "083-0536938",
-    "lineUrl": "https://line.me/ti/p/JOh5mgyN4H",
-    "mapsUrl": "https://maps.app.goo.gl/GJa67ogDCdAXkQ5V9?g_st=il",
+    "hours": "11.00-00.00",
+    "phone": "098-4192398",
+    "lineUrl": "https://line.me/ti/p/A7BJzytSXu",
+    "mapsUrl": "https://maps.google.com/maps?q=13.788024%2C100.409086",
     "photoUrls": [
-      "/images/relaxsociety2020/2026-08-22/relaxsociety2020_2056758_photo6273679349865189555.jpg"
+      "/images/relaxsocietymassage/2026-08-30/relaxsocietymassage_1776740_photo6095919243418341473.jpg"
     ],
-    "location": "ที่ตั้งซอยวัดลาปลาดุก นนทบุร",
-    "city": "Nonthaburi"
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1787996702313-1",
+    "name": "นวด ซีซั่น ริช นวดเพื่อสุขภาพ พิกัด ตัวเมืองนครป",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-29T08:15:27.000Z",
+    "description": "ร้านนวด ซีซั่น ริช นวดเพื่อสุขภาพ พิกัด ตัวเมืองนครปฐม เปิดบริการทุกวัน 10.00 - 22.00 น. สอบถามรายละเอียดเพิ่มเติม",
+    "priceLabel": "Rate on request",
+    "hours": "10.00 - 22.00",
+    "phone": "0838249481",
+    "lineUrl": "https://line.me/ti/p/ghRaEV4NR6",
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-29/relaxsociety2020_2067094_photo6095967269742645345.jpg"
+    ],
+    "location": "ร้านนวด ซีซั่น ริช นวดเพื่อสุขภาพ พิกัด ตัวเมืองนครปฐม",
+    "city": "Nakhon Pathom"
+  },
+  {
+    "id": "feed_snapshot-1787972476114-12",
+    "name": "ชวนชม โชคชัย 4",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-29T02:47:19.000Z",
+    "description": "ร้านชวนชม โชคชัย 4 ยินดีต้อนรับค่ะ 🎉พิกัด โชคชัย4/ สตรีวิทยา2🎉",
+    "priceLabel": "Rate on request",
+    "hours": "11.00-23.00",
+    "phone": "0956977756",
+    "lineUrl": null,
+    "mapsUrl": "https://maps.app.goo.gl/A34uLdYiWDKuzZsM9?g_st=al",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-29/relaxsociety2020_2066435_photo6091631762250338229.jpg"
+    ],
+    "location": "โชคชัย4/ สตรีวิทยา2",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1787883586390-1",
+    "name": "วิถีไท สปา",
+    "channel": "วิถีไทสปา164",
+    "messageDate": "2026-08-28T01:35:05.000Z",
+    "description": "📍แผนที่ร้าน📍 วิถีไท สปา",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": null,
+    "lineUrl": null,
+    "mapsUrl": "https://goo.gl/maps/A5npYKRcX2J1Ln7p8",
+    "photoUrls": [
+      "/images/วิถีไทสปา164/2026-08-28/วิถีไทสปา164_10496_photo6088923871269556751.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1787823729250-1",
+    "name": "UPDATE 27 สค 69",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-27T09:41:22.000Z",
+    "description": "UPDATE 27 สค 69 Grazip รามคำแหง21 โทรศัพท์ - 0655638498",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "0655638498",
+    "lineUrl": null,
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-27/relaxsociety2020_2064097_photo6088990567816696051.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1787797094025-6",
+    "name": "วิไลยา นวดเพื่อสุขภาพ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-27T01:45:17.000Z",
+    "description": "วิไลยา นวดเพื่อสุขภาพ ผ่อนคลายทุกสัมผัส นวดแผนไทย นวดอโรม่า นวดคอ บ่า ไหล่ นวดฝ่าเท้า นวดออย สครับผิว",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "061-493-5692",
+    "lineUrl": "https://line.me/ti/p/BJPHse9fZ2",
+    "mapsUrl": "https://maps.app.goo.gl/WgRDXRU7Vd5sSXYM7",
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-27/relaxsociety2020_2063176_photo6089344004970451023.jpg"
+    ],
+    "location": "Bangkok, Thailand",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1787742835614-1",
+    "name": "นวดดอนหัวฬ่อ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-26T11:13:31.000Z",
+    "description": "รับงานชลบุรี ชลบุรี จ้าพี่ๆจองคิวนวดได้💕💕💕 สนใจนวดทัก LINE เท่านั้น ทักไลน์ mint253525",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": null,
+    "lineUrl": null,
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-26/relaxsociety2020_2062670_photo6087005395277779819.jpg"
+    ],
+    "location": "นวดใกล้ฉัน",
+    "city": "Bangkok"
+  },
+  {
+    "id": "feed_snapshot-1787637065537-9",
+    "name": "ลานนา นวดเพื่อสุขภาพ",
+    "channel": "@relaxsociety2020",
+    "messageDate": "2026-08-25T05:48:34.000Z",
+    "description": "🌸 ลานนา นวดเพื่อสุขภาพ 🌸 เหนื่อยจากงาน ปวดเมื่อยร่างกาย อยากผ่อนคลาย แวะมาหาเราได้เลยค่ะ 💆‍♀️✨ 👩‍🦰 หมอนวดหญิงฝีมือดี พร้อมให้บริการ",
+    "priceLabel": "Rate on request",
+    "hours": null,
+    "phone": "065-235-9556",
+    "lineUrl": null,
+    "mapsUrl": null,
+    "photoUrls": [
+      "/images/relaxsociety2020/2026-08-25/relaxsociety2020_2060471_photo6082363111156420813.jpg"
+    ],
+    "location": "พุทธมณฑลสาย5 ศาลายา",
+    "city": "Bangkok"
   },
   {
     "id": "feed_snapshot-1787401558207-1",
@@ -692,40 +862,6 @@
     "mapsUrl": null,
     "photoUrls": [
       "/images/relaxsociety2020/2026-08-22/relaxsociety2020_2056619_photo6073180767430316447.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787381732561-3",
-    "name": "UPDATE 22 สค 69",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-22T06:54:50.000Z",
-    "description": "UPDATE 22 สค 69 Grazip รามคำแหง21 โทรศัพท์ - 0655638498",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "0655638498",
-    "lineUrl": null,
-    "mapsUrl": null,
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-22/relaxsociety2020_2056015_photo6073347996276953525.jpg"
-    ],
-    "location": "Bangkok, Thailand",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1787277940170-4",
-    "name": "Monta massage",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-21T02:05:02.000Z",
-    "description": "Rainy day, spa mood. ☔️🤎 Monta massage 🌙 เปิดบริการทุกวัน 10:30 - 23:00 น.",
-    "priceLabel": "Rate on request",
-    "hours": "10:30 - 23:00",
-    "phone": "0828283640",
-    "lineUrl": null,
-    "mapsUrl": null,
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-21/relaxsociety2020_2053771_photo6320964727885992790.jpg"
     ],
     "location": "Bangkok, Thailand",
     "city": "Bangkok"
@@ -765,23 +901,6 @@
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1787021818390-1",
-    "name": "พิกัด บางนา",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-18T02:56:07.000Z",
-    "description": "พิกัด บางนา ☎️ 0618867752 ไลน์ ID lovelyrelax7752",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "0618867752",
-    "lineUrl": "https://line.me/ti/p/xtSZvdvVmp",
-    "mapsUrl": null,
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-18/relaxsociety2020_2049054_photo6062302985364115866.jpg"
-    ],
-    "location": "บางนา",
-    "city": "Bangkok"
-  },
-  {
     "id": "feed_snapshot-1786847613736-1",
     "name": "Zinnia Spa",
     "channel": "@relaxsociety2020",
@@ -816,23 +935,6 @@
     "city": "Bangkok"
   },
   {
-    "id": "feed_snapshot-1786599101820-1",
-    "name": "ลานนา นวดเพื่อสุขภาพ",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-13T05:31:06.000Z",
-    "description": "🌸 ลานนา นวดเพื่อสุขภาพ 🌸 เหนื่อยจากงาน ปวดเมื่อยร่างกาย อยากผ่อนคลาย แวะมาหาเราได้เลยค่ะ 💆‍♀️✨ 👩‍🦰 หมอนวดหญิงฝีมือดี พร้อมให้บริการ",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "065-235-9556",
-    "lineUrl": null,
-    "mapsUrl": null,
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-13/relaxsociety2020_2041625_photo6334657770820408116.jpg"
-    ],
-    "location": "พุทธมณฑลสาย5 ศาลายา",
-    "city": "Bangkok"
-  },
-  {
     "id": "feed_snapshot-1786528528844-1",
     "name": "จัสมิน นวดเพื่อสุขภาพ",
     "channel": "@relaxsociety2020",
@@ -848,40 +950,6 @@
     ],
     "location": "Bangkok, Thailand",
     "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1786431274933-1",
-    "name": "นวดใกล้ฉัน",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-11T06:53:58.000Z",
-    "description": "พิกัด บางนา อุดมสุข9 🩸จองคิวนวด🩸มีหมอให้เลือกค่ะ โทร 0954685454",
-    "priceLabel": "Rate on request",
-    "hours": null,
-    "phone": "0954685454",
-    "lineUrl": null,
-    "mapsUrl": "https://maps.app.goo.gl/sKhgFffEV3QLNMWY9",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-11/relaxsociety2020_2038391_photo6327733325761548659.jpg"
-    ],
-    "location": "บางนา อุดมสุข9",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1786347700736-1",
-    "name": "นวดน้ำมันชาย นวดหินร้อน",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-08-10T07:41:00.000Z",
-    "description": "เอ็มที มาสสาจ พิกัด ถ. มิตรภาพ เมืองขอนแก่น ห้องส่วนตัว ห้องแอร์ น้ำอุ่น",
-    "priceLabel": "Rate on request",
-    "hours": "19.00-20.30",
-    "phone": null,
-    "lineUrl": "http://line.me/ti/p/~pac44",
-    "mapsUrl": null,
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-08-10/relaxsociety2020_2036904_photo6327976743033050245.jpg"
-    ],
-    "location": "ถ.มิตรภาพ เมืองขอนแก่น",
-    "city": "Khon Kaen"
   },
   {
     "id": "feed_snapshot-1786245190059-1",
@@ -1102,23 +1170,6 @@
       "/images/relaxsocietymassage/2026-07-12/relaxsocietymassage_1713998_photo6240094049935233288.jpg"
     ],
     "location": "Rama 2 Soi 60, Bangkok",
-    "city": "Bangkok"
-  },
-  {
-    "id": "feed_snapshot-1783643246934-1",
-    "name": "เปิด 11.00-24.00",
-    "channel": "@relaxsociety2020",
-    "messageDate": "2026-07-10T00:27:16.000Z",
-    "description": "เช็คตารางน้อง 26-5-69 NEWน้องลูกแก้ว 11.00-00.00 [น้องใหม่ล่าสุด] NEWน้องเรนนี่ 11.00-00.00 [น้องใหม่ล่าสุด]",
-    "priceLabel": "Rate on request",
-    "hours": "11.00-00.00",
-    "phone": "098-4192398",
-    "lineUrl": "https://line.me/ti/p/A7BJzytSXu",
-    "mapsUrl": "https://maps.google.com/maps?q=13.788024%2C100.409086",
-    "photoUrls": [
-      "/images/relaxsociety2020/2026-07-10/relaxsociety2020_1993094_photo6233073839990575640.jpg"
-    ],
-    "location": "Bangkok, Thailand",
     "city": "Bangkok"
   },
   {

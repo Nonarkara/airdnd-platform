@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { formatRelativeTimestamp } from '../lib/listings';
 import PageBanner from './PageBanner';
 import './HeroSection.css';
@@ -69,9 +70,18 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
         </div>
         <dl className="masthead__stats" aria-label={heroText.panelLabel || 'Inventory snapshot'}>
           {stats.map((row) => (
-            <div key={row.id}>
-              <dt>{row.label}</dt>
-              <dd className="mono">{Number(row.value).toLocaleString()}</dd>
+            <div key={row.id} className={row.id === 'photos' ? 'masthead__stat masthead__stat--link' : ''}>
+              {row.id === 'photos' ? (
+                <Link to="/places" className="masthead__stat-link">
+                  <dt>{row.label}</dt>
+                  <dd className="mono">{Number(row.value).toLocaleString()}</dd>
+                </Link>
+              ) : (
+                <>
+                  <dt>{row.label}</dt>
+                  <dd className="mono">{Number(row.value).toLocaleString()}</dd>
+                </>
+              )}
             </div>
           ))}
           <div className="masthead__stats-wide">
@@ -83,6 +93,12 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
             <dd className="mono masthead__sync">{lastSync}</dd>
           </div>
         </dl>
+        <div className="masthead__cta-row">
+          <Link to="/places" className="masthead__cta">
+            <span>{heroText.photosCta || 'Browse the full photo archive'}</span>
+            <span className="masthead__cta-arrow">→</span>
+          </Link>
+        </div>
       </div>
     </PageBanner>
   );

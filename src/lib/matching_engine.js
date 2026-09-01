@@ -78,7 +78,10 @@ export function scoreDemandSupplyMatch(demand, supplier, customWeights = {}) {
   const lastActiveTime = new Date(supplier.postedAt || supplier.updatedAt || supplier.createdAt || 0).getTime();
   if (lastActiveTime > 0) {
     const hoursElapsed = (Date.now() - lastActiveTime) / 3_600_000;
-    freshnessScore = Math.max(0.1, Math.exp(-hoursElapsed / 48.0)); // 48h half-life
+    // Clamp to [0.1, 1] — exp() is unbounded above for negative `hoursElapsed`
+    // (future-dated posts from clock-skewed Telegram messages would otherwise
+    // score >1 and systematically outrank genuinely fresh listings).
+    freshnessScore = Math.max(0.1, Math.min(1, Math.exp(-hoursElapsed / 48.0))); // 48h half-life
   }
 
   const isExplicitlyAvailable = /ว่าง|พร้อม|available|walk[ -]?in/i.test(textBlob);

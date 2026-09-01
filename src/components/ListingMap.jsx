@@ -263,6 +263,15 @@ function buildPopupHtml(listing, precision, availability) {
   if (mentions > 1) lines.push(`<div style="margin-top:4px;font-size:10px;color:#9fc2ff;font-family:monospace">${mentions}× in feed</div>`);
   if (listing.sourceChannel) lines.push(`<div style="margin-top:4px;font-size:10px;color:#666">${escapeHtml(listing.sourceChannel)}</div>`);
 
+  // Photo-archive deep link. The source channel slug matches the on-disk
+  // venue folder, so we can link directly into /places/{slug}.
+  const channelSlug = (listing.sourceChannel || '').replace(/^@/, '').toLowerCase();
+  if (channelSlug) {
+    lines.push(
+      `<a href="/places/${escapeHtml(channelSlug)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;padding:3px 8px;border:1px solid #2DD4BF;color:#2DD4BF;font-family:monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none">Browse ${escapeHtml(channelSlug)} photos →</a>`,
+    );
+  }
+
   lines.push(`
     <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255, 255, 255, 0.08)">
       <button class="popup-view-btn" data-id="${escapeHtml(listing.id)}" style="
@@ -1316,7 +1325,20 @@ export default function ListingMap({
         </div>
         <div className="data-source-legend" aria-label="Data source legend">
           <span><i className="map-source-swatch map-source-swatch--telegram" />Telegram broadcasts ({pins.length})</span>
-          <span><i className="map-source-swatch map-source-swatch--longdo" />Longdo POI · CC BY-SA 4.0 ({longdoPois.length})</span>
+          {/* CC BY-SA 4.0 wants a link back to the source, not just text. Pulled
+              from the dataset's own meta.attribution when available, else fall
+              back to the canonical Longdo Map URL. */}
+          <span>
+            <i className="map-source-swatch map-source-swatch--longdo" />
+            <a
+              href="https://map.longdo.com"
+              target="_blank"
+              rel="noreferrer"
+              title={longdoMeta?.attribution || 'POI data from Longdo Map'}
+            >
+              Longdo POI · CC BY-SA 4.0
+            </a> ({longdoPois.length})
+          </span>
         </div>
         <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
           <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>

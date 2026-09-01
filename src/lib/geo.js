@@ -126,7 +126,9 @@ export function getNearestTransit(coords) {
       line: nearest.line,
       distanceKm: minDist,
       distLabel,
-      tag: `🚇 ${distLabel} ${nearest.name}`
+      // No emoji — house style: typography-only hierarchy, zero decoration.
+      // The line name (BTS/MRT/ARL) is the only typographic signal the eye needs.
+      tag: `${nearest.line} ${distLabel} ${nearest.name}`
     };
   }
   return null;
@@ -150,7 +152,10 @@ export function nearestListings(listings, origin, { maxBudget = null, vibe = 'an
       if (vibe === 'oil' && !/oil|อโรม่า|aroma|sensual|นวดน้ำมัน|ผ่อนคลาย|ผ่อนคลายสบาย|ฟิน/i.test(textBlob)) continue;
       if (vibe === 'thai' && !/thai|แผนไทย|นวดไทย|รีดเส้น|คลายเส้น|ดัด|จับเส้น/i.test(textBlob)) continue;
       if (vibe === 'vip' && !/vip|private|ส่วนตัว|พรีเมียม|premium|suite|หรู/i.test(textBlob)) continue;
-      if (vibe === 'latenight' && !/24|ดึก|รอบดึก|คืนนี้|ตี\d|late|open.*night/i.test(textBlob)) continue;
+      // "24" needs word-boundary-ish context: a bare "24" inside "฿2,400" or
+      // a phone number shouldn't count as "24-hour". Look for "24ชม", "24 hr(s)",
+      // "24-hour", or a leading "24" (start-of-token after a non-digit).
+      if (vibe === 'latenight' && !/(?:^|[^\d])24(?:\s*(?:ชม|hr|hrs|hour|hours))?|ดึก|รอบดึก|คืนนี้|ตี\d|late|open.*night/i.test(textBlob)) continue;
       if (vibe === 'now' && !/ว่าง|พร้อม|available|walk[ -]?in|คิวว่าง/i.test(textBlob)) continue;
     }
 
