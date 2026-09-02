@@ -894,7 +894,7 @@ export default function Analytics() {
               </div>
               {economyData.provinces.map((prov) => {
                 const estPrice = data.priceMean || 600; // Use overall mean or specific if mapped
-                const gap = (estPrice / prov.minimumWage).toFixed(1);
+                const gap = prov.minimumWage > 0 ? (estPrice / prov.minimumWage).toFixed(1) : '—';
                 return (
                   <div key={prov.code} className="an-table-row">
                     <span>{prov.name}</span>
@@ -1146,7 +1146,7 @@ export default function Analytics() {
                   <span>@{row.ch}</span>
                   <span>{row.listings}</span>
                   <span>{row.mentions}</span>
-                  <strong>{row.snr.toFixed(3)}</strong>
+                  <strong>{typeof row.snr === 'number' ? row.snr.toFixed(3) : '—'}</strong>
                   <span>
                     <span className="an-snr-track">
                       <span className="an-snr-fill" style={{ width: `${pct}%` }} />
@@ -1163,7 +1163,7 @@ export default function Analytics() {
           <section className="an-card">
             <h2>Mention Distribution · Power Law</h2>
             <p className="an-card-sub">
-              Log-log scatter of rank vs. mention count for {data.mentionPower.n} listings. The fitted line is <code>log C = {(Math.log(data.mentionPower.points[0].count) - data.mentionPower.points[0].rank * 0).toFixed(2)} - {data.mentionPower.alpha}·log k</code>.
+              Log-log scatter of rank vs. mention count for {data.mentionPower?.n ?? '—'} listings. The fitted line is <code>log C = {(Math.log(data.mentionPower?.points?.[0]?.count ?? 1) - (data.mentionPower?.points?.[0]?.rank ?? 0) * 0).toFixed(2)} - {data.mentionPower?.alpha ?? '—'}·log k</code>.
             </p>
             <PowerLawChart data={data.mentionPower} />
           </section>
