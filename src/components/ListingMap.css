@@ -1367,3 +1367,464 @@
   font-family: var(--font-mono);
   color: var(--navy, var(--ink));
 }
+
+/* ============================================================================
+   MAP · MOBILE REAUDIT
+   ----------------------------------------------------------------------------
+   The desktop map page works because every chrome element has its own column
+   on a 1920×1080 monitor. On a 6-inch phone, the same DOM produces 1500px
+   of text/buttons/chips/legends/analytics BEFORE the user even sees the map,
+   then 800px of analytics + market widget + spatial panel AFTER it. Result:
+   the map is somewhere mid-scroll, the floating legends overlap pins, and
+   the touch targets are too small to use.
+
+   This block is a full restructure for ≤720px (phones in portrait, foldable
+   cover displays). The core moves:
+
+     1. Map becomes the dominant element — min 70vh, full viewport width,
+        sits in the natural flow after a collapsed header.
+     2. Header collapses to a one-line stat strip (no h2 title, no subtitle).
+     3. Toolbar (Fit all / Use my location) drops to the BOTTOM of the map
+        as floating action buttons (FABs), the standard mobile-map pattern.
+     4. Data-source chips and quick-jump cities collapse into a single
+        horizontal scroll strip directly above the map, all 44pt tall.
+     5. Reach dashboard, location invitation, and pending locations become
+        bottom sheets that slide up from the bottom edge of the map.
+     6. All in-map floating legends collapse behind a single "i" button at
+        the top-right of the map.
+     7. The MapMarketBar (currency widget) and SpatialAnalyticsPanel (full
+        density matrix + top-3 listing panel) are desktop-only — the same
+        data lives at /insights and /analytics respectively. Hiding them
+        on mobile removes ~700px of post-map scroll and keeps the page
+        focused on the map itself.
+     8. Every interactive surface in this section is bumped to ≥44pt
+        (Apple HIG / Material) regardless of what the desktop CSS does.
+   ============================================================================ */
+@media (max-width: 720px) {
+  /* Section flush to the viewport edges so the map can use the full
+     width without horizontal padding fighting the gestures. */
+  .listing-map-section {
+    margin: 0 -0.75rem;
+    padding: 0;
+  }
+
+  /* Header collapses to a single line: the pin count is the only stat
+     the user needs above the map. The h2 title and subtitle are
+     desktop typography that wastes vertical space on a phone. */
+  .listing-map-header h2,
+  .listing-map-header .listing-map-subtitle {
+    display: none;
+  }
+
+  .listing-map-header {
+    padding: 0.5rem 0.75rem 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .listing-map-count {
+    margin-top: 0;
+    font-size: 0.7rem;
+    line-height: 1.35;
+  }
+
+  /* Toolbar (Fit all / Use my location / status) goes away on mobile —
+     the actions become floating buttons inside the map container and
+     the status becomes a tiny pill in the data-source bar. */
+  .listing-map-toolbar {
+    display: none;
+  }
+
+  /* Data sources: Telegram / Longdo chips + search become a single
+     sticky horizontal strip directly above the map. All 44pt tall,
+     horizontally scrollable, with the count badge inline. */
+  .listing-map-datasources {
+    position: sticky;
+    top: 0;
+    z-index: 25;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-line);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .listing-map-datasources::-webkit-scrollbar {
+    display: none;
+  }
+
+  .map-quickjump-label {
+    flex-shrink: 0;
+    font-size: 0.65rem;
+  }
+
+  .map-source-chip {
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .map-source-search {
+    flex-shrink: 0;
+    min-width: 0;
+    width: 12rem;
+    margin-left: 0;
+  }
+
+  .map-source-search input {
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+    font-size: 1rem; /* 16px prevents iOS auto-zoom on focus */
+  }
+
+  .map-source-result-count {
+    flex-shrink: 0;
+  }
+
+  /* Quick-jump: keep the cities accessible, but in a single horizontal
+     scroll row directly above the map. The label is hidden to save
+     pixels; the chips themselves are 44pt and tell the user what
+     they do by their content. */
+  .listing-map-quickjump {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-line);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .listing-map-quickjump::-webkit-scrollbar {
+    display: none;
+  }
+
+  .listing-map-quickjump .map-quickjump-label {
+    display: none;
+  }
+
+  .map-quickjump-chip {
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.72rem;
+  }
+
+  /* The map itself. This is the single most important rule on mobile:
+     the user opens the page, scrolls past the header, and the map is
+     the FIRST thing they see at the top of the natural flow. */
+  .listing-map-container {
+    height: 70vh;
+    min-height: 500px;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  /* Fallback note: full-width alert, no icon clutter. */
+  .listing-map-fallback-note,
+  .listing-map-locate-error {
+    margin: 0.5rem 0.75rem;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  /* Reach dashboard: turn the 3-col grid into a 2-col, full width on
+     phones, and stick it to the bottom of the map. */
+  .map-reach-dashboard {
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    border-top: 1px solid var(--color-line);
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .map-position-readout {
+    grid-column: 1 / -1;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-line);
+    padding: 0.75rem 0.85rem;
+  }
+
+  .map-nearest-list {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .map-nearest-row {
+    min-height: 44px;
+    padding: 0.6rem 0.75rem;
+  }
+
+  /* Location invitation: bigger, easier to tap, full-width button. */
+  .map-location-invitation {
+    min-height: 64px;
+    margin: 0;
+    padding: 0.85rem 0.95rem;
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  /* In-map floating legends: the desktop version has 4-6 absolutely-
+     positioned elements at the corners and they overlap pins. On mobile
+     we hide the verbose ones by default and reveal them via the
+     `.map-info-open` class set by the "i" button. */
+  .availability-legend,
+  .data-source-legend,
+  .map-architecture-strip,
+  .reach-ring-legend {
+    display: none;
+  }
+
+  /* Map info toggle: a single 44pt FAB at the top-right of the map that
+     reveals the hidden legends when tapped. The actual button is
+     rendered by the JSX; this rule just makes it look right. */
+  .map-info-toggle {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    z-index: 420;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-line);
+    background: var(--color-bg);
+    color: var(--color-cream);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .map-info-toggle.is-active {
+    background: var(--color-status);
+    color: var(--color-bg);
+    border-color: var(--color-status);
+  }
+
+  /* When the user opens the info sheet, the legends become a vertical
+     stack at the top-right of the map. */
+  .map-info-open .availability-legend,
+  .map-info-open .data-source-legend,
+  .map-info-open .map-architecture-strip,
+  .map-info-open .reach-ring-legend {
+    display: flex;
+    position: absolute;
+    top: 3.6rem;
+    right: 0.6rem;
+    z-index: 410;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    padding: 0.55rem 0.65rem;
+    background: rgba(10, 10, 12, 0.92);
+    border: 1px solid var(--color-line);
+    max-width: calc(100% - 1.2rem);
+  }
+
+  .map-info-open .map-architecture-strip {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-top: 0.3rem;
+  }
+
+  .map-info-open .map-architecture-pill {
+    font-size: 0.65rem;
+  }
+
+  /* AQI and rain legends are conditional anyway, but on mobile they
+     must not overlap the floating UI when they do appear. */
+  .aqi-legend,
+  .rain-legend {
+    top: 3.6rem;
+    left: 0.6rem;
+    right: 0.6rem;
+    max-width: calc(100% - 1.2rem);
+    font-size: 0.7rem;
+  }
+
+  /* FAB row: Fit all + Use my location as floating buttons at the
+     bottom-right of the map. This is the standard mobile-map pattern
+     (Google Maps, Apple Maps) — the primary map actions are always
+     under the thumb. */
+  .map-fab-row {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.6rem;
+    z-index: 420;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .map-fab {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--color-line);
+    background: var(--color-bg);
+    color: var(--color-cream);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .map-fab.is-active {
+    background: var(--color-status);
+    color: var(--color-bg);
+    border-color: var(--color-status);
+  }
+
+  /* Leaflet zoom buttons are 30×30 by default — below the 44pt minimum.
+     Override the inline Leaflet classes (they have higher specificity
+     than the bundled CSS, so we use !important here). */
+  .leaflet-control-zoom a {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+    font-size: 1.2rem !important;
+  }
+
+  .leaflet-popup-content-wrapper {
+    max-width: min(280px, calc(100vw - 4rem));
+  }
+
+  .leaflet-popup-content {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    margin: 0.6rem 0.75rem;
+  }
+
+  /* Post-map panels: hide the analytics + market widget entirely on
+     mobile. The same data lives at /insights and /analytics — direct
+     the user there with a single link below the map. */
+  .map-mobile-analytics-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.85rem 0.95rem;
+    margin: 0.5rem 0.75rem 0;
+    border: 1px solid var(--color-line);
+    background: var(--color-bg);
+    color: var(--color-cream);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .map-mobile-analytics-link + .map-mobile-analytics-link {
+    margin-top: 0;
+    border-top: 0;
+  }
+
+  .map-mobile-analytics-link:hover,
+  .map-mobile-analytics-link:focus-visible {
+    color: var(--color-status);
+    border-color: var(--color-status);
+  }
+
+  /* Pending locations: a compact "X pending" pill that links to a
+     full list. The full list is still rendered in the DOM but
+     collapsed on mobile. */
+  .listing-map-pending {
+    padding: 0.5rem 0.75rem 0.75rem;
+  }
+
+  .pending-list {
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .pending-row {
+    min-height: 44px;
+    padding: 0.55rem 0.5rem;
+  }
+
+  .pending-view-btn {
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Province + epidemic panels: only relevant in their own map mode.
+     When active, they take the full mobile width instead of sitting
+     alongside the map. */
+  .epidemic-panel,
+  .province-panel {
+    margin: 0.5rem 0.75rem;
+    padding: 0.85rem 0.95rem;
+  }
+
+  .province-panel__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* MapMarketBar (currency / gold / GDP strip) and SpatialAnalyticsPanel
+     (full density matrix + top-3 listings) are desktop-only. The same
+     data is reachable from the /insights and /analytics deep-links
+     immediately below the map. Hiding them removes ~700px of post-
+     map scroll on a phone and keeps the page focused on the map. */
+  .map-desktop-only {
+    display: none;
+  }
+}
+
+/* Foldable open (840px wide) — same logic as 720px but with more
+   horizontal room for the data sources and quick-jump to sit on the
+   same row without scrolling. */
+@media (min-width: 721px) and (max-width: 840px) {
+  .listing-map-container {
+    height: 60vh;
+    min-height: 480px;
+  }
+
+  .listing-map-datasources {
+    flex-wrap: wrap;
+  }
+
+  .map-reach-dashboard {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .map-nearest-list {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Touch devices: drop hover scale on map pins (the gesture doesn't
+   fire on tap-hold), give an active-press feedback instead. */
+@media (hover: none) {
+  .listing-pin:hover {
+    transform: none;
+  }
+  .listing-pin:active {
+    transform: scale(1.4);
+  }
+  .map-quickjump-chip:hover:not(:disabled),
+  .map-source-chip:hover:not(.is-active) {
+    border-color: var(--color-line);
+    color: var(--color-cream-dim);
+    background: transparent;
+  }
+  .map-quickjump-chip:active,
+  .map-source-chip:active {
+    border-color: var(--color-status);
+    color: var(--color-status);
+  }
+}

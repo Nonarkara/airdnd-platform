@@ -404,6 +404,13 @@ export default function ListingMap({
   const [showTelegram, setShowTelegram] = useState(true);
   const [showLongdo, setShowLongdo] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  // Mobile info-sheet toggle: on phones, the in-map floating legends
+  // (availability, data source, architecture strip) are hidden behind
+  // a single "i" button at the top-right of the map. Tapping it reveals
+  // them as a stacked panel. Default closed to keep the map surface
+  // clean — the chips above the map already convey the most important
+  // info (which sources are visible + how many pins per city).
+  const [mapInfoOpen, setMapInfoOpen] = useState(false);
 
   const { pins, pendingListings } = useMemo(() => {
     if (!Array.isArray(listings)) return { pins: [], pendingListings: [] };
@@ -1307,10 +1314,43 @@ export default function ListingMap({
       )}
       <div
         ref={mapRef}
-        className="listing-map-container"
+        className={`listing-map-container${mapInfoOpen ? ' map-info-open' : ''}`}
         role="application"
         aria-label="Interactive listing map"
       >
+        <button
+          type="button"
+          className={`map-info-toggle${mapInfoOpen ? ' is-active' : ''}`}
+          onClick={() => setMapInfoOpen((v) => !v)}
+          aria-expanded={mapInfoOpen}
+          aria-controls="map-legend-sheet"
+          title={mapInfoOpen ? 'Hide map info' : 'Show map info (sources, basemap, architecture)'}
+        >
+          {mapInfoOpen ? '×' : 'i'}
+        </button>
+        <div className="map-fab-row" aria-label="Map actions">
+          <button
+            type="button"
+            className="map-fab"
+            onClick={fitMapToPins}
+            disabled={pins.length === 0}
+            title="Fit all pins to the viewport"
+            aria-label="Fit all"
+          >
+            Fit
+          </button>
+          <button
+            type="button"
+            className={`map-fab${userLocation ? ' is-active' : ''}`}
+            onClick={handleLocate}
+            disabled={locating}
+            aria-pressed={Boolean(userLocation)}
+            title={userLocation ? 'Update my location' : 'Use my location'}
+            aria-label={userLocation ? 'Update my location' : 'Use my location'}
+          >
+            {locating ? '…' : '◉'}
+          </button>
+        </div>
         {userLocation && (
           <div className="reach-ring-legend" aria-label="Distance ring legend">
             <span><i className="ring-key ring-key--one" />1 km</span>
@@ -1419,8 +1459,33 @@ export default function ListingMap({
         </div>
       )}
 
-      <MapMarketBar />
-      <SpatialAnalyticsPanel visiblePins={pins} totalListings={listings.length} />
+      {/* MapMarketBar and SpatialAnalyticsPanel are wrapped with
+          `.map-desktop-only` so the mobile reaudit CSS can hide them
+          entirely on phones — the same data is reachable via the
+          `/insights` and `/analytics` deep-links below. Desktop and
+          tablet users keep the full in-page panels. */}
+      <div className="map-desktop-only">
+        <MapMarketBar />
+      </div>
+      <div className="map-desktop-only">
+        <SpatialAnalyticsPanel visiblePins={pins} totalListings={listings.length} />
+      </div>
+
+      {/* Mobile deep-links to the analytics views that the MapMarketBar
+          and SpatialAnalyticsPanel render above. The same data is at
+          /insights and /analytics — the links below the map make that
+          explicit so the user can get the spatial density matrix and
+          the top-3 listing panel on a route that loads them in mobile-
+          first layouts, instead of as a 700px scroll after the map. */}
+      <a className="map-mobile-analytics-link" href="/insights" aria-label="Open the Spatial Density Matrix">
+        <span>Spatial Density Matrix</span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <a className="map-mobile-analytics-link" href="/analytics" aria-label="Open the Industry Telemetry report">
+        <span>Industry Telemetry</span>
+        <span aria-hidden="true">→</span>
+      </a>
+
       {pendingListings.length > 0 && (
         <div className="listing-map-pending">
           <div className="pending-header">
