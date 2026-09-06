@@ -22,9 +22,12 @@ import {
   archivePhotoMetadata,
   downloadAndStorePhoto,
   ensureLocalPhotosDir,
+  setPhotoArchiveClient,
   setPhotoStorageSupabaseEnabled,
 } from './photo_storage.js';
 import { syncListingsToFirestore } from './firestore_sync.js';
+import { openLocalDb } from './lib/local_store.js';
+import { createLocalSupabaseShim } from './lib/supabase_local_shim.js';
 
 import { cleanDisplayText, normalizeText } from '../src/lib/normalization.js';
 import { reportCapability } from './capability_report.js';
@@ -114,9 +117,31 @@ if (fs.existsSync(domainConfigPath)) {
 } else {
   console.warn('No domain.config.json found, using empty configuration.');
 }
+// Local-station mode: when LOCAL_DB=1 (or DATA_STORE=local), the pipeline reads
+// and writes a local SQLite database instead of Supabase. Cloud photo storage
+// is turned off (photos are already saved to disk); photo metadata is recorded
+// locally too. Firestore sync is unaffected and can be disabled separately.
+const useLocalDb = /^(1|true|local|yes)$/i.test(process.env.LOCAL_DB || '')
+  || /^local$/i.test(process.env.DATA_STORE || '');
+
+let localDb = null;
 let supabase = configuredSupabase;
 
+if (useLocalDb) {
+  localDb = openLocalDb();
+  const localShim = createLocalSupabaseShim(localDb);
+  supabase = localShim;
+  setPhotoStorageSupabaseEnabled(false);
+  setPhotoArchiveClient(localShim);
+  console.log(`Local data station active — SQLite at ${process.env.LOCAL_DB_PATH || 'data/sabai.db'} (Supabase disabled).`);
+}
+
 async function refreshSupabaseAvailability() {
+  if (useLocalDb) {
+    // In local mode the store never "pauses"; keep the SQLite shim in place.
+    return;
+  }
+
   if (!configuredSupabase) {
     supabase = null;
     setPhotoStorageSupabaseEnabled(false);
