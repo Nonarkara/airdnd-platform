@@ -152,10 +152,10 @@ export function nearestListings(listings, origin, { maxBudget = null, vibe = 'an
       if (vibe === 'oil' && !/oil|อโรม่า|aroma|sensual|นวดน้ำมัน|ผ่อนคลาย|ผ่อนคลายสบาย|ฟิน/i.test(textBlob)) continue;
       if (vibe === 'thai' && !/thai|แผนไทย|นวดไทย|รีดเส้น|คลายเส้น|ดัด|จับเส้น/i.test(textBlob)) continue;
       if (vibe === 'vip' && !/vip|private|ส่วนตัว|พรีเมียม|premium|suite|หรู/i.test(textBlob)) continue;
-      // "24" needs word-boundary-ish context: a bare "24" inside "฿2,400" or
-      // a phone number shouldn't count as "24-hour". Look for "24ชม", "24 hr(s)",
-      // "24-hour", or a leading "24" (start-of-token after a non-digit).
-      if (vibe === 'latenight' && !/(?:^|[^\d])24(?:\s*(?:ชม|hr|hrs|hour|hours))?|ดึก|รอบดึก|คืนนี้|ตี\d|late|open.*night/i.test(textBlob)) continue;
+      // "24" must be an actual 24-hour claim (24/7, 24 ชม, 24 hours): on its
+      // own it matches house numbers ("24 Sukhumvit Soi 11") and phone digits.
+      // "late" is word-bounded so it stops matching inside "chocolate".
+      if (vibe === 'latenight' && !/24\s*\/\s*7|24\s*(?:ชม|ชั่วโมง|hrs?|hours?)|ดึก|รอบดึก|คืนนี้|ตี\d|\blate\b|open.*night/i.test(textBlob)) continue;
       if (vibe === 'now' && !/ว่าง|พร้อม|available|walk[ -]?in|คิวว่าง/i.test(textBlob)) continue;
     }
 
