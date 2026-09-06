@@ -9,7 +9,12 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const publicDir = path.join(__dirname, '../public');
-const photosBaseDir = path.join(publicDir, 'images');
+// PHOTO_ARCHIVE_DIR lets the always-on Mac keep the full photo archive on a
+// large external drive instead of inside the repo. URLs stay /images/... so the
+// deploy/staging step and the frontend are unaffected by where files live.
+const photosBaseDir = process.env.PHOTO_ARCHIVE_DIR
+  ? path.resolve(process.env.PHOTO_ARCHIVE_DIR)
+  : path.join(publicDir, 'images');
 const bucketName = process.env.SUPABASE_PHOTO_BUCKET || 'listing-photos';
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
@@ -27,6 +32,11 @@ const configuredSupabase =
     : null;
 let supabase = configuredSupabase;
 
+// Client used only for writing photo_archive metadata rows. Defaults to the
+// same Supabase client, but can be pointed at the local SQLite shim so the
+// station records photo metadata locally while cloud storage stays off.
+let archiveClient = configuredSupabase;
+
 let bucketReady = false;
 
 export function setPhotoStorageSupabaseEnabled(enabled) {
@@ -34,6 +44,10 @@ export function setPhotoStorageSupabaseEnabled(enabled) {
   if (!enabled) {
     bucketReady = false;
   }
+}
+
+export function setPhotoArchiveClient(client) {
+  archiveClient = client;
 }
 
 function sanitizeFilename(filename) {
@@ -115,7 +129,8 @@ export function resolveLocalPhotoPath(imageUrl) {
   if (!isLocalPhotoUrl(imageUrl)) {
     return null;
   }
-  return path.join(publicDir, imageUrl.replace(/^\/+/, ''));
+  const relative = imageUrl.replace(/^\/images\/?/, '');
+  return path.join(photosBaseDir, relative);
 }
 
 async function ensureBucket() {
@@ -181,9 +196,10 @@ export function savePhotoLocally(buffer, storedFilename, channelName) {
   const filepath = path.join(dir, safeFilename);
   fs.writeFileSync(filepath, buffer);
 
-  // Return URL relative to public/
-  const relativePath = path.relative(publicDir, filepath);
-  return `/${relativePath}`;
+  // Always expose photos under /images/... regardless of the physical archive
+  // location, so the URL scheme is stable when PHOTO_ARCHIVE_DIR points off-repo.
+  const relativePath = path.relative(photosBaseDir, filepath).split(path.sep).join('/');
+  return `/images/${relativePath}`;
 }
 
 /**
@@ -225,10 +241,10 @@ export async function downloadAndStorePhoto(client, msg, channelName) {
  * Archive photo metadata to the photo_archive table in Supabase.
  */
 export async function archivePhotoMetadata(photoInfo, msg, channelId, channelName) {
-  if (!supabase || !photoInfo) return;
+  if (!archiveClient || !photoInfo) return;
 
   try {
-    const { error } = await supabase.from('photo_archive').upsert({
+    const { error } = await archiveClient.from('photo_archive').upsert({
       telegram_message_id: Number(msg?.id) || 0,
       channel_id: String(channelId),
       channel_name: channelName,
