@@ -56,7 +56,7 @@ function Methodology() {
             {/* Telegram Sources */}
             <rect x="20" y="120" width="140" height="80" stroke="var(--mango)" strokeWidth="1" fill="none" />
             <text x="90" y="155" textAnchor="middle" fill="var(--ink)" fontSize="11" fontWeight="700">TELEGRAM</text>
-            <text x="90" y="175" textAnchor="middle" fill="var(--ink-3)" fontSize="9">12 channels</text>
+            <text x="90" y="175" textAnchor="middle" fill="var(--ink-3)" fontSize="9">12 configured channels</text>
             <text x="90" y="190" textAnchor="middle" fill="var(--ink-3)" fontSize="9">80,000+ records</text>
 
             {/* Arrow */}

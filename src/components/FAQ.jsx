@@ -42,7 +42,7 @@ export default function FAQ() {
 
             <rect x="10" y="40" width="110" height="60" stroke="#ff3366" strokeWidth="1" fill="none" />
             <text x="65" y="66" textAnchor="middle" fill="#e8e6e1" fontSize="10" fontWeight="700">TELEGRAM</text>
-            <text x="65" y="83" textAnchor="middle" fill="#e8e6e180" fontSize="8">12 channels · 30s poll</text>
+            <text x="65" y="83" textAnchor="middle" fill="#e8e6e180" fontSize="8">12 configured channels</text>
             <text x="65" y="95" textAnchor="middle" fill="#e8e6e180" fontSize="8">109,000+ records</text>
 
             <line x1="120" y1="70" x2="150" y2="70" stroke="#2a2a3a" strokeWidth="1" />

@@ -220,3 +220,17 @@
     font-size: 0.7rem;
   }
 }
+
+/* Intake provenance — the funnel written by verify_snapshot.js. Same mono
+   instrument voice as the pulse line, one notch quieter; a rule above it so
+   it reads as a footnote to the claim, not part of it. */
+.masthead__provenance {
+  margin: 0.6rem 0 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  opacity: 0.78;
+  max-width: 62ch;
+}
