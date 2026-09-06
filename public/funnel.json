@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-09-06T15:27:18.691Z",
+  "shown": {
+    "cards": 109,
+    "withPhoto": 100,
+    "deployablePhotoCards": 16,
+    "photoFilesTracked": 16,
+    "photoFilesMissing": 84,
+    "unverifiedLocation": 40,
+    "channelsRepresented": 4,
+    "channels": [
+      "@keawjaojormmassage",
+      "@relaxsociety2020",
+      "@relaxsocietymassage",
+      "dialog:2491020966"
+    ]
+  },
+  "snapshot": {
+    "newestPostAt": "2026-09-02T03:40:19.000Z",
+    "ageDays": 4
+  },
+  "intake": {
+    "channelsConfigured": 12
+  },
+  "archive": {
+    "messages": 85646,
+    "photos": 25202,
+    "personaPosts": 4011,
+    "businesses": 92,
+    "duplicationFactor": 43.6
+  },
+  "feed": {
+    "degraded": true,
+    "builtAt": "2026-09-02T15:24:22.486Z"
+  },
+  "warnings": [
+    "84 of 100 local photo paths are not committed and will 404 in production",
+    "4 of 12 configured channels are represented",
+    "LIVE feed is degraded: Supabase unavailable: supabase.co | 522: Connection timed out"
+  ]
+}
