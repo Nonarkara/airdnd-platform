@@ -621,15 +621,10 @@ export function writeSnapshotListings(listings) {
   return true;
 }
 
-export function classifyMessageType(text) {
-  if (!text || text.length < 5) return 'unknown';
-  if (/(?:คลิป|clip|vdo|video|โป้|โป๊|18\+|xxx|porn|nude|onlyfans|เสียว|หลุด|กลุ่มลับ|vip\s*group)/i.test(text)) return 'spam';
-  if (/(?:ประกาศ|announcement|admin|rule|กฎ|กติกา|ข้อตกลง)/i.test(text)) return 'admin';
-  if (/(?:รีวิว|review|ประสบการณ์|experience|ไปมา|เคยไป|recommend|แนะนำ|ดีมาก|แย่|สะอาด|clean|คุ้ม|worth|ประทับใจ|ไม่ประทับ)/i.test(text)) return 'feedback';
-  if (/(?:ใครเคย|สอบถาม|เป็นยังไง|ที่ไหน|ราคาเท่าไหร่|มีใครรู้|แนะนำหน่อย|\?$)/i.test(text)) return 'discussion';
-  if (/(?:ร้าน|shop|spa|สปา|นวด|massage|clinic|คลินิก|health|สุขภาพ|therap|ราคา|price|baht|บาท|฿|โทร|tel|phone|line\s*(?:id)?|จอง|booking)/i.test(text)) return 'listing';
-  return 'unknown';
-}
+// The classifier lives in src/lib so it can be unit-tested without pulling in
+// the Supabase client this module initialises at import time.
+import { classifyMessageType } from '../src/lib/message_classifier.js';
+export { classifyMessageType };
 
 export async function archiveChannelMessages(supabase, messages, channelId, channelName, companionIdMap = new Map()) {
   if (!supabase || !Array.isArray(messages) || messages.length === 0) return 0;

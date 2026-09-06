@@ -27,6 +27,7 @@ import {
 import { syncListingsToFirestore } from './firestore_sync.js';
 
 import { cleanDisplayText, normalizeText } from '../src/lib/normalization.js';
+import { detectIntakeGap, mergeCatchUpPages, CATCH_UP_MAX_PAGES } from '../src/lib/intake_gap.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
@@ -1099,22 +1100,80 @@ function createMessageBatch(messages, minimumMessageId = 0) {
   };
 }
 
-async function extractListingsFromTarget(client, target, state = {}) {
-  const messages = await client.getMessages(target.fetchRef, {
-    limit: Number.isFinite(fetchLimit) ? fetchLimit : 30,
-  });
+/**
+ * Fetch the newest page for a channel and, if that page does not reach back to
+ * the last message we processed, keep paging backwards until it does.
+ *
+ * Without this, any outage longer than it takes a channel to post `fetchLimit`
+ * messages loses everything that scrolled out of the window: the next run just
+ * records the new high-water mark. Gaps that cannot be closed within the page
+ * ceiling are recorded in `state.intakeGaps` so they are never silent.
+ */
+async function fetchMessagesWithCatchUp(client, target, lastSeenId, state) {
+  const limit = Number.isFinite(fetchLimit) ? fetchLimit : 30;
+  const newest = await client.getMessages(target.fetchRef, { limit });
+  const gap = detectIntakeGap(newest, lastSeenId);
+  if (!gap.hasGap) {
+    return { messages: newest, catchUpPages: 0 };
+  }
 
+  console.warn(
+    `${target.displayLabel}: newest page starts at id ${gap.oldestFetchedId} but last processed id was ${lastSeenId}; paging back to close the gap.`,
+  );
+
+  const pages = [newest];
+  let offsetId = gap.missingBelow;
+  let catchUpPages = 0;
+  let reachedLastSeen = false;
+  while (catchUpPages < CATCH_UP_MAX_PAGES) {
+    // offsetId pages backwards from that id; minId stops Telegram from
+    // returning anything we have already processed.
+    const page = await client.getMessages(target.fetchRef, { limit, offsetId, minId: lastSeenId });
+    catchUpPages += 1;
+    if (!Array.isArray(page) || page.length === 0) {
+      reachedLastSeen = true;
+      break;
+    }
+    pages.push(page);
+    const oldest = Math.min(...page.map((message) => Number(message?.id) || Infinity));
+    if (page.length < limit || !Number.isFinite(oldest) || oldest <= lastSeenId + 1) {
+      reachedLastSeen = true;
+      break;
+    }
+    offsetId = oldest;
+  }
+
+  const messages = mergeCatchUpPages(pages, lastSeenId);
+  if (!reachedLastSeen) {
+    const oldestFetched = messages.length ? Number(messages[0].id) : gap.oldestFetchedId;
+    state.intakeGaps = state.intakeGaps || {};
+    state.intakeGaps[target.token] = {
+      afterId: lastSeenId,
+      beforeId: oldestFetched,
+      recordedAt: new Date().toISOString(),
+    };
+    console.warn(
+      `${target.displayLabel}: gap ${lastSeenId}..${oldestFetched} not closed after ${catchUpPages} page(s); recorded in state.intakeGaps. Run scripts/backfill_history.js to recover it.`,
+    );
+  } else if (state.intakeGaps?.[target.token]) {
+    delete state.intakeGaps[target.token];
+  }
+
+  return { messages, catchUpPages };
+}
+
+async function extractListingsFromTarget(client, target, state = {}) {
   if (!state.lastSeenMessageIds) {
     state.lastSeenMessageIds = {};
   }
 
-  const { latestMessageId, newMessages } = createMessageBatch(
-    messages,
-    state.lastSeenMessageIds[target.token] || 0,
-  );
+  const lastSeenId = state.lastSeenMessageIds[target.token] || 0;
+  const { messages, catchUpPages } = await fetchMessagesWithCatchUp(client, target, lastSeenId, state);
+
+  const { latestMessageId, newMessages } = createMessageBatch(messages, lastSeenId);
 
   console.log(
-    `${target.displayLabel}: fetched ${messages.length} messages, ${newMessages.length} new message(s), latest id ${latestMessageId}.`,
+    `${target.displayLabel}: fetched ${messages.length} messages${catchUpPages ? ` (+${catchUpPages} catch-up page(s))` : ''}, ${newMessages.length} new message(s), latest id ${latestMessageId}.`,
   );
 
   state.lastSeenMessageIds[target.token] = latestMessageId;
@@ -1318,10 +1377,23 @@ async function runTelegramScrape(client, targets, state = {}) {
     };
   }
 
-  const allowedSourceChannels = new Set(targets.map((target) => target.displayLabel));
-  const curatedExistingSnapshot = readSnapshotListings().filter((listing) =>
-    allowedSourceChannels.has(listing?.sourceChannel),
+  // Keep the previous snapshot's listings for every channel we are configured
+  // to watch, keyed by the stable target token rather than the display label.
+  // A dialog channel's label is its Telegram title, so a rename, or a channel
+  // that simply failed to resolve on this run, used to orphan and silently drop
+  // every listing it had ever produced from the next snapshot write.
+  const configuredTokens = new Set(configuredTargetTokens);
+  const resolvedLabels = new Set(targets.map((target) => target.displayLabel));
+  const existingSnapshot = readSnapshotListings();
+  const curatedExistingSnapshot = existingSnapshot.filter(
+    (listing) => configuredTokens.has(listing?.sourceTarget) || resolvedLabels.has(listing?.sourceChannel),
   );
+  const droppedFromSnapshot = existingSnapshot.length - curatedExistingSnapshot.length;
+  if (droppedFromSnapshot > 0) {
+    console.warn(
+      `Snapshot merge: dropping ${droppedFromSnapshot} listing(s) whose source channel is no longer configured.`,
+    );
+  }
 
   const mergedSnapshot = mergeSnapshotListings(listingsWithImages, curatedExistingSnapshot, {
     limit: snapshotLimit,
