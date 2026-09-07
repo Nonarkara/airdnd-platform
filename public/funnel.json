@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T15:27:18.691Z",
+  "generatedAt": "2026-09-07T22:34:32.367Z",
   "shown": {
     "cards": 109,
     "withPhoto": 100,
@@ -17,7 +17,7 @@
   },
   "snapshot": {
     "newestPostAt": "2026-09-02T03:40:19.000Z",
-    "ageDays": 4
+    "ageDays": 5
   },
   "intake": {
     "channelsConfigured": 12
