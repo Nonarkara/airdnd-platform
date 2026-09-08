@@ -75,12 +75,21 @@ let aiDisabledLogged = false;
 function resetAiCycleBudget() {
   aiCallsRemaining = aiCycleBudget;
 }
-async function waitAiTurn() {
-  const waitMs = aiMinGapMs - (Date.now() - aiLastCallAt);
+export async function waitAiTurn() {
+  // Reserve the next slot SYNCHRONOUSLY, before any await: the previous
+  // version read aiLastCallAt, slept, then stamped Date.now() — so N
+  // concurrent channels each read the same aiLastCallAt, waited the same
+  // window, and fired together. The whole point was serializing them. The
+  // reservation below is atomic (nothing is awaited between read and write);
+  // each caller chains onto the previous slot and sleep-until its reserved
+  // time instead of all waking in unison.
+  const now = Date.now();
+  const nextSlot = Math.max(now, aiLastCallAt + aiMinGapMs);
+  const waitMs = nextSlot - now;
+  aiLastCallAt = nextSlot;
   if (waitMs > 0) {
     await new Promise((resolve) => setTimeout(resolve, waitMs));
   }
-  aiLastCallAt = Date.now();
 }
 // Local-model transport: the always-on M3 Air runs Ollama (or the operator
 // gateway — both speak OpenAI /v1/chat/completions). Same prompt contract and
@@ -90,7 +99,11 @@ const localAiUrl = (process.env.LOCAL_AI_URL || '').replace(/\/+$/, '');
 const localAiModel = process.env.LOCAL_AI_MODEL || 'gemma3n:e4b';
 const localAiKey = process.env.LOCAL_AI_KEY || process.env.OPERATOR_KEY || '';
 const localAiTimeoutMs = Number.parseInt(process.env.LOCAL_AI_TIMEOUT_MS || '120000', 10);
-const localAiNumCtx = Number.parseInt(process.env.LOCAL_AI_NUM_CTX || '8192', 10);
+// The M3's Ollama daemon runs with OLLAMA_CONTEXT_LENGTH=65536 (see
+// setup_m3_local_ai.sh) so the card serves its full window. A per-request
+// num_ctx below that silently truncates every enrichment — align with the
+// daemon by default; override only to save memory on the M3.
+const localAiNumCtx = Number.parseInt(process.env.LOCAL_AI_NUM_CTX || '65536', 10);
 
 /**
  * Run one enrichment prompt against the local model endpoint.
@@ -111,8 +124,9 @@ export async function generateLocalEnrichment(promptText) {
       ],
       temperature: 0,
       response_format: { type: 'json_object' },
-      // Per-request context (Ollama daemon defaults are 4096 regardless of
-      // the model card — always set num_ctx explicitly on local calls).
+      // Align the request context with the daemon (65536) so enrichments use
+      // the card's full window; override via LOCAL_AI_NUM_CTX if the M3 needs
+      // to trade context for memory.
       options: { num_ctx: localAiNumCtx },
     }),
     signal: AbortSignal.timeout(localAiTimeoutMs),
@@ -985,8 +999,11 @@ async function enrichListingsWithAi(listings, clusters, sourceLabel) {
         return listings;
       }
       if (attempts <= MAX_RETRIES) {
-        console.warn(`${sourceLabel}: ${aiBackend} enrichment failed (attempt ${attempts}/${MAX_RETRIES + 1}). Error: ${error.message}. Retrying in 2000ms...`);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        console.warn(`${sourceLabel}: ${aiBackend} enrichment failed (attempt ${attempts}/${MAX_RETRIES + 1}). Error: ${error.message}. Waiting for next AI turn...`);
+        // Retries must re-queue through the governor too — a raw fixed sleep
+        // fired 2s after the last call, mid-window of a 4s gap, so a busy
+        // channel's retry could stomp another channel's in-flight call.
+        await waitAiTurn();
       } else {
         console.warn(`${sourceLabel}: ${aiBackend} enrichment skipped. All ${MAX_RETRIES + 1} attempts failed. Last error: ${error.message}`);
         return listings;
