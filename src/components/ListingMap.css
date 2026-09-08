@@ -760,7 +760,7 @@
 }
 
 .pending-contacts a {
-  color: var(--color-accent);
+  color: var(--accent-ink);
   text-decoration: none;
   letter-spacing: 0.04em;
 }

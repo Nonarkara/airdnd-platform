@@ -21,7 +21,7 @@
   text-decoration: none;
 }
 
-.meth-back:hover { color: var(--mango); }
+.meth-back:hover { color: var(--accent-ink); }
 
 .meth-label {
   font-family: var(--font-mono);
@@ -29,7 +29,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .meth-footer {
@@ -66,7 +66,7 @@
   text-decoration: none;
 }
 
-.meth-footer-link:hover { color: var(--mango); }
+.meth-footer-link:hover { color: var(--accent-ink); }
 
 /* ── Comparison table ─────────────────────────────────────────────────────── */
 
@@ -104,7 +104,7 @@
   font-size: var(--fs-2xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--mango) !important;
+  color: var(--accent-ink) !important;
   white-space: nowrap;
   font-weight: 700;
 }

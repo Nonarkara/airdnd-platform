@@ -71,7 +71,7 @@
 }
 
 .input-group label {
-  color: var(--color-accent);
+  color: var(--accent-ink);
   font-family: var(--font-mono);
   font-size: 0.58rem;
   font-weight: 700;

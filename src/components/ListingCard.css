@@ -1,11 +1,19 @@
-/* Cover initials — muted film tones, amber only as accent on cv1 */
+/* Cover initials for a listing with no photograph.
+ *
+ * cv4–cv6 were hardcoded near-blacks (#1a1812, #221f18, #2a2418) left over from
+ * the dark theme. On the paper ground they read as dead blocks punched into the
+ * page, and their glyphs measured 1.01–1.16:1 — invisible. These are now muted
+ * film tones drawn from the paper palette, so the placeholder recedes the way a
+ * placeholder should instead of shouting louder than the photographs beside it.
+ * Amber stays the single accent, on cv1 only. */
 .cv1 { background: var(--mango-dim); }
 .cv2 { background: var(--surface-3); }
 .cv3 { background: var(--surface-2); }
-.cv4 { background: #1a1812; }
-.cv5 { background: #221f18; }
-.cv6 { background: #2a2418; }
-.cv1 .photo__glyph { color: var(--mango); }
+.cv4 { background: #e9e5d8; }
+.cv5 { background: #e2ded0; }
+.cv6 { background: #ece8dd; }
+.photo__glyph { color: var(--ink-2); }
+.cv1 .photo__glyph { color: var(--accent-ink-on-wash); }
 
 .lcard__venue { min-width: 0; }
 
@@ -46,7 +54,7 @@
   white-space: nowrap;
 }
 
-.lcard__src { color: var(--ink-4); }
+.lcard__src { color: var(--ink-3); }
 
 .lcard__province {
   font-size: var(--fs-body);
@@ -64,7 +72,7 @@
   color: var(--ink-3);
 }
 
-.lcard__ads.is-hot { color: var(--mango); }
+.lcard__ads.is-hot { color: var(--accent-ink); }
 .lcard__ads .mono { font-size: 1.1rem; font-weight: 700; }
 .lcard__ads-unit {
   font-size: var(--fs-xs);
@@ -115,12 +123,12 @@
 
 .lcard__action:hover,
 .lcard__save:hover {
-  color: var(--mango);
+  color: var(--accent-ink);
   border-color: var(--mango);
 }
 
 .lcard__save.is-saved {
-  color: var(--mango);
+  color: var(--accent-ink);
   border-color: var(--mango);
 }
 
@@ -132,4 +140,34 @@
   .lcard__fresh { display: none; }
   .lcard__actions { grid-column: 3; grid-row: 2; }
   .lcard__meta { display: none; }
+}
+
+/* ── photo strip ──────────────────────────────────────────────────────────── */
+/* Flat tiles, hairline gaps, zero radius. The strip reads as a filmstrip of
+   evidence next to the hero frame, not as decoration: its LENGTH is the
+   information. */
+.lcard__strip {
+  display: flex;
+  gap: 2px;
+  margin-top: 2px;
+}
+.lcard__strip-tile {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 14px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--surface-3);
+}
+.lcard__strip-more {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 3px;
+  height: 14px;
+  font-size: 9px;
+  line-height: 1;
+  color: var(--ink-2);
+  background: var(--surface-2);
+  border-left: 1px solid var(--line);
 }

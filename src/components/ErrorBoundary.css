@@ -16,7 +16,7 @@
 }
 
 .an-error-boundary-content h3 {
-  color: var(--mango);
+  color: var(--accent-ink);
   font-family: var(--font-display);
   margin-top: 0;
   margin-bottom: var(--s2);

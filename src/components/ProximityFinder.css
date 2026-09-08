@@ -3,7 +3,7 @@
 .finder__panel { padding: var(--s7); }
 
 .finder__title { margin: 10px 0 8px; }
-.finder__title .serif { color: var(--mango); }
+.finder__title .serif { color: var(--accent-ink); }
 
 .finder__sub {
   margin: 0;
@@ -63,7 +63,7 @@
 
 .finder__error {
   margin-top: var(--s4);
-  color: var(--gold);
+  color: var(--accent-ink);
   font-size: var(--fs-sm);
 }
 
@@ -108,7 +108,7 @@
   font-family: var(--font-mono);
   font-weight: 600;
   font-size: var(--fs-sm);
-  color: var(--mango);
+  color: var(--accent-ink);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

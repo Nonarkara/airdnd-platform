@@ -27,7 +27,7 @@
 }
 
 .masthead__dot {
-  color: var(--mango);
+  color: var(--accent-ink);
   font-style: normal;
 }
 
@@ -84,7 +84,7 @@
   font-family: var(--font-mono);
   font-size: clamp(1.15rem, 2.4vw, 1.55rem);
   font-weight: 600;
-  color: var(--mango);
+  color: var(--accent-ink);
   line-height: 1.1;
 }
 

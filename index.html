@@ -11,7 +11,30 @@
     <meta name="theme-color" content="#faf9f7" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!--
+      Load webfonts WITHOUT blocking first paint.
+
+      As a plain <link rel="stylesheet"> this held the whole application
+      hostage: a pending stylesheet blocks module-script execution, so when
+      fonts.googleapis.com was slow or unreachable the directory did not
+      request /data.json for 12.8 SECONDS — measured — and the user stared at
+      an empty page the entire time. The data was a static file on the same
+      origin the whole time.
+
+      This matters in production, not just in a sandbox: the site ships a ZH
+      locale, and Google Fonts is unreachable from mainland China. Type is a
+      progressive enhancement; the inventory is the product. The fallback stack
+      in index.css carries the layout until the faces arrive.
+    -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet" />
+    </noscript>
     <meta property="og:title" content="Sabai Sabai | Inventory + HIV/STI context" />
     <meta
       property="og:description"

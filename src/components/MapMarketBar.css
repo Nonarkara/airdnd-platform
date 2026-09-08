@@ -1,3 +1,5 @@
+/* This bar renders on a near-black strip: every colour here is chosen
+   against that ground, not against the page. */
 .map-market-bar {
   display: flex;
   width: 100%;
@@ -26,12 +28,12 @@
 }
 
 .map-market-symbol {
-  color: var(--color-cream-muted);
+  color: var(--ink-on-dark-2);
   min-width: 1rem;
 }
 
 .map-market-value {
-  color: var(--color-cream);
+  color: var(--ink-on-dark);
   font-weight: 700;
 }
 
@@ -39,11 +41,11 @@
   font-size: 8px;
 }
 
-.map-market-dir.up   { color: var(--color-status); }
-.map-market-dir.down { color: var(--color-red, #c8102e); }
+.map-market-dir.up   { color: #6ee7a8; }
+.map-market-dir.down { color: #f98b8b; }
 
 .map-market-label {
-  color: var(--color-cream-muted);
+  color: var(--ink-on-dark-2);
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 0.08em;

@@ -30,7 +30,7 @@
 .fun-fact-content h4 {
   font-family: var(--font-display);
   font-size: var(--fs-h4);
-  color: var(--mango);
+  color: var(--accent-ink);
   margin: 0 0 var(--s2) 0;
 }
 

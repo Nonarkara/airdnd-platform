@@ -21,7 +21,7 @@
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--color-action);
+  color: var(--accent-ink);
   text-transform: uppercase;
   margin-bottom: 0.25rem;
 }
@@ -70,7 +70,7 @@
 
 .spatial-unit {
   font-size: var(--text-micro);
-  color: var(--color-cream-soft);
+  color: var(--ink-2);
   font-weight: 400;
   text-transform: lowercase;
 }
@@ -109,7 +109,7 @@
 .alpha-rank {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--color-action);
+  color: var(--accent-ink);
   font-weight: 700;
 }
 
@@ -158,7 +158,7 @@
 .value-sub {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--color-cream-soft);
+  color: var(--ink-2);
 }
 
 @media (max-width: 600px) {
@@ -166,3 +166,7 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Both labels sit on a faint gold wash; --ink-3 measured 3.28:1 there. */
+.spatial-unit, .value-sub { color: var(--ink); }

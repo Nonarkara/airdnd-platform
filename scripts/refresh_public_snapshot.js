@@ -78,17 +78,48 @@ function createImageIndex() {
 
 const imageIndex = createImageIndex();
 
+/**
+ * Photo resolution accounting. A silent drop here is invisible in the output
+ * and catastrophic downstream, so every decision is counted and reported.
+ */
+const photoResolution = { kept: 0, relinked: 0, dropped: 0, droppedSamples: [] };
+
+/**
+ * Resolve a stored photo URL to something that will actually load after deploy.
+ *
+ * This function previously validated `/images/` URLs with an exact
+ * `fs.existsSync` on the full path. When `sync_active_photos.js` flattened the
+ * archive from /images/{channel}/{date}/{file} to /images/{file}, every stored
+ * URL stopped matching its file — so this returned null for ~19,000 photo
+ * references, `deployablePhotoUrls` filtered them all away, and the snapshot
+ * shipped with zero photo arrays. The vite prune plugin then deleted 2,924 of
+ * 2,940 images from dist/ because nothing referenced them, and the live site
+ * showed 16 photos. Half a percent.
+ *
+ * The filename is the stable identity — {channel}_{messageId}_photo{id}.jpg is
+ * globally unique — so resolution falls back to the basename index. Directory
+ * layout may change again; filenames will not.
+ */
 function deployablePhotoUrl(url) {
   if (!url || typeof url !== 'string') {
     return null;
   }
 
-  if (url.startsWith('/images/')) {
-    return fs.existsSync(path.join(process.cwd(), 'public', url)) ? url : null;
-  }
+  if (url.startsWith('/images/') || url.startsWith('/photos/')) {
+    if (url.startsWith('/images/') && fs.existsSync(path.join(process.cwd(), 'public', url))) {
+      photoResolution.kept += 1;
+      return url;
+    }
 
-  if (url.startsWith('/photos/')) {
-    return imageIndex.get(path.basename(url)) || null;
+    const byName = imageIndex.get(path.basename(url));
+    if (byName) {
+      photoResolution.relinked += 1;
+      return byName;
+    }
+
+    photoResolution.dropped += 1;
+    if (photoResolution.droppedSamples.length < 5) photoResolution.droppedSamples.push(url);
+    return null;
   }
 
   return url;
@@ -100,6 +131,31 @@ function deployablePhotoUrls(urls) {
   }
 
   return [...new Set(urls.map(deployablePhotoUrl).filter(Boolean))];
+}
+
+/**
+ * Shout if this pass discarded most of the photo archive. A snapshot that
+ * quietly loses its images looks identical to one that never had any, and that
+ * is the difference between a working directory and an empty one.
+ */
+export function reportPhotoResolution() {
+  const seen = photoResolution.kept + photoResolution.relinked + photoResolution.dropped;
+  if (seen === 0) return photoResolution;
+
+  console.log(
+    `[snapshot] photos — ${photoResolution.kept} resolved as stored, ` +
+      `${photoResolution.relinked} re-linked by filename, ${photoResolution.dropped} dropped (no file on disk)`,
+  );
+
+  const droppedShare = photoResolution.dropped / seen;
+  if (droppedShare > 0.5) {
+    console.warn(
+      `[snapshot] WARNING: ${(droppedShare * 100).toFixed(1)}% of photo references resolved to nothing. ` +
+        'The public/images archive is probably missing or out of sync with the database. ' +
+        `Samples: ${photoResolution.droppedSamples.join(', ')}`,
+    );
+  }
+  return photoResolution;
 }
 
 // Per-listing credibility score (see research/findings-2026-05-02.md §5).
@@ -143,7 +199,9 @@ const slimListings = publicListings.map((listing) => ({
   tags: listing.tags,
   metrics: listing.metrics,
   imageUrl: deployablePhotoUrl(listing.imageUrl),
-  allPhotoUrls: deployablePhotoUrls(listing.allPhotoUrls),
+  // Supabase returns snake_case `photo_urls`; the normaliser may or may not
+  // have camel-cased it yet, so accept either rather than losing the array.
+  allPhotoUrls: deployablePhotoUrls(listing.allPhotoUrls ?? listing.photo_urls),
   drivePhotoUrls: listing.drivePhotoUrls,
   rating: listing.rating,
   reviews: listing.reviews,
@@ -176,5 +234,20 @@ const slimListings = publicListings.map((listing) => ({
   return Number(right.id || 0) - Number(left.id || 0);
 });
 
+reportPhotoResolution();
+
+const photoRefs = slimListings.reduce((n, l) => n + (l.allPhotoUrls?.length ?? 0), 0);
+const withPhotos = slimListings.filter((l) => (l.allPhotoUrls?.length ?? 0) > 0).length;
+
 fs.writeFileSync('public/data.json', JSON.stringify(slimListings, null, 2));
 console.log(`Refreshed public/data.json with ${slimListings.length} canonical public listing(s).`);
+console.log(`[snapshot] ${photoRefs} photo references across ${withPhotos} listing(s); ${imageIndex.size} files in public/images.`);
+
+// A snapshot with no photo arrays is the exact failure that shipped a
+// half-a-percent gallery. Fail loudly rather than writing a plausible-looking
+// file that quietly empties the directory on the next build.
+if (imageIndex.size > 0 && photoRefs === 0) {
+  console.error('[snapshot] FATAL: wrote zero photo references while public/images holds ' + imageIndex.size + ' files.');
+  console.error('[snapshot] Run `node scripts/repair_photo_links.js` to rebuild the mapping from git history.');
+  process.exitCode = 1;
+}

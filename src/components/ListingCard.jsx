@@ -71,6 +71,26 @@ function ListingCard({ listing, onClick, priority = false }) {
             />
           </div>
         )}
+        {/* Photo strip.
+            The archive holds 2,940 photographs and the card was showing one.
+            The depth of photographic evidence IS the signal a reader wants —
+            a venue advertised with forty photographs over three months is a
+            different proposition from one with a single stock shot — so the
+            count is surfaced rather than buried in the modal. */}
+        {galleryUrls.length > 1 && (
+          <div className="lcard__strip" aria-hidden="true">
+            {galleryUrls.slice(1, 4).map((url) => (
+              <span
+                key={url}
+                className="lcard__strip-tile"
+                style={{ backgroundImage: `url(${JSON.stringify(url).slice(1, -1)})` }}
+              />
+            ))}
+            {galleryUrls.length > 4 && (
+              <span className="lcard__strip-more mono">+{galleryUrls.length - 4}</span>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="lcard__venue">

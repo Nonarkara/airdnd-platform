@@ -153,7 +153,7 @@
   padding: 4px 8px;
   border: 1px solid var(--color-line);
   background: rgba(10, 10, 10, 0.85);
-  color: var(--mango);
+  color: var(--accent-ink);
   font-family: var(--font-mono);
   font-size: var(--text-micro);
   font-weight: 700;
@@ -462,7 +462,7 @@ a.metric-link .metric-value {
 .modal-signal-btn:hover,
 .btn-book:hover {
   border-color: var(--color-accent);
-  color: var(--color-accent);
+  color: var(--accent-ink);
 }
 
 .modal-contact-line {
@@ -531,7 +531,7 @@ a.metric-link .metric-value {
 
 .modal-description h3,
 .price-label {
-  color: var(--mango);
+  color: var(--accent-ink);
   font-family: var(--font-mono);
   font-size: 0.58rem;
   font-weight: 700;
@@ -580,7 +580,7 @@ a.metric-link .metric-value {
 .btn-book {
   flex: 0 0 auto;
   border-color: var(--mango);
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 @media (max-width: 800px) {
@@ -745,7 +745,7 @@ a.metric-link .metric-value {
   line-height: 1.6;
 }
 .modal-intel-note a {
-  color: var(--mango);
+  color: var(--accent-ink);
   text-decoration: none;
 }
 .modal-intel-note a:hover { text-decoration: underline; }

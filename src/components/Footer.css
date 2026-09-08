@@ -96,3 +96,7 @@
     flex-direction: column;
   }
 }
+
+
+/* Source label: amber glyphs on the paper ground measured 2.04:1. */
+.footer-ops strong, .footer-logo strong { color: var(--accent-ink); }

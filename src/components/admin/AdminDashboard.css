@@ -73,7 +73,7 @@
 }
 
 .range-btn:hover:not(.active) {
-  color: var(--color-accent);
+  color: var(--accent-ink);
 }
 
 .admin-back {
@@ -83,7 +83,7 @@
 }
 
 .admin-back:hover {
-  color: var(--color-accent);
+  color: var(--accent-ink);
 }
 
 .admin-loading,
@@ -118,7 +118,7 @@
 
 .admin-card h3 {
   margin: 0 0 0.85rem;
-  color: var(--color-accent);
+  color: var(--accent-ink);
   font-family: var(--font-mono);
   font-size: 0.66rem;
   font-weight: 700;

@@ -39,7 +39,7 @@
 }
 
 .an-back:hover {
-  color: var(--color-accent);
+  color: var(--accent-ink);
 }
 
 .an-header-meta {
@@ -290,7 +290,7 @@
 }
 
 .an-bar-val {
-  color: var(--mango);
+  color: var(--accent-ink);
   font-weight: 600;
   text-align: right;
   font-variant-numeric: tabular-nums;
@@ -325,7 +325,7 @@
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .an-tier-ladder__row {
@@ -447,7 +447,7 @@
 .an-insider-note .section-kicker {
   display: block;
   margin-bottom: 0.45rem;
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .an-insider-note p {
@@ -771,7 +771,7 @@
 
 .an-footer a:hover {
   border-color: var(--color-accent);
-  color: var(--color-accent);
+  color: var(--accent-ink);
 }
 
 @media (max-width: 900px) {

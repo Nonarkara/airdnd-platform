@@ -57,7 +57,7 @@
   color: var(--ink);
   margin: 0 0 var(--s4);
 }
-.paper-abstract .paper-h { font-size: var(--fs-xs); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mango); font-family: var(--font-mono); }
+.paper-abstract .paper-h { font-size: var(--fs-xs); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-ink); font-family: var(--font-mono); }
 
 /* ── Sections ───────────────────────────────────────────────────────────── */
 .paper-sec { padding-block: var(--s8); border-bottom: 1px solid var(--line); position: relative; }
@@ -66,7 +66,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
   letter-spacing: 0.2em;
-  color: var(--mango);
+  color: var(--accent-ink);
   margin-bottom: var(--s3);
 }
 .paper-lead {
@@ -82,7 +82,7 @@
   font-style: italic;
   font-size: 1.4rem;
   line-height: 1.4;
-  color: var(--mango);
+  color: var(--accent-ink);
   margin: var(--s6) 0 0;
 }
 
@@ -151,7 +151,7 @@
   color: var(--ink); background: var(--mango); padding: 3px 7px;
 }
 .paper-plate-cap { display: block; padding: var(--s4); }
-.paper-plate-n { display: block; font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--mango); margin-bottom: var(--s2); }
+.paper-plate-n { display: block; font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: var(--s2); }
 .paper-plate-text { display: block; font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); margin-bottom: var(--s3); }
 .paper-plate-src { display: block; font-size: var(--fs-2xs); line-height: 1.5; color: var(--ink-4); }
 
@@ -221,7 +221,7 @@
 }
 .paper-tab-btn:hover { color: var(--ink); }
 .paper-tab-btn.is-active {
-  color: var(--mango);
+  color: var(--accent-ink);
   border-bottom-color: var(--mango);
 }
 
@@ -287,7 +287,7 @@
   font-family: var(--font-mono);
   font-size: 1.6rem;
   font-weight: 700;
-  color: var(--mango);
+  color: var(--accent-ink);
   line-height: 1;
 }
 .paper-stat-label {
@@ -315,7 +315,7 @@
   font-size: var(--fs-2xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--mango);
+  color: var(--accent-ink);
   margin-bottom: var(--s3);
   display: block;
 }
@@ -343,7 +343,7 @@
   font-size: var(--fs-2xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 .paper-policy-cell {
   background: var(--surface);

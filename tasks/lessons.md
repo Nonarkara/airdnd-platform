@@ -4,6 +4,35 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-09-08 · A remote CSS `@import` held the whole application for 12.7 seconds
+
+- **What went wrong:** `src/index.css` line 12 pulled webfonts with `@import url('https://fonts.googleapis.com/...')`. A remote CSS `@import` is render-blocking **and serialised**: the browser must fetch index.css, parse it, discover the import, then fetch Google's stylesheet — blocking painting *and module-script execution* the whole time. Measured: one main-thread stall of **12,682 ms** beginning 18 ms after navigation. The app did not request `/data.json` — a static file on the same origin — until 12,848 ms. The directory looked broken. It was waiting for a font.
+- **Correct behaviour:** link fonts from `index.html` as `<link rel="preload" as="style" onload="this.rel='stylesheet'">` with a `<noscript>` fallback, and never `@import` a remote stylesheet from application CSS. Type is a progressive enhancement; the data is the product. This matters in production, not just behind a proxy — the site ships a ZH locale and Google Fonts is unreachable from mainland China.
+- **How to recognise:** the JS bundle responds fast (121 ms here) and then *nothing* happens for seconds. Distinguish blocked-thread from waiting-on-network with a `requestAnimationFrame` heartbeat recording gaps > 300 ms; one enormous gap starting at ~0 ms means render-blocking, not slow code. `grep -rn "@import url('https" src`.
+- **Result:** first data 13,418 ms → **863 ms** on the directory, 25,994 ms → **787 ms** on the map.
+
+## 2026-09-08 · Live-first loading makes a dead backend everyone's problem
+
+- **What went wrong:** `loadListingsWithFallback` tried Firestore, then Supabase, then the local snapshot — strictly in series, each live source behind its own 6.5 s timeout. With Supabase down since 18 Aug, every visitor waited the full 13 s before the browser even opened `public/data.json`. The fallback was correct and completely useless, because it ran last.
+- **Correct behaviour:** snapshot-first, stale-while-revalidate. Paint the local snapshot immediately (an `onUpgrade` callback fires as soon as it parses), race the live sources in the background, and swap in live data only if it turns out to be fresher. The source label stays honest about what is on screen.
+- **The rule:** a fallback that runs *after* a timeout is not resilience, it is a delay. Resilience is rendering the thing you already have while you go looking for something better.
+
+## 2026-09-08 · A cleanup step trusted a broken manifest and deleted the archive
+
+- **What went wrong:** three failures compounded into a site showing **16 photographs out of 2,940 — half a percent**. (1) `sync_active_photos.js` flattened storage from `/images/{channel}/{date}/{file}` to `/images/{file}`. (2) `refresh_public_snapshot.js` validated photo URLs with `fs.existsSync(exact path)`, so every stored URL stopped matching its file; it returned null for ~19,000 references and wrote `allPhotoUrls: []` **silently**. (3) The vite prune plugin, whose only job is keeping deployments under Cloudflare's 20,000-file cap, read that manifest, concluded 2,924 images were unused, and deleted them from every build.
+- **Correct behaviour:** resolve media by **filename**, not by path — `{channel}_{messageId}_photo{id}.jpg` is globally unique and survives any directory reshuffle. Count and report every drop, and fail the run outright when a snapshot writes zero photo references while the archive holds files. Give the prune step two guards: under budget, prune nothing; over budget but the manifest references under 10% of the archive, refuse and say why.
+- **The rule:** a destructive step must never trust a derived manifest without a sanity check against the thing it describes. "Nothing references these" and "the thing that references them is broken" look identical from inside the pruner.
+- **Recovery:** the mapping was not lost, it was in git. Historical snapshots carried both the photo arrays and listing identity, so `scripts/repair_photo_links.js` mines them, keys by **phone first** (2026-08-04), and re-attaches — 16 → 2,884 photos, 98.1%, entirely offline.
+
+## 2026-09-08 · Fixing a contrast bug in one component is not fixing it
+
+- **What went wrong:** the 2026-08-24 entry recorded amber `#f59e0b` measuring 2.04:1 on the cream ground and fixed it in `.health-copy h3`. It was never generalised. Seventy `color:` declarations across twenty-three files kept shipping the same failure; an automated audit found **24 real violations across two routes**, including the primary KPI numerals and the selected map tab.
+- **Correct behaviour:** a colour that is unsafe in one place is unsafe everywhere it lands on `color:`. The fix is a token, not an edit: `--accent-ink` (#b45309, 4.77:1 on paper) for glyphs, theme-aware so dark surfaces keep full-chroma amber, plus `--accent-on-dark` and `--accent-ink-on-wash` for the two other grounds this palette actually has. Amber keeps carrying rules and fills at full chroma.
+- **Also found by measuring rather than looking:** placeholder tiles `.cv4/.cv5/.cv6` were hardcoded near-blacks left over from the dark theme, rendering dead blocks on the paper page with glyphs at 1.01:1.
+- **How to recognise:** never eyeball this. Walk every leaf text node in a real browser, compute its ratio against the nearest opaque ancestor background, and assert zero failures. Both routes now measure **0**.
+
+---
+
 ## 2026-09-08 · A scoring band that ties two different states is a silent mis-ranking
 
 - **What went wrong:** The OTOP fit score mapped OPC stars linearly to `stars / 5`. A verified 1-star producer then scored **0.2** — exactly the same as a producer that had *never been assessed*, which was also 0.2. Three genuinely different states (assessed-and-failed, never-assessed, assessed-and-passed) collapsed into two, and a buyer sorting by fit could not distinguish "graded lowest" from "no evidence either way".

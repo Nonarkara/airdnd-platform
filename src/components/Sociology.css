@@ -22,7 +22,7 @@
   text-decoration: none;
 }
 
-.meth-back:hover { color: var(--color-accent); }
+.meth-back:hover { color: var(--accent-ink); }
 .meth-label { color: var(--color-red); }
 
 .sociology {

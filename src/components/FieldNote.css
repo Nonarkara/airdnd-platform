@@ -15,7 +15,7 @@
   font-size: var(--fs-2xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .fieldnote__text {

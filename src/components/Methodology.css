@@ -41,12 +41,12 @@
 }
 
 .meth-back:hover {
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .meth-label,
 .meth-num {
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .meth-hero {
@@ -98,7 +98,7 @@
 }
 
 .meth-title-accent {
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .meth-hero .meth-line {
@@ -116,7 +116,7 @@
 }
 
 .meth-author {
-  color: var(--mango);
+  color: var(--accent-ink);
   font-weight: 700;
 }
 
@@ -234,7 +234,7 @@
 
 .meth-tier__risk.is-high {
   border-color: var(--mango);
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .meth-tier__meta {
@@ -299,7 +299,7 @@
 
 .meth-card h3 {
   margin-bottom: 0.45rem;
-  color: var(--mango);
+  color: var(--accent-ink);
   font-size: var(--fs-body, var(--text-body));
 }
 
@@ -362,7 +362,7 @@
 }
 
 .meth-section-disclaimer h2 {
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .meth-section-disclaimer p {
@@ -376,7 +376,7 @@
 }
 
 .meth-row-total span:last-child {
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 .meth-footer {
@@ -414,7 +414,7 @@
 
 .meth-footer-link:hover {
   border-color: var(--mango);
-  color: var(--mango);
+  color: var(--accent-ink);
 }
 
 @media (max-width: 720px) {

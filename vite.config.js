@@ -27,8 +27,9 @@ function pruneHeavyPublicDirs() {
           const items = JSON.parse(fs.readFileSync(filePath, 'utf8'))
           items.forEach((item) => {
             if (item.imageUrl) activeUrls.add(item.imageUrl)
-            if (Array.isArray(item.photoUrls)) item.photoUrls.forEach((u) => activeUrls.add(u))
-            if (Array.isArray(item.allPhotoUrls)) item.allPhotoUrls.forEach((u) => activeUrls.add(u))
+            for (const field of ['photoUrls', 'photo_urls', 'allPhotoUrls', 'drivePhotoUrls']) {
+              if (Array.isArray(item[field])) item[field].forEach((u) => activeUrls.add(u))
+            }
             if (item.displayPrimaryPhoto) activeUrls.add(item.displayPrimaryPhoto)
           })
         } catch (e) {
@@ -48,6 +49,39 @@ function pruneHeavyPublicDirs() {
 
       const imagesTarget = path.join(outDir, 'images')
       if (fs.existsSync(imagesTarget)) {
+        // Count first, delete second.
+        //
+        // This step exists only because Cloudflare Pages caps a deployment at
+        // 20,000 files. It is not a cleanup for its own sake, and it must never
+        // be trusted to decide what is "unused" when the manifest it reads is
+        // broken. It deleted 2,924 of 2,940 photographs once already, because
+        // data.json had silently lost its photo arrays and the plugin
+        // faithfully concluded that nothing was in use.
+        //
+        // Two guards, in order:
+        //   1. Under budget, prune nothing. There is no reason to.
+        //   2. Over budget but the manifest references almost nothing —
+        //      refuse, and say why. A snapshot bug must not become data loss.
+        const FILE_BUDGET = 18000
+        const countFiles = (dir) => fs.readdirSync(dir, { withFileTypes: true })
+          .reduce((n, e) => n + (e.isDirectory() ? countFiles(path.join(dir, e.name)) : 1), 0)
+        const totalImages = countFiles(imagesTarget)
+
+        if (totalImages <= FILE_BUDGET) {
+          console.log(`[prune-heavy-public] ${totalImages} images is within the ${FILE_BUDGET}-file budget — pruning nothing`)
+          return
+        }
+
+        const referencedShare = totalImages > 0 ? activeFiles.size / totalImages : 0
+        if (referencedShare < 0.1) {
+          console.warn(
+            `[prune-heavy-public] REFUSING to prune: data.json references only ${activeFiles.size} of ${totalImages} images ` +
+            `(${(referencedShare * 100).toFixed(1)}%). That almost certainly means the snapshot lost its photo arrays, ` +
+            'not that the archive is dead. Run `node scripts/repair_photo_links.js`, then rebuild.'
+          )
+          return
+        }
+
         let kept = 0
         let removed = 0
         const walk = (dir) => {

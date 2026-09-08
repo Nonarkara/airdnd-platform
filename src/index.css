@@ -9,7 +9,20 @@
    warm-dark values, so the whole app adopts the new aesthetic at once.
    ============================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/*
+ * Webfonts are loaded from index.html as a NON-BLOCKING <link rel="preload">.
+ *
+ * They used to be pulled in here with `@import url(https://fonts.googleapis...)`,
+ * which is the single most expensive line this project has ever shipped. A
+ * remote CSS @import is render-blocking AND serialised: the browser must fetch
+ * index.css, parse it, discover the import, then fetch Google's stylesheet, and
+ * blocks both painting and module-script execution until that resolves. With
+ * fonts.googleapis.com slow or unreachable, the entire application sat behind a
+ * single 12,682 ms main-thread stall — measured — before it requested any data
+ * at all. The directory looked broken. It was waiting for a font.
+ *
+ * Never @import a remote stylesheet. Link it, and let it arrive late.
+ */
 @import url('./award-pass.css');
 
 :root {
@@ -119,6 +132,25 @@
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-dim);
   --color-accent: var(--mango);
+
+  /* Amber for GLYPHS.
+     --mango (#f59e0b) measures 2.04:1 on the cream ground: it fails WCAG badly
+     while looking fine at a glance, which is exactly the trap. tasks/lessons.md
+     recorded this on 2026-08-24 and it was fixed in one component while 70 other
+     declarations across 23 files kept shipping it. This token is the systematic
+     answer: amber keeps carrying RULES and FILLS at full chroma, and any amber
+     that lands on `color:` resolves here instead — #b45309, 4.77:1 on the paper
+     ground, same hue family, still unmistakably the brand accent. */
+  --accent-ink: #b45309;
+  /* Amber glyphs on the PALE AMBER wash (--mango-dim). #b45309 is only 4.07:1
+     there; the wash eats a step of contrast the paper ground does not. */
+  --accent-ink-on-wash: #7c3a06;
+  /* For type sitting on a DARK panel inside the light theme (map ticker,
+     terminal strips, photo placeholders). --accent-ink is tuned for the paper
+     ground and drops to 3.9:1 on near-black; this is its counterpart. */
+  --accent-on-dark: #fbbf24;
+  --ink-on-dark: #ebe6dc;
+  --ink-on-dark-2: #b8b2a6;
   --color-accent-soft: var(--mango-dim);
   --color-purple: var(--violet);
   --color-purple-soft: rgba(169,139,224,.16);
@@ -180,6 +212,8 @@
   --jade: #f59e0b; --jade-dim: #3a2a0a;
   --navy: #ebe6dc;
   --live: #f59e0b;
+  /* On a dark ground the full-chroma amber is the legible one (8.6:1). */
+  --accent-ink: #f59e0b;
 }
 
 /* HIGH CONTRAST — accessibility theme for low vision (WCAG AAA-leaning).
@@ -189,6 +223,7 @@
    "muted" greys stay legible. Bright, distinct status/data colours. */
 [data-theme='high-contrast'] {
   color-scheme: dark;
+  --accent-ink: #ffff00;
   --bg: #000000;  --bg-2: #000000;  --surface: #000000;  --surface-2: #141414;  --surface-3: #242424;
   --line: #8A8A8A;  --line-2: #FFFFFF;
   --ink: #FFFFFF;  --ink-2: #F0F0F0;  --ink-3: #C8C8C8;  --ink-4: #A0A0A0;
@@ -281,7 +316,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .cluster { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
 .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s5); margin-bottom: var(--s7); }
 .sec-head__t { display: flex; flex-direction: column; gap: 10px; }
-.sec-num { font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: .12em; color: var(--mango); }
+.sec-num { font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: .12em; color: var(--accent-ink); }
 .link-more { font-weight: 600; font-size: var(--fs-sm); color: var(--mango-2); display: inline-flex; align-items: center; gap: 6px; transition: gap .15s var(--ease); }
 .link-more:hover { gap: 10px; }
 
@@ -312,7 +347,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border: 0;
 }
 .brand__name { font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter-spacing: 0.14em; line-height: 1; text-transform: lowercase; color: var(--navy, var(--ink)); }
-.brand__name em { font-style: normal; color: var(--mango); }
+.brand__name em { font-style: normal; color: var(--accent-ink); }
 .nav { display: flex; align-items: center; gap: 2px; }
 .nav a, .nav-link-btn { font-family: var(--font-text); font-weight: 500; font-size: var(--fs-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); padding: 10px 12px; border-radius: 0; transition: color .15s var(--ease), border-color .15s var(--ease); border-bottom: 1px solid transparent; }
 .nav a:hover, .nav-link-btn:hover { color: var(--ink); background: transparent; border-bottom-color: var(--line-2); }
@@ -349,7 +384,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .tag { font-family: var(--font-text); font-size: var(--fs-xs); font-weight: 600; display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: var(--r-xs); background: var(--surface-2); color: var(--ink-2); }
 .tag-jade { background: var(--jade-dim); color: var(--jade); }
 .tag-mango { background: var(--mango-dim); color: var(--mango-2); }
-.tag-gold { background: var(--gold-dim); color: var(--gold); }
+.tag-gold { background: var(--gold-dim); color: var(--accent-ink); }
 .badge-verified { font-family: var(--font-text); font-weight: 700; font-size: var(--fs-xs); display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 7px; border-radius: var(--r-pill); background: var(--jade-dim); color: var(--jade); }
 
 .status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: var(--r-pill); border: 1px solid var(--line-2); font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
@@ -357,7 +392,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mango); box-shadow: none; animation: none; display: inline-block; flex: none; }
 
 /* legacy utility kickers/pills used across existing components */
-.section-kicker { font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--mango); }
+.section-kicker { font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-ink); }
 .section-kicker::before { content: '// '; opacity: .6; }
 .pill-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: var(--r-pill); background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-2); font-family: var(--font-text); font-size: var(--fs-xs); font-weight: 600; }
 
@@ -411,7 +446,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .index-row__price { font-family: var(--font-text); font-weight: 600; text-align: right; white-space: nowrap; color: var(--ink-2); }
 .index-row__price b { color: var(--ink); font-family: var(--font-mono); }
 .rating { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.rating .icon { color: var(--gold); }
+.rating .icon { color: var(--accent-ink); }
 
 /* Horizontal inventory ledger — flight-board row, not a photo card */
 .lcard {
@@ -432,6 +467,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .lcard__media { position: relative; aspect-ratio: 3/2; border-bottom: 1px solid rgba(255, 255, 255, 0.1); background: #050407; }
 .lcard__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
 .photo { width: 100%; height: 100%; position: relative; overflow: hidden; display: grid; place-items: center; border-radius: 0; }
+/* Placeholder initials for a listing with no photograph. The tiles are pale
+   film tones, so the glyph takes the dark ink — measured against the rendered
+   tile, not guessed from the class name. */
 .photo__glyph { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; color: var(--ink); letter-spacing: 0.04em; }
 .photo__tag { display: none; }
 .lcard__body { display: contents; }

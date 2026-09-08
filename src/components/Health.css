@@ -362,7 +362,7 @@
   font-size: var(--fs-xs);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--mango);
+  color: var(--accent-ink);
   margin-bottom: var(--s3);
 }
 
