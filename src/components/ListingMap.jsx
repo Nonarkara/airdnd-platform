@@ -19,6 +19,7 @@ import { buildHealthMatrix, loadFormalization, loadProvinceHiv } from '../lib/he
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import { channelSlug } from '../lib/channel';
 import 'leaflet.heat';
 import './ListingMap.css';
 
@@ -264,11 +265,12 @@ function buildPopupHtml(listing, precision, availability) {
   if (listing.sourceChannel) lines.push(`<div style="margin-top:4px;font-size:10px;color:#666">${escapeHtml(listing.sourceChannel)}</div>`);
 
   // Photo-archive deep link. The source channel slug matches the on-disk
-  // venue folder, so we can link directly into /places/{slug}.
-  const channelSlug = (listing.sourceChannel || '').replace(/^@/, '').toLowerCase();
-  if (channelSlug) {
+  // venue folder, so we can link directly into /places/{slug}. Derived via the
+  // shared channelSlug helper so the map and gallery can never drift.
+  const slug = channelSlug(listing.sourceChannel);
+  if (slug) {
     lines.push(
-      `<a href="/places/${escapeHtml(channelSlug)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;padding:3px 8px;border:1px solid #2DD4BF;color:#2DD4BF;font-family:monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none">Browse ${escapeHtml(channelSlug)} photos →</a>`,
+      `<a href="/places/${escapeHtml(slug)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;padding:3px 8px;border:1px solid #2DD4BF;color:#2DD4BF;font-family:monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none">Browse ${escapeHtml(slug)} photos →</a>`,
     );
   }
 

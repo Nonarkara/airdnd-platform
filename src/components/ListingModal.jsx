@@ -24,6 +24,7 @@ import {
 } from '../lib/normalization';
 import { trackSignal, isListingSaved } from '../lib/tracker';
 import { listingCoords, getNearestTransit } from '../lib/geo';
+import { channelLabel, channelSlug } from '../lib/channel';
 import './ListingModal.css';
 
 function ListingModal({ listing, onClose, t }) {
@@ -44,7 +45,7 @@ function ListingModal({ listing, onClose, t }) {
   const thaiScript = `สวัสดีครับ สอบถามคิวว่างช่วงเวลานี้ครับ มีน้องคนไหนพร้อมให้บริการบ้างครับ? (จาก Sabai Sabai - ${listing?.name || ''})`;
 
   const galleryUrls = getSafeListingGalleryUrls(listing);
-  const archiveSlug = (listing?.sourceChannel || '').replace(/^@/, '').toLowerCase();
+  const archiveSlug = channelSlug(listing?.sourceChannel);
   const archiveHref = archiveSlug && archiveSlug !== 'unknown' ? `/places/${archiveSlug}` : null;
   const activeIndex = (() => {
     if (!galleryUrls.length) return -1;
@@ -170,7 +171,7 @@ function ListingModal({ listing, onClose, t }) {
   const mentions = Number(listing.mentionCount) || 0;
   const tags = Array.isArray(listing.serviceTags) ? listing.serviceTags : [];
   const feedback = (listing.userFeedbackSummary || '').trim();
-  const channel = (listing.sourceChannel || '').replace(/^@/, '');
+  const channel = channelLabel(listing.sourceChannel);
   const firstSeen = listing.createdAt ? new Date(listing.createdAt) : null;
   const lastUpdate = listing.updatedAt ? new Date(listing.updatedAt) : null;
   const fmt = (d) => d && !isNaN(d.getTime())

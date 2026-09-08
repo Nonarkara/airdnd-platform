@@ -24,6 +24,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import { channelSlug } from '../src/lib/channel.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -41,9 +42,7 @@ const supabaseKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 const PHOTO_PAGE = 1000;
 
 function slugifyChannel(channelId) {
-  const raw = String(channelId || '').trim();
-  if (!raw) return null;
-  const cleaned = raw.replace(/^@/, '').toLowerCase();
+  const cleaned = channelSlug(channelId);
   if (!cleaned) return null;
   // The dialogue tokens (`dialog:2381945815`) carry the numeric ID; a channel
   // label is what the frontend links by, so prefer the readable form.

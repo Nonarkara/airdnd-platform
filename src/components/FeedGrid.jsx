@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { coverVariant, venueInitial } from '../lib/listings';
 import { useCardPhoto } from '../lib/useCardPhoto';
 import { dedupeFeed } from '../lib/dedupeFeed';
+import { channelLabel } from '../lib/channel';
 import './FeedGrid.css';
 
 /*
@@ -124,7 +125,7 @@ function isFreshlyIn(iso) {
 function FeedCard({ card, onOpen, isFreshest, t }) {
   const displayCard = getDisplayCard(card, t);
   const fresh = isFreshlyIn(card.messageDate);
-  const channel = (card.channel || '').replace(/^@/, '');
+  const channel = channelLabel(card.channel || '');
   const photos = displayCard.displayPhotoUrls;
   const primary = displayCard.displayPrimaryPhoto;
   const localFallback = primary ? `/images/${primary.split('/').pop()}` : null;

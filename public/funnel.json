@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-08T11:24:22.898Z",
+  "generatedAt": "2026-09-08T13:12:37.473Z",
   "shown": {
-    "cards": 81,
-    "withPhoto": 79,
-    "deployablePhotoCards": 79,
+    "cards": 84,
+    "withPhoto": 81,
+    "deployablePhotoCards": 81,
     "photoFilesTracked": 0,
     "photoFilesMissing": 0,
-    "unverifiedLocation": 22,
+    "unverifiedLocation": 5,
     "channelsRepresented": 5,
     "channels": [
       "@chanelmassage",
@@ -17,7 +17,7 @@
     ]
   },
   "snapshot": {
-    "newestPostAt": "2026-09-08T11:18:26.000Z",
+    "newestPostAt": "2026-09-08T12:50:47.000Z",
     "ageDays": 0
   },
   "intake": {
@@ -32,7 +32,7 @@
   },
   "feed": {
     "degraded": false,
-    "builtAt": "2026-09-08T10:58:40.908Z"
+    "builtAt": "2026-09-08T13:06:08.331Z"
   },
   "warnings": [
     "5 of 12 configured channels are represented"
