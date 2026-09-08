@@ -1062,7 +1062,8 @@
   }
 
   .listing-map-container {
-    height: 24rem;
+    height: 32rem;
+    min-height: 32rem;
   }
 
   .map-live-status { white-space: normal; }
@@ -1099,6 +1100,25 @@
   .reach-ring-legend {
     left: 60px;
     gap: 0.45rem;
+  }
+
+  /* Ensure all interactive map elements meet 44pt iOS minimum */
+  .map-source-chip {
+    min-height: 44px;
+    padding: 0.6rem 0.9rem;
+    font-size: var(--text-small);
+  }
+
+  .map-quickjump-chip {
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    font-size: var(--text-small);
+  }
+
+  .leaflet-control-zoom a {
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    line-height: 2.75rem !important;
   }
 }
 

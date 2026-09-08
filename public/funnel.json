@@ -1,23 +1,25 @@
 {
-  "generatedAt": "2026-09-07T22:34:32.367Z",
+  "generatedAt": "2026-09-08T09:02:56.568Z",
   "shown": {
-    "cards": 109,
-    "withPhoto": 100,
-    "deployablePhotoCards": 16,
-    "photoFilesTracked": 16,
-    "photoFilesMissing": 84,
-    "unverifiedLocation": 40,
-    "channelsRepresented": 4,
+    "cards": 84,
+    "withPhoto": 81,
+    "deployablePhotoCards": 81,
+    "photoFilesTracked": 0,
+    "photoFilesMissing": 0,
+    "unverifiedLocation": 5,
+    "channelsRepresented": 6,
     "channels": [
-      "@keawjaojormmassage",
+      "@chanelmassage",
       "@relaxsociety2020",
       "@relaxsocietymassage",
-      "dialog:2491020966"
+      "dialog:2025289026",
+      "dialog:2381945815",
+      "unknown"
     ]
   },
   "snapshot": {
-    "newestPostAt": "2026-09-02T03:40:19.000Z",
-    "ageDays": 5
+    "newestPostAt": "2026-09-08T08:35:22.000Z",
+    "ageDays": 0
   },
   "intake": {
     "channelsConfigured": 12
@@ -30,12 +32,10 @@
     "duplicationFactor": 43.6
   },
   "feed": {
-    "degraded": true,
-    "builtAt": "2026-09-02T15:24:22.486Z"
+    "degraded": false,
+    "builtAt": "2026-09-08T09:00:53.936Z"
   },
   "warnings": [
-    "84 of 100 local photo paths are not committed and will 404 in production",
-    "4 of 12 configured channels are represented",
-    "LIVE feed is degraded: Supabase unavailable: supabase.co | 522: Connection timed out"
+    "6 of 12 configured channels are represented"
   ]
 }

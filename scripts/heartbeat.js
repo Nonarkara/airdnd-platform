@@ -55,6 +55,9 @@ async function pullSnapshot() {
 
 function writeSnapshot(rows) {
   const publicListings = canonicalizePublicListings(rows, { source: 'snapshot' });
+  // Keep the gallery: canonicalize() already merges Supabase photo_urls into
+  // allPhotoUrls. Dropping the field here meant this 30-min writer stripped
+  // every gallery the scraper had just attached — photos never reached deploy.
   const slim = publicListings.map((l) => ({
     id: l.id,
     canonicalKey: l.canonicalKey,
@@ -68,8 +71,11 @@ function writeSnapshot(rows) {
     tags: l.tags,
     metrics: l.metrics,
     imageUrl: l.imageUrl,
+    allPhotoUrls: [...new Set(l.allPhotoUrls || [])].slice(0, 12),
     rating: l.rating,
     reviews: l.reviews,
+    aliasNames: Array.isArray(l.aliasNames) ? l.aliasNames : [],
+    aliasCount: l.aliasCount || ((l.aliasNames?.length || 0) + 1),
     updatedAt: l.updatedAt,
     postedAt: l.postedAt,
     createdAt: l.createdAt,

@@ -63,15 +63,90 @@ const pollIntervalMs = Number.parseInt(process.env.TELEGRAM_POLL_INTERVAL_MS || 
 const snapshotLimit = Number.parseInt(process.env.SNAPSHOT_LISTING_LIMIT || '2000', 10);
 const parseTimeoutMs = Number.parseInt(process.env.GEMINI_PARSE_TIMEOUT_MS || '15000', 10);
 const aiEnrichmentPerCycle = Number.parseInt(process.env.AI_ENRICHMENT_PER_CYCLE || '5', 10);
+// Global AI governor: channels run concurrently, so the RPM budget must be
+// shared across the whole cycle — not per channel. Without this, N channels
+// firing at once bursts past Gemini's free-tier limit and every call 429s.
+const aiCycleBudget = Number.parseInt(process.env.AI_ENRICHMENT_PER_CYCLE_TOTAL || '12', 10);
+const aiMinGapMs = Number.parseInt(process.env.AI_MIN_GAP_MS || '4000', 10);
+let aiCallsRemaining = aiCycleBudget;
+let aiLastCallAt = 0;
+let aiDisabledReason = null;
+let aiDisabledLogged = false;
+function resetAiCycleBudget() {
+  aiCallsRemaining = aiCycleBudget;
+}
+async function waitAiTurn() {
+  const waitMs = aiMinGapMs - (Date.now() - aiLastCallAt);
+  if (waitMs > 0) {
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
+  aiLastCallAt = Date.now();
+}
+// Local-model transport: the always-on M3 Air runs Ollama (or the operator
+// gateway — both speak OpenAI /v1/chat/completions). Same prompt contract and
+// JSON parsing as Gemini, $0, no API keys that can spend money. Takes
+// precedence over Gemini when configured.
+const localAiUrl = (process.env.LOCAL_AI_URL || '').replace(/\/+$/, '');
+const localAiModel = process.env.LOCAL_AI_MODEL || 'gemma3n:e4b';
+const localAiKey = process.env.LOCAL_AI_KEY || process.env.OPERATOR_KEY || '';
+const localAiTimeoutMs = Number.parseInt(process.env.LOCAL_AI_TIMEOUT_MS || '120000', 10);
+const localAiNumCtx = Number.parseInt(process.env.LOCAL_AI_NUM_CTX || '8192', 10);
+
+/**
+ * Run one enrichment prompt against the local model endpoint.
+ * Returns the raw text content; callers parse it with parseModelJson.
+ */
+export async function generateLocalEnrichment(promptText) {
+  const response = await fetch(`${localAiUrl}/v1/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(localAiKey ? { Authorization: `Bearer ${localAiKey}` } : {}),
+    },
+    body: JSON.stringify({
+      model: localAiModel,
+      messages: [
+        { role: 'system', content: 'You extract structured business listings from Thai Telegram posts. Reply with JSON only — no prose, no markdown fences.' },
+        { role: 'user', content: promptText },
+      ],
+      temperature: 0,
+      response_format: { type: 'json_object' },
+      // Per-request context (Ollama daemon defaults are 4096 regardless of
+      // the model card — always set num_ctx explicitly on local calls).
+      options: { num_ctx: localAiNumCtx },
+    }),
+    signal: AbortSignal.timeout(localAiTimeoutMs),
+  });
+  if (!response.ok) {
+    throw new Error(`Local AI ${response.status}: ${(await response.text()).slice(0, 160)}`);
+  }
+  const data = await response.json();
+  const text = data?.choices?.[0]?.message?.content;
+  if (!text) {
+    throw new Error('Local AI returned no content.');
+  }
+  return text;
+}
 const watchMode = process.argv.includes('--watch');
 
 process.on('unhandledRejection', (error) => {
-  if (String(error?.message || error).includes('TIMEOUT')) {
-    return;
+  // Never swallow: a fatal rejection with no exit left a zombie process that
+  // held the session, produced zero intake, and blocked daemon restarts.
+  // A "TIMEOUT" in the message is NOT proof the rejection was benign — the
+  // Gemini race timer, AbortSignal timeouts, network stalls, and genuinely
+  // hung requests all reject with timeout-like messages. Swallowing those
+  // would reproduce the exact zombie we are defending against. Only a
+  // rejection the caller already integrated into normal flow is acceptable,
+  // and those never reach this handler. So: log, persist, and exit always.
+  console.error('FATAL unhandled rejection — exiting for daemon restart:', error);
+  try {
+    savePersistedState(globalScraperState);
+  } catch {
+    /* noop */
   }
-
-  console.error(error);
+  process.exit(1);
 });
+let globalScraperState = { lastSeenMessageIds: {}, intakeGaps: {} };
 
 if (!apiId || !apiHash) {
   console.error('Missing TELEGRAM_API_ID or TELEGRAM_API_HASH in .env');
@@ -817,11 +892,25 @@ function mergeEnrichment(listing, enrichment) {
 }
 
 async function enrichListingsWithAi(listings, clusters, sourceLabel) {
-  if (!ai || !Array.isArray(listings) || listings.length === 0 || aiEnrichmentPerCycle <= 0) {
-    if (!ai) {
-      console.log(`${sourceLabel}: Gemini not configured. Deterministic-only mode active.`);
+  if ((!ai && !localAiUrl) || !Array.isArray(listings) || listings.length === 0 || aiEnrichmentPerCycle <= 0) {
+    if (!aiDisabledLogged) {
+      aiDisabledLogged = true;
+      if (!ai && !localAiUrl) {
+        console.log('No AI backend configured. Deterministic-only mode active ($0, no API spend).');
+      } else if (aiEnrichmentPerCycle <= 0) {
+        console.log('AI_ENRICHMENT_PER_CYCLE=0. Deterministic-only mode active ($0, no API spend).');
+      }
     }
 
+    return listings;
+  }
+
+  if (aiDisabledReason) {
+    return listings;
+  }
+
+  if (aiCallsRemaining <= 0) {
+    console.log(`${sourceLabel}: AI cycle budget exhausted. Deterministic-only for the rest of this cycle.`);
     return listings;
   }
 
@@ -849,47 +938,67 @@ async function enrichListingsWithAi(listings, clusters, sourceLabel) {
     return listings;
   }
 
-  // Respect Gemini Free Tier RPM limits (max 15/20 RPM).
-  // Enforce a 4.5s delay before calling the API.
-  console.log(`${sourceLabel}: Throttling Gemini API request to respect rate limits (4.5s)...`);
-  await new Promise((resolve) => setTimeout(resolve, 4500));
+  // Claim one call from the shared cycle budget, then wait for the global
+  // minimum gap so concurrent channels serialize their AI calls instead of
+  // bursting the rate limit together (or overloading the M3's small model).
+  aiCallsRemaining -= 1;
+  await waitAiTurn();
+  const aiBackend = localAiUrl ? `local AI ${localAiModel}` : 'Gemini';
+  console.log(`${sourceLabel}: Calling ${aiBackend} (cycle budget left: ${aiCallsRemaining})...`);
 
-  let response = null;
+  let responseText = null;
   const MAX_RETRIES = 2;
   let attempts = 0;
 
   while (attempts <= MAX_RETRIES) {
     try {
       attempts += 1;
-      response = await Promise.race([
-        ai.models.generateContent({
-          model: 'gemini-2.5-flash',
-          contents: buildEnrichmentPrompt(rawText),
-          config: {
-            responseMimeType: 'application/json',
-          },
-        }),
-        new Promise((_, reject) => {
-          setTimeout(() => {
-            reject(new Error(`Gemini parsing timed out after ${parseTimeoutMs}ms.`));
-          }, parseTimeoutMs);
-        }),
-      ]);
+      if (localAiUrl) {
+        responseText = await generateLocalEnrichment(buildEnrichmentPrompt(rawText));
+      } else {
+        const response = await Promise.race([
+          ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: buildEnrichmentPrompt(rawText),
+            config: {
+              responseMimeType: 'application/json',
+            },
+          }),
+          new Promise((_, reject) => {
+            setTimeout(() => {
+              reject(new Error(`Gemini parsing timed out after ${parseTimeoutMs}ms.`));
+            }, parseTimeoutMs);
+          }),
+        ]);
+        responseText = response.text;
+      }
       break;
     } catch (error) {
+      // Auth failures never heal with retries: disable AI for the process
+      // lifetime so cycles stop burning minutes on doomed calls.
+      if (/API_KEY_INVALID|API key not valid|UNAUTHENTICATED|PERMISSION_DENIED|invalid_api_key|Local AI 401|Local AI 403/i.test(String(error?.message || error))) {
+        aiDisabledReason = String(error?.message || error).slice(0, 160);
+        const hint = localAiUrl
+          ? 'Check LOCAL_AI_KEY/OPERATOR_KEY (or leave unset on a trusted LAN) and restart the scraper.'
+          : 'Set a valid GEMINI_API_KEY in .env and restart the scraper.';
+        console.error(`AI backend rejected the request (${aiDisabledReason}). AI enrichment DISABLED until restart — deterministic-only mode. ${hint}`);
+        return listings;
+      }
       if (attempts <= MAX_RETRIES) {
-        console.warn(`${sourceLabel}: Gemini enrichment failed (attempt ${attempts}/${MAX_RETRIES + 1}). Error: ${error.message}. Retrying in 2000ms...`);
+        console.warn(`${sourceLabel}: ${aiBackend} enrichment failed (attempt ${attempts}/${MAX_RETRIES + 1}). Error: ${error.message}. Retrying in 2000ms...`);
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } else {
-        console.warn(`${sourceLabel}: Gemini enrichment skipped. All ${MAX_RETRIES + 1} attempts failed. Last error: ${error.message}`);
+        console.warn(`${sourceLabel}: ${aiBackend} enrichment skipped. All ${MAX_RETRIES + 1} attempts failed. Last error: ${error.message}`);
         return listings;
       }
     }
   }
 
   try {
-    const enrichedListings = parseModelJson(response.text);
-    console.log(`${sourceLabel}: Gemini enriched ${enrichedListings.length} listing candidate(s).`);
+    // parseModelJson accepts both the requested array and a bare single
+    // object (small local models sometimes return the latter).
+    const enrichedListings = parseModelJson(responseText);
+    console.log(`${sourceLabel}: ${aiBackend} enriched ${enrichedListings.length} listing candidate(s).`);
 
     if (enrichedListings.length === 0) {
       return listings;
@@ -906,7 +1015,7 @@ async function enrichListingsWithAi(listings, clusters, sourceLabel) {
       return mergeEnrichment(listing, enrichmentByCluster.get(clusterId));
     });
   } catch (error) {
-    console.warn(`${sourceLabel}: Gemini parsing of response failed. ${error.message}`);
+    console.warn(`${sourceLabel}: ${aiBackend} parsing of response failed. ${error.message}`);
     return listings;
   }
 }
@@ -1050,8 +1159,7 @@ function getSenderId(msg) {
 
 const photosDir = ensureLocalPhotosDir();
 
-async function downloadClusterPhotos(client, cluster, channelName, maxPhotos = 8) {
-  const downloaded = [];
+async function downloadClusterPhotos(client, cluster, channelName, maxPhotos = 15) {
   // Download ALL media (photos + image documents)
   const allMedia = [
     ...cluster.mediaMessages.filter((m) => m.media?.photo),
@@ -1059,22 +1167,31 @@ async function downloadClusterPhotos(client, cluster, channelName, maxPhotos = 8
   ];
   // Limit to maxPhotos but prioritize what might be 'profile' photos if we could tell
   const toDownload = allMedia.slice(0, maxPhotos);
+  const channelId = cluster.rawMessages?.[0]?.peerId
+    ? String(cluster.rawMessages[0].peerId.channelId || cluster.rawMessages[0].peerId)
+    : channelName;
 
-  for (const msg of toDownload) {
-    const photoInfo = await downloadAndStorePhoto(client, msg, channelName);
-    if (!photoInfo) continue;
+  // Download concurrently (bounded) with order preserved: 15 serial
+  // downloads at ~1.5s each would stall every active cluster for 20s+.
+  const photoConcurrency = Math.max(1, Number.parseInt(process.env.PHOTO_CONCURRENCY || '4', 10));
+  const slots = new Array(toDownload.length).fill(null);
+  let nextPhoto = 0;
+  const downloadWorkers = Array.from({ length: Math.min(photoConcurrency, toDownload.length) }, async () => {
+    while (nextPhoto < toDownload.length) {
+      const index = nextPhoto;
+      nextPhoto += 1;
+      const photoInfo = await downloadAndStorePhoto(client, toDownload[index], channelName);
+      if (photoInfo) {
+        // Archive metadata to photo_archive table
+        await archivePhotoMetadata(photoInfo, toDownload[index], channelId, channelName);
+        // Use Supabase URL if available, otherwise local
+        slots[index] = photoInfo.supabaseUrl || photoInfo.localUrl;
+      }
+    }
+  });
+  await Promise.all(downloadWorkers);
 
-    // Archive metadata to photo_archive table
-    const channelId = cluster.rawMessages?.[0]?.peerId
-      ? String(cluster.rawMessages[0].peerId.channelId || cluster.rawMessages[0].peerId)
-      : channelName;
-    await archivePhotoMetadata(photoInfo, msg, channelId, channelName);
-
-    // Use Supabase URL if available, otherwise local
-    downloaded.push(photoInfo.supabaseUrl || photoInfo.localUrl);
-  }
-
-  return downloaded;
+  return slots.filter(Boolean);
 }
 
 function delay(ms) {
@@ -1162,7 +1279,7 @@ async function fetchMessagesWithCatchUp(client, target, lastSeenId, state) {
   return { messages, catchUpPages };
 }
 
-async function extractListingsFromTarget(client, target, state = {}) {
+export async function extractListingsFromTarget(client, target, state = {}) {
   if (!state.lastSeenMessageIds) {
     state.lastSeenMessageIds = {};
   }
@@ -1176,9 +1293,17 @@ async function extractListingsFromTarget(client, target, state = {}) {
     `${target.displayLabel}: fetched ${messages.length} messages${catchUpPages ? ` (+${catchUpPages} catch-up page(s))` : ''}, ${newMessages.length} new message(s), latest id ${latestMessageId}.`,
   );
 
-  state.lastSeenMessageIds[target.token] = latestMessageId;
+  // Commit the high-water mark ONLY after processing succeeds. Advancing it
+  // earlier (before clustering/photo-download/archive) meant any throw below
+  // silently skipped an entire batch forever — the next cycle fetched only
+  // `> lastSeen`, so the lost messages were never recovered.
+  const commitHighWaterMark = () => {
+    state.lastSeenMessageIds[target.token] = latestMessageId;
+  };
 
   if (newMessages.length === 0) {
+    // Nothing new — advancing is idempotent and prevents re-polling the set.
+    commitHighWaterMark();
     return {
       sourceLabel: target.displayLabel,
       fetchedMessages: messages.length,
@@ -1189,11 +1314,13 @@ async function extractListingsFromTarget(client, target, state = {}) {
   // Cluster messages by sender + time proximity or groupedId (albums)
   const clusters = mergeAdjacentClusters(clusterMessages(newMessages));
   const clustersWithText = clusters.filter((c) => c.texts.length > 0);
+  const mediaOnlyClusters = clusters.filter((c) => c.texts.length === 0 && c.mediaMessages.length > 0);
   console.log(
-    `${target.displayLabel}: grouped into ${clusters.length} cluster(s), ${clustersWithText.length} with text.`,
+    `${target.displayLabel}: grouped into ${clusters.length} cluster(s), ${clustersWithText.length} with text, ${mediaOnlyClusters.length} media-only.`,
   );
 
-  if (clustersWithText.length === 0) {
+  if (clustersWithText.length === 0 && mediaOnlyClusters.length === 0) {
+    commitHighWaterMark();
     return {
       sourceLabel: target.displayLabel,
       fetchedMessages: messages.length,
@@ -1204,7 +1331,10 @@ async function extractListingsFromTarget(client, target, state = {}) {
   const deterministicListings = buildFallbackListings(clusters, target.displayLabel);
   console.log(`${target.displayLabel}: deterministic parser returned ${deterministicListings.length} listing candidate(s).`);
 
-  if (deterministicListings.length === 0) {
+  // If no text-based listings but there are media-only clusters, continue
+  // so photos can still be archived.
+  if (deterministicListings.length === 0 && mediaOnlyClusters.length === 0) {
+    commitHighWaterMark();
     return {
       sourceLabel: target.displayLabel,
       fetchedMessages: messages.length,
@@ -1212,7 +1342,9 @@ async function extractListingsFromTarget(client, target, state = {}) {
     };
   }
 
-  const rawEnrichedListings = await enrichListingsWithAi(deterministicListings, clusters, target.displayLabel);
+  const rawEnrichedListings = deterministicListings.length > 0
+    ? await enrichListingsWithAi(deterministicListings, clusters, target.displayLabel)
+    : [];
 
   // Post-enrichment spam filter: reject listings with spam descriptions or names
   const enrichedListings = rawEnrichedListings.filter((listing) => {
@@ -1230,11 +1362,17 @@ async function extractListingsFromTarget(client, target, state = {}) {
   });
 
   const referencedClusterIds = [
-    ...new Set(
-      enrichedListings
+    ...new Set([
+      ...enrichedListings
         .map((listing) => normalizeClusterId(listing.cluster_id))
         .filter((clusterId) => clusterId !== null),
-    ),
+      // Also download photos from media-only clusters so they are archived
+      ...mediaOnlyClusters.map((_, idx) => {
+        // Find the cluster index in the original clusters array
+        const clusterIdx = clusters.indexOf(mediaOnlyClusters[idx]);
+        return clusterIdx >= 0 ? clusterIdx : null;
+      }).filter((id) => id !== null),
+    ]),
   ];
 
   const clusterPhotos = new Map();
@@ -1310,12 +1448,50 @@ async function extractListingsFromTarget(client, target, state = {}) {
     console.warn(`${target.displayLabel}: skipped ${skippedInvalidClusterCount} candidate(s) with invalid cluster_id values.`);
   }
 
+  // Media-only clusters (photo updates with no text) cannot produce their own
+  // listings, but their photos are already downloaded + archived above via
+  // clusterPhotos. Merge them into a text-based listing from the SAME sender
+  // in this batch — that is how a parlor's gallery grows when they post new
+  // staff photos without retyping the ad. Photos with no same-sender text
+  // listing stay in photo_archive for later matching; no orphan listings.
+  const mediaOnlyBySender = new Map();
+  for (const mediaCluster of mediaOnlyClusters) {
+    const clusterIdx = clusters.indexOf(mediaCluster);
+    if (clusterIdx < 0) continue;
+    const photos = clusterPhotos.get(clusterIdx) || [];
+    if (photos.length === 0) continue;
+    const senderId = mediaCluster.senderId ?? null;
+    if (!mediaOnlyBySender.has(senderId)) mediaOnlyBySender.set(senderId, []);
+    mediaOnlyBySender.get(senderId).push(clusterIdx);
+  }
+  let mergedMediaPhotoCount = 0;
+  for (const listing of listingsWithPhotos) {
+    const senderId = clusters[listing.cluster_id]?.senderId ?? null;
+    const senderClusters = mediaOnlyBySender.get(senderId);
+    if (!senderClusters || senderClusters.length === 0) continue;
+    const extra = [...new Set(senderClusters.flatMap((idx) => clusterPhotos.get(idx) || []))]
+      .filter((url) => !(listing.allPhotoUrls || []).includes(url));
+    if (extra.length === 0) continue;
+    listing.allPhotoUrls = [...(listing.allPhotoUrls || []), ...extra];
+    if (!listing.imageUrl) {
+      listing.imageUrl = extra[0];
+    }
+    mergedMediaPhotoCount += extra.length;
+    // Consume so a second same-sender listing does not duplicate them.
+    mediaOnlyBySender.set(senderId, []);
+  }
+  const archiveOnlyMediaCount = [...mediaOnlyBySender.values()].reduce((n, arr) => n + arr.length, 0);
+  if (mergedMediaPhotoCount > 0 || archiveOnlyMediaCount > 0) {
+    console.log(`${target.displayLabel}: media-only photos merged into listings: ${mergedMediaPhotoCount}, archive-only clusters: ${archiveOnlyMediaCount}.`);
+  }
+
   const normalizedListings = normalizeExtractedListings(listingsWithPhotos, {
     source: 'snapshot',
   });
   console.log(`${target.displayLabel}: normalized ${normalizedListings.length} unique listing(s).`);
 
   if (normalizedListings.length === 0) {
+    commitHighWaterMark();
     return {
       sourceLabel: target.displayLabel,
       fetchedMessages: messages.length,
@@ -1345,6 +1521,9 @@ async function extractListingsFromTarget(client, target, state = {}) {
     }
   }
 
+  // Processing succeeded end-to-end — now it is safe to advance the mark.
+  commitHighWaterMark();
+
   return {
     sourceLabel: target.displayLabel,
     fetchedMessages: messages.length,
@@ -1352,16 +1531,36 @@ async function extractListingsFromTarget(client, target, state = {}) {
   };
 }
 
-async function runTelegramScrape(client, targets, state = {}) {
-  const channelResults = [];
-  for (const target of targets) {
-    try {
-      const result = await extractListingsFromTarget(client, target, state);
-      channelResults.push(result);
-    } catch (error) {
-      console.error(`Error extracting from ${target.displayLabel}:`, error.message);
+// Bounded fan-out: channels are independent, but the Telegram session and
+// the Gemini budget are shared. Cap concurrency so we go faster than serial
+// without flooding the session or bursting the AI rate limit.
+const channelConcurrency = Math.max(1, Number.parseInt(process.env.CHANNEL_CONCURRENCY || '3', 10));
+async function mapWithConcurrency(items, limit, fn) {
+  const results = new Array(items.length);
+  let next = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (next < items.length) {
+      const index = next;
+      next += 1;
+      try {
+        results[index] = await fn(items[index]);
+      } catch (error) {
+        console.error(`Error extracting from ${items[index]?.displayLabel || '?'}:`, error.message);
+        results[index] = { sourceLabel: items[index]?.displayLabel || '?', fetchedMessages: 0, listings: [] };
+      }
     }
-  }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+async function runTelegramScrape(client, targets, state = {}) {
+  resetAiCycleBudget();
+  const channelResults = await mapWithConcurrency(
+    targets,
+    channelConcurrency,
+    (target) => extractListingsFromTarget(client, target, state),
+  );
 
   const fetchedMessages = channelResults.reduce((sum, result) => sum + result.fetchedMessages, 0);
   const listingsWithImages = channelResults.flatMap((result) => result.listings || []);
@@ -1468,7 +1667,11 @@ function loadPersistedState() {
 
 function savePersistedState(state) {
   try {
-    fs.writeFileSync(STATE_FILE, JSON.stringify({ lastSeenMessageIds: state.lastSeenMessageIds }, null, 2));
+    fs.writeFileSync(STATE_FILE, JSON.stringify({
+      lastSeenMessageIds: state.lastSeenMessageIds,
+      // Intake gaps must survive restarts or unrecovered ranges go silent.
+      intakeGaps: state.intakeGaps || {},
+    }, null, 2));
   } catch {
     // Non-critical — state will rebuild on next cycle
   }
@@ -1482,8 +1685,14 @@ async function main() {
   const persisted = loadPersistedState();
   const state = {
     lastSeenMessageIds: persisted?.lastSeenMessageIds || {},
+    intakeGaps: persisted?.intakeGaps || {},
     shouldStop: false,
   };
+  globalScraperState = state;
+  const pendingGaps = Object.keys(state.intakeGaps || {}).length;
+  if (pendingGaps > 0) {
+    console.warn(`Resumed with ${pendingGaps} unrecovered intake gap(s). Run scripts/backfill_history.js to recover them.`);
+  }
 
   process.on('SIGINT', () => {
     state.shouldStop = true;
@@ -1495,12 +1704,32 @@ async function main() {
     savePersistedState(state);
   });
 
-  await client.connect();
-  const resolvedTargets = await resolveSourceTargets(client);
-
-  if (resolvedTargets.length === 0) {
-    console.error('No Telegram source targets could be resolved. Check TELEGRAM_SOURCE_TARGETS.');
-    process.exit(1);
+  // Startup is the flakiest phase (Telegram "internal issues" on getDialogs).
+  // Retry with backoff instead of dying on the first attempt — but exit
+  // non-zero if it never succeeds so the daemon restarts us cleanly.
+  const maxStartupAttempts = Math.max(1, Number.parseInt(process.env.STARTUP_ATTEMPTS || '6', 10));
+  let resolvedTargets = [];
+  for (let attempt = 1; attempt <= maxStartupAttempts; attempt += 1) {
+    try {
+      await client.connect();
+      resolvedTargets = await resolveSourceTargets(client);
+      if (resolvedTargets.length === 0) {
+        throw new Error('No Telegram source targets could be resolved. Check TELEGRAM_SOURCE_TARGETS.');
+      }
+      break;
+    } catch (error) {
+      console.error(`Startup attempt ${attempt}/${maxStartupAttempts} failed: ${error.message}`);
+      try {
+        await client.disconnect();
+      } catch {
+        /* noop */
+      }
+      if (attempt >= maxStartupAttempts) {
+        console.error('Startup failed after all attempts. Exiting for daemon restart.');
+        process.exit(1);
+      }
+      await delay(20_000);
+    }
   }
 
   console.log(
@@ -1539,4 +1768,10 @@ async function main() {
   }
 }
 
-main();
+// Import-safe: unit tests and one-off scripts import helpers (e.g.
+// generateLocalEnrichment) from this module. Only auto-run the intake loop
+// when executed directly — importing must never open a second Telegram
+// session (that triggers AUTH_KEY_DUPLICATED against the running scraper).
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main();
+}

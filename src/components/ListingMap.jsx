@@ -824,9 +824,13 @@ export default function ListingMap({
     };
   }, [onCardClick]);
 
+  // Fit the 10km reach ring once: the geolocation watch fires repeatedly and
+  // every update re-fit the view, dragging the map away while users explore.
+  const hasFittedUserRef = useRef(false);
   useEffect(() => {
     const map = mapInstanceRef.current;
-    if (!map || !userLocation) return;
+    if (!map || !userLocation || hasFittedUserRef.current) return;
+    hasFittedUserRef.current = true;
 
     userMarkerRef.current?.remove();
     accuracyCircleRef.current?.remove();
@@ -874,8 +878,15 @@ export default function ListingMap({
     map.fitBounds(tenKmRing.getBounds(), { padding: [24, 24], animate: true });
   }, [userLocation]);
 
+  // Auto-scroll to the map at most once per mount: the old [pins.length]
+  // dependency re-scrolled on EVERY live count change, yanking the page away
+  // from users mid-pan on phones. First data arrival scrolls; later refreshes
+  // never steal the scroll.
+  const hasAutoScrolledRef = useRef(false);
   useEffect(() => {
     if (window.location.hash !== '#map' || !mapRef.current) return;
+    if (hasAutoScrolledRef.current || pins.length === 0) return;
+    hasAutoScrolledRef.current = true;
     const timeoutIds = [];
     const scrollToMap = () => {
       const section = mapRef.current?.closest('#map');
@@ -926,8 +937,22 @@ export default function ListingMap({
 
   useEffect(() => {
     if (!markersRef.current || !mapInstanceRef.current) return;
+    // Remember the open popup (60s availability ticks rebuild all markers):
+    // without this the card a user is reading snaps shut every minute.
+    let openPopupKey = null;
+    try {
+      markersRef.current.eachLayer((layer) => {
+        if (typeof layer.isPopupOpen === 'function' && layer.isPopupOpen() && layer.getLatLng) {
+          const ll = layer.getLatLng();
+          openPopupKey = `${ll.lat.toFixed(5)},${ll.lng.toFixed(5)}`;
+        }
+      });
+    } catch {
+      openPopupKey = null;
+    }
     markersRef.current.clearLayers();
 
+    let popupToReopen = null;
     for (const { listing, coords, precision } of visiblePins) {
       const availability = getAvailability(listing, nowMs);
       const marker = L.marker(coords, {
@@ -945,6 +970,19 @@ export default function ListingMap({
         className: 'listing-hover-tooltip',
       });
       markersRef.current.addLayer(marker);
+      if (openPopupKey && Array.isArray(coords)
+        && `${Number(coords[0]).toFixed(5)},${Number(coords[1]).toFixed(5)}` === openPopupKey
+        && !popupToReopen) {
+        popupToReopen = marker;
+      }
+    }
+    if (popupToReopen) {
+      try {
+        // Defer past the cluster re-layout so the popup anchors correctly.
+        window.setTimeout(() => { try { popupToReopen.openPopup(); } catch { /* noop */ } }, 60);
+      } catch {
+        /* noop */
+      }
     }
 
     // Render the Longdo POI layer (separate cluster group, teal squares).
