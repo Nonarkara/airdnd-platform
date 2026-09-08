@@ -62,3 +62,6 @@ public/images/
 # these from public/data.json before every wrangler deploy.)
 public/og/listing-[0-9]*.png
 public/og/default.png
+
+# OTOP harvest artifacts — regenerate with scripts/otop_catalog.js
+data/otop_catalog.json

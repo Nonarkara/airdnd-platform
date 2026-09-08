@@ -1,0 +1,116 @@
+/* OTOP coverage map — instrument panel, not a catalogue.
+   Rams: zero radius on non-circular elements, flat colour, no shadows,
+   lines only where they divide. Amber is the only accent. */
+
+.otop {
+  --ink: #0a0a0a;
+  --panel: #111111;
+  --line: #262626;
+  --text: #e5e5e5;
+  --muted: #737373;
+  --amber: #f59e0b;
+  --silent: #dc2626;
+  background: var(--ink);
+  color: var(--text);
+  min-height: 100vh;
+  font-family: 'Helvetica Neue', -apple-system, 'IBM Plex Sans Thai', sans-serif;
+}
+
+.otop-head {
+  border-bottom: 1px solid var(--line);
+  padding: 2.5rem 2rem 1.75rem;
+}
+.otop-head h1 {
+  font-family: 'Josefin Sans', 'IBM Plex Sans Thai', sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  letter-spacing: 0.02em;
+  margin: 0 0 0.4rem;
+}
+.otop-head p { color: var(--muted); margin: 0; max-width: 62ch; font-size: 0.875rem; line-height: 1.6; }
+
+/* Instrument row — the numbers read as a panel, not as cards. */
+.otop-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border-bottom: 1px solid var(--line);
+}
+.otop-stat { padding: 1.25rem 2rem; border-right: 1px solid var(--line); }
+.otop-stat:last-child { border-right: none; }
+.otop-stat dt {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--muted); margin: 0 0 0.4rem;
+}
+.otop-stat dd {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 1.75rem; font-weight: 300; margin: 0; font-variant-numeric: tabular-nums;
+}
+.otop-stat dd .unit { font-size: 0.8125rem; color: var(--muted); margin-left: 0.35rem; }
+.otop-stat.is-alarm dd { color: var(--silent); }
+
+.otop-body { display: grid; grid-template-columns: 1fr 340px; min-height: 620px; }
+@media (max-width: 900px) { .otop-body { grid-template-columns: 1fr; } }
+
+.otop-canvas { min-height: 620px; background: var(--ink); }
+.otop-canvas .leaflet-container { background: var(--ink); height: 100%; width: 100%; }
+/* Basemap tiles are muted so the data marks carry the page, not the cartography. */
+.otop-canvas .leaflet-tile-pane { filter: grayscale(1) invert(0.92) contrast(0.82) brightness(0.92); }
+.otop-canvas .leaflet-control-attribution {
+  background: rgba(0, 0, 0, 0.7); color: var(--muted); border: none; font-size: 0.625rem;
+}
+.otop-canvas .leaflet-control-attribution a { color: var(--muted); }
+
+.otop-side { border-left: 1px solid var(--line); overflow-y: auto; max-height: 720px; }
+@media (max-width: 900px) { .otop-side { border-left: none; border-top: 1px solid var(--line); } }
+.otop-side h2 {
+  font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--muted); font-weight: 400; margin: 0;
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--line);
+}
+
+/* Horizontal data rows — the project's signature move, applied to provinces. */
+.otop-row {
+  display: grid; grid-template-columns: 2.5rem 1fr auto;
+  align-items: baseline; gap: 0.75rem;
+  padding: 0.6rem 1.25rem; border-bottom: 1px solid var(--line);
+  width: 100%; background: none; border-left: none; border-right: none; border-top: none;
+  color: inherit; text-align: left; cursor: pointer; font: inherit;
+}
+.otop-row:hover, .otop-row:focus-visible { background: var(--panel); outline: none; }
+.otop-row.is-active { background: var(--panel); box-shadow: inset 2px 0 0 var(--amber); }
+.otop-row .code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6875rem; color: var(--muted);
+}
+.otop-row .name { font-size: 0.8125rem; }
+.otop-row .name small { display: block; color: var(--muted); font-size: 0.6875rem; }
+.otop-row .count {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.9375rem; font-variant-numeric: tabular-nums; color: var(--amber);
+}
+.otop-row.is-silent .count { color: var(--silent); }
+
+.otop-detail { padding: 1.25rem; border-bottom: 1px solid var(--line); }
+.otop-detail h3 { margin: 0 0 0.25rem; font-weight: 400; font-size: 1rem; }
+.otop-detail .sub { color: var(--muted); font-size: 0.75rem; margin: 0 0 0.9rem; }
+.otop-detail ul { list-style: none; margin: 0; padding: 0; }
+.otop-detail li { font-size: 0.75rem; padding: 0.3rem 0; border-bottom: 1px solid var(--line); }
+.otop-detail li:last-child { border-bottom: none; }
+.otop-detail a { color: var(--amber); text-decoration: none; }
+.otop-detail a:hover { text-decoration: underline; }
+
+.otop-legend {
+  display: flex; gap: 1.5rem; align-items: center;
+  padding: 0.75rem 2rem; border-bottom: 1px solid var(--line);
+  font-size: 0.6875rem; color: var(--muted);
+}
+.otop-legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+.otop-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.otop-legend i.filled { background: var(--amber); }
+.otop-legend i.hollow { border: 1px solid var(--silent); }
+
+.otop-empty { padding: 4rem 2rem; color: var(--muted); font-size: 0.875rem; line-height: 1.7; }
+.otop-empty code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  background: var(--panel); padding: 0.15rem 0.4rem; color: var(--amber);
+}

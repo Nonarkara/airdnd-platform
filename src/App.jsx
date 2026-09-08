@@ -52,6 +52,7 @@ const MatchingPaper = lazy(() => import('./components/MatchingPaper'));
 const Trends = lazy(() => import('./components/Trends'));
 const Health = lazy(() => import('./components/Health'));
 const Insights = lazy(() => import('./components/Insights'));
+const OtopMap = lazy(() => import('./components/OtopMap'));
 const SORT_OPTIONS = [
   'Most Active Broadcasters',
   'Most Promotions',
@@ -718,6 +719,14 @@ function App() {
 
   return (
     <Routes>
+      <Route
+        path="/otop"
+        element={(
+          <Suspense fallback={<div className="page-shell-loading">Loading OTOP coverage…</div>}>
+            <OtopMap />
+          </Suspense>
+        )}
+      />
       <Route
         path="/analytics"
         element={(
