@@ -243,6 +243,23 @@
   color: var(--color-red, #f44);
 }
 
+.modal-archive-link {
+  display: block;
+  padding: 0.5rem 0 0.35rem;
+  border-top: 1px solid var(--color-line);
+  color: var(--accent, #f59e0b);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.modal-archive-link:hover {
+  color: var(--color-cream-muted);
+}
+
 .modal-info-section {
   display: flex;
   flex-direction: column;

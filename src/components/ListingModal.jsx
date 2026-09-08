@@ -44,6 +44,8 @@ function ListingModal({ listing, onClose, t }) {
   const thaiScript = `สวัสดีครับ สอบถามคิวว่างช่วงเวลานี้ครับ มีน้องคนไหนพร้อมให้บริการบ้างครับ? (จาก Sabai Sabai - ${listing?.name || ''})`;
 
   const galleryUrls = getSafeListingGalleryUrls(listing);
+  const archiveSlug = (listing?.sourceChannel || '').replace(/^@/, '').toLowerCase();
+  const archiveHref = archiveSlug && archiveSlug !== 'unknown' ? `/places/${archiveSlug}` : null;
   const activeIndex = (() => {
     if (!galleryUrls.length) return -1;
     if (imageState.listingId === listing?.id && imageState.url) {
@@ -244,6 +246,17 @@ function ListingModal({ listing, onClose, t }) {
                   <span className="modal-image-stamp-label">{t.modal.capturedAt}</span>
                   <strong>{preciseTimestamp}</strong>
                 </div>
+
+                {archiveHref && (
+                  <a
+                    className="modal-archive-link"
+                    href={archiveHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Full {channel || archiveSlug} photo archive →
+                  </a>
+                )}
               </div>
             ) : (
               <div className="modal-main-image modal-image-placeholder">
