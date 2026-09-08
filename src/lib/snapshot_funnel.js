@@ -59,7 +59,9 @@ export function computeSnapshotFunnel({
       }
     }
     const channel = listing?.sourceTarget || listing?.sourceChannel;
-    if (channel) channels.add(String(channel));
+    // A literal 'unknown' (scraper fallback when a channel is unmapped)
+    // must never inflate channel coverage — it is not a represented channel.
+    if (channel && String(channel) !== 'unknown') channels.add(String(channel));
     if (!(Number.isFinite(listing?.latitude) && Number.isFinite(listing?.longitude)) && !listing?.mapsUrl) {
       unverifiedLocation += 1;
     }

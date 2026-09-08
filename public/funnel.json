@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T09:02:56.568Z",
+  "generatedAt": "2026-09-08T09:55:46.870Z",
   "shown": {
     "cards": 84,
     "withPhoto": 81,
@@ -7,18 +7,17 @@
     "photoFilesTracked": 0,
     "photoFilesMissing": 0,
     "unverifiedLocation": 5,
-    "channelsRepresented": 6,
+    "channelsRepresented": 5,
     "channels": [
       "@chanelmassage",
       "@relaxsociety2020",
       "@relaxsocietymassage",
       "dialog:2025289026",
-      "dialog:2381945815",
-      "unknown"
+      "dialog:2381945815"
     ]
   },
   "snapshot": {
-    "newestPostAt": "2026-09-08T08:35:22.000Z",
+    "newestPostAt": "2026-09-08T09:44:07.000Z",
     "ageDays": 0
   },
   "intake": {
@@ -33,9 +32,9 @@
   },
   "feed": {
     "degraded": false,
-    "builtAt": "2026-09-08T09:00:53.936Z"
+    "builtAt": "2026-09-08T09:54:58.392Z"
   },
   "warnings": [
-    "6 of 12 configured channels are represented"
+    "5 of 12 configured channels are represented"
   ]
 }

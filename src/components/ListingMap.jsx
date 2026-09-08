@@ -824,20 +824,31 @@ export default function ListingMap({
     };
   }, [onCardClick]);
 
-  // Fit the 10km reach ring once: the geolocation watch fires repeatedly and
-  // every update re-fit the view, dragging the map away while users explore.
+  // The geolocation watch fires repeatedly. Fit the 10km reach ring only on
+  // the first fix — re-fitting on every update would drag the map away while
+  // users explore. Later fixes still MOVE the marker, accuracy circle and
+  // reach rings to the new coordinate, so "You are here" tracks the device
+  // as GPS converges instead of freezing on the first (often rough) fix.
   const hasFittedUserRef = useRef(false);
   useEffect(() => {
     const map = mapInstanceRef.current;
-    if (!map || !userLocation || hasFittedUserRef.current) return;
+    if (!map || !userLocation) return;
+
+    const [latitude, longitude] = userLocation.coords;
+    const accuracyRadius = Math.max(8, Math.min(userLocation.accuracy || 0, 500));
+
+    if (hasFittedUserRef.current) {
+      userMarkerRef.current?.setLatLng([latitude, longitude]);
+      accuracyCircleRef.current?.setLatLng([latitude, longitude]);
+      accuracyCircleRef.current?.setRadius(accuracyRadius);
+      reachRingsRef.current.forEach((ring) => ring.setLatLng([latitude, longitude]));
+      return;
+    }
     hasFittedUserRef.current = true;
 
     userMarkerRef.current?.remove();
     accuracyCircleRef.current?.remove();
     reachRingsRef.current.forEach((ring) => ring.remove());
-
-    const [latitude, longitude] = userLocation.coords;
-    const accuracyRadius = Math.max(8, Math.min(userLocation.accuracy || 0, 500));
     const tenKmRing = L.circle([latitude, longitude], {
       radius: 10_000,
       color: '#36C7FF',

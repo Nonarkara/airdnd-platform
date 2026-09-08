@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "og:cards": "node scripts/generate_og_cards.js",
-    "build": "vite build",
+    "build": "npm run verify:snapshot -- --quiet && vite build",
     "build:full": "npm run snapshot:refresh && npm run photos:stage && npm run verify:snapshot && npm run places:build && npm run og:cards && npm run build",
     "photos:stage": "node scripts/stage_snapshot_photos.js",
     "places:build": "node scripts/build_place_photos.js",

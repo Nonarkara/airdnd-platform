@@ -41,6 +41,18 @@ test('channels represented are compared against the configured list', () => {
   assert.ok(f.warnings.some((w) => w.includes('3 of 4 configured channels')));
 });
 
+test('a literal "unknown" sourceTarget never inflates channel coverage', () => {
+  const withUnknown = [
+    { imageUrl: '/images/a.jpg', sourceTarget: '@one', postedAt: daysAgo(1) },
+    { sourceTarget: '@two', postedAt: daysAgo(2) },
+    { sourceTarget: 'unknown', sourceChannel: 'unknown', postedAt: daysAgo(3) },
+  ];
+  const f = computeSnapshotFunnel({ listings: withUnknown, trackedImagePaths: [], now: NOW });
+  assert.equal(f.shown.channelsRepresented, 2);
+  assert.deepEqual(f.shown.channels, ['@one', '@two']);
+  assert.ok(!f.shown.channels.includes('unknown'));
+});
+
 test('unverified location means no coordinates and no maps link', () => {
   const f = computeSnapshotFunnel({ listings, trackedImagePaths: [], now: NOW });
   assert.equal(f.shown.unverifiedLocation, 2);
