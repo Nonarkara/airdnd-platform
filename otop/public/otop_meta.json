@@ -1,9 +1,11 @@
 {
-  "builtAt": "2026-09-08T08:22:02.369Z",
+  "builtAt": "2026-09-08T08:46:53.821Z",
   "source": "fixture",
   "degraded": true,
   "reason": "Built from the committed development fixture, NOT from data.go.th. These records are synthetic and exist only to exercise the pipeline. Run `npm run otop:fetch` from a network that can reach data.go.th, then rebuild.",
   "portal": "https://data.go.th",
+  "shardCount": 6,
+  "flatFileWritten": true,
   "counts": {
     "resourcesCached": 3,
     "resourcesUsable": 2,

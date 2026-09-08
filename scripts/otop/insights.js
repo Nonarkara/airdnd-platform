@@ -25,8 +25,27 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
 const PUB = path.join(ROOT, 'otop/public');
 
-const records = JSON.parse(fs.readFileSync(path.join(PUB, 'otop.json'), 'utf8'));
 const meta = JSON.parse(fs.readFileSync(path.join(PUB, 'otop_meta.json'), 'utf8'));
+const index = JSON.parse(fs.readFileSync(path.join(PUB, 'otop_index.json'), 'utf8'));
+
+/**
+ * Read the corpus back out of the province shards rather than from a flat file.
+ * Above 20,000 records the flat file is not written at all, so the shards are
+ * the only complete source — and reading them here means every build verifies
+ * that the shards actually add up to what the index claims, instead of trusting
+ * two artefacts written by the same pass to agree.
+ */
+const records = index.provinces.flatMap((p) =>
+  JSON.parse(fs.readFileSync(path.join(PUB, 'p', `${p.code}.json`), 'utf8')),
+);
+
+if (records.length !== index.totals.records) {
+  console.error(
+    `[otop:insights] shard total ${records.length} does not match index total ${index.totals.records}. ` +
+      'The published data is inconsistent; not writing insights.',
+  );
+  process.exit(1);
+}
 
 const pct = (n, d) => (d > 0 ? Math.round((n / d) * 1000) / 10 : null);
 const tally = (items, key) => {

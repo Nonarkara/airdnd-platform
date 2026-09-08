@@ -4,6 +4,32 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-09-08 · A scoring band that ties two different states is a silent mis-ranking
+
+- **What went wrong:** The OTOP fit score mapped OPC stars linearly to `stars / 5`. A verified 1-star producer then scored **0.2** — exactly the same as a producer that had *never been assessed*, which was also 0.2. Three genuinely different states (assessed-and-failed, never-assessed, assessed-and-passed) collapsed into two, and a buyer sorting by fit could not distinguish "graded lowest" from "no evidence either way".
+- **Correct behaviour:** Decide the ordering *first*, then design the band to enforce it strictly. Here: `failure (0.1) < unknown (0.2) < any pass (0.44…1.0)`, achieved by banding passes above the unknown value (`0.3 + stars/5 * 0.7`) rather than letting them start from zero. A recorded pass is stronger evidence than no evidence; no evidence is better than a recorded failure.
+- **How to recognise:** any scoring function that maps a nullable graded field with a bare ratio. Write the ordering as a test (`failed < unknown < lowest pass`) before writing the formula — that test is what caught this, and a plausible-looking formula is exactly the kind of thing that never gets checked otherwise.
+
+## 2026-09-08 · Feeding a map the filtered set drew an empty map above a full table
+
+- **What went wrong:** The supply map was passed `sourcingBasins(matches)`, which defaults to `minDepth: 2`. At any scale where matching producers are spread one-per-province, that returns an empty array — so the map rendered blank while six matching producers sat in the table directly below it. A reader would reasonably conclude there was no supply anywhere, which is the opposite of the truth.
+- **Correct behaviour:** the map answers "where is there any matching supply?" and the basin cards answer "where is it deep enough to source from". Two different questions over the same rollup: `minDepth: 1, top: 77` for the map, the default for the cards. Also: an empty state must say what IS true ("6 provinces hold matching producers, but none holds two or more") rather than only what is absent — "no basins" next to a populated table reads as "no supply".
+- **How to recognise:** any visualisation fed the output of a *filtered* aggregate rather than the full one. Check the empty case against the non-empty component beside it: if they disagree about whether anything exists, the visualisation is being fed the wrong set.
+
+## 2026-09-08 · Shard at every scale, or ship a load path that was never exercised
+
+- **What went right:** The published OTOP data is sharded one file per province behind a small index — and the sharding runs at fixture scale (6 records) exactly as it will at national scale. The alternative, sharding only above some record threshold, would mean the production load path never runs in development until the day it matters.
+- **Also:** the aggregate step reads the corpus back *out of the shards* and refuses to write if the total disagrees with the index. Two artefacts written by the same pass agreeing with each other proves nothing; reading one back through the path the browser will use is what actually verifies it. Deliberately corrupting a shard to confirm the check fires took ten seconds and is the only reason it is known to work.
+- **The rule:** a code path that only activates above a data threshold is untested by construction. Make the threshold change the *volume*, never the *path*.
+
+## 2026-09-08 · Draw the resolution the data has, not the one the reader wants
+
+- **The decision:** the OTOP registry records **no producer coordinates at all**. The tempting move is to geocode a hundred thousand Thai village addresses and drop pins. A pin is read as a verified location; these would be inferred to a precision the source never had, and wrong pins on a sourcing map cost a buyer a wasted trip.
+- **What was drawn instead:** one circle per province at the provincial capital, sized by matching supply depth, with a caption stating plainly that circles represent provinces and not producer locations. This is the resolution the data supports — and it happens to be the resolution a sourcing decision is actually made at: choose a province to visit, then a producer.
+- **The rule this generalises to:** when a visualisation implies more precision than the source carries, change the mark, not the caveat. A footnote does not undo a pin.
+
+---
+
 ## 2026-09-08 · A ranked identity key is a trap; entity resolution needs a union of signals
 
 - **What went wrong:** The OTOP ingest first keyed each record on its strongest available identifier (tax ID → registration number → phone → name+area). One agency's export carried `PRODUCT_ID = "P-002"` — a row number inside that single spreadsheet — which outranked the telephone number and *blocked* the genuine cross-agency match. The same producer appeared twice and the national count inflated. This is the 2026-08-04 Maps-vs-phone bug in a new costume: a locally-unique identifier is not a global identity, and ranking it above a weaker-but-portable signal loses records.

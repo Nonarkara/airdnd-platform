@@ -17,13 +17,26 @@ deploy, separate audience.
 
 ```bash
 npm run otop:fetch      # ① pull raw CKAN data from data.go.th   (NETWORK)
-npm run otop:build      # ② normalise → resolve → aggregate      (PURE)
+npm run otop:build      # ② normalise → resolve → shard → aggregate  (PURE)
 npm run otop:dev        # ③ develop at http://localhost:5180
 npm run otop:site       # ③ build to dist-otop/
-npm test                # unit tests, including the entity-resolution traps
+npm test                # 34 unit tests, including the resolution and scoring traps
 ```
 
 `npm run otop:discover` lists what stage ① *would* pull without pulling it.
+
+Stage ① covers the **whole catalogue** — the "OTOP" search on data.go.th runs to
+roughly 28 pages of datasets, and `package_search` is paged through to
+exhaustion across three queries and three publishing organisations. It is
+**resumable**: every resource already on disk is skipped, so an interrupted run
+is resumed by running it again. Useful flags:
+
+| Flag | Effect |
+|---|---|
+| `--concurrency 6` | in-flight requests, default 4 — be polite to a government portal |
+| `--limit 20` | cap resources, for a smoke test |
+| `--refetch` | ignore the cache and pull everything again |
+| `--max-rows-per-resource N` | cap a single enormous resource |
 
 ### The two stages are separate on purpose
 
@@ -70,8 +83,78 @@ canonical record
   ↓
 entity resolution by SIGNAL UNION (not a ranked key — see below)
   ↓
-otop.json · otop_meta.json · otop_insights.json
+otop_index.json  ·  p/<provinceCode>.json × 77  ·  otop_meta.json  ·  otop_insights.json
 ```
+
+### Published as province shards, always
+
+A national pull is plausibly hundreds of thousands of records. A single
+`otop.json` would be tens of megabytes — too slow for a static host and
+impossible to filter in the browser. So records are published as one shard per
+province behind a small `otop_index.json` that carries the national picture and
+enough per-province detail for the matching engine to decide which shards are
+worth fetching at all.
+
+Sharding runs **at every scale, including the fixture**. A build that sharded
+only when it happened to be large would ship a loading path nobody had ever
+exercised until production. `otop.json` is still written as a convenience export
+below 20,000 records, and is deleted rather than left stale above it; the app
+never loads it.
+
+`insights.js` reads the corpus back *out of the shards* and refuses to write if
+the total disagrees with the index — so every build verifies its own output
+rather than trusting two artefacts from the same pass to agree.
+
+---
+
+## Matching demand to supply
+
+Two lenses over the same corpus, because the buyer's question differs.
+
+**Source · B2B** — ranked for due diligence. Grading, cross-agency corroboration
+and filing recency carry more weight, because the phone call is cheap and the
+failed purchase order is not. Adds *sourcing basins*: provinces ranked by
+**reachable** depth, answering the question a flat directory cannot — "where can
+I meet six credible suppliers in one trip?" Ten unreachable listings in one
+province are not a basin; three reachable ones are.
+
+**Discover · B2C** — ranked for reach. Contactability dominates, because a
+consumer who cannot reach the producer cannot buy anything at all.
+
+The fit score is decomposed into five components — contactability, assurance,
+freshness, corroboration, locatability — and every component is returned
+alongside the score so the interface can show *why* a producer ranks where it
+does. A ranking handed over without its reason is authority without argument.
+
+The requirement round-trips through the URL, so a sourcing brief is a link.
+Shortlists export to CSV.
+
+### What the engine refuses to score
+
+A buyer's real questions are: can they make what I need, in the quantity I need,
+to the standard I need, by when? **The registry answers none of them.** It holds
+no capacity, no minimum order quantity, no lead time, no food-safety, organic,
+Halal or export certification, and no evidence a producer filed in 2020 is still
+trading.
+
+Inferring capacity from a star rating would invent the most consequential number
+on the page. So the engine scores only what the registry attests, and every
+result carries caveats naming what it could not assess — including *dynamic*
+ones measured on that specific result set ("41% of these matches have no contact
+of any kind recorded"). The output is an honest shortlist to go and verify, not
+a supplier ranking.
+
+### The map
+
+Province circles on an OpenStreetMap base layer, positioned at each provincial
+capital and sized by matching supply depth.
+
+**Not producer pins.** The registry records no producer coordinates — not "some
+are missing", none. Geocoding a hundred thousand Thai village addresses would
+manufacture point-level precision the source never had, and a dropped pin reads
+as a verified location. The province is the resolution the data supports, and it
+is also the resolution a sourcing decision is made at: you choose a province to
+visit, then a producer. The caption says so on the page.
 
 ---
 
