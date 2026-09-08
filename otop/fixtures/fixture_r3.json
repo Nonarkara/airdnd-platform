@@ -1,0 +1,25 @@
+{
+  "resourceId": "fixture:r3",
+  "datasetId": "fixture:dataset-r3",
+  "datasetName": "fixture-r3",
+  "datasetTitle": "[FIXTURE] ข่าวประชาสัมพันธ์",
+  "organization": "[FIXTURE] หน่วยงานตัวอย่าง",
+  "licence": "FIXTURE — not a real licence",
+  "format": "CSV",
+  "resourceUrl": null,
+  "lastModified": null,
+  "retrievedAt": "2026-09-08T00:00:00Z",
+  "method": "fixture",
+  "fields": [
+    "หัวข้อ",
+    "เนื้อหา",
+    "วันที่"
+  ],
+  "rows": [
+    {
+      "หัวข้อ": "ประกาศ",
+      "เนื้อหา": "ทดสอบ",
+      "วันที่": "2026-01-01"
+    }
+  ]
+}

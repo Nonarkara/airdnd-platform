@@ -4,6 +4,28 @@ Read at the start of every session. The same mistake never happens twice.
 
 ---
 
+## 2026-09-08 · A ranked identity key is a trap; entity resolution needs a union of signals
+
+- **What went wrong:** The OTOP ingest first keyed each record on its strongest available identifier (tax ID → registration number → phone → name+area). One agency's export carried `PRODUCT_ID = "P-002"` — a row number inside that single spreadsheet — which outranked the telephone number and *blocked* the genuine cross-agency match. The same producer appeared twice and the national count inflated. This is the 2026-08-04 Maps-vs-phone bug in a new costume: a locally-unique identifier is not a global identity, and ranking it above a weaker-but-portable signal loses records.
+- **Correct behaviour:** Every record emits **every** identity signal it can support; records sharing any signal are unioned (disjoint-set). This resolves transitively — A shares a tax ID with B, B shares a phone with C, all three are one entity — which no ranked key can do. Source-local identifiers are namespaced by dataset (`reg:<datasetId>:<id>`) so they de-duplicate within one export and can never join across agencies. `otop/core/record.js`.
+- **The opposite failure, and its guard:** Union-find's own failure mode is one shared contact number swallowing the country — a district office line on 200 rows collapses 200 producers into one. The guard must be *administrative, not statistical*: a phone appearing in **more than one province** is a switchboard, not an identity, and is withdrawn. A tax ID is never withdrawn — one legal entity legitimately spans provinces. Withdrawn signals are recorded per record so the decision stays auditable.
+- **How to recognise:** merged-record count barely below accepted-row count while obvious cross-source duplicates survive (ranked-key failure); or one record with an absurd `mergedFrom` spanning many provinces (over-merge). Test the *basis*: report which signal joined each group, and never report a singleton's strongest available signal as if it were a merge basis — that inflates apparent corroboration.
+
+## 2026-09-08 · Thai government CSVs are frequently not UTF-8, and the failure is silent
+
+- **What went wrong (anticipated, guarded before it shipped):** Excel on a Thai Windows locale writes TIS-620 / windows-874. A naive UTF-8 decode turns every Thai column *header* into replacement characters, so field discovery matches nothing and the ingest reports "0 usable rows" for a perfectly good file — indistinguishable from a file that was never fetched.
+- **Correct behaviour:** Decode by evidence, not assumption. Strip the BOM, try UTF-8, and fall back to TIS-620 when the UTF-8 result carries replacement characters *and* the buffer has bytes in 0xA1–0xFB. The whole Thai block maps with one constant offset (+0x0D60), so the decoder is ~10 lines and needs no dependency. Report the encoding actually used in the build manifest. `otop/core/text_decode.js`.
+- **The off-by-one that hid it:** the fallback originally required `thaiChars > replacementChars`. A buffer that is *entirely* Thai produces exactly as many of one as the other, so the purest case failed the test. Use `>=`.
+- **How to recognise:** a resource whose row count is healthy but whose mapped-field count is zero; or column names rendering as `??????` in the manifest.
+
+## 2026-09-08 · Separate the network stage from the transform stage
+
+- **What went right:** `data.go.th` is 403-blocked by the sandbox egress policy, which would have blocked the whole OTOP build if fetching and transforming were one script. Splitting them — `otop:fetch` writes an untouched raw cache, `otop:build` is a pure function of files on disk — meant only the first stage was blocked, and everything downstream was developed, tested and rendered against a labelled fixture.
+- **Why it is right independent of the block:** stage 2 becomes reproducible (same files in, byte-identical out) so a reviewer can rerun and get the same numbers; CI never has to reach a government portal; and the raw cache is an *archive* — if a publisher silently rewrites a dataset, the version analysed still exists and the finding stays defensible.
+- **The rule this generalises to:** never let a network dependency sit in the middle of a transform. Fetch to disk, transform from disk.
+
+---
+
 ## 2026-08-04 · Maps-first identity undercounted the parlour inventory
 
 - **What went wrong:** `buildCanonicalKey` preferred Google Maps short-links over phone numbers. Distinct booking phones that reused a Maps URL (or a channel Maps pin) were merged into one card — venues vanished from the public count. Live Firestore fetch also capped at 1,200 of ~4,011 persona-posts, so some phones never reached the merge step. Hero "Named faces" counted only card titles, not rolled-up aliases.

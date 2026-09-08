@@ -1,0 +1,109 @@
+{
+  "builtAt": "2026-09-08T08:22:02.369Z",
+  "source": "fixture",
+  "degraded": true,
+  "reason": "Built from the committed development fixture, NOT from data.go.th. These records are synthetic and exist only to exercise the pipeline. Run `npm run otop:fetch` from a network that can reach data.go.th, then rebuild.",
+  "portal": "https://data.go.th",
+  "counts": {
+    "resourcesCached": 3,
+    "resourcesUsable": 2,
+    "rowsIn": 11,
+    "rowsAccepted": 8,
+    "rowsRejected": 2,
+    "recordsAfterMerge": 6,
+    "duplicatesCollapsed": 2
+  },
+  "rejectReasons": {
+    "no_area": 1,
+    "numeric_name": 1
+  },
+  "mergeBasis": {
+    "name_area": 1,
+    "tax_id": 1
+  },
+  "strongestSignal": {
+    "phone": 3,
+    "tax_id": 2,
+    "name_area": 1
+  },
+  "mergedRecords": 2,
+  "resources": [
+    {
+      "resourceId": "fixture:r1",
+      "datasetTitle": "[FIXTURE] ทะเบียนผู้ผลิต OTOP รายจังหวัด",
+      "organization": "[FIXTURE] กรมการพัฒนาชุมชน",
+      "method": "fixture",
+      "encoding": null,
+      "rowsIn": 6,
+      "usable": true,
+      "mappedFields": 11,
+      "map": {
+        "producerName": "ชื่อกลุ่มผู้ผลิต",
+        "productName": "ชื่อผลิตภัณฑ์",
+        "category": "ประเภทผลิตภัณฑ์",
+        "stars": "ระดับดาว",
+        "province": "จังหวัด",
+        "district": "อำเภอ",
+        "subdistrict": "ตำบล",
+        "phone": "เบอร์โทรศัพท์",
+        "taxId": "เลขประจำตัวผู้เสียภาษี",
+        "price": "ราคา",
+        "registeredYear": "ปีที่ลงทะเบียน"
+      },
+      "unmappedColumns": [
+        "ลำดับ"
+      ],
+      "ambiguous": [],
+      "rowsAccepted": 4,
+      "rowsRejected": 2
+    },
+    {
+      "resourceId": "fixture:r2",
+      "datasetTitle": "[FIXTURE] OTOP product champion results",
+      "organization": "[FIXTURE] Department of Business Development",
+      "method": "fixture",
+      "encoding": null,
+      "rowsIn": 4,
+      "usable": true,
+      "mappedFields": 12,
+      "map": {
+        "producerName": "PRODUCER_NAME",
+        "productName": "PRODUCT_NAME",
+        "category": "PRODUCT_TYPE",
+        "stars": "STAR_LEVEL",
+        "province": "PROVINCE_CODE",
+        "district": "DISTRICT",
+        "subdistrict": "TAMBON",
+        "phone": "TEL",
+        "taxId": "TAX_ID",
+        "registrationId": "PRODUCT_ID",
+        "price": "PRICE",
+        "registeredYear": "YEAR"
+      },
+      "unmappedColumns": [],
+      "ambiguous": [],
+      "rowsAccepted": 4,
+      "rowsRejected": 0
+    },
+    {
+      "resourceId": "fixture:r3",
+      "datasetTitle": "[FIXTURE] ข่าวประชาสัมพันธ์",
+      "organization": "[FIXTURE] หน่วยงานตัวอย่าง",
+      "method": "fixture",
+      "encoding": null,
+      "rowsIn": 1,
+      "usable": false,
+      "mappedFields": 0,
+      "map": {},
+      "unmappedColumns": [
+        "หัวข้อ",
+        "เนื้อหา",
+        "วันที่"
+      ],
+      "ambiguous": [],
+      "rowsAccepted": 0,
+      "rowsRejected": 0,
+      "skipReason": "no name column and/or no area column after field discovery"
+    }
+  ]
+}

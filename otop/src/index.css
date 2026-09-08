@@ -1,0 +1,254 @@
+/**
+ * one·tambon — design tokens and base.
+ *
+ * House rules inherited from the wellness project and enforced here:
+ *   · zero border-radius on anything non-circular
+ *   · zero gradients, zero box-shadows
+ *   · lines only where they divide, direct, or communicate
+ *   · one accent (amber #f59e0b), and on a light surface it carries RULES,
+ *     never glyphs — amber text on cream measures 2.04:1 and fails WCAG
+ *     (tasks/lessons.md · 2026-08-24). Every rule below obeys that.
+ *   · ONE wordmark per viewport: the hero owns it, the header never repeats it.
+ */
+
+:root {
+  --bg:        #faf9f7;
+  --bg-2:      #f3f1eb;
+  --surface:   #fcfbf9;
+  --line:      #e7e5dd;
+  --line-2:    #d2cfc5;
+
+  --ink:       #191712;
+  --ink-2:     #5c5a54;
+  --ink-3:     #736f66;
+  --ink-4:     #9a968c;
+
+  --accent:    #f59e0b;
+  --accent-2:  #b45309;   /* 4.9:1 on --bg — the only amber allowed on glyphs */
+  --navy:      #0e1e3c;
+  --alert:     #a51931;
+
+  --font-display: 'Josefin Sans', 'IBM Plex Sans Thai', Helvetica Neue, Arial, sans-serif;
+  --font-text:    Helvetica Neue, Helvetica, Arial, 'IBM Plex Sans Thai', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --measure: 1440px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  left: var(--gutter);
+  top: 0.5rem;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0.5rem 0.75rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+}
+
+.shell { min-height: 100dvh; display: flex; flex-direction: column; }
+.wrap { width: 100%; max-width: var(--measure); margin: 0 auto; padding-inline: var(--gutter); }
+
+/* ── header: nav + status only. No wordmark — the hero carries it. ────────── */
+.hdr {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.hdr-in {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; height: 48px;
+}
+.hdr-nav { display: flex; gap: 1.25rem; }
+.hdr-nav button {
+  background: none; border: 0; padding: 0;
+  font: inherit; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3); cursor: pointer;
+  border-bottom: 2px solid transparent; line-height: 2;
+}
+.hdr-nav button[aria-current='true'] { color: var(--ink); border-bottom-color: var(--accent); }
+.hdr-status {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-3);
+  display: flex; align-items: center; gap: .5rem;
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--navy); }
+.dot.warn { background: var(--accent); }
+
+/* ── hero ─────────────────────────────────────────────────────────────────── */
+.hero { border-bottom: 1px solid var(--line); padding-block: clamp(2.5rem, 7vw, 4.5rem) 0; }
+.hero-mark {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(2.25rem, 6vw, 3.75rem); line-height: 1;
+  letter-spacing: -.02em; margin: 0;
+}
+.hero-mark .mid { color: var(--accent-2); }
+.hero-sub {
+  margin: .75rem 0 0; max-width: 56ch;
+  font-size: clamp(15px, 1.6vw, 17px); color: var(--ink-2);
+}
+.hero-th { font-family: var(--font-display); color: var(--ink-3); margin: .25rem 0 0; }
+
+/* instrument panel — numerals do the talking */
+.gauges {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  border-top: 1px solid var(--line); margin-top: clamp(2rem, 5vw, 3rem);
+}
+.gauge { padding: 1.25rem 1rem 1.5rem 0; border-right: 1px solid var(--line); }
+.gauge:last-child { border-right: 0; }
+.gauge-n {
+  font-family: var(--font-mono); font-weight: 500;
+  font-size: clamp(1.5rem, 3.5vw, 2.125rem); line-height: 1;
+  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+}
+.gauge-l {
+  margin-top: .5rem; font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.gauge-th { font-size: 12px; color: var(--ink-4); }
+
+/* ── provenance banner ────────────────────────────────────────────────────── */
+.prov {
+  border-block: 1px solid var(--line);
+  border-left: 3px solid var(--ink-4);
+  padding: 1rem 1.25rem; margin-block: 1.5rem;
+  background: var(--surface);
+}
+.prov.degraded { border-left-color: var(--alert); }
+.prov-h {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3); margin: 0 0 .375rem;
+}
+.prov.degraded .prov-h { color: var(--alert); }
+.prov-b { margin: 0; color: var(--ink-2); max-width: 92ch; }
+.prov-b code {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--bg-2); padding: .0625rem .25rem;
+}
+
+/* ── section furniture ────────────────────────────────────────────────────── */
+.sec { padding-block: clamp(2.5rem, 6vw, 4rem); border-bottom: 1px solid var(--line); }
+.sec-h {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap;
+  border-top: 2px solid var(--accent); padding-top: .75rem; margin-bottom: 1.5rem;
+}
+.sec-t { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin: 0; }
+.sec-n { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); }
+
+/* ── completeness meters ──────────────────────────────────────────────────── */
+.meters { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem 2rem; }
+.meter-top { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+.meter-l { font-size: 12px; color: var(--ink-2); }
+.meter-v { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.meter-track { height: 4px; background: var(--bg-2); margin-top: .5rem; }
+.meter-fill { height: 100%; background: var(--navy); }
+.meter-fill.low { background: var(--accent); }
+.meter-note { margin-top: .375rem; font-size: 11px; color: var(--ink-4); }
+
+/* ── filters ──────────────────────────────────────────────────────────────── */
+.filters { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-end; margin-bottom: 1.25rem; }
+.field { display: flex; flex-direction: column; gap: .25rem; }
+.field label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.field select, .field input {
+  font: inherit; font-size: 13px; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line-2);
+  padding: .4375rem .5rem; min-width: 160px;
+}
+.field input { min-width: 240px; }
+.reset {
+  font: inherit; font-size: 12px; color: var(--ink-2);
+  background: none; border: 0; border-bottom: 1px solid var(--line-2);
+  padding: .4375rem .25rem; cursor: pointer;
+}
+
+/* ── the horizontal data row ──────────────────────────────────────────────── */
+.rows { border-top: 1px solid var(--line-2); }
+.row {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 2.4fr) minmax(0, 1.4fr) 7.5rem 5rem minmax(0, 1fr) 6rem;
+  gap: 1rem; align-items: baseline;
+  padding: .875rem 0; border-bottom: 1px solid var(--line);
+}
+.row-hd {
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-3); padding-block: .5rem; border-bottom: 1px solid var(--line-2);
+}
+.c-code { font-family: var(--font-mono); font-size: 12px; color: var(--ink-4); font-variant-numeric: tabular-nums; }
+.c-name { font-weight: 500; overflow-wrap: anywhere; }
+.c-producer { color: var(--ink-2); font-size: 13px; overflow-wrap: anywhere; }
+.c-cat { font-size: 12px; color: var(--ink-2); }
+.c-cat .inferred { color: var(--ink-4); font-style: italic; }
+.c-stars { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.c-stars .none { color: var(--ink-4); }
+.c-place { font-size: 13px; color: var(--ink-2); }
+.c-place .sub { display: block; font-size: 11px; color: var(--ink-4); }
+.c-src { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); text-align: right; }
+.c-src .multi { color: var(--ink); border-bottom: 2px solid var(--accent); }
+
+.empty { padding: 3rem 0; color: var(--ink-3); text-align: center; }
+.more { padding: 1.25rem 0; text-align: center; }
+.more button {
+  font: inherit; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  background: none; border: 1px solid var(--line-2); color: var(--ink);
+  padding: .625rem 1.25rem; cursor: pointer;
+}
+
+/* ── province table ───────────────────────────────────────────────────────── */
+/* Wide content scrolls inside its own container. The page body must never
+   scroll horizontally — a 7-column table in a 390px viewport otherwise pushes
+   the whole document sideways and every section with it. */
+.pscroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.ptable { min-width: 640px; }
+.ptable { width: 100%; border-collapse: collapse; }
+.ptable th {
+  text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 400; padding: .5rem .75rem .5rem 0;
+  border-bottom: 1px solid var(--line-2);
+}
+.ptable th.num, .ptable td.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.ptable td { padding: .5rem .75rem .5rem 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.ptable .th-name { font-family: var(--font-display); }
+.ptable .en { color: var(--ink-4); font-size: 11px; }
+.bar { display: block; height: 3px; background: var(--navy); margin-top: .25rem; }
+
+/* ── footer ───────────────────────────────────────────────────────────────── */
+.ftr { margin-top: auto; padding-block: 2rem 3rem; color: var(--ink-3); font-size: 12px; }
+.ftr p { margin: 0 0 .5rem; max-width: 88ch; }
+.ftr code { font-family: var(--font-mono); }
+
+.state { padding: 4rem var(--gutter); color: var(--ink-2); }
+.state h1 { font-family: var(--font-display); font-size: 1.25rem; margin: 0 0 .5rem; }
+.state.err { border-left: 3px solid var(--alert); }
+
+/* Belt and braces: nothing may widen the document. */
+html, body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  .row { grid-template-columns: 1fr 1fr; gap: .25rem 1rem; }
+  .row-hd { display: none; }
+  .c-code, .c-src { grid-column: span 1; }
+  .c-name, .c-producer { grid-column: 1 / -1; }
+}

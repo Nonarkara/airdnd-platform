@@ -1,0 +1,160 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+
+import { PROVINCES, REGION_ORDER, resolveProvince } from '../otop/core/provinces.js';
+import { classifyCategory, parseStars, CATEGORIES } from '../otop/core/taxonomy.js';
+import { decodeBuffer, csvToObjects } from '../otop/core/text_decode.js';
+import { discoverFieldMap, isUsableMapping } from '../otop/core/field_map.js';
+import {
+  buildRecord, gradeRecord, mergeRecords, findOverbroadSignals,
+  normalizePhone, normalizeTaxId, parseBuddhistYear, nameKey,
+} from '../otop/core/record.js';
+
+const prov = (datasetId = 'ds1', resourceId = 'r1') => ({ datasetId, resourceId, retrievedAt: '2026-09-08T00:00:00Z' });
+const row = (over = {}) => ({ sourceRowId: 'x#0', producerName: 'กลุ่มทดสอบ', productName: 'ผ้าทอ', province: 'บุรีรัมย์', ...over });
+
+test('77 provinces, unique codes, NESDC region totals reconcile', () => {
+  assert.equal(PROVINCES.length, 77);
+  assert.equal(new Set(PROVINCES.map((p) => p.code)).size, 77);
+  const counts = Object.fromEntries(REGION_ORDER.map((r) => [r, PROVINCES.filter((p) => p.region === r).length]));
+  assert.deepEqual(counts, { north: 9, northeast: 20, central: 22, east: 7, west: 5, south: 14 });
+});
+
+test('province resolves from Thai, romanisation, TIS-1099 code, ISO and free-text address', () => {
+  for (const input of ['เชียงใหม่', 'จ.เชียงใหม่', 'Chiang Mai', 50, '50', 'TH-50', '119 ม.4 ต.สุเทพ อ.เมือง จ.เชียงใหม่ 50200']) {
+    assert.equal(resolveProvince(input)?.code, 50, `failed for ${input}`);
+  }
+});
+
+test('province refuses to guess rather than defaulting to Bangkok', () => {
+  for (const input of ['Narnia', '', null, 'ไม่ระบุ']) assert.equal(resolveProvince(input), null);
+});
+
+test('category prefers a declared code or name over inference', () => {
+  assert.deepEqual(classifyCategory({ declared: '3' }), { category: 'textile', confidence: 'declared', matched: '3' });
+  assert.equal(classifyCategory({ declared: 'ของใช้/ของตกแต่ง/ของที่ระลึก' }).category, 'craft');
+});
+
+test('category inference is head-initial: the leading noun names the product form', () => {
+  // Without head weighting "ไวน์มะม่วง" scores as food on the longer ingredient word.
+  assert.equal(classifyCategory({ text: 'ไวน์มะม่วงหาวมะนาวโห่' }).category, 'beverage');
+  assert.equal(classifyCategory({ text: 'สบู่สมุนไพรข้าวหอมมะลิ' }).category, 'herbal');
+  assert.equal(classifyCategory({ text: 'ตะกร้าจักสานผักตบชวา' }).category, 'craft');
+});
+
+test('category returns none rather than a wrong guess', () => {
+  assert.deepEqual(classifyCategory({ text: 'zzzz' }), { category: null, confidence: 'none', matched: null });
+  assert.equal(CATEGORIES.length, 5);
+});
+
+test('stars distinguish ungraded (0) from unrecorded (null)', () => {
+  assert.equal(parseStars('ไม่ผ่าน'), 0);
+  assert.equal(parseStars(''), null);
+  assert.equal(parseStars('ระดับ 4 ดาว'), 4);
+});
+
+test('TIS-620 buffers are detected and decoded, UTF-8 is left alone', () => {
+  const thai = 'ชื่อผลิตภัณฑ์,ราคา\nผ้าไหม,1500';
+  const tis = Buffer.from([...thai].map((c) => (c.charCodeAt(0) > 0x0e00 ? c.charCodeAt(0) - 0x0d60 : c.charCodeAt(0))));
+  const decoded = decodeBuffer(tis);
+  assert.equal(decoded.encoding, 'tis-620');
+  assert.equal(decoded.text, thai);
+  assert.equal(decodeBuffer(Buffer.from(thai, 'utf8')).encoding, 'utf-8');
+});
+
+test('CSV handles quoted delimiters, doubled quotes and CRLF', () => {
+  const rows = csvToObjects('a,b\r\n"x, y","he said ""hi"""\r\n');
+  assert.deepEqual(rows, [{ a: 'x, y', b: 'he said "hi"' }]);
+});
+
+test('field discovery maps Thai and Latin headers, and refuses irrelevant resources', () => {
+  const aliases = { productName: ['ชื่อผลิตภัณฑ์', 'product_name'], province: ['จังหวัด', 'province_code'] };
+  assert.ok(isUsableMapping(discoverFieldMap(['ชื่อผลิตภัณฑ์', 'จังหวัด'], aliases).map));
+  assert.ok(isUsableMapping(discoverFieldMap(['PRODUCT_NAME', 'PROVINCE_CODE'], aliases).map));
+  assert.equal(isUsableMapping(discoverFieldMap(['หัวข้อ', 'เนื้อหา'], aliases).map), false);
+});
+
+test('phone normalisation handles +66, Thai numerals, extensions; rejects placeholders', () => {
+  assert.equal(normalizePhone('+66812345678'), '0812345678');
+  assert.equal(normalizePhone('๐๘๑๒๓๔๕๖๗๘'), '0812345678');
+  assert.equal(normalizePhone('053-123456 ต่อ 12'), '053123456');
+  assert.equal(normalizePhone('0000000000'), '');
+});
+
+test('tax ID enforces the mod-11 checksum', () => {
+  const stem = '310170121234';
+  let sum = 0;
+  for (let i = 0; i < 12; i += 1) sum += Number(stem[i]) * (13 - i);
+  const valid = stem + ((11 - (sum % 11)) % 10);
+  assert.equal(normalizeTaxId(valid), valid);
+  assert.equal(normalizeTaxId(stem + (((11 - (sum % 11)) % 10) + 1) % 10), '');
+});
+
+test('Buddhist and Common era both normalise to CE', () => {
+  assert.equal(parseBuddhistYear('2563'), 2020);
+  assert.equal(parseBuddhistYear(2020), 2020);
+  assert.equal(parseBuddhistYear(''), null);
+});
+
+test('name keys keep Thai vowel signs and tone marks', () => {
+  assert.notEqual(nameKey('บ้าน'), nameKey('บาน'));
+  assert.equal(nameKey('กลุ่มทอผ้าบ้านหนองบัว'), nameKey('กลุ่ม ทอผ้า บ้านหนองบัว'));
+});
+
+test('buildRecord refuses to exist without provenance', () => {
+  assert.throws(() => buildRecord(row(), null), /provenance/);
+});
+
+test('quality gate reports reasons, and never defaults a missing province', () => {
+  const r = buildRecord(row({ province: 'ไม่ระบุ' }), prov());
+  assert.equal(r.provinceCode, null);
+  assert.deepEqual(gradeRecord(r).rejects, ['no_area']);
+});
+
+test('a source-local registration id never merges across datasets', () => {
+  // The exact trap that a ranked identity key falls into: "P-002" is a row
+  // number in one agency's export, not a national identifier.
+  const a = buildRecord(row({ registrationId: 'P-002', producerName: 'กลุ่ม ก' }), prov('dsA', 'rA'));
+  const b = buildRecord(row({ registrationId: 'P-002', producerName: 'กลุ่ม ข' }), prov('dsB', 'rB'));
+  assert.equal(mergeRecords([a, b]).length, 2);
+});
+
+test('records union transitively across sources: tax ID joins A-B, phone joins B-C', () => {
+  const stem = '310170121234';
+  let sum = 0;
+  for (let i = 0; i < 12; i += 1) sum += Number(stem[i]) * (13 - i);
+  const tax = stem + ((11 - (sum % 11)) % 10);
+
+  const a = buildRecord(row({ sourceRowId: 'a', taxId: tax, producerName: 'ชื่อ A' }), prov('ds1', 'r1'));
+  const b = buildRecord(row({ sourceRowId: 'b', taxId: tax, phone: '081-111-2222', producerName: 'ชื่อ B' }), prov('ds2', 'r2'));
+  const c = buildRecord(row({ sourceRowId: 'c', phone: '0811112222', producerName: 'ชื่อ C' }), prov('ds3', 'r3'));
+
+  const merged = mergeRecords([a, b, c]);
+  assert.equal(merged.length, 1);
+  assert.equal(merged[0].mergedFrom, 3);
+  assert.equal(merged[0].sourceCount, 3);
+});
+
+test('a phone spanning two provinces is withdrawn as identity', () => {
+  const a = buildRecord(row({ sourceRowId: 'a', phone: '02-111-2222', province: 'บุรีรัมย์', producerName: 'กลุ่ม ก' }), prov());
+  const b = buildRecord(row({ sourceRowId: 'b', phone: '02-111-2222', province: 'เชียงใหม่', producerName: 'กลุ่ม ข' }), prov());
+  assert.equal(findOverbroadSignals([a, b]).size, 1);
+  const merged = mergeRecords([a, b]);
+  assert.equal(merged.length, 2, 'a shared office number must not fuse two provinces');
+  assert.deepEqual(merged[0].withdrawnSignals, ['phone']);
+});
+
+test('merge keeps the highest star grading and every attesting source', () => {
+  const a = buildRecord(row({ sourceRowId: 'a', phone: '081-111-2222', stars: '3' }), prov('ds1', 'r1'));
+  const b = buildRecord(row({ sourceRowId: 'b', phone: '081-111-2222', stars: '5' }), prov('ds2', 'r2'));
+  const [merged] = mergeRecords([a, b]);
+  assert.equal(merged.stars, 5);
+  assert.equal(merged.sourceCount, 2);
+  assert.equal(merged.mergeBasis, 'phone');
+});
+
+test('a singleton reports no merge basis', () => {
+  const [merged] = mergeRecords([buildRecord(row({ phone: '081-111-2222' }), prov())]);
+  assert.equal(merged.mergeBasis, null);
+  assert.equal(merged.strongestSignal, 'phone');
+});

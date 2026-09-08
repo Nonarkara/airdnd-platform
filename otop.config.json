@@ -1,0 +1,46 @@
+{
+  "domain": "otop",
+  "name": "OTOP Thailand — product and producer intelligence",
+  "site": "otop.nonarkara.org",
+
+  "source": {
+    "portal": "https://data.go.th",
+    "api": "https://data.go.th/api/3/action",
+    "note": "CKAN 2.9. package_search for discovery, datastore_search for tabular resources, direct resource download as fallback when the DataStore is not active for a resource.",
+    "queries": [
+      { "q": "OTOP", "rows": 100 },
+      { "q": "หนึ่งตำบลหนึ่งผลิตภัณฑ์", "rows": 100 },
+      { "q": "ผลิตภัณฑ์ชุมชน", "rows": 100 }
+    ],
+    "organizations": [
+      "the_community_development_dept",
+      "department_of_business_development",
+      "office_of_smes_promotion"
+    ],
+    "excludeFormats": ["PDF", "DOC", "DOCX", "ZIP", "RAR", "SHP", "HTML"]
+  },
+
+  "fieldAliases": {
+    "producerName": ["ชื่อผู้ผลิต", "ชื่อผู้ประกอบการ", "ชื่อกลุ่มผู้ผลิต", "ชื่อกลุ่ม", "ผู้ผลิต", "ผู้ประกอบการ", "ชื่อสถานประกอบการ", "ชื่อร้าน", "ชื่อวิสาหกิจชุมชน", "producer", "producer_name", "entrepreneur", "business_name", "group_name"],
+    "producerType": ["ประเภทผู้ผลิต", "ประเภทผู้ประกอบการ", "ประเภทกลุ่ม", "ชนิดผู้ผลิต", "producer_type"],
+    "productName": ["ชื่อผลิตภัณฑ์", "ชื่อสินค้า", "ผลิตภัณฑ์", "สินค้า", "ชื่อผลิตภัณฑ์ otop", "product", "product_name", "item_name"],
+    "productDescription": ["รายละเอียด", "รายละเอียดผลิตภัณฑ์", "คำอธิบาย", "รายละเอียดสินค้า", "description", "detail", "product_detail"],
+    "category": ["ประเภทผลิตภัณฑ์", "ประเภทสินค้า", "กลุ่มผลิตภัณฑ์", "ประเภท", "หมวดหมู่", "หมวด", "category", "product_type", "product_group"],
+    "stars": ["ระดับดาว", "ดาว", "ระดับ", "ผลการคัดสรร", "ระดับผลิตภัณฑ์", "ระดับดาว otop", "จำนวนดาว", "star", "stars", "star_level", "grade"],
+    "province": ["จังหวัด", "ชื่อจังหวัด", "รหัสจังหวัด", "province", "province_name", "province_code", "changwat"],
+    "district": ["อำเภอ", "ชื่ออำเภอ", "เขต/อำเภอ", "อำเภอ/เขต", "เขต", "district", "amphoe", "amphur"],
+    "subdistrict": ["ตำบล", "ชื่อตำบล", "แขวง/ตำบล", "ตำบล/แขวง", "แขวง", "subdistrict", "tambon", "tambol"],
+    "address": ["ที่อยู่", "ที่ตั้ง", "สถานที่ตั้ง", "ที่อยู่ผู้ผลิต", "บ้านเลขที่", "address", "location"],
+    "phone": ["โทรศัพท์", "เบอร์โทรศัพท์", "เบอร์โทร", "โทร", "หมายเลขโทรศัพท์", "ติดต่อ", "phone", "tel", "telephone", "contact", "mobile"],
+    "email": ["อีเมล", "อีเมล์", "ไปรษณีย์อิเล็กทรอนิกส์", "email", "e-mail"],
+    "website": ["เว็บไซต์", "เวบไซต์", "website", "web", "url", "facebook"],
+    "taxId": ["เลขประจำตัวผู้เสียภาษี", "เลขนิติบุคคล", "เลขทะเบียนนิติบุคคล", "เลขบัตรประชาชน", "tax_id", "taxid", "juristic_id"],
+    "registrationId": ["รหัสผู้ผลิต", "รหัสทะเบียน", "เลขที่ทะเบียน", "รหัส otop", "เลขทะเบียน otop", "รหัสผลิตภัณฑ์", "otop_id", "registration_no", "product_id", "id"],
+    "price": ["ราคา", "ราคาขาย", "ราคา (บาท)", "ราคาต่อหน่วย", "price", "unit_price"],
+    "registeredYear": ["ปีที่ลงทะเบียน", "ปีที่จดทะเบียน", "ปีงบประมาณ", "ปี", "ปีที่คัดสรร", "year", "fiscal_year", "registered_year"],
+    "latitude": ["ละติจูด", "latitude", "lat", "y"],
+    "longitude": ["ลองจิจูด", "longitude", "lng", "lon", "long", "x"]
+  },
+
+  "database": { "table_name": "otop_records" }
+}

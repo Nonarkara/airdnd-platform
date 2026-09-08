@@ -62,3 +62,8 @@ public/images/
 # these from public/data.json before every wrangler deploy.)
 public/og/listing-[0-9]*.png
 public/og/default.png
+
+# OTOP — build output and raw source cache
+dist-otop/
+otop/data/raw/*.json
+!otop/data/raw/manifest.json
