@@ -37,7 +37,7 @@
  * producer we want to see merged.
  */
 
-import { resolveProvince } from './provinces.js';
+import { resolveProvince, resolveDistrictToProvince } from './provinces.js';
 import { classifyCategory, classifyProducerType, parseStars } from './taxonomy.js';
 
 export const SIGNAL_STRENGTH = ['tax_id', 'phone', 'registration', 'name_area'];
@@ -173,7 +173,14 @@ export function buildRecord(row, provenance) {
 
   const producerName = normalizeText(row.producerName, '') || null;
   const productName = normalizeText(row.productName, '') || null;
-  const province = resolveProvince(row.province ?? row.provinceCode ?? row.address ?? '');
+  const districtRaw = normalizeText(row.district, '') || '';
+  // Province resolution. The central OTOP producer registry exports only
+  // อำเภอ and ตำบล, not จังหวัด, so the district→province reverse index is a
+  // required second pass. Order: explicit province → district lookup → address
+  // substring. Returns null on ambiguity rather than guessing.
+  let province = resolveProvince(row.province ?? row.provinceCode ?? '');
+  if (!province && districtRaw) province = resolveDistrictToProvince(districtRaw);
+  if (!province) province = resolveProvince(row.address ?? '');
   const category = classifyCategory({
     declared: row.category,
     text: [productName, row.productDescription].filter(Boolean).join(' '),
@@ -194,7 +201,7 @@ export function buildRecord(row, provenance) {
     provinceEn: province ? province.en : null,
     provinceCode: province ? province.code : null,
     region: province ? province.region : null,
-    district: normalizeText(row.district, '') || null,
+    district: districtRaw || null,
     subdistrict: normalizeText(row.subdistrict, '') || null,
     address: normalizeText(row.address, '') || null,
 

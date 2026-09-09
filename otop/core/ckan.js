@@ -18,7 +18,9 @@ import { decodeBuffer, csvToObjects } from './text_decode.js';
 const DEFAULT_API = 'https://data.go.th/api/3/action';
 
 export class CkanClient {
-  constructor({ api = DEFAULT_API, timeoutMs = 60_000, retries = 4, userAgent = 'otop-intelligence/1.0 (+https://otop.nonarkara.org)' } = {}) {
+  // Browser-like UA: data.go.th sits behind Cloudflare, which 429-challenges
+  // non-browser agents. Identify in Accept / comment headers only.
+  constructor({ api = DEFAULT_API, timeoutMs = 60_000, retries = 6, userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36' } = {}) {
     this.api = api.replace(/\/$/, '');
     this.timeoutMs = timeoutMs;
     this.retries = retries;
@@ -43,12 +45,37 @@ export class CkanClient {
         });
 
         if (response.status === 403 || response.status === 407) {
-          // Egress-policy denial. Retrying cannot help and hammering the proxy
-          // is antisocial — surface it immediately with the host named.
-          throw Object.assign(new Error(`blocked (HTTP ${response.status}) for ${new URL(url).host}`), { blocked: true });
+          // Cloudflare WAF challenge: a real egress-policy denial would persist
+          // across retries, but the WAF rate-limits per-IP and lifts after a
+          // short pause. Back off and try again; only the final attempt's 403
+          // surfaces as a hard block. This is what keeps the catalogue-scale
+          // pull alive through the first ~100 resources before the throttle
+          // settles in.
+          await response.arrayBuffer().catch(() => null);
+          clearTimeout(timer);
+          const waitMs = 30_000 * 2 ** attempt; // 30s, 60s, 120s, 240s
+          lastError = Object.assign(
+            new Error(`HTTP ${response.status} (cloudflare throttled; waited ${Math.round(waitMs / 1000)}s)`),
+            { blocked: attempt === this.retries },
+          );
+          await new Promise((r) => setTimeout(r, waitMs));
+          continue;
         }
         if (response.status === 404) {
           throw Object.assign(new Error('not found (HTTP 404)'), { fatal: true });
+        }
+        if (response.status === 429 || response.status === 503) {
+          // Rate limit / temporary overload — honour Retry-After when present,
+          // otherwise wait longer than the normal ladder before the next try.
+          const retryAfter = Number(response.headers.get('retry-after'));
+          const waitMs = Number.isFinite(retryAfter) && retryAfter > 0
+            ? retryAfter * 1000
+            : 15_000 * 2 ** attempt;
+          await response.arrayBuffer().catch(() => null);
+          clearTimeout(timer);
+          lastError = new Error(`HTTP ${response.status} (rate-limited; waited ${Math.round(waitMs / 1000)}s)`);
+          await new Promise((r) => setTimeout(r, waitMs));
+          continue;
         }
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
