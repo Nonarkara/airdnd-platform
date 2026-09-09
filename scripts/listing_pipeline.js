@@ -10,6 +10,7 @@ import {
 } from '../src/lib/listing_contract.js';
 import { resolveGoogleMapsDataCached as resolveGoogleMapsData } from './geocoder_cache.js';
 import { CITY_PATTERNS, cleanDisplayText, normalizeText, normalizePhone, inferCityFromLocation } from '../src/lib/normalization.js';
+import { classifyVenueTier } from '../src/lib/venue_tiers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -448,6 +449,7 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         serviceTags,
         userFeedbackSummary,
         isSafeImage: listing?.isSafeImage !== false,
+        complianceTier: classifyVenueTier(listing).key,
       };
     })
     .filter(Boolean);
@@ -975,6 +977,9 @@ export async function insertListingsIfPossible(supabase, listings) {
       if (listing.serviceTags?.length) row.service_tags = listing.serviceTags;
       if (listing.userFeedbackSummary) row.discussion_notes = listing.userFeedbackSummary;
       if (listing.isSafeImage === false) row.is_safe_image = false;
+      if (listing.complianceTier && listing.complianceTier !== 'unclassified') {
+        row.compliance_tier = listing.complianceTier;
+      }
 
       // Geocoding: resolve coordinates from Google Maps URL
       if (listing.mapsUrl && !row.latitude) {

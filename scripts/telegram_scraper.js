@@ -1286,8 +1286,15 @@ async function fetchMessagesWithCatchUp(client, target, lastSeenId, state) {
       beforeId: oldestFetched,
       recordedAt: new Date().toISOString(),
     };
+    // Flag for heartbeat-triggered backfill (auto-recovery).
+    state.pendingBackfill = state.pendingBackfill || {};
+    state.pendingBackfill[target.token] = {
+      afterId: lastSeenId,
+      beforeId: oldestFetched,
+      flaggedAt: new Date().toISOString(),
+    };
     console.warn(
-      `${target.displayLabel}: gap ${lastSeenId}..${oldestFetched} not closed after ${catchUpPages} page(s); recorded in state.intakeGaps. Run scripts/backfill_history.js to recover it.`,
+      `${target.displayLabel}: gap ${lastSeenId}..${oldestFetched} not closed after ${catchUpPages} page(s); recorded in state.intakeGaps. Backfill flagged for heartbeat.`,
     );
   } else if (state.intakeGaps?.[target.token]) {
     delete state.intakeGaps[target.token];
