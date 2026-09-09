@@ -191,3 +191,9 @@ Read at the start of every session. The same mistake never happens twice.
 - **What went wrong:** four sessions each appended an honest section to one Atlas view until it was 18 stacked tables, and nobody's question was answered in order. The fix was not a 19th section.
 - **Correct behaviour:** give the data a unit of reading below the nation (one province, whole, at a shareable URL) and cut the national view into chapters that each answer one question, chart first, tables below, long ones behind `<details>`. Every existing section survived; each was moved, not deleted.
 - **How to recognise:** the next contribution is "add a section" and the page already needs a sticky nav to be usable. Ask which question the reader arrived with, and which page unit answers it.
+
+## 2026-09-10 · `force-cache` on an unhashed data URL pins a returning visitor to an old build
+
+- **What went wrong:** province shards (`/p/46.json`) were fetched with `cache: 'force-cache'`. The URL never changes between builds, so a browser that had seen the site once kept serving its first shard forever — on the live dossier Kalasin showed "0 of 3,813 records name a product" while the served file held 3,431. Stale data under a fresh heading: the silent-substitute failure this project bans.
+- **Correct behaviour:** unhashed data URLs use `cache: 'no-cache'` (revalidate against the edge ETag — a 304 when unchanged, new bytes after a rebuild), the same as the index already did. Only content-hashed asset URLs may be cached forever.
+- **How to recognise:** a number on the live page disagrees with the artefact the live URL serves to `curl`. Compare `fetch(url, {cache:'force-cache'})` and `{cache:'reload'}` in the console before suspecting the build.

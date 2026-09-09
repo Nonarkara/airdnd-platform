@@ -26,7 +26,12 @@ export async function loadIndex() {
 export async function loadShards(codes) {
   const results = await Promise.allSettled(
     codes.map(async (code) => {
-      const response = await fetch(`/p/${code}.json`, { cache: 'force-cache' });
+      // Shard URLs are not content-hashed, so `force-cache` pinned a returning
+      // visitor to whichever build they first saw — a stale shard under a fresh
+      // heading, the silent-substitute failure this project bans. `no-cache`
+      // revalidates against the edge ETag: a 304 when nothing changed, the
+      // new bytes when a rebuild shipped.
+      const response = await fetch(`/p/${code}.json`, { cache: 'no-cache' });
       if (!response.ok) throw new Error(`province shard ${code} unavailable (${response.status})`);
       return response.json();
     }),
