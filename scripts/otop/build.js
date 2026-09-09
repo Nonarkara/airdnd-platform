@@ -27,7 +27,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { discoverFieldMap, isUsableMapping, applyFieldMap } from '../../otop/core/field_map.js';
-import { PROVINCE_BY_CODE } from '../../otop/core/provinces.js';
+import { PROVINCE_BY_CODE, PROVINCES } from '../../otop/core/provinces.js';
 import { CATEGORIES } from '../../otop/core/taxonomy.js';
 import { buildRecord, gradeRecord, mergeRecords } from '../../otop/core/record.js';
 
@@ -50,7 +50,15 @@ function readCache(dir) {
   return fs
     .readdirSync(dir)
     .filter((f) => f.endsWith('.json') && f !== 'manifest.json')
-    .map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')))
+    .map((f) => {
+      try {
+        return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+      } catch (e) {
+        console.warn(`[otop:build] corrupt cache file ${f}: ${e.message}. Skipping.`);
+        return null;
+      }
+    })
+    .filter(Boolean)
     .filter((entry) => Array.isArray(entry.rows) && entry.rows.length > 0);
 }
 
@@ -204,7 +212,7 @@ function main() {
       records: merged.length,
       producers: new Set(merged.map((r) => r.identityKey)).size,
       provincesWithRecords: shards.length,
-      provincesTotal: 77,
+      provincesTotal: PROVINCES.length,
     },
     categories: CATEGORIES.map((c) => ({ id: c.id, th: c.th, en: c.en })),
     provinces: shards,

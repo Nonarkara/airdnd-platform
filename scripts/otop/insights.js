@@ -25,8 +25,24 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
 const PUB = path.join(ROOT, 'otop/public');
 
-const meta = JSON.parse(fs.readFileSync(path.join(PUB, 'otop_meta.json'), 'utf8'));
-const index = JSON.parse(fs.readFileSync(path.join(PUB, 'otop_index.json'), 'utf8'));
+const metaPath = path.join(PUB, 'otop_meta.json');
+const indexPath = path.join(PUB, 'otop_index.json');
+if (!fs.existsSync(metaPath) || !fs.existsSync(indexPath)) {
+  console.error('[otop:insights] missing otop_meta.json or otop_index.json — cannot compute aggregates');
+  process.exit(1);
+}
+let meta, index;
+try {
+  meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+  index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+} catch (e) {
+  console.error(`[otop:insights] corrupt JSON in metadata or index: ${e.message}`);
+  process.exit(1);
+}
+if (!index.totals || typeof index.totals.records !== 'number') {
+  console.error('[otop:insights] index.totals.records missing or invalid — cannot verify shard consistency');
+  process.exit(1);
+}
 
 /**
  * Read the corpus back out of the province shards rather than from a flat file.
@@ -145,9 +161,10 @@ const contributors = [...tally(records.flatMap((r) => r.provenance), (p) => p.or
   .map(([organization, count]) => ({ organization, records: count }))
   .sort((a, b) => b.records - a.records);
 
+const CONCENTRATION_TOP_N = 10;
 const concentration = {
-  top10Share: pct(byProvince.slice(0, 10).reduce((n, p) => n + p.records, 0), records.length),
-  top10: byProvince.slice(0, 10).map((p) => ({ th: p.th, en: p.en, records: p.records })),
+  top10Share: pct(byProvince.slice(0, CONCENTRATION_TOP_N).reduce((n, p) => n + p.records, 0), records.length),
+  top10: byProvince.slice(0, CONCENTRATION_TOP_N).map((p) => ({ th: p.th, en: p.en, records: p.records })),
   emptyProvinces: byProvince.filter((p) => p.records === 0).length,
 };
 
@@ -458,7 +475,7 @@ const insights = {
 
 fs.writeFileSync(path.join(PUB, 'otop_insights.json'), JSON.stringify(insights, null, 2));
 
-console.log(`[otop:insights] ${insights.national.records} records · ${insights.national.provincesCovered}/77 provinces · degraded=${insights.degraded}`);
+console.log(`[otop:insights] ${insights.national.records} records · ${insights.national.provincesCovered}/${PROVINCES.length} provinces · degraded=${insights.degraded}`);
 console.log(`[otop:insights] completeness — contact ${insights.national.completeness.withContact}% · graded ${insights.national.completeness.withStars}% · priced ${insights.national.completeness.withPrice}%`);
 console.log(`[otop:insights] category declared ${insights.national.completeness.categoryDeclared}% / inferred ${insights.national.completeness.categoryInferred}% / unknown ${insights.national.completeness.categoryUnknown}%`);
 console.log(`[otop:insights] corroborated by >1 source: ${insights.national.corroboratedShare}% · top-10 concentration ${insights.concentration.top10Share}%`);

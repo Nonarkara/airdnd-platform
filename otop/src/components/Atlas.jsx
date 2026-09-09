@@ -64,6 +64,8 @@ export default function Atlas({ insights }) {
   const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [], reachGap = [], corroborationQuadrant = {}, hiddenChampions = [], regionIdentity = [], revenue = null } = insights;
 const bnBaht = (v) => (v == null ? '—' : `${(v / 1e9).toFixed(2)}B baht`);
 
+const unclassified = national.categories?.find((c) => c.id === 'unclassified');
+  const classifiedCount = national.records - (unclassified?.count ?? 0);
   const provinces = useMemo(() => {
     const rows = byProvince.map((p) => ({ ...p, rail: railOf(p), classified: classifiedOf(p) }));
     const by = {
@@ -301,11 +303,11 @@ const bnBaht = (v) => (v == null ? '—' : `${(v / 1e9).toFixed(2)}B baht`);
       {/* ── REGION IDENTITY — what each region actually makes ──────────── */}
       {regionIdentity.length > 0 && (
         <>
-          <h3 className="sub-h">Region identity · อัตลักษณ์ภูมิภาค</h3>
-          <p className="t-note">
-            Shares are of <em>classified records only</em> — and only {n(national.records - national.categories.find((c) => c.id === 'unclassified').count)} of {n(national.records)} records
-            carry any category at all. Read each card as "of what this region bothered to
-            describe, this is what it describes": a buyer who needs woven fabric starts in
+            <h3 className="sub-h">Region identity · อัตลักษณ์ภูมิภาค</h3>
+            <p className="t-note">
+              Shares are of <em>classified records only</em> — and only {n(classifiedCount)} of {n(national.records)} records
+              carry any category at all. Read each card as "of what this region bothered to
+              describe, this is what it describes": a buyer who needs woven fabric starts in
             the North/Isaan; processed food concentrates in the West and South.
           </p>
           <div className="t-region-id">
@@ -437,7 +439,9 @@ const bnBaht = (v) => (v == null ? '—' : `${(v / 1e9).toFixed(2)}B baht`);
                   <span>{Number(year) + 543} BE · {year} CE{a.months < 12 ? ` (${a.months} months)` : ''}</span>
                   <span className="t-row-num">{bnBaht(a.total)}</span>
                 </div>
-                <span className="t-ranked-track"><i style={{ width: `${(a.total / Math.max(...Object.values(revenue.nationalAnnual).map((x) => x.total))) * 100}%` }} /></span>
+                const revenueTotals = Object.values(revenue?.nationalAnnual ?? {}).map((x) => x.total).filter(Boolean);
+const maxRevenue = revenueTotals.length ? Math.max(...revenueTotals) : 1;
+              <span className="t-ranked-track"><i style={{ width: `${(a.total / maxRevenue) * 100}%` }} /></span>
               </div>
             ))}
           </div>

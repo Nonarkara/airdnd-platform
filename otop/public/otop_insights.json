@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-09T14:08:05.708Z",
+  "builtAt": "2026-09-09T15:25:03.259Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -10064,7 +10064,7 @@
     }
   ],
   "revenue": {
-    "builtAt": "2026-09-09T14:08:03.916Z",
+    "builtAt": "2026-09-09T15:25:01.702Z",
     "unit": "บาท",
     "seriesSource": "กรมพัฒนาชุมชน",
     "latestFullYear": 2023,

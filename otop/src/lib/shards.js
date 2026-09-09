@@ -24,14 +24,24 @@ export async function loadIndex() {
 }
 
 export async function loadShards(codes) {
-  const results = await Promise.all(
+  const results = await Promise.allSettled(
     codes.map(async (code) => {
       const response = await fetch(`/p/${code}.json`, { cache: 'force-cache' });
       if (!response.ok) throw new Error(`province shard ${code} unavailable (${response.status})`);
       return response.json();
     }),
   );
-  return results.flat();
+  const records = [];
+  const failed = [];
+  for (const result of results) {
+    if (result.status === 'fulfilled') {
+      records.push(...result.value);
+    } else {
+      failed.push(result.reason?.message ?? String(result.reason));
+    }
+  }
+  if (failed.length > 0) console.warn(`[loadShards] ${failed.length} shard(s) failed: ${failed.join('; ')}`);
+  return records;
 }
 
 /**

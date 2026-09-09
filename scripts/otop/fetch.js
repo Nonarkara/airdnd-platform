@@ -146,8 +146,10 @@ async function main() {
   const skipped = limited.length - pending.length;
   if (skipped > 0) console.log(`[otop:fetch] ${HUMAN(skipped)} resources already cached — resuming with ${HUMAN(pending.length)}`);
 
-  const concurrency = Math.max(1, Number(value('concurrency', 4)));
-  const maxRows = Number(value('max-rows-per-resource', 200_000));
+const MAX_CONCURRENCY = 20;
+const MAX_ROWS_PER_RESOURCE = 500_000;
+const concurrency = Math.max(1, Math.min(MAX_CONCURRENCY, Number(value('concurrency', 4)) || 4));
+const maxRows = Math.min(MAX_ROWS_PER_RESOURCE, Number(value('max-rows-per-resource', 200_000)) || 200_000);
   let done = 0;
   let aborted = false;
 

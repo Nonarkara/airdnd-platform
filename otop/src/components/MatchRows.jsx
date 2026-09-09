@@ -94,7 +94,7 @@ export default function MatchRows({ matches, limit }) {
           <span className="c-src">
             <span
               className={record.sourceCount > 1 ? 'multi' : undefined}
-              title={record.provenance.map((p) => p.datasetTitle ?? p.datasetId).join('\n')}
+              title={record.provenance?.map((p) => p.datasetTitle ?? p.datasetId).join('\n') ?? ''}
             >
               {record.sourceCount}
             </span>

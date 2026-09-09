@@ -74,7 +74,13 @@ if (!fs.existsSync(RAW)) {
   process.exit(0);
 }
 
-const raw = JSON.parse(fs.readFileSync(RAW, 'utf8'));
+let raw;
+try {
+  raw = JSON.parse(fs.readFileSync(RAW, 'utf8'));
+} catch (e) {
+  degrade(`corrupt JSON in ${REVENUE_RESOURCE_ID}.json: ${e.message}`);
+  process.exit(0);
+}
 const rows = raw.rows ?? [];
 if (rows.length === 0) {
   degrade('raw revenue file cached but holds zero rows');
@@ -191,11 +197,13 @@ const out = {
 
 fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
 
-const latest = Math.max(...Object.keys(nationalAnnual).map(Number));
+const latest = Object.keys(nationalAnnual).length
+  ? Math.max(...Object.keys(nationalAnnual).map(Number))
+  : null;
 console.log(
   `[otop:revenue] ${out.coverage.provincesWithData}/${out.coverage.provinces} provinces with data · ` +
     Object.entries(nationalAnnual)
       .map(([y, a]) => `${y}: ${(a.total / 1e9).toFixed(2)}B baht over ${a.months}mo`)
       .join(' · ') +
-    ` · latest month key ${latest}`,
+    (latest != null ? ` · latest month key ${latest}` : ''),
 );
