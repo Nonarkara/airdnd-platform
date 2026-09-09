@@ -507,14 +507,38 @@ const revenue = (() => {
     .filter((p) => p.total != null)
     .sort((a, b) => b.total - a.total)
     .slice(0, 10);
+  // National month-by-month, 33 points, for the Money chapter's line. Summed
+  // over reporting provinces only; a month with no reporting province is null.
+  const nationalMonthly = (() => {
+    const acc = new Map();
+    for (const p of rev.byProvince) {
+      for (const [y, yr] of Object.entries(p.years ?? {})) {
+        for (const [m, v] of Object.entries(yr.months ?? {})) {
+          const key = Number(y) * 100 + Number(m);
+          if (!acc.has(key)) acc.set(key, null);
+          if (v != null) acc.set(key, (acc.get(key) ?? 0) + v);
+        }
+      }
+    }
+    return [...acc.entries()].sort(([a], [b]) => a - b)
+      .map(([key, value]) => ({ year: Math.floor(key / 100), month: key % 100, value }));
+  })();
   return {
     builtAt: rev.builtAt,
     unit: rev.source?.unit ?? 'บาท',
     seriesSource: rev.source?.seriesSource ?? null,
+    resourceId: rev.source?.resourceId ?? null,
     latestFullYear: latestFull,
     nationalAnnual: rev.nationalAnnual,
+    nationalMonthly,
     coverage: rev.coverage,
     top10,
+    // The second filing: annual, by category and channel. National only here;
+    // the per-province split lives in otop_revenue.json for the dossier.
+    byCategory: rev.byCategory
+      ? { resourceId: rev.byCategory.resourceId, categories: rev.byCategory.categories, years: rev.byCategory.years, national: rev.byCategory.national, excluded: rev.byCategory.excluded }
+      : null,
+    reconciliation: rev.reconciliation ?? null,
   };
 })();
 

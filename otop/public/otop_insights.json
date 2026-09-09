@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-09T16:10:19.008Z",
+  "builtAt": "2026-09-09T17:12:37.262Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -11322,9 +11322,10 @@
     }
   ],
   "revenue": {
-    "builtAt": "2026-09-09T16:10:17.378Z",
+    "builtAt": "2026-09-09T17:12:19.307Z",
     "unit": "บาท",
     "seriesSource": "กรมพัฒนาชุมชน",
+    "resourceId": "c1c39e6a-c6ab-4d31-a911-44517db7f2eb",
     "latestFullYear": 2023,
     "nationalAnnual": {
       "2022": {
@@ -11340,6 +11341,173 @@
         "months": 9
       }
     },
+    "nationalMonthly": [
+      {
+        "year": 2022,
+        "month": 1,
+        "value": 23637183421.04
+      },
+      {
+        "year": 2022,
+        "month": 2,
+        "value": 22325287370.059998
+      },
+      {
+        "year": 2022,
+        "month": 3,
+        "value": 21755746968.49
+      },
+      {
+        "year": 2022,
+        "month": 4,
+        "value": 19947695411
+      },
+      {
+        "year": 2022,
+        "month": 5,
+        "value": 19102753163.339996
+      },
+      {
+        "year": 2022,
+        "month": 6,
+        "value": 19567592263.29
+      },
+      {
+        "year": 2022,
+        "month": 7,
+        "value": 18933561874.47
+      },
+      {
+        "year": 2022,
+        "month": 8,
+        "value": 18650753061.5
+      },
+      {
+        "year": 2022,
+        "month": 9,
+        "value": 17231282325.690002
+      },
+      {
+        "year": 2022,
+        "month": 10,
+        "value": 25193328835.04
+      },
+      {
+        "year": 2022,
+        "month": 11,
+        "value": 26283609532.210003
+      },
+      {
+        "year": 2022,
+        "month": 12,
+        "value": 29034369205.520004
+      },
+      {
+        "year": 2023,
+        "month": 1,
+        "value": 29728141559.010002
+      },
+      {
+        "year": 2023,
+        "month": 2,
+        "value": 27732487156.06
+      },
+      {
+        "year": 2023,
+        "month": 3,
+        "value": 27179038102.8
+      },
+      {
+        "year": 2023,
+        "month": 4,
+        "value": 25296794358.43
+      },
+      {
+        "year": 2023,
+        "month": 5,
+        "value": 24800074557.41
+      },
+      {
+        "year": 2023,
+        "month": 6,
+        "value": 25190670092.09
+      },
+      {
+        "year": 2023,
+        "month": 7,
+        "value": 24261102864.79
+      },
+      {
+        "year": 2023,
+        "month": 8,
+        "value": 23660044335.620003
+      },
+      {
+        "year": 2023,
+        "month": 9,
+        "value": 20601033212.190002
+      },
+      {
+        "year": 2023,
+        "month": 10,
+        "value": 26434014899.33
+      },
+      {
+        "year": 2023,
+        "month": 11,
+        "value": 28268606194.9
+      },
+      {
+        "year": 2023,
+        "month": 12,
+        "value": 30962029123.33
+      },
+      {
+        "year": 2024,
+        "month": 1,
+        "value": 32073595721.950005
+      },
+      {
+        "year": 2024,
+        "month": 2,
+        "value": 30296739899.690006
+      },
+      {
+        "year": 2024,
+        "month": 3,
+        "value": 29174477528.320004
+      },
+      {
+        "year": 2024,
+        "month": 4,
+        "value": 26550192207.84
+      },
+      {
+        "year": 2024,
+        "month": 5,
+        "value": 26282868045.670002
+      },
+      {
+        "year": 2024,
+        "month": 6,
+        "value": 26335022468.2
+      },
+      {
+        "year": 2024,
+        "month": 7,
+        "value": 25386743118.489998
+      },
+      {
+        "year": 2024,
+        "month": 8,
+        "value": 25505744621.78
+      },
+      {
+        "year": 2024,
+        "month": 9,
+        "value": 21796030226.629997
+      }
+    ],
     "coverage": {
       "provinces": 77,
       "provincesWithData": 76,
@@ -11414,7 +11582,155 @@
         "en": "Samut Prakan",
         "total": 7753288014
       }
-    ]
+    ],
+    "byCategory": {
+      "resourceId": "000017df-6ebc-4e8f-afcc-500708549a71",
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food"
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages"
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel"
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir"
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal"
+        }
+      ],
+      "years": [
+        2022,
+        2023,
+        2024
+      ],
+      "national": {
+        "2022": {
+          "categories": {
+            "food": {
+              "offline": 113697128957.23001,
+              "online": 1499486064.89,
+              "total": 115196615022.12001
+            },
+            "beverage": {
+              "offline": 13225213439.609999,
+              "online": 151937328,
+              "total": 13377150767.609999
+            },
+            "textile": {
+              "offline": 41272434727.670006,
+              "online": 1039670714,
+              "total": 42312105441.670006
+            },
+            "craft": {
+              "offline": 46715626593.98,
+              "online": 586074637.75,
+              "total": 47301701231.73
+            },
+            "herbal": {
+              "offline": 18009911040.53,
+              "online": 197246122.76,
+              "total": 18207157163.29
+            }
+          },
+          "offline": 232920314759.02,
+          "online": 3474414867.4,
+          "total": 236394729626.41998
+        },
+        "2023": {
+          "categories": {
+            "food": {
+              "offline": 137591359651.02,
+              "online": 2987361658.08,
+              "total": 140578721309.1
+            },
+            "textile": {
+              "offline": 51735443303.68,
+              "online": 2358089143.57,
+              "total": 54093532447.24999
+            },
+            "craft": {
+              "offline": 58651004709.54,
+              "online": 1243454072.92,
+              "total": 59894458782.46
+            },
+            "herbal": {
+              "offline": 22406993741.369995,
+              "online": 445950749.4,
+              "total": 22852944490.769997
+            },
+            "beverage": {
+              "offline": 18654568207.54,
+              "online": 348431780.8,
+              "total": 19002999988.339996
+            }
+          },
+          "offline": 289039369613.1499,
+          "online": 7383287404.77,
+          "total": 296422657017.9199
+        },
+        "2024": {
+          "categories": {
+            "food": {
+              "offline": 149653216346.27,
+              "online": 5114213552.47,
+              "total": 154767429898.74
+            },
+            "beverage": {
+              "offline": 16187523565.77,
+              "online": 660162229.64,
+              "total": 16847685795.41
+            },
+            "textile": {
+              "offline": 55144978608.13,
+              "online": 3828340758.9,
+              "total": 58973319367.02999
+            },
+            "craft": {
+              "offline": 61175559329.520004,
+              "online": 2365916767.16,
+              "total": 63541476096.68001
+            },
+            "herbal": {
+              "offline": 25115490121.57,
+              "online": 766330994.14,
+              "total": 25881821115.71
+            }
+          },
+          "offline": 307276767971.25995,
+          "online": 12734964302.309998,
+          "total": 320011732273.56995
+        }
+      },
+      "excluded": [
+        {
+          "code": 26,
+          "year": 2023,
+          "th": "นครนายก",
+          "reason": "conflicting duplicate row in source"
+        }
+      ]
+    },
+    "reconciliation": {
+      "comparedProvinceYears": 151,
+      "matching": 8,
+      "mismatching": 143,
+      "medianGapPct": 4.7,
+      "note": "Monthly series (c1c39e6a) summed per full year vs the annual category table (000017df), same department. Neither is corrected toward the other."
+    }
   },
   "catalogue": {
     "resourcesCached": 1294,

@@ -19,9 +19,20 @@
  * PROVINCES code or the build fails. A silent drop would corrupt every
  * total; a loud failure names the variant.
  *
- * Reads  otop/data/raw/c1c39e6a-c6ab-4d31-a911-44517db7f2eb.json
- * Writes otop/public/otop_revenue.json (or a degraded artefact if the raw
- *         file is absent, so a fetch gap degrades the revenue section
+ * Second table (added 2026-09-10): the same department's ANNUAL series split
+ * by product category and by offline/online channel — 77 provinces × BE
+ * 2565–2567 × 5 categories, resource 000017df-…. It does NOT reconcile with
+ * the monthly series: for most province-years the two totals differ by
+ * 10–50%. They are two filings from one department, so both are published
+ * under their own resource id, never summed, and the disagreement is measured
+ * (`reconciliation`) and stated on the page. A near-duplicate of this table
+ * exists as resource 831a5e76-b6a7-4cc4-a6e7-180440d3c475 with totals ~30×
+ * smaller — a different measure, left out on purpose.
+ *
+ * Reads  otop/data/raw/c1c39e6a-c6ab-4d31-a911-44517db7f2eb.json  (monthly)
+ *        otop/data/raw/000017df-6ebc-4e8f-afcc-500708549a71.json  (category)
+ * Writes otop/public/otop_revenue.json (or a degraded artefact if the monthly
+ *         raw file is absent, so a fetch gap degrades the revenue section
  *         instead of breaking the build)
  */
 
@@ -29,6 +40,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PROVINCES } from '../../otop/core/provinces.js';
+import { CATEGORIES } from '../../otop/core/taxonomy.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -39,6 +51,17 @@ const RAW = path.join(
 const OUT = path.join(ROOT, 'otop/public/otop_revenue.json');
 
 const REVENUE_RESOURCE_ID = 'c1c39e6a-c6ab-4d31-a911-44517db7f2eb';
+const CATEGORY_RESOURCE_ID = '000017df-6ebc-4e8f-afcc-500708549a71';
+const RAW_CATEGORY = path.join(ROOT, 'otop/data/raw', `${CATEGORY_RESOURCE_ID}.json`);
+
+/** The category table's own labels → taxonomy ids. Anything else fails the build. */
+const CATEGORY_LABELS = {
+  'อาหาร': 'food',
+  'เครื่องดื่ม': 'beverage',
+  'ผ้าและเครื่องแต่งกาย': 'textile',
+  'เครื่องใช้และเครื่องประดับตกแต่ง': 'craft',
+  'สมุนไพรที่ไม่ใช่อาหารและยา': 'herbal',
+};
 
 const THAI_MONTHS = {
   มกราคม: 1,
@@ -172,6 +195,108 @@ const fullYears = Object.entries(nationalAnnual)
   .map(([y]) => Number(y))
   .sort();
 
+/**
+ * Category × channel table. Optional: absent file → `byCategory: null` and the
+ * page hides that chart, same rule as the monthly series.
+ */
+function parseCategoryTable() {
+  if (!fs.existsSync(RAW_CATEGORY)) return null;
+  const catRows = JSON.parse(fs.readFileSync(RAW_CATEGORY, 'utf8')).rows ?? [];
+  if (catRows.length === 0) return null;
+
+  const badProv = [...new Set(catRows.map((r) => r.Province))].filter((x) => !byThaiName.has(x));
+  const badCat = [...new Set(catRows.map((r) => r.List))].filter((x) => !(x in CATEGORY_LABELS));
+  if (badProv.length || badCat.length) {
+    console.error(`[otop:revenue] category table: unresolved province ${JSON.stringify(badProv)} / category ${JSON.stringify(badCat)}. Refusing to guess.`);
+    process.exit(1);
+  }
+  const num = (v) => {
+    if (v == null || v === '') return 0;
+    const x = Number(v);
+    if (!Number.isFinite(x) || x < 0) { console.error(`[otop:revenue] category table: bad value ${JSON.stringify(v)}`); process.exit(1); }
+    return x;
+  };
+
+  // The source carries two duplicate keys (2026-09-09 vintage): Bangkok
+  // 2567 beverage twice with identical zeros, and Nakhon Nayok 2566 herbal
+  // twice with DIFFERENT values while that year's food and beverage rows are
+  // one short — a mislabelled row. An identical duplicate collapses; a
+  // conflicting one cannot be resolved without guessing which label is
+  // wrong, so that whole province-year is excluded and named in the output.
+  const seen = new Map();
+  const excluded = new Set();
+  const cells = [];
+  for (const r of catRows) {
+    const p = byThaiName.get(r.Province);
+    const year = Number(r.Year) - 543;
+    const cat = CATEGORY_LABELS[r.List];
+    const offline = num(r['Value (offline)']);
+    const online = num(r['Value (online)'] ?? r['Value (Online)']);
+    const key = `${p.code}:${year}:${cat}`;
+    const prior = seen.get(key);
+    if (prior) {
+      if (prior.offline === offline && prior.online === online) continue;
+      excluded.add(`${p.code}:${year}`);
+      console.warn(`[otop:revenue] category table: conflicting duplicate ${p.th} ${year} ${cat} — excluding that province-year`);
+      continue;
+    }
+    seen.set(key, { offline, online });
+    cells.push({ p, year, cat, offline, online });
+  }
+
+  // provinces[code][year] = { food: {offline, online}, ... }
+  const provinces = new Map();
+  const national = {}; // year -> { categories: {id: {offline, online}}, offline, online, total }
+  for (const { p, year, cat, offline, online } of cells) {
+    if (excluded.has(`${p.code}:${year}`)) continue;
+    if (!provinces.has(p.code)) provinces.set(p.code, {});
+    const py = (provinces.get(p.code)[year] ??= { categories: {}, offline: 0, online: 0, total: 0 });
+    py.categories[cat] = { offline, online, total: offline + online };
+    py.offline += offline; py.online += online; py.total += offline + online;
+    const ny = (national[year] ??= { categories: {}, offline: 0, online: 0, total: 0 });
+    const nc = (ny.categories[cat] ??= { offline: 0, online: 0, total: 0 });
+    nc.offline += offline; nc.online += online; nc.total += offline + online;
+    ny.offline += offline; ny.online += online; ny.total += offline + online;
+  }
+  return {
+    resourceId: CATEGORY_RESOURCE_ID,
+    categories: CATEGORIES.map((c) => ({ id: c.id, th: c.th, en: c.en })),
+    years: Object.keys(national).map(Number).sort(),
+    national,
+    provinces: Object.fromEntries(provinces),
+    excluded: [...excluded].map((k) => { const [code, year] = k.split(':').map(Number); return { code, year, th: PROVINCES.find((x) => x.code === code)?.th, reason: 'conflicting duplicate row in source' }; }),
+  };
+}
+
+const byCategory = parseCategoryTable();
+
+/**
+ * Do the two filings agree? Compared only where both hold a full year. A gap
+ * under 1% is "matching". This is published as a finding, not hidden — the
+ * reader is owed the fact that one department's two tables disagree.
+ */
+const reconciliation = (() => {
+  if (!byCategory) return null;
+  const gaps = [];
+  for (const p of byProvince) {
+    for (const [y, yr] of Object.entries(p.years)) {
+      if (yr.monthsReported < 12) continue;
+      const annual = byCategory.provinces[p.code]?.[y]?.total;
+      if (annual == null || (annual === 0 && yr.total === 0)) continue;
+      gaps.push(Math.abs(annual - yr.total) / Math.max(annual, yr.total));
+    }
+  }
+  const sorted = [...gaps].sort((a, b) => a - b);
+  const median = sorted.length ? sorted[Math.floor(sorted.length / 2)] : null;
+  return {
+    comparedProvinceYears: gaps.length,
+    matching: gaps.filter((g) => g < 0.01).length,
+    mismatching: gaps.filter((g) => g >= 0.01).length,
+    medianGapPct: median == null ? null : Math.round(median * 1000) / 10,
+    note: 'Monthly series (c1c39e6a) summed per full year vs the annual category table (000017df), same department. Neither is corrected toward the other.',
+  };
+})();
+
 const out = {
   builtAt: new Date().toISOString(),
   degraded: false,
@@ -193,6 +318,8 @@ const out = {
   },
   nationalAnnual,
   byProvince,
+  byCategory,
+  reconciliation,
 };
 
 fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
