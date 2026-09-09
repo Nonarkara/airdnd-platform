@@ -2,6 +2,33 @@ const POSITIVE_AVAILABILITY_RE = /(?:คิวว่าง|ว่างตอน
 const NEGATIVE_AVAILABILITY_RE = /(?:คิวเต็ม|เต็มแล้ว|ไม่ว่าง|ปิดวันนี้|fully\s+booked|no\s+(?:slots?|availability)|closed\s+today)/i;
 const FRESH_SIGNAL_MS = 6 * 60 * 60 * 1000;
 
+// Every listing in this corpus is a Bangkok business, and every opening hour it
+// posts is Bangkok wall-clock time. `Date#getHours()` reads the *viewer's* clock,
+// so a venue open 10.00-23.00 ICT reported "Closed now" to anyone browsing from
+// Europe or the Americas — and the further from ICT the reader sat, the more of
+// the directory went dark. Resolve the hour in Asia/Bangkok instead, wherever
+// the reader is.
+const LISTING_TIME_ZONE = 'Asia/Bangkok';
+
+const bangkokClock = new Intl.DateTimeFormat('en-GB', {
+  timeZone: LISTING_TIME_ZONE,
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+export function minutesOfDayInBangkok(date) {
+  const parts = bangkokClock.formatToParts(date);
+  const read = (type) => Number(parts.find((part) => part.type === type)?.value);
+  const hour = read('hour');
+  const minute = read('minute');
+  if (Number.isFinite(hour) && Number.isFinite(minute)) return hour * 60 + minute;
+  // Runtimes built without full ICU cannot resolve named zones. Thailand has
+  // observed no DST since 1976, so a fixed +07:00 offset is exact, not an
+  // approximation.
+  return (date.getUTCHours() * 60 + date.getUTCMinutes() + 7 * 60) % (24 * 60);
+}
+
 function getListingTimestamp(listing) {
   const value = listing?.postedAt || listing?.posted_at || listing?.updatedAt
     || listing?.updated_at || listing?.createdAt || listing?.created_at;
@@ -36,7 +63,7 @@ export function isOpenAt(hours, date = new Date()) {
   if (!range) return null;
   if (range.startMinutes === 0 && range.endMinutes === 24 * 60) return true;
 
-  const currentMinutes = date.getHours() * 60 + date.getMinutes();
+  const currentMinutes = minutesOfDayInBangkok(date);
   const { startMinutes, endMinutes } = range;
   if (startMinutes === endMinutes) return true;
   if (endMinutes > startMinutes) {
