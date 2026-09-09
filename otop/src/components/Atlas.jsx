@@ -61,7 +61,7 @@ function categoryParts(scope) {
 
 export default function Atlas({ insights }) {
   const [sort, setSort] = useState('records');
-  const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [] } = insights;
+  const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [], reachGap = [], corroborationQuadrant = {}, hiddenChampions = [], regionIdentity = [] } = insights;
 
   const provinces = useMemo(() => {
     const rows = byProvince.map((p) => ({ ...p, rail: railOf(p), classified: classifiedOf(p) }));
@@ -96,6 +96,121 @@ export default function Atlas({ insights }) {
             ))}
           </ol>
         </section>
+      )}
+
+      {/* ── THE REACH GAP — the poverty-fighting table ─────────────────── */}
+      {reachGap.length > 0 && (
+        <>
+          <h3 className="sub-h">The Reach Gap · ช่องว่างการเข้าถึง</h3>
+          <p className="t-note">
+            Thailand has <strong>{n(national.records)}</strong> registered OTOP producers and{' '}
+            <strong>{n(reachGap.reduce((s, p) => s + p.reachable, 0))}</strong> can be reached.
+            Fix the second number and you lift the first. Sort by the gap.
+          </p>
+          <div className="t-rows" id="reach-gap">
+            <div className="t-row t-row-hd">
+              <span className="t-rail" />
+              <span>Province · จังหวัด</span>
+              <span className="t-row-num">Producing</span>
+              <span className="t-row-num">Reachable</span>
+              <span className="t-hide-sm t-row-num">Corroborated</span>
+              <span className="t-row-num">Gap</span>
+            </div>
+            {reachGap.filter((p) => p.records > 0).slice(0, 20).map((p) => (
+              <button type="button" className="t-row" key={p.code}
+                onClick={() => { window.location.href = `/?lens=b2b&prov=${p.code}`; }}>
+                <span className="t-rail" />
+                <span>
+                  <span className="t-row-th">{p.th}</span><br />
+                  <span className="t-row-en">{p.en}</span>
+                </span>
+                <span className="t-row-num">{n(p.records)}</span>
+                <span className="t-row-num">{p.reachable > 0 ? n(p.reachable) : '—'}</span>
+                <span className="t-hide-sm t-row-num">{p.corroboratedPct}%</span>
+                <span className="t-row-num" data-high={p.unreachable > 1000}>
+                  {n(p.unreachable)}
+                </span>
+              </button>
+            ))}
+          </div>
+          <p className="t-note">
+            Top 20 by number of unreachable producers. A high gap means a province with deep production
+            but almost no way to reach those producers. Each row is a contact-drive waiting to happen.
+          </p>
+        </>
+      )}
+
+      {/* ── CORROBORATION QUADRANT — the 2×2 ─────────────────────────── */}
+      {corroborationQuadrant.ready && (
+        <>
+          <h3 className="sub-h">The Quadrant · ตาราง 2×2</h3>
+          <p className="t-note">
+            Provinces classified by two independent axes: corroboration (is the data verified by
+            more than one agency?) and contactability (can someone actually reach the producer?).
+          </p>
+          <div className="t-quadrant">
+            <div className="t-quad-cell" data-quad="ready">
+              <div className="t-quad-h">
+                <span className="t-quad-icon">●</span>
+                Ready to trade · พร้อมค้า
+              </div>
+              <span className="t-quad-count">{corroborationQuadrant.ready.length}</span>
+              <span className="t-quad-desc">High corroboration, high contact</span>
+              {corroborationQuadrant.ready.slice(0, 5).map((p) => (
+                <button type="button" className="t-quad-row" key={p.code}
+                  onClick={() => { window.location.href = `/?lens=b2b&prov=${p.code}`; }}>
+                  <span className="t-row-th">{p.th}</span>
+                  <span className="t-row-num">{p.reachable} reachable</span>
+                </button>
+              ))}
+            </div>
+            <div className="t-quad-cell" data-quad="documented">
+              <div className="t-quad-h">
+                <span className="t-quad-icon">■</span>
+                Best docs, no reach · มีเอกสาร ไม่มีช่องทาง
+              </div>
+              <span className="t-quad-count">{corroborationQuadrant.documented.length}</span>
+              <span className="t-quad-desc">High corroboration, low contact</span>
+              {corroborationQuadrant.documented.slice(0, 5).map((p) => (
+                <button type="button" className="t-quad-row" key={p.code}
+                  onClick={() => { window.location.href = `/?lens=b2b&prov=${p.code}`; }}>
+                  <span className="t-row-th">{p.th}</span>
+                  <span className="t-row-num">{n(p.records)} records, {p.reachable} reachable</span>
+                </button>
+              ))}
+            </div>
+            <div className="t-quad-cell" data-quad="reachable">
+              <div className="t-quad-h">
+                <span className="t-quad-icon">▲</span>
+                Reachable, unverified · มีช่องทาง ไม่ได้ตรวจสอบ
+              </div>
+              <span className="t-quad-count">{corroborationQuadrant.reachable.length}</span>
+              <span className="t-quad-desc">Low corroboration, high contact</span>
+              {corroborationQuadrant.reachable.slice(0, 5).map((p) => (
+                <button type="button" className="t-quad-row" key={p.code}
+                  onClick={() => { window.location.href = `/?lens=b2b&prov=${p.code}`; }}>
+                  <span className="t-row-th">{p.th}</span>
+                  <span className="t-row-num">{p.reachable} reachable</span>
+                </button>
+              ))}
+            </div>
+            <div className="t-quad-cell" data-quad="blind">
+              <div className="t-quad-h">
+                <span className="t-quad-icon">▪</span>
+                The poverty zones · พื้นที่ยากจน
+              </div>
+              <span className="t-quad-count">{corroborationQuadrant.blind.length}</span>
+              <span className="t-quad-desc">Low corroboration, low contact</span>
+              {corroborationQuadrant.blind.slice(0, 5).map((p) => (
+                <button type="button" className="t-quad-row" key={p.code}
+                  onClick={() => { window.location.href = `/?lens=b2b&prov=${p.code}`; }}>
+                  <span className="t-row-th">{p.th}</span>
+                  <span className="t-row-num">{n(p.records)} records</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
       )}
 
       {/* ── rank 1: the country as one tag ─────────────────────────────── */}
@@ -174,6 +289,33 @@ export default function Atlas({ insights }) {
         ))}
       </div>
 
+      {/* ── REGION IDENTITY — what each region actually makes ──────────── */}
+      {regionIdentity.length > 0 && (
+        <>
+          <h3 className="sub-h">Region identity · อัตลักษณ์ภูมิภาค</h3>
+          <p className="t-note">
+            Thailand's OTOP character in one screen. The classified records reveal
+            genuine regional specializations — a buyer who needs woven fabric goes to
+            the North/Isaan; processed food concentrates in the West and South.
+          </p>
+          <div className="t-region-id">
+            {regionIdentity.map((r) => (
+              <div key={r.id} className="t-region-card">
+                <div className="t-region-card-h">
+                  <span className="t-row-th">{r.th}</span>
+                  <span className="t-row-en">{r.en}</span>
+                </div>
+                <div className="t-region-card-body">
+                  <span className="t-key">{r.dominantLabel}</span>
+                  <span className="t-region-card-share">{r.dominantShare}%</span>
+                  <span className="t-ctx">{n(r.classified)} classified of {n(r.records)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
       {/* ── SPECIALIZATION — where each category concentrates ──────────── */}
       {specialization.length > 0 && (
         <>
@@ -226,6 +368,40 @@ export default function Atlas({ insights }) {
                 <span className="t-row-num">{n(p.graded)}</span>
                 <span className="t-hide-sm t-row-num">{n(p.graded45)}</span>
                 <span className="t-hide-sm t-row-num">{p.density}%</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ── HIDDEN CHAMPIONS — certified but unreachable ─────────────── */}
+      {hiddenChampions.length > 0 && (
+        <>
+          <h3 className="sub-h">Hidden champions · แชมป์ที่ซ่อนอยู่</h3>
+          <p className="t-note">
+            These are the state's own certified producers — 4-5★, corroborated by multiple
+            agencies — with <em>no phone number</em>. Each one is a lost sale the government itself signed off on.
+            A contact-drive to these provinces yields the highest ROI.
+          </p>
+          <div className="t-rows" id="hidden-champions">
+            <div className="t-row t-row-hd">
+              <span className="t-rail" />
+              <span>Province · จังหวัด</span>
+              <span className="t-row-num">Champions</span>
+              <span className="t-hide-sm t-row-num">4-5★ total</span>
+              <span className="t-hide-sm t-row-num">Reachable</span>
+            </div>
+            {hiddenChampions.map((p) => (
+              <button type="button" className="t-row" key={p.code}
+                onClick={() => { window.location.href = `/?lens=b2b&prov=${p.code}`; }}>
+                <span className="t-rail" />
+                <span>
+                  <span className="t-row-th">{p.th}</span><br />
+                  <span className="t-row-en">{p.en}</span>
+                </span>
+                <span className="t-row-num" data-high>{p.hiddenChampions}</span>
+                <span className="t-hide-sm t-row-num">{p.highStars}</span>
+                <span className="t-hide-sm t-row-num">{p.reachable}</span>
               </button>
             ))}
           </div>

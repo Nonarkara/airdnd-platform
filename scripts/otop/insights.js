@@ -273,6 +273,80 @@ const qualityLeaders = byProvince
   .sort((a, b) => b.graded - a.graded)
   .slice(0, 10);
 
+/**
+ * The Reach Gap — the single most actionable table in the whole registry.
+ * Per province: how many producers exist, how many can be reached, how many
+ * are corroborated. The poverty-fighting number is the gap between the first
+ * and the second column.
+ */
+const reachGap = byProvince
+  .map((p) => {
+    const items = records.filter((r) => r.provinceCode === p.code);
+    const reachable = items.filter((r) => r.phone || r.email || r.website).length;
+    const unreachable = items.length - reachable;
+    const corrob = items.filter((r) => r.sourceCount > 1).length;
+    const highStars = items.filter((r) => r.stars >= 4).length;
+    const hiddenChampions = items.filter((r) => r.stars >= 4 && r.sourceCount > 1 && !r.phone && !r.email && !r.website).length;
+    return {
+      code: p.code, th: p.th, en: p.en, region: p.region,
+      records: items.length,
+      reachable,
+      unreachable,
+      reachablePct: pct(reachable, items.length),
+      corroborated: corrob,
+      corroboratedPct: pct(corrob, items.length),
+      highStars,
+      hiddenChampions,
+    };
+  })
+  .sort((a, b) => b.unreachable - a.unreachable);
+
+/**
+ * The Contact × Corroboration Quadrant. A 2×2 grid that classifies every
+ * province into: ready to trade, best docs but unreachable, reachable but
+ * unverified, and the poverty zones.
+ */
+const CORROBORATION_THRESHOLD = 50; // % of records corroborated
+const CONTACT_THRESHOLD = 10; // % of records with contact
+
+const corroborationQuadrant = {
+  thresholds: { corroboration: CORROBORATION_THRESHOLD, contact: CONTACT_THRESHOLD },
+  ready: reachGap.filter((p) => p.corroboratedPct >= CORROBORATION_THRESHOLD && p.reachablePct >= CONTACT_THRESHOLD),
+  documented: reachGap.filter((p) => p.corroboratedPct >= CORROBORATION_THRESHOLD && p.reachablePct < CONTACT_THRESHOLD),
+  reachable: reachGap.filter((p) => p.corroboratedPct < CORROBORATION_THRESHOLD && p.reachablePct >= CONTACT_THRESHOLD),
+  blind: reachGap.filter((p) => p.corroboratedPct < CORROBORATION_THRESHOLD && p.reachablePct < CONTACT_THRESHOLD),
+};
+
+/**
+ * Hidden champions — the state's own certified producers that are unreachable.
+ * Each one is a lost sale the state itself vetted.
+ */
+const hiddenChampions = reachGap
+  .filter((p) => p.hiddenChampions > 0)
+  .sort((a, b) => b.hiddenChampions - a.hiddenChampions)
+  .slice(0, 15)
+  .map((p) => ({ code: p.code, th: p.th, en: p.en, hiddenChampions: p.hiddenChampions, highStars: p.highStars, reachable: p.reachable }));
+
+/**
+ * Region identity — what each region's classified production actually is.
+ * Thailand's OTOP character in one screen.
+ */
+const regionIdentity = byRegion.map((r) => {
+  const cats = (r.categories || []).filter((c) => c.id !== 'unclassified');
+  const total = cats.reduce((s, c) => s + c.count, 0);
+  const sorted = [...cats].sort((a, b) => b.count - a.count);
+  const dominant = sorted[0];
+  return {
+    id: r.id, th: r.th, en: r.en,
+    dominantCategory: dominant ? dominant.id : null,
+    dominantLabel: dominant ? dominant.en : 'Unclassified',
+    dominantShare: dominant ? Math.round((dominant.count / Math.max(total, 1)) * 1000) / 10 : 0,
+    classified: total,
+    records: r.records,
+    classifiedPct: pct(total, r.records),
+  };
+});
+
 const insights = {
   builtAt: new Date().toISOString(),
   // Carried forward so a consumer of this file alone can still tell whether it
@@ -301,6 +375,12 @@ const insights = {
   findings,
   specialization,
   qualityLeaders,
+
+  // New: poverty-fighting intelligence
+  reachGap,
+  corroborationQuadrant,
+  hiddenChampions,
+  regionIdentity,
 
   // Concentration: the share of all records held by the top ten provinces. A
   // registry is not a census, so a high figure is as likely to reflect where

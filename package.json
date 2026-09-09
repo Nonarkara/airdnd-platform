@@ -37,6 +37,8 @@
     "otop:dev": "vite --config vite.otop.config.js",
     "otop:site": "vite build --config vite.otop.config.js",
     "otop:all": "npm run otop:build && npm run otop:site",
+    "otop:ship": "npm run otop:site && npx wrangler pages deploy dist-otop --project-name otop --branch main && npm run otop:verify",
+    "otop:verify": "bash scripts/otop/verify-live.sh",
     "test:otop": "node --test test/otop_core.test.js"
   },
   "dependencies": {
