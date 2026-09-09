@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { reportCapability, reportCapabilityFailure, clearCapabilityFailures } from './capability_report.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,15 +17,22 @@ const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;
 
 async function sendTelegramAlert(message) {
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_NOTIFY_CHAT_ID) return;
+  // Was a bare `return`. An operator who believed alerting was armed got no
+  // alarm and no way to discover that it had never been armed at all.
+  if (!reportCapability('telegram-alerting', {
+    enabled: Boolean(TELEGRAM_BOT_TOKEN && TELEGRAM_NOTIFY_CHAT_ID),
+    reason: 'TELEGRAM_BOT_TOKEN or TELEGRAM_NOTIFY_CHAT_ID missing from .env',
+    remedy: 'copy both from the .env that scripts/notify.js already uses',
+  })) return;
   try {
     await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: TELEGRAM_NOTIFY_CHAT_ID, text: message, parse_mode: 'HTML' }),
     });
+    clearCapabilityFailures('telegram-alerting');
   } catch (err) {
-    console.error('[ALERT] Telegram notification failed:', err.message);
+    reportCapabilityFailure('telegram-alerting', err);
   }
 }
 
