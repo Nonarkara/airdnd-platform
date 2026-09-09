@@ -214,8 +214,8 @@ export function buildRecord(row, provenance) {
     price: parsePrice(row.price),
     registeredYear: parseBuddhistYear(row.registeredYear),
 
-    latitude: null,
-    longitude: null,
+    latitude: parseCoordinate(row.latitude),
+    longitude: parseCoordinate(row.longitude),
 
     provenance: {
       datasetId: provenance.datasetId,
@@ -226,6 +226,23 @@ export function buildRecord(row, provenance) {
       licence: provenance.licence ?? null,
     },
   };
+}
+
+/** Coordinates from government exports: "13.7563", "13°45'22.7\"N", Thai numerals. */
+export function parseCoordinate(value) {
+  const raw = normalizeText(value, '');
+  if (!raw) return null;
+  // Simple decimal: "13.7563"
+  const decimal = Number(raw.replace(/,/g, ''));
+  if (Number.isFinite(decimal) && Math.abs(decimal) <= 180) return Math.round(decimal * 1_000_000) / 1_000_000;
+  // DMS: "13°45'22.7\"N" or "13 45 22.7"
+  const dms = raw.match(/(\d+)[°\s]+(\d+)[′'"]+\s*([\d.]+)[″""]*\s*([NSEW]?)/i);
+  if (dms) {
+    let dd = Number(dms[1]) + Number(dms[2]) / 60 + Number(dms[3]) / 3600;
+    if (dms[4]?.toUpperCase() === 'S' || dms[4]?.toUpperCase() === 'W') dd = -dd;
+    if (Math.abs(dd) <= 180) return Math.round(dd * 1_000_000) / 1_000_000;
+  }
+  return null;
 }
 
 /** Prices arrive as "150", "150 บาท", "100-250", "๑๕๐". Take the low bound. */

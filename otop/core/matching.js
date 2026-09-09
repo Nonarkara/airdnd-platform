@@ -120,6 +120,13 @@ function dynamicCaveats(matches) {
   return out;
 }
 
+/** Count records by signal tier (0-3). */
+export function tierCounts(matches) {
+  const counts = [0, 0, 0, 0];
+  for (const m of matches) counts[signalTier(m.record)] += 1;
+  return { tier0: counts[0], tier1: counts[1], tier2: counts[2], tier3: counts[3] };
+}
+
 /**
  * A record has a "signal" when any of the following is true: it carries a
  * declared category, a contact channel (phone / email / website), a star
@@ -140,6 +147,25 @@ function hasSignal(record) {
 }
 
 /**
+ * Tiered signal strength. Instead of binary signal/no-signal, classify
+ * records by how many of the three "commercial-ready" attributes they carry:
+ *   Tier 3 (commercial-ready): category + contact + stars
+ *   Tier 2 (partially attested): any 2 of {category, contact, stars}
+ *   Tier 1 (signal): exactly 1 of {category, contact, stars}
+ *   Tier 0 (name-only): none of these
+ *
+ * This lets the UI surface progressively more records without dumping the
+ * reader into 146k empty rows.
+ */
+export function signalTier(record) {
+  const hasCategory = Boolean(record.category);
+  const hasContact = Boolean(record.phone || record.email || record.website);
+  const hasStars = record.stars != null;
+  const bits = (hasCategory ? 1 : 0) + (hasContact ? 1 : 0) + (hasStars ? 1 : 0);
+  return bits; // 0-3, higher is better
+}
+
+/**
  * Rank records against a buyer's requirement.
  *
  * `requirement` is a plain object so it round-trips through a URL and a
@@ -153,6 +179,7 @@ export function matchRequirement(records, requirement = {}) {
     provinceCodes = [],
     regions = [],
     minStars = null,
+    minTier = null,
     requireContact = false,
     requireCorroborated = false,
     requireSignal = false,
@@ -165,6 +192,7 @@ export function matchRequirement(records, requirement = {}) {
   const matches = records
     .filter((record) => {
       if (requireSignal && !hasSignal(record)) return false;
+      if (minTier != null && signalTier(record) < minTier) return false;
       if (categories.length && !categories.includes(record.category)) return false;
       if (provinceCodes.length && !provinceCodes.includes(record.provinceCode)) return false;
       if (regions.length && !regions.includes(record.region)) return false;
@@ -188,6 +216,7 @@ export function matchRequirement(records, requirement = {}) {
   return {
     matches,
     total: records.length,
+    tiers: tierCounts(matches),
     caveats: [...dynamicCaveats(matches), ...STRUCTURAL_CAVEATS],
     profile,
   };

@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-09T10:02:31.561Z",
+  "builtAt": "2026-09-09T10:16:28.970Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -17,53 +17,53 @@
       "withStars": 8.8,
       "withPrice": 0,
       "withSubdistrict": 86.2,
-      "withCoordinates": 0,
+      "withCoordinates": 0.7,
       "categoryDeclared": 11.8,
-      "categoryInferred": 12.4,
-      "categoryUnknown": 75.8
+      "categoryInferred": 12.6,
+      "categoryUnknown": 75.6
     },
     "categories": [
       {
         "id": "food",
         "th": "อาหาร",
         "en": "Food",
-        "count": 16943,
-        "share": 10.7
+        "count": 17100,
+        "share": 10.8
       },
       {
         "id": "beverage",
         "th": "เครื่องดื่ม",
         "en": "Beverages",
-        "count": 1554,
+        "count": 1563,
         "share": 1
       },
       {
         "id": "textile",
         "th": "ผ้าและเครื่องแต่งกาย",
         "en": "Fabric & Apparel",
-        "count": 13594,
-        "share": 8.6
+        "count": 13830,
+        "share": 8.7
       },
       {
         "id": "craft",
         "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
         "en": "Household, Decorative & Souvenir",
-        "count": 11054,
-        "share": 7
+        "count": 11018,
+        "share": 6.9
       },
       {
         "id": "herbal",
         "th": "สมุนไพรที่ไม่ใช่อาหาร",
         "en": "Non-food Herbal",
-        "count": 3208,
+        "count": 3178,
         "share": 2
       },
       {
         "id": "unclassified",
         "th": "ไม่จำแนก",
         "en": "Unclassified",
-        "count": 112511,
-        "share": 70.8
+        "count": 112175,
+        "share": 70.6
       }
     ],
     "stars": {
@@ -101,43 +101,43 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 1651,
-          "share": 7.3
+          "count": 1676,
+          "share": 7.4
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 354,
+          "count": 351,
           "share": 1.6
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 2526,
-          "share": 11.2
+          "count": 2550,
+          "share": 11.3
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 973,
+          "count": 964,
           "share": 4.3
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 364,
+          "count": 361,
           "share": 1.6
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 16664,
-          "share": 74
+          "count": 16630,
+          "share": 73.8
         }
       ],
       "stars": {
@@ -161,8 +161,8 @@
         "withSubdistrict": 75,
         "withCoordinates": 0,
         "categoryDeclared": 11,
-        "categoryInferred": 11.4,
-        "categoryUnknown": 77.6
+        "categoryInferred": 11.6,
+        "categoryUnknown": 77.4
       }
     },
     {
@@ -178,43 +178,43 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 6284,
-          "share": 10.5
+          "count": 6309,
+          "share": 10.6
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 420,
+          "count": 422,
           "share": 0.7
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 6540,
-          "share": 11
+          "count": 6608,
+          "share": 11.1
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 4531,
+          "count": 4526,
           "share": 7.6
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 889,
+          "count": 880,
           "share": 1.5
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 40989,
-          "share": 68.7
+          "count": 40908,
+          "share": 68.6
         }
       ],
       "stars": {
@@ -236,10 +236,10 @@
         "withStars": 9.9,
         "withPrice": 0,
         "withSubdistrict": 86.2,
-        "withCoordinates": 0,
+        "withCoordinates": 0.1,
         "categoryDeclared": 12,
-        "categoryInferred": 13.1,
-        "categoryUnknown": 75
+        "categoryInferred": 13.2,
+        "categoryUnknown": 74.9
       }
     },
     {
@@ -255,43 +255,43 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 4227,
-          "share": 12
+          "count": 4286,
+          "share": 12.2
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 353,
+          "count": 358,
           "share": 1
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 2176,
-          "share": 6.2
+          "count": 2239,
+          "share": 6.4
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 3117,
-          "share": 8.9
+          "count": 3093,
+          "share": 8.8
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 1088,
+          "count": 1077,
           "share": 3.1
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 24208,
-          "share": 68.8
+          "count": 24116,
+          "share": 68.6
         }
       ],
       "stars": {
@@ -313,10 +313,10 @@
         "withStars": 8.5,
         "withPrice": 0,
         "withSubdistrict": 89.9,
-        "withCoordinates": 0,
+        "withCoordinates": 0.1,
         "categoryDeclared": 15.5,
-        "categoryInferred": 12.6,
-        "categoryUnknown": 71.9
+        "categoryInferred": 12.9,
+        "categoryUnknown": 71.6
       }
     },
     {
@@ -332,22 +332,22 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 579,
-          "share": 5.8
+          "count": 583,
+          "share": 5.9
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 54,
+          "count": 53,
           "share": 0.5
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 435,
-          "share": 4.4
+          "count": 444,
+          "share": 4.5
         },
         {
           "id": "craft",
@@ -360,15 +360,15 @@
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 200,
+          "count": 199,
           "share": 2
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 7953,
-          "share": 80.2
+          "count": 7942,
+          "share": 80
         }
       ],
       "stars": {
@@ -392,8 +392,8 @@
         "withSubdistrict": 89.4,
         "withCoordinates": 0,
         "categoryDeclared": 9.3,
-        "categoryInferred": 9.6,
-        "categoryUnknown": 81.2
+        "categoryInferred": 9.7,
+        "categoryUnknown": 81
       }
     },
     {
@@ -409,43 +409,43 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 1379,
-          "share": 16.1
+          "count": 1398,
+          "share": 16.4
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 174,
+          "count": 173,
           "share": 2
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 497,
-          "share": 5.8
+          "count": 517,
+          "share": 6.1
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 533,
+          "count": 531,
           "share": 6.2
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 281,
+          "count": 279,
           "share": 3.3
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 5678,
-          "share": 66.5
+          "count": 5644,
+          "share": 66.1
         }
       ],
       "stars": {
@@ -467,10 +467,10 @@
         "withStars": 6.1,
         "withPrice": 0,
         "withSubdistrict": 80,
-        "withCoordinates": 0,
+        "withCoordinates": 6.7,
         "categoryDeclared": 9.5,
-        "categoryInferred": 17.1,
-        "categoryUnknown": 73.4
+        "categoryInferred": 17.6,
+        "categoryUnknown": 72.9
       }
     },
     {
@@ -486,43 +486,43 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 2823,
-          "share": 12.2
+          "count": 2848,
+          "share": 12.4
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 199,
+          "count": 206,
           "share": 0.9
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 1420,
-          "share": 6.2
+          "count": 1472,
+          "share": 6.4
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 1199,
+          "count": 1203,
           "share": 5.2
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 386,
+          "count": 382,
           "share": 1.7
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 17019,
-          "share": 73.8
+          "count": 16935,
+          "share": 73.5
         }
       ],
       "stars": {
@@ -544,10 +544,10 @@
         "withStars": 7,
         "withPrice": 0,
         "withSubdistrict": 92.3,
-        "withCoordinates": 0,
+        "withCoordinates": 2.1,
         "categoryDeclared": 8.5,
-        "categoryInferred": 11,
-        "categoryUnknown": 80.5
+        "categoryInferred": 11.3,
+        "categoryUnknown": 80.2
       }
     }
   ],
@@ -651,7 +651,7 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 756,
+          "count": 758,
           "share": 13.1
         },
         {
@@ -665,8 +665,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 527,
-          "share": 9.1
+          "count": 531,
+          "share": 9.2
         },
         {
           "id": "craft",
@@ -686,8 +686,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 3669,
-          "share": 63.4
+          "count": 3663,
+          "share": 63.3
         }
       ],
       "stars": {
@@ -711,8 +711,8 @@
         "withSubdistrict": 91.1,
         "withCoordinates": 0,
         "categoryDeclared": 30.7,
-        "categoryInferred": 5.8,
-        "categoryUnknown": 63.5
+        "categoryInferred": 5.9,
+        "categoryUnknown": 63.4
       },
       "vintage": {
         "years": 1630,
@@ -750,8 +750,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 397,
-          "share": 9.2
+          "count": 399,
+          "share": 9.3
         },
         {
           "id": "craft",
@@ -771,7 +771,7 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 3557,
+          "count": 3555,
           "share": 82.5
         }
       ],
@@ -906,7 +906,7 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 162,
+          "count": 163,
           "share": 4
         },
         {
@@ -920,7 +920,7 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 515,
+          "count": 516,
           "share": 12.6
         },
         {
@@ -941,8 +941,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 3064,
-          "share": 74.9
+          "count": 3062,
+          "share": 74.8
         }
       ],
       "stars": {
@@ -966,7 +966,7 @@
         "withSubdistrict": 84.8,
         "withCoordinates": 0,
         "categoryDeclared": 11.7,
-        "categoryInferred": 13.3,
+        "categoryInferred": 13.4,
         "categoryUnknown": 75
       },
       "vintage": {
@@ -1005,8 +1005,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 339,
-          "share": 8.3
+          "count": 342,
+          "share": 8.4
         },
         {
           "id": "craft",
@@ -1026,7 +1026,7 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 3383,
+          "count": 3380,
           "share": 82.7
         }
       ],
@@ -1052,7 +1052,7 @@
         "withCoordinates": 0,
         "categoryDeclared": 9.3,
         "categoryInferred": 7.9,
-        "categoryUnknown": 82.9
+        "categoryUnknown": 82.8
       },
       "vintage": {
         "years": 12,
@@ -1076,8 +1076,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 637,
-          "share": 15.7
+          "count": 638,
+          "share": 15.8
         },
         {
           "id": "beverage",
@@ -1090,14 +1090,14 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 219,
-          "share": 5.4
+          "count": 228,
+          "share": 5.6
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 210,
+          "count": 209,
           "share": 5.2
         },
         {
@@ -1111,8 +1111,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 2911,
-          "share": 72
+          "count": 2902,
+          "share": 71.7
         }
       ],
       "stars": {
@@ -1136,8 +1136,8 @@
         "withSubdistrict": 91.7,
         "withCoordinates": 0,
         "categoryDeclared": 8.6,
-        "categoryInferred": 11,
-        "categoryUnknown": 80.4
+        "categoryInferred": 11.1,
+        "categoryUnknown": 80.2
       },
       "vintage": {
         "years": 505,
@@ -1161,7 +1161,7 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 163,
+          "count": 162,
           "share": 4.1
         },
         {
@@ -1175,8 +1175,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 199,
-          "share": 5
+          "count": 202,
+          "share": 5.1
         },
         {
           "id": "craft",
@@ -1196,8 +1196,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 3430,
-          "share": 86.4
+          "count": 3428,
+          "share": 86.3
         }
       ],
       "stars": {
@@ -1221,7 +1221,7 @@
         "withSubdistrict": 92.4,
         "withCoordinates": 0,
         "categoryDeclared": 6.6,
-        "categoryInferred": 6.9,
+        "categoryInferred": 7,
         "categoryUnknown": 86.4
       },
       "vintage": {
@@ -1246,43 +1246,43 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 851,
-          "share": 22.3
+          "count": 864,
+          "share": 22.7
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 37,
+          "count": 38,
           "share": 1
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 1590,
-          "share": 41.7
+          "count": 1609,
+          "share": 42.2
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 725,
-          "share": 19
+          "count": 720,
+          "share": 18.9
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 169,
-          "share": 4.4
+          "count": 161,
+          "share": 4.2
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 441,
-          "share": 11.6
+          "count": 421,
+          "share": 11
         }
       ],
       "stars": {
@@ -1501,8 +1501,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 520,
-          "share": 14.9
+          "count": 528,
+          "share": 15.2
         },
         {
           "id": "beverage",
@@ -1515,8 +1515,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 392,
-          "share": 11.3
+          "count": 400,
+          "share": 11.5
         },
         {
           "id": "craft",
@@ -1536,8 +1536,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 2208,
-          "share": 63.4
+          "count": 2192,
+          "share": 62.9
         }
       ],
       "stars": {
@@ -1561,8 +1561,8 @@
         "withSubdistrict": 91.3,
         "withCoordinates": 0,
         "categoryDeclared": 7.7,
-        "categoryInferred": 28.7,
-        "categoryUnknown": 63.5
+        "categoryInferred": 29.2,
+        "categoryUnknown": 63.1
       },
       "vintage": {
         "years": 1180,
@@ -1685,8 +1685,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 1050,
-          "share": 40.7
+          "count": 1052,
+          "share": 40.8
         },
         {
           "id": "craft",
@@ -1706,8 +1706,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1244,
-          "share": 48.3
+          "count": 1242,
+          "share": 48.2
         }
       ],
       "stars": {
@@ -1731,8 +1731,8 @@
         "withSubdistrict": 88.8,
         "withCoordinates": 0,
         "categoryDeclared": 19.6,
-        "categoryInferred": 30.5,
-        "categoryUnknown": 49.9
+        "categoryInferred": 30.6,
+        "categoryUnknown": 49.8
       },
       "vintage": {
         "years": 926,
@@ -1770,8 +1770,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 252,
-          "share": 9.8
+          "count": 257,
+          "share": 10
         },
         {
           "id": "craft",
@@ -1791,8 +1791,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1743,
-          "share": 68.1
+          "count": 1738,
+          "share": 67.9
         }
       ],
       "stars": {
@@ -1814,10 +1814,10 @@
         "withStars": 16.4,
         "withPrice": 0,
         "withSubdistrict": 82.3,
-        "withCoordinates": 0,
+        "withCoordinates": 0.5,
         "categoryDeclared": 17.7,
-        "categoryInferred": 13.5,
-        "categoryUnknown": 68.9
+        "categoryInferred": 13.7,
+        "categoryUnknown": 68.6
       },
       "vintage": {
         "years": 13,
@@ -1841,8 +1841,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 562,
-          "share": 22.2
+          "count": 574,
+          "share": 22.7
         },
         {
           "id": "beverage",
@@ -1855,29 +1855,29 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 211,
-          "share": 8.3
+          "count": 222,
+          "share": 8.8
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 206,
+          "count": 205,
           "share": 8.1
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 109,
+          "count": 108,
           "share": 4.3
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1374,
-          "share": 54.2
+          "count": 1353,
+          "share": 53.4
         }
       ],
       "stars": {
@@ -1901,8 +1901,8 @@
         "withSubdistrict": 55.5,
         "withCoordinates": 0,
         "categoryDeclared": 5.5,
-        "categoryInferred": 36,
-        "categoryUnknown": 58.5
+        "categoryInferred": 37.1,
+        "categoryUnknown": 57.4
       },
       "vintage": {
         "years": 10,
@@ -2103,15 +2103,15 @@
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 31,
+          "count": 30,
           "share": 1.3
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 480,
-          "share": 20.5
+          "count": 483,
+          "share": 20.6
         },
         {
           "id": "craft",
@@ -2131,7 +2131,7 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 637,
+          "count": 635,
           "share": 27.1
         }
       ],
@@ -2154,10 +2154,10 @@
         "withStars": 6.7,
         "withPrice": 0,
         "withSubdistrict": 91.6,
-        "withCoordinates": 0,
+        "withCoordinates": 2.3,
         "categoryDeclared": 15.5,
-        "categoryInferred": 16.7,
-        "categoryUnknown": 67.8
+        "categoryInferred": 16.8,
+        "categoryUnknown": 67.7
       },
       "vintage": {
         "years": 1521,
@@ -2188,21 +2188,21 @@
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 45,
+          "count": 47,
           "share": 2
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 354,
-          "share": 15.4
+          "count": 358,
+          "share": 15.6
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 369,
+          "count": 371,
           "share": 16.1
         },
         {
@@ -2216,8 +2216,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1017,
-          "share": 44.2
+          "count": 1009,
+          "share": 43.9
         }
       ],
       "stars": {
@@ -2241,8 +2241,8 @@
         "withSubdistrict": 93.2,
         "withCoordinates": 0,
         "categoryDeclared": 4.7,
-        "categoryInferred": 49.8,
-        "categoryUnknown": 45.5
+        "categoryInferred": 50.2,
+        "categoryUnknown": 45.2
       },
       "vintage": {
         "years": 35,
@@ -2280,15 +2280,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 163,
+          "count": 164,
           "share": 7.3
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 147,
-          "share": 6.6
+          "count": 146,
+          "share": 6.5
         },
         {
           "id": "herbal",
@@ -2351,7 +2351,7 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 109,
+          "count": 108,
           "share": 4.9
         },
         {
@@ -2365,15 +2365,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 70,
-          "share": 3.2
+          "count": 74,
+          "share": 3.4
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 130,
-          "share": 5.9
+          "count": 128,
+          "share": 5.8
         },
         {
           "id": "herbal",
@@ -2386,7 +2386,7 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1844,
+          "count": 1843,
           "share": 83.6
         }
       ],
@@ -2411,8 +2411,8 @@
         "withSubdistrict": 92.7,
         "withCoordinates": 0,
         "categoryDeclared": 8.7,
-        "categoryInferred": 7.2,
-        "categoryUnknown": 84.1
+        "categoryInferred": 7.3,
+        "categoryUnknown": 83.9
       },
       "vintage": {
         "years": 86,
@@ -2436,8 +2436,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 63,
-          "share": 3
+          "count": 67,
+          "share": 3.2
         },
         {
           "id": "beverage",
@@ -2450,15 +2450,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 64,
-          "share": 3
+          "count": 66,
+          "share": 3.1
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 43,
-          "share": 2
+          "count": 41,
+          "share": 1.9
         },
         {
           "id": "herbal",
@@ -2471,8 +2471,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1942,
-          "share": 91.5
+          "count": 1938,
+          "share": 91.3
         }
       ],
       "stars": {
@@ -2494,10 +2494,10 @@
         "withStars": 2.8,
         "withPrice": 0,
         "withSubdistrict": 96.8,
-        "withCoordinates": 0,
+        "withCoordinates": 23.3,
         "categoryDeclared": 3.9,
-        "categoryInferred": 4.5,
-        "categoryUnknown": 91.7
+        "categoryInferred": 4.7,
+        "categoryUnknown": 91.5
       },
       "vintage": {
         "years": 12,
@@ -2535,15 +2535,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 45,
-          "share": 2.1
+          "count": 48,
+          "share": 2.3
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 116,
-          "share": 5.5
+          "count": 115,
+          "share": 5.4
         },
         {
           "id": "herbal",
@@ -2556,8 +2556,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1758,
-          "share": 83.3
+          "count": 1756,
+          "share": 83.2
         }
       ],
       "stars": {
@@ -2581,8 +2581,8 @@
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
         "categoryDeclared": 10.6,
-        "categoryInferred": 5.8,
-        "categoryUnknown": 83.6
+        "categoryInferred": 5.9,
+        "categoryUnknown": 83.5
       },
       "vintage": {
         "years": 22,
@@ -2606,22 +2606,22 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 165,
-          "share": 8
+          "count": 185,
+          "share": 8.9
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 26,
-          "share": 1.3
+          "count": 22,
+          "share": 1.1
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 73,
-          "share": 3.5
+          "count": 70,
+          "share": 3.4
         },
         {
           "id": "craft",
@@ -2641,8 +2641,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1686,
-          "share": 81.5
+          "count": 1673,
+          "share": 80.9
         }
       ],
       "stars": {
@@ -2666,8 +2666,8 @@
         "withSubdistrict": 80.9,
         "withCoordinates": 0,
         "categoryDeclared": 10.4,
-        "categoryInferred": 7.8,
-        "categoryUnknown": 81.7
+        "categoryInferred": 8.5,
+        "categoryUnknown": 81.1
       },
       "vintage": {
         "years": 206,
@@ -2790,8 +2790,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 44,
-          "share": 2.2
+          "count": 50,
+          "share": 2.5
         },
         {
           "id": "craft",
@@ -2811,8 +2811,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1747,
-          "share": 88.1
+          "count": 1741,
+          "share": 87.8
         }
       ],
       "stars": {
@@ -2836,8 +2836,8 @@
         "withSubdistrict": 95.5,
         "withCoordinates": 0,
         "categoryDeclared": 6.4,
-        "categoryInferred": 5.4,
-        "categoryUnknown": 88.2
+        "categoryInferred": 5.7,
+        "categoryUnknown": 87.9
       },
       "vintage": {
         "years": 10,
@@ -2919,7 +2919,7 @@
         "withStars": 6.5,
         "withPrice": 0,
         "withSubdistrict": 92.7,
-        "withCoordinates": 0,
+        "withCoordinates": 0.1,
         "categoryDeclared": 7,
         "categoryInferred": 7.9,
         "categoryUnknown": 85.1
@@ -2960,8 +2960,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 149,
-          "share": 7.7
+          "count": 150,
+          "share": 7.8
         },
         {
           "id": "craft",
@@ -2981,8 +2981,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1503,
-          "share": 78
+          "count": 1502,
+          "share": 77.9
         }
       ],
       "stars": {
@@ -3006,7 +3006,7 @@
         "withSubdistrict": 86.7,
         "withCoordinates": 0,
         "categoryDeclared": 10.1,
-        "categoryInferred": 11,
+        "categoryInferred": 11.1,
         "categoryUnknown": 78.9
       },
       "vintage": {
@@ -3045,15 +3045,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 65,
-          "share": 3.4
+          "count": 70,
+          "share": 3.6
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 105,
-          "share": 5.5
+          "count": 103,
+          "share": 5.4
         },
         {
           "id": "herbal",
@@ -3066,8 +3066,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1610,
-          "share": 83.7
+          "count": 1607,
+          "share": 83.6
         }
       ],
       "stars": {
@@ -3091,8 +3091,8 @@
         "withSubdistrict": 88.2,
         "withCoordinates": 0,
         "categoryDeclared": 5.7,
-        "categoryInferred": 8,
-        "categoryUnknown": 86.3
+        "categoryInferred": 8.2,
+        "categoryUnknown": 86.1
       },
       "vintage": {
         "years": 81,
@@ -3116,8 +3116,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 236,
-          "share": 12.3
+          "count": 237,
+          "share": 12.4
         },
         {
           "id": "beverage",
@@ -3130,8 +3130,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 149,
-          "share": 7.8
+          "count": 155,
+          "share": 8.1
         },
         {
           "id": "craft",
@@ -3151,8 +3151,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1334,
-          "share": 69.6
+          "count": 1327,
+          "share": 69.2
         }
       ],
       "stars": {
@@ -3176,8 +3176,8 @@
         "withSubdistrict": 90.2,
         "withCoordinates": 0,
         "categoryDeclared": 13.5,
-        "categoryInferred": 16.7,
-        "categoryUnknown": 69.8
+        "categoryInferred": 17,
+        "categoryUnknown": 69.5
       },
       "vintage": {
         "years": 94,
@@ -3201,29 +3201,29 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 126,
+          "count": 127,
           "share": 6.8
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 31,
-          "share": 1.7
+          "count": 30,
+          "share": 1.6
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 81,
-          "share": 4.4
+          "count": 85,
+          "share": 4.6
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 67,
-          "share": 3.6
+          "count": 65,
+          "share": 3.5
         },
         {
           "id": "herbal",
@@ -3236,8 +3236,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1512,
-          "share": 81.5
+          "count": 1510,
+          "share": 81.4
         }
       ],
       "stars": {
@@ -3261,8 +3261,8 @@
         "withSubdistrict": 90.8,
         "withCoordinates": 0,
         "categoryDeclared": 11.2,
-        "categoryInferred": 6.3,
-        "categoryUnknown": 82.5
+        "categoryInferred": 6.4,
+        "categoryUnknown": 82.4
       },
       "vintage": {
         "years": 30,
@@ -3300,15 +3300,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 324,
-          "share": 17.6
+          "count": 329,
+          "share": 17.9
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 460,
-          "share": 25
+          "count": 457,
+          "share": 24.8
         },
         {
           "id": "herbal",
@@ -3321,8 +3321,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 207,
-          "share": 11.2
+          "count": 205,
+          "share": 11.1
         }
       ],
       "stars": {
@@ -3346,8 +3346,8 @@
         "withSubdistrict": 84,
         "withCoordinates": 0,
         "categoryDeclared": 74.9,
-        "categoryInferred": 12.4,
-        "categoryUnknown": 12.7
+        "categoryInferred": 12.5,
+        "categoryUnknown": 12.6
       },
       "vintage": {
         "years": 1341,
@@ -3371,43 +3371,43 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 461,
-          "share": 25.2
+          "count": 456,
+          "share": 24.9
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 19,
-          "share": 1
+          "count": 26,
+          "share": 1.4
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 202,
-          "share": 11
+          "count": 206,
+          "share": 11.3
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 96,
-          "share": 5.2
+          "count": 97,
+          "share": 5.3
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 42,
+          "count": 43,
           "share": 2.3
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1011,
-          "share": 55.2
+          "count": 1003,
+          "share": 54.8
         }
       ],
       "stars": {
@@ -3431,8 +3431,8 @@
         "withSubdistrict": 93.8,
         "withCoordinates": 0,
         "categoryDeclared": 6.8,
-        "categoryInferred": 34.1,
-        "categoryUnknown": 59.1
+        "categoryInferred": 34.8,
+        "categoryUnknown": 58.3
       },
       "vintage": {
         "years": 662,
@@ -3470,8 +3470,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 48,
-          "share": 2.6
+          "count": 49,
+          "share": 2.7
         },
         {
           "id": "craft",
@@ -3491,8 +3491,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1522,
-          "share": 83.9
+          "count": 1521,
+          "share": 83.8
         }
       ],
       "stars": {
@@ -3541,7 +3541,7 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 134,
+          "count": 135,
           "share": 7.5
         },
         {
@@ -3555,14 +3555,14 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 121,
-          "share": 6.8
+          "count": 125,
+          "share": 7
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 114,
+          "count": 115,
           "share": 6.4
         },
         {
@@ -3576,8 +3576,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1378,
-          "share": 76.9
+          "count": 1372,
+          "share": 76.6
         }
       ],
       "stars": {
@@ -3601,8 +3601,8 @@
         "withSubdistrict": 88.2,
         "withCoordinates": 0,
         "categoryDeclared": 13.1,
-        "categoryInferred": 9.3,
-        "categoryUnknown": 77.6
+        "categoryInferred": 9.7,
+        "categoryUnknown": 77.2
       },
       "vintage": {
         "years": 12,
@@ -3626,8 +3626,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 661,
-          "share": 37.2
+          "count": 666,
+          "share": 37.5
         },
         {
           "id": "beverage",
@@ -3640,29 +3640,29 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 141,
-          "share": 7.9
+          "count": 153,
+          "share": 8.6
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 189,
-          "share": 10.6
+          "count": 192,
+          "share": 10.8
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 80,
-          "share": 4.5
+          "count": 78,
+          "share": 4.4
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 669,
-          "share": 37.7
+          "count": 651,
+          "share": 36.7
         }
       ],
       "stars": {
@@ -3686,8 +3686,8 @@
         "withSubdistrict": 89.5,
         "withCoordinates": 0,
         "categoryDeclared": 13.6,
-        "categoryInferred": 9.4,
-        "categoryUnknown": 77
+        "categoryInferred": 9.5,
+        "categoryUnknown": 76.9
       },
       "vintage": {
         "years": 890,
@@ -3973,14 +3973,14 @@
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 15,
-          "share": 0.9
+          "count": 14,
+          "share": 0.8
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 93,
+          "count": 94,
           "share": 5.5
         },
         {
@@ -4026,8 +4026,8 @@
         "withSubdistrict": 93.6,
         "withCoordinates": 0,
         "categoryDeclared": 12.1,
-        "categoryInferred": 18.4,
-        "categoryUnknown": 69.5
+        "categoryInferred": 18.5,
+        "categoryUnknown": 69.4
       },
       "vintage": {
         "years": 313,
@@ -4051,8 +4051,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 132,
-          "share": 8
+          "count": 134,
+          "share": 8.1
         },
         {
           "id": "beverage",
@@ -4086,8 +4086,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1392,
-          "share": 83.9
+          "count": 1390,
+          "share": 83.8
         }
       ],
       "stars": {
@@ -4111,8 +4111,8 @@
         "withSubdistrict": 90.7,
         "withCoordinates": 0,
         "categoryDeclared": 8.8,
-        "categoryInferred": 7.3,
-        "categoryUnknown": 83.9
+        "categoryInferred": 7.4,
+        "categoryUnknown": 83.8
       },
       "vintage": {
         "years": 8,
@@ -4136,7 +4136,7 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 65,
+          "count": 64,
           "share": 3.9
         },
         {
@@ -4150,8 +4150,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 90,
-          "share": 5.4
+          "count": 94,
+          "share": 5.7
         },
         {
           "id": "craft",
@@ -4164,15 +4164,15 @@
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 23,
-          "share": 1.4
+          "count": 22,
+          "share": 1.3
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1374,
-          "share": 83
+          "count": 1372,
+          "share": 82.9
         }
       ],
       "stars": {
@@ -4196,8 +4196,8 @@
         "withSubdistrict": 92,
         "withCoordinates": 0,
         "categoryDeclared": 9.7,
-        "categoryInferred": 6.9,
-        "categoryUnknown": 83.3
+        "categoryInferred": 7.2,
+        "categoryUnknown": 83.1
       },
       "vintage": {
         "years": 10,
@@ -4221,43 +4221,43 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 623,
-          "share": 38.8
+          "count": 632,
+          "share": 39.4
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 29,
-          "share": 1.8
+          "count": 32,
+          "share": 2
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 135,
-          "share": 8.4
+          "count": 145,
+          "share": 9
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 242,
-          "share": 15.1
+          "count": 237,
+          "share": 14.8
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 95,
-          "share": 5.9
+          "count": 93,
+          "share": 5.8
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 481,
-          "share": 30
+          "count": 466,
+          "share": 29
         }
       ],
       "stars": {
@@ -4279,10 +4279,10 @@
         "withStars": 5.9,
         "withPrice": 0,
         "withSubdistrict": 92.6,
-        "withCoordinates": 0,
+        "withCoordinates": 0.1,
         "categoryDeclared": 10,
-        "categoryInferred": 55.1,
-        "categoryUnknown": 34.8
+        "categoryInferred": 57,
+        "categoryUnknown": 33
       },
       "vintage": {
         "years": 1018,
@@ -4306,7 +4306,7 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 84,
+          "count": 85,
           "share": 5.3
         },
         {
@@ -4320,8 +4320,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 53,
-          "share": 3.3
+          "count": 54,
+          "share": 3.4
         },
         {
           "id": "craft",
@@ -4334,14 +4334,14 @@
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 15,
+          "count": 14,
           "share": 0.9
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1325,
+          "count": 1324,
           "share": 83.3
         }
       ],
@@ -4367,7 +4367,7 @@
         "withCoordinates": 0,
         "categoryDeclared": 9.1,
         "categoryInferred": 7,
-        "categoryUnknown": 84
+        "categoryUnknown": 83.9
       },
       "vintage": {
         "years": 26,
@@ -4391,8 +4391,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 104,
-          "share": 6.7
+          "count": 103,
+          "share": 6.6
         },
         {
           "id": "beverage",
@@ -4405,8 +4405,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 84,
-          "share": 5.4
+          "count": 86,
+          "share": 5.5
         },
         {
           "id": "craft",
@@ -4426,7 +4426,7 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1208,
+          "count": 1207,
           "share": 77.7
         }
       ],
@@ -4476,15 +4476,15 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 141,
-          "share": 9.1
+          "count": 142,
+          "share": 9.2
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 9,
-          "share": 0.6
+          "count": 8,
+          "share": 0.5
         },
         {
           "id": "textile",
@@ -4561,8 +4561,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 678,
-          "share": 44.9
+          "count": 700,
+          "share": 46.4
         },
         {
           "id": "beverage",
@@ -4575,8 +4575,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 258,
-          "share": 17.1
+          "count": 277,
+          "share": 18.3
         },
         {
           "id": "craft",
@@ -4589,15 +4589,15 @@
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 79,
-          "share": 5.2
+          "count": 76,
+          "share": 5
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 288,
-          "share": 19.1
+          "count": 250,
+          "share": 16.6
         }
       ],
       "stars": {
@@ -4621,8 +4621,8 @@
         "withSubdistrict": 91.1,
         "withCoordinates": 0,
         "categoryDeclared": 7,
-        "categoryInferred": 27.4,
-        "categoryUnknown": 65.6
+        "categoryInferred": 28.5,
+        "categoryUnknown": 64.5
       },
       "vintage": {
         "years": 10,
@@ -4646,8 +4646,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 69,
-          "share": 4.6
+          "count": 70,
+          "share": 4.7
         },
         {
           "id": "beverage",
@@ -4660,8 +4660,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 53,
-          "share": 3.5
+          "count": 55,
+          "share": 3.7
         },
         {
           "id": "craft",
@@ -4681,8 +4681,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1268,
-          "share": 84.8
+          "count": 1265,
+          "share": 84.6
         }
       ],
       "stars": {
@@ -4706,8 +4706,8 @@
         "withSubdistrict": 84.3,
         "withCoordinates": 0,
         "categoryDeclared": 9.1,
-        "categoryInferred": 5.8,
-        "categoryUnknown": 85.1
+        "categoryInferred": 6,
+        "categoryUnknown": 84.9
       },
       "vintage": {
         "years": 103,
@@ -4731,7 +4731,7 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 80,
+          "count": 81,
           "share": 5.5
         },
         {
@@ -4759,7 +4759,7 @@
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 43,
+          "count": 42,
           "share": 2.9
         },
         {
@@ -4791,7 +4791,7 @@
         "withSubdistrict": 89.8,
         "withCoordinates": 0,
         "categoryDeclared": 13,
-        "categoryInferred": 12.8,
+        "categoryInferred": 12.9,
         "categoryUnknown": 74.1
       },
       "vintage": {
@@ -4816,43 +4816,43 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 477,
-          "share": 32.6
+          "count": 480,
+          "share": 32.8
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 52,
+          "count": 53,
           "share": 3.6
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 243,
-          "share": 16.6
+          "count": 251,
+          "share": 17.1
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 249,
-          "share": 17
+          "count": 245,
+          "share": 16.7
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 78,
-          "share": 5.3
+          "count": 75,
+          "share": 5.1
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 365,
-          "share": 24.9
+          "count": 360,
+          "share": 24.6
         }
       ],
       "stars": {
@@ -4876,8 +4876,8 @@
         "withSubdistrict": 86,
         "withCoordinates": 0,
         "categoryDeclared": 13.7,
-        "categoryInferred": 10.7,
-        "categoryUnknown": 75.7
+        "categoryInferred": 10.9,
+        "categoryUnknown": 75.5
       },
       "vintage": {
         "years": 903,
@@ -4915,15 +4915,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 94,
-          "share": 6.5
+          "count": 97,
+          "share": 6.7
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 59,
-          "share": 4.1
+          "count": 56,
+          "share": 3.9
         },
         {
           "id": "herbal",
@@ -4961,7 +4961,7 @@
         "withSubdistrict": 90,
         "withCoordinates": 0,
         "categoryDeclared": 11.8,
-        "categoryInferred": 9.4,
+        "categoryInferred": 9.5,
         "categoryUnknown": 78.7
       },
       "vintage": {
@@ -5000,14 +5000,14 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 80,
-          "share": 5.6
+          "count": 84,
+          "share": 5.9
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 42,
+          "count": 41,
           "share": 2.9
         },
         {
@@ -5021,8 +5021,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1159,
-          "share": 81
+          "count": 1156,
+          "share": 80.8
         }
       ],
       "stars": {
@@ -5046,8 +5046,8 @@
         "withSubdistrict": 92.4,
         "withCoordinates": 0,
         "categoryDeclared": 10.5,
-        "categoryInferred": 8.3,
-        "categoryUnknown": 81.2
+        "categoryInferred": 8.6,
+        "categoryUnknown": 80.9
       },
       "vintage": {
         "years": 39,
@@ -5071,8 +5071,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 130,
-          "share": 9.2
+          "count": 125,
+          "share": 8.8
         },
         {
           "id": "beverage",
@@ -5085,15 +5085,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 87,
-          "share": 6.2
+          "count": 89,
+          "share": 6.3
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 79,
-          "share": 5.6
+          "count": 82,
+          "share": 5.8
         },
         {
           "id": "herbal",
@@ -5170,8 +5170,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 107,
-          "share": 7.6
+          "count": 108,
+          "share": 7.7
         },
         {
           "id": "craft",
@@ -5191,7 +5191,7 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1046,
+          "count": 1045,
           "share": 74.1
         }
       ],
@@ -5217,7 +5217,7 @@
         "withCoordinates": 0,
         "categoryDeclared": 11.8,
         "categoryInferred": 14,
-        "categoryUnknown": 74.3
+        "categoryUnknown": 74.2
       },
       "vintage": {
         "years": 954,
@@ -5241,8 +5241,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 76,
-          "share": 5.4
+          "count": 77,
+          "share": 5.5
         },
         {
           "id": "beverage",
@@ -5255,8 +5255,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 67,
-          "share": 4.8
+          "count": 66,
+          "share": 4.7
         },
         {
           "id": "craft",
@@ -5340,8 +5340,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 77,
-          "share": 5.5
+          "count": 82,
+          "share": 5.9
         },
         {
           "id": "craft",
@@ -5354,15 +5354,15 @@
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 8,
-          "share": 0.6
+          "count": 7,
+          "share": 0.5
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1055,
-          "share": 75.5
+          "count": 1051,
+          "share": 75.2
         }
       ],
       "stars": {
@@ -5386,8 +5386,8 @@
         "withSubdistrict": 85.6,
         "withCoordinates": 0,
         "categoryDeclared": 10.9,
-        "categoryInferred": 13.4,
-        "categoryUnknown": 75.7
+        "categoryInferred": 13.7,
+        "categoryUnknown": 75.4
       },
       "vintage": {
         "years": 11,
@@ -5595,15 +5595,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 60,
-          "share": 4.4
+          "count": 62,
+          "share": 4.6
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 36,
-          "share": 2.7
+          "count": 35,
+          "share": 2.6
         },
         {
           "id": "herbal",
@@ -5616,8 +5616,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1137,
-          "share": 84.2
+          "count": 1136,
+          "share": 84.1
         }
       ],
       "stars": {
@@ -5666,8 +5666,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 139,
-          "share": 10.3
+          "count": 138,
+          "share": 10.2
         },
         {
           "id": "beverage",
@@ -5680,29 +5680,29 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 126,
-          "share": 9.3
+          "count": 135,
+          "share": 10
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 101,
-          "share": 7.5
+          "count": 97,
+          "share": 7.2
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 29,
+          "count": 28,
           "share": 2.1
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 949,
-          "share": 70.2
+          "count": 946,
+          "share": 70
         }
       ],
       "stars": {
@@ -5726,8 +5726,8 @@
         "withSubdistrict": 89,
         "withCoordinates": 0,
         "categoryDeclared": 12.9,
-        "categoryInferred": 15.8,
-        "categoryUnknown": 71.3
+        "categoryInferred": 16.4,
+        "categoryUnknown": 70.7
       },
       "vintage": {
         "years": 132,
@@ -5751,8 +5751,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 534,
-          "share": 40.1
+          "count": 536,
+          "share": 40.2
         },
         {
           "id": "beverage",
@@ -5765,15 +5765,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 97,
-          "share": 7.3
+          "count": 96,
+          "share": 7.2
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 124,
-          "share": 9.3
+          "count": 125,
+          "share": 9.4
         },
         {
           "id": "herbal",
@@ -5786,8 +5786,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 439,
-          "share": 33
+          "count": 437,
+          "share": 32.8
         }
       ],
       "stars": {
@@ -5809,10 +5809,10 @@
         "withStars": 6.2,
         "withPrice": 0,
         "withSubdistrict": 84,
-        "withCoordinates": 0,
+        "withCoordinates": 43.1,
         "categoryDeclared": 14.6,
-        "categoryInferred": 18.2,
-        "categoryUnknown": 67.2
+        "categoryInferred": 18.3,
+        "categoryUnknown": 67
       },
       "vintage": {
         "years": 582,
@@ -5921,8 +5921,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 275,
-          "share": 21.4
+          "count": 277,
+          "share": 21.5
         },
         {
           "id": "beverage",
@@ -5935,15 +5935,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 378,
-          "share": 29.4
+          "count": 381,
+          "share": 29.6
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 273,
-          "share": 21.2
+          "count": 274,
+          "share": 21.3
         },
         {
           "id": "herbal",
@@ -5956,8 +5956,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 303,
-          "share": 23.5
+          "count": 297,
+          "share": 23.1
         }
       ],
       "stars": {
@@ -5981,8 +5981,8 @@
         "withSubdistrict": 88.6,
         "withCoordinates": 0,
         "categoryDeclared": 8.9,
-        "categoryInferred": 64,
-        "categoryUnknown": 27.1
+        "categoryInferred": 64.9,
+        "categoryUnknown": 26.3
       },
       "vintage": {
         "years": 865,
@@ -6020,15 +6020,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 39,
-          "share": 3.2
+          "count": 42,
+          "share": 3.4
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 113,
-          "share": 9.2
+          "count": 115,
+          "share": 9.4
         },
         {
           "id": "herbal",
@@ -6041,8 +6041,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 1001,
-          "share": 81.9
+          "count": 996,
+          "share": 81.5
         }
       ],
       "stars": {
@@ -6066,8 +6066,8 @@
         "withSubdistrict": 93.3,
         "withCoordinates": 0,
         "categoryDeclared": 8.3,
-        "categoryInferred": 9.6,
-        "categoryUnknown": 82.2
+        "categoryInferred": 10,
+        "categoryUnknown": 81.8
       },
       "vintage": {
         "years": 7,
@@ -6091,15 +6091,15 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 104,
-          "share": 8.6
+          "count": 122,
+          "share": 10.1
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 14,
-          "share": 1.2
+          "count": 17,
+          "share": 1.4
         },
         {
           "id": "textile",
@@ -6112,22 +6112,22 @@
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 61,
+          "count": 60,
           "share": 5
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 37,
-          "share": 3.1
+          "count": 35,
+          "share": 2.9
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 940,
-          "share": 77.6
+          "count": 922,
+          "share": 76.1
         }
       ],
       "stars": {
@@ -6151,8 +6151,8 @@
         "withSubdistrict": 90.1,
         "withCoordinates": 0,
         "categoryDeclared": 10.6,
-        "categoryInferred": 10.6,
-        "categoryUnknown": 78.8
+        "categoryInferred": 12.1,
+        "categoryUnknown": 77.3
       },
       "vintage": {
         "years": 76,
@@ -6176,8 +6176,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 92,
-          "share": 7.9
+          "count": 97,
+          "share": 8.3
         },
         {
           "id": "beverage",
@@ -6190,8 +6190,8 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 18,
-          "share": 1.5
+          "count": 20,
+          "share": 1.7
         },
         {
           "id": "craft",
@@ -6211,8 +6211,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 979,
-          "share": 84
+          "count": 972,
+          "share": 83.4
         }
       ],
       "stars": {
@@ -6236,8 +6236,8 @@
         "withSubdistrict": 94.6,
         "withCoordinates": 0,
         "categoryDeclared": 9.4,
-        "categoryInferred": 6.5,
-        "categoryUnknown": 84
+        "categoryInferred": 7.1,
+        "categoryUnknown": 83.4
       },
       "vintage": {
         "years": 29,
@@ -6261,8 +6261,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 63,
-          "share": 5.7
+          "count": 64,
+          "share": 5.8
         },
         {
           "id": "beverage",
@@ -6296,8 +6296,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 908,
-          "share": 82.1
+          "count": 907,
+          "share": 82
         }
       ],
       "stars": {
@@ -6321,8 +6321,8 @@
         "withSubdistrict": 93.2,
         "withCoordinates": 0,
         "categoryDeclared": 6.7,
-        "categoryInferred": 10.8,
-        "categoryUnknown": 82.5
+        "categoryInferred": 10.9,
+        "categoryUnknown": 82.4
       },
       "vintage": {
         "years": 10,
@@ -6346,8 +6346,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 196,
-          "share": 18.3
+          "count": 217,
+          "share": 20.3
         },
         {
           "id": "beverage",
@@ -6367,8 +6367,8 @@
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 50,
-          "share": 4.7
+          "count": 48,
+          "share": 4.5
         },
         {
           "id": "herbal",
@@ -6381,8 +6381,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 737,
-          "share": 68.9
+          "count": 718,
+          "share": 67.2
         }
       ],
       "stars": {
@@ -6404,10 +6404,10 @@
         "withStars": 6.1,
         "withPrice": 0,
         "withSubdistrict": 91,
-        "withCoordinates": 0,
+        "withCoordinates": 1.7,
         "categoryDeclared": 10.9,
-        "categoryInferred": 14.9,
-        "categoryUnknown": 74.3
+        "categoryInferred": 16.7,
+        "categoryUnknown": 72.5
       },
       "vintage": {
         "years": 7,
@@ -6601,8 +6601,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 281,
-          "share": 27.6
+          "count": 286,
+          "share": 28.1
         },
         {
           "id": "beverage",
@@ -6615,29 +6615,29 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 92,
-          "share": 9
+          "count": 98,
+          "share": 9.6
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 146,
-          "share": 14.4
+          "count": 144,
+          "share": 14.2
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 45,
-          "share": 4.4
+          "count": 41,
+          "share": 4
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 441,
-          "share": 43.4
+          "count": 436,
+          "share": 42.9
         }
       ],
       "stars": {
@@ -6661,8 +6661,8 @@
         "withSubdistrict": 91.3,
         "withCoordinates": 0,
         "categoryDeclared": 10.3,
-        "categoryInferred": 15.7,
-        "categoryUnknown": 73.9
+        "categoryInferred": 15.9,
+        "categoryUnknown": 73.7
       },
       "vintage": {
         "years": 425,
@@ -6785,15 +6785,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 117,
-          "share": 13
+          "count": 120,
+          "share": 13.3
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 27,
-          "share": 3
+          "count": 26,
+          "share": 2.9
         },
         {
           "id": "herbal",
@@ -6806,8 +6806,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 633,
-          "share": 70.2
+          "count": 631,
+          "share": 70
         }
       ],
       "stars": {
@@ -6831,8 +6831,8 @@
         "withSubdistrict": 87.3,
         "withCoordinates": 0,
         "categoryDeclared": 18.2,
-        "categoryInferred": 11.1,
-        "categoryUnknown": 70.7
+        "categoryInferred": 11.4,
+        "categoryUnknown": 70.4
       },
       "vintage": {
         "years": 7,
@@ -6856,8 +6856,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 295,
-          "share": 33.1
+          "count": 302,
+          "share": 33.9
         },
         {
           "id": "beverage",
@@ -6870,29 +6870,29 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 123,
-          "share": 13.8
+          "count": 140,
+          "share": 15.7
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 186,
-          "share": 20.9
+          "count": 182,
+          "share": 20.4
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 29,
-          "share": 3.3
+          "count": 28,
+          "share": 3.1
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 240,
-          "share": 27
+          "count": 221,
+          "share": 24.8
         }
       ],
       "stars": {
@@ -6916,8 +6916,8 @@
         "withSubdistrict": 89.6,
         "withCoordinates": 0,
         "categoryDeclared": 11.3,
-        "categoryInferred": 15.3,
-        "categoryUnknown": 73.4
+        "categoryInferred": 15.7,
+        "categoryUnknown": 72.9
       },
       "vintage": {
         "years": 10,
@@ -7026,8 +7026,8 @@
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 69,
-          "share": 8.4
+          "count": 70,
+          "share": 8.5
         },
         {
           "id": "beverage",
@@ -7040,15 +7040,15 @@
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 62,
-          "share": 7.6
+          "count": 64,
+          "share": 7.8
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 21,
-          "share": 2.6
+          "count": 19,
+          "share": 2.3
         },
         {
           "id": "herbal",
@@ -7061,8 +7061,8 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 644,
-          "share": 78.5
+          "count": 643,
+          "share": 78.4
         }
       ],
       "stars": {
@@ -7086,8 +7086,8 @@
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
         "categoryDeclared": 9.3,
-        "categoryInferred": 11.8,
-        "categoryUnknown": 78.9
+        "categoryInferred": 12.1,
+        "categoryUnknown": 78.7
       },
       "vintage": {
         "years": 9,
@@ -7468,25 +7468,25 @@
           "code": 46,
           "th": "กาฬสินธุ์",
           "en": "Kalasin",
-          "count": 1590,
-          "share": 41.7
+          "count": 1609,
+          "share": 42.2
         },
         {
           "code": 51,
           "th": "ลำพูน",
           "en": "Lamphun",
-          "count": 1050,
-          "share": 40.7
+          "count": 1052,
+          "share": 40.8
         },
         {
           "code": 34,
           "th": "อุบลราชธานี",
           "en": "Ubon Ratchathani",
-          "count": 527,
-          "share": 9.1
+          "count": 531,
+          "share": 9.2
         }
       ],
-      "topCount": 1590
+      "topCount": 1609
     },
     {
       "id": "food",
@@ -7497,25 +7497,25 @@
           "code": 46,
           "th": "กาฬสินธุ์",
           "en": "Kalasin",
-          "count": 851,
-          "share": 22.3
+          "count": 864,
+          "share": 22.7
         },
         {
           "code": 34,
           "th": "อุบลราชธานี",
           "en": "Ubon Ratchathani",
-          "count": 756,
+          "count": 758,
           "share": 13.1
         },
         {
           "code": 81,
           "th": "กระบี่",
           "en": "Krabi",
-          "count": 678,
-          "share": 44.9
+          "count": 700,
+          "share": 46.4
         }
       ],
-      "topCount": 851
+      "topCount": 864
     },
     {
       "id": "craft",
@@ -7526,8 +7526,8 @@
           "code": 46,
           "th": "กาฬสินธุ์",
           "en": "Kalasin",
-          "count": 725,
-          "share": 19
+          "count": 720,
+          "share": 18.9
         },
         {
           "code": 34,
@@ -7544,7 +7544,7 @@
           "share": 21.1
         }
       ],
-      "topCount": 725
+      "topCount": 720
     },
     {
       "id": "herbal",
@@ -7562,8 +7562,8 @@
           "code": 46,
           "th": "กาฬสินธุ์",
           "en": "Kalasin",
-          "count": 169,
-          "share": 4.4
+          "count": 161,
+          "share": 4.2
         },
         {
           "code": 34,
