@@ -61,8 +61,12 @@ function categoryParts(scope) {
 
 export default function Atlas({ insights }) {
   const [sort, setSort] = useState('records');
-  const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [], reachGap = [], corroborationQuadrant = {}, hiddenChampions = [], regionIdentity = [], revenue = null } = insights;
+  const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [], reachGap = [], corroborationQuadrant = {}, hiddenChampions = [], regionIdentity = [], revenue = null, catalogue = null } = insights;
 const bnBaht = (v) => (v == null ? '—' : `${(v / 1e9).toFixed(2)}B baht`);
+  // Hoisted out of the JSX where ae77e47 left them — a `const` inside a
+  // children expression is a parse error, not a computation.
+  const revenueTotals = Object.values(revenue?.nationalAnnual ?? {}).map((x) => x.total).filter(Boolean);
+  const maxRevenue = revenueTotals.length ? Math.max(...revenueTotals) : 1;
 
 const unclassified = national.categories?.find((c) => c.id === 'unclassified');
   const classifiedCount = national.records - (unclassified?.count ?? 0);
@@ -431,6 +435,13 @@ const unclassified = national.categories?.find((c) => c.id === 'unclassified');
             This is a <em>different dataset</em> from the producer registry above: it says how much
             money moved, not who earned it. The two cannot be joined, and dividing these totals by
             registry row counts would turn filing energy into fake productivity — so this page refuses to.
+            {catalogue?.resourcesAggregateEconomic != null && (
+              <>
+                {' '}The catalogue holds {catalogue.resourcesAggregateEconomic} such series under{' '}
+                {catalogue.aggregateTitles} titles, almost all single-province, single-year filings.
+                Only this one covers all 77 provinces, which is why it is the one used.
+              </>
+            )}
           </p>
           <div className="t-ranked">
             {Object.entries(revenue.nationalAnnual).sort(([a], [b]) => b - a).map(([year, a]) => (
@@ -439,8 +450,6 @@ const unclassified = national.categories?.find((c) => c.id === 'unclassified');
                   <span>{Number(year) + 543} BE · {year} CE{a.months < 12 ? ` (${a.months} months)` : ''}</span>
                   <span className="t-row-num">{bnBaht(a.total)}</span>
                 </div>
-                const revenueTotals = Object.values(revenue?.nationalAnnual ?? {}).map((x) => x.total).filter(Boolean);
-const maxRevenue = revenueTotals.length ? Math.max(...revenueTotals) : 1;
               <span className="t-ranked-track"><i style={{ width: `${(a.total / maxRevenue) * 100}%` }} /></span>
               </div>
             ))}

@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { PROVINCES, REGION_ORDER, resolveProvince } from '../otop/core/provinces.js';
 import { classifyCategory, parseStars, CATEGORIES } from '../otop/core/taxonomy.js';
 import { decodeBuffer, csvToObjects } from '../otop/core/text_decode.js';
-import { discoverFieldMap, isUsableMapping } from '../otop/core/field_map.js';
+import { discoverFieldMap, isUsableMapping, classifyResource } from '../otop/core/field_map.js';
 import {
   buildRecord, gradeRecord, mergeRecords, findOverbroadSignals,
   normalizePhone, normalizeTaxId, parseBuddhistYear, parseCoordinate, parseLatLng, nameKey,
@@ -185,4 +185,14 @@ test('buildRecord carries valid coordinates and nulls the rest', () => {
   const bad = buildRecord(row({ latitude: 0, longitude: 0 }), prov());
   assert.equal(bad.latitude, null);
   assert.equal(bad.longitude, null);
+});
+
+test('classifyResource is the one definition of an economic aggregate', () => {
+  const unusable = { title: 'รายได้จากการจำหน่ายสินค้า OTOP', map: { province: 'จังหวัด' }, unmapped: ['มูลค่า', 'หน่วย'] };
+  assert.equal(classifyResource(unusable), 'aggregate-economic');
+  // The leak: field discovery mapped a revenue column as the product name.
+  const leak = { title: 'รายได้จากหมู่บ้านท่องเที่ยว OTOP นวัตวิถี', map: { productName: 'รายได้จากผลิตภัณฑ์', province: 'จังหวัด' }, unmapped: [] };
+  assert.equal(classifyResource(leak), 'aggregate-economic');
+  assert.equal(classifyResource({ title: 'ข้อมูลผลิตภัณฑ์ OTOP', map: { productName: 'ชื่อผลิตภัณฑ์', province: 'จังหวัด' }, unmapped: [] }), 'producer');
+  assert.equal(classifyResource({ title: '(มอก.) รายชื่อมาตรฐานผลิตภัณฑ์อุตสาหกรรม', map: {}, unmapped: ['เลขที่ มอก.', 'ชื่อ'] }), 'other');
 });

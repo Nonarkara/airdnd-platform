@@ -424,6 +424,25 @@ const revenue = (() => {
   };
 })();
 
+/**
+ * Catalogue shape, carried from otop_meta.json so the prose prints the count
+ * instead of typing it. resourcesAggregateEconomic is pinned to
+ * classifyResource() in otop/core/field_map.js; "136 vs 385" style drift is
+ * what happens when this number lives in a handoff note instead of here.
+ */
+const catalogue = (() => {
+  const agg = (meta.resources ?? []).filter((r) => r.kind === 'aggregate-economic');
+  return {
+    resourcesCached: meta.counts.resourcesCached,
+    resourcesUsable: meta.counts.resourcesUsable,
+    resourcesSkipped: meta.counts.resourcesSkipped ?? null,
+    resourcesAggregateEconomic: meta.counts.resourcesAggregateEconomic ?? null,
+    resourcesExcludedByTitle: meta.counts.resourcesExcludedByTitle ?? 0,
+    aggregateTitles: new Set(agg.map((r) => (r.datasetTitle ?? '').trim().toLowerCase())).size,
+    aggregateRows: agg.reduce((n, r) => n + (r.rowsIn ?? 0), 0),
+  };
+})();
+
 const insights = {
   builtAt: new Date().toISOString(),
   // Carried forward so a consumer of this file alone can still tell whether it
@@ -462,6 +481,7 @@ const insights = {
   // Revenue aggregates (null when the revenue stage degraded — the Atlas
   // hides the section rather than substituting).
   revenue,
+  catalogue,
 
   // Concentration: the share of all records held by the top ten provinces. A
   // registry is not a census, so a high figure is as likely to reflect where

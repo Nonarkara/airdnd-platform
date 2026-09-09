@@ -77,6 +77,27 @@ export function isUsableMapping(map) {
   return hasName && hasArea;
 }
 
+/**
+ * Resource kind. Every "how many economic aggregates are in the catalogue"
+ * count goes through this one function so the number cannot drift between
+ * audits. A revenue series is a title match, a monetary unmapped column, or —
+ * the leak this closes — a monetary column that field discovery mistook for
+ * the name column ("รายได้จากผลิตภัณฑ์" is a value, not a product).
+ * ponytail: title/column heuristic; upgrade path is CKAN group tags if
+ * data.go.th ever fills them in.
+ */
+export const ECON_TITLE = /มูลค่า|รายได้|จำหน่าย|ยอดขาย|revenue|sales|income/i;
+export const MONEY_COLUMN = /มูลค่า|รายได้|ยอดขาย|ยอดจำหน่าย|value|amount|baht|บาท/i;
+
+/** @returns {'aggregate-economic' | 'producer' | 'other'} */
+export function classifyResource({ title = '', map = {}, unmapped = [] }) {
+  const nameColumn = map.productName ?? map.producerName ?? '';
+  if (nameColumn && MONEY_COLUMN.test(nameColumn)) return 'aggregate-economic';
+  if (isUsableMapping(map)) return 'producer';
+  if (ECON_TITLE.test(title) || unmapped.some((c) => MONEY_COLUMN.test(String(c ?? '')))) return 'aggregate-economic';
+  return 'other';
+}
+
 export function applyFieldMap(row, map) {
   const out = {};
   for (const [field, column] of Object.entries(map)) out[field] = row[column];

@@ -26,7 +26,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { discoverFieldMap, isUsableMapping, applyFieldMap } from '../../otop/core/field_map.js';
+import { discoverFieldMap, isUsableMapping, applyFieldMap, classifyResource } from '../../otop/core/field_map.js';
 import { PROVINCE_BY_CODE, PROVINCES } from '../../otop/core/provinces.js';
 import { CATEGORIES } from '../../otop/core/taxonomy.js';
 import { buildRecord, gradeRecord, mergeRecords } from '../../otop/core/record.js';
@@ -92,7 +92,12 @@ function main() {
   for (const entry of cache) {
     const headers = entry.fields?.length ? entry.fields : Object.keys(entry.rows[0] ?? {});
     const { map, unmapped, ambiguous } = discoverFieldMap(headers, CONFIG.fieldAliases);
-    const usable = isUsableMapping(map);
+    const kind = classifyResource({ title: entry.datasetTitle, map, unmapped });
+    const excluded = (CONFIG.excludeTitles ?? []).find((p) => new RegExp(p).test(entry.datasetTitle ?? ''));
+    // A resource is a producer list only if it has a name + area AND that name
+    // is not a monetary field AND its title is not on the exclusion list
+    // (ร้านธงฟ้า retail outlets are a Commerce programme, not OTOP producers).
+    const usable = isUsableMapping(map) && kind !== 'aggregate-economic' && !excluded;
 
     const report = {
       resourceId: entry.resourceId,
@@ -102,6 +107,7 @@ function main() {
       encoding: entry.encoding ?? null,
       rowsIn: entry.rows.length,
       usable,
+      kind: excluded ? 'other' : kind,
       mappedFields: Object.keys(map).length,
       map,
       unmappedColumns: unmapped,
@@ -114,7 +120,11 @@ function main() {
       // Loud skip. A resource dropped for lack of a name or area column is
       // reported with its columns so the alias dictionary can be extended,
       // rather than vanishing into a row count that never adds up.
-      report.skipReason = 'no name column and/or no area column after field discovery';
+      report.skipReason = excluded
+        ? `excluded by title (${excluded}): not an OTOP producer list`
+        : kind === 'aggregate-economic' && isUsableMapping(map)
+          ? 'name column is a monetary field — an aggregate series, not producers'
+          : 'no name column and/or no area column after field discovery';
       resourceReports.push(report);
       console.warn(`[otop:build] SKIP ${entry.datasetTitle ?? entry.resourceId} — ${report.skipReason}; columns: ${headers.slice(0, 12).join(', ')}`);
       continue;
@@ -254,6 +264,10 @@ function main() {
     counts: {
       resourcesCached: cache.length,
       resourcesUsable: resourceReports.filter((r) => r.usable).length,
+      resourcesSkipped: resourceReports.filter((r) => !r.usable).length,
+      // Pinned to classifyResource() — the one definition of "economic aggregate".
+      resourcesAggregateEconomic: resourceReports.filter((r) => r.kind === 'aggregate-economic').length,
+      resourcesExcludedByTitle: resourceReports.filter((r) => r.skipReason?.startsWith('excluded by title')).length,
       rowsIn: resourceReports.reduce((n, r) => n + r.rowsIn, 0),
       rowsAccepted: records.length,
       rowsRejected: resourceReports.reduce((n, r) => n + r.rowsRejected, 0),

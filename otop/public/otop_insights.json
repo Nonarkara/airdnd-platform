@@ -1,26 +1,26 @@
 {
-  "builtAt": "2026-09-09T15:25:03.259Z",
+  "builtAt": "2026-09-09T15:33:50.900Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
   "national": {
-    "records": 158864,
-    "producers": 158864,
+    "records": 154078,
+    "producers": 154078,
     "provincesCovered": 77,
     "provincesEmpty": [],
     "corroborated": 105787,
-    "corroboratedShare": 66.6,
-    "duplicatesCollapsed": 273277,
+    "corroboratedShare": 68.7,
+    "duplicatesCollapsed": 273069,
     "completeness": {
-      "records": 158864,
-      "withContact": 7.7,
-      "withStars": 8.8,
+      "records": 154078,
+      "withContact": 5.8,
+      "withStars": 9,
       "withPrice": 0,
-      "withSubdistrict": 86.2,
-      "withCoordinates": 0.7,
-      "categoryDeclared": 11.8,
-      "categoryInferred": 12.6,
-      "categoryUnknown": 75.6
+      "withSubdistrict": 87.9,
+      "withCoordinates": 0.4,
+      "categoryDeclared": 12.2,
+      "categoryInferred": 13,
+      "categoryUnknown": 74.8
     },
     "categories": [
       {
@@ -28,7 +28,7 @@
         "th": "อาหาร",
         "en": "Food",
         "count": 17100,
-        "share": 10.8
+        "share": 11.1
       },
       {
         "id": "beverage",
@@ -42,33 +42,33 @@
         "th": "ผ้าและเครื่องแต่งกาย",
         "en": "Fabric & Apparel",
         "count": 13830,
-        "share": 8.7
+        "share": 9
       },
       {
         "id": "craft",
         "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
         "en": "Household, Decorative & Souvenir",
         "count": 11018,
-        "share": 6.9
+        "share": 7.2
       },
       {
         "id": "herbal",
         "th": "สมุนไพรที่ไม่ใช่อาหาร",
         "en": "Non-food Herbal",
         "count": 3178,
-        "share": 2
+        "share": 2.1
       },
       {
         "id": "unclassified",
         "th": "ไม่จำแนก",
         "en": "Unclassified",
-        "count": 112175,
-        "share": 70.6
+        "count": 107389,
+        "share": 69.7
       }
     ],
     "stars": {
       "graded": 13939,
-      "ungraded": 144925,
+      "ungraded": 140139,
       "distribution": {
         "0": 26,
         "1": 143,
@@ -80,7 +80,7 @@
       "mean": 4.01
     },
     "vintage": {
-      "years": 21287,
+      "years": 20989,
       "earliest": 2007,
       "latest": 2026,
       "median": 2022,
@@ -94,55 +94,55 @@
       "en": "North",
       "provinces": 9,
       "provincesWithRecords": 9,
-      "records": 22532,
-      "share": 14.2,
+      "records": 19222,
+      "share": 12.5,
       "categories": [
         {
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
           "count": 1676,
-          "share": 7.4
+          "share": 8.7
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
           "count": 351,
-          "share": 1.6
+          "share": 1.8
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
           "count": 2550,
-          "share": 11.3
+          "share": 13.3
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
           "count": 964,
-          "share": 4.3
+          "share": 5
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
           "count": 361,
-          "share": 1.6
+          "share": 1.9
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 16630,
-          "share": 73.8
+          "count": 13320,
+          "share": 69.3
         }
       ],
       "stars": {
         "graded": 2167,
-        "ungraded": 20365,
+        "ungraded": 17055,
         "distribution": {
           "0": 1,
           "1": 21,
@@ -154,15 +154,15 @@
         "mean": 4.19
       },
       "completeness": {
-        "records": 22532,
-        "withContact": 18.6,
-        "withStars": 9.6,
+        "records": 19222,
+        "withContact": 4.7,
+        "withStars": 11.3,
         "withPrice": 0,
-        "withSubdistrict": 75,
+        "withSubdistrict": 87.9,
         "withCoordinates": 0,
-        "categoryDeclared": 11,
-        "categoryInferred": 11.6,
-        "categoryUnknown": 77.4
+        "categoryDeclared": 12.9,
+        "categoryInferred": 13.6,
+        "categoryUnknown": 73.6
       }
     },
     {
@@ -171,8 +171,8 @@
       "en": "Northeast",
       "provinces": 20,
       "provincesWithRecords": 20,
-      "records": 59653,
-      "share": 37.5,
+      "records": 59377,
+      "share": 38.5,
       "categories": [
         {
           "id": "food",
@@ -213,13 +213,13 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 40908,
-          "share": 68.6
+          "count": 40632,
+          "share": 68.4
         }
       ],
       "stars": {
         "graded": 5898,
-        "ungraded": 53755,
+        "ungraded": 53479,
         "distribution": {
           "0": 9,
           "1": 59,
@@ -231,15 +231,15 @@
         "mean": 3.93
       },
       "completeness": {
-        "records": 59653,
+        "records": 59377,
         "withContact": 5.9,
         "withStars": 9.9,
         "withPrice": 0,
-        "withSubdistrict": 86.2,
+        "withSubdistrict": 86.1,
         "withCoordinates": 0.1,
         "categoryDeclared": 12,
         "categoryInferred": 13.2,
-        "categoryUnknown": 74.9
+        "categoryUnknown": 74.7
       }
     },
     {
@@ -249,7 +249,7 @@
       "provinces": 22,
       "provincesWithRecords": 22,
       "records": 35169,
-      "share": 22.1,
+      "share": 22.8,
       "categories": [
         {
           "id": "food",
@@ -326,7 +326,7 @@
       "provinces": 7,
       "provincesWithRecords": 7,
       "records": 9922,
-      "share": 6.2,
+      "share": 6.4,
       "categories": [
         {
           "id": "food",
@@ -402,8 +402,8 @@
       "en": "West",
       "provinces": 5,
       "provincesWithRecords": 5,
-      "records": 8542,
-      "share": 5.4,
+      "records": 8520,
+      "share": 5.5,
       "categories": [
         {
           "id": "food",
@@ -444,13 +444,13 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 5644,
-          "share": 66.1
+          "count": 5622,
+          "share": 66
         }
       ],
       "stars": {
         "graded": 525,
-        "ungraded": 8017,
+        "ungraded": 7995,
         "distribution": {
           "0": 1,
           "1": 3,
@@ -462,15 +462,15 @@
         "mean": 4.11
       },
       "completeness": {
-        "records": 8542,
+        "records": 8520,
         "withContact": 7.2,
-        "withStars": 6.1,
+        "withStars": 6.2,
         "withPrice": 0,
         "withSubdistrict": 80,
         "withCoordinates": 6.7,
         "categoryDeclared": 9.5,
-        "categoryInferred": 17.6,
-        "categoryUnknown": 72.9
+        "categoryInferred": 17.7,
+        "categoryUnknown": 72.8
       }
     },
     {
@@ -479,15 +479,15 @@
       "en": "South",
       "provinces": 14,
       "provincesWithRecords": 14,
-      "records": 23046,
-      "share": 14.5,
+      "records": 21868,
+      "share": 14.2,
       "categories": [
         {
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
           "count": 2848,
-          "share": 12.4
+          "share": 13
         },
         {
           "id": "beverage",
@@ -501,14 +501,14 @@
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
           "count": 1472,
-          "share": 6.4
+          "share": 6.7
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
           "count": 1203,
-          "share": 5.2
+          "share": 5.5
         },
         {
           "id": "herbal",
@@ -521,13 +521,13 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 16935,
-          "share": 73.5
+          "count": 15757,
+          "share": 72.1
         }
       ],
       "stars": {
         "graded": 1618,
-        "ungraded": 21428,
+        "ungraded": 20250,
         "distribution": {
           "0": 9,
           "1": 21,
@@ -539,112 +539,27 @@
         "mean": 4.04
       },
       "completeness": {
-        "records": 23046,
-        "withContact": 4.8,
-        "withStars": 7,
+        "records": 21868,
+        "withContact": 5.1,
+        "withStars": 7.4,
         "withPrice": 0,
-        "withSubdistrict": 92.3,
-        "withCoordinates": 2.1,
-        "categoryDeclared": 8.5,
-        "categoryInferred": 11.3,
-        "categoryUnknown": 80.2
+        "withSubdistrict": 91.8,
+        "withCoordinates": 0,
+        "categoryDeclared": 9,
+        "categoryInferred": 11.9,
+        "categoryUnknown": 79.2
       }
     }
   ],
   "byProvince": [
-    {
-      "code": 57,
-      "iso": "TH-57",
-      "th": "เชียงราย",
-      "en": "Chiang Rai",
-      "region": "north",
-      "records": 6633,
-      "producers": 6633,
-      "corroborated": 2107,
-      "categories": [
-        {
-          "id": "food",
-          "th": "อาหาร",
-          "en": "Food",
-          "count": 129,
-          "share": 1.9
-        },
-        {
-          "id": "beverage",
-          "th": "เครื่องดื่ม",
-          "en": "Beverages",
-          "count": 79,
-          "share": 1.2
-        },
-        {
-          "id": "textile",
-          "th": "ผ้าและเครื่องแต่งกาย",
-          "en": "Fabric & Apparel",
-          "count": 205,
-          "share": 3.1
-        },
-        {
-          "id": "craft",
-          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
-          "en": "Household, Decorative & Souvenir",
-          "count": 146,
-          "share": 2.2
-        },
-        {
-          "id": "herbal",
-          "th": "สมุนไพรที่ไม่ใช่อาหาร",
-          "en": "Non-food Herbal",
-          "count": 28,
-          "share": 0.4
-        },
-        {
-          "id": "unclassified",
-          "th": "ไม่จำแนก",
-          "en": "Unclassified",
-          "count": 6046,
-          "share": 91.2
-        }
-      ],
-      "stars": {
-        "graded": 304,
-        "ungraded": 6329,
-        "distribution": {
-          "0": 0,
-          "1": 6,
-          "2": 14,
-          "3": 56,
-          "4": 104,
-          "5": 124
-        },
-        "mean": 4.07
-      },
-      "completeness": {
-        "records": 6633,
-        "withContact": 48.6,
-        "withStars": 4.6,
-        "withPrice": 0,
-        "withSubdistrict": 46.2,
-        "withCoordinates": 0,
-        "categoryDeclared": 5,
-        "categoryInferred": 3.7,
-        "categoryUnknown": 91.3
-      },
-      "vintage": {
-        "years": 11,
-        "earliest": 2015,
-        "latest": 2025,
-        "median": 2025,
-        "staleYears": 1
-      }
-    },
     {
       "code": 34,
       "iso": "TH-34",
       "th": "อุบลราชธานี",
       "en": "Ubon Ratchathani",
       "region": "northeast",
-      "records": 5784,
-      "producers": 5784,
+      "records": 5508,
+      "producers": 5508,
       "corroborated": 4997,
       "categories": [
         {
@@ -652,7 +567,7 @@
           "th": "อาหาร",
           "en": "Food",
           "count": 758,
-          "share": 13.1
+          "share": 13.8
         },
         {
           "id": "beverage",
@@ -666,33 +581,33 @@
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
           "count": 531,
-          "share": 9.2
+          "share": 9.6
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
           "count": 619,
-          "share": 10.7
+          "share": 11.2
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
           "count": 152,
-          "share": 2.6
+          "share": 2.8
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 3663,
-          "share": 63.3
+          "count": 3387,
+          "share": 61.5
         }
       ],
       "stars": {
         "graded": 425,
-        "ungraded": 5359,
+        "ungraded": 5083,
         "distribution": {
           "0": 0,
           "1": 7,
@@ -704,22 +619,22 @@
         "mean": 3.52
       },
       "completeness": {
-        "records": 5784,
+        "records": 5508,
         "withContact": 0.1,
-        "withStars": 7.3,
+        "withStars": 7.7,
         "withPrice": 0,
-        "withSubdistrict": 91.1,
+        "withSubdistrict": 90.7,
         "withCoordinates": 0,
-        "categoryDeclared": 30.7,
-        "categoryInferred": 5.9,
-        "categoryUnknown": 63.4
+        "categoryDeclared": 32.2,
+        "categoryInferred": 6.2,
+        "categoryUnknown": 61.6
       },
       "vintage": {
-        "years": 1630,
+        "years": 1354,
         "earliest": 2014,
-        "latest": 2026,
-        "median": 2025,
-        "staleYears": 0
+        "latest": 2025,
+        "median": 2024,
+        "staleYears": 1
       }
     },
     {
@@ -893,91 +808,6 @@
       }
     },
     {
-      "code": 50,
-      "iso": "TH-50",
-      "th": "เชียงใหม่",
-      "en": "Chiang Mai",
-      "region": "north",
-      "records": 4093,
-      "producers": 4093,
-      "corroborated": 2474,
-      "categories": [
-        {
-          "id": "food",
-          "th": "อาหาร",
-          "en": "Food",
-          "count": 163,
-          "share": 4
-        },
-        {
-          "id": "beverage",
-          "th": "เครื่องดื่ม",
-          "en": "Beverages",
-          "count": 51,
-          "share": 1.2
-        },
-        {
-          "id": "textile",
-          "th": "ผ้าและเครื่องแต่งกาย",
-          "en": "Fabric & Apparel",
-          "count": 516,
-          "share": 12.6
-        },
-        {
-          "id": "craft",
-          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
-          "en": "Household, Decorative & Souvenir",
-          "count": 215,
-          "share": 5.3
-        },
-        {
-          "id": "herbal",
-          "th": "สมุนไพรที่ไม่ใช่อาหาร",
-          "en": "Non-food Herbal",
-          "count": 86,
-          "share": 2.1
-        },
-        {
-          "id": "unclassified",
-          "th": "ไม่จำแนก",
-          "en": "Unclassified",
-          "count": 3062,
-          "share": 74.8
-        }
-      ],
-      "stars": {
-        "graded": 441,
-        "ungraded": 3652,
-        "distribution": {
-          "0": 0,
-          "1": 5,
-          "2": 12,
-          "3": 71,
-          "4": 171,
-          "5": 182
-        },
-        "mean": 4.16
-      },
-      "completeness": {
-        "records": 4093,
-        "withContact": 2,
-        "withStars": 10.8,
-        "withPrice": 0,
-        "withSubdistrict": 84.8,
-        "withCoordinates": 0,
-        "categoryDeclared": 11.7,
-        "categoryInferred": 13.4,
-        "categoryUnknown": 75
-      },
-      "vintage": {
-        "years": 72,
-        "earliest": 2017,
-        "latest": 2025,
-        "median": 2022,
-        "staleYears": 1
-      }
-    },
-    {
       "code": 40,
       "iso": "TH-40",
       "th": "ขอนแก่น",
@@ -1144,6 +974,91 @@
         "earliest": 2011,
         "latest": 2025,
         "median": 2018,
+        "staleYears": 1
+      }
+    },
+    {
+      "code": 50,
+      "iso": "TH-50",
+      "th": "เชียงใหม่",
+      "en": "Chiang Mai",
+      "region": "north",
+      "records": 4011,
+      "producers": 4011,
+      "corroborated": 2474,
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 163,
+          "share": 4.1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 51,
+          "share": 1.3
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 516,
+          "share": 12.9
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 215,
+          "share": 5.4
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 86,
+          "share": 2.1
+        },
+        {
+          "id": "unclassified",
+          "th": "ไม่จำแนก",
+          "en": "Unclassified",
+          "count": 2980,
+          "share": 74.3
+        }
+      ],
+      "stars": {
+        "graded": 441,
+        "ungraded": 3570,
+        "distribution": {
+          "0": 0,
+          "1": 5,
+          "2": 12,
+          "3": 71,
+          "4": 171,
+          "5": 182
+        },
+        "mean": 4.16
+      },
+      "completeness": {
+        "records": 4011,
+        "withContact": 0,
+        "withStars": 11,
+        "withPrice": 0,
+        "withSubdistrict": 86.5,
+        "withCoordinates": 0,
+        "categoryDeclared": 11.9,
+        "categoryInferred": 13.7,
+        "categoryUnknown": 74.4
+      },
+      "vintage": {
+        "years": 72,
+        "earliest": 2017,
+        "latest": 2025,
+        "median": 2022,
         "staleYears": 1
       }
     },
@@ -1569,6 +1484,91 @@
         "earliest": 2014,
         "latest": 2025,
         "median": 2023,
+        "staleYears": 1
+      }
+    },
+    {
+      "code": 57,
+      "iso": "TH-57",
+      "th": "เชียงราย",
+      "en": "Chiang Rai",
+      "region": "north",
+      "records": 3405,
+      "producers": 3405,
+      "corroborated": 2107,
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 129,
+          "share": 3.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 79,
+          "share": 2.3
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 205,
+          "share": 6
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 146,
+          "share": 4.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 28,
+          "share": 0.8
+        },
+        {
+          "id": "unclassified",
+          "th": "ไม่จำแนก",
+          "en": "Unclassified",
+          "count": 2818,
+          "share": 82.8
+        }
+      ],
+      "stars": {
+        "graded": 304,
+        "ungraded": 3101,
+        "distribution": {
+          "0": 0,
+          "1": 6,
+          "2": 14,
+          "3": 56,
+          "4": 104,
+          "5": 124
+        },
+        "mean": 4.07
+      },
+      "completeness": {
+        "records": 3405,
+        "withContact": 0.1,
+        "withStars": 8.9,
+        "withPrice": 0,
+        "withSubdistrict": 90,
+        "withCoordinates": 0,
+        "categoryDeclared": 9.8,
+        "categoryInferred": 7.3,
+        "categoryUnknown": 83
+      },
+      "vintage": {
+        "years": 11,
+        "earliest": 2015,
+        "latest": 2025,
+        "median": 2025,
         "staleYears": 1
       }
     },
@@ -2420,91 +2420,6 @@
         "latest": 2026,
         "median": 2026,
         "staleYears": 0
-      }
-    },
-    {
-      "code": 91,
-      "iso": "TH-91",
-      "th": "สตูล",
-      "en": "Satun",
-      "region": "south",
-      "records": 2123,
-      "producers": 2123,
-      "corroborated": 893,
-      "categories": [
-        {
-          "id": "food",
-          "th": "อาหาร",
-          "en": "Food",
-          "count": 67,
-          "share": 3.2
-        },
-        {
-          "id": "beverage",
-          "th": "เครื่องดื่ม",
-          "en": "Beverages",
-          "count": 10,
-          "share": 0.5
-        },
-        {
-          "id": "textile",
-          "th": "ผ้าและเครื่องแต่งกาย",
-          "en": "Fabric & Apparel",
-          "count": 66,
-          "share": 3.1
-        },
-        {
-          "id": "craft",
-          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
-          "en": "Household, Decorative & Souvenir",
-          "count": 41,
-          "share": 1.9
-        },
-        {
-          "id": "herbal",
-          "th": "สมุนไพรที่ไม่ใช่อาหาร",
-          "en": "Non-food Herbal",
-          "count": 1,
-          "share": 0
-        },
-        {
-          "id": "unclassified",
-          "th": "ไม่จำแนก",
-          "en": "Unclassified",
-          "count": 1938,
-          "share": 91.3
-        }
-      ],
-      "stars": {
-        "graded": 60,
-        "ungraded": 2063,
-        "distribution": {
-          "0": 0,
-          "1": 0,
-          "2": 2,
-          "3": 11,
-          "4": 26,
-          "5": 21
-        },
-        "mean": 4.1
-      },
-      "completeness": {
-        "records": 2123,
-        "withContact": 30.5,
-        "withStars": 2.8,
-        "withPrice": 0,
-        "withSubdistrict": 96.8,
-        "withCoordinates": 22.8,
-        "categoryDeclared": 3.9,
-        "categoryInferred": 4.7,
-        "categoryUnknown": 91.5
-      },
-      "vintage": {
-        "years": 12,
-        "earliest": 2017,
-        "latest": 2025,
-        "median": 2025,
-        "staleYears": 1
       }
     },
     {
@@ -6168,8 +6083,8 @@
       "th": "ประจวบคีรีขันธ์",
       "en": "Prachuap Khiri Khan",
       "region": "west",
-      "records": 1166,
-      "producers": 1166,
+      "records": 1144,
+      "producers": 1144,
       "corroborated": 682,
       "categories": [
         {
@@ -6177,7 +6092,7 @@
           "th": "อาหาร",
           "en": "Food",
           "count": 97,
-          "share": 8.3
+          "share": 8.5
         },
         {
           "id": "beverage",
@@ -6198,7 +6113,7 @@
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
           "count": 50,
-          "share": 4.3
+          "share": 4.4
         },
         {
           "id": "herbal",
@@ -6211,13 +6126,13 @@
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 972,
-          "share": 83.4
+          "count": 950,
+          "share": 83
         }
       ],
       "stars": {
         "graded": 55,
-        "ungraded": 1111,
+        "ungraded": 1089,
         "distribution": {
           "0": 0,
           "1": 1,
@@ -6229,22 +6144,22 @@
         "mean": 4.13
       },
       "completeness": {
-        "records": 1166,
+        "records": 1144,
         "withContact": 0.3,
-        "withStars": 4.7,
+        "withStars": 4.8,
         "withPrice": 0,
-        "withSubdistrict": 94.6,
+        "withSubdistrict": 94.5,
         "withCoordinates": 0,
-        "categoryDeclared": 9.4,
-        "categoryInferred": 7.1,
-        "categoryUnknown": 83.4
+        "categoryDeclared": 9.6,
+        "categoryInferred": 7.3,
+        "categoryUnknown": 83.1
       },
       "vintage": {
-        "years": 29,
+        "years": 7,
         "earliest": 2014,
-        "latest": 2026,
-        "median": 2026,
-        "staleYears": 0
+        "latest": 2025,
+        "median": 2025,
+        "staleYears": 1
       }
     },
     {
@@ -6670,6 +6585,91 @@
         "latest": 2026,
         "median": 2018,
         "staleYears": 0
+      }
+    },
+    {
+      "code": 91,
+      "iso": "TH-91",
+      "th": "สตูล",
+      "en": "Satun",
+      "region": "south",
+      "records": 945,
+      "producers": 945,
+      "corroborated": 893,
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 67,
+          "share": 7.1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 10,
+          "share": 1.1
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 66,
+          "share": 7
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 41,
+          "share": 4.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 1,
+          "share": 0.1
+        },
+        {
+          "id": "unclassified",
+          "th": "ไม่จำแนก",
+          "en": "Unclassified",
+          "count": 760,
+          "share": 80.4
+        }
+      ],
+      "stars": {
+        "graded": 60,
+        "ungraded": 885,
+        "distribution": {
+          "0": 0,
+          "1": 0,
+          "2": 2,
+          "3": 11,
+          "4": 26,
+          "5": 21
+        },
+        "mean": 4.1
+      },
+      "completeness": {
+        "records": 945,
+        "withContact": 68.5,
+        "withStars": 6.3,
+        "withPrice": 0,
+        "withSubdistrict": 92.8,
+        "withCoordinates": 0.2,
+        "categoryDeclared": 8.7,
+        "categoryInferred": 10.5,
+        "categoryUnknown": 80.8
+      },
+      "vintage": {
+        "years": 12,
+        "earliest": 2017,
+        "latest": 2025,
+        "median": 2025,
+        "staleYears": 1
       }
     },
     {
@@ -7124,20 +7124,16 @@
       "records": 4452
     },
     {
-      "organization": "สำนักงานจังหวัดอุบลราชธานี",
-      "records": 4128
-    },
-    {
       "organization": "สำนักงานจังหวัดนครราชสีมา",
       "records": 4016
     },
     {
-      "organization": "สำนักงานจังหวัดบุรีรัมย์",
-      "records": 3348
+      "organization": "สำนักงานจังหวัดอุบลราชธานี",
+      "records": 3852
     },
     {
-      "organization": "สำนักงานจังหวัดเชียงราย",
-      "records": 3340
+      "organization": "สำนักงานจังหวัดบุรีรัมย์",
+      "records": 3348
     },
     {
       "organization": "สำนักงานจังหวัดบึงกาฬ",
@@ -7146,10 +7142,6 @@
     {
       "organization": "สำนักงานจังหวัดกาญจนบุรี",
       "records": 2084
-    },
-    {
-      "organization": "สำนักงานจังหวัดสตูล",
-      "records": 1951
     },
     {
       "organization": "สำนักงานจังหวัดพะเยา",
@@ -7190,6 +7182,10 @@
     {
       "organization": "สำนักงานจังหวัดชัยนาท",
       "records": 918
+    },
+    {
+      "organization": "สำนักงานจังหวัดสตูล",
+      "records": 772
     },
     {
       "organization": "สำนักงานจังหวัดพิจิตร",
@@ -7340,10 +7336,6 @@
       "records": 44
     },
     {
-      "organization": "สำนักงานจังหวัดประจวบคีรีขันธ์",
-      "records": 38
-    },
-    {
       "organization": "สำนักงานจังหวัดสุราษฎร์ธานี",
       "records": 36
     },
@@ -7376,6 +7368,10 @@
       "records": 24
     },
     {
+      "organization": "สำนักงานจังหวัดเชียงราย",
+      "records": 24
+    },
+    {
       "organization": "สำนักงานจังหวัดสุพรรณบุรี",
       "records": 24
     },
@@ -7404,6 +7400,10 @@
       "records": 16
     },
     {
+      "organization": "สำนักงานจังหวัดประจวบคีรีขันธ์",
+      "records": 16
+    },
+    {
       "organization": "สำนักงานจังหวัดสิงห์บุรี",
       "records": 12
     },
@@ -7424,42 +7424,42 @@
     {
       "id": "commercial-ready",
       "th": "โอทอปพร้อมค้า",
-      "text": "123 records (0.1%) carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. 20,292 carry two of the three, 31,848 carry one, and 106,601 (67.1%) carry none of the three: a name and an area only.",
+      "text": "117 records (0.1%) carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. 20,298 carry two of the three, 28,550 carry one, and 105,113 (68.2%) carry none of the three: a name and an area only.",
       "value": 0.1,
-      "count": 123,
-      "tier2": 20292,
-      "tier1": 31848,
-      "tier0": 106601
+      "count": 117,
+      "tier2": 20298,
+      "tier1": 28550,
+      "tier0": 105113
     },
     {
       "id": "corroboration",
       "th": "ความเห็นตรงกัน",
-      "text": "66.6% of records are attested by more than one agency. Without corroboration, a record is one office's filing; with it, two or more agreed.",
-      "value": 66.6
+      "text": "68.7% of records are attested by more than one agency. Without corroboration, a record is one office's filing; with it, two or more agreed.",
+      "value": 68.7
     },
     {
       "id": "graded",
       "th": "ได้รับการคัดสรร",
-      "text": "13,939 records (8.8%) carry an OPC star grade. Mean grade of those: 4.01★. 5,317 are 5-star; 4,789 are 4-star.",
-      "value": 8.8
+      "text": "13,939 records (9%) carry an OPC star grade. Mean grade of those: 4.01★. 5,317 are 5-star; 4,789 are 4-star.",
+      "value": 9
     },
     {
       "id": "concentration",
       "th": "ความเข้มข้น",
-      "text": "The ten most-filed provinces hold 28.1% of all records. The remaining 67 provinces share the rest.",
-      "value": 28.1
+      "text": "The ten most-filed provinces hold 26.8% of all records. The remaining 67 provinces share the rest.",
+      "value": 26.8
     },
     {
       "id": "trust-spread",
       "th": "ช่วงความน่าเชื่อถือ",
-      "text": "บุรีรัมย์ is the most cross-attested province (89.3% of its records corroborated by ≥2 agencies); เชียงราย is the least (31.8%). Same data source, very different administrative depth.",
-      "value": 89.3
+      "text": "สตูล is the most cross-attested province (94.5% of its records corroborated by ≥2 agencies); ยะลา is the least (34.4%). Same data source, very different administrative depth.",
+      "value": 94.5
     },
     {
       "id": "freshness",
       "th": "ความสดใหม่",
-      "text": "21,287 records (13.4%) carry a filing year. Median filing year is 2022. The other 86.6% cannot be dated from the registry.",
-      "value": 13.4
+      "text": "20,989 records (13.6%) carry a filing year. Median filing year is 2022. The other 86.4% cannot be dated from the registry.",
+      "value": 13.6
     }
   ],
   "specialization": [
@@ -7487,7 +7487,7 @@
           "th": "อุบลราชธานี",
           "en": "Ubon Ratchathani",
           "count": 531,
-          "share": 9.2
+          "share": 9.6
         }
       ],
       "topCount": 1609
@@ -7509,7 +7509,7 @@
           "th": "อุบลราชธานี",
           "en": "Ubon Ratchathani",
           "count": 758,
-          "share": 13.1
+          "share": 13.8
         },
         {
           "code": 81,
@@ -7538,7 +7538,7 @@
           "th": "อุบลราชธานี",
           "en": "Ubon Ratchathani",
           "count": 619,
-          "share": 10.7
+          "share": 11.2
         },
         {
           "code": 35,
@@ -7574,7 +7574,7 @@
           "th": "อุบลราชธานี",
           "en": "Ubon Ratchathani",
           "count": 152,
-          "share": 2.6
+          "share": 2.8
         }
       ],
       "topCount": 256
@@ -7596,7 +7596,7 @@
           "th": "เชียงราย",
           "en": "Chiang Rai",
           "count": 79,
-          "share": 1.2
+          "share": 2.3
         },
         {
           "code": 54,
@@ -7661,8 +7661,8 @@
       "en": "Chiang Mai",
       "graded": 441,
       "graded45": 353,
-      "total": 4093,
-      "density": 10.8
+      "total": 4011,
+      "density": 11
     },
     {
       "code": 34,
@@ -7670,8 +7670,8 @@
       "en": "Ubon Ratchathani",
       "graded": 425,
       "graded45": 228,
-      "total": 5784,
-      "density": 7.3
+      "total": 5508,
+      "density": 7.7
     },
     {
       "code": 10,
@@ -7707,12 +7707,12 @@
       "th": "อุบลราชธานี",
       "en": "Ubon Ratchathani",
       "region": "northeast",
-      "records": 5784,
+      "records": 5508,
       "reachable": 4,
-      "unreachable": 5780,
+      "unreachable": 5504,
       "reachablePct": 0.1,
       "corroborated": 4997,
-      "corroboratedPct": 86.4,
+      "corroboratedPct": 90.7,
       "highStars": 228,
       "hiddenChampions": 183
     },
@@ -7763,12 +7763,12 @@
       "th": "เชียงใหม่",
       "en": "Chiang Mai",
       "region": "north",
-      "records": 4093,
-      "reachable": 83,
-      "unreachable": 4010,
-      "reachablePct": 2,
+      "records": 4011,
+      "reachable": 2,
+      "unreachable": 4009,
+      "reachablePct": 0,
       "corroborated": 2474,
-      "corroboratedPct": 60.4,
+      "corroboratedPct": 61.7,
       "highStars": 353,
       "hiddenChampions": 275
     },
@@ -7847,14 +7847,14 @@
       "th": "เชียงราย",
       "en": "Chiang Rai",
       "region": "north",
-      "records": 6633,
-      "reachable": 3226,
-      "unreachable": 3407,
-      "reachablePct": 48.6,
+      "records": 3405,
+      "reachable": 3,
+      "unreachable": 3402,
+      "reachablePct": 0.1,
       "corroborated": 2107,
-      "corroboratedPct": 31.8,
+      "corroboratedPct": 61.9,
       "highStars": 228,
-      "hiddenChampions": 167
+      "hiddenChampions": 171
     },
     {
       "code": 80,
@@ -8319,20 +8319,6 @@
       "hiddenChampions": 37
     },
     {
-      "code": 91,
-      "th": "สตูล",
-      "en": "Satun",
-      "region": "south",
-      "records": 2123,
-      "reachable": 647,
-      "unreachable": 1476,
-      "reachablePct": 30.5,
-      "corroborated": 893,
-      "corroboratedPct": 42.1,
-      "highStars": 47,
-      "hiddenChampions": 36
-    },
-    {
       "code": 22,
       "th": "จันทบุรี",
       "en": "Chanthaburi",
@@ -8575,12 +8561,12 @@
       "th": "ประจวบคีรีขันธ์",
       "en": "Prachuap Khiri Khan",
       "region": "west",
-      "records": 1166,
+      "records": 1144,
       "reachable": 3,
-      "unreachable": 1163,
+      "unreachable": 1141,
       "reachablePct": 0.3,
       "corroborated": 682,
-      "corroboratedPct": 58.5,
+      "corroboratedPct": 59.6,
       "highStars": 41,
       "hiddenChampions": 27
     },
@@ -8779,6 +8765,20 @@
       "corroboratedPct": 78.9,
       "highStars": 66,
       "hiddenChampions": 53
+    },
+    {
+      "code": 91,
+      "th": "สตูล",
+      "en": "Satun",
+      "region": "south",
+      "records": 945,
+      "reachable": 647,
+      "unreachable": 298,
+      "reachablePct": 68.5,
+      "corroborated": 893,
+      "corroboratedPct": 94.5,
+      "highStars": 47,
+      "hiddenChampions": 36
     }
   ],
   "corroborationQuadrant": {
@@ -8870,6 +8870,20 @@
         "corroboratedPct": 78.9,
         "highStars": 66,
         "hiddenChampions": 53
+      },
+      {
+        "code": 91,
+        "th": "สตูล",
+        "en": "Satun",
+        "region": "south",
+        "records": 945,
+        "reachable": 647,
+        "unreachable": 298,
+        "reachablePct": 68.5,
+        "corroborated": 893,
+        "corroboratedPct": 94.5,
+        "highStars": 47,
+        "hiddenChampions": 36
       }
     ],
     "documented": [
@@ -8878,12 +8892,12 @@
         "th": "อุบลราชธานี",
         "en": "Ubon Ratchathani",
         "region": "northeast",
-        "records": 5784,
+        "records": 5508,
         "reachable": 4,
-        "unreachable": 5780,
+        "unreachable": 5504,
         "reachablePct": 0.1,
         "corroborated": 4997,
-        "corroboratedPct": 86.4,
+        "corroboratedPct": 90.7,
         "highStars": 228,
         "hiddenChampions": 183
       },
@@ -8934,12 +8948,12 @@
         "th": "เชียงใหม่",
         "en": "Chiang Mai",
         "region": "north",
-        "records": 4093,
-        "reachable": 83,
-        "unreachable": 4010,
-        "reachablePct": 2,
+        "records": 4011,
+        "reachable": 2,
+        "unreachable": 4009,
+        "reachablePct": 0,
         "corroborated": 2474,
-        "corroboratedPct": 60.4,
+        "corroboratedPct": 61.7,
         "highStars": 353,
         "hiddenChampions": 275
       },
@@ -9012,6 +9026,20 @@
         "corroboratedPct": 63.7,
         "highStars": 202,
         "hiddenChampions": 170
+      },
+      {
+        "code": 57,
+        "th": "เชียงราย",
+        "en": "Chiang Rai",
+        "region": "north",
+        "records": 3405,
+        "reachable": 3,
+        "unreachable": 3402,
+        "reachablePct": 0.1,
+        "corroborated": 2107,
+        "corroboratedPct": 61.9,
+        "highStars": 228,
+        "hiddenChampions": 171
       },
       {
         "code": 80,
@@ -9634,12 +9662,12 @@
         "th": "ประจวบคีรีขันธ์",
         "en": "Prachuap Khiri Khan",
         "region": "west",
-        "records": 1166,
+        "records": 1144,
         "reachable": 3,
-        "unreachable": 1163,
+        "unreachable": 1141,
         "reachablePct": 0.3,
         "corroborated": 682,
-        "corroboratedPct": 58.5,
+        "corroboratedPct": 59.6,
         "highStars": 41,
         "hiddenChampions": 27
       },
@@ -9772,34 +9800,6 @@
     ],
     "reachable": [
       {
-        "code": 57,
-        "th": "เชียงราย",
-        "en": "Chiang Rai",
-        "region": "north",
-        "records": 6633,
-        "reachable": 3226,
-        "unreachable": 3407,
-        "reachablePct": 48.6,
-        "corroborated": 2107,
-        "corroboratedPct": 31.8,
-        "highStars": 228,
-        "hiddenChampions": 167
-      },
-      {
-        "code": 91,
-        "th": "สตูล",
-        "en": "Satun",
-        "region": "south",
-        "records": 2123,
-        "reachable": 647,
-        "unreachable": 1476,
-        "reachablePct": 30.5,
-        "corroborated": 893,
-        "corroboratedPct": 42.1,
-        "highStars": 47,
-        "hiddenChampions": 36
-      },
-      {
         "code": 95,
         "th": "ยะลา",
         "en": "Yala",
@@ -9888,7 +9888,7 @@
       "en": "Chiang Mai",
       "hiddenChampions": 275,
       "highStars": 353,
-      "reachable": 83
+      "reachable": 2
     },
     {
       "code": 10,
@@ -9947,20 +9947,20 @@
       "reachable": 400
     },
     {
+      "code": 57,
+      "th": "เชียงราย",
+      "en": "Chiang Rai",
+      "hiddenChampions": 171,
+      "highStars": 228,
+      "reachable": 3
+    },
+    {
       "code": 36,
       "th": "ชัยภูมิ",
       "en": "Chaiyaphum",
       "hiddenChampions": 170,
       "highStars": 202,
       "reachable": 4
-    },
-    {
-      "code": 57,
-      "th": "เชียงราย",
-      "en": "Chiang Rai",
-      "hiddenChampions": 167,
-      "highStars": 228,
-      "reachable": 3226
     },
     {
       "code": 47,
@@ -10004,8 +10004,8 @@
       "dominantLabel": "Fabric & Apparel",
       "dominantShare": 43.2,
       "classified": 5902,
-      "records": 22532,
-      "classifiedPct": 26.2
+      "records": 19222,
+      "classifiedPct": 30.7
     },
     {
       "id": "northeast",
@@ -10015,8 +10015,8 @@
       "dominantLabel": "Fabric & Apparel",
       "dominantShare": 35.3,
       "classified": 18745,
-      "records": 59653,
-      "classifiedPct": 31.4
+      "records": 59377,
+      "classifiedPct": 31.6
     },
     {
       "id": "central",
@@ -10048,8 +10048,8 @@
       "dominantLabel": "Food",
       "dominantShare": 48.2,
       "classified": 2898,
-      "records": 8542,
-      "classifiedPct": 33.9
+      "records": 8520,
+      "classifiedPct": 34
     },
     {
       "id": "south",
@@ -10059,12 +10059,12 @@
       "dominantLabel": "Food",
       "dominantShare": 46.6,
       "classified": 6111,
-      "records": 23046,
-      "classifiedPct": 26.5
+      "records": 21868,
+      "classifiedPct": 27.9
     }
   ],
   "revenue": {
-    "builtAt": "2026-09-09T15:25:01.702Z",
+    "builtAt": "2026-09-09T15:33:49.344Z",
     "unit": "บาท",
     "seriesSource": "กรมพัฒนาชุมชน",
     "latestFullYear": 2023,
@@ -10158,18 +10158,22 @@
       }
     ]
   },
+  "catalogue": {
+    "resourcesCached": 1294,
+    "resourcesUsable": 485,
+    "resourcesSkipped": 809,
+    "resourcesAggregateEconomic": 230,
+    "resourcesExcludedByTitle": 3,
+    "aggregateTitles": 120,
+    "aggregateRows": 40872
+  },
   "concentration": {
-    "top10Share": 28.1,
+    "top10Share": 26.8,
     "top10": [
-      {
-        "th": "เชียงราย",
-        "en": "Chiang Rai",
-        "records": 6633
-      },
       {
         "th": "อุบลราชธานี",
         "en": "Ubon Ratchathani",
-        "records": 5784
+        "records": 5508
       },
       {
         "th": "สุรินทร์",
@@ -10182,11 +10186,6 @@
         "records": 4288
       },
       {
-        "th": "เชียงใหม่",
-        "en": "Chiang Mai",
-        "records": 4093
-      },
-      {
         "th": "ขอนแก่น",
         "en": "Khon Kaen",
         "records": 4089
@@ -10195,6 +10194,11 @@
         "th": "นครราชสีมา",
         "en": "Nakhon Ratchasima",
         "records": 4045
+      },
+      {
+        "th": "เชียงใหม่",
+        "en": "Chiang Mai",
+        "records": 4011
       },
       {
         "th": "ร้อยเอ็ด",
@@ -10210,6 +10214,11 @@
         "th": "ศรีสะเกษ",
         "en": "Si Sa Ket",
         "records": 3676
+      },
+      {
+        "th": "สกลนคร",
+        "en": "Sakon Nakhon",
+        "records": 3514
       }
     ],
     "emptyProvinces": 0

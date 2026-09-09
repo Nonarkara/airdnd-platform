@@ -20,6 +20,7 @@
     "excludeFormats": ["PDF", "DOC", "DOCX", "ZIP", "RAR", "SHP", "HTML"]
   },
 
+  "excludeTitles": ["ธงฟ้า"],
   "fieldAliases": {
     "producerName": ["ชื่อผู้ผลิต", "ชื่อผู้ประกอบการ", "ชื่อกลุ่มผู้ผลิต", "ชื่อกลุ่ม", "ชื่อกลุ่ม/องค์กร", "ผู้ผลิต", "ผู้ประกอบการ", "ชื่อสถานประกอบการ", "ชื่อร้าน", "ชื่อวิสาหกิจชุมชน", "ชื่อกิจการ", "ชื่อผู้รับอนุญาต", "ชุมชน/หมู่บ้าน", "producer", "producer_name", "entrepreneur", "entrepreneure", "business_name", "group_name", "organizations_name", "ชื่อผลิตภัณฑ์ otop", "ชื่อ"],
     "producerType": ["ประเภทผู้ผลิต", "ประเภทผู้ประกอบการ", "ประเภทกลุ่ม", "ชนิดผู้ผลิต", "ลักษณะผู้ประกอบการ", "otop_type", "producer_type"],

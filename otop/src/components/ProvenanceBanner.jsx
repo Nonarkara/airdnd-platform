@@ -32,6 +32,13 @@ export default function ProvenanceBanner({ meta }) {
         rows in, {meta.counts.rowsRejected.toLocaleString()} rejected by the quality gate,{' '}
         {meta.counts.duplicatesCollapsed.toLocaleString()} duplicates collapsed by entity resolution.
         Every record below carries the dataset it came from.
+        {meta.counts.resourcesAggregateEconomic != null && (
+          <>
+            {' '}{meta.counts.resourcesAggregateEconomic} of the {meta.counts.resourcesSkipped} skipped
+            resources are sales or revenue aggregates: counted here, used in the Revenue section,
+            never as producers.
+          </>
+        )}
       </p>
     </div>
   );

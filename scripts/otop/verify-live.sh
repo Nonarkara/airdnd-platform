@@ -69,6 +69,7 @@ check_json() { # url  node-expression-returning-a-string  label
 }
 check_json otop_index.json    "\`\${d.totals.records} records · \${d.totals.provincesWithRecords}/\${d.totals.provincesTotal} provinces\`" "otop_index.json"
 check_json otop_insights.json "d.byProvince.length === d.national.provincesCovered ? \`\${d.national.provincesCovered} provinces · \${d.contributors.length} offices\` : 'ERR only ' + d.byProvince.length + ' provinces'" "otop_insights.json"
+check_json otop_meta.json     "d.counts.resourcesAggregateEconomic != null ? \`\${d.counts.resourcesAggregateEconomic} economic aggregates · \${d.counts.resourcesExcludedByTitle} excluded by title\` : 'ERR resourcesAggregateEconomic missing — old build served'" "otop_meta.json"
 check_json p/34.json          "Array.isArray(d) ? \`shard TH-34 · \${d.length} records\` : 'ERR shard is not an array'" "province shard"
 
 # 4. The SPA fallback. Without it every deep link 404s and only the bare domain
