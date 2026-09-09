@@ -48,6 +48,8 @@ if (records.length !== index.totals.records) {
 }
 
 const pct = (n, d) => (d > 0 ? Math.round((n / d) * 1000) / 10 : null);
+const nf = new Intl.NumberFormat('en-US');
+const n = (v) => (v == null ? '—' : nf.format(v));
 const tally = (items, key) => {
   const out = new Map();
   for (const item of items) {
@@ -143,6 +145,134 @@ const contributors = [...tally(records.flatMap((r) => r.provenance), (p) => p.or
   .map(([organization, count]) => ({ organization, records: count }))
   .sort((a, b) => b.records - a.records);
 
+const concentration = {
+  top10Share: pct(byProvince.slice(0, 10).reduce((n, p) => n + p.records, 0), records.length),
+  top10: byProvince.slice(0, 10).map((p) => ({ th: p.th, en: p.en, records: p.records })),
+  emptyProvinces: byProvince.filter((p) => p.records === 0).length,
+};
+
+/**
+ * Headline findings — what the data actually says, in plain language. The
+ * Atlas leads with these because 118,335 is not a finding, it is the size of
+ * the input. Every claim here is paired with the value the reader can
+ * verify against the meter below it.
+ */
+const findings = (() => {
+  const out = [];
+  const total = records.length;
+  const corroborated = records.filter((r) => r.sourceCount > 1).length;
+  const stars = starProfile(records);
+  const v = vintage(records);
+
+  // The "commercial-ready" share: records carrying all three signals a buyer
+  // needs at once. Without this, the headline number is a count of paperwork,
+  // not a count of tradeable supply.
+  const commercial = records.filter((r) => r.category && (r.phone || r.email || r.website) && r.stars != null).length;
+  out.push({
+    id: 'commercial-ready',
+    th: 'โอทอปพร้อมค้า',
+    text: `Only ${n(pct(commercial, total))}% of records carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. The other ${n(pct(total - commercial, total))}% are name-only registrations.`,
+    value: pct(commercial, total),
+  });
+
+  // Corroboration: the only field in the registry that distinguishes a real
+  // producer from a single filing, because every record has at least one
+  // source.
+  out.push({
+    id: 'corroboration',
+    th: 'ความเห็นตรงกัน',
+    text: `${n(pct(corroborated, total))}% of records are attested by more than one agency. Without corroboration, a record is one office's filing; with it, two or more agreed.`,
+    value: pct(corroborated, total),
+  });
+
+  // Grading. OPC stars are the state's own quality assessment.
+  out.push({
+    id: 'graded',
+    th: 'ได้รับการคัดสรร',
+    text: `${n(stars.graded)} records (${n(pct(stars.graded, total))}%) carry an OPC star grade. Mean grade of those: ${n(stars.mean)}★. ${n(stars.distribution[5] ?? 0)} are 5-star; ${n(stars.distribution[4] ?? 0)} are 4-star.`,
+    value: pct(stars.graded, total),
+  });
+
+  // Concentration. A registry is not a census, so this measures where the
+  // paperwork happens, not where the making happens.
+  out.push({
+    id: 'concentration',
+    th: 'ความเข้มข้น',
+    text: `The ten most-filed provinces hold ${n(concentration.top10Share)}% of all records. The remaining 67 provinces share the rest.`,
+    value: concentration.top10Share,
+  });
+
+  // Corroboration spread. Same data source, very different trust.
+  const byCorroboration = [...byProvince].sort((a, b) => (b.corroborated / Math.max(b.records, 1)) - (a.corroborated / Math.max(a.records, 1)));
+  const mostTrusted = byCorroboration[0];
+  const leastTrusted = byCorroboration[byCorroboration.length - 1];
+  if (mostTrusted && leastTrusted) {
+    out.push({
+      id: 'trust-spread',
+      th: 'ช่วงความน่าเชื่อถือ',
+      text: `${mostTrusted.th} is the most cross-attested province (${n(pct(mostTrusted.corroborated, mostTrusted.records))}% of its records corroborated by ≥2 agencies); ${leastTrusted.th} is the least (${n(pct(leastTrusted.corroborated, leastTrusted.records))}%). Same data source, very different administrative depth.`,
+      value: pct(mostTrusted.corroborated, mostTrusted.records),
+    });
+  }
+
+  // Freshness.
+  if (v.years > 0) {
+    out.push({
+      id: 'freshness',
+      th: 'ความสดใหม่',
+      text: `${n(v.years)} records (${n(pct(v.years, total))}%) carry a filing year. Median filing year is ${v.median}. The other ${n(pct(total - v.years, total))}% cannot be dated from the registry.`,
+      value: pct(v.years, total),
+    });
+  }
+
+  return out;
+})();
+
+/**
+ * Specialization. For each declared category, the top three provinces. A
+ * category becomes a real signal only when a province concentrates it —
+ * equal distribution means no province is the place to source from for that
+ * category.
+ */
+const specialization = (() => {
+  const out = [];
+  for (const cat of CATEGORIES) {
+    const ranked = byProvince
+      .map((p) => {
+        const c = (p.categories || []).find((x) => x.id === cat.id);
+        return c ? { code: p.code, th: p.th, en: p.en, count: c.count, share: c.share } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 3);
+    if (ranked[0] && ranked[0].count > 0) {
+      out.push({
+        id: cat.id, th: cat.th, en: cat.en,
+        leaders: ranked,
+        topCount: ranked[0].count,
+      });
+    }
+  }
+  return out.sort((a, b) => b.topCount - a.topCount);
+})();
+
+/**
+ * Where the verified supply actually is. The graded subset is the most
+ * defensible shortlist the registry offers, because both the producer and
+ * the state have signed off.
+ */
+const qualityLeaders = byProvince
+  .map((p) => ({
+    code: p.code, th: p.th, en: p.en,
+    graded: p.stars.graded,
+    graded45: (p.stars.distribution?.[4] ?? 0) + (p.stars.distribution?.[5] ?? 0),
+    total: p.records,
+    density: p.stars.graded > 0 ? Math.round((p.stars.graded / p.records) * 1000) / 10 : 0,
+  }))
+  .filter((p) => p.graded > 0)
+  .sort((a, b) => b.graded - a.graded)
+  .slice(0, 10);
+
 const insights = {
   builtAt: new Date().toISOString(),
   // Carried forward so a consumer of this file alone can still tell whether it
@@ -168,6 +298,9 @@ const insights = {
   byRegion,
   byProvince,
   contributors,
+  findings,
+  specialization,
+  qualityLeaders,
 
   // Concentration: the share of all records held by the top ten provinces. A
   // registry is not a census, so a high figure is as likely to reflect where

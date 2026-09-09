@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-09T09:43:10.696Z",
+  "builtAt": "2026-09-09T10:02:31.561Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -7418,6 +7418,283 @@
     {
       "organization": "เทศบาลตำบลอุโมงค์ อำเภอเมือง จังหวัดลำพูน",
       "records": 1
+    }
+  ],
+  "findings": [
+    {
+      "id": "commercial-ready",
+      "th": "โอทอปพร้อมค้า",
+      "text": "Only 0.1% of records carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. The other 99.9% are name-only registrations.",
+      "value": 0.1
+    },
+    {
+      "id": "corroboration",
+      "th": "ความเห็นตรงกัน",
+      "text": "66.6% of records are attested by more than one agency. Without corroboration, a record is one office's filing; with it, two or more agreed.",
+      "value": 66.6
+    },
+    {
+      "id": "graded",
+      "th": "ได้รับการคัดสรร",
+      "text": "13,939 records (8.8%) carry an OPC star grade. Mean grade of those: 4.01★. 5,317 are 5-star; 4,789 are 4-star.",
+      "value": 8.8
+    },
+    {
+      "id": "concentration",
+      "th": "ความเข้มข้น",
+      "text": "The ten most-filed provinces hold 28.1% of all records. The remaining 67 provinces share the rest.",
+      "value": 28.1
+    },
+    {
+      "id": "trust-spread",
+      "th": "ช่วงความน่าเชื่อถือ",
+      "text": "บุรีรัมย์ is the most cross-attested province (89.3% of its records corroborated by ≥2 agencies); เชียงราย is the least (31.8%). Same data source, very different administrative depth.",
+      "value": 89.3
+    },
+    {
+      "id": "freshness",
+      "th": "ความสดใหม่",
+      "text": "21,287 records (13.4%) carry a filing year. Median filing year is 2022. The other 86.6% cannot be dated from the registry.",
+      "value": 13.4
+    }
+  ],
+  "specialization": [
+    {
+      "id": "textile",
+      "th": "ผ้าและเครื่องแต่งกาย",
+      "en": "Fabric & Apparel",
+      "leaders": [
+        {
+          "code": 46,
+          "th": "กาฬสินธุ์",
+          "en": "Kalasin",
+          "count": 1590,
+          "share": 41.7
+        },
+        {
+          "code": 51,
+          "th": "ลำพูน",
+          "en": "Lamphun",
+          "count": 1050,
+          "share": 40.7
+        },
+        {
+          "code": 34,
+          "th": "อุบลราชธานี",
+          "en": "Ubon Ratchathani",
+          "count": 527,
+          "share": 9.1
+        }
+      ],
+      "topCount": 1590
+    },
+    {
+      "id": "food",
+      "th": "อาหาร",
+      "en": "Food",
+      "leaders": [
+        {
+          "code": 46,
+          "th": "กาฬสินธุ์",
+          "en": "Kalasin",
+          "count": 851,
+          "share": 22.3
+        },
+        {
+          "code": 34,
+          "th": "อุบลราชธานี",
+          "en": "Ubon Ratchathani",
+          "count": 756,
+          "share": 13.1
+        },
+        {
+          "code": 81,
+          "th": "กระบี่",
+          "en": "Krabi",
+          "count": 678,
+          "share": 44.9
+        }
+      ],
+      "topCount": 851
+    },
+    {
+      "id": "craft",
+      "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+      "en": "Household, Decorative & Souvenir",
+      "leaders": [
+        {
+          "code": 46,
+          "th": "กาฬสินธุ์",
+          "en": "Kalasin",
+          "count": 725,
+          "share": 19
+        },
+        {
+          "code": 34,
+          "th": "อุบลราชธานี",
+          "en": "Ubon Ratchathani",
+          "count": 619,
+          "share": 10.7
+        },
+        {
+          "code": 35,
+          "th": "ยโสธร",
+          "en": "Yasothon",
+          "count": 496,
+          "share": 21.1
+        }
+      ],
+      "topCount": 725
+    },
+    {
+      "id": "herbal",
+      "th": "สมุนไพรที่ไม่ใช่อาหาร",
+      "en": "Non-food Herbal",
+      "leaders": [
+        {
+          "code": 12,
+          "th": "นนทบุรี",
+          "en": "Nonthaburi",
+          "count": 256,
+          "share": 13.9
+        },
+        {
+          "code": 46,
+          "th": "กาฬสินธุ์",
+          "en": "Kalasin",
+          "count": 169,
+          "share": 4.4
+        },
+        {
+          "code": 34,
+          "th": "อุบลราชธานี",
+          "en": "Ubon Ratchathani",
+          "count": 152,
+          "share": 2.6
+        }
+      ],
+      "topCount": 256
+    },
+    {
+      "id": "beverage",
+      "th": "เครื่องดื่ม",
+      "en": "Beverages",
+      "leaders": [
+        {
+          "code": 12,
+          "th": "นนทบุรี",
+          "en": "Nonthaburi",
+          "count": 93,
+          "share": 5
+        },
+        {
+          "code": 57,
+          "th": "เชียงราย",
+          "en": "Chiang Rai",
+          "count": 79,
+          "share": 1.2
+        },
+        {
+          "code": 54,
+          "th": "แพร่",
+          "en": "Phrae",
+          "count": 75,
+          "share": 3.9
+        }
+      ],
+      "topCount": 93
+    }
+  ],
+  "qualityLeaders": [
+    {
+      "code": 46,
+      "th": "กาฬสินธุ์",
+      "en": "Kalasin",
+      "graded": 934,
+      "graded45": 652,
+      "total": 3813,
+      "density": 24.5
+    },
+    {
+      "code": 51,
+      "th": "ลำพูน",
+      "en": "Lamphun",
+      "graded": 478,
+      "graded45": 421,
+      "total": 2578,
+      "density": 18.5
+    },
+    {
+      "code": 12,
+      "th": "นนทบุรี",
+      "en": "Nonthaburi",
+      "graded": 458,
+      "graded45": 347,
+      "total": 1843,
+      "density": 24.9
+    },
+    {
+      "code": 32,
+      "th": "สุรินทร์",
+      "en": "Surin",
+      "graded": 455,
+      "graded45": 386,
+      "total": 4311,
+      "density": 10.6
+    },
+    {
+      "code": 33,
+      "th": "ศรีสะเกษ",
+      "en": "Si Sa Ket",
+      "graded": 455,
+      "graded45": 293,
+      "total": 3676,
+      "density": 12.4
+    },
+    {
+      "code": 50,
+      "th": "เชียงใหม่",
+      "en": "Chiang Mai",
+      "graded": 441,
+      "graded45": 353,
+      "total": 4093,
+      "density": 10.8
+    },
+    {
+      "code": 34,
+      "th": "อุบลราชธานี",
+      "en": "Ubon Ratchathani",
+      "graded": 425,
+      "graded45": 228,
+      "total": 5784,
+      "density": 7.3
+    },
+    {
+      "code": 10,
+      "th": "กรุงเทพมหานคร",
+      "en": "Bangkok",
+      "graded": 419,
+      "graded45": 317,
+      "total": 2559,
+      "density": 16.4
+    },
+    {
+      "code": 31,
+      "th": "บุรีรัมย์",
+      "en": "Buri Ram",
+      "graded": 400,
+      "graded45": 303,
+      "total": 4288,
+      "density": 9.3
+    },
+    {
+      "code": 40,
+      "th": "ขอนแก่น",
+      "en": "Khon Kaen",
+      "graded": 356,
+      "graded45": 179,
+      "total": 4089,
+      "density": 8.7
     }
   ],
   "concentration": {

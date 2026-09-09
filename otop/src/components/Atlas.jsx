@@ -2,18 +2,17 @@ import { useMemo, useState } from 'react';
 import { railOf, RAIL_LABEL, classifiedOf } from '../lib/insights.js';
 
 /**
- * Atlas — the 118,335-record registry read as one closed information package.
+ * Atlas — the registry read as one closed information package.
  *
  * The aesthetic is Dr Non's white baggage tag, INDEX register: four type ranks,
  * an id that copies, a full-bleed rail carrying a domain that is genuinely in
  * the record, and a fallback rank that still identifies the object when every
  * rank above it is blank.
  *
- * The subject is the blank zones. 97% of this registry carries no category, 99%
- * carries no contact and none carries a coordinate — so the honest lede is not
- * "118,335 producers", it is "118,335 names in an administrative area". Ink is
- * spent on the holes rather than on the fills, because a tag whose zones are
- * empty cannot route a bag, and this registry mostly cannot route a purchase.
+ * The subject is what the data actually says. The findings block at the top
+ * is the answer to "of all this data, what does it mean?" — each finding
+ * pairs a plain-language claim with a value the reader can verify against the
+ * meter below it.
  */
 
 const nf = new Intl.NumberFormat('en-US');
@@ -62,7 +61,7 @@ function categoryParts(scope) {
 
 export default function Atlas({ insights }) {
   const [sort, setSort] = useState('records');
-  const { national, byRegion, byProvince, contributors, concentration } = insights;
+  const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [] } = insights;
 
   const provinces = useMemo(() => {
     const rows = byProvince.map((p) => ({ ...p, rail: railOf(p), classified: classifiedOf(p) }));
@@ -84,6 +83,21 @@ export default function Atlas({ insights }) {
 
   return (
     <>
+      {/* ── HEADLINE FINDINGS — the lede ──────────────────────────────── */}
+      {findings.length > 0 && (
+        <section className="atlas-findings" aria-label="Headline findings">
+          <p className="atlas-lede-eyebrow">Findings · สิ่งที่ข้อมูลบอก</p>
+          <ol className="atlas-findings-list">
+            {findings.map((f) => (
+              <li key={f.id} className="atlas-finding">
+                <span className="atlas-finding-th">{f.th}</span>
+                <span className="atlas-finding-text">{f.text}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
       {/* ── rank 1: the country as one tag ─────────────────────────────── */}
       <div className="t-national" data-rail="default">
         <div className="t-face">
@@ -159,6 +173,64 @@ export default function Atlas({ insights }) {
           </div>
         ))}
       </div>
+
+      {/* ── SPECIALIZATION — where each category concentrates ──────────── */}
+      {specialization.length > 0 && (
+        <>
+          <h3 className="sub-h">Specialization · top province in each category</h3>
+          <p className="t-note">A category becomes a real sourcing signal only when a province concentrates it. These are the places to call first if you need that product.</p>
+          <div className="t-spec-grid">
+            {specialization.map((s) => (
+              <div key={s.id} className="t-spec">
+                <div className="t-spec-h">
+                  <span className="t-key">{s.en}</span>
+                  <span className="t-spec-th">{s.th}</span>
+                </div>
+                {s.leaders.map((l, i) => (
+                  <div key={l.code} className="t-spec-row">
+                    <span className="t-spec-rank">{i + 1}</span>
+                    <a className="t-spec-name" href={`/?lens=b2b&prov=${l.code}`}>
+                      <span className="t-row-th">{l.th}</span>
+                      <span className="t-row-en">{l.en}</span>
+                    </a>
+                    <span className="t-row-num">{n(l.count)}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ── QUALITY LEADERS — where the 4-5★ supply actually is ────────── */}
+      {qualityLeaders.length > 0 && (
+        <>
+          <h3 className="sub-h">Where the graded supply is · top 10 by OPC star count</h3>
+          <p className="t-note">Both the producer and the state have signed off on these. This is the most defensible shortlist the registry offers.</p>
+          <div className="t-rows" id="quality-leaders">
+            <div className="t-row t-row-hd">
+              <span className="t-rail" />
+              <span>Province · จังหวัด</span>
+              <span className="t-row-num">Graded</span>
+              <span className="t-hide-sm t-row-num">At 4-5★</span>
+              <span className="t-hide-sm t-row-num">Density</span>
+            </div>
+            {qualityLeaders.map((p) => (
+              <button type="button" className="t-row" key={p.code}
+                onClick={() => { window.location.href = `/?lens=b2b&prov=${p.code}`; }}>
+                <span className="t-rail" />
+                <span>
+                  <span className="t-row-th">{p.th}</span><br />
+                  <span className="t-row-en">{p.en}</span>
+                </span>
+                <span className="t-row-num">{n(p.graded)}</span>
+                <span className="t-hide-sm t-row-num">{n(p.graded45)}</span>
+                <span className="t-hide-sm t-row-num">{p.density}%</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* ── the 77 tags ───────────────────────────────────────────────── */}
       <h3 className="sub-h">

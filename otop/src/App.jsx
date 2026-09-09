@@ -97,7 +97,16 @@ export default function App() {
   const initial = useRef(requirementFromUrl());
   const [state, setState] = useState({ status: 'loading' });
   const [lens, setLens] = useState(initial.current.lens);
-  const [view, setView] = useState(() => (new URLSearchParams(window.location.search).get('view') === 'atlas' ? 'atlas' : 'match'));
+  // Atlas is the home view: the headline findings + specialization +
+  // quality leaders + 77-province rollup. The match view is a tool a buyer
+  // reaches for when they have a specific sourcing brief; landing there
+  // first would show 3,665 of a province's records before telling the
+  // reader what any of them mean.
+  const [view, setView] = useState(() => {
+    const urlView = new URLSearchParams(window.location.search).get('view');
+    if (urlView === 'match' || urlView === 'atlas') return urlView;
+    return 'atlas';
+  });
   const [insights, setInsights] = useState(null);
   const [insightsError, setInsightsError] = useState(null);
   const [requirement, setRequirement] = useState(initial.current.requirement);
