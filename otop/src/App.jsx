@@ -10,6 +10,8 @@ import Basins from './components/Basins.jsx';
 const ProvinceMap = lazy(() => import('./components/ProvinceMap.jsx'));
 // Atlas is the whole national rollup and only the Atlas view draws it.
 const Atlas = lazy(() => import('./components/Atlas.jsx'));
+// One province, whole — the shareable unit of reading. Only drawn on demand.
+const ProvinceDossier = lazy(() => import('./components/ProvinceDossier.jsx'));
 import { loadIndex, loadShards, planShards } from './lib/shards.js';
 import { loadInsights } from './lib/insights.js';
 import { matchRequirement, sourcingBasins, toCsv, PROFILES } from '../core/matching.js';
@@ -63,9 +65,10 @@ function requirementFromUrl() {
   };
 }
 
-function requirementToUrl(view, lens, r) {
+function requirementToUrl(view, lens, r, code) {
   const p = new URLSearchParams();
   if (view === 'atlas') p.set('view', 'atlas');
+  if (view === 'province' && code != null) { p.set('view', 'province'); p.set('code', String(code)); }
   p.set('lens', lens);
   if (r.categories.length) p.set('cat', r.categories.join(','));
   if (r.provinceCodes.length) p.set('prov', r.provinceCodes.join(','));
@@ -104,9 +107,19 @@ export default function App() {
   // reader what any of them mean.
   const [view, setView] = useState(() => {
     const urlView = new URLSearchParams(window.location.search).get('view');
-    if (urlView === 'match' || urlView === 'atlas') return urlView;
+    if (urlView === 'match' || urlView === 'atlas' || urlView === 'province') return urlView;
     return 'atlas';
   });
+  const [provinceCode, setProvinceCode] = useState(() => {
+    const c = Number(new URLSearchParams(window.location.search).get('code'));
+    return Number.isInteger(c) && c > 0 ? c : null;
+  });
+  // Every province row anywhere lands here: the dossier, not the B2B engine.
+  const openProvince = useCallback((code) => {
+    if (code == null) { setView('atlas'); setProvinceCode(null); }
+    else { setView('province'); setProvinceCode(code); }
+    window.scrollTo({ top: 0 });
+  }, []);
   const [insights, setInsights] = useState(null);
   const [insightsError, setInsightsError] = useState(null);
   const [requirement, setRequirement] = useState(initial.current.requirement);
@@ -163,7 +176,7 @@ export default function App() {
   }, [wanted, wantedKey]);
 
   useEffect(() => {
-    if (view !== 'atlas' || insights || insightsError) return;
+    if ((view !== 'atlas' && view !== 'province') || insights || insightsError) return;
     let cancelled = false;
     loadInsights()
       .then((data) => { if (!cancelled) setInsights(data); })
@@ -172,8 +185,8 @@ export default function App() {
   }, [view, insights, insightsError]);
 
   useEffect(() => {
-    window.history.replaceState(null, '', requirementToUrl(view, lens, requirement));
-  }, [view, lens, requirement]);
+    window.history.replaceState(null, '', requirementToUrl(view, lens, requirement, provinceCode));
+  }, [view, lens, requirement, provinceCode]);
 
   useEffect(() => { setLimit(PAGE); }, [lens, requirement]);
 
@@ -228,7 +241,8 @@ export default function App() {
           <nav className="hdr-nav">
             <button type="button" aria-current={view === 'match' && lens === 'b2b'} onClick={() => { setView('match'); setLens('b2b'); }}>Source · B2B</button>
             <button type="button" aria-current={view === 'match' && lens === 'b2c'} onClick={() => { setView('match'); setLens('b2c'); }}>Discover · B2C</button>
-            <button type="button" aria-current={view === 'atlas'} onClick={() => setView('atlas')}>Atlas</button>
+            <button type="button" aria-current={view === 'atlas'} onClick={() => openProvince(null)}>Atlas</button>
+            {view === 'province' && <button type="button" aria-current>Province</button>}
             <a href="#method"><button type="button">Method</button></a>
           </nav>
           <div className="hdr-status">
@@ -249,17 +263,19 @@ export default function App() {
               explicit account of what the registry cannot tell you.
             </p>
 
-            <div className="gauges">
+            {/* A shared province link opens on a phone: the province, not the
+                national gauges, must be the first thing under the wordmark. */}
+            {view !== 'province' && <div className="gauges">
               <Gauge n={totals.records.toLocaleString()} label="Records" th="รายการ" />
               <Gauge n={totals.producers.toLocaleString()} label="Producers" th="ผู้ผลิต" />
               <Gauge n={`${totals.provincesWithRecords}/77`} label="Provinces" th="จังหวัด" />
               <Gauge n={meta.counts.duplicatesCollapsed.toLocaleString()} label="Duplicates collapsed" th="รวมซ้ำ" />
               <Gauge n={meta.shardCount} label="Shards" th="ชุดข้อมูล" />
-            </div>
+            </div>}
           </div>
         </section>
 
-        <div className="wrap"><ProvenanceBanner meta={meta} /></div>
+        {view !== 'province' && <div className="wrap"><ProvenanceBanner meta={meta} /></div>}
 
         {view === 'match' && (<>
         <section className="sec" id="match">
@@ -380,9 +396,28 @@ export default function App() {
               {!insights && !insightsError && <p className="empty">Loading the national rollup…</p>}
               {insights && (
                 <Suspense fallback={<p className="empty">Loading the national rollup…</p>}>
-                  <Atlas insights={insights} />
+                  <Atlas insights={insights} onSelectProvince={openProvince} />
                 </Suspense>
               )}
+            </div>
+          </section>
+        )}
+
+        {view === 'province' && (
+          <section className="sec" id="province">
+            <div className="wrap">
+              <div className="sec-h">
+                <h2 className="sec-t">Province</h2>
+                <span className="sec-n">one province, every layer — a link you can hand across a table</span>
+              </div>
+              {insightsError && <p className="empty">The national rollup could not be loaded — {insightsError}.</p>}
+              {!insights && !insightsError && <p className="empty">Loading the national rollup…</p>}
+              {insights && provinceCode != null && (
+                <Suspense fallback={<p className="empty">Loading the province…</p>}>
+                  <ProvinceDossier insights={insights} code={provinceCode} onSelectProvince={openProvince} />
+                </Suspense>
+              )}
+              {insights && provinceCode == null && <p className="empty">No province code in the link.</p>}
             </div>
           </section>
         )}

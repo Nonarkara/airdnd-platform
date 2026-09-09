@@ -38,3 +38,50 @@ export function classifiedOf(scope) {
   const unclassified = scope.categories.find((c) => c.id === 'unclassified');
   return scope.records - (unclassified ? unclassified.count : 0);
 }
+
+/** Zones of the tag, mapped onto the fields the registry either filled or did not. */
+export const ZONES = [
+  { key: 'withSubdistrict', label: 'Located to tambon', th: 'ระบุถึงตำบล', zone: 'Destination' },
+  { key: 'categoryDeclared', label: 'Category declared', th: 'ระบุประเภทเอง', zone: 'Domain' },
+  { key: 'withStars', label: 'OPC graded', th: 'มีระดับดาว', zone: 'Class of service' },
+  { key: 'withContact', label: 'Reachable', th: 'มีช่องทางติดต่อ', zone: 'Claim' },
+  { key: 'withPrice', label: 'Priced', th: 'มีราคา', zone: 'Value' },
+  { key: 'withCoordinates', label: 'Mapped', th: 'มีพิกัด', zone: 'Machine key' },
+];
+
+/** 1-based rank of `code` in `list` by `key`, descending. null when absent. */
+export function rankOf(list, code, key) {
+  const sorted = [...list].filter((p) => p[key] != null).sort((a, b) => b[key] - a[key]);
+  const i = sorted.findIndex((p) => p.code === code);
+  return i === -1 ? null : i + 1;
+}
+
+/** The revenue artefact itself — only the dossier needs the per-province series. */
+export async function loadRevenue() {
+  const response = await fetch('/otop_revenue.json', { cache: 'no-cache' });
+  if (!response.ok) throw new Error(`otop_revenue.json ${response.status}`);
+  const rev = await response.json();
+  if (rev.degraded) throw new Error(rev.reason ?? 'revenue artefact degraded');
+  return rev;
+}
+
+/** Baht, rounded to the unit a reader can hold. */
+export function baht(v) {
+  if (v == null) return '—';
+  if (Math.abs(v) >= 1e9) return `${(v / 1e9).toFixed(2)}B ฿`;
+  if (Math.abs(v) >= 1e6) return `${(v / 1e6).toFixed(1)}M ฿`;
+  return `${new Intl.NumberFormat('en-US').format(Math.round(v))} ฿`;
+}
+
+export const MONTH_TH = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+
+/** A revenue `years` block → sparkline points in calendar order. */
+export function monthlyPoints(years) {
+  const out = [];
+  for (const y of Object.keys(years ?? {}).map(Number).sort()) {
+    for (const m of Object.keys(years[y].months).map(Number).sort((a, b) => a - b)) {
+      out.push({ label: `${MONTH_TH[m]} ${y + 543}`, value: years[y].months[m] });
+    }
+  }
+  return out;
+}
