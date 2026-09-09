@@ -7,7 +7,7 @@ import { decodeBuffer, csvToObjects } from '../otop/core/text_decode.js';
 import { discoverFieldMap, isUsableMapping } from '../otop/core/field_map.js';
 import {
   buildRecord, gradeRecord, mergeRecords, findOverbroadSignals,
-  normalizePhone, normalizeTaxId, parseBuddhistYear, nameKey,
+  normalizePhone, normalizeTaxId, parseBuddhistYear, parseCoordinate, parseLatLng, nameKey,
 } from '../otop/core/record.js';
 
 const prov = (datasetId = 'ds1', resourceId = 'r1') => ({ datasetId, resourceId, retrievedAt: '2026-09-08T00:00:00Z' });
@@ -157,4 +157,32 @@ test('a singleton reports no merge basis', () => {
   const [merged] = mergeRecords([buildRecord(row({ phone: '081-111-2222' }), prov())]);
   assert.equal(merged.mergeBasis, null);
   assert.equal(merged.strongestSignal, 'phone');
+});
+
+test('zero is a null-placeholder, not a coordinate', () => {
+  assert.equal(parseCoordinate(0), null);
+  assert.equal(parseCoordinate('0'), null);
+  assert.equal(parseCoordinate('0.000000'), null);
+  assert.equal(parseCoordinate('13.7563'), 13.7563);
+});
+
+test('lat/lng validate jointly inside a Thailand box with border margin', () => {
+  // Real producers at the edges survive.
+  assert.deepEqual(parseLatLng('20.4278', '99.8841'), { latitude: 20.4278, longitude: 99.8841 }); // Mae Sai
+  assert.deepEqual(parseLatLng('5.7776', '101.0609'), { latitude: 5.7776, longitude: 101.0609 }); // Betong
+  // Null-island placeholders and misparses do not.
+  assert.deepEqual(parseLatLng(0, 0), { latitude: null, longitude: null }); // seven Satun rows
+  assert.deepEqual(parseLatLng('3.695545', '100.41582'), { latitude: null, longitude: null }); // off Malaysia
+  // A lone half-coordinate is worse than none: both go null.
+  assert.deepEqual(parseLatLng('13.7563', null), { latitude: null, longitude: null });
+  assert.deepEqual(parseLatLng(null, '100.5018'), { latitude: null, longitude: null });
+});
+
+test('buildRecord carries valid coordinates and nulls the rest', () => {
+  const ok = buildRecord(row({ latitude: '15.2297', longitude: '104.8579' }), prov());
+  assert.equal(ok.latitude, 15.2297);
+  assert.equal(ok.longitude, 104.8579);
+  const bad = buildRecord(row({ latitude: 0, longitude: 0 }), prov());
+  assert.equal(bad.latitude, null);
+  assert.equal(bad.longitude, null);
 });

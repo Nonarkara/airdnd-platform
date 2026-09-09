@@ -33,7 +33,7 @@
     "start": "node server.js",
     "otop:fetch": "node scripts/otop/fetch.js",
     "otop:discover": "node scripts/otop/fetch.js --discover",
-    "otop:build": "node scripts/otop/build.js && node scripts/otop/insights.js",
+    "otop:build": "node scripts/otop/build.js && node scripts/otop/revenue.js && node scripts/otop/insights.js",
     "otop:dev": "vite --config vite.otop.config.js",
     "otop:site": "vite build --config vite.otop.config.js",
     "otop:all": "npm run otop:build && npm run otop:site",

@@ -185,6 +185,12 @@ export function buildRecord(row, provenance) {
     declared: row.category,
     text: [productName, row.productDescription].filter(Boolean).join(' '),
   });
+  // Coordinates are validated jointly: a lone half-coordinate is worse than
+  // none, and these exports use 0 as a null-placeholder (seven Satun rows
+  // sit at exactly 0,0; one Bangkok row parses to lat 3.69, deep in
+  // Malaysia). Both halves must parse and land inside a Thailand bounding
+  // box with border margin, or both are null.
+  const { latitude, longitude } = parseLatLng(row.latitude, row.longitude);
 
   return {
     sourceRowId: String(row.sourceRowId ?? ''),
@@ -214,8 +220,8 @@ export function buildRecord(row, provenance) {
     price: parsePrice(row.price),
     registeredYear: parseBuddhistYear(row.registeredYear),
 
-    latitude: parseCoordinate(row.latitude),
-    longitude: parseCoordinate(row.longitude),
+    latitude,
+    longitude,
 
     provenance: {
       datasetId: provenance.datasetId,
@@ -234,7 +240,13 @@ export function parseCoordinate(value) {
   if (!raw) return null;
   // Simple decimal: "13.7563"
   const decimal = Number(raw.replace(/,/g, ''));
-  if (Number.isFinite(decimal) && Math.abs(decimal) <= 180) return Math.round(decimal * 1_000_000) / 1_000_000;
+  // Exact zero is the null-placeholder in these exports, never a real
+  // producer location — no Thai producer sits on the equator or the prime
+  // meridian.
+  if (Number.isFinite(decimal) && decimal !== 0 && Math.abs(decimal) <= 180) {
+    return Math.round(decimal * 1_000_000) / 1_000_000;
+  }
+  if (decimal === 0) return null;
   // DMS: "13°45'22.7\"N" or "13 45 22.7"
   const dms = raw.match(/(\d+)[°\s]+(\d+)[′'"]+\s*([\d.]+)[″""]*\s*([NSEW]?)/i);
   if (dms) {
@@ -243,6 +255,22 @@ export function parseCoordinate(value) {
     if (Math.abs(dd) <= 180) return Math.round(dd * 1_000_000) / 1_000_000;
   }
   return null;
+}
+
+/**
+ * Joint lat/lng validation. Thailand spans roughly 5.6–20.5°N, 97.3–105.6°E;
+ * the box below carries border margin so legitimate edge producers (Mae Sai,
+ * Betong, Mae Hong Son) survive while misparses (lat 3.69, off Malaysia) do
+ * not. Anything failing any check yields { latitude: null, longitude: null }.
+ */
+export function parseLatLng(latValue, lngValue) {
+  const none = { latitude: null, longitude: null };
+  const latitude = parseCoordinate(latValue);
+  const longitude = parseCoordinate(lngValue);
+  if (latitude == null || longitude == null) return none;
+  if (latitude < 4.5 || latitude > 21.5) return none;
+  if (longitude < 96.5 || longitude > 106.5) return none;
+  return { latitude, longitude };
 }
 
 /** Prices arrive as "150", "150 บาท", "100-250", "๑๕๐". Take the low bound. */

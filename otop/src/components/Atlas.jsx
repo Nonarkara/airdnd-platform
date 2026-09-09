@@ -61,7 +61,8 @@ function categoryParts(scope) {
 
 export default function Atlas({ insights }) {
   const [sort, setSort] = useState('records');
-  const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [], reachGap = [], corroborationQuadrant = {}, hiddenChampions = [], regionIdentity = [] } = insights;
+  const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [], reachGap = [], corroborationQuadrant = {}, hiddenChampions = [], regionIdentity = [], revenue = null } = insights;
+const bnBaht = (v) => (v == null ? '—' : `${(v / 1e9).toFixed(2)}B baht`);
 
   const provinces = useMemo(() => {
     const rows = byProvince.map((p) => ({ ...p, rail: railOf(p), classified: classifiedOf(p) }));
@@ -147,6 +148,14 @@ export default function Atlas({ insights }) {
           <p className="t-note">
             Provinces classified by two independent axes: corroboration (is the data verified by
             more than one agency?) and contactability (can someone actually reach the producer?).
+            The cut sits at ≥{corroborationQuadrant.thresholds.corroboration}% corroborated and ≥{corroborationQuadrant.thresholds.contact}% reachable —
+            administrative lines, not natural kinds. {(() => {
+              const t = corroborationQuadrant.thresholds;
+              const edge = [...(corroborationQuadrant.blind ?? [])]
+                .map((p) => ({ p, d: Math.abs(p.corroboratedPct - t.corroboration) + Math.abs(p.reachablePct - t.contact) }))
+                .sort((a, b) => a.d - b.d)[0];
+              return edge ? `${edge.p.th} (${edge.p.corroboratedPct}% / ${edge.p.reachablePct}%) sits just below both lines — move them slightly and it moves quadrants.` : 'Provinces near the lines move quadrants when the lines move.';
+            })()}
           </p>
           <div className="t-quadrant">
             <div className="t-quad-cell" data-quad="ready">
@@ -294,8 +303,9 @@ export default function Atlas({ insights }) {
         <>
           <h3 className="sub-h">Region identity · อัตลักษณ์ภูมิภาค</h3>
           <p className="t-note">
-            Thailand's OTOP character in one screen. The classified records reveal
-            genuine regional specializations — a buyer who needs woven fabric goes to
+            Shares are of <em>classified records only</em> — and only {n(national.records - national.categories.find((c) => c.id === 'unclassified').count)} of {n(national.records)} records
+            carry any category at all. Read each card as "of what this region bothered to
+            describe, this is what it describes": a buyer who needs woven fabric starts in
             the North/Isaan; processed food concentrates in the West and South.
           </p>
           <div className="t-region-id">
@@ -306,9 +316,9 @@ export default function Atlas({ insights }) {
                   <span className="t-row-en">{r.en}</span>
                 </div>
                 <div className="t-region-card-body">
-                  <span className="t-key">{r.dominantLabel}</span>
+                  <span className="t-key">{r.dominantLabel} · of classified</span>
                   <span className="t-region-card-share">{r.dominantShare}%</span>
-                  <span className="t-ctx">{n(r.classified)} classified of {n(r.records)}</span>
+                  <span className="t-ctx">{n(r.classified)} classified of {n(r.records)} ({r.classifiedPct}%)</span>
                 </div>
               </div>
             ))}
@@ -379,9 +389,10 @@ export default function Atlas({ insights }) {
         <>
           <h3 className="sub-h">Hidden champions · แชมป์ที่ซ่อนอยู่</h3>
           <p className="t-note">
-            These are the state's own certified producers — 4-5★, corroborated by multiple
-            agencies — with <em>no phone number</em>. Each one is a lost sale the government itself signed off on.
-            A contact-drive to these provinces yields the highest ROI.
+            The state's own certified producers — 4-5★, corroborated by multiple
+            agencies — with <em>no phone number</em>. A star certifies process compliance,
+            not market demand, so these are not proven sales waiting to happen; they are
+            the shortest list a contact-drive could start from: certified names, not cold ones.
           </p>
           <div className="t-rows" id="hidden-champions">
             <div className="t-row t-row-hd">
@@ -402,6 +413,55 @@ export default function Atlas({ insights }) {
                 <span className="t-row-num" data-high>{p.hiddenChampions}</span>
                 <span className="t-hide-sm t-row-num">{p.highStars}</span>
                 <span className="t-hide-sm t-row-num">{p.reachable}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ── REVENUE — what money moved, not who earned it ─────────────── */}
+      {revenue && (
+        <>
+          <h3 className="sub-h">Revenue · รายได้จากการจำหน่าย</h3>
+          <p className="t-note">
+            Provincial sales aggregates from the Department of Community Development's monthly
+            series (BE {Math.min(...Object.keys(revenue.nationalAnnual).map(Number)) + 543}–{Math.max(...Object.keys(revenue.nationalAnnual).map(Number)) + 543}).
+            This is a <em>different dataset</em> from the producer registry above: it says how much
+            money moved, not who earned it. The two cannot be joined, and dividing these totals by
+            registry row counts would turn filing energy into fake productivity — so this page refuses to.
+          </p>
+          <div className="t-ranked">
+            {Object.entries(revenue.nationalAnnual).sort(([a], [b]) => b - a).map(([year, a]) => (
+              <div key={year}>
+                <div className="t-ranked-row">
+                  <span>{Number(year) + 543} BE · {year} CE{a.months < 12 ? ` (${a.months} months)` : ''}</span>
+                  <span className="t-row-num">{bnBaht(a.total)}</span>
+                </div>
+                <span className="t-ranked-track"><i style={{ width: `${(a.total / Math.max(...Object.values(revenue.nationalAnnual).map((x) => x.total))) * 100}%` }} /></span>
+              </div>
+            ))}
+          </div>
+          <p className="t-note">
+            Top ten provinces by {revenue.latestFullYear} (latest full year).{' '}
+            {revenue.coverage.provincesMissing.length > 0 && (
+              <>{revenue.coverage.provincesMissing.join(', ')} report{revenue.coverage.provincesMissing.length === 1 ? 's' : ''} no values in any month — {revenue.coverage.provincesWithData}/{revenue.coverage.provinces} provinces carry data.</>
+            )}
+          </p>
+          <div className="t-rows" id="revenue-leaders">
+            <div className="t-row t-row-hd">
+              <span className="t-rail" />
+              <span>Province · จังหวัด</span>
+              <span className="t-row-num">{revenue.latestFullYear} total</span>
+            </div>
+            {revenue.top10.map((p) => (
+              <button type="button" className="t-row" key={p.code}
+                onClick={() => { window.location.href = `/?lens=b2b&prov=${p.code}`; }}>
+                <span className="t-rail" />
+                <span>
+                  <span className="t-row-th">{p.th}</span><br />
+                  <span className="t-row-en">{p.en}</span>
+                </span>
+                <span className="t-row-num">{bnBaht(p.total)}</span>
               </button>
             ))}
           </div>

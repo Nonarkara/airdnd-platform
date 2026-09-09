@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-09T12:19:45.213Z",
+  "builtAt": "2026-09-09T14:08:05.708Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -2494,7 +2494,7 @@
         "withStars": 2.8,
         "withPrice": 0,
         "withSubdistrict": 96.8,
-        "withCoordinates": 23.3,
+        "withCoordinates": 22.8,
         "categoryDeclared": 3.9,
         "categoryInferred": 4.7,
         "categoryUnknown": 91.5
@@ -7424,8 +7424,12 @@
     {
       "id": "commercial-ready",
       "th": "โอทอปพร้อมค้า",
-      "text": "Only 0.1% of records carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. The other 99.9% are name-only registrations.",
-      "value": 0.1
+      "text": "123 records (0.1%) carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. 20,292 carry two of the three, 31,848 carry one, and 106,601 (67.1%) carry none of the three: a name and an area only.",
+      "value": 0.1,
+      "count": 123,
+      "tier2": 20292,
+      "tier1": 31848,
+      "tier0": 106601
     },
     {
       "id": "corroboration",
@@ -10059,6 +10063,101 @@
       "classifiedPct": 26.5
     }
   ],
+  "revenue": {
+    "builtAt": "2026-09-09T14:08:03.916Z",
+    "unit": "บาท",
+    "seriesSource": "กรมพัฒนาชุมชน",
+    "latestFullYear": 2023,
+    "nationalAnnual": {
+      "2022": {
+        "total": 261663163431.65002,
+        "months": 12
+      },
+      "2023": {
+        "total": 314114036455.96,
+        "months": 12
+      },
+      "2024": {
+        "total": 243401413838.57,
+        "months": 9
+      }
+    },
+    "coverage": {
+      "provinces": 77,
+      "provincesWithData": 76,
+      "provincesMissing": [
+        "กรุงเทพมหานคร"
+      ],
+      "monthsPerProvince": 33,
+      "fullYears": [
+        2022,
+        2023
+      ],
+      "note": "BE 2565 and 2566 are full years; BE 2567 (2024) covers January–September only. Bangkok reports no values in any month."
+    },
+    "top10": [
+      {
+        "code": 73,
+        "th": "นครปฐม",
+        "en": "Nakhon Pathom",
+        "total": 21190419552.93
+      },
+      {
+        "code": 50,
+        "th": "เชียงใหม่",
+        "en": "Chiang Mai",
+        "total": 14360469573
+      },
+      {
+        "code": 40,
+        "th": "ขอนแก่น",
+        "en": "Khon Kaen",
+        "total": 12719705099.1
+      },
+      {
+        "code": 70,
+        "th": "ราชบุรี",
+        "en": "Ratchaburi",
+        "total": 10525897022.93
+      },
+      {
+        "code": 30,
+        "th": "นครราชสีมา",
+        "en": "Nakhon Ratchasima",
+        "total": 10260928569
+      },
+      {
+        "code": 41,
+        "th": "อุดรธานี",
+        "en": "Udon Thani",
+        "total": 8885450923
+      },
+      {
+        "code": 34,
+        "th": "อุบลราชธานี",
+        "en": "Ubon Ratchathani",
+        "total": 8832938384
+      },
+      {
+        "code": 76,
+        "th": "เพชรบุรี",
+        "en": "Phetchaburi",
+        "total": 8056238453
+      },
+      {
+        "code": 33,
+        "th": "ศรีสะเกษ",
+        "en": "Si Sa Ket",
+        "total": 7899884361
+      },
+      {
+        "code": 11,
+        "th": "สมุทรปราการ",
+        "en": "Samut Prakan",
+        "total": 7753288014
+      }
+    ]
+  },
   "concentration": {
     "top10Share": 28.1,
     "top10": [

@@ -165,14 +165,28 @@ const findings = (() => {
   const v = vintage(records);
 
   // The "commercial-ready" share: records carrying all three signals a buyer
-  // needs at once. Without this, the headline number is a count of paperwork,
-  // not a count of tradeable supply.
-  const commercial = records.filter((r) => r.category && (r.phone || r.email || r.website) && r.stars != null).length;
+  // needs at once. Definition is pinned to signalTier() in
+  // otop/core/matching.js: category + contact (phone/email/website) + stars.
+  // Both the share AND the absolute count are printed, because an earlier
+  // report quoted "159" against this same 158,864-record build while the
+  // shards recompute to 123 — a bare count with no pinned definition rots.
+  // Only tier 0 is "name-only": tiers 1-2 carry one or two usable signals,
+  // and calling all of the other 99.9% "name-only registrations" (as an
+  // earlier finding did) defined ~52,000 partially-signalled records out of
+  // existence.
+  const tier = (r) => [r.category, (r.phone || r.email || r.website), r.stars != null].filter(Boolean).length;
+  const tierCounts = [0, 0, 0, 0];
+  for (const r of records) tierCounts[tier(r)] += 1;
+  const commercial = tierCounts[3];
   out.push({
     id: 'commercial-ready',
     th: 'โอทอปพร้อมค้า',
-    text: `Only ${n(pct(commercial, total))}% of records carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. The other ${n(pct(total - commercial, total))}% are name-only registrations.`,
+    text: `${n(commercial)} records (${n(pct(commercial, total))}%) carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. ${n(tierCounts[2])} carry two of the three, ${n(tierCounts[1])} carry one, and ${n(tierCounts[0])} (${n(pct(tierCounts[0], total))}%) carry none of the three: a name and an area only.`,
     value: pct(commercial, total),
+    count: commercial,
+    tier2: tierCounts[2],
+    tier1: tierCounts[1],
+    tier0: tierCounts[0],
   });
 
   // Corroboration: the only field in the registry that distinguishes a real
@@ -305,6 +319,14 @@ const reachGap = byProvince
  * The Contact × Corroboration Quadrant. A 2×2 grid that classifies every
  * province into: ready to trade, best docs but unreachable, reachable but
  * unverified, and the poverty zones.
+ *
+ * The cuts (50% corroborated, 10% reachable) are administrative lines, not
+ * natural kinds — chosen because 10% contact separates the handful of
+ * reachable provinces from the mass near zero, and 50% corroboration splits
+ * verified-majority from verified-minority. Provinces sitting on the lines
+ * (e.g. Kamphaeng Phet at 49.4%/8.8% in the 2026-09-09 build) change
+ * quadrants if the lines move; the Atlas names the nearest edge case live
+ * so the fragility is visible, not hidden.
  */
 const CORROBORATION_THRESHOLD = 50; // % of records corroborated
 const CONTACT_THRESHOLD = 10; // % of records with contact
@@ -347,6 +369,44 @@ const regionIdentity = byRegion.map((r) => {
   };
 });
 
+/**
+ * Revenue. The CDD monthly sales series (BE 2565–2567) joined to province
+ * codes by scripts/otop/revenue.js. Embedded here — not merged into records —
+ * because provincial aggregates cannot be divided down to producers. The only
+ * numbers carried forward are the ones that survive without a per-record
+ * join: national annuals and the top ten provinces of the latest full year.
+ * No revenue-per-record ratio is computed anywhere: dividing CDD aggregates
+ * by registry row counts would launder filing energy into productivity.
+ */
+const revenue = (() => {
+  const file = path.join(PUB, 'otop_revenue.json');
+  if (!fs.existsSync(file)) return null;
+  let rev;
+  try {
+    rev = JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {
+    return null;
+  }
+  if (!rev || rev.degraded || !Array.isArray(rev.byProvince)) return null;
+  const fullYears = (rev.coverage?.fullYears ?? []).slice().sort();
+  const latestFull = fullYears.length ? fullYears[fullYears.length - 1] : null;
+  if (latestFull == null) return null;
+  const top10 = rev.byProvince
+    .map((p) => ({ code: p.code, th: p.th, en: p.en, total: p.years?.[latestFull]?.total ?? null }))
+    .filter((p) => p.total != null)
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 10);
+  return {
+    builtAt: rev.builtAt,
+    unit: rev.source?.unit ?? 'บาท',
+    seriesSource: rev.source?.seriesSource ?? null,
+    latestFullYear: latestFull,
+    nationalAnnual: rev.nationalAnnual,
+    coverage: rev.coverage,
+    top10,
+  };
+})();
+
 const insights = {
   builtAt: new Date().toISOString(),
   // Carried forward so a consumer of this file alone can still tell whether it
@@ -381,6 +441,10 @@ const insights = {
   corroborationQuadrant,
   hiddenChampions,
   regionIdentity,
+
+  // Revenue aggregates (null when the revenue stage degraded — the Atlas
+  // hides the section rather than substituting).
+  revenue,
 
   // Concentration: the share of all records held by the top ten provinces. A
   // registry is not a census, so a high figure is as likely to reflect where
