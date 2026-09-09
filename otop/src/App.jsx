@@ -8,7 +8,10 @@ import Basins from './components/Basins.jsx';
 // Leaflet is ~150KB and only the B2B lens draws a map. Split it so the B2C
 // path never pays for it.
 const ProvinceMap = lazy(() => import('./components/ProvinceMap.jsx'));
+// Atlas is the whole national rollup and only the Atlas view draws it.
+const Atlas = lazy(() => import('./components/Atlas.jsx'));
 import { loadIndex, loadShards, planShards } from './lib/shards.js';
+import { loadInsights } from './lib/insights.js';
 import { matchRequirement, sourcingBasins, toCsv, PROFILES } from '../core/matching.js';
 
 const PAGE = 60;
@@ -40,8 +43,9 @@ function requirementFromUrl() {
   };
 }
 
-function requirementToUrl(lens, r) {
+function requirementToUrl(view, lens, r) {
   const p = new URLSearchParams();
+  if (view === 'atlas') p.set('view', 'atlas');
   p.set('lens', lens);
   if (r.categories.length) p.set('cat', r.categories.join(','));
   if (r.provinceCodes.length) p.set('prov', r.provinceCodes.join(','));
@@ -68,6 +72,9 @@ export default function App() {
   const initial = useRef(requirementFromUrl());
   const [state, setState] = useState({ status: 'loading' });
   const [lens, setLens] = useState(initial.current.lens);
+  const [view, setView] = useState(() => (new URLSearchParams(window.location.search).get('view') === 'atlas' ? 'atlas' : 'match'));
+  const [insights, setInsights] = useState(null);
+  const [insightsError, setInsightsError] = useState(null);
   const [requirement, setRequirement] = useState(initial.current.requirement);
   const [records, setRecords] = useState([]);
   const [plan, setPlan] = useState(null);
@@ -122,8 +129,17 @@ export default function App() {
   }, [wanted, wantedKey]);
 
   useEffect(() => {
-    window.history.replaceState(null, '', requirementToUrl(lens, requirement));
-  }, [lens, requirement]);
+    if (view !== 'atlas' || insights || insightsError) return;
+    let cancelled = false;
+    loadInsights()
+      .then((data) => { if (!cancelled) setInsights(data); })
+      .catch((error) => { if (!cancelled) setInsightsError(error.message); });
+    return () => { cancelled = true; };
+  }, [view, insights, insightsError]);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', requirementToUrl(view, lens, requirement));
+  }, [view, lens, requirement]);
 
   useEffect(() => { setLimit(PAGE); }, [lens, requirement]);
 
@@ -176,8 +192,9 @@ export default function App() {
             per viewport — two stacked wordmarks read as an unfinished template. */}
         <div className="wrap hdr-in">
           <nav className="hdr-nav">
-            <button type="button" aria-current={lens === 'b2b'} onClick={() => setLens('b2b')}>Source · B2B</button>
-            <button type="button" aria-current={lens === 'b2c'} onClick={() => setLens('b2c')}>Discover · B2C</button>
+            <button type="button" aria-current={view === 'match' && lens === 'b2b'} onClick={() => { setView('match'); setLens('b2b'); }}>Source · B2B</button>
+            <button type="button" aria-current={view === 'match' && lens === 'b2c'} onClick={() => { setView('match'); setLens('b2c'); }}>Discover · B2C</button>
+            <button type="button" aria-current={view === 'atlas'} onClick={() => setView('atlas')}>Atlas</button>
             <a href="#method"><button type="button">Method</button></a>
           </nav>
           <div className="hdr-status">
@@ -210,6 +227,7 @@ export default function App() {
 
         <div className="wrap"><ProvenanceBanner meta={meta} /></div>
 
+        {view === 'match' && (<>
         <section className="sec" id="match">
           <div className="wrap">
             <div className="sec-h">
@@ -301,6 +319,27 @@ export default function App() {
             <Meters completeness={completenessOf(records)} />
           </div>
         </section>
+        </>)}
+
+        {view === 'atlas' && (
+          <section className="sec" id="atlas">
+            <div className="wrap">
+              <div className="sec-h">
+                <h2 className="sec-t">Atlas</h2>
+                <span className="sec-n">the whole registry as one information package — and the zones it left blank</span>
+              </div>
+              {insightsError && (
+                <p className="empty">The national rollup could not be loaded — {insightsError}. Nothing is shown rather than something substituted.</p>
+              )}
+              {!insights && !insightsError && <p className="empty">Loading the national rollup…</p>}
+              {insights && (
+                <Suspense fallback={<p className="empty">Loading the national rollup…</p>}>
+                  <Atlas insights={insights} />
+                </Suspense>
+              )}
+            </div>
+          </section>
+        )}
 
         <section className="sec" id="method">
           <div className="wrap">

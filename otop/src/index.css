@@ -312,11 +312,20 @@ html, body { overflow-x: hidden; }
 
 /* ── scored match rows ────────────────────────────────────────────────────── */
 .results-h { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+/* Rail first, then the fit score as the destination rank — in a ranked list the
+   score is the thing the reader must not miss (baggage-tag hierarchy, dashboard
+   mapping: destination = first column, huge). */
 .row.match-row {
-  grid-template-columns: 4.5rem minmax(0, 2.1fr) minmax(0, 1.3fr) 7.5rem 5rem minmax(0, 1fr) 8.5rem 3rem;
+  grid-template-columns: var(--tag-rail-width) 4.5rem minmax(0, 2.1fr) minmax(0, 1.3fr) 7.5rem 5rem minmax(0, 1fr) 8.5rem 3rem;
 }
+/* Full-bleed rail: it must run the height of the row, past the row padding. */
+.row.match-row .t-rail { align-self: stretch; margin-block: -.875rem; }
+.row.match-row.row-hd .t-rail { margin-block: -.5rem; background: transparent; }
 .c-score { display: block; }
-.score-n { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.score-n {
+  font-family: var(--font-mono); font-size: 1.5rem; line-height: 1;
+  letter-spacing: -.03em; font-variant-numeric: tabular-nums;
+}
 .score-track { display: block; height: 3px; background: var(--bg-2); margin-top: .25rem; }
 .score-fill { display: block; height: 100%; background: var(--navy); }
 .c-contact { font-size: 12px; overflow-wrap: anywhere; }
@@ -329,7 +338,17 @@ html, body { overflow-x: hidden; }
 .caveats li { margin-bottom: .3125rem; max-width: 92ch; }
 
 @media (max-width: 900px) {
-  .row.match-row { grid-template-columns: 1fr 1fr; }
+  /* On a phone the rail leaves the grid entirely and is painted on the row's
+     edge, so it stays full-bleed without taking a column away from the content. */
+  .row.match-row {
+    position: relative;
+    grid-template-columns: 1fr 1fr;
+    padding-left: calc(var(--tag-rail-width) + .5rem);
+  }
+  .row.match-row .t-rail {
+    position: absolute; inset-block: 0; left: 0;
+    width: var(--tag-rail-width); margin: 0;
+  }
   .row.match-row .c-name, .row.match-row .c-producer, .row.match-row .c-contact { grid-column: 1 / -1; }
   .basins { grid-template-columns: 1fr 1fr; }
 }

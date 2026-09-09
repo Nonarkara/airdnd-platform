@@ -1,0 +1,153 @@
+/* SPDX-License-Identifier: MIT */
+/* Dr Non's Luggage Tag Aesthetic — design tokens.
+   Ground / ink / reversal / rails / type hierarchy / density / barcode.
+
+   v3 change of doctrine. v2 said "colour is not a rank" and "ground + ink is
+   the default package", then shipped a system with zero solid-ink fills. The
+   result read as minimalism — which the philosophy explicitly disowns. A real
+   tag is roughly a third ink by area: solid bands, reversed type, saturated
+   routing rails. Those are not decoration, they are how the object survives a
+   half-second glance in bad light. See docs/why-it-is-beautiful.md. */
+
+:root {
+  /* ---- Material: thermal face stock. Near-white, slightly warm. ---- */
+  --tag-ground: #f7f6f2;
+  --tag-ground-strict: #fffefa;
+  --tag-ink: #111111;
+  --tag-ink-soft: #2a2a2a;
+  --tag-rule: #111111;
+  --tag-focus: #111111;
+
+  /* ---- Reversal: the cheapest hierarchy in print. ----
+     Type knocked out of a solid band reads as louder without getting bigger.
+     A strip that is 30% ink survives glare, motion and a torn corner. */
+  --tag-reverse-ground: #111111;
+  --tag-reverse-ink: #fffefa;
+
+  /* ---- Routing rails: colour as a DOMAIN, never as flavour. ----
+     Use exactly one rail per package, and only when that routing state is
+     genuinely in the record.
+
+     ⚠️ HONESTY NOTE — this vocabulary is OURS, not IATA's.
+     Exactly one coloured rail on a real tag is standardised, and it is not a
+     priority marking: a GREEN edge identifies hold baggage checked in at an EU
+     airport, so destination customs can separate intra-EU bags from
+     third-country bags. IATA makes it a compliance requirement.
+     Priority / class-of-service markings are per-carrier conventions, and for
+     short connections IATA's own guidance recommends a remark, a SEPARATE
+     sticker, or a system attribute — explicitly not a standardised rail.
+     Historically it was the pre-1990 string tags that used elaborate colour
+     schemes so handlers could read a destination at a glance.
+     So: treat the six below as a designed key for information packages, not as
+     an aviation standard. Label it as an invention wherever you ship it. */
+  --tag-rail-standard: #1c8a4a;  /* normal routing (echoes the EU customs green) */
+  --tag-rail-priority: #e8471f;  /* expedite / rush / SLA breach */
+  --tag-rail-business: #14489c;  /* business / premium / crew */
+  --tag-rail-transfer: #f2b706;  /* interline / short connection */
+  --tag-rail-hazard:   #8b1212;  /* DG / hold / blocking */
+  --tag-rail-heavy:    #6b21a8;  /* heavy / oversize / special handling */
+
+  /* Rail geometry. Full-bleed edge band — not a 1px accent border. */
+  --tag-rail-width: 0.75rem;
+  --tag-rail-width-strip: 1.125rem;
+
+  /* ---- Type: size IS information. Four ranks only. ---- */
+  --tag-font-dest: "Arial Narrow", "Helvetica Neue Condensed", "Franklin Gothic Medium", Arial, sans-serif;
+  --tag-font-body: Arial, Helvetica, sans-serif;
+  --tag-font-mono: ui-monospace, "Cascadia Mono", "SF Mono", "Courier New", monospace;
+
+  --tag-size-dest: clamp(3.25rem, 14vw, 7.5rem);
+  --tag-lh-dest: 0.82;
+  --tag-track-dest: -0.06em;
+  --tag-weight-dest: 800;
+
+  --tag-size-lpn: 1.125rem;
+  --tag-lh-lpn: 1.2;
+  --tag-track-lpn: 0.18em;
+  --tag-weight-lpn: 500;
+
+  --tag-size-context: 0.8125rem;
+  --tag-lh-context: 1.35;
+  --tag-track-context: 0.06em;
+  --tag-weight-context: 500;
+
+  --tag-size-fallback: 0.75rem;
+  --tag-lh-fallback: 1.3;
+  --tag-track-fallback: 0.14em;
+  --tag-weight-fallback: 700;
+
+  --tag-size-stub: 0.6875rem;
+  --tag-size-meta: 0.625rem;
+  --tag-track-meta: 0.16em;
+
+  /* ---- Spacing: TWO scales, deliberately. ----
+     Page scale is for the document around the object. Tag scale is for inside
+     the object, where a real strip runs content to within ~2mm of a die-cut
+     edge. v2 used page scale inside the tag; that is why it floated. */
+  --tag-space-1: 0.25rem;
+  --tag-space-2: 0.5rem;
+  --tag-space-3: 0.75rem;
+  --tag-space-4: 1rem;
+  --tag-space-5: 1.5rem;
+  --tag-space-6: 2rem;
+  --tag-space-7: 3rem;
+  --tag-space-8: 4rem;
+
+  /* Tag scale — inside the package. Tight on purpose. */
+  --tag-gutter: 0.1875rem;   /* ~2mm at tag scale: the die-cut margin */
+  --tag-gap-tight: 0.125rem; /* between rows of a stub block */
+  --tag-gap-zone: 0.375rem;  /* between anatomical zones */
+  --tag-pad-zone: 0.375rem;
+
+  --tag-rule-width: 1.5px;
+  --tag-rule-hair: 1px;
+  --tag-pad: var(--tag-space-5);
+  --tag-max: 72rem;
+  --tag-face-min: 12.7rem;   /* 50.8 mm at 96dpi — the real printable width */
+
+  /* ---- Strip geometry ----
+     IATA-style tag: ~2in printable width, ~20in long before the loop.
+     The extreme ratio is the identity. A 40rem-wide landscape card is a
+     different object wearing the name. */
+  --tag-strip-width: 15rem;
+  --tag-strip-ratio: 0.1429; /* 1:7 printed zone; the physical tag incl. the
+                                doubled sticky section is nearer 1:9 */
+
+  /* ---- Barcode ----
+     Module width and the mandatory 10-module quiet zone are owned by
+     components/barcode.js (per-element via data-barcode-module). Keeping CSS
+     copies would be a second source of truth for the same number. */
+  --tag-barcode-height: 4.5rem;
+  --tag-tabular: tabular-nums lining-nums;
+
+  --tag-radius: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Thermal tag stays light. The object does not invert in a dark room.
+     Only the page chrome outside the package may invert — this sheet does not. */
+}
+
+/* Routing state → rail colour. One per package.
+   `default` intentionally resolves to ink: an unrouted package is not
+   colourless by aesthetic preference, it is black because no routing
+   instruction exists yet. */
+[data-rail="standard"] { --tag-rail: var(--tag-rail-standard); }
+[data-rail="priority"] { --tag-rail: var(--tag-rail-priority); }
+[data-rail="business"] { --tag-rail: var(--tag-rail-business); }
+[data-rail="transfer"] { --tag-rail: var(--tag-rail-transfer); }
+[data-rail="hazard"]   { --tag-rail: var(--tag-rail-hazard); }
+[data-rail="heavy"]    { --tag-rail: var(--tag-rail-heavy); }
+[data-rail="default"]  { --tag-rail: var(--tag-ink); }
+
+/* Back-compat with v2 `data-domain`. Same idea, narrower vocabulary. */
+[data-domain="priority"] { --tag-rail: var(--tag-rail-priority); --tag-domain-mark: var(--tag-rail-priority); }
+[data-domain="crew"]     { --tag-rail: var(--tag-rail-business); --tag-domain-mark: var(--tag-rail-business); }
+[data-domain="hazard"]   { --tag-rail: var(--tag-rail-hazard);   --tag-domain-mark: var(--tag-rail-hazard); }
+[data-domain="default"]  { --tag-rail: var(--tag-ink);           --tag-domain-mark: var(--tag-ink); }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Vendored verbatim from github.com/Nonarkara/dr-non-luggage-tag-aesthetic
+   (MIT). Do not edit this file — edit ../tag.css, which layers one·tambon's
+   own surfaces on top. Re-vendor by re-copying design-tokens/tokens.css.
+   ───────────────────────────────────────────────────────────────────────── */

@@ -1,6 +1,17 @@
 import { CATEGORY_LABEL } from '../lib/labels.js';
 
 /**
+ * The rail carries a domain that is in the record: can this producer be reached
+ * at all? A shortlist row nobody can telephone is not a lead, and that fact
+ * resolves at a distance where the fit score has not yet resolved.
+ */
+function railOf(record) {
+  if (record.phone) return 'standard';
+  if (record.email || record.website) return 'transfer';
+  return 'default';
+}
+
+/**
  * Horizontal data rows, now carrying a score.
  *
  * The score bar is the only new mark, and the component breakdown is exposed on
@@ -28,6 +39,7 @@ export default function MatchRows({ matches, limit }) {
   return (
     <div className="rows">
       <div className="row match-row row-hd" aria-hidden="true">
+        <span className="t-rail" />
         <span>Fit</span>
         <span>Product · ผลิตภัณฑ์</span>
         <span>Producer · ผู้ผลิต</span>
@@ -39,7 +51,8 @@ export default function MatchRows({ matches, limit }) {
       </div>
 
       {matches.slice(0, limit).map(({ record, score, components }) => (
-        <article className="row match-row" key={record.identityKey}>
+        <article className="row match-row" key={record.identityKey} data-rail={railOf(record)}>
+          <span className="t-rail" />
           <span className="c-score" title={why(components)}>
             <span className="score-n">{score.toFixed(0)}</span>
             <span className="score-track"><span className="score-fill" style={{ width: `${score}%` }} /></span>

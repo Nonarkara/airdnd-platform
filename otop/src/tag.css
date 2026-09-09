@@ -1,0 +1,192 @@
+/**
+ * one·tambon × the white baggage tag.
+ *
+ * Register: INDEX (docs/registers.md) — someone reading a ranking deliberately,
+ * not an operator at 2am and not a citizen in sunlight. So: keep the four type
+ * ranks and the id discipline, loosen the density enough that 77 rows scan
+ * without fatigue. Nothing here inverts in dark mode; a thermal tag does not
+ * change colour in a dark room.
+ *
+ * The rail vocabulary below is OURS, not IATA's — see the honesty note in
+ * vendor/luggage-tag-tokens.css. Here a rail encodes the strongest field the
+ * province's records actually carry, which is a routing state in the record:
+ *   business  a producer in this province carries an OPC star result
+ *   standard  carries a product category
+ *   transfer  corroborated across agencies, but nothing else
+ *   hazard    name and area only — nothing to route on
+ */
+
+@import './vendor/luggage-tag-tokens.css';
+
+/* The INDEX register is allowed to move absolute type sizes and nothing else
+   (docs/registers.md). These are the four upstream ranks restated at the size a
+   77-row table can carry: rank 1 shrinks so three glyphs do not set the column
+   width, rank 2 grows so a numeral reads as a numeral. Ranks 3 and 4 are the
+   upstream tokens unchanged. */
+:root {
+  --t-rank1-row:  1.5rem;    /* rank 1 at list density */
+  --t-rank2-lg:   1.75rem;   /* rank 2, hero numeral */
+  --t-rank2-md:   1.375rem;  /* rank 2, stub numeral */
+}
+
+/* Ranks 1–4. Rank 1 is condensed on purpose: three glyphs at 4rem must not
+   set the column width of a 77-row table. */
+.t-dest {
+  font-family: var(--tag-font-dest);
+  font-weight: var(--tag-weight-dest);
+  letter-spacing: var(--tag-track-dest);
+  line-height: var(--tag-lh-dest);
+  text-transform: uppercase;
+  font-variant-numeric: var(--tag-tabular);
+  margin: 0;
+}
+.t-id {
+  font-family: var(--font-mono);
+  font-size: var(--tag-size-lpn);
+  letter-spacing: var(--tag-track-lpn);
+  font-variant-numeric: var(--tag-tabular);
+}
+.t-ctx { font-size: var(--tag-size-context); letter-spacing: var(--tag-track-context); }
+.t-key {
+  display: block;
+  font-size: var(--tag-size-meta); font-weight: 700;
+  letter-spacing: var(--tag-track-meta); text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* Reversal. The cheapest hierarchy in print: type knocked out of solid ink
+   reads louder without getting bigger. This is the one thing that stops the
+   page reading as minimalism. */
+.t-band {
+  background: var(--tag-reverse-ground);
+  color: var(--tag-reverse-ink);
+  padding: var(--tag-space-2) var(--tag-space-3);
+}
+.t-band .t-key { color: rgba(255,254,250,.68); }
+
+/* ── the national tag: the country as one closed package ─────────────────── */
+.t-national {
+  border: 2px solid var(--tag-ink);
+  background: var(--tag-ground-strict);
+  display: grid;
+  grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+  margin-block: clamp(1.5rem, 4vw, 2.5rem);
+}
+.t-face { border-right: 2px solid var(--tag-ink); }
+.t-face .t-dest { font-size: clamp(3rem, 12vw, 5.5rem); }
+.t-face-body { padding: var(--tag-space-3); display: grid; gap: var(--tag-space-3); }
+/* Six stubs, three columns, two rows — no orphan cell. Every edge resolves to
+   another edge (Planar Alignment Law). */
+.t-stubs { display: grid; grid-template-columns: repeat(3, 1fr); height: 100%; }
+.t-stub {
+  border-bottom: 1px solid var(--tag-ink);
+  border-right: 1px solid var(--tag-ink);
+  padding: var(--tag-space-3);
+  display: grid; align-content: start; gap: var(--tag-space-1);
+}
+.t-stub:nth-child(3n) { border-right: 0; }
+.t-stub:nth-last-child(-n+3) { border-bottom: 0; }
+.t-stub-n { font-family: var(--font-mono); font-size: var(--t-rank2-md); font-variant-numeric: var(--tag-tabular); }
+@media (max-width: 720px) {
+  .t-national { grid-template-columns: 1fr; }
+  .t-stubs { grid-template-columns: repeat(2, 1fr); }
+  .t-stub:nth-child(3n) { border-right: 1px solid var(--tag-ink); }
+  .t-stub:nth-child(2n) { border-right: 0; }
+  .t-stub:nth-last-child(-n+3) { border-bottom: 1px solid var(--tag-ink); }
+  .t-stub:nth-last-child(-n+2) { border-bottom: 0; }
+  .t-face { border-right: 0; border-bottom: 2px solid var(--tag-ink); }
+}
+
+/* ── printed-vs-blank: the zones this registry did not fill ──────────────── */
+.t-zones { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 1px; background: var(--tag-ink); border: 1px solid var(--tag-ink); }
+.t-zone { background: var(--tag-ground-strict); padding: var(--tag-space-3); display: grid; gap: var(--tag-space-2); align-content: start; }
+.t-zone-n { font-family: var(--font-mono); font-size: var(--t-rank2-lg); font-variant-numeric: var(--tag-tabular); line-height: 1; }
+/* A zone under 5% filled is printed as blank: the ink is the ABSENCE, so the
+   eye counts holes rather than reading six near-identical percentages. */
+.t-zone[data-fill='blank'] { background: var(--tag-reverse-ground); color: var(--tag-reverse-ink); }
+.t-zone[data-fill='blank'] .t-key { color: rgba(255,254,250,.68); }
+.t-zone-bar { height: 6px; background: var(--tag-ground); border: 1px solid currentColor; }
+.t-zone-bar > i { display: block; height: 100%; background: currentColor; }
+
+/* ── stacked composition bar (categories, concentration) ─────────────────── */
+.t-bar { display: flex; height: 2.25rem; border: 1px solid var(--tag-ink); background: var(--tag-ground-strict); overflow: hidden; }
+.t-bar > span {
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: var(--tag-size-meta);
+  letter-spacing: .06em; overflow: hidden; min-width: 0;
+  border-right: 1px solid var(--tag-ink);
+}
+.t-bar > span:last-child { border-right: 0; }
+/* Ink for the filled part, ground for the hole. One accent only, and it is a
+   fill — amber on cream measures 2.04:1 and never carries a glyph here. */
+.t-bar > .is-ink { background: var(--tag-reverse-ground); color: var(--tag-reverse-ink); }
+.t-bar > .is-hole { background: var(--tag-ground); color: var(--ink-3); }
+.t-bar > .is-mark { background: var(--accent); color: var(--tag-ink); }
+.t-legend { display: flex; flex-wrap: wrap; gap: var(--tag-space-2) var(--tag-space-4); margin-top: var(--tag-space-2); font-size: var(--tag-size-meta); letter-spacing: var(--tag-track-meta); text-transform: uppercase; color: var(--ink-2); }
+
+/* ── the 77 province tags ────────────────────────────────────────────────── */
+.t-rows { border-top: 1px solid var(--tag-ink); }
+.t-row {
+  display: grid;
+  grid-template-columns: var(--tag-rail-width) 5rem minmax(10rem, 1.5fr) minmax(7rem, 1fr) 6rem 5rem 5.5rem;
+  gap: 0 var(--tag-space-4);
+  align-items: center;
+  border-bottom: 1px solid var(--line-2);
+  padding-right: var(--tag-space-3);
+  background: var(--tag-ground-strict);
+  width: 100%; text-align: left; font: inherit; color: inherit;
+  border-left: 0; border-right: 0; border-top: 0; cursor: pointer;
+}
+.t-row:hover, .t-row:focus-visible { background: var(--bg-2); }
+.t-row-hd { background: var(--bg-2); cursor: default; font-size: var(--tag-size-meta); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; color: var(--ink-3); padding-block: var(--tag-space-2); }
+.t-row-hd:hover { background: var(--bg-2); }
+/* Full-bleed rail, not a 1px accent border — it resolves at a distance where
+   the province code has not yet resolved. */
+.t-rail { align-self: stretch; background: var(--tag-rail, var(--tag-ink)); }
+.t-row-hd .t-rail { background: transparent; }
+/* Rank 1 — what a buyer planning a trip actually sorts on. Arial Narrow carries
+   no Thai, so this rank uses the project's Thai face at the rank-1 size rather
+   than the upstream condensed stack. */
+.t-row-th {
+  font-family: var(--font-text); font-size: var(--t-rank1-row);
+  font-weight: 600; letter-spacing: -.01em; line-height: 1.1;
+}
+.t-row-en { color: var(--ink-3); font-size: var(--tag-size-stub); letter-spacing: .08em; text-transform: uppercase; }
+/* Rank 2 — the machine key. Mono, tracked, copyable, deliberately quieter. */
+.t-row .t-dest {
+  font-family: var(--font-mono); font-size: var(--tag-size-lpn);
+  font-weight: 500; letter-spacing: var(--tag-track-lpn);
+  padding-block: var(--tag-space-3); text-transform: none;
+}
+.t-row-num { font-family: var(--font-mono); font-size: var(--tag-size-context); font-variant-numeric: var(--tag-tabular); text-align: right; }
+.t-row-meter { height: 4px; background: var(--bg-2); margin-top: 4px; }
+.t-row-meter > i { display: block; height: 100%; background: var(--tag-ink); }
+@media (max-width: 860px) {
+  .t-row { grid-template-columns: var(--tag-rail-width) 4.5rem 1fr 4.5rem; }
+  .t-row > .t-hide-sm { display: none; }
+}
+
+/* ── ranked bars (contributors, concentration) ───────────────────────────── */
+.t-ranked { display: grid; gap: var(--tag-space-2); }
+.t-ranked-row { display: grid; grid-template-columns: minmax(0, 1fr) 9rem; gap: var(--tag-space-3); align-items: baseline; }
+.t-ranked-track { height: 10px; background: var(--bg-2); margin-top: 4px; }
+.t-ranked-track > i { display: block; height: 100%; background: var(--tag-ink); }
+
+/* ── vintage rule: one axis, tick per year the registry actually holds ────── */
+.t-vintage { border-top: 2px solid var(--tag-ink); display: flex; margin-top: var(--tag-space-4); }
+.t-vintage > span { flex: 1; padding-top: var(--tag-space-2); font-family: var(--font-mono); font-size: var(--tag-size-meta); color: var(--ink-3); border-right: 1px solid var(--line-2); text-align: center; }
+.t-vintage > span:last-child { border-right: 0; }
+.t-vintage > span[data-median='true'] { background: var(--accent); color: var(--tag-ink); font-weight: 700; }
+
+#atlas .sub-h { margin-top: clamp(2rem, 5vw, 3rem); }
+.t-note { font-size: var(--tag-size-context); color: var(--ink-2); max-width: 68ch; margin: var(--tag-space-3) 0 0; }
+.t-note code { font-family: var(--font-mono); font-size: var(--tag-size-context); }
+
+/* §11.8 — every interactive target ≥ 44×44 on a phone, with 8px between. */
+.t-legend button {
+  min-height: 44px;
+  display: inline-flex; align-items: center;
+  padding-inline: var(--tag-space-3);
+  margin-right: var(--tag-space-2);
+}
+.t-legend button[aria-current='true'] { background: var(--tag-reverse-ground); color: var(--tag-reverse-ink); border-color: var(--tag-ink); }
