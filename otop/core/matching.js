@@ -121,6 +121,25 @@ function dynamicCaveats(matches) {
 }
 
 /**
+ * A record has a "signal" when any of the following is true: it carries a
+ * declared category, a contact channel (phone / email / website), a star
+ * grading, or a product name distinct from its producer name. Records
+ * without any of these — a registered OTOP number with nothing else attached
+ * — pass the schema but carry nothing the interface can communicate, and
+ * listing them at the same score is a category error: the engine says
+ * "equally good" when the truth is "equally empty". `requireSignal` drops
+ * them by default; the all-rows view remains one click away for the
+ * completeness-first reader.
+ */
+function hasSignal(record) {
+  if (record.category) return true;
+  if (record.phone || record.email || record.website) return true;
+  if (record.stars != null) return true;
+  if (record.productName && record.producerName && record.productName !== record.producerName) return true;
+  return false;
+}
+
+/**
  * Rank records against a buyer's requirement.
  *
  * `requirement` is a plain object so it round-trips through a URL and a
@@ -136,6 +155,7 @@ export function matchRequirement(records, requirement = {}) {
     minStars = null,
     requireContact = false,
     requireCorroborated = false,
+    requireSignal = false,
     maxFilingAge = null,
     query = '',
   } = requirement;
@@ -144,6 +164,7 @@ export function matchRequirement(records, requirement = {}) {
 
   const matches = records
     .filter((record) => {
+      if (requireSignal && !hasSignal(record)) return false;
       if (categories.length && !categories.includes(record.category)) return false;
       if (provinceCodes.length && !provinceCodes.includes(record.provinceCode)) return false;
       if (regions.length && !regions.includes(record.region)) return false;
@@ -166,6 +187,7 @@ export function matchRequirement(records, requirement = {}) {
 
   return {
     matches,
+    total: records.length,
     caveats: [...dynamicCaveats(matches), ...STRUCTURAL_CAVEATS],
     profile,
   };

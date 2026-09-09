@@ -20,7 +20,19 @@ const EMPTY = {
   categories: [], provinceCodes: [], regions: [],
   minStars: null, maxFilingAge: null,
   requireContact: false, requireCorroborated: false,
+  requireSignal: true,
   query: '',
+};
+
+/**
+ * The lens picks the default strictness. Without one of these defaults, a
+ * 4,288-row province returns 4,288 equally-scored stubs that say nothing
+ * the interface can communicate. The user can opt out (showAll) to see the
+ * full registry, but should not have to opt in to see the meaningful half.
+ */
+const DEFAULTS = {
+  b2b: { requireCorroborated: true, requireSignal: true },
+  b2c: { requireContact: true, requireSignal: true },
 };
 
 /** The requirement round-trips through the URL so a brief can be sent as a link. */
@@ -28,16 +40,24 @@ function requirementFromUrl() {
   const p = new URLSearchParams(window.location.search);
   const list = (k) => (p.get(k) ? p.get(k).split(',').filter(Boolean) : []);
   const num = (k) => (p.get(k) ? Number(p.get(k)) : null);
+  const lens = p.get('lens') === 'b2c' ? 'b2c' : 'b2b';
+  const defaults = DEFAULTS[lens];
+  // `all=1` is the explicit opt-out: "show the full registry, not just the
+  // attested half". A reader who is doing a completeness audit, or who
+  // needs to find a registered name that nobody has filled the dossier in
+  // for, asks for it by name.
+  const all = p.get('all') === '1';
   return {
-    lens: p.get('lens') === 'b2c' ? 'b2c' : 'b2b',
+    lens,
     requirement: {
       categories: list('cat'),
       provinceCodes: list('prov').map(Number),
       regions: list('region'),
       minStars: num('stars'),
       maxFilingAge: num('age'),
-      requireContact: p.get('contact') === '1',
-      requireCorroborated: p.get('corr') === '1',
+      requireContact: all ? false : (p.get('contact') === '1' || defaults.requireContact),
+      requireCorroborated: all ? false : (p.get('corr') === '1' || defaults.requireCorroborated),
+      requireSignal: all ? false : (p.get('signal') === '1' || (defaults.requireSignal && p.get('signal') !== '0')),
       query: p.get('q') ?? '',
     },
   };
@@ -54,6 +74,11 @@ function requirementToUrl(view, lens, r) {
   if (r.maxFilingAge != null) p.set('age', String(r.maxFilingAge));
   if (r.requireContact) p.set('contact', '1');
   if (r.requireCorroborated) p.set('corr', '1');
+  // Only emit the signal flag when the user has toggled it off the default,
+  // so the URL stays clean for the common case.
+  const defaults = DEFAULTS[lens];
+  if (r.requireSignal && !defaults.requireSignal) p.set('signal', '1');
+  if (!r.requireSignal && defaults.requireSignal) p.set('signal', '0');
   if (r.query) p.set('q', r.query);
   return `${window.location.pathname}?${p.toString()}`;
 }
@@ -287,11 +312,23 @@ export default function App() {
             <div className="results-h">
               <h3 className="sub-h">
                 {result.matches.length.toLocaleString()} matching producers
+                {requirement.requireSignal && result.matches.length < result.total && (
+                  <span className="filter-note"> · of {result.total.toLocaleString()} in the loaded provinces</span>
+                )}
               </h3>
               {result.matches.length > 0 && (
                 <button type="button" className="reset" onClick={exportCsv}>Export shortlist (CSV)</button>
               )}
             </div>
+
+            {requirement.requireSignal && result.matches.length < result.total && (
+              <p className="filter-explain">
+                Showing records with at least one real attestation — a category, a contact channel, a star grade, or a product name distinct from the producer. The {result.total.toLocaleString() - result.matches.length} unattested registrations in the loaded provinces are name-only OTOP numbers and are hidden by default.{' '}
+                <button type="button" className="reset" onClick={() => setRequirement((r) => ({ ...r, requireSignal: false, requireContact: false, requireCorroborated: false }))}>
+                  Show all {result.total.toLocaleString()} registrations
+                </button>
+              </p>
+            )}
 
             <MatchRows matches={result.matches} limit={limit} />
 

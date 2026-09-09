@@ -101,6 +101,13 @@ export default function RequirementPanel({ requirement, onChange, lens, province
         <div className="field checks">
           <label>
             <input
+              type="checkbox" checked={requirement.requireSignal}
+              onChange={(event) => set({ requireSignal: event.target.checked })}
+            />
+            {' '}Hide name-only registrations
+          </label>
+          <label>
+            <input
               type="checkbox" checked={requirement.requireContact}
               onChange={(event) => set({ requireContact: event.target.checked })}
             />
