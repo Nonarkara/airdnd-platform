@@ -238,3 +238,26 @@
 .t-spec-rank { font-family: var(--font-mono); font-size: var(--tag-size-context); color: var(--ink-3); text-align: right; }
 .t-spec-name { text-decoration: none; color: inherit; display: flex; flex-direction: column; min-height: 44px; align-items: flex-start; justify-content: center; }
 .t-spec-name:hover { color: var(--accent); }
+
+/* ── heatmap: provinces × categories ─────────────────────────────────── */
+.t-matrix-wrap { overflow-x: auto; margin-block: var(--tag-space-2); }
+.t-matrix { display: grid; grid-auto-rows: minmax(2.4rem, auto); min-width: 100%; border: 1px solid var(--tag-ink); }
+.t-matrix-row { display: grid; grid-template-columns: 12rem 4rem repeat(5, minmax(4rem, 1fr)); align-items: stretch; border-top: 1px solid var(--line-2); }
+.t-matrix-row.t-matrix-hd { border-top: 0; background: var(--bg-2); font-size: var(--tag-size-meta); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; }
+.t-matrix-th-province, .t-matrix-th-total, .t-matrix-th-cat { padding: var(--tag-space-2); }
+.t-matrix-th-cat { text-align: center; }
+.t-matrix-province { padding: var(--tag-space-2); text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-height: 44px; }
+.t-matrix-province:hover { color: var(--accent); }
+.t-matrix-province .t-row-en { font-size: var(--tag-size-meta); color: var(--ink-3); }
+.t-matrix-total { padding: var(--tag-space-2); font-family: var(--font-mono); font-variant-numeric: var(--tag-tabular); text-align: right; border-left: 1px solid var(--line-2); }
+.t-matrix-cell { padding: var(--tag-space-2); text-align: center; font-family: var(--font-mono); font-variant-numeric: var(--tag-tabular); border-left: 1px solid var(--line-2); display: flex; align-items: center; justify-content: center; min-height: 2.4rem; }
+
+/* ── time series: filings per year, stacked by category ─────────────── */
+.t-timeseries { display: flex; align-items: flex-end; gap: 2px; height: 200px; padding: var(--tag-space-2) 0; border-bottom: 1px solid var(--line-2); }
+.t-ts-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--tag-space-1); min-width: 0; }
+.t-ts-stack { display: flex; flex-direction: column-reverse; width: 100%; min-height: 1px; overflow: hidden; }
+.t-ts-seg { width: 100%; min-height: 0; }
+.t-ts-year { font-family: var(--font-mono); font-size: var(--tag-size-meta); color: var(--ink-3); }
+.t-ts-num { font-family: var(--font-mono); font-size: var(--tag-size-meta); font-variant-numeric: var(--tag-tabular); color: var(--ink-2); }
+.t-ts-legend { display: flex; flex-wrap: wrap; gap: var(--tag-space-3); align-items: center; font-size: var(--tag-size-meta); }
+.t-ts-legend-item { display: inline-flex; align-items: center; color: var(--ink-2); }

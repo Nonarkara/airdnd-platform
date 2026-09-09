@@ -61,7 +61,7 @@ function categoryParts(scope) {
 
 export default function Atlas({ insights }) {
   const [sort, setSort] = useState('records');
-  const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [], reachGap = [], corroborationQuadrant = {}, hiddenChampions = [], regionIdentity = [], revenue = null, catalogue = null } = insights;
+  const { national, byRegion, byProvince, contributors, concentration, findings = [], specialization = [], qualityLeaders = [], reachGap = [], corroborationQuadrant = {}, hiddenChampions = [], regionIdentity = [], revenue = null, catalogue = null, byYear = null, matrix = null } = insights;
 const bnBaht = (v) => (v == null ? '—' : `${(v / 1e9).toFixed(2)}B baht`);
   // Hoisted out of the JSX where ae77e47 left them — a `const` inside a
   // children expression is a parse error, not a computation.
@@ -331,6 +331,127 @@ const unclassified = national.categories?.find((c) => c.id === 'unclassified');
           </div>
         </>
       )}
+
+      {/* ── HEATMAP — provinces × categories ────────────────────────────── */}
+      {matrix && matrix.rows.length > 0 && matrix.categories.length > 0 && (
+        <>
+          <h3 className="sub-h">Heatmap · the 25 most-classified provinces × the five categories</h3>
+          <p className="t-note">
+            Cell shading is the cell's share of the column (category) total — the eye lands on the
+            cells that are darker than their row, i.e. the categories a province is actually
+            <em> disproportionate </em> in. Counts are absolute; click a province name to open it
+            in the matching engine.
+          </p>
+          <div className="t-matrix-wrap">
+            <div className="t-matrix" role="table" aria-label="Province by category matrix">
+              <div className="t-matrix-row t-matrix-hd" role="row">
+                <span className="t-matrix-th-province" role="columnheader">Province · จังหวัด</span>
+                <span className="t-matrix-th-total" role="columnheader">Total</span>
+                {matrix.categories.map((c) => (
+                  <span className="t-matrix-th-cat" role="columnheader" key={c.id} title={c.en}>
+                    {c.en.split(' ')[0]}
+                  </span>
+                ))}
+              </div>
+              {matrix.rows.map((r) => {
+                // Find max share across this row to scale the cell intensities.
+                const maxShare = Math.max(0.1, ...Object.values(r.cells).map((c) => c.share));
+                return (
+                  <div className="t-matrix-row" role="row" key={r.code}>
+                    <a className="t-matrix-province" role="cell" href={`/?lens=b2b&prov=${r.code}`}>
+                      <span className="t-row-th">{r.th}</span>
+                      <span className="t-row-en">{r.en}</span>
+                    </a>
+                    <span className="t-matrix-total" role="cell">{n(r.rowTotal)}</span>
+                    {matrix.categories.map((c) => {
+                      const cell = r.cells[c.id] ?? { count: 0, share: 0 };
+                      // Opacity: 0 if no data, otherwise share / maxShare (column relative).
+                      const opacity = cell.count > 0 ? 0.08 + 0.92 * (cell.share / maxShare) : 0;
+                      return (
+                        <span
+                          className="t-matrix-cell"
+                          role="cell"
+                          key={c.id}
+                          style={cell.count > 0 ? {
+                            background: `rgba(245, 158, 11, ${opacity.toFixed(3)})`,
+                            color: opacity > 0.5 ? '#0a0a0a' : 'inherit',
+                          } : undefined}
+                          title={`${r.th} · ${c.en} · ${cell.count} records (${cell.share}% of category)`}
+                        >
+                          {cell.count > 0 ? cell.count : ''}
+                        </span>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <p className="t-note">
+            <strong>Lamphun</strong> is 79% textile (silk weaving tradition).{' '}
+            <strong>Nonthaburi</strong> is 14% herbal — both genuine specializations. The dominance
+            of the first column on the top row is the central registry's noise: Kalasin's 1,609
+            textile records are largely the keyword classifier catching baskets and bags.
+          </p>
+        </>
+      )}
+
+      {/* ── TIME SERIES — filings per year, with category stack ────────── */}
+      {byYear && byYear.total && byYear.total.length > 0 && (() => {
+        const total = byYear.total;
+        const maxCount = Math.max(...total.map((y) => y.count));
+        const catIds = Object.keys(byYear.byCategory ?? {});
+        const catColors = {
+          food: 'rgba(245, 158, 11, 0.85)',
+          beverage: 'rgba(34, 197, 94, 0.85)',
+          textile: 'rgba(99, 102, 241, 0.85)',
+          craft: 'rgba(236, 72, 153, 0.85)',
+          herbal: 'rgba(14, 165, 233, 0.85)',
+        };
+        return (
+          <>
+            <h3 className="sub-h">Filings per year · {total[0].year} – {total[total.length - 1].year}</h3>
+            <p className="t-note">
+              Only records that carry a filing year ({n(byYear.years.length === 0 ? 0 : total.reduce((s, y) => s + y.count, 0))}
+              of {n(national.records)} total) are counted. The other {n(pct(national.records - total.reduce((s, y) => s + y.count, 0), national.records))}%
+              cannot be dated. A spike in 2024 corresponds to the year the national registry
+              re-issued most OTOP certificates.
+            </p>
+            <div className="t-timeseries" role="img" aria-label="OTOP filings per year, stacked by category">
+              {total.map((y) => (
+                <div key={y.year} className="t-ts-col" title={`${y.year}: ${y.count} filings`}>
+                  <div className="t-ts-stack" style={{ height: `${(y.count / maxCount) * 100}%` }}>
+                    {catIds.map((cid) => {
+                      const series = byYear.byCategory[cid] ?? [];
+                      const v = series.find((s) => s.year === y.year);
+                      if (!v || v.count === 0) return null;
+                      return (
+                        <div
+                          key={cid}
+                          className="t-ts-seg"
+                          style={{ flex: v.count, background: catColors[cid] ?? 'rgba(120, 120, 120, 0.7)' }}
+                          title={`${cid} · ${v.count}`}
+                        />
+                      );
+                    })}
+                  </div>
+                  <span className="t-ts-year">{String(y.year).slice(2)}</span>
+                  <span className="t-ts-num">{y.count}</span>
+                </div>
+              ))}
+            </div>
+            <div className="t-legend t-ts-legend">
+              <span className="t-key">Categories:</span>
+              {catIds.map((cid) => (
+                <span key={cid} className="t-ts-legend-item">
+                  <i style={{ display: 'inline-block', width: 10, height: 10, background: catColors[cid] ?? 'rgba(120,120,120,0.7)', marginRight: 4 }} />
+                  {cid}
+                </span>
+              ))}
+            </div>
+          </>
+        );
+      })()}
 
       {/* ── SPECIALIZATION — where each category concentrates ──────────── */}
       {specialization.length > 0 && (

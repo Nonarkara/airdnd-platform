@@ -161,6 +161,84 @@ const contributors = [...tally(records.flatMap((r) => r.provenance), (p) => p.or
   .map(([organization, count]) => ({ organization, records: count }))
   .sort((a, b) => b.records - a.records);
 
+/**
+ * Filings per year. The vintage section already shows the median; this is
+ * the year-by-year breakdown. Categories split so a viewer can read the
+ * shift in the programme's emphasis: a textile spike in year X, a food
+ * surge in year Y. Only records that carry a year are counted — the rest
+ * (86.6% of the registry) cannot be dated.
+ */
+const byYear = (() => {
+  const total = new Map();
+  const byCategory = new Map();
+  for (const r of records) {
+    const y = r.registeredYear;
+    if (y == null) continue;
+    total.set(y, (total.get(y) ?? 0) + 1);
+    const cat = r.category ?? 'unclassified';
+    if (!byCategory.has(cat)) byCategory.set(cat, new Map());
+    const m = byCategory.get(cat);
+    m.set(y, (m.get(y) ?? 0) + 1);
+  }
+  const years = [...total.keys()].sort((a, b) => a - b);
+  return {
+    years,
+    total: years.map((y) => ({ year: y, count: total.get(y) })),
+    byCategory: Object.fromEntries(
+      [...byCategory.entries()].map(([cat, m]) => [cat, years.map((y) => ({ year: y, count: m.get(y) ?? 0 }))]),
+    ),
+  };
+})();
+
+/**
+ * Province × category matrix, the single most informative view in the
+ * registry. A reader can see in one glance that Lamphun is a textile
+ * specialist, Nonthaburi is herbal/beverage, and Bangkok punches above
+ * its weight in processed goods. The cell intensity is the cell's share
+ * of the column (category) total, so the eye is drawn to the columns
+ * where one province dominates — the actual specializations.
+ */
+const matrix = (() => {
+  const catIds = CATEGORIES.map((c) => c.id);
+  const cellCounts = {};
+  for (const id of catIds) cellCounts[id] = {};
+  for (const r of records) {
+    if (!r.category) continue;
+    if (!cellCounts[r.category]) continue;
+    cellCounts[r.category][r.provinceCode] = (cellCounts[r.category][r.provinceCode] ?? 0) + 1;
+  }
+  // Per-category column totals drive the share calculation.
+  const colTotal = {};
+  for (const id of catIds) colTotal[id] = Object.values(cellCounts[id] ?? {}).reduce((a, b) => a + b, 0);
+
+  const rows = byProvince
+    .filter((p) => p.records > 0)
+    .map((p) => {
+      const row = {
+        code: p.code, th: p.th, en: p.en, records: p.records,
+        cells: {},
+        rowTotal: 0,
+      };
+      for (const id of catIds) {
+        const count = cellCounts[id]?.[p.code] ?? 0;
+        row.cells[id] = {
+          count,
+          share: colTotal[id] > 0 ? Math.round((count / colTotal[id]) * 1000) / 10 : 0,
+        };
+        row.rowTotal += count;
+      }
+      return row;
+    })
+    .sort((a, b) => b.rowTotal - a.rowTotal)
+    .slice(0, 25); // the long tail flattens; 25 provinces still carry >95% of the classified volume
+
+  return {
+    categories: CATEGORIES.map((c) => ({ id: c.id, th: c.th, en: c.en, total: colTotal[c.id] ?? 0 })),
+    rows,
+    colTotal,
+  };
+})();
+
 const CONCENTRATION_TOP_N = 10;
 const concentration = {
   top10Share: pct(byProvince.slice(0, CONCENTRATION_TOP_N).reduce((n, p) => n + p.records, 0), records.length),
@@ -232,6 +310,22 @@ const findings = (() => {
     text: `The ten most-filed provinces hold ${n(concentration.top10Share)}% of all records. The remaining 67 provinces share the rest.`,
     value: concentration.top10Share,
   });
+
+  // Hidden champions. The registry's most damning finding: state-certified
+  // 4-5★ producers with no contact channel. These exist; the system just
+  // cannot route a buyer to them. Summed across all provinces this is the
+  // number of supply the programme has graded and then lost. Computed
+  // directly from the records (not from a derived const) so the findings
+  // IIFE has no forward references.
+  const hiddenTotal = records.filter((r) => r.stars != null && r.stars >= 4 && r.sourceCount > 1 && !r.phone && !r.email && !r.website).length;
+  if (hiddenTotal > 0) {
+    out.push({
+      id: 'hidden-champions',
+      th: 'ซ่อนอยู่ในทะเบียน',
+      text: `${n(hiddenTotal)} records carry a 4-5★ OPC grade but no contact channel. The state has certified them; the system cannot route a buyer to them.`,
+      value: hiddenTotal,
+    });
+  }
 
   // Corroboration spread. Same data source, very different trust.
   const byCorroboration = [...byProvince].sort((a, b) => (b.corroborated / Math.max(b.records, 1)) - (a.corroborated / Math.max(a.records, 1)));
@@ -471,6 +565,8 @@ const insights = {
   findings,
   specialization,
   qualityLeaders,
+  byYear,
+  matrix,
 
   // New: poverty-fighting intelligence
   reachGap,

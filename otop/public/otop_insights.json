@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-09T15:33:50.900Z",
+  "builtAt": "2026-09-09T16:10:19.008Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -7450,6 +7450,12 @@
       "value": 26.8
     },
     {
+      "id": "hidden-champions",
+      "th": "ซ่อนอยู่ในทะเบียน",
+      "text": "7,087 records carry a 4-5★ OPC grade but no contact channel. The state has certified them; the system cannot route a buyer to them.",
+      "value": 7087
+    },
+    {
       "id": "trust-spread",
       "th": "ช่วงความน่าเชื่อถือ",
       "text": "สตูล is the most cross-attested province (94.5% of its records corroborated by ≥2 agencies); ยะลา is the least (34.4%). Same data source, very different administrative depth.",
@@ -7701,6 +7707,1258 @@
       "density": 8.7
     }
   ],
+  "byYear": {
+    "years": [
+      2007,
+      2011,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "total": [
+      {
+        "year": 2007,
+        "count": 1
+      },
+      {
+        "year": 2011,
+        "count": 2
+      },
+      {
+        "year": 2013,
+        "count": 1
+      },
+      {
+        "year": 2014,
+        "count": 3114
+      },
+      {
+        "year": 2015,
+        "count": 457
+      },
+      {
+        "year": 2016,
+        "count": 42
+      },
+      {
+        "year": 2017,
+        "count": 1687
+      },
+      {
+        "year": 2018,
+        "count": 1989
+      },
+      {
+        "year": 2019,
+        "count": 878
+      },
+      {
+        "year": 2020,
+        "count": 592
+      },
+      {
+        "year": 2021,
+        "count": 686
+      },
+      {
+        "year": 2022,
+        "count": 1296
+      },
+      {
+        "year": 2023,
+        "count": 2782
+      },
+      {
+        "year": 2024,
+        "count": 4182
+      },
+      {
+        "year": 2025,
+        "count": 3003
+      },
+      {
+        "year": 2026,
+        "count": 277
+      }
+    ],
+    "byCategory": {
+      "craft": [
+        {
+          "year": 2007,
+          "count": 0
+        },
+        {
+          "year": 2011,
+          "count": 0
+        },
+        {
+          "year": 2013,
+          "count": 1
+        },
+        {
+          "year": 2014,
+          "count": 612
+        },
+        {
+          "year": 2015,
+          "count": 68
+        },
+        {
+          "year": 2016,
+          "count": 5
+        },
+        {
+          "year": 2017,
+          "count": 303
+        },
+        {
+          "year": 2018,
+          "count": 308
+        },
+        {
+          "year": 2019,
+          "count": 150
+        },
+        {
+          "year": 2020,
+          "count": 45
+        },
+        {
+          "year": 2021,
+          "count": 53
+        },
+        {
+          "year": 2022,
+          "count": 162
+        },
+        {
+          "year": 2023,
+          "count": 326
+        },
+        {
+          "year": 2024,
+          "count": 474
+        },
+        {
+          "year": 2025,
+          "count": 497
+        },
+        {
+          "year": 2026,
+          "count": 42
+        }
+      ],
+      "herbal": [
+        {
+          "year": 2007,
+          "count": 0
+        },
+        {
+          "year": 2011,
+          "count": 0
+        },
+        {
+          "year": 2013,
+          "count": 0
+        },
+        {
+          "year": 2014,
+          "count": 154
+        },
+        {
+          "year": 2015,
+          "count": 34
+        },
+        {
+          "year": 2016,
+          "count": 5
+        },
+        {
+          "year": 2017,
+          "count": 102
+        },
+        {
+          "year": 2018,
+          "count": 122
+        },
+        {
+          "year": 2019,
+          "count": 58
+        },
+        {
+          "year": 2020,
+          "count": 40
+        },
+        {
+          "year": 2021,
+          "count": 47
+        },
+        {
+          "year": 2022,
+          "count": 72
+        },
+        {
+          "year": 2023,
+          "count": 95
+        },
+        {
+          "year": 2024,
+          "count": 180
+        },
+        {
+          "year": 2025,
+          "count": 292
+        },
+        {
+          "year": 2026,
+          "count": 15
+        }
+      ],
+      "textile": [
+        {
+          "year": 2007,
+          "count": 0
+        },
+        {
+          "year": 2011,
+          "count": 0
+        },
+        {
+          "year": 2013,
+          "count": 0
+        },
+        {
+          "year": 2014,
+          "count": 831
+        },
+        {
+          "year": 2015,
+          "count": 108
+        },
+        {
+          "year": 2016,
+          "count": 14
+        },
+        {
+          "year": 2017,
+          "count": 250
+        },
+        {
+          "year": 2018,
+          "count": 258
+        },
+        {
+          "year": 2019,
+          "count": 217
+        },
+        {
+          "year": 2020,
+          "count": 141
+        },
+        {
+          "year": 2021,
+          "count": 179
+        },
+        {
+          "year": 2022,
+          "count": 490
+        },
+        {
+          "year": 2023,
+          "count": 522
+        },
+        {
+          "year": 2024,
+          "count": 889
+        },
+        {
+          "year": 2025,
+          "count": 362
+        },
+        {
+          "year": 2026,
+          "count": 44
+        }
+      ],
+      "food": [
+        {
+          "year": 2007,
+          "count": 1
+        },
+        {
+          "year": 2011,
+          "count": 1
+        },
+        {
+          "year": 2013,
+          "count": 0
+        },
+        {
+          "year": 2014,
+          "count": 1208
+        },
+        {
+          "year": 2015,
+          "count": 183
+        },
+        {
+          "year": 2016,
+          "count": 15
+        },
+        {
+          "year": 2017,
+          "count": 843
+        },
+        {
+          "year": 2018,
+          "count": 1080
+        },
+        {
+          "year": 2019,
+          "count": 361
+        },
+        {
+          "year": 2020,
+          "count": 294
+        },
+        {
+          "year": 2021,
+          "count": 262
+        },
+        {
+          "year": 2022,
+          "count": 356
+        },
+        {
+          "year": 2023,
+          "count": 564
+        },
+        {
+          "year": 2024,
+          "count": 775
+        },
+        {
+          "year": 2025,
+          "count": 850
+        },
+        {
+          "year": 2026,
+          "count": 67
+        }
+      ],
+      "unclassified": [
+        {
+          "year": 2007,
+          "count": 0
+        },
+        {
+          "year": 2011,
+          "count": 1
+        },
+        {
+          "year": 2013,
+          "count": 0
+        },
+        {
+          "year": 2014,
+          "count": 254
+        },
+        {
+          "year": 2015,
+          "count": 51
+        },
+        {
+          "year": 2016,
+          "count": 2
+        },
+        {
+          "year": 2017,
+          "count": 155
+        },
+        {
+          "year": 2018,
+          "count": 162
+        },
+        {
+          "year": 2019,
+          "count": 64
+        },
+        {
+          "year": 2020,
+          "count": 51
+        },
+        {
+          "year": 2021,
+          "count": 121
+        },
+        {
+          "year": 2022,
+          "count": 181
+        },
+        {
+          "year": 2023,
+          "count": 1214
+        },
+        {
+          "year": 2024,
+          "count": 1786
+        },
+        {
+          "year": 2025,
+          "count": 880
+        },
+        {
+          "year": 2026,
+          "count": 99
+        }
+      ],
+      "beverage": [
+        {
+          "year": 2007,
+          "count": 0
+        },
+        {
+          "year": 2011,
+          "count": 0
+        },
+        {
+          "year": 2013,
+          "count": 0
+        },
+        {
+          "year": 2014,
+          "count": 55
+        },
+        {
+          "year": 2015,
+          "count": 13
+        },
+        {
+          "year": 2016,
+          "count": 1
+        },
+        {
+          "year": 2017,
+          "count": 34
+        },
+        {
+          "year": 2018,
+          "count": 59
+        },
+        {
+          "year": 2019,
+          "count": 28
+        },
+        {
+          "year": 2020,
+          "count": 21
+        },
+        {
+          "year": 2021,
+          "count": 24
+        },
+        {
+          "year": 2022,
+          "count": 35
+        },
+        {
+          "year": 2023,
+          "count": 61
+        },
+        {
+          "year": 2024,
+          "count": 78
+        },
+        {
+          "year": 2025,
+          "count": 122
+        },
+        {
+          "year": 2026,
+          "count": 10
+        }
+      ]
+    }
+  },
+  "matrix": {
+    "categories": [
+      {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "total": 17100
+      },
+      {
+        "id": "beverage",
+        "th": "เครื่องดื่ม",
+        "en": "Beverages",
+        "total": 1563
+      },
+      {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "total": 13830
+      },
+      {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "total": 11018
+      },
+      {
+        "id": "herbal",
+        "th": "สมุนไพรที่ไม่ใช่อาหาร",
+        "en": "Non-food Herbal",
+        "total": 3178
+      }
+    ],
+    "rows": [
+      {
+        "code": 46,
+        "th": "กาฬสินธุ์",
+        "en": "Kalasin",
+        "records": 3813,
+        "cells": {
+          "food": {
+            "count": 864,
+            "share": 5.1
+          },
+          "beverage": {
+            "count": 38,
+            "share": 2.4
+          },
+          "textile": {
+            "count": 1609,
+            "share": 11.6
+          },
+          "craft": {
+            "count": 720,
+            "share": 6.5
+          },
+          "herbal": {
+            "count": 161,
+            "share": 5.1
+          }
+        },
+        "rowTotal": 3392
+      },
+      {
+        "code": 34,
+        "th": "อุบลราชธานี",
+        "en": "Ubon Ratchathani",
+        "records": 5508,
+        "cells": {
+          "food": {
+            "count": 758,
+            "share": 4.4
+          },
+          "beverage": {
+            "count": 61,
+            "share": 3.9
+          },
+          "textile": {
+            "count": 531,
+            "share": 3.8
+          },
+          "craft": {
+            "count": 619,
+            "share": 5.6
+          },
+          "herbal": {
+            "count": 152,
+            "share": 4.8
+          }
+        },
+        "rowTotal": 2121
+      },
+      {
+        "code": 35,
+        "th": "ยโสธร",
+        "en": "Yasothon",
+        "records": 2347,
+        "cells": {
+          "food": {
+            "count": 622,
+            "share": 3.6
+          },
+          "beverage": {
+            "count": 30,
+            "share": 1.9
+          },
+          "textile": {
+            "count": 483,
+            "share": 3.5
+          },
+          "craft": {
+            "count": 496,
+            "share": 4.5
+          },
+          "herbal": {
+            "count": 81,
+            "share": 2.5
+          }
+        },
+        "rowTotal": 1712
+      },
+      {
+        "code": 12,
+        "th": "นนทบุรี",
+        "en": "Nonthaburi",
+        "records": 1843,
+        "cells": {
+          "food": {
+            "count": 503,
+            "share": 2.9
+          },
+          "beverage": {
+            "count": 93,
+            "share": 6
+          },
+          "textile": {
+            "count": 329,
+            "share": 2.4
+          },
+          "craft": {
+            "count": 457,
+            "share": 4.1
+          },
+          "herbal": {
+            "count": 256,
+            "share": 8.1
+          }
+        },
+        "rowTotal": 1638
+      },
+      {
+        "code": 51,
+        "th": "ลำพูน",
+        "en": "Lamphun",
+        "records": 2578,
+        "cells": {
+          "food": {
+            "count": 183,
+            "share": 1.1
+          },
+          "beverage": {
+            "count": 7,
+            "share": 0.4
+          },
+          "textile": {
+            "count": 1052,
+            "share": 7.6
+          },
+          "craft": {
+            "count": 58,
+            "share": 0.5
+          },
+          "herbal": {
+            "count": 36,
+            "share": 1.1
+          }
+        },
+        "rowTotal": 1336
+      },
+      {
+        "code": 36,
+        "th": "ชัยภูมิ",
+        "en": "Chaiyaphum",
+        "records": 3483,
+        "cells": {
+          "food": {
+            "count": 528,
+            "share": 3.1
+          },
+          "beverage": {
+            "count": 72,
+            "share": 4.6
+          },
+          "textile": {
+            "count": 400,
+            "share": 2.9
+          },
+          "craft": {
+            "count": 192,
+            "share": 1.7
+          },
+          "herbal": {
+            "count": 99,
+            "share": 3.1
+          }
+        },
+        "rowTotal": 1291
+      },
+      {
+        "code": 38,
+        "th": "บึงกาฬ",
+        "en": "Bueng Kan",
+        "records": 2299,
+        "cells": {
+          "food": {
+            "count": 408,
+            "share": 2.4
+          },
+          "beverage": {
+            "count": 47,
+            "share": 3
+          },
+          "textile": {
+            "count": 358,
+            "share": 2.6
+          },
+          "craft": {
+            "count": 371,
+            "share": 3.4
+          },
+          "herbal": {
+            "count": 106,
+            "share": 3.3
+          }
+        },
+        "rowTotal": 1290
+      },
+      {
+        "code": 81,
+        "th": "กระบี่",
+        "en": "Krabi",
+        "records": 1510,
+        "cells": {
+          "food": {
+            "count": 700,
+            "share": 4.1
+          },
+          "beverage": {
+            "count": 38,
+            "share": 2.4
+          },
+          "textile": {
+            "count": 277,
+            "share": 2
+          },
+          "craft": {
+            "count": 169,
+            "share": 1.5
+          },
+          "herbal": {
+            "count": 76,
+            "share": 2.4
+          }
+        },
+        "rowTotal": 1260
+      },
+      {
+        "code": 71,
+        "th": "กาญจนบุรี",
+        "en": "Kanchanaburi",
+        "records": 2534,
+        "cells": {
+          "food": {
+            "count": 574,
+            "share": 3.4
+          },
+          "beverage": {
+            "count": 72,
+            "share": 4.6
+          },
+          "textile": {
+            "count": 222,
+            "share": 1.6
+          },
+          "craft": {
+            "count": 205,
+            "share": 1.9
+          },
+          "herbal": {
+            "count": 108,
+            "share": 3.4
+          }
+        },
+        "rowTotal": 1181
+      },
+      {
+        "code": 30,
+        "th": "นครราชสีมา",
+        "en": "Nakhon Ratchasima",
+        "records": 4045,
+        "cells": {
+          "food": {
+            "count": 638,
+            "share": 3.7
+          },
+          "beverage": {
+            "count": 26,
+            "share": 1.7
+          },
+          "textile": {
+            "count": 228,
+            "share": 1.6
+          },
+          "craft": {
+            "count": 209,
+            "share": 1.9
+          },
+          "herbal": {
+            "count": 42,
+            "share": 1.3
+          }
+        },
+        "rowTotal": 1143
+      },
+      {
+        "code": 65,
+        "th": "พิษณุโลก",
+        "en": "Phitsanulok",
+        "records": 1605,
+        "cells": {
+          "food": {
+            "count": 632,
+            "share": 3.7
+          },
+          "beverage": {
+            "count": 32,
+            "share": 2
+          },
+          "textile": {
+            "count": 145,
+            "share": 1
+          },
+          "craft": {
+            "count": 237,
+            "share": 2.2
+          },
+          "herbal": {
+            "count": 93,
+            "share": 2.9
+          }
+        },
+        "rowTotal": 1139
+      },
+      {
+        "code": 93,
+        "th": "พัทลุง",
+        "en": "Phatthalung",
+        "records": 1776,
+        "cells": {
+          "food": {
+            "count": 666,
+            "share": 3.9
+          },
+          "beverage": {
+            "count": 36,
+            "share": 2.3
+          },
+          "textile": {
+            "count": 153,
+            "share": 1.1
+          },
+          "craft": {
+            "count": 192,
+            "share": 1.7
+          },
+          "herbal": {
+            "count": 78,
+            "share": 2.5
+          }
+        },
+        "rowTotal": 1125
+      },
+      {
+        "code": 56,
+        "th": "พะเยา",
+        "en": "Phayao",
+        "records": 1464,
+        "cells": {
+          "food": {
+            "count": 480,
+            "share": 2.8
+          },
+          "beverage": {
+            "count": 53,
+            "share": 3.4
+          },
+          "textile": {
+            "count": 251,
+            "share": 1.8
+          },
+          "craft": {
+            "count": 245,
+            "share": 2.2
+          },
+          "herbal": {
+            "count": 75,
+            "share": 2.4
+          }
+        },
+        "rowTotal": 1104
+      },
+      {
+        "code": 50,
+        "th": "เชียงใหม่",
+        "en": "Chiang Mai",
+        "records": 4011,
+        "cells": {
+          "food": {
+            "count": 163,
+            "share": 1
+          },
+          "beverage": {
+            "count": 51,
+            "share": 3.3
+          },
+          "textile": {
+            "count": 516,
+            "share": 3.7
+          },
+          "craft": {
+            "count": 215,
+            "share": 2
+          },
+          "herbal": {
+            "count": 86,
+            "share": 2.7
+          }
+        },
+        "rowTotal": 1031
+      },
+      {
+        "code": 49,
+        "th": "มุกดาหาร",
+        "en": "Mukdahan",
+        "records": 1287,
+        "cells": {
+          "food": {
+            "count": 277,
+            "share": 1.6
+          },
+          "beverage": {
+            "count": 24,
+            "share": 1.5
+          },
+          "textile": {
+            "count": 381,
+            "share": 2.8
+          },
+          "craft": {
+            "count": 274,
+            "share": 2.5
+          },
+          "herbal": {
+            "count": 34,
+            "share": 1.1
+          }
+        },
+        "rowTotal": 990
+      },
+      {
+        "code": 66,
+        "th": "พิจิตร",
+        "en": "Phichit",
+        "records": 1764,
+        "cells": {
+          "food": {
+            "count": 437,
+            "share": 2.6
+          },
+          "beverage": {
+            "count": 25,
+            "share": 1.6
+          },
+          "textile": {
+            "count": 101,
+            "share": 0.7
+          },
+          "craft": {
+            "count": 248,
+            "share": 2.3
+          },
+          "herbal": {
+            "count": 87,
+            "share": 2.7
+          }
+        },
+        "rowTotal": 898
+      },
+      {
+        "code": 76,
+        "th": "เพชรบุรี",
+        "en": "Phetchaburi",
+        "records": 1332,
+        "cells": {
+          "food": {
+            "count": 536,
+            "share": 3.1
+          },
+          "beverage": {
+            "count": 42,
+            "share": 2.7
+          },
+          "textile": {
+            "count": 96,
+            "share": 0.7
+          },
+          "craft": {
+            "count": 125,
+            "share": 1.1
+          },
+          "herbal": {
+            "count": 96,
+            "share": 3
+          }
+        },
+        "rowTotal": 895
+      },
+      {
+        "code": 95,
+        "th": "ยะลา",
+        "en": "Yala",
+        "records": 1831,
+        "cells": {
+          "food": {
+            "count": 456,
+            "share": 2.7
+          },
+          "beverage": {
+            "count": 26,
+            "share": 1.7
+          },
+          "textile": {
+            "count": 206,
+            "share": 1.5
+          },
+          "craft": {
+            "count": 97,
+            "share": 0.9
+          },
+          "herbal": {
+            "count": 43,
+            "share": 1.4
+          }
+        },
+        "rowTotal": 828
+      },
+      {
+        "code": 10,
+        "th": "กรุงเทพมหานคร",
+        "en": "Bangkok",
+        "records": 2559,
+        "cells": {
+          "food": {
+            "count": 152,
+            "share": 0.9
+          },
+          "beverage": {
+            "count": 14,
+            "share": 0.9
+          },
+          "textile": {
+            "count": 257,
+            "share": 1.9
+          },
+          "craft": {
+            "count": 262,
+            "share": 2.4
+          },
+          "herbal": {
+            "count": 136,
+            "share": 4.3
+          }
+        },
+        "rowTotal": 821
+      },
+      {
+        "code": 32,
+        "th": "สุรินทร์",
+        "en": "Surin",
+        "records": 4311,
+        "cells": {
+          "food": {
+            "count": 195,
+            "share": 1.1
+          },
+          "beverage": {
+            "count": 9,
+            "share": 0.6
+          },
+          "textile": {
+            "count": 399,
+            "share": 2.9
+          },
+          "craft": {
+            "count": 143,
+            "share": 1.3
+          },
+          "herbal": {
+            "count": 10,
+            "share": 0.3
+          }
+        },
+        "rowTotal": 756
+      },
+      {
+        "code": 33,
+        "th": "ศรีสะเกษ",
+        "en": "Si Sa Ket",
+        "records": 3676,
+        "cells": {
+          "food": {
+            "count": 196,
+            "share": 1.1
+          },
+          "beverage": {
+            "count": 10,
+            "share": 0.6
+          },
+          "textile": {
+            "count": 269,
+            "share": 1.9
+          },
+          "craft": {
+            "count": 223,
+            "share": 2
+          },
+          "herbal": {
+            "count": 18,
+            "share": 0.6
+          }
+        },
+        "rowTotal": 716
+      },
+      {
+        "code": 40,
+        "th": "ขอนแก่น",
+        "en": "Khon Kaen",
+        "records": 4089,
+        "cells": {
+          "food": {
+            "count": 118,
+            "share": 0.7
+          },
+          "beverage": {
+            "count": 23,
+            "share": 1.5
+          },
+          "textile": {
+            "count": 342,
+            "share": 2.5
+          },
+          "craft": {
+            "count": 189,
+            "share": 1.7
+          },
+          "herbal": {
+            "count": 37,
+            "share": 1.2
+          }
+        },
+        "rowTotal": 709
+      },
+      {
+        "code": 31,
+        "th": "บุรีรัมย์",
+        "en": "Buri Ram",
+        "records": 4288,
+        "cells": {
+          "food": {
+            "count": 213,
+            "share": 1.2
+          },
+          "beverage": {
+            "count": 10,
+            "share": 0.6
+          },
+          "textile": {
+            "count": 286,
+            "share": 2.1
+          },
+          "craft": {
+            "count": 156,
+            "share": 1.4
+          },
+          "herbal": {
+            "count": 19,
+            "share": 0.6
+          }
+        },
+        "rowTotal": 684
+      },
+      {
+        "code": 61,
+        "th": "อุทัยธานี",
+        "en": "Uthai Thani",
+        "records": 890,
+        "cells": {
+          "food": {
+            "count": 302,
+            "share": 1.8
+          },
+          "beverage": {
+            "count": 17,
+            "share": 1.1
+          },
+          "textile": {
+            "count": 140,
+            "share": 1
+          },
+          "craft": {
+            "count": 182,
+            "share": 1.7
+          },
+          "herbal": {
+            "count": 28,
+            "share": 0.9
+          }
+        },
+        "rowTotal": 669
+      },
+      {
+        "code": 54,
+        "th": "แพร่",
+        "en": "Phrae",
+        "records": 1918,
+        "cells": {
+          "food": {
+            "count": 237,
+            "share": 1.4
+          },
+          "beverage": {
+            "count": 75,
+            "share": 4.8
+          },
+          "textile": {
+            "count": 155,
+            "share": 1.1
+          },
+          "craft": {
+            "count": 82,
+            "share": 0.7
+          },
+          "herbal": {
+            "count": 42,
+            "share": 1.3
+          }
+        },
+        "rowTotal": 591
+      }
+    ],
+    "colTotal": {
+      "food": 17100,
+      "beverage": 1563,
+      "textile": 13830,
+      "craft": 11018,
+      "herbal": 3178
+    }
+  },
   "reachGap": [
     {
       "code": 34,
@@ -10064,7 +11322,7 @@
     }
   ],
   "revenue": {
-    "builtAt": "2026-09-09T15:33:49.344Z",
+    "builtAt": "2026-09-09T16:10:17.378Z",
     "unit": "บาท",
     "seriesSource": "กรมพัฒนาชุมชน",
     "latestFullYear": 2023,
