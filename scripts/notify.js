@@ -20,6 +20,10 @@ const NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;
 const BASE_URL = `https://api.telegram.org/bot${BOT_TOKEN}`;
 const publicDir = path.join(__dirname, '../public');
 
+if (!BOT_TOKEN) {
+  console.warn('[WARN] NOTIFICATIONS DISABLED — TELEGRAM_BOT_TOKEN not set in .env. New-listing alerts will not be sent.');
+}
+
 // Rate limiting: max 20 messages per minute to Telegram
 const SEND_DELAY_MS = 3000;
 let lastNotifyChatId = NOTIFY_CHAT_ID || null;

@@ -15,6 +15,10 @@ const supabase = createClient(
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;
 
+if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_NOTIFY_CHAT_ID) {
+  console.warn('[WARN] ALERTING DISABLED — TELEGRAM_BOT_TOKEN or TELEGRAM_NOTIFY_CHAT_ID not set in .env. Integrity checks will run but alerts will not be sent.');
+}
+
 async function sendTelegramAlert(message) {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_NOTIFY_CHAT_ID) return;
   try {
