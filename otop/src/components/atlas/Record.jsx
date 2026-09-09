@@ -1,0 +1,171 @@
+import { useMemo, useState } from 'react';
+import { Chapter, n } from './fmt.jsx';
+import Composition from './Composition.jsx';
+import { railOf, RAIL_LABEL, classifiedOf, ZONES } from '../../lib/insights.js';
+
+/** What is the registry's condition? Leads with the six zone meters. */
+export default function Record({ insights, go }) {
+  const [sort, setSort] = useState('records');
+  const { national, byProvince, contributors, concentration } = insights;
+
+  const provinces = useMemo(() => {
+    const rows = byProvince.map((p) => ({ ...p, rail: railOf(p), classified: classifiedOf(p) }));
+    const by = {
+      records: (a, b) => b.records - a.records,
+      classified: (a, b) => b.classified / b.records - a.classified / a.records,
+      graded: (a, b) => b.stars.graded - a.stars.graded,
+      corroborated: (a, b) => b.corroborated / b.records - a.corroborated / a.records,
+    };
+    return rows.sort(by[sort] ?? by.records);
+  }, [byProvince, sort]);
+
+  const maxRecords = provinces[0] ? Math.max(...provinces.map((p) => p.records)) : 1;
+  const railCounts = provinces.reduce((acc, p) => ({ ...acc, [p.rail]: (acc[p.rail] ?? 0) + 1 }), {});
+  const vintage = national.vintage;
+  const years = vintage.earliest != null
+    ? Array.from({ length: vintage.latest - vintage.earliest + 1 }, (_, i) => vintage.earliest + i)
+    : [];
+  const undated = byProvince.filter((p) => p.vintage?.median == null).length;
+
+  return (
+    <Chapter id="record" q="What is the registry's condition?" title="Record" th="สภาพทะเบียน">
+      {/* ── the blank zones ────────────────────────────────────────────── */}
+      <div className="t-zones">
+        {ZONES.map((z) => {
+          const value = national.completeness[z.key] ?? 0;
+          return (
+            <div className="t-zone" key={z.key} data-fill={value < 5 ? 'blank' : 'printed'}>
+              <span className="t-key">{z.zone}</span>
+              <span className="t-zone-n">{value}%</span>
+              <span className="t-ctx">{z.label} · {z.th}</span>
+              <span className="t-zone-bar"><i style={{ width: `${Math.max(value, 0.6)}%` }} /></span>
+            </div>
+          );
+        })}
+      </div>
+      <p className="t-note">
+        Reversed zones are under 5% filled. They are printed in ink because the absence is the
+        finding: this registry can tell you a producer's name and sub-district, and almost nothing
+        that would let you buy from them. Percentages are of all {n(national.completeness.records)}{' '}
+        records, from <code>otop_insights.json</code>.
+      </p>
+
+      {/* ── rank 1: the country as one tag ─────────────────────────────── */}
+      <div className="t-national" data-rail="default">
+        <div className="t-face">
+          <p className="t-dest t-band">THA</p>
+          <div className="t-face-body">
+            <div>
+              <span className="t-key">Registry · ทะเบียน</span>
+              <span className="t-id">{n(national.records)}</span>
+            </div>
+            <div>
+              <span className="t-key">Source · แหล่งข้อมูล</span>
+              <span className="t-ctx">{insights.source} · built {insights.builtAt.slice(0, 10)}</span>
+            </div>
+            <p className="t-ctx" style={{ margin: 0 }}>
+              A name, and an administrative area. That is what all of these rows carry.
+            </p>
+          </div>
+        </div>
+        <div>
+          <div className="t-stubs">
+            <div className="t-stub"><span className="t-key">Producers</span><span className="t-stub-n">{n(national.producers)}</span></div>
+            <div className="t-stub"><span className="t-key">Provinces</span><span className="t-stub-n">{national.provincesCovered}/77</span></div>
+            <div className="t-stub"><span className="t-key">Corroborated</span><span className="t-stub-n">{national.corroboratedShare}%</span></div>
+            <div className="t-stub"><span className="t-key">Duplicates collapsed</span><span className="t-stub-n">{n(national.duplicatesCollapsed)}</span></div>
+            <div className="t-stub"><span className="t-key">Contributing offices</span><span className="t-stub-n">{contributors.length}</span></div>
+            <div className="t-stub"><span className="t-key">Graded</span><span className="t-stub-n">{n(national.stars.graded)}</span></div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── the 77 tags ───────────────────────────────────────────────── */}
+      <h3 className="sub-h">77 provinces · rail = the strongest field that province's records carry</h3>
+      <div className="t-legend">
+        {['business', 'standard', 'transfer', 'hazard'].map((rail) => (
+          <span key={rail}>
+            <i className="t-swatch" style={{ background: `var(--tag-rail-${rail}, var(--tag-ink))` }} />
+            {RAIL_LABEL[rail]} · {railCounts[rail] ?? 0}
+          </span>
+        ))}
+      </div>
+      <div className="t-legend">
+        <span>Sort:</span>
+        {[['records', 'Records'], ['classified', 'Classified %'], ['graded', 'Graded'], ['corroborated', 'Corroborated %']].map(([k, label]) => (
+          <button key={k} type="button" className="reset" aria-current={sort === k} onClick={() => setSort(k)}>{label}</button>
+        ))}
+      </div>
+      <div className="t-rows" id="provinces">
+        <div className="t-row t-row-hd">
+          <span className="t-rail" />
+          <span>Code</span>
+          <span>Province · จังหวัด</span>
+          <span className="t-hide-sm">Records</span>
+          <span className="t-hide-sm t-row-num">Classified</span>
+          <span className="t-hide-sm t-row-num">Graded</span>
+          <span className="t-row-num">Filed</span>
+        </div>
+        {provinces.map((p) => (
+          <button type="button" className="t-row" key={p.code} data-rail={p.rail} title={RAIL_LABEL[p.rail]} onClick={() => go(p.code)}>
+            <span className="t-rail" />
+            <span className="t-dest">{p.iso}</span>
+            <span>
+              <span className="t-row-th">{p.th}</span><br />
+              <span className="t-row-en">{p.en}</span>
+            </span>
+            <span className="t-hide-sm">
+              <span className="t-row-num" style={{ textAlign: 'left', display: 'block' }}>{n(p.records)}</span>
+              <span className="t-row-meter"><i style={{ width: `${(p.records / maxRecords) * 100}%` }} /></span>
+            </span>
+            <span className="t-hide-sm t-row-num">{Math.round((p.classified / p.records) * 100)}%</span>
+            <span className="t-hide-sm t-row-num">{p.stars.graded || '—'}</span>
+            <span className="t-row-num">{p.vintage.median ?? '—'}</span>
+          </button>
+        ))}
+      </div>
+      <p className="t-note">
+        <strong>Filed</strong> is the median filing year in that province, and {undated} of the 77 record
+        no year at all. Row counts measure how energetically a provincial office files paperwork,
+        not how much is made there. Click a row to open that province.
+      </p>
+
+      {/* ── concentration + provenance ────────────────────────────────── */}
+      <h3 className="sub-h">Concentration · the ten largest provinces hold {concentration.top10Share}%</h3>
+      <Composition
+        parts={[
+          { id: 'top10', label: 'Top ten provinces', count: concentration.top10.reduce((s, p) => s + p.records, 0), tone: 'is-ink' },
+          { id: 'rest', label: 'The other 67', count: national.records - concentration.top10.reduce((s, p) => s + p.records, 0), tone: 'is-hole' },
+        ]}
+        total={national.records}
+      />
+
+      <h3 className="sub-h" id="provenance">Who filed it · {contributors.length} publishing offices</h3>
+      <div className="t-ranked">
+        {contributors.slice(0, 12).map((c) => (
+          <div key={c.organization}>
+            <div className="t-ranked-row">
+              <span>{c.organization}</span>
+              <span className="t-row-num">{n(c.records)}</span>
+            </div>
+            <span className="t-ranked-track"><i style={{ width: `${(c.records / contributors[0].records) * 100}%` }} /></span>
+          </div>
+        ))}
+      </div>
+      <p className="t-note">
+        These are <strong>source rows before de-duplication</strong>, so they sum past the{' '}
+        {n(national.records)} resolved records — one producer filed by both the national office and
+        a provincial one is counted by each. That overlap is the corroboration the fit score rewards.
+      </p>
+
+      <h3 className="sub-h">Vintage · {vintage.earliest}–{vintage.latest}, median {vintage.median}</h3>
+      <div className="t-vintage">
+        {years.map((y) => <span key={y} data-median={y === vintage.median}>{String(y).slice(2)}</span>)}
+      </div>
+      <p className="t-note">
+        Only {n(vintage.years)} of {n(national.records)} records carry a filing year at all — {Math.round((vintage.years / national.records) * 100)}%.
+        The median is of those, not of the registry.
+      </p>
+    </Chapter>
+  );
+}

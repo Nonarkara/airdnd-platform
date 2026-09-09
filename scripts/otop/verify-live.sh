@@ -54,6 +54,17 @@ else
   bad "atlas chunk" "not referenced by the bundle"
 fi
 
+# 2b. The province dossier is the link that gets shared. Its chunk is lazy, and
+#     it reads otop_revenue.json — either missing renders a wordmark and nothing.
+dossier=$(curl -sS --max-time "$TIMEOUT" "$BASE/$live_js" |
+  grep -o 'ProvinceDossier-[A-Za-z0-9_-]*\.js' | head -1)
+if [[ -n "$dossier" ]]; then
+  code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time "$TIMEOUT" "$BASE/assets/$dossier" || echo 000)
+  [[ "$code" == "200" ]] && say "dossier chunk" "200 ($dossier)" || bad "dossier chunk" "$dossier -> $code"
+else
+  bad "dossier chunk" "not referenced by the bundle"
+fi
+
 # 3. The published artefacts, checked for shape rather than status code — a
 #    truncated or half-written JSON still returns 200.
 check_json() { # url  node-expression-returning-a-string  label
@@ -70,6 +81,7 @@ check_json() { # url  node-expression-returning-a-string  label
 check_json otop_index.json    "\`\${d.totals.records} records · \${d.totals.provincesWithRecords}/\${d.totals.provincesTotal} provinces\`" "otop_index.json"
 check_json otop_insights.json "d.byProvince.length === d.national.provincesCovered ? \`\${d.national.provincesCovered} provinces · \${d.contributors.length} offices\` : 'ERR only ' + d.byProvince.length + ' provinces'" "otop_insights.json"
 check_json otop_meta.json     "d.counts.resourcesAggregateEconomic != null ? \`\${d.counts.resourcesAggregateEconomic} economic aggregates · \${d.counts.resourcesExcludedByTitle} excluded by title\` : 'ERR resourcesAggregateEconomic missing — old build served'" "otop_meta.json"
+check_json otop_revenue.json  "d.degraded ? 'ERR degraded: ' + d.reason : \`\${d.coverage.provincesWithData}/\${d.coverage.provinces} provinces · \${d.byCategory ? d.byCategory.years.length + ' category years · gap ' + d.reconciliation.medianGapPct + '%' : 'no category table'}\`" "otop_revenue.json"
 check_json p/34.json          "Array.isArray(d) ? \`shard TH-34 · \${d.length} records\` : 'ERR shard is not an array'" "province shard"
 
 # 4. The SPA fallback. Without it every deep link 404s and only the bare domain

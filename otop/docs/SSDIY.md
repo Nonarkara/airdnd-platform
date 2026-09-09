@@ -64,6 +64,7 @@ than it is down, so these are the four ways it goes wrong silently:
 | atlas chunk | A lazy import broke, so the Atlas renders as an empty section with no console error a visitor would report. |
 | `otop_index.json` · `otop_insights.json` · `p/34.json` | An artefact is truncated or half-written. All three still return 200. |
 | SPA fallback | `_redirects` stopped catching deep links, so every shared URL 404s and only the bare domain works. |
+| province dossier chunk + `otop_revenue.json` | `/?view=province&code=34` is the link that gets pasted into LINE. If its lazy chunk or the revenue artefact is missing, the page renders the wordmark and nothing else. |
 
 It exits non-zero on the first real miss. Point it anywhere:
 
@@ -159,6 +160,30 @@ The registry is one CKAN catalogue today. The pattern for a second source:
    test because each one was a bug first.
 5. `npm run otop:build && npm test && npm run otop:ship`
 
+### The money layer — two filings, never summed
+
+`scripts/otop/revenue.js` reads two CDD resources: the monthly province series
+(`c1c39e6a…`, 77 × 33 months) and the annual category × channel table
+(`000017df…`, 77 × 3 years × 5 categories). They disagree — the build measures
+by how much and publishes it as `reconciliation`; the Money chapter prints the
+live figure. A conflicting duplicate row in the source excludes that
+province-year and names it in `byCategory.excluded`. Never resolve it by
+picking a row.
+
+### Parked: the 216 provincial sales datasets
+
+The catalogue holds ~216 further sales/revenue resources from 66 provincial
+offices — district × month, BE 2560–2569, ~41k rows — under roughly 40
+distinct column shapes (`ปี/เดือน/อำเภอ` with the value under `มูลค่า`,
+`ค่าข้อมูล`, `จำนวน`, `รายได้`, `ยอดจำหน่าย`, `บาท`…, some with `ช่องทาง` or
+`ประเภท`, some per village). They are cached, archived, and unused.
+
+Ingesting them needs a `field_map`-style discovery pass for that shape before
+any join, and a per-office coverage label (most cover one province, some
+years). **Trigger to do it:** a district-level revenue view is asked for, or a
+province dossier is shown to one of the 66 offices that filed. Until then a
+PARK, not a TODO.
+
 ### What the build refuses to do
 
 | It will not | Because |
@@ -171,6 +196,14 @@ The registry is one CKAN catalogue today. The pattern for a second source:
 
 ---
 
+## The three surfaces
+
+| URL | What it is |
+|---|---|
+| `/?view=atlas` | The national rollup in five chapters — Findings · Money · Reach · Domain · Record. One question per chapter, one chart first, tables below it. |
+| `/?view=province&code=34` | One province, whole: tag face with rank-of-77 on every stub, monthly sales sparkline, category mix, districts, product names, condition vs national. This is the link to share. |
+| `/?lens=b2b&prov=34` | The matching engine, for a buyer with a requirement. Every province row in the Atlas opens the dossier; the dossier holds the B2B button. |
+
 ## Add a panel to the Atlas
 
 The Atlas reads `otop_insights.json` and nothing else. To add a panel:
@@ -178,8 +211,13 @@ The Atlas reads `otop_insights.json` and nothing else. To add a panel:
 1. Add the aggregate to `scripts/otop/insights.js` — it reads the corpus back
    **out of the shards** and refuses to write if the total disagrees with the
    index, so every build verifies its own output.
-2. Render it in `otop/src/components/Atlas.jsx` using the tag surfaces in
-   `otop/src/tag.css` (`.t-band`, `.t-zones`, `.t-bar`, `.t-rows`, `.t-ranked`).
+2. Render it in the chapter that answers its question —
+   `otop/src/components/atlas/{Findings,Money,Reach,Domain,Record}.jsx` — using
+   the tag surfaces in `otop/src/tag.css` (`.t-band`, `.t-zones`, `.t-bar`,
+   `.t-rows`, `.t-ranked`) and the chart primitives in
+   `otop/src/components/charts/` (`Sparkline`, `Bars`, `StackedBar`). A chapter
+   leads with one chart; a new table goes below it, behind `<details>` if long.
+   Do not add a sixth chapter for one panel.
 3. Add its conservation law to `test/otop_atlas.test.js`. A composition whose
    segments do not sum to its total is a chart lying with true numbers.
 4. `npx node ../dr-non-luggage-tag-aesthetic/tools/tag-audit.mjs otop/src/tag.css`
