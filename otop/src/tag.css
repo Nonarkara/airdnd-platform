@@ -310,3 +310,46 @@
 .chapter-h { margin-top: clamp(2.5rem, 6vw, 4rem); border-top: 2px solid var(--tag-ink); padding-top: var(--tag-space-3); }
 .chapter-h .t-key { display: block; }
 .chapter-h h2 { font-family: var(--font-display); font-size: var(--t-rank2-lg); font-weight: 600; margin: 0; }
+
+/* ── Atlas tabs (top-level navigation within the Atlas view) ──────────── */
+.atlas-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 1px solid var(--tag-ink);
+  margin-bottom: var(--tag-space-4);
+  background: var(--tag-ground);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.atlas-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--tag-space-3) var(--tag-space-4);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  cursor: pointer;
+  min-height: 64px;
+  text-align: left;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+}
+.atlas-tab:hover { color: var(--ink-1); background: var(--bg-2); }
+.atlas-tab[data-active='1'] {
+  color: var(--ink-1);
+  border-bottom-color: var(--accent);
+  background: var(--tag-ground-strict);
+}
+.atlas-tab-label { font-family: var(--font-text); font-size: var(--tag-size-context); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; }
+.atlas-tab-th { font-size: var(--tag-size-meta); color: var(--ink-3); }
+.atlas-tab[data-active='1'] .atlas-tab-th { color: var(--ink-2); }
+@media (max-width: 720px) {
+  .atlas-tabs { flex-direction: column; }
+  .atlas-tab { border-bottom: 1px solid var(--line-2); border-left: 3px solid transparent; padding: var(--tag-space-2) var(--tag-space-3); min-height: 0; }
+  .atlas-tab[data-active='1'] { border-bottom-color: var(--line-2); border-left-color: var(--accent); }
+}

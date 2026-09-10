@@ -7,7 +7,7 @@ import { decodeBuffer, csvToObjects } from '../otop/core/text_decode.js';
 import { discoverFieldMap, isUsableMapping, classifyResource } from '../otop/core/field_map.js';
 import {
   buildRecord, gradeRecord, mergeRecords, findOverbroadSignals,
-  normalizePhone, normalizeTaxId, parseBuddhistYear, parseCoordinate, parseLatLng, nameKey,
+  normalizePhone, normalizeTaxId, parseBuddhistYear, parseCoordinate, parseLatLng, nameKey, parsePrice, parseIncome
 } from '../otop/core/record.js';
 
 const prov = (datasetId = 'ds1', resourceId = 'r1') => ({ datasetId, resourceId, retrievedAt: '2026-09-08T00:00:00Z' });
@@ -185,6 +185,14 @@ test('buildRecord carries valid coordinates and nulls the rest', () => {
   const bad = buildRecord(row({ latitude: 0, longitude: 0 }), prov());
   assert.equal(bad.latitude, null);
   assert.equal(bad.longitude, null);
+});
+
+test('parseIncome handles messy values and large numbers up to 10 billion', () => {
+  assert.equal(parseIncome('1500000.0'), 1500000);
+  assert.equal(parseIncome('50,000-100,000 บาท'), 50000);
+  assert.equal(parseIncome('๑๕๐,๐๐๐'), 150000);
+  assert.equal(parseIncome('20,000,000'), 20000000);
+  assert.equal(parseIncome('ไม่ระบุ'), null);
 });
 
 test('classifyResource is the one definition of an economic aggregate', () => {

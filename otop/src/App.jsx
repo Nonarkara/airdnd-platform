@@ -69,6 +69,11 @@ function requirementToUrl(view, lens, r, code) {
   const p = new URLSearchParams();
   if (view === 'atlas') p.set('view', 'atlas');
   if (view === 'province' && code != null) { p.set('view', 'province'); p.set('code', String(code)); }
+  // Preserve the active Atlas tab across requirement/lens changes so a user
+  // who lands on `?view=atlas&tab=reach` and then changes a filter does
+  // not get bounced back to the findings tab.
+  const currentTab = new URLSearchParams(window.location.search).get('tab');
+  if (view === 'atlas' && currentTab) p.set('tab', currentTab);
   p.set('lens', lens);
   if (r.categories.length) p.set('cat', r.categories.join(','));
   if (r.provinceCodes.length) p.set('prov', r.provinceCodes.join(','));

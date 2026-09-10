@@ -218,6 +218,7 @@ export function buildRecord(row, provenance) {
     registrationId: normalizeText(row.registrationId, '') || null,
 
     price: parsePrice(row.price),
+    income: parseIncome(row.income),
     registeredYear: parseBuddhistYear(row.registeredYear),
 
     latitude,
@@ -281,6 +282,17 @@ export function parsePrice(value) {
   if (!match) return null;
   const price = Number(match[1]);
   return Number.isFinite(price) && price > 0 && price < 10_000_000 ? price : null;
+}
+
+/** Income can be much larger than a single product price. */
+export function parseIncome(value) {
+  const raw = normalizeText(value, '');
+  if (!raw) return null;
+  const match = raw.replace(/,/g, '').match(/(\d+(?:\.\d+)?)/);
+  if (!match) return null;
+  const income = Number(match[1]);
+  // Allow up to 10 billion for annual income
+  return Number.isFinite(income) && income > 0 && income < 10_000_000_000 ? income : null;
 }
 
 /**

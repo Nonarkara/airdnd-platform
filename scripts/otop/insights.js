@@ -84,6 +84,7 @@ function completeness(items) {
     withContact: pct(items.filter((r) => r.phone || r.email || r.website).length, n),
     withStars: pct(items.filter((r) => r.stars != null).length, n),
     withPrice: pct(items.filter((r) => r.price != null).length, n),
+    withIncome: pct(items.filter((r) => r.income != null).length, n),
     withSubdistrict: pct(items.filter((r) => r.subdistrict).length, n),
     withCoordinates: pct(items.filter((r) => r.latitude != null && r.longitude != null).length, n),
     categoryDeclared: pct(items.filter((r) => r.categoryConfidence === 'declared').length, n),
@@ -616,6 +617,6 @@ const insights = {
 fs.writeFileSync(path.join(PUB, 'otop_insights.json'), JSON.stringify(insights, null, 2));
 
 console.log(`[otop:insights] ${insights.national.records} records · ${insights.national.provincesCovered}/${PROVINCES.length} provinces · degraded=${insights.degraded}`);
-console.log(`[otop:insights] completeness — contact ${insights.national.completeness.withContact}% · graded ${insights.national.completeness.withStars}% · priced ${insights.national.completeness.withPrice}%`);
+console.log(`[otop:insights] completeness — contact ${insights.national.completeness.withContact}% · graded ${insights.national.completeness.withStars}% · priced ${insights.national.completeness.withPrice}% · incomed ${insights.national.completeness.withIncome}%`);
 console.log(`[otop:insights] category declared ${insights.national.completeness.categoryDeclared}% / inferred ${insights.national.completeness.categoryInferred}% / unknown ${insights.national.completeness.categoryUnknown}%`);
 console.log(`[otop:insights] corroborated by >1 source: ${insights.national.corroboratedShare}% · top-10 concentration ${insights.concentration.top10Share}%`);

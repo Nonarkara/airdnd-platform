@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-09T16:10:17.240Z",
+  "builtAt": "2026-09-09T17:50:35.099Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -10,7 +10,7 @@
     "resourcesCached": 1294,
     "resourcesUsable": 485,
     "resourcesSkipped": 809,
-    "resourcesAggregateEconomic": 230,
+    "resourcesAggregateEconomic": 228,
     "resourcesExcludedByTitle": 3,
     "rowsIn": 1015991,
     "rowsAccepted": 427147,
@@ -172,12 +172,13 @@
       "rowsIn": 17,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 7,
+      "mappedFields": 8,
       "map": {
         "category": "PRODUCT_TYPE",
         "latitude": "lat",
         "longitude": "lng",
         "registrationId": "OTOP_ID",
+        "income": "INCOME_AVG",
         "productName": "PRODUCT_DESC",
         "address": "OTOP_ADDRESS",
         "registeredYear": "YEAR_SELECTION"
@@ -188,7 +189,6 @@
         "OWNER_TYPE",
         "CAPACITY",
         "UNIT",
-        "INCOME_AVG",
         "EXPORT",
         "REMARK",
         "DCODE",
@@ -420,11 +420,12 @@
       "rowsIn": 30,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "productName": "product",
         "address": "address",
         "registrationId": "otop_id",
+        "income": "income_avg",
         "registeredYear": "year_selection"
       },
       "unmappedColumns": [
@@ -437,7 +438,6 @@
         "type_product",
         "capacity",
         "unit",
-        "income_avg",
         "export",
         "remark",
         "adddate",
@@ -3179,14 +3179,14 @@
       "rowsIn": 324,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้otop"
       },
       "unmappedColumns": [
         "เดือน",
-        "รายได้otop",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -4088,14 +4088,14 @@
       "rowsIn": 70,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
       "unmappedColumns": [
         "การจำหน่าย",
-        "รายได้",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -4821,25 +4821,34 @@
       "rowsIn": 277,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 5,
+      "mappedFields": 6,
       "map": {
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
         "registeredYear": "ปี",
-        "productName": "รายได้จากผลิตภัณฑ์"
+        "productName": "รายได้จากผลิตภัณฑ์",
+        "income": "รวมยอดรายได้"
       },
       "unmappedColumns": [
         "หมู่ที่",
         "หมู่บ้าน",
-        "รวมยอดรายได้",
         "รายได้จากที่พัก",
         "รายได้จากร้านอาหาร",
         "การบริการ/ท่องเที่ยว",
         "หน่วย",
         "ที่มา"
       ],
-      "ambiguous": [],
+      "ambiguous": [
+        {
+          "field": "income",
+          "chose": "รวมยอดรายได้",
+          "over": [
+            "รายได้จากที่พัก",
+            "รายได้จากร้านอาหาร"
+          ]
+        }
+      ],
       "rowsAccepted": 0,
       "rowsRejected": 0,
       "skipReason": "name column is a monetary field — an aggregate series, not producers"
@@ -5991,12 +6000,13 @@
       "rowsIn": 7,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 7,
+      "mappedFields": 8,
       "map": {
         "category": "PRODUCT_TYPE",
         "latitude": "lat",
         "longitude": "lng",
         "registrationId": "OTOP_ID",
+        "income": "INCOME_AVG",
         "productName": "PRODUCT_DESC",
         "address": "OTOP_ADDRESS",
         "registeredYear": "YEAR_SELECTION"
@@ -6007,7 +6017,6 @@
         "OWNER_TYPE",
         "CAPACITY",
         "UNIT",
-        "INCOME_AVG",
         "EXPORT",
         "REMARK",
         "DCODE",
@@ -6144,14 +6153,14 @@
       "rowsIn": 20,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 3,
+      "mappedFields": 4,
       "map": {
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "income": "รายได้ปี",
         "producerName": "ชื่อข้อมูล"
       },
       "unmappedColumns": [
-        "รายได้ปี",
         "หน่วย",
         "ข้อมูลวันที่",
         "เจ้าของข้อมูล"
@@ -6445,12 +6454,12 @@
       "rowsIn": 7,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
       "unmappedColumns": [
-        "รายได้",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -8721,15 +8730,15 @@
       "rowsIn": 320,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "district": "อำเภอ",
-        "registeredYear": "ปีงบประมาณ"
+        "registeredYear": "ปีงบประมาณ",
+        "income": "รายได้ รวม"
       },
       "unmappedColumns": [
         "ปี",
         "เดือน",
-        "รายได้ รวม",
         "หน่วย",
         "ที่มา"
       ],
@@ -8747,16 +8756,16 @@
       "rowsIn": 90,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้ (บาท)"
       },
       "unmappedColumns": [
-        "เดือน",
-        "รายได้ (บาท)"
+        "เดือน"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -8796,20 +8805,28 @@
       "rowsIn": 1260,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 3,
+      "mappedFields": 4,
       "map": {
         "category": "ประเภท",
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้ออฟไลน์"
       },
       "unmappedColumns": [
         "เดือน",
-        "รายได้ออฟไลน์",
         "รายได้ออนไลน์",
         "หน่วยนับ",
         "ที่มา"
       ],
-      "ambiguous": [],
+      "ambiguous": [
+        {
+          "field": "income",
+          "chose": "รายได้ออฟไลน์",
+          "over": [
+            "รายได้ออนไลน์"
+          ]
+        }
+      ],
       "rowsAccepted": 0,
       "rowsRejected": 0,
       "skipReason": "no name column and/or no area column after field discovery"
@@ -9617,12 +9634,12 @@
       "rowsIn": 7,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
       "unmappedColumns": [
-        "รายได้",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -10213,15 +10230,14 @@
       "encoding": null,
       "rowsIn": 18,
       "usable": false,
-      "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "kind": "other",
+      "mappedFields": 3,
       "map": {
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้รวม"
       },
-      "unmappedColumns": [
-        "รายได้รวม"
-      ],
+      "unmappedColumns": [],
       "ambiguous": [],
       "rowsAccepted": 0,
       "rowsRejected": 0,
@@ -10515,12 +10531,13 @@
       "rowsIn": 17,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 7,
+      "mappedFields": 8,
       "map": {
         "category": "PRODUCT_TYPE",
         "latitude": "lat",
         "longitude": "lng",
         "registrationId": "OTOP_ID",
+        "income": "INCOME_AVG",
         "productName": "PRODUCT_DESC",
         "address": "OTOP_ADDRESS",
         "registeredYear": "YEAR_SELECTION"
@@ -10531,7 +10548,6 @@
         "OWNER_TYPE",
         "CAPACITY",
         "UNIT",
-        "INCOME_AVG",
         "EXPORT",
         "REMARK",
         "DCODE",
@@ -10791,14 +10807,13 @@
       "rowsIn": 3,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "province": "จังหวัด",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
-      "unmappedColumns": [
-        "รายได้"
-      ],
+      "unmappedColumns": [],
       "ambiguous": [],
       "rowsAccepted": 0,
       "rowsRejected": 0,
@@ -10989,12 +11004,13 @@
       "rowsIn": 46,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "productName": "ผลิตภัณฑ์",
         "province": "จังหวัด",
         "district": "อำเภอ",
-        "subdistrict": "ตำบล"
+        "subdistrict": "ตำบล",
+        "income": "รวมยอดรายได้"
       },
       "unmappedColumns": [
         "หมู่",
@@ -11002,7 +11018,6 @@
         "ที่พัก",
         "ร้านอาหาร",
         "การบริการ/กิจกรรมท่องเที่ยว",
-        "รวมยอดรายได้",
         "หน่วย",
         "ทีมา"
       ],
@@ -11778,14 +11793,13 @@
       "rowsIn": 3,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "province": "จังหวัด",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
-      "unmappedColumns": [
-        "รายได้"
-      ],
+      "unmappedColumns": [],
       "ambiguous": [],
       "rowsAccepted": 0,
       "rowsRejected": 0,
@@ -11959,12 +11973,13 @@
       "rowsIn": 370,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 7,
+      "mappedFields": 8,
       "map": {
         "category": "PRODUCT_TYPE",
         "latitude": "lat",
         "longitude": "lng",
         "registrationId": "OTOP_ID",
+        "income": "INCOME_AVG",
         "productName": "PRODUCT_DESC",
         "address": "OTOP_ADDRESS",
         "registeredYear": "YEAR_SELECTION"
@@ -11975,7 +11990,6 @@
         "OWNER_TYPE",
         "CAPACITY",
         "UNIT",
-        "INCOME_AVG",
         "EXPORT",
         "REMARK",
         "DCODE",
@@ -12075,14 +12089,13 @@
       "rowsIn": 8,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "province": "จังหวัด",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
-      "unmappedColumns": [
-        "รายได้"
-      ],
+      "unmappedColumns": [],
       "ambiguous": [],
       "rowsAccepted": 0,
       "rowsRejected": 0,
@@ -14066,18 +14079,18 @@
       "rowsIn": 26,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "producerName": "ผู้ประกอบการ",
         "address": "ที่อยู่",
         "registeredYear": "ปี",
-        "productName": "ผลิตภัณฑ์1"
+        "productName": "ผลิตภัณฑ์1",
+        "income": "รายได้ ปี 2566"
       },
       "unmappedColumns": [
         "รายการ",
         "ผลิตภัณฑ์2",
-        "ผลิตภัณฑ์3",
-        "รายได้ ปี 2566"
+        "ผลิตภัณฑ์3"
       ],
       "ambiguous": [
         {
@@ -14707,14 +14720,13 @@
       "rowsIn": 120,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
-      "unmappedColumns": [
-        "รายได้"
-      ],
+      "unmappedColumns": [],
       "ambiguous": [],
       "rowsAccepted": 0,
       "rowsRejected": 0,
@@ -15427,15 +15439,15 @@
       "rowsIn": 45,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "province": "จังหวัด",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
       "unmappedColumns": [
         "เดือน",
-        "หน่วย",
-        "รายได้"
+        "หน่วย"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -16442,14 +16454,14 @@
       "rowsIn": 48,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "registeredYear": "ปีงบประมาณ"
+        "registeredYear": "ปีงบประมาณ",
+        "income": "รายได้"
       },
       "unmappedColumns": [
         "ปี",
         "เดือน",
-        "รายได้",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -17542,11 +17554,12 @@
       "rowsIn": 13,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "productName": "product",
         "address": "address",
         "registrationId": "otop_id",
+        "income": "income_avg",
         "registeredYear": "year_selection"
       },
       "unmappedColumns": [
@@ -17558,7 +17571,6 @@
         "type_product",
         "capacity",
         "unit",
-        "income_avg",
         "export",
         "remark"
       ],
@@ -17738,25 +17750,34 @@
       "rowsIn": 277,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 5,
+      "mappedFields": 6,
       "map": {
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
         "registeredYear": "ปี",
-        "productName": "รายได้จากผลิตภัณฑ์"
+        "productName": "รายได้จากผลิตภัณฑ์",
+        "income": "รวมยอดรายได้"
       },
       "unmappedColumns": [
         "หมู่ที่",
         "หมู่บ้าน",
-        "รวมยอดรายได้",
         "รายได้จากที่พัก",
         "รายได้จากร้านอาหาร",
         "การบริการ/ท่องเที่ยว",
         "หน่วย",
         "ที่มา"
       ],
-      "ambiguous": [],
+      "ambiguous": [
+        {
+          "field": "income",
+          "chose": "รวมยอดรายได้",
+          "over": [
+            "รายได้จากที่พัก",
+            "รายได้จากร้านอาหาร"
+          ]
+        }
+      ],
       "rowsAccepted": 0,
       "rowsRejected": 0,
       "skipReason": "name column is a monetary field — an aggregate series, not producers"
@@ -18415,14 +18436,14 @@
       "rowsIn": 20,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 3,
+      "mappedFields": 4,
       "map": {
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "income": "รายได้ปี",
         "producerName": "ชื่อข้อมูล"
       },
       "unmappedColumns": [
-        "รายได้ปี",
         "หน่วย",
         "ข้อมูลวันที่",
         "เจ้าของข้อมูล"
@@ -18835,11 +18856,12 @@
       "rowsIn": 12,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "productName": "product",
         "address": "address",
         "registrationId": "otop_id",
+        "income": "income_avg",
         "registeredYear": "year_selection"
       },
       "unmappedColumns": [
@@ -18852,7 +18874,6 @@
         "type_product",
         "capacity",
         "unit",
-        "income_avg",
         "export",
         "remark",
         "adddate",
@@ -19175,16 +19196,16 @@
       "rowsIn": 576,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 3,
+      "mappedFields": 4,
       "map": {
         "province": "จังหวัด",
         "district": "อำเภอ",
-        "registeredYear": "ปีงบประมาณ"
+        "registeredYear": "ปีงบประมาณ",
+        "income": "รายได้ (บาท)"
       },
       "unmappedColumns": [
         "ปี",
         "เดือน",
-        "รายได้ (บาท)",
         "ช่องทาง",
         "การส่งออก"
       ],
@@ -19249,16 +19270,16 @@
       "rowsIn": 106,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 5,
+      "mappedFields": 6,
       "map": {
         "producerName": "ชุมชน/หมู่บ้าน",
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
       "unmappedColumns": [
-        "รายได้",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -21009,20 +21030,28 @@
       "rowsIn": 1260,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 3,
+      "mappedFields": 4,
       "map": {
         "category": "ประเภท",
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้ออฟไลน์"
       },
       "unmappedColumns": [
         "เดือน",
-        "รายได้ออฟไลน์",
         "รายได้ออนไลน์",
         "หน่วยนับ",
         "ที่มา"
       ],
-      "ambiguous": [],
+      "ambiguous": [
+        {
+          "field": "income",
+          "chose": "รายได้ออฟไลน์",
+          "over": [
+            "รายได้ออนไลน์"
+          ]
+        }
+      ],
       "rowsAccepted": 0,
       "rowsRejected": 0,
       "skipReason": "no name column and/or no area column after field discovery"
@@ -21036,14 +21065,14 @@
       "rowsIn": 91,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 3,
+      "mappedFields": 4,
       "map": {
         "province": "จังหวัด",
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
       "unmappedColumns": [
-        "รายได้",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -21220,14 +21249,14 @@
       "rowsIn": 35,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 3,
+      "mappedFields": 4,
       "map": {
         "province": "จังหวัด",
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
       "unmappedColumns": [
-        "รายได้",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -22289,11 +22318,12 @@
       "rowsIn": 10,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "productName": "product",
         "address": "address",
         "registrationId": "otop_id",
+        "income": "income_avg",
         "registeredYear": "year_selection"
       },
       "unmappedColumns": [
@@ -22306,7 +22336,6 @@
         "type_product",
         "capacity",
         "unit",
-        "income_avg",
         "export",
         "remark",
         "adddate",
@@ -22479,17 +22508,17 @@
       "rowsIn": 6,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "registeredYear": "ปีงบประมาณ",
-        "producerName": "ชื่อโครงการ"
+        "producerName": "ชื่อโครงการ",
+        "income": "รายได้(บาท)"
       },
       "unmappedColumns": [
         "วันที่เริ่มโครงการ",
         "วันที่สิ้นสุดโครงการ",
         "งบประมาณ(บาท)",
-        "กลุ่มเป้าหมาย(คน)",
-        "รายได้(บาท)"
+        "กลุ่มเป้าหมาย(คน)"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -22656,12 +22685,12 @@
       "rowsIn": 18,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "district": "อำเภอ"
+        "district": "อำเภอ",
+        "income": "เป้าหมายรายได้ 64"
       },
       "unmappedColumns": [
-        "เป้าหมายรายได้ 64",
         "ยอดจำหน่ายรวมทั้งสิ้น",
         "คิดเป็นร้อยละ"
       ],
@@ -23867,11 +23896,12 @@
       "rowsIn": 2,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "productName": "product",
         "address": "address",
         "registrationId": "otop_id",
+        "income": "income_avg",
         "registeredYear": "year_selection"
       },
       "unmappedColumns": [
@@ -23884,7 +23914,6 @@
         "type_product",
         "capacity",
         "unit",
-        "income_avg",
         "export",
         "remark",
         "adddate",
@@ -24739,16 +24768,16 @@
       "rowsIn": 106,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 5,
+      "mappedFields": 6,
       "map": {
         "producerName": "ชุมชน/หมู่บ้าน",
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้"
       },
       "unmappedColumns": [
-        "รายได้",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -25256,14 +25285,14 @@
       "rowsIn": 324,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้otop"
       },
       "unmappedColumns": [
         "เดือน",
-        "รายได้otop",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -26480,14 +26509,14 @@
       "rowsIn": 20,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 3,
+      "mappedFields": 4,
       "map": {
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "income": "รายได้ปี",
         "producerName": "ชื่อข้อมูล"
       },
       "unmappedColumns": [
-        "รายได้ปี",
         "หน่วย",
         "ข้อมูลวันที่",
         "เจ้าของข้อมูล"
@@ -27146,12 +27175,12 @@
       "rowsIn": 8,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้ (ล้านบาท)"
       },
       "unmappedColumns": [
-        "รายได้ (ล้านบาท)",
         "หน่วย"
       ],
       "ambiguous": [],
@@ -28308,18 +28337,18 @@
       "rowsIn": 1580,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 5,
+      "mappedFields": 6,
       "map": {
         "category": "ประเภท",
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้ (บาท)"
       },
       "unmappedColumns": [
         "เดือน",
-        "บ้าน",
-        "รายได้ (บาท)"
+        "บ้าน"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -28362,14 +28391,14 @@
       "rowsIn": 96,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 3,
+      "mappedFields": 4,
       "map": {
         "district": "อำเภอ",
         "registeredYear": "ปีงบประมาณ",
+        "income": "รายได้",
         "category": "ประเภทของรายได้"
       },
       "unmappedColumns": [
-        "รายได้",
         "หน่วย",
         "ที่มา"
       ],
@@ -29471,15 +29500,15 @@
       "rowsIn": 320,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "district": "อำเภอ",
-        "registeredYear": "ปีงบประมาณ"
+        "registeredYear": "ปีงบประมาณ",
+        "income": "รายได้ รวม"
       },
       "unmappedColumns": [
         "ปี",
         "เดือน",
-        "รายได้ รวม",
         "หน่วย",
         "ที่มา"
       ],
@@ -30083,14 +30112,13 @@
       "rowsIn": 33,
       "usable": false,
       "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "mappedFields": 3,
       "map": {
         "district": "อำเภอ",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้(ล้านบาท)"
       },
-      "unmappedColumns": [
-        "รายได้(ล้านบาท)"
-      ],
+      "unmappedColumns": [],
       "ambiguous": [],
       "rowsAccepted": 0,
       "rowsRejected": 0,
@@ -32503,15 +32531,14 @@
       "encoding": null,
       "rowsIn": 2,
       "usable": false,
-      "kind": "aggregate-economic",
-      "mappedFields": 2,
+      "kind": "other",
+      "mappedFields": 3,
       "map": {
         "province": "จังหวัด",
-        "registeredYear": "ปี"
+        "registeredYear": "ปี",
+        "income": "รายได้รวม"
       },
-      "unmappedColumns": [
-        "รายได้รวม"
-      ],
+      "unmappedColumns": [],
       "ambiguous": [],
       "rowsAccepted": 0,
       "rowsRejected": 0,
@@ -32905,11 +32932,12 @@
       "rowsIn": 4,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "productName": "product",
         "address": "address",
         "registrationId": "otop_id",
+        "income": "income_avg",
         "registeredYear": "year_selection"
       },
       "unmappedColumns": [
@@ -32922,7 +32950,6 @@
         "type_product",
         "capacity",
         "unit",
-        "income_avg",
         "export",
         "remark",
         "adddate",
@@ -34027,11 +34054,12 @@
       "rowsIn": 15,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 5,
       "map": {
         "productName": "product",
         "address": "address",
         "registrationId": "otop_id",
+        "income": "income_avg",
         "registeredYear": "year_selection"
       },
       "unmappedColumns": [
@@ -34044,7 +34072,6 @@
         "type_product",
         "capacity",
         "unit",
-        "income_avg",
         "export",
         "remark",
         "adddate",
