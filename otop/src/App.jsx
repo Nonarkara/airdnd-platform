@@ -704,15 +704,15 @@ export default function App() {
             </div>
           </div>
           <div className="cr-legal">
-            <a href="/legal/terms.html">Terms of use</a>
+            <a href="/legal/terms/">Terms of use</a>
             <span className="cr-legal-sep">·</span>
-            <a href="/legal/privacy.html">Privacy policy</a>
+            <a href="/legal/privacy/">Privacy policy</a>
             <span className="cr-legal-sep">·</span>
-            <a href="/legal/provenance.html">Data provenance</a>
+            <a href="/legal/provenance/">Data provenance</a>
             <span className="cr-legal-sep">·</span>
-            <a href="/legal/disclaimer.html">Disclaimer</a>
+            <a href="/legal/disclaimer/">Disclaimer</a>
             <span className="cr-legal-sep">·</span>
-            <a href="/legal/takedown.html">Correction &amp; takedown</a>
+            <a href="/legal/takedown/">Correction &amp; takedown</a>
             <span className="cr-legal-th" lang="th">ข้อกำหนด · นโยบาย · แหล่งข้อมูล · คำปฏิเสธ · การแก้ไข</span>
           </div>
         </footer>

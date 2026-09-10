@@ -1,14 +1,2 @@
-/legal/index          /legal/index.html         200
-/legal/terms          /legal/terms.html         200
-/legal/privacy        /legal/privacy.html       200
-/legal/provenance     /legal/provenance.html    200
-/legal/disclaimer     /legal/disclaimer.html    200
-/legal/takedown       /legal/takedown.html      200
-/legal/index.html     /legal/index              301
-/legal/terms.html     /legal/terms              301
-/legal/privacy.html   /legal/privacy            301
-/legal/provenance.html /legal/provenance        301
-/legal/disclaimer.html /legal/disclaimer        301
-/legal/takedown.html   /legal/takedown          301
-/*                    /index.html               200
+/*    /index.html   200
 
