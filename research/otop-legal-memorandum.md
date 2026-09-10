@@ -157,7 +157,8 @@ If the user wants the documents signed off, the points a Thai lawyer would push 
 2. **The data subject's right of erasure.** PDPA Section 33 grants the right to delete; we provide a takedown mechanism with a stated window. The lawyer would want a 30-day SLA documented.
 3. **The contact for the PDPC.** The PDPC's contact details must be on the Privacy Policy.
 4. **The data retention period.** PDPA requires that personal data not be retained longer than necessary. For our case, *as long as the source remains public* is the honest answer. The lawyer would want this stated.
-5. **The lawful basis statement.** The Privacy Policy must declare the lawful basis under Section 24. *We declare Section 24(1) and 24(6).*
+5. **The lawful basis statement.** The Privacy Policy must declare the lawful basis under Section 24, and the basis must be one the controller is actually entitled to. *We declare Section 24(1) (research/statistics for public interest) and Section 24(5) (legitimate interest, with the balancing test written out), and we explicitly disclaim 24(4) and 24(6) because neither applies to a private operator.*
+6. **The mailbox works.** A 30-day SLA is only a defence if the mailbox behind it actually accepts mail. The Privacy Policy and Takedown page both cite `otop@nonarkara.org`; a Cloudflare Email Routing rule (`d5368688fd754bc39dfa2b797b32cf34`, enabled) forwards that address to the operator's Gmail. Without this rule, the documented SLA collapses and three of the five ranked risks lose their primary mitigation. The lawyer will check this.
 
 These five points are in the documents. They are the points a Thai lawyer will find and sign.
 
