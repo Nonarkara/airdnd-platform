@@ -4,6 +4,12 @@ import Meters from './components/Meters.jsx';
 import RequirementPanel from './components/RequirementPanel.jsx';
 import MatchRows from './components/MatchRows.jsx';
 import Basins from './components/Basins.jsx';
+import NationalStory from './components/NationalStory.jsx';
+import Champions from './components/Champions.jsx';
+import DemandTides from './components/DemandTides.jsx';
+import Matchmaker from './components/Matchmaker.jsx';
+import History from './components/History.jsx';
+import CrossReferences from './components/CrossReferences.jsx';
 
 // Leaflet is ~150KB and only the B2B lens draws a map. Split it so the B2C
 // path never pays for it.
@@ -68,6 +74,12 @@ function requirementFromUrl() {
 function requirementToUrl(view, lens, r, code) {
   const p = new URLSearchParams();
   if (view === 'atlas') p.set('view', 'atlas');
+  if (view === 'story') p.set('view', 'story');
+  if (view === 'history') p.set('view', 'history');
+  if (view === 'crossrefs') p.set('view', 'crossrefs');
+  if (view === 'champions') p.set('view', 'champions');
+  if (view === 'tides') p.set('view', 'tides');
+  if (view === 'matchmaker') p.set('view', 'matchmaker');
   if (view === 'province' && code != null) { p.set('view', 'province'); p.set('code', String(code)); }
   // Preserve the active Atlas tab across requirement/lens changes so a user
   // who lands on `?view=atlas&tab=reach` and then changes a filter does
@@ -127,7 +139,7 @@ export default function App() {
   // reader what any of them mean.
   const [view, setView] = useState(() => {
     const urlView = new URLSearchParams(window.location.search).get('view');
-    if (urlView === 'match' || urlView === 'atlas' || urlView === 'province') return urlView;
+    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker'].includes(urlView)) return urlView;
     return 'atlas';
   });
   const [provinceCode, setProvinceCode] = useState(() => {
@@ -267,6 +279,24 @@ export default function App() {
             </button>
             <button type="button" aria-current={view === 'atlas'} onClick={() => openProvince(null)}>
               <Bi en="Atlas" th="แผนที่ข้อมูล" />
+            </button>
+            <button type="button" aria-current={view === 'matchmaker'} onClick={() => setView('matchmaker')}>
+              <Bi en="Matchmaker" th="จับคู่" />
+            </button>
+            <button type="button" aria-current={view === 'tides'} onClick={() => setView('tides')}>
+              <Bi en="Tides" th="กระแส" />
+            </button>
+            <button type="button" aria-current={view === 'champions'} onClick={() => setView('champions')}>
+              <Bi en="Champions" th="แชมป์" />
+            </button>
+            <button type="button" aria-current={view === 'story'} onClick={() => setView('story')}>
+              <Bi en="Story" th="เรื่องเล่า" />
+            </button>
+            <button type="button" aria-current={view === 'history'} onClick={() => setView('history')}>
+              <Bi en="History" th="25 ปี" />
+            </button>
+            <button type="button" aria-current={view === 'crossrefs'} onClick={() => setView('crossrefs')}>
+              <Bi en="Cross-refs" th="เชื่อมโยง" />
             </button>
             {view === 'province' && <button type="button" aria-current>
               <Bi en="Province" th="จังหวัด" />
@@ -499,6 +529,113 @@ export default function App() {
           </section>
         )}
 
+        {view === 'matchmaker' && (
+          <section className="sec" id="matchmaker">
+            <div className="wrap">
+              <div className="sec-h">
+                <h2 className="sec-t">
+                  <Bi en="The Matchmaker" th="จับคู่" />
+                </h2>
+                <span className="sec-n">
+                  <Bi
+                    en="where the supply is, where the money already is — the triangulation one³ does for everything"
+                    th="ที่ไหนมีอุปทาน ที่ไหนมีเงิน — สามเหลี่ยมเดียวที่ one³ ใช้ทุกอย่าง"
+                  />
+                </span>
+              </div>
+              <Matchmaker />
+            </div>
+          </section>
+        )}
+
+        {view === 'tides' && (
+          <section className="sec" id="tides">
+            <div className="wrap">
+              <div className="sec-h">
+                <h2 className="sec-t">
+                  <Bi en="Demand Tides" th="กระแสความต้องการ" />
+                </h2>
+                <span className="sec-n">
+                  <Bi
+                    en="77 provinces × 5 categories = 385 cells, each a 3-year revenue trajectory"
+                    th="77 จังหวัด × 5 ประเภท = 385 เซลล์ แต่ละเซลล์คือแนวโน้ม 3 ปี"
+                  />
+                </span>
+              </div>
+              {insightsError && <p className="empty">The revenue artefact could not be loaded — {insightsError}.</p>}
+              {!insights && !insightsError && <p className="empty">Loading the revenue artefact…</p>}
+              {insights && <Suspense fallback={<p className="empty">Loading the demand grid…</p>}>
+                <DemandTides revenue={insights.revenue} onSelectProvince={openProvince} />
+              </Suspense>}
+            </div>
+          </section>
+        )}
+
+        {view === 'champions' && (
+          <section className="sec" id="champions">
+            <div className="wrap">
+              <div className="sec-h">
+                <h2 className="sec-t">
+                  <Bi en="Reachable Champions" th="แชมป์ที่ติดต่อได้" />
+                </h2>
+                <span className="sec-n">
+                  <Bi
+                    en="4-5★ OTOP producers the registry says CAN be reached — the buyer's starting list"
+                    th="ผู้ผลิต 4-5 ดาวที่ติดต่อได้ — รายชื่อตั้งต้นสำหรับผู้ซื้อ"
+                  />
+                </span>
+              </div>
+              <Champions />
+            </div>
+          </section>
+        )}
+
+        {view === 'story' && (
+          <section className="sec" id="story">
+            <div className="wrap">
+              <NationalStory />
+            </div>
+          </section>
+        )}
+
+        {view === 'history' && (
+          <section className="sec" id="history">
+            <div className="wrap">
+              <div className="sec-h">
+                <h2 className="sec-t">
+                  <Bi en="OTOP: 25 Years" th="25 ปี" />
+                </h2>
+                <span className="sec-n">
+                  <Bi
+                    en="the seed, the boom, the silence, the platform — every event in the public record"
+                    th="เมล็ดพันธุ์ ความเฟื่องฟู ความเงียบ และแพลตฟอร์ม"
+                  />
+                </span>
+              </div>
+              <History />
+            </div>
+          </section>
+        )}
+
+        {view === 'crossrefs' && (
+          <section className="sec" id="crossrefs">
+            <div className="wrap">
+              <div className="sec-h">
+                <h2 className="sec-t">
+                  <Bi en="Cross-references" th="เชื่อมโยงข้อมูล" />
+                </h2>
+                <span className="sec-n">
+                  <Bi
+                    en="OTOP joined with the country the producers sit in — population, tourism, internet"
+                    th="OTOP เชื่อมกับประเทศที่ผู้ผลิตอยู่อาศัย — ประชากร ท่องเที่ยว อินเทอร์เน็ต"
+                  />
+                </span>
+              </div>
+              <CrossReferences />
+            </div>
+          </section>
+        )}
+
         <section className="sec" id="method">
           <div className="wrap">
             <div className="sec-h">
@@ -535,6 +672,38 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        <footer className="cr">
+          <div className="wrap cr-in">
+            <div className="cr-block">
+              <span className="cr-key">Architect</span>
+              <span className="cr-name">Dr Non Arkaraprasertkul</span>
+              <span className="cr-th">ดร. นนท์ อัครประสิทธิ์กุล</span>
+              <span className="cr-line">PhD Anthropologist · Harvard · Architect · MIT</span>
+              <span className="cr-line">Senior Expert, Thailand's depa</span>
+            </div>
+            <div className="cr-block">
+              <span className="cr-key">Engineering</span>
+              <span className="cr-name">Mavis</span>
+              <span className="cr-th">เมวิส</span>
+              <span className="cr-line">the AI assistant that built the data pipeline,</span>
+              <span className="cr-line">the Atlas, the dossier, the Matchmaker, the Tides,</span>
+              <span className="cr-line">the Champions, and the National Story on this site</span>
+            </div>
+            <div className="cr-block">
+              <span className="cr-key">Data</span>
+              <span className="cr-name">data.go.th</span>
+              <span className="cr-line">กรมพัฒนาชุมชน · Department of Community Development</span>
+              <span className="cr-line">{meta.shardCount} province shards · 154,078 producer rows</span>
+              <span className="cr-line">33 months of revenue · 3 years by category</span>
+            </div>
+            <div className="cr-block cr-mantra">
+              <p className="cr-mantra-th">หนึ่งตำบล หนึ่งผลิตภัณฑ์ หนึ่งแพลตฟอร์ม</p>
+              <p className="cr-mantra-en">One Tambon · One Product · One Platform</p>
+              <p className="cr-mantra-1"><span>1</span><sup>3</sup> <span>= 1</span></p>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   );
