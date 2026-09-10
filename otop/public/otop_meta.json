@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-09T17:50:35.099Z",
+  "builtAt": "2026-09-10T18:31:10.182Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -16,7 +16,17 @@
     "rowsAccepted": 427147,
     "rowsRejected": 9469,
     "recordsAfterMerge": 154078,
-    "duplicatesCollapsed": 273069
+    "duplicatesCollapsed": 273069,
+    "tambonPlaced": 135100
+  },
+  "geo": {
+    "records": 154078,
+    "withSubdistrict": 135390,
+    "placed": 135100,
+    "placedShare": 87.7,
+    "unplacedWithSubdistrict": 290,
+    "tambonsWithRecords": 7383,
+    "tambonsInReference": 7436
   },
   "rejectReasons": {
     "no_area": 8930,

@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-09T17:50:37.175Z",
+  "builtAt": "2026-09-10T18:31:11.836Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -19,6 +19,7 @@
       "withIncome": 0.1,
       "withSubdistrict": 87.9,
       "withCoordinates": 0.4,
+      "withTambon": 87.7,
       "categoryDeclared": 12.2,
       "categoryInferred": 13,
       "categoryUnknown": 74.8
@@ -162,6 +163,7 @@
         "withIncome": 0,
         "withSubdistrict": 87.9,
         "withCoordinates": 0,
+        "withTambon": 87.8,
         "categoryDeclared": 12.9,
         "categoryInferred": 13.6,
         "categoryUnknown": 73.6
@@ -240,6 +242,7 @@
         "withIncome": 0,
         "withSubdistrict": 86.1,
         "withCoordinates": 0.1,
+        "withTambon": 86,
         "categoryDeclared": 12,
         "categoryInferred": 13.2,
         "categoryUnknown": 74.7
@@ -318,6 +321,7 @@
         "withIncome": 0,
         "withSubdistrict": 89.9,
         "withCoordinates": 0.1,
+        "withTambon": 89.4,
         "categoryDeclared": 15.5,
         "categoryInferred": 12.9,
         "categoryUnknown": 71.6
@@ -396,6 +400,7 @@
         "withIncome": 0.5,
         "withSubdistrict": 89.4,
         "withCoordinates": 0,
+        "withTambon": 89.3,
         "categoryDeclared": 9.3,
         "categoryInferred": 9.7,
         "categoryUnknown": 81
@@ -474,6 +479,7 @@
         "withIncome": 0,
         "withSubdistrict": 80,
         "withCoordinates": 6.7,
+        "withTambon": 79.9,
         "categoryDeclared": 9.5,
         "categoryInferred": 17.7,
         "categoryUnknown": 72.8
@@ -552,6 +558,7 @@
         "withIncome": 0.2,
         "withSubdistrict": 91.8,
         "withCoordinates": 0,
+        "withTambon": 91.8,
         "categoryDeclared": 9,
         "categoryInferred": 11.9,
         "categoryUnknown": 79.2
@@ -633,6 +640,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.7,
         "withCoordinates": 0,
+        "withTambon": 90.7,
         "categoryDeclared": 32.2,
         "categoryInferred": 6.2,
         "categoryUnknown": 61.6
@@ -719,6 +727,7 @@
         "withIncome": 0,
         "withSubdistrict": 87.9,
         "withCoordinates": 0,
+        "withTambon": 87.9,
         "categoryDeclared": 9.4,
         "categoryInferred": 8,
         "categoryUnknown": 82.6
@@ -805,6 +814,7 @@
         "withIncome": 0,
         "withSubdistrict": 87.8,
         "withCoordinates": 0,
+        "withTambon": 87.7,
         "categoryDeclared": 9.2,
         "categoryInferred": 6.7,
         "categoryUnknown": 84.1
@@ -891,6 +901,7 @@
         "withIncome": 0,
         "withSubdistrict": 89.3,
         "withCoordinates": 0,
+        "withTambon": 89.3,
         "categoryDeclared": 9.3,
         "categoryInferred": 7.9,
         "categoryUnknown": 82.8
@@ -977,6 +988,7 @@
         "withIncome": 0,
         "withSubdistrict": 91.7,
         "withCoordinates": 0,
+        "withTambon": 90.9,
         "categoryDeclared": 8.6,
         "categoryInferred": 11.1,
         "categoryUnknown": 80.2
@@ -1063,6 +1075,7 @@
         "withIncome": 0,
         "withSubdistrict": 86.5,
         "withCoordinates": 0,
+        "withTambon": 86.4,
         "categoryDeclared": 11.9,
         "categoryInferred": 13.7,
         "categoryUnknown": 74.4
@@ -1149,6 +1162,7 @@
         "withIncome": 0,
         "withSubdistrict": 92.4,
         "withCoordinates": 0,
+        "withTambon": 91.7,
         "categoryDeclared": 6.6,
         "categoryInferred": 7,
         "categoryUnknown": 86.4
@@ -1235,6 +1249,7 @@
         "withIncome": 0,
         "withSubdistrict": 72.7,
         "withCoordinates": 0,
+        "withTambon": 72.7,
         "categoryDeclared": 22.9,
         "categoryInferred": 6,
         "categoryUnknown": 71.2
@@ -1321,6 +1336,7 @@
         "withIncome": 0,
         "withSubdistrict": 85.9,
         "withCoordinates": 0,
+        "withTambon": 85.9,
         "categoryDeclared": 11.9,
         "categoryInferred": 7.2,
         "categoryUnknown": 80.9
@@ -1407,6 +1423,7 @@
         "withIncome": 0,
         "withSubdistrict": 49.9,
         "withCoordinates": 0,
+        "withTambon": 49.8,
         "categoryDeclared": 5.9,
         "categoryInferred": 7.8,
         "categoryUnknown": 86.3
@@ -1493,6 +1510,7 @@
         "withIncome": 0,
         "withSubdistrict": 91.3,
         "withCoordinates": 0,
+        "withTambon": 91.3,
         "categoryDeclared": 7.7,
         "categoryInferred": 29.2,
         "categoryUnknown": 63.1
@@ -1579,6 +1597,7 @@
         "withIncome": 0,
         "withSubdistrict": 90,
         "withCoordinates": 0,
+        "withTambon": 90,
         "categoryDeclared": 9.8,
         "categoryInferred": 7.3,
         "categoryUnknown": 83
@@ -1665,6 +1684,7 @@
         "withIncome": 0,
         "withSubdistrict": 92.2,
         "withCoordinates": 0,
+        "withTambon": 92.1,
         "categoryDeclared": 7.7,
         "categoryInferred": 5.7,
         "categoryUnknown": 86.6
@@ -1751,6 +1771,7 @@
         "withIncome": 0,
         "withSubdistrict": 88.8,
         "withCoordinates": 0,
+        "withTambon": 88.8,
         "categoryDeclared": 19.6,
         "categoryInferred": 30.6,
         "categoryUnknown": 49.8
@@ -1837,6 +1858,7 @@
         "withIncome": 0.3,
         "withSubdistrict": 82.3,
         "withCoordinates": 0.5,
+        "withTambon": 79.1,
         "categoryDeclared": 17.7,
         "categoryInferred": 13.7,
         "categoryUnknown": 68.6
@@ -1923,6 +1945,7 @@
         "withIncome": 0,
         "withSubdistrict": 55.5,
         "withCoordinates": 0,
+        "withTambon": 55.5,
         "categoryDeclared": 5.5,
         "categoryInferred": 37.1,
         "categoryUnknown": 57.4
@@ -2009,6 +2032,7 @@
         "withIncome": 0,
         "withSubdistrict": 94.4,
         "withCoordinates": 0,
+        "withTambon": 94.3,
         "categoryDeclared": 5.3,
         "categoryInferred": 7.7,
         "categoryUnknown": 87
@@ -2095,6 +2119,7 @@
         "withIncome": 0,
         "withSubdistrict": 87.3,
         "withCoordinates": 0,
+        "withTambon": 87.3,
         "categoryDeclared": 9,
         "categoryInferred": 13.3,
         "categoryUnknown": 77.7
@@ -2181,6 +2206,7 @@
         "withIncome": 0,
         "withSubdistrict": 91.6,
         "withCoordinates": 2.3,
+        "withTambon": 91.6,
         "categoryDeclared": 15.5,
         "categoryInferred": 16.8,
         "categoryUnknown": 67.7
@@ -2267,6 +2293,7 @@
         "withIncome": 1.1,
         "withSubdistrict": 93.2,
         "withCoordinates": 0,
+        "withTambon": 93.2,
         "categoryDeclared": 4.7,
         "categoryInferred": 50.2,
         "categoryUnknown": 45.2
@@ -2353,6 +2380,7 @@
         "withIncome": 0,
         "withSubdistrict": 88.8,
         "withCoordinates": 0,
+        "withTambon": 88.6,
         "categoryDeclared": 10.4,
         "categoryInferred": 11.1,
         "categoryUnknown": 78.6
@@ -2439,6 +2467,7 @@
         "withIncome": 0,
         "withSubdistrict": 92.7,
         "withCoordinates": 0,
+        "withTambon": 92.7,
         "categoryDeclared": 8.7,
         "categoryInferred": 7.3,
         "categoryUnknown": 83.9
@@ -2525,6 +2554,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
+        "withTambon": 87.5,
         "categoryDeclared": 10.6,
         "categoryInferred": 5.9,
         "categoryUnknown": 83.5
@@ -2611,6 +2641,7 @@
         "withIncome": 0,
         "withSubdistrict": 80.9,
         "withCoordinates": 0,
+        "withTambon": 80.8,
         "categoryDeclared": 10.4,
         "categoryInferred": 8.5,
         "categoryUnknown": 81.1
@@ -2697,6 +2728,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
+        "withTambon": 90.9,
         "categoryDeclared": 6.6,
         "categoryInferred": 19.7,
         "categoryUnknown": 73.6
@@ -2783,6 +2815,7 @@
         "withIncome": 0,
         "withSubdistrict": 95.5,
         "withCoordinates": 0,
+        "withTambon": 95.5,
         "categoryDeclared": 6.4,
         "categoryInferred": 5.7,
         "categoryUnknown": 87.9
@@ -2869,6 +2902,7 @@
         "withIncome": 0,
         "withSubdistrict": 92.7,
         "withCoordinates": 0.1,
+        "withTambon": 92.4,
         "categoryDeclared": 7,
         "categoryInferred": 7.9,
         "categoryUnknown": 85.1
@@ -2955,6 +2989,7 @@
         "withIncome": 0,
         "withSubdistrict": 86.7,
         "withCoordinates": 0,
+        "withTambon": 86.7,
         "categoryDeclared": 10.1,
         "categoryInferred": 11.1,
         "categoryUnknown": 78.9
@@ -3041,6 +3076,7 @@
         "withIncome": 0,
         "withSubdistrict": 88.2,
         "withCoordinates": 0,
+        "withTambon": 88.2,
         "categoryDeclared": 5.7,
         "categoryInferred": 8.2,
         "categoryUnknown": 86.1
@@ -3127,6 +3163,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.2,
         "withCoordinates": 0,
+        "withTambon": 90.2,
         "categoryDeclared": 13.5,
         "categoryInferred": 17,
         "categoryUnknown": 69.5
@@ -3213,6 +3250,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.8,
         "withCoordinates": 0,
+        "withTambon": 90.8,
         "categoryDeclared": 11.2,
         "categoryInferred": 6.4,
         "categoryUnknown": 82.4
@@ -3299,6 +3337,7 @@
         "withIncome": 0,
         "withSubdistrict": 84,
         "withCoordinates": 0,
+        "withTambon": 84,
         "categoryDeclared": 74.9,
         "categoryInferred": 12.5,
         "categoryUnknown": 12.6
@@ -3385,6 +3424,7 @@
         "withIncome": 0,
         "withSubdistrict": 93.8,
         "withCoordinates": 0,
+        "withTambon": 93.8,
         "categoryDeclared": 6.8,
         "categoryInferred": 34.8,
         "categoryUnknown": 58.3
@@ -3471,6 +3511,7 @@
         "withIncome": 2.5,
         "withSubdistrict": 93.3,
         "withCoordinates": 0,
+        "withTambon": 93.3,
         "categoryDeclared": 7.9,
         "categoryInferred": 7.9,
         "categoryUnknown": 84.2
@@ -3557,6 +3598,7 @@
         "withIncome": 0,
         "withSubdistrict": 88.2,
         "withCoordinates": 0,
+        "withTambon": 88.2,
         "categoryDeclared": 13.1,
         "categoryInferred": 9.7,
         "categoryUnknown": 77.2
@@ -3643,6 +3685,7 @@
         "withIncome": 0,
         "withSubdistrict": 89.5,
         "withCoordinates": 0,
+        "withTambon": 89.5,
         "categoryDeclared": 13.6,
         "categoryInferred": 9.5,
         "categoryUnknown": 76.9
@@ -3729,6 +3772,7 @@
         "withIncome": 0,
         "withSubdistrict": 94.6,
         "withCoordinates": 0,
+        "withTambon": 94.6,
         "categoryDeclared": 45.1,
         "categoryInferred": 5.7,
         "categoryUnknown": 49.2
@@ -3815,6 +3859,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
+        "withTambon": 90.9,
         "categoryDeclared": 11.7,
         "categoryInferred": 10.1,
         "categoryUnknown": 78.3
@@ -3901,6 +3946,7 @@
         "withIncome": 0,
         "withSubdistrict": 85.8,
         "withCoordinates": 0,
+        "withTambon": 85.8,
         "categoryDeclared": 10.1,
         "categoryInferred": 9.5,
         "categoryUnknown": 80.4
@@ -3987,6 +4033,7 @@
         "withIncome": 0,
         "withSubdistrict": 93.6,
         "withCoordinates": 0,
+        "withTambon": 93.6,
         "categoryDeclared": 12.1,
         "categoryInferred": 18.5,
         "categoryUnknown": 69.4
@@ -4073,6 +4120,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.7,
         "withCoordinates": 0,
+        "withTambon": 90.6,
         "categoryDeclared": 8.8,
         "categoryInferred": 7.4,
         "categoryUnknown": 83.8
@@ -4159,6 +4207,7 @@
         "withIncome": 0,
         "withSubdistrict": 92,
         "withCoordinates": 0,
+        "withTambon": 92,
         "categoryDeclared": 9.7,
         "categoryInferred": 7.2,
         "categoryUnknown": 83.1
@@ -4245,6 +4294,7 @@
         "withIncome": 0,
         "withSubdistrict": 92.6,
         "withCoordinates": 0.1,
+        "withTambon": 91.8,
         "categoryDeclared": 10,
         "categoryInferred": 57,
         "categoryUnknown": 33
@@ -4331,6 +4381,7 @@
         "withIncome": 0,
         "withSubdistrict": 82.6,
         "withCoordinates": 0,
+        "withTambon": 82.6,
         "categoryDeclared": 9.1,
         "categoryInferred": 7,
         "categoryUnknown": 83.9
@@ -4417,6 +4468,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.7,
         "withCoordinates": 0,
+        "withTambon": 90.7,
         "categoryDeclared": 11.9,
         "categoryInferred": 10,
         "categoryUnknown": 78.1
@@ -4503,6 +4555,7 @@
         "withIncome": 0,
         "withSubdistrict": 90,
         "withCoordinates": 0,
+        "withTambon": 90,
         "categoryDeclared": 11.3,
         "categoryInferred": 7.7,
         "categoryUnknown": 81
@@ -4589,6 +4642,7 @@
         "withIncome": 0,
         "withSubdistrict": 91.1,
         "withCoordinates": 0,
+        "withTambon": 91.1,
         "categoryDeclared": 7,
         "categoryInferred": 28.5,
         "categoryUnknown": 64.5
@@ -4675,6 +4729,7 @@
         "withIncome": 0,
         "withSubdistrict": 84.3,
         "withCoordinates": 0,
+        "withTambon": 84.3,
         "categoryDeclared": 9.1,
         "categoryInferred": 6,
         "categoryUnknown": 84.9
@@ -4761,6 +4816,7 @@
         "withIncome": 3.5,
         "withSubdistrict": 89.8,
         "withCoordinates": 0,
+        "withTambon": 89.6,
         "categoryDeclared": 13,
         "categoryInferred": 12.9,
         "categoryUnknown": 74.1
@@ -4847,6 +4903,7 @@
         "withIncome": 0,
         "withSubdistrict": 86,
         "withCoordinates": 0,
+        "withTambon": 85.7,
         "categoryDeclared": 13.7,
         "categoryInferred": 10.9,
         "categoryUnknown": 75.5
@@ -4933,6 +4990,7 @@
         "withIncome": 0,
         "withSubdistrict": 90,
         "withCoordinates": 0,
+        "withTambon": 90,
         "categoryDeclared": 11.8,
         "categoryInferred": 9.5,
         "categoryUnknown": 78.7
@@ -5019,6 +5077,7 @@
         "withIncome": 0,
         "withSubdistrict": 92.4,
         "withCoordinates": 0,
+        "withTambon": 92.4,
         "categoryDeclared": 10.5,
         "categoryInferred": 8.6,
         "categoryUnknown": 80.9
@@ -5105,6 +5164,7 @@
         "withIncome": 0,
         "withSubdistrict": 91.7,
         "withCoordinates": 0,
+        "withTambon": 91.7,
         "categoryDeclared": 7.4,
         "categoryInferred": 14.1,
         "categoryUnknown": 78.4
@@ -5191,6 +5251,7 @@
         "withIncome": 0,
         "withSubdistrict": 86.7,
         "withCoordinates": 0,
+        "withTambon": 85.9,
         "categoryDeclared": 11.8,
         "categoryInferred": 14,
         "categoryUnknown": 74.2
@@ -5277,6 +5338,7 @@
         "withIncome": 0,
         "withSubdistrict": 89.8,
         "withCoordinates": 0,
+        "withTambon": 89.8,
         "categoryDeclared": 8.4,
         "categoryInferred": 14.9,
         "categoryUnknown": 76.7
@@ -5363,6 +5425,7 @@
         "withIncome": 0,
         "withSubdistrict": 85.6,
         "withCoordinates": 0,
+        "withTambon": 85.6,
         "categoryDeclared": 10.9,
         "categoryInferred": 13.7,
         "categoryUnknown": 75.4
@@ -5449,6 +5512,7 @@
         "withIncome": 0,
         "withSubdistrict": 89.6,
         "withCoordinates": 0,
+        "withTambon": 89.6,
         "categoryDeclared": 9.4,
         "categoryInferred": 10.1,
         "categoryUnknown": 80.5
@@ -5535,6 +5599,7 @@
         "withIncome": 0,
         "withSubdistrict": 82.4,
         "withCoordinates": 0,
+        "withTambon": 82.4,
         "categoryDeclared": 8,
         "categoryInferred": 16.9,
         "categoryUnknown": 75.1
@@ -5621,6 +5686,7 @@
         "withIncome": 0,
         "withSubdistrict": 92.3,
         "withCoordinates": 0,
+        "withTambon": 92.3,
         "categoryDeclared": 8.4,
         "categoryInferred": 7,
         "categoryUnknown": 84.5
@@ -5707,6 +5773,7 @@
         "withIncome": 0,
         "withSubdistrict": 89,
         "withCoordinates": 0,
+        "withTambon": 89,
         "categoryDeclared": 12.9,
         "categoryInferred": 16.4,
         "categoryUnknown": 70.7
@@ -5793,6 +5860,7 @@
         "withIncome": 0,
         "withSubdistrict": 84,
         "withCoordinates": 43.1,
+        "withTambon": 83.8,
         "categoryDeclared": 14.6,
         "categoryInferred": 18.3,
         "categoryUnknown": 67
@@ -5879,6 +5947,7 @@
         "withIncome": 0,
         "withSubdistrict": 89.1,
         "withCoordinates": 0,
+        "withTambon": 89.1,
         "categoryDeclared": 9.2,
         "categoryInferred": 6.4,
         "categoryUnknown": 84.4
@@ -5965,6 +6034,7 @@
         "withIncome": 0,
         "withSubdistrict": 88.6,
         "withCoordinates": 0,
+        "withTambon": 88.6,
         "categoryDeclared": 8.9,
         "categoryInferred": 64.9,
         "categoryUnknown": 26.3
@@ -6051,6 +6121,7 @@
         "withIncome": 0,
         "withSubdistrict": 93.3,
         "withCoordinates": 0,
+        "withTambon": 93.3,
         "categoryDeclared": 8.3,
         "categoryInferred": 10,
         "categoryUnknown": 81.8
@@ -6137,6 +6208,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.1,
         "withCoordinates": 0,
+        "withTambon": 90,
         "categoryDeclared": 10.6,
         "categoryInferred": 12.1,
         "categoryUnknown": 77.3
@@ -6223,6 +6295,7 @@
         "withIncome": 0,
         "withSubdistrict": 94.5,
         "withCoordinates": 0,
+        "withTambon": 94.5,
         "categoryDeclared": 9.6,
         "categoryInferred": 7.3,
         "categoryUnknown": 83.1
@@ -6309,6 +6382,7 @@
         "withIncome": 0,
         "withSubdistrict": 93.2,
         "withCoordinates": 0,
+        "withTambon": 93.2,
         "categoryDeclared": 6.7,
         "categoryInferred": 10.9,
         "categoryUnknown": 82.4
@@ -6395,6 +6469,7 @@
         "withIncome": 0,
         "withSubdistrict": 91,
         "withCoordinates": 1.7,
+        "withTambon": 91,
         "categoryDeclared": 10.9,
         "categoryInferred": 16.7,
         "categoryUnknown": 72.5
@@ -6481,6 +6556,7 @@
         "withIncome": 0,
         "withSubdistrict": 95.2,
         "withCoordinates": 0,
+        "withTambon": 95.2,
         "categoryDeclared": 10.4,
         "categoryInferred": 5.9,
         "categoryUnknown": 83.7
@@ -6567,6 +6643,7 @@
         "withIncome": 0,
         "withSubdistrict": 95.9,
         "withCoordinates": 0,
+        "withTambon": 95.9,
         "categoryDeclared": 13,
         "categoryInferred": 4,
         "categoryUnknown": 83.1
@@ -6653,6 +6730,7 @@
         "withIncome": 0,
         "withSubdistrict": 91.3,
         "withCoordinates": 0,
+        "withTambon": 91.3,
         "categoryDeclared": 10.3,
         "categoryInferred": 15.9,
         "categoryUnknown": 73.7
@@ -6739,6 +6817,7 @@
         "withIncome": 0,
         "withSubdistrict": 92.8,
         "withCoordinates": 0.2,
+        "withTambon": 92.8,
         "categoryDeclared": 8.7,
         "categoryInferred": 10.5,
         "categoryUnknown": 80.8
@@ -6825,6 +6904,7 @@
         "withIncome": 0,
         "withSubdistrict": 91.3,
         "withCoordinates": 0,
+        "withTambon": 90.6,
         "categoryDeclared": 11.6,
         "categoryInferred": 10.2,
         "categoryUnknown": 78.3
@@ -6911,6 +6991,7 @@
         "withIncome": 0,
         "withSubdistrict": 87.3,
         "withCoordinates": 0,
+        "withTambon": 87.1,
         "categoryDeclared": 18.2,
         "categoryInferred": 11.4,
         "categoryUnknown": 70.4
@@ -6997,6 +7078,7 @@
         "withIncome": 0,
         "withSubdistrict": 89.6,
         "withCoordinates": 0,
+        "withTambon": 89.6,
         "categoryDeclared": 11.3,
         "categoryInferred": 15.7,
         "categoryUnknown": 72.9
@@ -7083,6 +7165,7 @@
         "withIncome": 0,
         "withSubdistrict": 92.8,
         "withCoordinates": 0,
+        "withTambon": 92.8,
         "categoryDeclared": 10.3,
         "categoryInferred": 8.6,
         "categoryUnknown": 81.1
@@ -7169,6 +7252,7 @@
         "withIncome": 0,
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
+        "withTambon": 90.9,
         "categoryDeclared": 9.3,
         "categoryInferred": 12.1,
         "categoryUnknown": 78.7
@@ -11406,7 +11490,7 @@
     }
   ],
   "revenue": {
-    "builtAt": "2026-09-09T17:50:35.266Z",
+    "builtAt": "2026-09-10T18:31:10.317Z",
     "unit": "บาท",
     "seriesSource": "กรมพัฒนาชุมชน",
     "resourceId": "c1c39e6a-c6ab-4d31-a911-44517db7f2eb",

@@ -30,6 +30,7 @@ import { discoverFieldMap, isUsableMapping, applyFieldMap, classifyResource } fr
 import { PROVINCE_BY_CODE, PROVINCES } from '../../otop/core/provinces.js';
 import { CATEGORIES } from '../../otop/core/taxonomy.js';
 import { buildRecord, gradeRecord, mergeRecords } from '../../otop/core/record.js';
+import { loadTambons, tambonFor, GEO_SOURCE } from '../../otop/core/geo.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -163,6 +164,50 @@ function main() {
     return (a.productName ?? a.producerName ?? '').localeCompare(b.productName ?? b.producerName ?? '', 'th');
   });
 
+  // ── tambon placement ──────────────────────────────────────────────────────
+  // Stamp each record with the TIS-1099 code of the tambon it names, then
+  // publish one small file of tambon centroids + counts so the map can draw
+  // 135k records as ~7k honest points without loading the shards.
+  const geo = loadTambons();
+  const tambonTally = new Map();
+  let placed = 0;
+  for (const record of merged) {
+    const code = tambonFor(record, geo);
+    record.tambonCode = code;
+    if (!code) continue;
+    placed += 1;
+    if (!tambonTally.has(code)) tambonTally.set(code, { records: 0, reachable: 0, graded4Plus: 0 });
+    const t = tambonTally.get(code);
+    t.records += 1;
+    if (record.phone || record.email || record.website) t.reachable += 1;
+    if (record.stars != null && record.stars >= 4) t.graded4Plus += 1;
+  }
+  const tambons = [...tambonTally].map(([code, t]) => {
+    const ref = geo.byCode.get(code);
+    return { code, provinceCode: ref.provinceCode, th: ref.th, en: ref.en, districtTh: ref.districtTh, lat: ref.lat, lng: ref.lng, ...t };
+  }).sort((a, b) => b.records - a.records);
+  const withSubdistrict = merged.filter((r) => r.subdistrict).length;
+  const geoCoverage = {
+    records: merged.length,
+    withSubdistrict,
+    placed,
+    placedShare: merged.length ? Math.round((placed / merged.length) * 1000) / 10 : 0,
+    unplacedWithSubdistrict: withSubdistrict - placed,
+    tambonsWithRecords: tambons.length,
+    tambonsInReference: geo.byCode.size,
+  };
+  if (withSubdistrict > 0 && placed / withSubdistrict < 0.95) {
+    throw new Error(`[otop:build] tambon join placed only ${placed}/${withSubdistrict} subdistrict-bearing records — reference or normalisation drifted`);
+  }
+  fs.writeFileSync(path.join(OUT_DIR, 'otop_tambons.json'), JSON.stringify({
+    builtAt: new Date().toISOString(),
+    source: GEO_SOURCE,
+    precision: 'tambon centroid — the administrative unit the record names, not the producer address',
+    coverage: geoCoverage,
+    tambons,
+  }));
+  console.log(`[otop:build] tambon placement: ${placed}/${withSubdistrict} subdistrict-bearing records placed (${geoCoverage.placedShare}% of all) across ${tambons.length} tambons`);
+
   // ── publish ───────────────────────────────────────────────────────────────
   //
   // Sharded by province, ALWAYS — including at fixture scale.
@@ -273,7 +318,9 @@ function main() {
       rowsRejected: resourceReports.reduce((n, r) => n + r.rowsRejected, 0),
       recordsAfterMerge: merged.length,
       duplicatesCollapsed: records.length - merged.length,
+      tambonPlaced: placed,
     },
+    geo: geoCoverage,
     rejectReasons: Object.fromEntries(rejectTally),
     mergeBasis,
     strongestSignal,

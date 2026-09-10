@@ -5,6 +5,8 @@ import { PROVINCES, REGION_ORDER, resolveProvince } from '../otop/core/provinces
 import { classifyCategory, parseStars, CATEGORIES } from '../otop/core/taxonomy.js';
 import { decodeBuffer, csvToObjects } from '../otop/core/text_decode.js';
 import { discoverFieldMap, isUsableMapping, classifyResource } from '../otop/core/field_map.js';
+import { loadTambons, tambonFor, areaNameKey } from '../otop/core/geo.js';
+import { tallyByTambon } from '../otop/core/tambon_tally.js';
 import {
   buildRecord, gradeRecord, mergeRecords, findOverbroadSignals,
   normalizePhone, normalizeTaxId, parseBuddhistYear, parseCoordinate, parseLatLng, nameKey, parsePrice, parseIncome
@@ -203,4 +205,36 @@ test('classifyResource is the one definition of an economic aggregate', () => {
   assert.equal(classifyResource(leak), 'aggregate-economic');
   assert.equal(classifyResource({ title: 'ข้อมูลผลิตภัณฑ์ OTOP', map: { productName: 'ชื่อผลิตภัณฑ์', province: 'จังหวัด' }, unmapped: [] }), 'producer');
   assert.equal(classifyResource({ title: '(มอก.) รายชื่อมาตรฐานผลิตภัณฑ์อุตสาหกรรม', map: {}, unmapped: ['เลขที่ มอก.', 'ชื่อ'] }), 'other');
+});
+
+test('tambon placement joins on the name the record carries and refuses ambiguity', () => {
+  const geo = loadTambons();
+  assert.ok(geo.byCode.size >= 7400);
+  assert.equal(tambonFor({ provinceCode: 20, district: 'สัตหีบ', subdistrict: 'สัตหีบ' }, geo), '200901');
+  // prefixes the registry sometimes carries are stripped
+  assert.equal(tambonFor({ provinceCode: 20, district: 'อ.สัตหีบ', subdistrict: 'ต.สัตหีบ' }, geo), '200901');
+  // fallback by tambon name only when unique within the province
+  const anyUnique = [...geo.byTambon].find(([, v]) => v.length === 1);
+  const [prov, tKey] = anyUnique[0].split(':');
+  const ref = geo.byCode.get(anyUnique[1][0]);
+  assert.equal(tambonFor({ provinceCode: Number(prov), district: 'wrong', subdistrict: ref.th }, geo), anyUnique[1][0]);
+  assert.equal(areaNameKey(ref.th), tKey);
+  // junk and missing never place
+  for (const bad of ['FALSE', '0', 'ป.ร.', null]) assert.equal(tambonFor({ provinceCode: 10, district: 'x', subdistrict: bad }, geo), null);
+});
+
+test('tallyByTambon groups matcher output or bare records, counts reachability, caps and sorts', () => {
+  const rec = (tambonCode, phone) => ({ tambonCode, phone });
+  const matches = [
+    { record: rec('100101', '0812345678'), score: 90 },
+    { record: rec('100101', null), score: 80 },
+    rec('200901', null),
+    rec(null, '0899999999'), // unplaceable: counted nowhere
+  ];
+  const out = tallyByTambon(matches);
+  assert.equal(out.placeable, 3);
+  assert.deepEqual(out.rows.map((r) => [r.code, r.n, r.reachable]), [['100101', 2, 1], ['200901', 1, 0]]);
+  assert.equal(out.maxN, 2);
+  assert.equal(tallyByTambon(matches, { max: 1 }).rows.length, 1);
+  assert.equal(tallyByTambon(matches, { max: 0 }).placeable, 3); // placeable is counted before the cap
 });

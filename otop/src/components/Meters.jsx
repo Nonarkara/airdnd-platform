@@ -13,6 +13,7 @@ const METERS = [
   { key: 'withPrice', label: 'Priced', th: 'มีราคา', note: 'carries a price' },
   { key: 'withSubdistrict', label: 'Located to tambon', th: 'ระบุถึงตำบล', note: 'sub-district resolved' },
   { key: 'withCoordinates', label: 'Mapped', th: 'มีพิกัด', note: 'has coordinates' },
+  { key: 'withTambon', label: 'Placeable', th: 'วางบนแผนที่ได้', note: 'tambon centroid resolved from the name it carries' },
   { key: 'categoryDeclared', label: 'Category declared', th: 'ระบุประเภทเอง', note: 'source stated it; the rest is inferred' },
 ];
 

@@ -87,6 +87,7 @@ function completeness(items) {
     withIncome: pct(items.filter((r) => r.income != null).length, n),
     withSubdistrict: pct(items.filter((r) => r.subdistrict).length, n),
     withCoordinates: pct(items.filter((r) => r.latitude != null && r.longitude != null).length, n),
+    withTambon: pct(items.filter((r) => r.tambonCode).length, n),
     categoryDeclared: pct(items.filter((r) => r.categoryConfidence === 'declared').length, n),
     categoryInferred: pct(items.filter((r) => r.categoryConfidence === 'inferred').length, n),
     categoryUnknown: pct(items.filter((r) => r.categoryConfidence === 'none').length, n),

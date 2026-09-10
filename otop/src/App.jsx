@@ -392,6 +392,7 @@ export default function App() {
                 <Suspense fallback={<div className="map-skeleton">Loading map…</div>}>
                   <ProvinceMap
                     basins={mapProvinces}
+                    records={result.matches}
                     degraded={meta.degraded}
                     onSelectProvince={(code) => setRequirement((r) => ({ ...r, provinceCodes: [code] }))}
                   />
