@@ -260,8 +260,9 @@ export default function App() {
       <main>
         <section className="hero">
           <div className="wrap">
-            <h1 className="hero-mark">one<span className="mid">·</span>tambon</h1>
-            <p className="hero-th">หนึ่งตำบล หนึ่งผลิตภัณฑ์</p>
+            <h1 className="hero-mark">one<span className="mid">³</span></h1>
+            <p className="hero-mark-sub">One Tambon · One Product · One Platform</p>
+            <p className="hero-th">หนึ่งตำบล หนึ่งผลิตภัณฑ์ หนึ่งแพลตฟอร์ม</p>
             <p className="hero-sub">
               Thailand's OTOP registry as a working directory for matching demand to supply.
               State a requirement; get a ranked shortlist, the reason for the ranking, and an

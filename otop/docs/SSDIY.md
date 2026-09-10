@@ -1,6 +1,6 @@
 # SSDIY — Self-Service + DIY Operator Manual
 
-one·tambon is built to be run by one person from a terminal. No CI, no build
+one³ is built to be run by one person from a terminal. No CI, no build
 service, no cloud dependency beyond a static host. This is the canonical "how do
 I make it do X" reference.
 

@@ -1,4 +1,8 @@
-# one·tambon — OTOP registry intelligence
+# one³ — OTOP registry intelligence
+
+One Tambon · One Product · One Platform. Thailand's OTOP
+registry read as data. Every record carries its source, its
+completeness, and its age.
 
 `otop.nonarkara.org` · Case study #2 of the community-intelligence platform.
 

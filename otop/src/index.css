@@ -1,10 +1,10 @@
 /**
- * one·tambon — Thai festival palette.
+ * one³ — One Tambon, One Product, One Platform.
  *
- * The data is Thai: 154k OTOP products, 77 provinces, ฿314B annual revenue.
- * The page now matches. The previous Dieter-Rams-into-cream palette is
- * retired; the new palette is drawn from the festival-market imagery the
- * site carries in its hero banners:
+ * Three readings of "one" stacked, deliberately: the tambon (the
+ * sub-district), the product (the OTOP unit), and the platform (this
+ * site). 1³ = 1: the three are the same number, the same programme,
+ * one source of truth, three lenses.
  *
  *   ground    warm lotus ivory    (paper, banana leaf)
  *   ink       deep banyan brown   (text, temple wood)
@@ -14,14 +14,36 @@
  *   leaf      rice-paddy green    (geography tab)
  *   river     river teal          (reach tab, water)
  *
- * The original house rules hold: sharp edges, no shadows, type does the
- * work. The colour change is the message — this is a Thai directory, not
- * a Swiss one.
+ * Sharp edges, no shadows, type does the work. The colour is the
+ * message — this is a Thai directory.
  *
- * Typography: Sao Chingcha for Thai text (Google Font, designed for
- * modern Thai display use), Josefin Sans for Latin display, JetBrains
- * Mono for instrument numerals.
+ * Typography: Sao Chingcha is shipped locally as OTF (Light / Regular
+ * / Bold) under otop/public/fonts/ — not loaded from Google Fonts, so the
+ * page renders the right Thai cut on first paint and there is no
+ * third-party font request in the network tab. Josefin Sans stays
+ * for Latin display; JetBrains Mono for instrument numerals.
  */
+@font-face {
+  font-family: 'Sao Chingcha';
+  src: url('/fonts/SaoChingcha-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sao Chingcha';
+  src: url('/fonts/SaoChingcha-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sao Chingcha';
+  src: url('/fonts/SaoChingcha-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --bg:        #fdf3df;        /* warm lotus ivory */
@@ -45,9 +67,9 @@
   --navy:      #0e1e3c;        /* kept for status dot only */
   --alert:     #8b1a1a;        /* synonym of accent-2 in this palette */
 
-  --font-display: 'Josefin Sans', 'Sao Chingcha', Helvetica Neue, Arial, sans-serif;
-  --font-text:    Helvetica Neue, Helvetica, Arial, 'Sao Chingcha', system-ui, sans-serif;
-  --font-thai:    'Sao Chingcha', 'IBM Plex Sans Thai', 'Noto Sans Thai', system-ui, sans-serif;
+  --font-display: 'Sao Chingcha', 'Josefin Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-text:    'Sao Chingcha', Helvetica Neue, Arial, system-ui, sans-serif;
+  --font-thai:    'Sao Chingcha', 'Noto Sans Thai', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
 
   --gutter: clamp(1rem, 4vw, 3rem);
@@ -141,6 +163,12 @@ a { color: inherit; }
   text-shadow: 0 2px 24px rgba(31, 14, 10, 0.6);
 }
 .hero-mark .mid { color: var(--accent); }
+.hero-mark-sub {
+  margin: .35rem 0 0; font-family: var(--font-text);
+  font-size: clamp(11px, 1.4vw, 13px); letter-spacing: .14em; text-transform: uppercase;
+  color: #fffaef; text-shadow: 0 1px 12px rgba(31, 14, 10, 0.7);
+  font-weight: 500;
+}
 .hero-sub {
   margin: 1rem 0 0; max-width: 56ch;
   font-size: clamp(15px, 1.6vw, 17px); color: #fffaef;
