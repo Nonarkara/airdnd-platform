@@ -69,6 +69,18 @@ export default function Atlas({ insights, onSelectProvince }) {
         ))}
       </nav>
 
+      {/* Per-tab festival banner with the question that tab answers. */}
+      {(() => {
+        const current = CHAPTERS.find((c) => c.id === tab) ?? CHAPTERS[0];
+        return (
+          <div className="atlas-tab-banner" data-tab={current.id}>
+            <p className="atlas-tab-q">{current.q}</p>
+            <h2 className="atlas-tab-h">{current.label}</h2>
+            <p className="atlas-tab-th">{current.th}</p>
+          </div>
+        );
+      })()}
+
       {tab === 'findings' && <Findings findings={findings} />}
       {tab === 'domain' && (
         <Domain

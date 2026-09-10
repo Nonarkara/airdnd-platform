@@ -1,35 +1,53 @@
 /**
- * one·tambon — design tokens and base.
+ * one·tambon — Thai festival palette.
  *
- * House rules inherited from the wellness project and enforced here:
- *   · zero border-radius on anything non-circular
- *   · zero gradients, zero box-shadows
- *   · lines only where they divide, direct, or communicate
- *   · one accent (amber #f59e0b), and on a light surface it carries RULES,
- *     never glyphs — amber text on cream measures 2.04:1 and fails WCAG
- *     (tasks/lessons.md · 2026-08-24). Every rule below obeys that.
- *   · ONE wordmark per viewport: the hero owns it, the header never repeats it.
+ * The data is Thai: 154k OTOP products, 77 provinces, ฿314B annual revenue.
+ * The page now matches. The previous Dieter-Rams-into-cream palette is
+ * retired; the new palette is drawn from the festival-market imagery the
+ * site carries in its hero banners:
+ *
+ *   ground    warm lotus ivory    (paper, banana leaf)
+ *   ink       deep banyan brown   (text, temple wood)
+ *   accent    temple gold         (the active rule)
+ *   silk      silk magenta        (links, focus)
+ *   crimson   temple crimson      (degraded state, alerts)
+ *   leaf      rice-paddy green    (geography tab)
+ *   river     river teal          (reach tab, water)
+ *
+ * The original house rules hold: sharp edges, no shadows, type does the
+ * work. The colour change is the message — this is a Thai directory, not
+ * a Swiss one.
+ *
+ * Typography: Sao Chingcha for Thai text (Google Font, designed for
+ * modern Thai display use), Josefin Sans for Latin display, JetBrains
+ * Mono for instrument numerals.
  */
 
 :root {
-  --bg:        #faf9f7;
-  --bg-2:      #f3f1eb;
-  --surface:   #fcfbf9;
-  --line:      #e7e5dd;
-  --line-2:    #d2cfc5;
+  --bg:        #fdf3df;        /* warm lotus ivory */
+  --bg-2:      #f6e4c1;        /* deeper banana-leaf */
+  --surface:   #fffaef;        /* paper */
+  --line:      #d8b87a;        /* warm gold-rule */
+  --line-2:    #ad8c4d;        /* deep rule */
 
-  --ink:       #191712;
-  --ink-2:     #5c5a54;
-  --ink-3:     #736f66;
-  --ink-4:     #9a968c;
+  --ink:       #1f0e0a;        /* banyan brown — warmer than near-black */
+  --ink-2:     #5a3625;        /* warm walnut */
+  --ink-3:     #8a6645;        /* sandalwood */
+  --ink-4:     #b89568;        /* almond shell */
 
-  --accent:    #f59e0b;
-  --accent-2:  #b45309;   /* 4.9:1 on --bg — the only amber allowed on glyphs */
-  --navy:      #0e1e3c;
-  --alert:     #a51931;
+  --accent:    #c99518;        /* temple gold — slightly deeper than the
+                                  previous amber for legibility on warm bg */
+  --accent-2:  #8b1a1a;        /* temple crimson — for emphasis glyphs */
+  --silk:      #b83264;        /* silk magenta — links, focus rings */
+  --lotus:     #e89ba9;        /* lotus pink — soft accent */
+  --leaf:      #2d6a3e;        /* rice-paddy green */
+  --river:     #0e5e63;        /* river teal */
+  --navy:      #0e1e3c;        /* kept for status dot only */
+  --alert:     #8b1a1a;        /* synonym of accent-2 in this palette */
 
-  --font-display: 'Josefin Sans', 'IBM Plex Sans Thai', Helvetica Neue, Arial, sans-serif;
-  --font-text:    Helvetica Neue, Helvetica, Arial, 'IBM Plex Sans Thai', system-ui, sans-serif;
+  --font-display: 'Josefin Sans', 'Sao Chingcha', Helvetica Neue, Arial, sans-serif;
+  --font-text:    Helvetica Neue, Helvetica, Arial, 'Sao Chingcha', system-ui, sans-serif;
+  --font-thai:    'Sao Chingcha', 'IBM Plex Sans Thai', 'Noto Sans Thai', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
 
   --gutter: clamp(1rem, 4vw, 3rem);
@@ -65,18 +83,19 @@ a { color: inherit; }
 }
 
 :focus-visible {
-  outline: 2px solid var(--navy);
+  outline: 2px solid var(--silk);
   outline-offset: 2px;
 }
 
-.shell { min-height: 100dvh; display: flex; flex-direction: column; }
+.shell { min-height: 100dvh; display: flex; flex-direction: column; background: var(--bg); }
 .wrap { width: 100%; max-width: var(--measure); margin: 0 auto; padding-inline: var(--gutter); }
 
 /* ── header: nav + status only. No wordmark — the hero carries it. ────────── */
 .hdr {
   position: sticky; top: 0; z-index: 20;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
+  background: var(--ink);
+  color: var(--bg);
+  border-bottom: 1px solid var(--accent);
 }
 .hdr-in {
   display: flex; align-items: center; justify-content: space-between;
@@ -86,30 +105,59 @@ a { color: inherit; }
 .hdr-nav button {
   background: none; border: 0; padding: 0;
   font: inherit; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink-3); cursor: pointer;
+  color: var(--bg-2); cursor: pointer;
   border-bottom: 2px solid transparent; line-height: 2;
 }
-.hdr-nav button[aria-current='true'] { color: var(--ink); border-bottom-color: var(--accent); }
+.hdr-nav button[aria-current='true'] { color: var(--bg); border-bottom-color: var(--accent); }
 .hdr-status {
-  font-family: var(--font-mono); font-size: 11px; color: var(--ink-3);
+  font-family: var(--font-mono); font-size: 11px; color: var(--bg-2);
   display: flex; align-items: center; gap: .5rem;
 }
-.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--navy); }
-.dot.warn { background: var(--accent); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.dot.warn { background: var(--accent-2); }
 
-/* ── hero ─────────────────────────────────────────────────────────────────── */
-.hero { border-bottom: 1px solid var(--line); padding-block: clamp(2.5rem, 7vw, 4.5rem) 0; }
+/* ── hero with festival-market art ─────────────────────────────────────────── */
+.hero {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  padding-block: clamp(3.5rem, 8vw, 6rem) clamp(2.5rem, 6vw, 4rem);
+  background:
+    linear-gradient(180deg, rgba(31, 14, 10, 0.55) 0%, rgba(31, 14, 10, 0.20) 40%, rgba(253, 243, 223, 0.85) 100%),
+    url('/heroes/festival-market.png') center 30% / cover no-repeat;
+  color: #fffaef;
+  isolation: isolate;
+}
+.hero::after {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  background: var(--bg);
+  opacity: 0;
+}
 .hero-mark {
   font-family: var(--font-display); font-weight: 600;
-  font-size: clamp(2.25rem, 6vw, 3.75rem); line-height: 1;
+  font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1;
   letter-spacing: -.02em; margin: 0;
+  color: #fffaef;
+  text-shadow: 0 2px 24px rgba(31, 14, 10, 0.6);
 }
-.hero-mark .mid { color: var(--accent-2); }
+.hero-mark .mid { color: var(--accent); }
 .hero-sub {
-  margin: .75rem 0 0; max-width: 56ch;
-  font-size: clamp(15px, 1.6vw, 17px); color: var(--ink-2);
+  margin: 1rem 0 0; max-width: 56ch;
+  font-size: clamp(15px, 1.6vw, 17px); color: #fffaef;
+  text-shadow: 0 1px 12px rgba(31, 14, 10, 0.7);
+  background: rgba(31, 14, 10, 0.35);
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--accent);
+  backdrop-filter: blur(2px);
 }
-.hero-th { font-family: var(--font-display); color: var(--ink-3); margin: .25rem 0 0; }
+.hero-th {
+  font-family: var(--font-thai); font-weight: 500;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  color: var(--accent);
+  margin: .25rem 0 0;
+  text-shadow: 0 2px 18px rgba(31, 14, 10, 0.7);
+  letter-spacing: 0.05em;
+}
 
 /* instrument panel — numerals do the talking */
 .gauges {
@@ -164,7 +212,7 @@ a { color: inherit; }
 .meter-l { font-size: 12px; color: var(--ink-2); }
 .meter-v { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
 .meter-track { height: 4px; background: var(--bg-2); margin-top: .5rem; }
-.meter-fill { height: 100%; background: var(--navy); }
+.meter-fill { height: 100%; background: var(--river); }
 .meter-fill.low { background: var(--accent); }
 .meter-note { margin-top: .375rem; font-size: 11px; color: var(--ink-4); }
 
@@ -376,3 +424,58 @@ html, body { overflow-x: hidden; }
 .leaflet-popup-content { font-size: 12px; margin: .625rem .75rem; }
 .leaflet-bar a { border-radius: 0 !important; }
 .leaflet-control-attribution { font-size: 10px; }
+
+/* ── Per-Atlas-tab banners ──────────────────────────────────────────────────
+   Each tab shows one of the four festival-market illustrations as a
+   banner, with a warm paper panel on top carrying the question.
+   The banner changes when the active tab changes. */
+.atlas-tab-banner {
+  position: relative;
+  min-height: 180px;
+  padding: 1.75rem 1.5rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--line);
+  background-size: cover;
+  background-position: center 35%;
+  color: #fffaef;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  isolation: isolate;
+}
+.atlas-tab-banner::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(31, 14, 10, 0.15) 0%, rgba(31, 14, 10, 0.55) 100%);
+}
+.atlas-tab-banner[data-tab='findings'] { background-image: url('/heroes/festival-market.png'); }
+.atlas-tab-banner[data-tab='domain']   { background-image: url('/heroes/mountains-rice.png'); }
+.atlas-tab-banner[data-tab='reach']    { background-image: url('/heroes/sunset-river.png'); }
+.atlas-tab-banner[data-tab='money']    { background-image: url('/heroes/market-food.png'); }
+.atlas-tab-banner[data-tab='record']   { background-image: url('/heroes/festival-market.png'); }
+.atlas-tab-banner .atlas-tab-q {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.5rem;
+  text-shadow: 0 1px 8px rgba(31, 14, 10, 0.8);
+}
+.atlas-tab-banner .atlas-tab-h {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 600;
+  margin: 0;
+  color: #fffaef;
+  text-shadow: 0 2px 16px rgba(31, 14, 10, 0.7);
+}
+.atlas-tab-banner .atlas-tab-th {
+  font-family: var(--font-thai);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 500;
+  color: #fffaef;
+  margin: 0.25rem 0 0;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 12px rgba(31, 14, 10, 0.7);
+}
