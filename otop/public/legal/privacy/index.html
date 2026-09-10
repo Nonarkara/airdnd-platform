@@ -36,7 +36,7 @@
     <dl class="def">
       <div><dt>Name</dt><dd>Dr Non Arkaraprasertkul (ดร. นนท์ อัครประสิทธิ์กุล)</dd></div>
       <div><dt>Address</dt><dd>Bangkok, Thailand</dd></div>
-      <div><dt>Contact</dt><dd><a href="mailto:otop@nonarkara.org">otop@nonarkara.org</a></dd></div>
+      <div><dt>Contact</dt><dd><a href="mailto:non@nonarkara.org">non@nonarkara.org</a></dd></div>
     </dl>
     <p>For Thai PDPA purposes, this is a small-scale processing operation. The PDPA does not require us to appoint a Data Protection Officer (DPO) for the kind of static-data re-publication we do.</p>
 
@@ -49,7 +49,7 @@
       <tbody>
         <tr><td>Producer / group name</td><td>ชื่อกลุ่มผู้ประกอบการ</td><td>Yes (name)</td></tr>
         <tr><td>Chair / owner name</td><td>ชื่อประธานกลุ่ม</td><td>Yes (name)</td></tr>
-        <tr><td>National ID number (in some datasets)</td><td>เลขประจำตัวประชาชน</td><td>Yes (national identifier)</td></tr>
+        <tr><td>National ID / tax number <strong>&mdash; stripped, never published</strong></td><td>เลขประจำตัวประชาชน / เลขประจำตัวผู้เสียภาษี</td><td>Not published (0 of 154,078 records)</td></tr>
         <tr><td>Address, village, sub-district, district, province, postcode</td><td>ที่อยู่ / หมู่บ้าน / ตำบล / อำเภอ / จังหวัด / รหัสไปรษณีย์</td><td>Yes (location)</td></tr>
         <tr><td>Phone number</td><td>เบอร์โทร</td><td>Yes (contact channel)</td></tr>
         <tr><td>OTOP registry number</td><td>เลขทะเบียนผู้ประกอบการ OTOP</td><td>No (public identifier)</td></tr>
@@ -62,14 +62,23 @@
     <p>When you load a page, our hosting provider (Cloudflare) processes your IP address for the technical purpose of serving the page, blocking abuse, and routing you to the nearest edge node. This is a side effect of using the internet, not something we choose. Cloudflare's privacy policy applies to that processing; we do not receive that data in a way that identifies you. We do not set cookies, do not run analytics scripts, and do not maintain logs keyed to your identity beyond the short retention window Cloudflare uses for security.</p>
 
     <h2>3. The lawful basis for re-publishing <span lang="th" class="bi-th">ฐานทางกฎหมายในการเผยแพร่อีกครั้ง</span></h2>
-    <p>We rely on <strong>PDPA Section 24(1)</strong> (preparation of historical documents, archives, study, research, or statistics for public interest, with appropriate safeguards) and on <strong>Section 24(6)</strong> (carrying out a task in the public interest) as the lawful bases for our re-publication of producer data that we did not collect directly from the data subject.</p>
+    <p>We rely on <strong>PDPA Section 24(1)</strong> (preparation of historical documents or archives, study, research, or statistics for public interest, with appropriate safeguards) and on <strong>Section 24(5)</strong> (legitimate interest of the data controller, except where the data subject&rsquo;s fundamental rights override it) as the lawful bases for our re-publication of producer data that we did not collect directly from the data subject.</p>
+    <p>We do not rely on Section 24(4) or Section 24(6). Section 24(4) covers a task carried out in the public interest <em>by the data controller</em> or official authority vested in the data controller; we are a private operator and hold no such authority. Section 24(6) covers compliance with a law to which the data controller is subject; no law requires us to publish this registry. We say so here because a privacy notice that claims the wrong basis is worse than one that claims a narrow one.</p>
+    <h3>The balancing test under Section 24(5) <span lang="th" class="bi-th">การชั่งน้ำหนักประโยชน์</span></h3>
+    <p>Section 24(5) is not automatic. It requires the controller to weigh its interest against the data subject&rsquo;s rights and to record the result. Ours:</p>
+    <ol>
+      <li><strong>The interest.</strong> Making a fragmented public registry legible &mdash; deduplicated, attributed, and searchable &mdash; so that buyers, researchers, and the producers themselves can see what the state has recorded.</li>
+      <li><strong>Necessity.</strong> The purpose cannot be achieved with less data. A directory without a producer name or an administrative area is not a directory. We publish no field that the purpose does not need, and we add none.</li>
+      <li><strong>The balance.</strong> The data was already published by the state for public re-use; the fields are business-facing rather than intimate; we add no inference about a person; and any producer can have their record removed on request. Against that, the residual intrusion is the continued visibility of a business listing the state had already made public. We judge the balance to favour publication &mdash; and we accept that a data subject who disagrees may object under Section 32, which ends the matter for that record.</li>
+    </ol>
     <p>These bases apply because:</p>
     <ol>
       <li>The data was already made public by a Thai state agency (the Department of Community Development) on an open data portal operating under the EGA Open Government License.</li>
       <li>Our use is a registry-intelligence read — a public-interest function analogous to research and statistics — and is not a marketing, profiling, or automated-decision use.</li>
       <li>We add appropriate safeguards: we do not re-identify records with other datasets, we do not sell the data, we provide a public takedown mechanism, and we limit liability through our disclaimer.</li>
     </ol>
-    <p>The PDPA explicitly recognises that data which has been lawfully disclosed to the public can be processed for compatible purposes without re-obtaining consent. The OGD licence and the Official Information Act B.E. 2540 together establish that the source publication was lawful.</p>
+    <p><strong>Being public is not, by itself, a lawful basis.</strong> The Thai PDPA &mdash; unlike some regional statutes &mdash; contains no exemption for personal data that is already publicly available. Data that identifies a person stays personal data whether it sits on an open portal or not. We state this plainly because the opposite assumption is the common one, and it is wrong.</p>
+    <p>What prior publication actually does is weigh in the balancing test above: the OGD licence and the Official Information Act B.E. 2540 establish that the source publication was lawful, which lowers the marginal intrusion of our re-publication. That is a factor in our favour under Section 24(5). It is not a substitute for having a basis at all.</p>
 
     <h2>4. What we do not do <span lang="th" class="bi-th">สิ่งที่เราไม่ทำ</span></h2>
     <ul>
@@ -93,13 +102,13 @@
       <thead><tr><th>Right</th><th>PDPA section</th><th>How to exercise it on this site</th></tr></thead>
       <tbody>
         <tr><td>Right to be informed</td><td>Section 23</td><td>This page is the notice.</td></tr>
-        <tr><td>Right of access</td><td>Section 30</td><td>Email <a href="mailto:otop@nonarkara.org">otop@nonarkara.org</a> with the registry number or your name and province; we will reply within 30 days.</td></tr>
+        <tr><td>Right of access</td><td>Section 30</td><td>Email <a href="mailto:non@nonarkara.org">non@nonarkara.org</a> with the registry number or your name and province; we will reply within 30 days.</td></tr>
         <tr><td>Right to data portability</td><td>Section 31</td><td>Same as above; we will send the JSON for your record(s).</td></tr>
         <tr><td>Right to object</td><td>Section 32</td><td>Same as above; state that you object and to what processing.</td></tr>
         <tr><td>Right to erasure / deletion</td><td>Section 33</td><td>Use the <a href="/legal/takedown/">takedown procedure</a>.</td></tr>
         <tr><td>Right to restrict processing</td><td>Section 34</td><td>Same as above.</td></tr>
         <tr><td>Right to rectification</td><td>Section 35</td><td>Use the <a href="/legal/takedown/">takedown procedure</a> with the corrected information; we will forward to the source publisher.</td></tr>
-        <tr><td>Right to withdraw consent</td><td>Section 18</td><td>Not applicable — we do not rely on consent. The lawful basis is Section 24(1) and 24(6).</td></tr>
+        <tr><td>Right to withdraw consent</td><td>Section 18</td><td>Not applicable — we do not rely on consent. The lawful bases are Section 24(1) and 24(5).</td></tr>
         <tr><td>Right to lodge a complaint with the PDPC</td><td>Section 73</td><td>Office of the Personal Data Protection Committee, M Floor, 120 Moo 3, Chaeng Watthana Road, Thung Song Hong, Lak Si, Bangkok 10210. <span class="mono">www.pdpc.or.th</span></td></tr>
       </tbody>
     </table>
@@ -113,7 +122,7 @@
     <h2>10. Contact <span lang="th" class="bi-th">ติดต่อ</span></h2>
     <div class="contact-box">
       <span class="cb-key">All privacy matters</span>
-      <p><a href="mailto:otop@nonarkara.org">otop@nonarkara.org</a> · response within 30 days, in Thai or English. Please include the OTOP registry number or your name and province so we can locate the record.</p>
+      <p><a href="mailto:non@nonarkara.org">non@nonarkara.org</a> · response within 30 days, in Thai or English. Please include the OTOP registry number or your name and province so we can locate the record.</p>
     </div>
 
     <div class="page-foot">

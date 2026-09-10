@@ -3,7 +3,7 @@
 ### What Thai law actually says, what risks we carry, and how the fine print mitigates them
 
 **For the file of Dr Non Arkaraprasertkul** · one³ OTOP registry intelligence project
-*2026-09-10 · Working draft · Sources: primary Acts of Thailand, OGD License, PDPC and DLA Piper guidance, secondary commentary. Not legal advice — consult a Thai lawyer before relying on this in a dispute.*
+*2026-09-10 · Working draft, corrected same day (see §1.1 and §4) · Sources: primary Acts of Thailand, OGD License, PDPC and DLA Piper guidance, secondary commentary. Not legal advice — consult a Thai lawyer before relying on this in a dispute.*
 
 > The user is building one³ at `otop.pages.dev` (custom `otop.nonarkara.org` in progress) by pulling the Thai government's open OTOP catalogue from `data.go.th`, re-publishing it as a single closed information package with dedup, scoring, and findings. The question is the legal posture: is this lawful, what risks are real, and what does the fine print need to say? This document is the reasoning behind the five public pages at `/legal/`.
 
@@ -21,17 +21,25 @@ Effective in full since **1 June 2025** (after the most recent extension). Perso
 
 **The lawful bases that touch our case** (Section 24 for ordinary personal data):
 
-- **Section 24(1)** — preparation of historical documents, archives, study/research, or statistics for public interest, with appropriate safeguards. *This is the strongest fit for us.* We are not selling the data; we are reading 196,000 producer records and turning them into a searchable, deduplicated, public-interest intelligence surface. The Act's own language ("การศึกษาวิจารณ์ หรือสถิติ" — research or statistics) maps to what we do. The safeguard requirement is met by: (a) public-benefit purpose, (b) accuracy caveats in the data, (c) a takedown mechanism, (d) no re-identification, (e) no commercial sale.
+- **Section 24(1)** — preparation of historical documents, archives, study/research, or statistics for public interest, with appropriate safeguards. *This is a strong fit for us, though it is not sufficient on its own.* We are not selling the data; we are reading 154,078 producer records and turning them into a searchable, deduplicated, public-interest intelligence surface. The Act's own language ("การศึกษาวิจารณ์ หรือสถิติ" — research or statistics) maps to what we do. The safeguard requirement is met by: (a) public-benefit purpose, (b) accuracy caveats in the data, (c) a takedown mechanism, (d) no re-identification, (e) no commercial sale.
 
-- **Section 24(2)** — necessary to comply with a contract. *Not applicable.* We have no contract with the producer.
+- **Section 24(2)** — preventing or suppressing a danger to a person's life, body, or health. *Not applicable.*
 
-- **Section 24(5)** — legitimate interest. *Available but weaker.* The PDPC requires a balancing test. Our interest is a public-interest intelligence surface; the data subject's interest is the privacy of their address and phone. The fact that the data was already published by a state agency weighs in our favour, but the balance is closer than under 24(1).
+- **Section 24(3)** — necessary for the performance of a contract with the data subject. *Not applicable.* We have no contract with the producer.
 
-- **Section 24(6)** — substantial public interest. *Available.* The OTOP programme is itself a substantial public interest programme; a public-facing intelligence read of the registry is in the same spirit.
+- **Section 24(4)** — a task carried out in the public interest **by the data controller**, or official authority **vested in the data controller**. *Not available.* Both limbs attach the public function to the controller. We are a private operator exercising no official authority; the fact that the underlying programme serves the public does not transfer the basis to us.
+
+- **Section 24(5)** — legitimate interest of the controller, unless overridden by the data subject's fundamental rights. ***This is our primary basis.*** The PDPC requires a balancing test. Our interest is a public-interest intelligence surface; the data subject's interest is the privacy of their address and phone. The fact that the data was already published by a state agency weighs in our favour, but the balance is closer than under 24(1).
+
+- **Section 24(6)** — necessary for compliance with **a law to which the data controller is subject**. *Not available.* No law requires us to publish this registry. "Substantial public interest" is not a Section 24 ground at all: it belongs to Section 26, which governs *sensitive* data. An earlier draft of this memorandum asserted 24(6) as "substantial public interest" and the Privacy Policy repeated it; both were wrong and both are corrected as of 2026-09-10.
+
+**Conclusion on basis.** We rely on **24(1) plus 24(5)**. 24(5) is the workhorse, and its balancing test is not a weakness to be avoided — it is a test we pass and can show our working for. The Privacy Policy now records that working in three numbered steps, which is what the PDPC expects a controller to be able to produce on request.
 
 **Sensitive personal data** (Section 26): racial origin, religious belief, sexual behaviour, criminal record, health data, etc. **Our data is not sensitive data** under the Act. Phone and address are ordinary personal data. National ID is *not* on the statutory sensitive list (it is a national identifier, treated as ordinary). We therefore do not need a Section 26 basis at all.
 
 **Cross-border transfer** (Section 28): sending personal data outside Thailand requires adequate protection in the destination, or one of the listed grounds. Our hosting is on Cloudflare Pages, which serves content from global edge nodes. *However*, the PDPC's December 2023 subordinate regulation explicitly exempts *data transit and data storage* (e.g. cloud computing) from the cross-border rules if appropriate technical safeguards are in place. Cloudflare is on the PDPC's accepted adequate-jurisdiction list, and we are not the *originator* of a new transfer — we are re-publishing what a Thai state agency published. The cross-border exposure is therefore low but not zero; we mention it in the Privacy Policy.
+
+**No public-domain exemption.** Thai law has no equivalent of Singapore's "publicly available data" exception. Personal data that identifies a person remains personal data whether or not a state agency already published it. Prior lawful publication is evidence that lowers the intrusion in the 24(5) balance; it is not a basis and it is not an exemption. Any page of ours that implied otherwise has been corrected.
 
 **Section 4 exemptions**: these are mostly for state agencies, the legislature, the courts, mass media, and credit bureaus. **They do not apply to us.** We are a private operator. We must comply with the general rules.
 
@@ -45,7 +53,7 @@ The Act's own preamble (the *Rao Tham* of the Cabinet) treats open data as a tra
 
 ### 1.3 พ.ร.บ.ลิขสิทธิ์ พ.ศ. 2537 (Copyright Act B.E. 2537 / 1994)
 
-The OTOP data is *not* a creative work. Thai copyright protects "literary, scientific, artistic works" of original expression. A CSV column of 196,000 producer names is a *compilation* (Section 9 of the Act) and may enjoy thin copyright only in the *selection and arrangement*. The selection and arrangement on `data.go.th` is functional and unoriginal, so the compilation itself attracts at most de minimis copyright protection. We are safe.
+The OTOP data is *not* a creative work. Thai copyright protects "literary, scientific, artistic works" of original expression. A CSV column of 154,078 producer names is a *compilation* (Section 9 of the Act) and may enjoy thin copyright only in the *selection and arrangement*. The selection and arrangement on `data.go.th` is functional and unoriginal, so the compilation itself attracts at most de minimis copyright protection. We are safe.
 
 The official *name* "OTOP" and the mark "OTOP Product Champion" are public-sector identifiers, used descriptively. We do not claim any sponsorship or endorsement. This is nominative fair use under any reading of the Thai Act, US Lanham Act, or EU trademark law.
 
@@ -101,15 +109,15 @@ Five pages, in this order on the site footer:
 | File | One-line purpose | Thai equivalent |
 |---|---|---|
 | `/legal/` (index) | "Fine print" — a single bilingual landing page that indexes the rest | รายละเอียดทางกฎหมาย |
-| `/legal/terms.html` | Terms of Use — what you may and may not do, who runs the platform, what the warranties are, governing law | ข้อกำหนดและเงื่อนไขการใช้งาน |
-| `/legal/privacy.html` | Privacy Policy — what we collect, what we re-publish, how to ask for a correction, who the data controller is | นโยบายความเป็นส่วนตัว |
-| `/legal/provenance.html` | Data Provenance & License — exactly where the data comes from, what licence, attribution, what we add | แหล่งที่มาของข้อมูลและสัญญาอนุญาต |
-| `/legal/disclaimer.html` | Disclaimer — no warranty of accuracy, no endorsement, no commercial outcome, no professional advice | การปฏิเสธความรับผิด |
-| `/legal/takedown.html` | Correction & Takedown procedure — who can ask, what to include, response time | การแจ้งแก้ไขหรือลบข้อมูล |
+| `/legal/terms/` | Terms of Use — what you may and may not do, who runs the platform, what the warranties are, governing law | ข้อกำหนดและเงื่อนไขการใช้งาน |
+| `/legal/privacy/` | Privacy Policy — what we collect, what we re-publish, how to ask for a correction, who the data controller is | นโยบายความเป็นส่วนตัว |
+| `/legal/provenance/` | Data Provenance & License — exactly where the data comes from, what licence, attribution, what we add | แหล่งที่มาของข้อมูลและสัญญาอนุญาต |
+| `/legal/disclaimer/` | Disclaimer — no warranty of accuracy, no endorsement, no commercial outcome, no professional advice | การปฏิเสธความรับผิด |
+| `/legal/takedown/` | Correction & Takedown procedure — who can ask, what to include, response time | การแจ้งแก้ไขหรือลบข้อมูล |
 
 The pages are short, plain, bilingual (English primary, Thai secondary at ~0.78em with `lang="th"` for screen readers), and follow the existing site aesthetic: sharp edges, no decoration, monochrome + amber accent, single column on mobile, two on desktop.
 
-The **governing law** is Thailand. The **forum** is the Thai courts. The **operator** is Dr Non Arkaraprasertkul. The **contact email** is `otop@nonarkara.org` (which the user can route). The **last-updated date** is in the page footer of each legal page.
+The **governing law** is Thailand. The **forum** is the Thai courts. The **operator** is Dr Non Arkaraprasertkul. The **contact email** is `non@nonarkara.org`. *This matters more than it looks:* the first draft used `otop@nonarkara.org`, which had no Cloudflare Email Routing rule and no catch-all (catch-all is disabled, action `drop`). Every takedown request would have been silently discarded while five pages promised a 30-day response. A takedown mechanism that does not receive mail is not a mitigation; it is evidence of a failure to respond. Corrected 2026-09-10 to the address that actually forwards. If a dedicated alias is wanted later: `npx wrangler email routing rules create --name "otop" --match "to:otop@nonarkara.org" --action "forward:nonsmartcity@gmail.com"`. The **last-updated date** is in the page footer of each legal page.
 
 ---
 
