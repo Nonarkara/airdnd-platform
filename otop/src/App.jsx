@@ -734,6 +734,7 @@ function completenessOf(records) {
     withPrice: pct(records.filter((r) => r.price != null).length, n),
     withSubdistrict: pct(records.filter((r) => r.subdistrict).length, n),
     withCoordinates: pct(records.filter((r) => r.latitude != null && r.longitude != null).length, n),
+    withTambon: pct(records.filter((r) => r.tambonCode).length, n),
     categoryDeclared: pct(records.filter((r) => r.categoryConfidence === 'declared').length, n),
   };
 }
