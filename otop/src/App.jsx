@@ -96,8 +96,23 @@ function Gauge({ n, label, th }) {
     <div className="gauge">
       <div className="gauge-n">{n}</div>
       <div className="gauge-l">{label}</div>
-      <div className="gauge-th">{th}</div>
+      <div className="gauge-th" lang="th">{th}</div>
     </div>
+  );
+}
+
+/**
+ * Bilingual chip. English is the primary, Thai sits underneath in the
+ * Sao Chingcha cut. `lang="th"` on the Thai span so a screen reader
+ * pronounces it correctly (without it, TTS reads Thai letters as if
+ * they were Latin, producing nonsense).
+ */
+function Bi({ en, th, as: As = 'span' }) {
+  return (
+    <As className="bi">
+      <span className="bi-en">{en}</span>
+      {th != null && <span className="bi-th" lang="th">{th}</span>}
+    </As>
   );
 }
 
@@ -244,15 +259,23 @@ export default function App() {
             per viewport — two stacked wordmarks read as an unfinished template. */}
         <div className="wrap hdr-in">
           <nav className="hdr-nav">
-            <button type="button" aria-current={view === 'match' && lens === 'b2b'} onClick={() => { setView('match'); setLens('b2b'); }}>Source · B2B</button>
-            <button type="button" aria-current={view === 'match' && lens === 'b2c'} onClick={() => { setView('match'); setLens('b2c'); }}>Discover · B2C</button>
-            <button type="button" aria-current={view === 'atlas'} onClick={() => openProvince(null)}>Atlas</button>
-            {view === 'province' && <button type="button" aria-current>Province</button>}
-            <a href="#method"><button type="button">Method</button></a>
+            <button type="button" aria-current={view === 'match' && lens === 'b2b'} onClick={() => { setView('match'); setLens('b2b'); }}>
+              <Bi en="Source" th="แหล่ง" /> · <Bi en="B2B" th="ธุรกิจสู่ธุรกิจ" />
+            </button>
+            <button type="button" aria-current={view === 'match' && lens === 'b2c'} onClick={() => { setView('match'); setLens('b2c'); }}>
+              <Bi en="Discover" th="ค้นพบ" /> · <Bi en="B2C" th="ธุรกิจสู่ผู้บริโภค" />
+            </button>
+            <button type="button" aria-current={view === 'atlas'} onClick={() => openProvince(null)}>
+              <Bi en="Atlas" th="แผนที่ข้อมูล" />
+            </button>
+            {view === 'province' && <button type="button" aria-current>
+              <Bi en="Province" th="จังหวัด" />
+            </button>}
+            <a href="#method"><button type="button"><Bi en="Method" th="วิธีการ" /></button></a>
           </nav>
           <div className="hdr-status">
             <span className={`dot${meta.degraded ? ' warn' : ''}`} />
-            <span>{meta.degraded ? 'FIXTURE' : 'data.go.th'}</span>
+            <Bi en={meta.degraded ? 'Fixture' : 'data.go.th'} th={meta.degraded ? 'ข้อมูลทดสอบ' : 'แหล่งข้อมูล'} />
           </div>
         </div>
       </header>
@@ -289,9 +312,17 @@ export default function App() {
             <div className="sec-h">
               <h2 className="sec-t">{PROFILES[lens].label}</h2>
               <span className="sec-n">
-                {lens === 'b2b'
-                  ? 'ranked for due diligence: grading, corroboration and filing age carry more weight'
-                  : 'ranked for reach: a producer you can contact and locate carries more weight'}
+                {lens === 'b2b' ? (
+                  <Bi
+                    en="ranked for due diligence: grading, corroboration and filing age carry more weight"
+                    th="จัดอันดับตามการตรวจสอบ: คะแนน OPC, การรับรองข้ามหน่วยงาน และอายุการยื่นทะเบียน"
+                  />
+                ) : (
+                  <Bi
+                    en="ranked for reach: a producer you can contact and locate carries more weight"
+                    th="จัดอันดับตามการเข้าถึง: ผู้ผลิตที่ติดต่อได้และระบุตำแหน่งได้"
+                  />
+                )}
               </span>
             </div>
 
@@ -316,7 +347,7 @@ export default function App() {
                   </span>
                   {!plan.complete && (
                     <button type="button" className="reset" onClick={() => setForceAll(true)}>
-                      Search all Thailand
+                      <Bi en="Search all Thailand" th="ค้นหาทั้งประเทศ" />
                     </button>
                   )}
                 </>
@@ -342,21 +373,38 @@ export default function App() {
 
             <div className="results-h">
               <h3 className="sub-h">
-                {result.matches.length.toLocaleString()} matching producers
+                <Bi
+                  en={`${result.matches.length.toLocaleString()} matching producers`}
+                  th={`${result.matches.length.toLocaleString()} ผู้ผลิตที่ตรงกับเงื่อนไข`}
+                />
                 {requirement.requireSignal && result.matches.length < result.total && (
-                  <span className="filter-note"> · of {result.total.toLocaleString()} in the loaded provinces</span>
+                  <span className="filter-note">
+                    <Bi
+                      en={` · of ${result.total.toLocaleString()} in the loaded provinces`}
+                      th={` · จาก ${result.total.toLocaleString()} ในจังหวัดที่โหลด`}
+                    />
+                  </span>
                 )}
               </h3>
               {result.matches.length > 0 && (
-                <button type="button" className="reset" onClick={exportCsv}>Export shortlist (CSV)</button>
+                <button type="button" className="reset" onClick={exportCsv}>
+                  <Bi en="Export shortlist" th="ส่งออกรายชื่อ" /> <span className="muted">(CSV)</span>
+                </button>
               )}
             </div>
 
             {requirement.requireSignal && result.matches.length < result.total && (
               <p className="filter-explain">
-                Showing records with at least one real attestation — a category, a contact channel, a star grade, or a product name distinct from the producer. The {result.total.toLocaleString() - result.matches.length} unattested registrations in the loaded provinces are name-only OTOP numbers and are hidden by default.{' '}
+                <Bi
+                  en="Showing records with at least one real attestation — a category, a contact channel, a star grade, or a product name distinct from the producer. The"
+                  th="แสดงเฉพาะรายการที่มีการรับรองจริง — ประเภท, ช่องทางติดต่อ, คะแนน OPC, หรือชื่อผลิตภัณฑ์ต่างจากชื่อผู้ผลิต อีก"
+                />{' '}{result.total.toLocaleString() - result.matches.length}{' '}
+                <Bi
+                  en="unattested registrations in the loaded provinces are name-only OTOP numbers and are hidden by default."
+                  th="รายการที่ไม่มีการรับรองในจังหวัดที่โหลดถูกซ่อนไว้เป็นค่าเริ่มต้น (มีเพียงเลขทะเบียน OTOP เท่านั้น)"
+                />{' '}
                 <button type="button" className="reset" onClick={() => setRequirement((r) => ({ ...r, requireSignal: false, requireContact: false, requireCorroborated: false }))}>
-                  Show all {result.total.toLocaleString()} registrations
+                  <Bi en={`Show all ${result.total.toLocaleString()} registrations`} th={`แสดงทั้งหมด ${result.total.toLocaleString()} รายการ`} />
                 </button>
               </p>
             )}
@@ -366,13 +414,15 @@ export default function App() {
             {result.matches.length > limit && (
               <div className="more">
                 <button type="button" onClick={() => setLimit((n) => n + PAGE)}>
-                  Show {Math.min(PAGE, result.matches.length - limit)} more
+                  <Bi en={`Show ${Math.min(PAGE, result.matches.length - limit)} more`} th={`แสดงอีก ${Math.min(PAGE, result.matches.length - limit)} รายการ`} />
                 </button>
               </div>
             )}
 
             <div className="caveats">
-              <p className="prov-h">What this ranking does not know</p>
+              <p className="prov-h">
+                <Bi en="What this ranking does not know" th="สิ่งที่การจัดอันดับนี้ไม่รู้" />
+              </p>
               <ul>{result.caveats.map((c) => <li key={c}>{c}</li>)}</ul>
             </div>
           </div>
@@ -381,8 +431,15 @@ export default function App() {
         <section className="sec">
           <div className="wrap">
             <div className="sec-h">
-              <h2 className="sec-t">Condition of the record</h2>
-              <span className="sec-n">across the {plan?.recordsChosen.toLocaleString() ?? 0} loaded records</span>
+              <h2 className="sec-t">
+                <Bi en="Condition of the record" th="สภาพของทะเบียน" />
+              </h2>
+              <span className="sec-n">
+                <Bi
+                  en={`across the ${(plan?.recordsChosen.toLocaleString() ?? 0)} loaded records`}
+                  th={`จากข้อมูล ${(plan?.recordsChosen.toLocaleString() ?? 0)} รายการที่โหลด`}
+                />
+              </span>
             </div>
             <Meters completeness={completenessOf(records)} />
           </div>
@@ -393,8 +450,15 @@ export default function App() {
           <section className="sec" id="atlas">
             <div className="wrap">
               <div className="sec-h">
-                <h2 className="sec-t">Atlas</h2>
-                <span className="sec-n">the whole registry as one information package — and the zones it left blank</span>
+                <h2 className="sec-t">
+                  <Bi en="Atlas" th="แผนที่ข้อมูล" />
+                </h2>
+                <span className="sec-n">
+                  <Bi
+                    en="the whole registry as one information package — and the zones it left blank"
+                    th="ทะเบียนทั้งหมดในรูปแบบชุดข้อมูลเดียว — และช่องว่างที่เหลืออยู่"
+                  />
+                </span>
               </div>
               {insightsError && (
                 <p className="empty">The national rollup could not be loaded — {insightsError}. Nothing is shown rather than something substituted.</p>
@@ -413,8 +477,15 @@ export default function App() {
           <section className="sec" id="province">
             <div className="wrap">
               <div className="sec-h">
-                <h2 className="sec-t">Province</h2>
-                <span className="sec-n">one province, every layer — a link you can hand across a table</span>
+                <h2 className="sec-t">
+                  <Bi en="Province" th="จังหวัด" />
+                </h2>
+                <span className="sec-n">
+                  <Bi
+                    en="one province, every layer — a link you can hand across a table"
+                    th="หนึ่งจังหวัด ทุกชั้นข้อมูล — ลิงก์ที่ส่งต่อกันข้ามโต๊ะได้"
+                  />
+                </span>
               </div>
               {insightsError && <p className="empty">The national rollup could not be loaded — {insightsError}.</p>}
               {!insights && !insightsError && <p className="empty">Loading the national rollup…</p>}
@@ -431,8 +502,15 @@ export default function App() {
         <section className="sec" id="method">
           <div className="wrap">
             <div className="sec-h">
-              <h2 className="sec-t">Method</h2>
-              <span className="sec-n">what these numbers are, and are not</span>
+              <h2 className="sec-t">
+                <Bi en="Method" th="วิธีการ" />
+              </h2>
+              <span className="sec-n">
+                <Bi
+                  en="what these numbers are, and are not"
+                  th="ตัวเลขเหล่านี้คืออะไร และไม่ใช่อะไร"
+                />
+              </span>
             </div>
             <div className="ftr">
               <p>
