@@ -1,0 +1,357 @@
+/* one³ — /legal/* — Fine print
+ * Shared styles for the legal pages. Bilingual (en primary, th secondary).
+ * Sharp edges, no shadows. Amber accent for actionable items only.
+ * Sao Chingcha local OTF, same as the rest of the site.
+ */
+
+@font-face {
+  font-family: 'Sao Chingcha';
+  src: url('/fonts/SaoChingcha-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sao Chingcha';
+  src: url('/fonts/SaoChingcha-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sao Chingcha';
+  src: url('/fonts/SaoChingcha-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg:        #fdf3df;
+  --bg-2:      #f6e4c1;
+  --surface:   #fffaef;
+  --line:      #d8b87a;
+  --line-2:    #ad8c4d;
+  --ink:       #1f0e0a;
+  --ink-2:     #5a3625;
+  --ink-3:     #8a6645;
+  --ink-4:     #b89568;
+  --accent:    #c99518;
+  --accent-2:  #a8780c;
+  --silk:      #a02050;
+  --crimson:   #8a1c1c;
+
+  --font-display: 'Sao Chingcha', 'Josefin Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-text:    'Sao Chingcha', Helvetica Neue, Arial, system-ui, sans-serif;
+  --font-thai:    'Sao Chingcha', 'Noto Sans Thai', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: var(--accent-2); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--silk); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ─── layout shell ─── */
+
+.shell {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 28px 22px 96px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 8px 12px;
+  background: var(--ink);
+  color: var(--bg);
+  text-decoration: none;
+  z-index: 10;
+  font-size: 14px;
+}
+.skip-link:focus { top: 0; }
+
+.crumb {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.crumb a { color: var(--ink-3); text-decoration: none; }
+.crumb a:hover { color: var(--accent-2); }
+.crumb .sep { color: var(--ink-4); }
+.crumb .now { color: var(--ink-2); font-weight: 700; }
+
+/* ─── type ─── */
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; margin: 0; line-height: 1.15; }
+
+h1 {
+  font-size: 36px;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+
+h2 {
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin: 44px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+h3 {
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+  margin: 22px 0 6px;
+}
+
+p { margin: 0 0 14px; }
+p.tight { margin: 0 0 6px; }
+
+ul, ol { margin: 0 0 18px; padding-left: 22px; }
+li { margin: 0 0 6px; }
+
+ul.flat, ol.flat { padding-left: 18px; }
+ul.flat li, ol.flat li { margin: 0 0 2px; }
+
+code, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: var(--bg-2);
+  padding: 1px 5px;
+  border: 1px solid var(--line);
+}
+
+blockquote.callout {
+  margin: 22px 0;
+  padding: 14px 18px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+
+strong { font-weight: 700; }
+em { font-style: italic; color: var(--ink-2); }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 36px 0;
+}
+
+/* ─── bilingual helpers ─── */
+
+.bi-th {
+  display: block;
+  font-family: var(--font-thai);
+  font-size: 0.78em;
+  font-weight: 400;
+  color: var(--ink-3);
+  letter-spacing: 0;
+  margin-top: 2px;
+}
+
+.lead-th {
+  font-family: var(--font-thai);
+  font-size: 0.85em;
+  color: var(--ink-2);
+  display: block;
+  margin-top: 4px;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.eyebrow-th {
+  display: block;
+  font-family: var(--font-thai);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--accent-2);
+  font-weight: 400;
+  margin-top: 2px;
+  margin-bottom: 14px;
+}
+
+.subhead {
+  font-size: 13px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+  margin: -6px 0 24px;
+}
+
+/* ─── tables ─── */
+
+table.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0 22px;
+  font-size: 14.5px;
+}
+table.legal-table th, table.legal-table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+table.legal-table th {
+  font-weight: 700;
+  color: var(--ink-2);
+  background: var(--bg-2);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+}
+
+/* ─── page footer ─── */
+
+.page-foot {
+  margin-top: 56px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 22px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.page-foot .pf-key { color: var(--ink-2); font-weight: 700; }
+.page-foot .pf-val { color: var(--ink-2); }
+
+@media (max-width: 640px) {
+  .shell { padding: 20px 16px 64px; }
+  h1 { font-size: 28px; }
+  h2 { font-size: 17px; }
+  .page-foot { grid-template-columns: 1fr; }
+}
+
+/* ─── page index (landing) cards ─── */
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.card {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px 18px;
+  align-items: baseline;
+}
+.card .card-h {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.card .card-h-th {
+  display: block;
+  font-family: var(--font-thai);
+  font-size: 13.5px;
+  color: var(--ink-3);
+  font-weight: 400;
+  margin-top: 2px;
+}
+.card .card-p {
+  grid-column: 1 / -1;
+  font-size: 14.5px;
+  color: var(--ink-2);
+  margin: 0;
+}
+.card .card-go {
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  white-space: nowrap;
+}
+
+/* ─── small print ─── */
+
+.fineprint {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+.fineprint p { margin: 0 0 8px; }
+
+/* ─── definition lists ─── */
+
+dl.def { margin: 0 0 22px; }
+dl.def > div {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 4px 18px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+dl.def dt { font-weight: 700; color: var(--ink-2); font-size: 14px; }
+dl.def dd { margin: 0; color: var(--ink-2); font-size: 14.5px; }
+@media (max-width: 640px) {
+  dl.def > div { grid-template-columns: 1fr; gap: 2px; }
+}
+
+/* ─── contact box ─── */
+
+.contact-box {
+  border: 1px solid var(--line);
+  padding: 16px 18px;
+  margin: 18px 0;
+  background: var(--surface);
+}
+.contact-box .cb-key {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+.contact-box p { margin: 0; font-size: 14.5px; }
+.contact-box a { color: var(--accent-2); }
+
+/* ─── print ─── */
+@media print {
+  body { background: white; color: black; }
+  a { color: black; text-decoration: none; }
+  .crumb { display: none; }
+  .page-foot { display: none; }
+  h2 { page-break-after: avoid; }
+}
