@@ -17,11 +17,11 @@ import Record from './atlas/Record.jsx';
  * rank above it is blank.
  */
 const CHAPTERS = [
-  { id: 'findings', label: 'Findings',  th: 'สิ่งที่ข้อมูลบอก',  q: 'What does the data say?' },
-  { id: 'domain',   label: 'Geography', th: 'ภูมิศาสตร์',         q: 'What is made where?' },
-  { id: 'reach',    label: 'Reach',     th: 'การเข้าถึง',           q: 'Who can be contacted?' },
-  { id: 'money',    label: 'Money',     th: 'เงิน',                 q: 'Where does the money move?' },
-  { id: 'record',   label: 'Record',    th: 'สภาพทะเบียน',          q: 'What is the registry\'s condition?' },
+  { id: 'findings', label: 'Findings',  th: 'สิ่งที่ข้อมูลบอก',  q: 'What does the data say?',          credit: 'Photo: Tony Wu / Pexels' },
+  { id: 'domain',   label: 'Geography', th: 'ภูมิศาสตร์',         q: 'What is made where?',              credit: 'Photo: Pexels' },
+  { id: 'reach',    label: 'Reach',     th: 'การเข้าถึง',           q: 'Who can be contacted?',            credit: 'Photo: Pexels' },
+  { id: 'money',    label: 'Money',     th: 'เงิน',                 q: 'Where does the money move?',       credit: 'Photo: María Merlin / Pexels' },
+  { id: 'record',   label: 'Record',    th: 'สภาพทะเบียน',          q: 'What is the registry\'s condition?', credit: 'Photo: María Merlin / Pexels' },
 ];
 
 /** Read the active tab from the URL on first paint, defaulting to findings. */
@@ -77,6 +77,7 @@ export default function Atlas({ insights, onSelectProvince }) {
             <p className="atlas-tab-q">{current.q}</p>
             <h2 className="atlas-tab-h">{current.label}</h2>
             <p className="atlas-tab-th">{current.th}</p>
+            <span className="atlas-tab-credit">{current.credit}</span>
           </div>
         );
       })()}

@@ -123,7 +123,7 @@ a { color: inherit; }
   padding-block: clamp(3.5rem, 8vw, 6rem) clamp(2.5rem, 6vw, 4rem);
   background:
     linear-gradient(180deg, rgba(31, 14, 10, 0.55) 0%, rgba(31, 14, 10, 0.20) 40%, rgba(253, 243, 223, 0.85) 100%),
-    url('/heroes/festival-market.png') center 30% / cover no-repeat;
+    url('/heroes/festival-market-real.jpg') center 30% / cover no-repeat;
   color: #fffaef;
   isolation: isolate;
 }
@@ -448,11 +448,11 @@ html, body { overflow-x: hidden; }
   position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(180deg, rgba(31, 14, 10, 0.15) 0%, rgba(31, 14, 10, 0.55) 100%);
 }
-.atlas-tab-banner[data-tab='findings'] { background-image: url('/heroes/festival-market.png'); }
-.atlas-tab-banner[data-tab='domain']   { background-image: url('/heroes/mountains-rice.png'); }
-.atlas-tab-banner[data-tab='reach']    { background-image: url('/heroes/sunset-river.png'); }
-.atlas-tab-banner[data-tab='money']    { background-image: url('/heroes/market-food.png'); }
-.atlas-tab-banner[data-tab='record']   { background-image: url('/heroes/festival-market.png'); }
+.atlas-tab-banner[data-tab='findings'] { background-image: url('/heroes/festival-market-real.jpg'); }
+.atlas-tab-banner[data-tab='domain']   { background-image: url('/heroes/mountains-rice-real.jpg'); }
+.atlas-tab-banner[data-tab='reach']    { background-image: url('/heroes/sunset-river-real.jpg'); }
+.atlas-tab-banner[data-tab='money']    { background-image: url('/heroes/market-food-real.jpg'); }
+.atlas-tab-banner[data-tab='record']   { background-image: url('/heroes/record-real.jpg'); }
 .atlas-tab-banner .atlas-tab-q {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -478,4 +478,17 @@ html, body { overflow-x: hidden; }
   margin: 0.25rem 0 0;
   letter-spacing: 0.05em;
   text-shadow: 0 1px 12px rgba(31, 14, 10, 0.7);
+}
+
+/* Photographer credit, anchored bottom-right of every banner so a reader can
+   see who shot it without leaving the page. */
+.atlas-tab-banner .atlas-tab-credit {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 250, 239, 0.78);
+  text-shadow: 0 1px 6px rgba(31, 14, 10, 0.7);
 }
