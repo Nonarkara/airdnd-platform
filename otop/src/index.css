@@ -649,9 +649,76 @@ html, body { overflow-x: hidden; }
 .ch-card-contact { display: grid; grid-template-columns: max-content 1fr; gap: 0.15rem 0.7rem; margin: 0; font-size: 0.85em; }
 .ch-card-contact dt { font-weight: 600; opacity: 0.7; }
 .ch-card-contact dd { margin: 0; word-break: break-word; }
-.ch-card-contact a { color: inherit; }
 .ch-card-actions { padding: 0.7rem 0.5rem 0 0; }
+.ch-card-media {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  background: #0f172a;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule-2, currentColor);
+}
+.ch-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.92;
+}
+.ch-card-img-cap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.25rem 0.5rem;
+  background: rgba(14, 30, 60, 0.88);
+  color: #fff;
+  font-size: 0.72rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ch-card-img-attr {
+  font-size: 0.65rem;
+  opacity: 0.75;
+  font-family: var(--font-mono, monospace);
+}
+.ch-quick-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+}
+.ch-act-btn {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.45rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.ch-act-btn:hover {
+  background: var(--accent, #f59e0b);
+  color: #000;
+  border-color: var(--accent, #f59e0b);
+}
 .ch-foot { margin-top: 0.5rem; font-size: 0.85em; opacity: 0.85; }
+
+/* Dossier Craft Heritage */
+.dossier-craft { margin: 1rem 0; border: 1px solid var(--rule-2, currentColor); background: var(--ground-alt, rgba(0,0,0,0.25)); }
+.dossier-craft-banner { display: grid; grid-template-columns: minmax(180px, 300px) 1fr; gap: 0; }
+@media (max-width: 640px) { .dossier-craft-banner { grid-template-columns: 1fr; } }
+.dossier-craft-media { height: 160px; overflow: hidden; background: #000; }
+.dossier-craft-img { width: 100%; height: 100%; object-fit: cover; }
+.dossier-craft-body { padding: 0.85rem 1.1rem; display: flex; flex-direction: column; justify-content: center; gap: 0.3rem; }
+.dossier-craft-title { margin: 0; font: 600 1.05rem var(--font-thai, inherit); }
+.dossier-craft-note { margin: 0; font-size: 0.88rem; opacity: 0.85; line-height: 1.4; }
+.dossier-craft-meta { margin: 0; font-size: 0.75rem; opacity: 0.65; font-family: var(--font-mono, monospace); }
 
 /* National Story */
 .ns { max-width: 50rem; margin-inline: auto; }

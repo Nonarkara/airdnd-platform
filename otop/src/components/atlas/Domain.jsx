@@ -2,7 +2,7 @@ import { Chapter, n, pct } from './fmt.jsx';
 import Composition, { categoryParts } from './Composition.jsx';
 
 /** What is made where? Leads with the heatmap; everything else sits below it. */
-export default function Domain({ national, byRegion, regionIdentity, matrix, byYear, specialization, qualityLeaders, go }) {
+export default function Domain({ national, byRegion, regionIdentity, matrix, byYear, specialization, qualityLeaders, topBasins, go }) {
   const unclassified = national.categories?.find((c) => c.id === 'unclassified');
   const classifiedCount = national.records - (unclassified?.count ?? 0);
   const href = (code) => `/?view=province&code=${code}`;
@@ -173,6 +173,45 @@ export default function Domain({ national, byRegion, regionIdentity, matrix, byY
               </button>
             ))}
           </div>
+        </>
+      )}
+
+      {/* ── DEEP PRODUCTION BASINS (TAMBON LEVEL) ────────────────────────── */}
+      {topBasins && (topBasins.byRecords?.length > 0 || topBasins.byChampions?.length > 0) && (
+        <>
+          <h3 className="sub-h" id="basins">
+            Production basins · แหล่งผลิตระดับตำบล (Subdistrict Epicenters)
+          </h3>
+          <p className="t-note">
+            135,100 records (87.7%) are geocoded to exact subdistrict centroids across 7,383 tambons.
+            Real craft production does not spread uniformly across provinces: it clusters into historic village basins.
+            Below are Thailand's top artisanal basins ranked by producer density and certified champions.
+          </p>
+          <div className="t-rows" id="subdistrict-basins">
+            <div className="t-row t-row-hd">
+              <span className="t-rail" />
+              <span>Subdistrict · ตำบล / อำเภอ</span>
+              <span className="t-row-num">Records</span>
+              <span className="t-hide-sm t-row-num">Reachable</span>
+              <span className="t-hide-sm t-row-num">4-5★ Champions</span>
+            </div>
+            {(topBasins.byChampions?.slice(0, 8) ?? []).concat(topBasins.byReachable?.slice(0, 4) ?? []).map((t) => (
+              <button type="button" className="t-row" key={t.code} onClick={() => go(t.provinceCode)}>
+                <span className="t-rail" />
+                <span>
+                  <strong className="t-row-th">ต.{t.th}</strong> <span className="t-row-en">({t.en})</span><br />
+                  <span className="t-ctx">อ.{t.districtTh} · จ.รหัส {t.provinceCode}</span>
+                </span>
+                <span className="t-row-num">{n(t.records)}</span>
+                <span className="t-hide-sm t-row-num">{t.reachable > 0 ? n(t.reachable) : '—'}</span>
+                <span className="t-hide-sm t-row-num">{t.graded4Plus > 0 ? `${t.graded4Plus}★` : '—'}</span>
+              </button>
+            ))}
+          </div>
+          <p className="t-note">
+            Notice how Wiang Yong and Pa Sang (Lamphun) concentrate high-grade weaving champions with zero direct phone lines,
+            while Phon (Kalasin) and Sateng (Yala) maintain highly reachable artisan networks. Click a row to explore that province.
+          </p>
         </>
       )}
 

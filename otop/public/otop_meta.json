@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-11T05:23:28.250Z",
+  "builtAt": "2026-09-11T06:17:45.886Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -20630,13 +20630,14 @@
       "rowsIn": 9,
       "usable": false,
       "kind": "other",
-      "mappedFields": 0,
-      "map": {},
+      "mappedFields": 1,
+      "map": {
+        "website": "page"
+      },
       "unmappedColumns": [
         "No",
         "item",
-        "item2",
-        "page"
+        "item2"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -34242,8 +34243,8 @@
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
         "address": "ที่อยู่",
-        "productName": "ผลิตภัณฑ์เด่น",
-        "website": "Url รูปภาพ"
+        "imageUrl": "Url รูปภาพ",
+        "productName": "ผลิตภัณฑ์เด่น"
       },
       "unmappedColumns": [
         "หมู่ที่",

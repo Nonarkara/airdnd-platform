@@ -140,7 +140,45 @@ export default function Record({ insights, go }) {
         total={national.records}
       />
 
-      <h3 className="sub-h" id="provenance">Who filed it · {contributors.length} publishing offices</h3>
+      {/* ── community standards (มผช.) ──────────────────────────────────── */}
+      {insights.standards && insights.standards.total > 0 && (
+        <>
+          <h3 className="sub-h" id="standards">
+            Technical standards (มผช.) · {n(insights.standards.total)} specifications from TISI / สมอ.
+          </h3>
+          <p className="t-note">
+            Beyond provincial paperwork, the Ministry of Industry (สำนักงานมาตรฐานผลิตภัณฑ์อุตสาหกรรม - สมอ.)
+            maintains <strong>{n(insights.standards.total)} official Community Product Standards (มผช. / TCPS)</strong> across
+            the five canonical categories. Each standard establishes explicit quality criteria (moisture content,
+            microbial limits, heavy-metal safety thresholds, packaging norms) and is published in the Royal Gazette.
+          </p>
+          <div className="t-stubs" style={{ marginBottom: '1rem' }}>
+            <div className="t-stub"><span className="t-key">Food · อาหาร</span><span className="t-stub-n">{n(insights.standards.byCategory.food)}</span></div>
+            <div className="t-stub"><span className="t-key">Decor · ของใช้</span><span className="t-stub-n">{n(insights.standards.byCategory.decor)}</span></div>
+            <div className="t-stub"><span className="t-key">Beverage · เครื่องดื่ม</span><span className="t-stub-n">{n(insights.standards.byCategory.beverage)}</span></div>
+            <div className="t-stub"><span className="t-key">Textile · ผ้า</span><span className="t-stub-n">{n(insights.standards.byCategory.textile)}</span></div>
+            <div className="t-stub"><span className="t-key">Herbal · สมุนไพร</span><span className="t-stub-n">{n(insights.standards.byCategory.herbal)}</span></div>
+          </div>
+          <Composition
+            parts={[
+              { id: 'food', label: 'Food (553)', count: insights.standards.byCategory.food, tone: 'is-ink' },
+              { id: 'decor', label: 'Decor/Craft (461)', count: insights.standards.byCategory.decor, tone: 'is-hole' },
+              { id: 'beverage', label: 'Beverage (262)', count: insights.standards.byCategory.beverage, tone: 'is-ink' },
+              { id: 'textile', label: 'Textiles (110)', count: insights.standards.byCategory.textile, tone: 'is-hole' },
+              { id: 'herbal', label: 'Herbal (103)', count: insights.standards.byCategory.herbal, tone: 'is-ink' },
+            ]}
+            total={insights.standards.total}
+          />
+        </>
+      )}
+
+      <h3 className="sub-h" id="provenance">Who filed it · {contributors.length} publishing offices across 522 datasets</h3>
+      <p className="t-note">
+        The pipeline harmonized <strong>1,015,991 rows from 522 open datasets</strong> published by 26 government bodies
+        (CDD, Provincial Governors, DOAE, TISI/สมอ., MOC, and municipal offices). Deterministic entity resolution collapsed{' '}
+        <strong>{n(national.duplicatesCollapsed)} duplicate filings</strong> (a 64.0% reduction in administrative inflation),
+        yielding <strong>{n(national.records)} true producer records</strong>. Overlap across agencies constitutes the corroboration signal.
+      </p>
       <div className="t-ranked">
         {contributors.slice(0, 12).map((c) => (
           <div key={c.organization}>

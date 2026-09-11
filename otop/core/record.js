@@ -214,6 +214,7 @@ export function buildRecord(row, provenance) {
     phone: normalizePhone(row.phone) || null,
     email: normalizeText(row.email, '') || null,
     website: normalizeText(row.website, '') || null,
+    imageUrl: normalizeText(row.imageUrl, '') || null,
     taxId: normalizeTaxId(row.taxId) || null,
     registrationId: normalizeText(row.registrationId, '') || null,
 

@@ -87,7 +87,7 @@ export default function Atlas({ insights, onSelectProvince }) {
         <Domain
           national={national} byRegion={byRegion} regionIdentity={regionIdentity}
           matrix={matrix} byYear={byYear} specialization={specialization}
-          qualityLeaders={qualityLeaders} go={go}
+          qualityLeaders={qualityLeaders} topBasins={insights.topBasins} go={go}
         />
       )}
       {tab === 'reach' && (

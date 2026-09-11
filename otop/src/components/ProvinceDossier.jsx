@@ -5,6 +5,8 @@ import { ZONES, rankOf, loadRevenue, baht, monthlyPoints } from '../lib/insights
 import { loadShards } from '../lib/shards.js';
 import { toCsv } from '../../core/matching.js';
 import { REGION_LABEL } from '../lib/labels.js';
+import { photosForProvince } from '../../core/photos.js';
+import { matchStandardForProduct } from '../../core/standards.js';
 
 /**
  * One province, whole. The unit of reading the Atlas lacks: a governor, a CDD
@@ -103,6 +105,23 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
     return records.filter((r) => r.income != null);
   }, [records]);
 
+  const matchedStandards = useMemo(() => {
+    if (!records || !insights.standards?.standards) return [];
+    const allStandards = insights.standards.standards;
+    const seen = new Set();
+    const list = [];
+    for (const r of records) {
+      if (!r.productName) continue;
+      const s = matchStandardForProduct(r.productName, allStandards, r.category);
+      if (s && !seen.has(s.code)) {
+        seen.add(s.code);
+        list.push(s);
+        if (list.length >= 20) break;
+      }
+    }
+    return list;
+  }, [records, insights.standards]);
+
   if (!p) return <p className="empty">No province with code {code}.</p>;
 
   const rev = revenue?.byProvince?.find((r) => r.code === code);
@@ -162,6 +181,25 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
         )}
         {records && <button type="button" className="reset" onClick={exportCsv}>Export this province (CSV)</button>}
       </div>
+
+      {/* ── craft heritage & photography ────────────────────────────── */}
+      {photosForProvince(code).map((photo) => (
+        <div key={photo.title} className="dossier-craft">
+          <div className="dossier-craft-banner">
+            <div className="dossier-craft-media">
+              <img src={photo.url} alt={photo.title} className="dossier-craft-img" loading="lazy" />
+            </div>
+            <div className="dossier-craft-body">
+              <span className="t-key">Craft Heritage · ภูมิปัญญาท้องถิ่น</span>
+              <h4 className="dossier-craft-title">{photo.titleTh} · {photo.title}</h4>
+              <p className="dossier-craft-note">{photo.heritageNote}</p>
+              <p className="dossier-craft-meta">
+                <span>Craft: {photo.craft}</span> · <span>Photo: {photo.author} ({photo.source} · {photo.license})</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
 
       {/* ── money ────────────────────────────────────────────────────── */}
       <h3 className="sub-h">Money · รายได้จากการจำหน่าย</h3>
@@ -309,6 +347,42 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
                 <div className="t-grid-row" role="row" key={name}><span>{name}</span><span className="t-row-num">{count}</span></div>
               ))}
             </div>
+          )}
+
+          {/* ── technical standards (มผช.) ──────────────────────────── */}
+          {matchedStandards.length > 0 && (
+            <>
+              <h3 className="sub-h">
+                Technical Standards (มผช.) · {matchedStandards.length} specifications apply
+              </h3>
+              <p className="t-note">
+                Official Ministry of Industry (TISI / สมอ.) standards identified for products registered in this province.
+                Each document sets regulatory thresholds for moisture, microbes, food safety, and craft durability.
+              </p>
+              <div className="t-grid t-grid-2" role="table">
+                <div className="t-grid-row t-grid-hd" role="row">
+                  <span>Standard Title · ชื่อมาตรฐาน</span><span className="t-row-num">Specification</span>
+                </div>
+                {matchedStandards.map((s) => (
+                  <div className="t-grid-row" role="row" key={s.code}>
+                    <span>
+                      <strong>{s.titleTh}</strong> <span className="t-row-en">({s.titleEn})</span>
+                    </span>
+                    <span className="t-row-num">
+                      <a
+                        href={s.pdfUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ color: 'var(--tag-ink)', textDecoration: 'underline' }}
+                        title={`TISI Standard ${s.code}: ${s.titleEn}`}
+                      >
+                        มผช. {s.code} (PDF ↗)
+                      </a>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </>
       )}

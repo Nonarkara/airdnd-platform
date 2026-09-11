@@ -82,6 +82,7 @@ function main() {
           phone: r.phone ?? null,
           email: r.email ?? null,
           website: r.website ?? null,
+          imageUrl: r.imageUrl ?? null,
           reach,
         });
       }

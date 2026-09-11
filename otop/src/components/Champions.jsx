@@ -14,11 +14,20 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import { photoForRecord } from '../../core/photos.js';
+import { matchStandardForProduct } from '../../core/standards.js';
 
 async function loadChampions() {
   const r = await fetch('/otop_champions.json', { cache: 'no-cache' });
   if (!r.ok) throw new Error(`otop_champions.json ${r.status}`);
   return r.json();
+}
+
+async function loadStandards() {
+  const r = await fetch('/otop_standards.json', { cache: 'no-cache' });
+  if (!r.ok) return null;
+  const d = await r.json();
+  return d.standards ?? [];
 }
 
 const REACH_LABEL = {
@@ -60,6 +69,7 @@ function exportList(rows, filename) {
 
 export default function Champions({ onSelectProvince }) {
   const [data, setData] = useState(null);
+  const [standards, setStandards] = useState([]);
   const [error, setError] = useState(null);
   const [filterCat, setFilterCat] = useState('all');
   const [filterReach, setFilterReach] = useState('all');
@@ -67,9 +77,12 @@ export default function Champions({ onSelectProvince }) {
   const [filterProv, setFilterProv] = useState('all');
   const [query, setQuery] = useState('');
 
+  const [showPhotos, setShowPhotos] = useState(true);
+
   useEffect(() => {
     let cancelled = false;
     loadChampions().then((d) => { if (!cancelled) setData(d); }).catch((e) => { if (!cancelled) setError(e.message); });
+    loadStandards().then((s) => { if (!cancelled && s) setStandards(s); }).catch(() => {});
     return () => { cancelled = true; };
   }, []);
 
@@ -87,24 +100,21 @@ export default function Champions({ onSelectProvince }) {
       }
       return true;
     });
-  }, [data, filterCat, filterReach, filterStar, filterProv, query]);
+  }, [data, filterStar, filterCat, filterReach, filterProv, query]);
 
-  if (error) return <p className="empty">The champions list could not be loaded — {error}.</p>;
-  if (!data) return <p className="empty">Loading the champions list…</p>;
+  if (error) return <p className="empty">Could not load champions — {error}.</p>;
+  if (!data) return <p className="empty">Loading reachable champions…</p>;
 
-  const cats = ['all', 'food', 'beverage', 'textile', 'craft', 'herbal'];
+  const cats = ['all', ...new Set(data.champions.map((c) => c.category).filter(Boolean))];
   const reaches = ['all', 'phone', 'email', 'web'];
   const totalChampions = data.champions.length;
-  const totalProvinces = data.provinces.length;
 
   return (
-    <div className="ch-wrap">
-      <p className="t-note ch-lede">
-        <strong>{totalChampions}</strong> 4-5★ producers in <strong>{totalProvinces}</strong> provinces,
-        each with at least one contact channel on file. The opposite of this list
-        lives in the Atlas · Reach chapter ("Hidden Champions") — those are the
-        4-5★ producers the system cannot route. Together they are the
-        contact-drive's two halves.
+    <div className="champions">
+      <p className="ch-lede">
+        Across 154,078 records, 13,939 have star ratings and 8,869 have contact information.
+        Only <strong>{totalChampions}</strong> carry both 4-5 stars and contact details — making this
+        the direct starting point for verified procurement.
       </p>
 
       <div className="ch-controls">
@@ -169,73 +179,119 @@ export default function Champions({ onSelectProvince }) {
 
       <div className="ch-actions">
         <span className="t-key">{filtered.length} of {totalChampions} shown</span>
-        {filtered.length > 0 && (
-          <button type="button" className="reset" onClick={() => exportList(filtered, `otop-champions-${new Date().toISOString().slice(0, 10)}.csv`)}>
-            Export this list (CSV)
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <button
+            type="button"
+            className="reset"
+            onClick={() => setShowPhotos((v) => !v)}
+            style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '0.85rem' }}
+          >
+            {showPhotos ? 'Hide craft photos' : 'Show craft photos'}
           </button>
-        )}
+          {filtered.length > 0 && (
+            <button type="button" className="reset" onClick={() => exportList(filtered, `otop-champions-${new Date().toISOString().slice(0, 10)}.csv`)}>
+              Export this list (CSV)
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="ch-cards">
-        {filtered.map((c) => (
-          <article key={c.sourceRowId ?? `${c.producerName}-${c.provinceCode}-${c.productName}`} className="ch-card" data-stars={c.stars}>
-            <div className="ch-card-rail" />
-            <div className="ch-card-body">
-              <header className="ch-card-h">
-                <div className="ch-card-stars">{'★'.repeat(c.stars)}<span className="ch-card-stars-e">{'★'.repeat(5 - c.stars)}</span></div>
-                <div className="ch-card-reach" data-reach={c.reach}>
-                  <span className="ch-card-reach-icon">{REACH_LABEL[c.reach]?.icon}</span>
-                  <span>{REACH_LABEL[c.reach]?.en}</span>
+        {filtered.map((c) => {
+          const photo = showPhotos ? photoForRecord(c) : null;
+          const std = matchStandardForProduct(c.productName || c.producerName, standards, c.category);
+          return (
+            <article key={c.sourceRowId ?? `${c.producerName}-${c.provinceCode}-${c.productName}`} className="ch-card" data-stars={c.stars}>
+              <div className="ch-card-rail" />
+              <div className="ch-card-body">
+                {photo && (
+                  <div className="ch-card-media">
+                    <img
+                      src={photo.url}
+                      alt={photo.caption}
+                      loading="lazy"
+                      className="ch-card-img"
+                    />
+                    <div className="ch-card-img-cap">
+                      <span>{photo.caption}</span>
+                      <span className="ch-card-img-attr">{photo.author ? `${photo.author} · ` : ''}{photo.source}</span>
+                    </div>
+                  </div>
+                )}
+                <header className="ch-card-h">
+                  <div className="ch-card-stars">{'★'.repeat(c.stars)}<span className="ch-card-stars-e">{'★'.repeat(5 - c.stars)}</span></div>
+                  <div className="ch-card-reach" data-reach={c.reach}>
+                    <span className="ch-card-reach-icon">{REACH_LABEL[c.reach]?.icon}</span>
+                    <span>{REACH_LABEL[c.reach]?.en}</span>
+                  </div>
+                </header>
+                <h3 className="ch-card-name">{c.producerName ?? '—'}</h3>
+                {c.productName && c.productName !== c.producerName && (
+                  <p className="ch-card-product">{c.productName}</p>
+                )}
+                <div className="ch-card-meta">
+                  <span className="ch-card-cat" data-cat={c.category}>
+                    {CAT_EN[c.category] ?? c.category} <span className="ch-card-cat-th">{CAT_TH[c.category] ?? ''}</span>
+                  </span>
+                  <span className="ch-card-loc">
+                    {onSelectProvince ? (
+                      <button
+                        type="button"
+                        className="reset"
+                        onClick={() => onSelectProvince(c.provinceCode)}
+                        style={{ textDecoration: 'underline', cursor: 'pointer', font: 'inherit', color: 'inherit' }}
+                        title={`Open ${c.provinceEn} dossier`}
+                      >
+                        <span className="ch-card-loc-th">{c.province}</span>
+                        <span> · {c.provinceEn} →</span>
+                      </button>
+                    ) : (
+                      <>
+                        <span className="ch-card-loc-th">{c.province}</span>
+                        <span> · {c.provinceEn}</span>
+                      </>
+                    )}
+                    {c.district && <span> · {c.district}</span>}
+                    {c.subdistrict && <span> · {c.subdistrict}</span>}
+                  </span>
                 </div>
-              </header>
-              <h3 className="ch-card-name">{c.producerName ?? '—'}</h3>
-              {c.productName && c.productName !== c.producerName && (
-                <p className="ch-card-product">{c.productName}</p>
-              )}
-              <div className="ch-card-meta">
-                <span className="ch-card-cat" data-cat={c.category}>
-                  {CAT_EN[c.category] ?? c.category} <span className="ch-card-cat-th">{CAT_TH[c.category] ?? ''}</span>
-                </span>
-                <span className="ch-card-loc">
-                  {onSelectProvince ? (
-                    <button
-                      type="button"
-                      className="reset"
-                      onClick={() => onSelectProvince(c.provinceCode)}
-                      style={{ textDecoration: 'underline', cursor: 'pointer', font: 'inherit', color: 'inherit' }}
-                      title={`Open ${c.provinceEn} dossier`}
+                {std && (
+                  <div className="ch-card-std" style={{ margin: '0.4rem 0', fontSize: '0.75rem' }}>
+                    <span className="t-key" style={{ marginRight: '0.5rem' }}>มผช. / TCPS</span>
+                    <a
+                      href={std.pdfUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: 'var(--tag-ink)', borderBottom: '1px solid var(--border-subtle)', textDecoration: 'none' }}
+                      title={`TISI Standard: ${std.titleEn}`}
                     >
-                      <span className="ch-card-loc-th">{c.province}</span>
-                      <span> · {c.provinceEn} →</span>
-                    </button>
-                  ) : (
-                    <>
-                      <span className="ch-card-loc-th">{c.province}</span>
-                      <span> · {c.provinceEn}</span>
-                    </>
-                  )}
-                  {c.district && <span> · {c.district}</span>}
-                  {c.subdistrict && <span> · {c.subdistrict}</span>}
-                </span>
+                      {std.code}: {std.titleTh} (PDF ↗)
+                    </a>
+                  </div>
+                )}
+                <dl className="ch-card-contact">
+                  {c.phone && <><dt>Phone</dt><dd><a href={`tel:${c.phone}`}>{c.phone}</a></dd></>}
+                  {c.email && <><dt>Email</dt><dd><a href={`mailto:${c.email}`}>{c.email}</a></dd></>}
+                  {c.website && <><dt>Web</dt><dd><a href={c.website} target="_blank" rel="noreferrer">{c.website}</a></dd></>}
+                  {c.address && <><dt>Address</dt><dd>{c.address}</dd></>}
+                </dl>
+                <div className="ch-quick-actions">
+                  {c.phone && <a href={`tel:${c.phone}`} className="ch-act-btn">☎ {c.phone}</a>}
+                  {onSelectProvince && <button type="button" className="ch-act-btn reset" onClick={() => onSelectProvince(c.provinceCode)}>Dossier →</button>}
+                </div>
               </div>
-              <dl className="ch-card-contact">
-                {c.phone && <><dt>Phone</dt><dd><a href={`tel:${c.phone}`}>{c.phone}</a></dd></>}
-                {c.email && <><dt>Email</dt><dd><a href={`mailto:${c.email}`}>{c.email}</a></dd></>}
-                {c.website && <><dt>Web</dt><dd><a href={c.website} target="_blank" rel="noreferrer">{c.website}</a></dd></>}
-                {c.address && <><dt>Address</dt><dd>{c.address}</dd></>}
-              </dl>
-            </div>
-            <div className="ch-card-actions">
-              <button
-                type="button"
-                className="reset"
-                onClick={() => exportList([c], `otop-champion-${(c.producerName ?? 'row').replace(/[^a-z0-9]+/gi, '-')}.csv`)}
-              >
-                Save card (CSV)
-              </button>
-            </div>
-          </article>
-        ))}
+              <div className="ch-card-actions">
+                <button
+                  type="button"
+                  className="reset"
+                  onClick={() => exportList([c], `otop-champion-${(c.producerName ?? 'row').replace(/[^a-z0-9]+/gi, '-')}.csv`)}
+                >
+                  Save card (CSV)
+                </button>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       {filtered.length === 0 && (
