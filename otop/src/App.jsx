@@ -446,7 +446,7 @@ export default function App() {
               </p>
             )}
 
-            <MatchRows matches={result.matches} limit={limit} />
+            <MatchRows matches={result.matches} limit={limit} onSelectProvince={openProvince} />
 
             {result.matches.length > limit && (
               <div className="more">

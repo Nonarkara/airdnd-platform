@@ -31,7 +31,7 @@ function why(components) {
     .join('\n');
 }
 
-export default function MatchRows({ matches, limit }) {
+export default function MatchRows({ matches, limit, onSelectProvince }) {
   if (matches.length === 0) {
     return <p className="empty">No producer in the loaded provinces matches this requirement.</p>;
   }
@@ -75,7 +75,19 @@ export default function MatchRows({ matches, limit }) {
           <span className="c-stars"><Stars value={record.stars} /></span>
 
           <span className="c-place">
-            {record.province ?? '—'}
+            {onSelectProvince && record.provinceCode ? (
+              <button
+                type="button"
+                className="reset"
+                onClick={() => onSelectProvince(record.provinceCode)}
+                style={{ textDecoration: 'underline', cursor: 'pointer', font: 'inherit', color: 'inherit', textAlign: 'left', padding: 0 }}
+                title={`Open ${record.provinceEn || record.province} dossier`}
+              >
+                {record.province}
+              </button>
+            ) : (
+              record.province ?? '—'
+            )}
             {(record.district || record.subdistrict) && (
               <span className="sub">{[record.subdistrict, record.district].filter(Boolean).join(' · ')}</span>
             )}
