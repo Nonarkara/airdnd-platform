@@ -3,7 +3,7 @@ import { Chapter, n } from './fmt.jsx';
 import Composition from './Composition.jsx';
 import { railOf, RAIL_LABEL, classifiedOf, ZONES } from '../../lib/insights.js';
 
-/** What is the registry's condition? Leads with the six zone meters. */
+/** What is the registry's condition? Leads with the seven zone meters. */
 export default function Record({ insights, go }) {
   const [sort, setSort] = useState('records');
   const { national, byProvince, contributors, concentration } = insights;
@@ -169,6 +169,34 @@ export default function Record({ insights, go }) {
             ]}
             total={insights.standards.total}
           />
+        </>
+      )}
+
+      {/* ── certified holders: the state's own mark, joined ─────────────── */}
+      {insights.certification && insights.certification.certified > 0 && (
+        <>
+          <h3 className="sub-h" id="certified">
+            Certified holders · {n(insights.certification.certified)} records carry a มผช. certificate
+          </h3>
+          <p className="t-note">
+            The holder lists name certified producers with certificate numbers and expiry dates.
+            Those fields used to be dropped by the pipeline, so 11,000+ clean holder rows entered
+            the corpus as ordinary producers. Now the join is kept: <strong>{n(insights.certification.valid)} still
+            valid as of {insights.certification.asOf}</strong>, {n(insights.certification.expired)} lapsed,{' '}
+            {n(insights.certification.unknown)} undated. {n(insights.certification.buyerReady)} are buyer-ready —
+            valid certificate, 4–5★ grade, and a contact channel.
+          </p>
+          <div className="t-grid t-grid-2" role="table">
+            <div className="t-grid-row t-grid-hd" role="row">
+              <span>Standard held · มาตรฐานที่ถือ</span><span className="t-row-num">Holders · valid</span>
+            </div>
+            {insights.certification.byStandard.map((s) => (
+              <div className="t-grid-row" role="row" key={s.standard}>
+                <span>{s.standard}</span>
+                <span className="t-row-num">{n(s.holders)} · {n(s.valid)}</span>
+              </div>
+            ))}
+          </div>
         </>
       )}
 

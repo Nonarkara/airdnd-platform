@@ -41,6 +41,7 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
   const idx = ordered.findIndex((p) => p.code === code);
   const p = ordered[idx];
   const gap = reachGap.find((r) => r.code === code);
+  const cert = (insights.certification?.byProvince ?? []).find((r) => r.code === code);
 
   useEffect(() => {
     let cancelled = false;
@@ -122,6 +123,11 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
     return list;
   }, [records, insights.standards]);
 
+  const certifiedRecords = useMemo(() => {
+    if (!records) return [];
+    return records.filter((r) => (r.certs ?? []).length > 0);
+  }, [records]);
+
   if (!p) return <p className="empty">No province with code {code}.</p>;
 
   const rev = revenue?.byProvince?.find((r) => r.code === code);
@@ -167,6 +173,13 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
           <Stub label="Reachable" value={gap ? `${gap.reachablePct}%` : '—'} rank={gap ? rankOf(reachGap, code, 'reachablePct') : null} />
           <Stub label="Graded" value={n(p.stars.graded)} rank={gradedRank} />
           <Stub label="Corroborated" value={`${Math.round((p.corroborated / Math.max(p.records, 1)) * 100)}%`} rank={corrRank} />
+          {cert && (
+            <Stub
+              label="State-certified"
+              value={`${n(cert.valid)} valid / ${n(cert.certified)} held`}
+              rank={rankOf(insights.certification.byProvince, code, 'certified')}
+            />
+          )}
           <Stub label={`Sales ${revLatest ? revLatest + 543 : ''} BE`} value={revTotal != null && rev?.years?.[revLatest]?.monthsReported === 12 ? baht(revTotal) : '—'}
             rank={revTotal != null ? rankOf(revRanked, code, 'total') : null} note="not reported" />
           <Stub label="Hidden champions" value={gap ? n(gap.hiddenChampions) : '—'} rank={gap ? rankOf(reachGap, code, 'hiddenChampions') : null} />
@@ -382,6 +395,59 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
                   </div>
                 ))}
               </div>
+            </>
+          )}
+          {/* ── state-certified holders ────────────────────────────────── */}
+          {certifiedRecords.length > 0 && (
+            <>
+              <h3 className="sub-h">
+                State-certified holders · {n(certifiedRecords.filter((r) => r.certStatus === 'valid').length)} valid of {n(certifiedRecords.length)} certificates held
+              </h3>
+              <p className="t-note">
+                Held มผช. certificates from the TISI holder lists, joined to this province's records
+                {insights.certification?.asOf ? ` and judged as of ${insights.certification.asOf}` : ''}.
+                A lapsed certificate is printed as lapsed — it still proves the holder once met the standard.
+              </p>
+              <div className="t-grid t-grid-2" role="table">
+                <div className="t-grid-row t-grid-hd" role="row">
+                  <span>Producer / Product</span><span className="t-row-num">Certificate · standing</span>
+                </div>
+                {certifiedRecords.slice(0, 10).map((r, i) => (
+                  <div className="t-grid-row" role="row" key={r.sourceRowId || i}>
+                    <span>{r.producerName ?? r.productName}{r.productName && r.producerName ? ` · ${r.productName}` : ''}</span>
+                    <span className="t-row-num">
+                      {(r.certs ?? []).map((c, j) => (
+                        <span key={j}>
+                          {j > 0 && '; '}{[c.standardCode, c.standardTitle].filter(Boolean).join(' · ') || 'มผช.'}
+                          {c.number ? ` · cert ${c.number}` : ''}
+                          {c.expires ? ` · ${r.certStatus === 'valid' ? 'valid to' : r.certStatus === 'expired' ? 'lapsed' : 'expires'} ${c.expires}` : ' · undated'}
+                        </span>
+                      ))}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              {certifiedRecords.length > 10 && (
+                <details className="t-more">
+                  <summary>All {certifiedRecords.length} certified records in {p.th}</summary>
+                  <div className="t-grid t-grid-2" role="table">
+                    {certifiedRecords.slice(10).map((r, i) => (
+                      <div className="t-grid-row" role="row" key={r.sourceRowId || i}>
+                        <span>{r.producerName ?? r.productName}{r.productName && r.producerName ? ` · ${r.productName}` : ''}</span>
+                        <span className="t-row-num">
+                          {(r.certs ?? []).map((c, j) => (
+                            <span key={j}>
+                              {j > 0 && '; '}{[c.standardCode, c.standardTitle].filter(Boolean).join(' · ') || 'มผช.'}
+                              {c.number ? ` · cert ${c.number}` : ''}
+                              {c.expires ? ` · ${c.expires}` : ' · undated'}
+                            </span>
+                          ))}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
             </>
           )}
         </>

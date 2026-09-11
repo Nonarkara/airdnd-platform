@@ -105,6 +105,7 @@ function completeness(items) {
     withSubdistrict: pct(items.filter((r) => r.subdistrict).length, n),
     withCoordinates: pct(items.filter((r) => r.latitude != null && r.longitude != null).length, n),
     withTambon: pct(items.filter((r) => r.tambonCode).length, n),
+    withCert: pct(items.filter((r) => (r.certs ?? []).length > 0).length, n),
     categoryDeclared: pct(items.filter((r) => r.categoryConfidence === 'declared').length, n),
     categoryInferred: pct(items.filter((r) => r.categoryConfidence === 'inferred').length, n),
     categoryUnknown: pct(items.filter((r) => r.categoryConfidence === 'none').length, n),
@@ -276,6 +277,63 @@ const concentration = {
 };
 
 /**
+ * State certification — the มผช. holder lists joined to the registry.
+ * The certificate fields used to be dropped by the pipeline, so 11,000+
+ * clean holder rows entered the corpus as ordinary producers and no view
+ * could answer "is this producer state-certified?". Now each merged record
+ * carries its certificates with a standing judged at build time.
+ * Certified + reachable + graded is the buyer-ready set: the state has
+ * signed the product AND the system can route an order to its maker.
+ * (Defined before `findings`: that IIFE runs immediately and cannot take
+ * forward references.)
+ */
+const certification = (() => {
+  const certified = records.filter((r) => (r.certs ?? []).length > 0);
+  const valid = certified.filter((r) => r.certStatus === 'valid');
+  const expired = certified.filter((r) => r.certStatus === 'expired');
+  const unknown = certified.filter((r) => r.certStatus === 'unknown');
+  const asOf = (certified.map((r) => r.certAsOf).filter(Boolean).sort().pop()) ?? null;
+
+  const stdTally = new Map();
+  for (const r of certified) {
+    for (const c of r.certs ?? []) {
+      const key = [c.standardCode, c.standardTitle].filter(Boolean).join(' · ') || '(unspecified standard)';
+      if (!stdTally.has(key)) stdTally.set(key, { standard: key, holders: 0, valid: 0 });
+      const t = stdTally.get(key);
+      t.holders += 1;
+      if (r.certStatus === 'valid') t.valid += 1;
+    }
+  }
+  const byStandard = [...stdTally.values()].sort((a, b) => b.holders - a.holders).slice(0, 10);
+
+  const byProvinceCert = byProvince
+    .map((p) => {
+      const items = records.filter((r) => r.provinceCode === p.code && (r.certs ?? []).length > 0);
+      return {
+        code: p.code, th: p.th, en: p.en, records: p.records,
+        certified: items.length,
+        valid: items.filter((r) => r.certStatus === 'valid').length,
+        certifiedReachable: items.filter((r) => r.phone || r.email || r.website).length,
+        certifiedGraded: items.filter((r) => r.stars != null && r.stars >= 4).length,
+      };
+    })
+    .filter((p) => p.certified > 0)
+    .sort((a, b) => b.certified - a.certified);
+
+  return {
+    asOf,
+    certified: certified.length,
+    certifiedShare: pct(certified.length, records.length),
+    valid: valid.length,
+    expired: expired.length,
+    unknown: unknown.length,
+    buyerReady: certified.filter((r) => r.certStatus === 'valid' && (r.phone || r.email || r.website) && r.stars != null && r.stars >= 4).length,
+    byStandard,
+    byProvince: byProvinceCert,
+  };
+})();
+
+/**
  * Headline findings — what the data actually says, in plain language. The
  * Atlas leads with these because 118,335 is not a finding, it is the size of
  * the input. Every claim here is paired with the value the reader can
@@ -396,6 +454,18 @@ const findings = (() => {
     text: `1,015,991 rows from 522 open datasets across 26 government publishing offices were harmonized. Deduplication collapsed ${n(meta.counts.duplicatesCollapsed)} redundant filings (64.0% duplicate inflation) down to ${n(total)} verified producer entities.`,
     value: meta.counts.duplicatesCollapsed,
   });
+
+  // State certification. The มผช. holder lists name certified producers with
+  // certificate numbers and expiry dates — the state's own quality mark,
+  // joined to the registry rather than read as a separate PDF.
+  if (certification.certified > 0) {
+    out.push({
+      id: 'certified',
+      th: 'ได้รับการรับรอง มผช.',
+      text: `${n(certification.certified)} records (${n(certification.certifiedShare)}%) carry a Community Product Standard (มผช.) certificate: ${n(certification.valid)} still valid as of ${certification.asOf}, ${n(certification.expired)} lapsed, ${n(certification.unknown)} undated. ${n(certification.buyerReady)} are buyer-ready — valid certificate, 4-5★ grade, and a contact channel.`,
+      value: certification.certified,
+    });
+  }
 
   return out;
 })();
@@ -766,6 +836,9 @@ const insights = {
   corroborationQuadrant,
   hiddenChampions,
   regionIdentity,
+
+  // State certification: the มผช. holder join, judged at build time.
+  certification,
 
   // Technical standards and geographic basins
   standards: standardsPayload,

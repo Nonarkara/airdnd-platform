@@ -255,7 +255,21 @@ export default function Champions({ onSelectProvince }) {
                     {c.subdistrict && <span> · {c.subdistrict}</span>}
                   </span>
                 </div>
-                {std && (
+                {(c.certs ?? []).length > 0 ? (
+                  <div className="ch-card-std" style={{ margin: '0.4rem 0', fontSize: '0.75rem' }}>
+                    <span className="t-key" style={{ marginRight: '0.5rem' }}>
+                      ✓ Certified มผช.{c.certStatus === 'valid' ? '' : c.certStatus === 'expired' ? ' · lapsed' : ' · undated'}
+                    </span>
+                    {(c.certs ?? []).map((cert, i) => (
+                      <span key={i}>
+                        {i > 0 && '; '}
+                        {[cert.standardCode, cert.standardTitle].filter(Boolean).join(': ') || 'มผช.'}
+                        {cert.number ? ` · cert ${cert.number}` : ''}
+                        {cert.expires ? ` · ${c.certStatus === 'valid' ? 'valid to' : 'expired'} ${cert.expires}` : ''}
+                      </span>
+                    ))}
+                  </div>
+                ) : std && (
                   <div className="ch-card-std" style={{ margin: '0.4rem 0', fontSize: '0.75rem' }}>
                     <span className="t-key" style={{ marginRight: '0.5rem' }}>มผช. / TCPS</span>
                     <a

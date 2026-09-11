@@ -16,7 +16,9 @@
  *
  * Fields: sourceRowId, producerName, productName, province, provinceEn,
  * provinceCode, district, subdistrict, category, stars, phone, email,
- * website, address, reach (one of "phone" | "email" | "web").
+ * website, address, reach (one of "phone" | "email" | "web"), plus the
+ * held มผช. certificates (certs) with the build-time standing (certStatus
+ * one of "valid" | "expired" | "unknown" | null, judged as of certAsOf).
  *
  * Sorted by: stars desc, then province asc, then producerName asc.
  *
@@ -83,6 +85,9 @@ function main() {
           email: r.email ?? null,
           website: r.website ?? null,
           imageUrl: r.imageUrl ?? null,
+          certs: r.certs ?? [],
+          certStatus: r.certStatus ?? null,
+          certAsOf: r.certAsOf ?? null,
           reach,
         });
       }

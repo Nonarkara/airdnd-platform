@@ -1,18 +1,18 @@
 {
-  "builtAt": "2026-09-11T07:54:02.678Z",
+  "builtAt": "2026-09-11T08:53:32.254Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
   "national": {
-    "records": 154078,
-    "producers": 154078,
+    "records": 154050,
+    "producers": 154050,
     "provincesCovered": 77,
     "provincesEmpty": [],
-    "corroborated": 105787,
+    "corroborated": 105789,
     "corroboratedShare": 68.7,
-    "duplicatesCollapsed": 273069,
+    "duplicatesCollapsed": 273050,
     "completeness": {
-      "records": 154078,
+      "records": 154050,
       "withContact": 5.7,
       "withStars": 9,
       "withPrice": 0,
@@ -20,6 +20,7 @@
       "withSubdistrict": 87.9,
       "withCoordinates": 0.4,
       "withTambon": 87.7,
+      "withCert": 11.2,
       "categoryDeclared": 12.2,
       "categoryInferred": 13,
       "categoryUnknown": 74.8
@@ -29,48 +30,48 @@
         "id": "food",
         "th": "อาหาร",
         "en": "Food",
-        "count": 17100,
+        "count": 17091,
         "share": 11.1
       },
       {
         "id": "beverage",
         "th": "เครื่องดื่ม",
         "en": "Beverages",
-        "count": 1563,
+        "count": 1562,
         "share": 1
       },
       {
         "id": "textile",
         "th": "ผ้าและเครื่องแต่งกาย",
         "en": "Fabric & Apparel",
-        "count": 13830,
+        "count": 13827,
         "share": 9
       },
       {
         "id": "craft",
         "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
         "en": "Household, Decorative & Souvenir",
-        "count": 11018,
-        "share": 7.2
+        "count": 11013,
+        "share": 7.1
       },
       {
         "id": "herbal",
         "th": "สมุนไพรที่ไม่ใช่อาหาร",
         "en": "Non-food Herbal",
-        "count": 3178,
+        "count": 3172,
         "share": 2.1
       },
       {
         "id": "unclassified",
         "th": "ไม่จำแนก",
         "en": "Unclassified",
-        "count": 107389,
+        "count": 107385,
         "share": 69.7
       }
     ],
     "stars": {
       "graded": 13939,
-      "ungraded": 140139,
+      "ungraded": 140111,
       "distribution": {
         "0": 26,
         "1": 143,
@@ -96,55 +97,55 @@
       "en": "North",
       "provinces": 9,
       "provincesWithRecords": 9,
-      "records": 19222,
+      "records": 19194,
       "share": 12.5,
       "categories": [
         {
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 1676,
+          "count": 1667,
           "share": 8.7
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 351,
+          "count": 350,
           "share": 1.8
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 2550,
+          "count": 2547,
           "share": 13.3
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 964,
+          "count": 959,
           "share": 5
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 361,
-          "share": 1.9
+          "count": 355,
+          "share": 1.8
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 13320,
-          "share": 69.3
+          "count": 13316,
+          "share": 69.4
         }
       ],
       "stars": {
         "graded": 2167,
-        "ungraded": 17055,
+        "ungraded": 17027,
         "distribution": {
           "0": 1,
           "1": 21,
@@ -156,16 +157,17 @@
         "mean": 4.19
       },
       "completeness": {
-        "records": 19222,
+        "records": 19194,
         "withContact": 4.7,
         "withStars": 11.3,
         "withPrice": 0,
         "withIncome": 0,
-        "withSubdistrict": 87.9,
+        "withSubdistrict": 88,
         "withCoordinates": 0,
-        "withTambon": 87.8,
+        "withTambon": 87.9,
+        "withCert": 13,
         "categoryDeclared": 12.9,
-        "categoryInferred": 13.6,
+        "categoryInferred": 13.5,
         "categoryUnknown": 73.6
       }
     },
@@ -243,6 +245,7 @@
         "withSubdistrict": 86.1,
         "withCoordinates": 0.1,
         "withTambon": 86,
+        "withCert": 8.7,
         "categoryDeclared": 12,
         "categoryInferred": 13.2,
         "categoryUnknown": 74.7
@@ -322,6 +325,7 @@
         "withSubdistrict": 89.9,
         "withCoordinates": 0.1,
         "withTambon": 89.4,
+        "withCert": 13.8,
         "categoryDeclared": 15.5,
         "categoryInferred": 12.9,
         "categoryUnknown": 71.6
@@ -401,6 +405,7 @@
         "withSubdistrict": 89.4,
         "withCoordinates": 0,
         "withTambon": 89.3,
+        "withCert": 13.2,
         "categoryDeclared": 9.3,
         "categoryInferred": 9.7,
         "categoryUnknown": 81
@@ -480,6 +485,7 @@
         "withSubdistrict": 80,
         "withCoordinates": 6.7,
         "withTambon": 79.9,
+        "withCert": 10.9,
         "categoryDeclared": 9.5,
         "categoryInferred": 17.7,
         "categoryUnknown": 72.8
@@ -559,6 +565,7 @@
         "withSubdistrict": 91.8,
         "withCoordinates": 0,
         "withTambon": 91.8,
+        "withCert": 11.5,
         "categoryDeclared": 9,
         "categoryInferred": 11.9,
         "categoryUnknown": 79.2
@@ -641,6 +648,7 @@
         "withSubdistrict": 90.7,
         "withCoordinates": 0,
         "withTambon": 90.7,
+        "withCert": 7.4,
         "categoryDeclared": 32.2,
         "categoryInferred": 6.2,
         "categoryUnknown": 61.6
@@ -790,6 +798,7 @@
         "withSubdistrict": 87.9,
         "withCoordinates": 0,
         "withTambon": 87.9,
+        "withCert": 7.4,
         "categoryDeclared": 9.4,
         "categoryInferred": 8,
         "categoryUnknown": 82.6
@@ -939,6 +948,7 @@
         "withSubdistrict": 87.8,
         "withCoordinates": 0,
         "withTambon": 87.7,
+        "withCert": 6.8,
         "categoryDeclared": 9.2,
         "categoryInferred": 6.7,
         "categoryUnknown": 84.1
@@ -1088,6 +1098,7 @@
         "withSubdistrict": 89.3,
         "withCoordinates": 0,
         "withTambon": 89.3,
+        "withCert": 9.1,
         "categoryDeclared": 9.3,
         "categoryInferred": 7.9,
         "categoryUnknown": 82.8
@@ -1237,6 +1248,7 @@
         "withSubdistrict": 91.7,
         "withCoordinates": 0,
         "withTambon": 90.9,
+        "withCert": 11.6,
         "categoryDeclared": 8.6,
         "categoryInferred": 11.1,
         "categoryUnknown": 80.2
@@ -1317,56 +1329,56 @@
       "th": "เชียงใหม่",
       "en": "Chiang Mai",
       "region": "north",
-      "records": 4011,
-      "producers": 4011,
-      "corroborated": 2474,
+      "records": 3985,
+      "producers": 3985,
+      "corroborated": 2476,
       "categories": [
         {
           "id": "food",
           "th": "อาหาร",
           "en": "Food",
-          "count": 163,
-          "share": 4.1
+          "count": 154,
+          "share": 3.9
         },
         {
           "id": "beverage",
           "th": "เครื่องดื่ม",
           "en": "Beverages",
-          "count": 51,
+          "count": 50,
           "share": 1.3
         },
         {
           "id": "textile",
           "th": "ผ้าและเครื่องแต่งกาย",
           "en": "Fabric & Apparel",
-          "count": 516,
+          "count": 513,
           "share": 12.9
         },
         {
           "id": "craft",
           "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
           "en": "Household, Decorative & Souvenir",
-          "count": 215,
-          "share": 5.4
+          "count": 210,
+          "share": 5.3
         },
         {
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 86,
+          "count": 82,
           "share": 2.1
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
-          "count": 2980,
-          "share": 74.3
+          "count": 2976,
+          "share": 74.7
         }
       ],
       "stars": {
         "graded": 441,
-        "ungraded": 3570,
+        "ungraded": 3544,
         "distribution": {
           "0": 0,
           "1": 5,
@@ -1378,20 +1390,21 @@
         "mean": 4.16
       },
       "completeness": {
-        "records": 4011,
-        "withContact": 0,
-        "withStars": 11,
+        "records": 3985,
+        "withContact": 0.1,
+        "withStars": 11.1,
         "withPrice": 0,
         "withIncome": 0,
-        "withSubdistrict": 86.5,
+        "withSubdistrict": 87.1,
         "withCoordinates": 0,
-        "withTambon": 86.4,
-        "categoryDeclared": 11.9,
-        "categoryInferred": 13.7,
-        "categoryUnknown": 74.4
+        "withTambon": 87,
+        "withCert": 16.3,
+        "categoryDeclared": 12,
+        "categoryInferred": 13.2,
+        "categoryUnknown": 74.8
       },
       "vintage": {
-        "years": 72,
+        "years": 74,
         "earliest": 2017,
         "latest": 2025,
         "median": 2022,
@@ -1535,6 +1548,7 @@
         "withSubdistrict": 92.4,
         "withCoordinates": 0,
         "withTambon": 91.7,
+        "withCert": 7,
         "categoryDeclared": 6.6,
         "categoryInferred": 7,
         "categoryUnknown": 86.4
@@ -1684,6 +1698,7 @@
         "withSubdistrict": 72.7,
         "withCoordinates": 0,
         "withTambon": 72.7,
+        "withCert": 5.3,
         "categoryDeclared": 22.9,
         "categoryInferred": 6,
         "categoryUnknown": 71.2
@@ -1833,6 +1848,7 @@
         "withSubdistrict": 85.9,
         "withCoordinates": 0,
         "withTambon": 85.9,
+        "withCert": 7.6,
         "categoryDeclared": 11.9,
         "categoryInferred": 7.2,
         "categoryUnknown": 80.9
@@ -1982,6 +1998,7 @@
         "withSubdistrict": 49.9,
         "withCoordinates": 0,
         "withTambon": 49.8,
+        "withCert": 7.3,
         "categoryDeclared": 5.9,
         "categoryInferred": 7.8,
         "categoryUnknown": 86.3
@@ -2131,6 +2148,7 @@
         "withSubdistrict": 91.3,
         "withCoordinates": 0,
         "withTambon": 91.3,
+        "withCert": 7.2,
         "categoryDeclared": 7.7,
         "categoryInferred": 29.2,
         "categoryUnknown": 63.1
@@ -2280,6 +2298,7 @@
         "withSubdistrict": 90,
         "withCoordinates": 0,
         "withTambon": 90,
+        "withCert": 9.2,
         "categoryDeclared": 9.8,
         "categoryInferred": 7.3,
         "categoryUnknown": 83
@@ -2429,6 +2448,7 @@
         "withSubdistrict": 92.2,
         "withCoordinates": 0,
         "withTambon": 92.1,
+        "withCert": 8.2,
         "categoryDeclared": 7.7,
         "categoryInferred": 5.7,
         "categoryUnknown": 86.6
@@ -2578,6 +2598,7 @@
         "withSubdistrict": 88.8,
         "withCoordinates": 0,
         "withTambon": 88.8,
+        "withCert": 11.4,
         "categoryDeclared": 19.6,
         "categoryInferred": 30.6,
         "categoryUnknown": 49.8
@@ -2727,6 +2748,7 @@
         "withSubdistrict": 82.3,
         "withCoordinates": 0.5,
         "withTambon": 79.1,
+        "withCert": 18.4,
         "categoryDeclared": 17.7,
         "categoryInferred": 13.7,
         "categoryUnknown": 68.6
@@ -2876,6 +2898,7 @@
         "withSubdistrict": 55.5,
         "withCoordinates": 0,
         "withTambon": 55.5,
+        "withCert": 8.8,
         "categoryDeclared": 5.5,
         "categoryInferred": 37.1,
         "categoryUnknown": 57.4
@@ -3025,6 +3048,7 @@
         "withSubdistrict": 94.4,
         "withCoordinates": 0,
         "withTambon": 94.3,
+        "withCert": 10.1,
         "categoryDeclared": 5.3,
         "categoryInferred": 7.7,
         "categoryUnknown": 87
@@ -3174,6 +3198,7 @@
         "withSubdistrict": 87.3,
         "withCoordinates": 0,
         "withTambon": 87.3,
+        "withCert": 14.3,
         "categoryDeclared": 9,
         "categoryInferred": 13.3,
         "categoryUnknown": 77.7
@@ -3323,6 +3348,7 @@
         "withSubdistrict": 91.6,
         "withCoordinates": 2.3,
         "withTambon": 91.6,
+        "withCert": 9.1,
         "categoryDeclared": 15.5,
         "categoryInferred": 16.8,
         "categoryUnknown": 67.7
@@ -3472,6 +3498,7 @@
         "withSubdistrict": 93.2,
         "withCoordinates": 0,
         "withTambon": 93.2,
+        "withCert": 8.4,
         "categoryDeclared": 4.7,
         "categoryInferred": 50.2,
         "categoryUnknown": 45.2
@@ -3621,6 +3648,7 @@
         "withSubdistrict": 88.8,
         "withCoordinates": 0,
         "withTambon": 88.6,
+        "withCert": 8.9,
         "categoryDeclared": 10.4,
         "categoryInferred": 11.1,
         "categoryUnknown": 78.6
@@ -3770,6 +3798,7 @@
         "withSubdistrict": 92.7,
         "withCoordinates": 0,
         "withTambon": 92.7,
+        "withCert": 10.7,
         "categoryDeclared": 8.7,
         "categoryInferred": 7.3,
         "categoryUnknown": 83.9
@@ -3919,6 +3948,7 @@
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
         "withTambon": 87.5,
+        "withCert": 9.9,
         "categoryDeclared": 10.6,
         "categoryInferred": 5.9,
         "categoryUnknown": 83.5
@@ -4068,6 +4098,7 @@
         "withSubdistrict": 80.9,
         "withCoordinates": 0,
         "withTambon": 80.8,
+        "withCert": 9.5,
         "categoryDeclared": 10.4,
         "categoryInferred": 8.5,
         "categoryUnknown": 81.1
@@ -4217,6 +4248,7 @@
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
         "withTambon": 90.9,
+        "withCert": 7.9,
         "categoryDeclared": 6.6,
         "categoryInferred": 19.7,
         "categoryUnknown": 73.6
@@ -4366,6 +4398,7 @@
         "withSubdistrict": 95.5,
         "withCoordinates": 0,
         "withTambon": 95.5,
+        "withCert": 8.5,
         "categoryDeclared": 6.4,
         "categoryInferred": 5.7,
         "categoryUnknown": 87.9
@@ -4515,6 +4548,7 @@
         "withSubdistrict": 92.7,
         "withCoordinates": 0.1,
         "withTambon": 92.4,
+        "withCert": 12.2,
         "categoryDeclared": 7,
         "categoryInferred": 7.9,
         "categoryUnknown": 85.1
@@ -4664,6 +4698,7 @@
         "withSubdistrict": 86.7,
         "withCoordinates": 0,
         "withTambon": 86.7,
+        "withCert": 11.5,
         "categoryDeclared": 10.1,
         "categoryInferred": 11.1,
         "categoryUnknown": 78.9
@@ -4813,6 +4848,7 @@
         "withSubdistrict": 88.2,
         "withCoordinates": 0,
         "withTambon": 88.2,
+        "withCert": 9.5,
         "categoryDeclared": 5.7,
         "categoryInferred": 8.2,
         "categoryUnknown": 86.1
@@ -4893,8 +4929,8 @@
       "th": "แพร่",
       "en": "Phrae",
       "region": "north",
-      "records": 1918,
-      "producers": 1918,
+      "records": 1916,
+      "producers": 1916,
       "corroborated": 1351,
       "categories": [
         {
@@ -4929,20 +4965,20 @@
           "id": "herbal",
           "th": "สมุนไพรที่ไม่ใช่อาหาร",
           "en": "Non-food Herbal",
-          "count": 42,
-          "share": 2.2
+          "count": 40,
+          "share": 2.1
         },
         {
           "id": "unclassified",
           "th": "ไม่จำแนก",
           "en": "Unclassified",
           "count": 1327,
-          "share": 69.2
+          "share": 69.3
         }
       ],
       "stars": {
         "graded": 178,
-        "ungraded": 1740,
+        "ungraded": 1738,
         "distribution": {
           "0": 0,
           "1": 1,
@@ -4954,20 +4990,21 @@
         "mean": 4.23
       },
       "completeness": {
-        "records": 1918,
+        "records": 1916,
         "withContact": 0.3,
         "withStars": 9.3,
         "withPrice": 0,
         "withIncome": 0,
-        "withSubdistrict": 90.2,
+        "withSubdistrict": 90.3,
         "withCoordinates": 0,
-        "withTambon": 90.2,
+        "withTambon": 90.3,
+        "withCert": 17.8,
         "categoryDeclared": 13.5,
         "categoryInferred": 17,
-        "categoryUnknown": 69.5
+        "categoryUnknown": 69.6
       },
       "vintage": {
-        "years": 94,
+        "years": 92,
         "earliest": 2014,
         "latest": 2025,
         "median": 2024,
@@ -5111,6 +5148,7 @@
         "withSubdistrict": 90.8,
         "withCoordinates": 0,
         "withTambon": 90.8,
+        "withCert": 10.5,
         "categoryDeclared": 11.2,
         "categoryInferred": 6.4,
         "categoryUnknown": 82.4
@@ -5260,6 +5298,7 @@
         "withSubdistrict": 84,
         "withCoordinates": 0,
         "withTambon": 84,
+        "withCert": 12.3,
         "categoryDeclared": 74.9,
         "categoryInferred": 12.5,
         "categoryUnknown": 12.6
@@ -5409,6 +5448,7 @@
         "withSubdistrict": 93.8,
         "withCoordinates": 0,
         "withTambon": 93.8,
+        "withCert": 8.8,
         "categoryDeclared": 6.8,
         "categoryInferred": 34.8,
         "categoryUnknown": 58.3
@@ -5558,6 +5598,7 @@
         "withSubdistrict": 93.3,
         "withCoordinates": 0,
         "withTambon": 93.3,
+        "withCert": 11.4,
         "categoryDeclared": 7.9,
         "categoryInferred": 7.9,
         "categoryUnknown": 84.2
@@ -5707,6 +5748,7 @@
         "withSubdistrict": 88.2,
         "withCoordinates": 0,
         "withTambon": 88.2,
+        "withCert": 14.1,
         "categoryDeclared": 13.1,
         "categoryInferred": 9.7,
         "categoryUnknown": 77.2
@@ -5856,6 +5898,7 @@
         "withSubdistrict": 89.5,
         "withCoordinates": 0,
         "withTambon": 89.5,
+        "withCert": 14.2,
         "categoryDeclared": 13.6,
         "categoryInferred": 9.5,
         "categoryUnknown": 76.9
@@ -6005,6 +6048,7 @@
         "withSubdistrict": 94.6,
         "withCoordinates": 0,
         "withTambon": 94.6,
+        "withCert": 8.5,
         "categoryDeclared": 45.1,
         "categoryInferred": 5.7,
         "categoryUnknown": 49.2
@@ -6154,6 +6198,7 @@
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
         "withTambon": 90.9,
+        "withCert": 15.2,
         "categoryDeclared": 11.7,
         "categoryInferred": 10.1,
         "categoryUnknown": 78.3
@@ -6303,6 +6348,7 @@
         "withSubdistrict": 85.8,
         "withCoordinates": 0,
         "withTambon": 85.8,
+        "withCert": 16.1,
         "categoryDeclared": 10.1,
         "categoryInferred": 9.5,
         "categoryUnknown": 80.4
@@ -6452,6 +6498,7 @@
         "withSubdistrict": 93.6,
         "withCoordinates": 0,
         "withTambon": 93.6,
+        "withCert": 23.6,
         "categoryDeclared": 12.1,
         "categoryInferred": 18.5,
         "categoryUnknown": 69.4
@@ -6601,6 +6648,7 @@
         "withSubdistrict": 90.7,
         "withCoordinates": 0,
         "withTambon": 90.6,
+        "withCert": 9.9,
         "categoryDeclared": 8.8,
         "categoryInferred": 7.4,
         "categoryUnknown": 83.8
@@ -6750,6 +6798,7 @@
         "withSubdistrict": 92,
         "withCoordinates": 0,
         "withTambon": 92,
+        "withCert": 12.1,
         "categoryDeclared": 9.7,
         "categoryInferred": 7.2,
         "categoryUnknown": 83.1
@@ -6899,6 +6948,7 @@
         "withSubdistrict": 92.6,
         "withCoordinates": 0.1,
         "withTambon": 91.8,
+        "withCert": 13.1,
         "categoryDeclared": 10,
         "categoryInferred": 57,
         "categoryUnknown": 33
@@ -7048,6 +7098,7 @@
         "withSubdistrict": 82.6,
         "withCoordinates": 0,
         "withTambon": 82.6,
+        "withCert": 10.1,
         "categoryDeclared": 9.1,
         "categoryInferred": 7,
         "categoryUnknown": 83.9
@@ -7197,6 +7248,7 @@
         "withSubdistrict": 90.7,
         "withCoordinates": 0,
         "withTambon": 90.7,
+        "withCert": 16.1,
         "categoryDeclared": 11.9,
         "categoryInferred": 10,
         "categoryUnknown": 78.1
@@ -7346,6 +7398,7 @@
         "withSubdistrict": 90,
         "withCoordinates": 0,
         "withTambon": 90,
+        "withCert": 12.5,
         "categoryDeclared": 11.3,
         "categoryInferred": 7.7,
         "categoryUnknown": 81
@@ -7495,6 +7548,7 @@
         "withSubdistrict": 91.1,
         "withCoordinates": 0,
         "withTambon": 91.1,
+        "withCert": 9.6,
         "categoryDeclared": 7,
         "categoryInferred": 28.5,
         "categoryUnknown": 64.5
@@ -7644,6 +7698,7 @@
         "withSubdistrict": 84.3,
         "withCoordinates": 0,
         "withTambon": 84.3,
+        "withCert": 11.3,
         "categoryDeclared": 9.1,
         "categoryInferred": 6,
         "categoryUnknown": 84.9
@@ -7793,6 +7848,7 @@
         "withSubdistrict": 89.8,
         "withCoordinates": 0,
         "withTambon": 89.6,
+        "withCert": 16.5,
         "categoryDeclared": 13,
         "categoryInferred": 12.9,
         "categoryUnknown": 74.1
@@ -7942,6 +7998,7 @@
         "withSubdistrict": 86,
         "withCoordinates": 0,
         "withTambon": 85.7,
+        "withCert": 14.1,
         "categoryDeclared": 13.7,
         "categoryInferred": 10.9,
         "categoryUnknown": 75.5
@@ -8091,6 +8148,7 @@
         "withSubdistrict": 90,
         "withCoordinates": 0,
         "withTambon": 90,
+        "withCert": 12.8,
         "categoryDeclared": 11.8,
         "categoryInferred": 9.5,
         "categoryUnknown": 78.7
@@ -8240,6 +8298,7 @@
         "withSubdistrict": 92.4,
         "withCoordinates": 0,
         "withTambon": 92.4,
+        "withCert": 12.9,
         "categoryDeclared": 10.5,
         "categoryInferred": 8.6,
         "categoryUnknown": 80.9
@@ -8389,6 +8448,7 @@
         "withSubdistrict": 91.7,
         "withCoordinates": 0,
         "withTambon": 91.7,
+        "withCert": 11.7,
         "categoryDeclared": 7.4,
         "categoryInferred": 14.1,
         "categoryUnknown": 78.4
@@ -8538,6 +8598,7 @@
         "withSubdistrict": 86.7,
         "withCoordinates": 0,
         "withTambon": 85.9,
+        "withCert": 14.5,
         "categoryDeclared": 11.8,
         "categoryInferred": 14,
         "categoryUnknown": 74.2
@@ -8687,6 +8748,7 @@
         "withSubdistrict": 89.8,
         "withCoordinates": 0,
         "withTambon": 89.8,
+        "withCert": 16.4,
         "categoryDeclared": 8.4,
         "categoryInferred": 14.9,
         "categoryUnknown": 76.7
@@ -8836,6 +8898,7 @@
         "withSubdistrict": 85.6,
         "withCoordinates": 0,
         "withTambon": 85.6,
+        "withCert": 14.9,
         "categoryDeclared": 10.9,
         "categoryInferred": 13.7,
         "categoryUnknown": 75.4
@@ -8985,6 +9048,7 @@
         "withSubdistrict": 89.6,
         "withCoordinates": 0,
         "withTambon": 89.6,
+        "withCert": 15.1,
         "categoryDeclared": 9.4,
         "categoryInferred": 10.1,
         "categoryUnknown": 80.5
@@ -9134,6 +9198,7 @@
         "withSubdistrict": 82.4,
         "withCoordinates": 0,
         "withTambon": 82.4,
+        "withCert": 14.3,
         "categoryDeclared": 8,
         "categoryInferred": 16.9,
         "categoryUnknown": 75.1
@@ -9283,6 +9348,7 @@
         "withSubdistrict": 92.3,
         "withCoordinates": 0,
         "withTambon": 92.3,
+        "withCert": 9.5,
         "categoryDeclared": 8.4,
         "categoryInferred": 7,
         "categoryUnknown": 84.5
@@ -9432,6 +9498,7 @@
         "withSubdistrict": 89,
         "withCoordinates": 0,
         "withTambon": 89,
+        "withCert": 11.5,
         "categoryDeclared": 12.9,
         "categoryInferred": 16.4,
         "categoryUnknown": 70.7
@@ -9581,6 +9648,7 @@
         "withSubdistrict": 84,
         "withCoordinates": 43.1,
         "withTambon": 83.8,
+        "withCert": 12.3,
         "categoryDeclared": 14.6,
         "categoryInferred": 18.3,
         "categoryUnknown": 67
@@ -9730,6 +9798,7 @@
         "withSubdistrict": 89.1,
         "withCoordinates": 0,
         "withTambon": 89.1,
+        "withCert": 12.4,
         "categoryDeclared": 9.2,
         "categoryInferred": 6.4,
         "categoryUnknown": 84.4
@@ -9879,6 +9948,7 @@
         "withSubdistrict": 88.6,
         "withCoordinates": 0,
         "withTambon": 88.6,
+        "withCert": 11.6,
         "categoryDeclared": 8.9,
         "categoryInferred": 64.9,
         "categoryUnknown": 26.3
@@ -10028,6 +10098,7 @@
         "withSubdistrict": 93.3,
         "withCoordinates": 0,
         "withTambon": 93.3,
+        "withCert": 13.7,
         "categoryDeclared": 8.3,
         "categoryInferred": 10,
         "categoryUnknown": 81.8
@@ -10177,6 +10248,7 @@
         "withSubdistrict": 90.1,
         "withCoordinates": 0,
         "withTambon": 90,
+        "withCert": 12,
         "categoryDeclared": 10.6,
         "categoryInferred": 12.1,
         "categoryUnknown": 77.3
@@ -10326,6 +10398,7 @@
         "withSubdistrict": 94.5,
         "withCoordinates": 0,
         "withTambon": 94.5,
+        "withCert": 12.6,
         "categoryDeclared": 9.6,
         "categoryInferred": 7.3,
         "categoryUnknown": 83.1
@@ -10475,6 +10548,7 @@
         "withSubdistrict": 93.2,
         "withCoordinates": 0,
         "withTambon": 93.2,
+        "withCert": 13.7,
         "categoryDeclared": 6.7,
         "categoryInferred": 10.9,
         "categoryUnknown": 82.4
@@ -10624,6 +10698,7 @@
         "withSubdistrict": 91,
         "withCoordinates": 1.7,
         "withTambon": 91,
+        "withCert": 13.5,
         "categoryDeclared": 10.9,
         "categoryInferred": 16.7,
         "categoryUnknown": 72.5
@@ -10773,6 +10848,7 @@
         "withSubdistrict": 95.2,
         "withCoordinates": 0,
         "withTambon": 95.2,
+        "withCert": 12.3,
         "categoryDeclared": 10.4,
         "categoryInferred": 5.9,
         "categoryUnknown": 83.7
@@ -10922,6 +10998,7 @@
         "withSubdistrict": 95.9,
         "withCoordinates": 0,
         "withTambon": 95.9,
+        "withCert": 14.8,
         "categoryDeclared": 13,
         "categoryInferred": 4,
         "categoryUnknown": 83.1
@@ -11071,6 +11148,7 @@
         "withSubdistrict": 91.3,
         "withCoordinates": 0,
         "withTambon": 91.3,
+        "withCert": 18.6,
         "categoryDeclared": 10.3,
         "categoryInferred": 15.9,
         "categoryUnknown": 73.7
@@ -11220,6 +11298,7 @@
         "withSubdistrict": 92.8,
         "withCoordinates": 0.2,
         "withTambon": 92.8,
+        "withCert": 14.8,
         "categoryDeclared": 8.7,
         "categoryInferred": 10.5,
         "categoryUnknown": 80.8
@@ -11369,6 +11448,7 @@
         "withSubdistrict": 91.3,
         "withCoordinates": 0,
         "withTambon": 90.6,
+        "withCert": 18.8,
         "categoryDeclared": 11.6,
         "categoryInferred": 10.2,
         "categoryUnknown": 78.3
@@ -11518,6 +11598,7 @@
         "withSubdistrict": 87.3,
         "withCoordinates": 0,
         "withTambon": 87.1,
+        "withCert": 13.3,
         "categoryDeclared": 18.2,
         "categoryInferred": 11.4,
         "categoryUnknown": 70.4
@@ -11667,6 +11748,7 @@
         "withSubdistrict": 89.6,
         "withCoordinates": 0,
         "withTambon": 89.6,
+        "withCert": 20,
         "categoryDeclared": 11.3,
         "categoryInferred": 15.7,
         "categoryUnknown": 72.9
@@ -11816,6 +11898,7 @@
         "withSubdistrict": 92.8,
         "withCoordinates": 0,
         "withTambon": 92.8,
+        "withCert": 14,
         "categoryDeclared": 10.3,
         "categoryInferred": 8.6,
         "categoryUnknown": 81.1
@@ -11965,6 +12048,7 @@
         "withSubdistrict": 90.9,
         "withCoordinates": 0,
         "withTambon": 90.9,
+        "withCert": 17.2,
         "categoryDeclared": 9.3,
         "categoryInferred": 12.1,
         "categoryUnknown": 78.7
@@ -12366,12 +12450,12 @@
     {
       "id": "commercial-ready",
       "th": "โอทอปพร้อมค้า",
-      "text": "117 records (0.1%) carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. 20,268 carry two of the three, 28,580 carry one, and 105,113 (68.2%) carry none of the three: a name and an area only.",
+      "text": "117 records (0.1%) carry the three signals a buyer needs at the same time — a category, a contact, and an OPC grade. 20,268 carry two of the three, 28,556 carry one, and 105,109 (68.2%) carry none of the three: a name and an area only.",
       "value": 0.1,
       "count": 117,
       "tier2": 20268,
-      "tier1": 28580,
-      "tier0": 105113
+      "tier1": 28556,
+      "tier0": 105109
     },
     {
       "id": "corroboration",
@@ -12388,14 +12472,14 @@
     {
       "id": "concentration",
       "th": "ความเข้มข้น",
-      "text": "The ten most-filed provinces hold 26.8% of all records. The remaining 67 provinces share the rest.",
-      "value": 26.8
+      "text": "The ten most-filed provinces hold 26.7% of all records. The remaining 67 provinces share the rest.",
+      "value": 26.7
     },
     {
       "id": "hidden-champions",
       "th": "ซ่อนอยู่ในทะเบียน",
-      "text": "7,087 records carry a 4-5★ OPC grade but no contact channel. The state has certified them; the system cannot route a buyer to them.",
-      "value": 7087
+      "text": "7,089 records carry a 4-5★ OPC grade but no contact channel. The state has certified them; the system cannot route a buyer to them.",
+      "value": 7089
     },
     {
       "id": "trust-spread",
@@ -12418,8 +12502,14 @@
     {
       "id": "agency-reconciliation",
       "th": "การประมวลรวม 26 หน่วยงาน",
-      "text": "1,015,991 rows from 522 open datasets across 26 government publishing offices were harmonized. Deduplication collapsed 273,069 redundant filings (64.0% duplicate inflation) down to 154,078 verified producer entities.",
-      "value": 273069
+      "text": "1,015,991 rows from 522 open datasets across 26 government publishing offices were harmonized. Deduplication collapsed 273,050 redundant filings (64.0% duplicate inflation) down to 154,050 verified producer entities.",
+      "value": 273050
+    },
+    {
+      "id": "certified",
+      "th": "ได้รับการรับรอง มผช.",
+      "text": "17,235 records (11.2%) carry a Community Product Standard (มผช.) certificate: 10,044 still valid as of 2026-09-11, 7,067 lapsed, 124 undated. 5 are buyer-ready — valid certificate, 4-5★ grade, and a contact channel.",
+      "value": 17235
     }
   ],
   "specialization": [
@@ -12621,8 +12711,8 @@
       "en": "Chiang Mai",
       "graded": 441,
       "graded45": 353,
-      "total": 4011,
-      "density": 11
+      "total": 3985,
+      "density": 11.1
     },
     {
       "code": 34,
@@ -12719,27 +12809,27 @@
       },
       {
         "year": 2020,
-        "count": 592
+        "count": 590
       },
       {
         "year": 2021,
-        "count": 686
+        "count": 687
       },
       {
         "year": 2022,
-        "count": 1296
+        "count": 1307
       },
       {
         "year": 2023,
-        "count": 2782
+        "count": 2781
       },
       {
         "year": 2024,
-        "count": 4182
+        "count": 4183
       },
       {
         "year": 2025,
-        "count": 3003
+        "count": 2993
       },
       {
         "year": 2026,
@@ -12786,7 +12876,7 @@
         },
         {
           "year": 2020,
-          "count": 45
+          "count": 48
         },
         {
           "year": 2021,
@@ -12794,7 +12884,7 @@
         },
         {
           "year": 2022,
-          "count": 162
+          "count": 165
         },
         {
           "year": 2023,
@@ -12806,7 +12896,7 @@
         },
         {
           "year": 2025,
-          "count": 497
+          "count": 493
         },
         {
           "year": 2026,
@@ -12852,11 +12942,11 @@
         },
         {
           "year": 2020,
-          "count": 40
+          "count": 41
         },
         {
           "year": 2021,
-          "count": 47
+          "count": 45
         },
         {
           "year": 2022,
@@ -12864,15 +12954,15 @@
         },
         {
           "year": 2023,
-          "count": 95
+          "count": 93
         },
         {
           "year": 2024,
-          "count": 180
+          "count": 181
         },
         {
           "year": 2025,
-          "count": 292
+          "count": 291
         },
         {
           "year": 2026,
@@ -12918,15 +13008,15 @@
         },
         {
           "year": 2020,
-          "count": 141
+          "count": 137
         },
         {
           "year": 2021,
-          "count": 179
+          "count": 184
         },
         {
           "year": 2022,
-          "count": 490
+          "count": 503
         },
         {
           "year": 2023,
@@ -12934,11 +13024,11 @@
         },
         {
           "year": 2024,
-          "count": 889
+          "count": 890
         },
         {
           "year": 2025,
-          "count": 362
+          "count": 358
         },
         {
           "year": 2026,
@@ -12984,7 +13074,7 @@
         },
         {
           "year": 2020,
-          "count": 294
+          "count": 292
         },
         {
           "year": 2021,
@@ -12992,7 +13082,7 @@
         },
         {
           "year": 2022,
-          "count": 356
+          "count": 352
         },
         {
           "year": 2023,
@@ -13004,7 +13094,7 @@
         },
         {
           "year": 2025,
-          "count": 850
+          "count": 849
         },
         {
           "year": 2026,
@@ -13054,19 +13144,19 @@
         },
         {
           "year": 2021,
-          "count": 121
+          "count": 119
         },
         {
           "year": 2022,
-          "count": 181
+          "count": 179
         },
         {
           "year": 2023,
-          "count": 1214
+          "count": 1215
         },
         {
           "year": 2024,
-          "count": 1786
+          "count": 1785
         },
         {
           "year": 2025,
@@ -13124,7 +13214,7 @@
         },
         {
           "year": 2022,
-          "count": 35
+          "count": 36
         },
         {
           "year": 2023,
@@ -13151,31 +13241,31 @@
         "id": "food",
         "th": "อาหาร",
         "en": "Food",
-        "total": 17100
+        "total": 17091
       },
       {
         "id": "beverage",
         "th": "เครื่องดื่ม",
         "en": "Beverages",
-        "total": 1563
+        "total": 1562
       },
       {
         "id": "textile",
         "th": "ผ้าและเครื่องแต่งกาย",
         "en": "Fabric & Apparel",
-        "total": 13830
+        "total": 13827
       },
       {
         "id": "craft",
         "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
         "en": "Household, Decorative & Souvenir",
-        "total": 11018
+        "total": 11013
       },
       {
         "id": "herbal",
         "th": "สมุนไพรที่ไม่ใช่อาหาร",
         "en": "Non-food Herbal",
-        "total": 3178
+        "total": 3172
       }
     ],
     "rows": [
@@ -13261,7 +13351,7 @@
           },
           "herbal": {
             "count": 81,
-            "share": 2.5
+            "share": 2.6
           }
         },
         "rowTotal": 1712
@@ -13560,30 +13650,30 @@
         "code": 50,
         "th": "เชียงใหม่",
         "en": "Chiang Mai",
-        "records": 4011,
+        "records": 3985,
         "cells": {
           "food": {
-            "count": 163,
-            "share": 1
+            "count": 154,
+            "share": 0.9
           },
           "beverage": {
-            "count": 51,
-            "share": 3.3
+            "count": 50,
+            "share": 3.2
           },
           "textile": {
-            "count": 516,
+            "count": 513,
             "share": 3.7
           },
           "craft": {
-            "count": 215,
-            "share": 2
+            "count": 210,
+            "share": 1.9
           },
           "herbal": {
-            "count": 86,
-            "share": 2.7
+            "count": 82,
+            "share": 2.6
           }
         },
-        "rowTotal": 1031
+        "rowTotal": 1009
       },
       {
         "code": 49,
@@ -13879,7 +13969,7 @@
         "code": 54,
         "th": "แพร่",
         "en": "Phrae",
-        "records": 1918,
+        "records": 1916,
         "cells": {
           "food": {
             "count": 237,
@@ -13898,19 +13988,19 @@
             "share": 0.7
           },
           "herbal": {
-            "count": 42,
+            "count": 40,
             "share": 1.3
           }
         },
-        "rowTotal": 591
+        "rowTotal": 589
       }
     ],
     "colTotal": {
-      "food": 17100,
-      "beverage": 1563,
-      "textile": 13830,
-      "craft": 11018,
-      "herbal": 3178
+      "food": 17091,
+      "beverage": 1562,
+      "textile": 13827,
+      "craft": 11013,
+      "herbal": 3172
     }
   },
   "reachGap": [
@@ -13975,14 +14065,14 @@
       "th": "เชียงใหม่",
       "en": "Chiang Mai",
       "region": "north",
-      "records": 4011,
+      "records": 3985,
       "reachable": 2,
-      "unreachable": 4009,
-      "reachablePct": 0,
-      "corroborated": 2474,
-      "corroboratedPct": 61.7,
+      "unreachable": 3983,
+      "reachablePct": 0.1,
+      "corroborated": 2476,
+      "corroboratedPct": 62.1,
       "highStars": 353,
-      "hiddenChampions": 275
+      "hiddenChampions": 277
     },
     {
       "code": 45,
@@ -14297,12 +14387,12 @@
       "th": "แพร่",
       "en": "Phrae",
       "region": "north",
-      "records": 1918,
+      "records": 1916,
       "reachable": 5,
-      "unreachable": 1913,
+      "unreachable": 1911,
       "reachablePct": 0.3,
       "corroborated": 1351,
-      "corroboratedPct": 70.4,
+      "corroboratedPct": 70.5,
       "highStars": 143,
       "hiddenChampions": 111
     },
@@ -15160,14 +15250,14 @@
         "th": "เชียงใหม่",
         "en": "Chiang Mai",
         "region": "north",
-        "records": 4011,
+        "records": 3985,
         "reachable": 2,
-        "unreachable": 4009,
-        "reachablePct": 0,
-        "corroborated": 2474,
-        "corroboratedPct": 61.7,
+        "unreachable": 3983,
+        "reachablePct": 0.1,
+        "corroborated": 2476,
+        "corroboratedPct": 62.1,
         "highStars": 353,
-        "hiddenChampions": 275
+        "hiddenChampions": 277
       },
       {
         "code": 45,
@@ -15468,12 +15558,12 @@
         "th": "แพร่",
         "en": "Phrae",
         "region": "north",
-        "records": 1918,
+        "records": 1916,
         "reachable": 5,
-        "unreachable": 1913,
+        "unreachable": 1911,
         "reachablePct": 0.3,
         "corroborated": 1351,
-        "corroboratedPct": 70.4,
+        "corroboratedPct": 70.5,
         "highStars": 143,
         "hiddenChampions": 111
       },
@@ -16098,7 +16188,7 @@
       "code": 50,
       "th": "เชียงใหม่",
       "en": "Chiang Mai",
-      "hiddenChampions": 275,
+      "hiddenChampions": 277,
       "highStars": 353,
       "reachable": 2
     },
@@ -16214,10 +16304,10 @@
       "en": "North",
       "dominantCategory": "textile",
       "dominantLabel": "Fabric & Apparel",
-      "dominantShare": 43.2,
-      "classified": 5902,
-      "records": 19222,
-      "classifiedPct": 30.7
+      "dominantShare": 43.3,
+      "classified": 5878,
+      "records": 19194,
+      "classifiedPct": 30.6
     },
     {
       "id": "northeast",
@@ -16275,8 +16365,841 @@
       "classifiedPct": 27.9
     }
   ],
+  "certification": {
+    "asOf": "2026-09-11",
+    "certified": 17235,
+    "certifiedShare": 11.2,
+    "valid": 10044,
+    "expired": 7067,
+    "unknown": 124,
+    "buyerReady": 5,
+    "byStandard": [
+      {
+        "standard": "(unspecified standard)",
+        "holders": 705,
+        "valid": 304
+      },
+      {
+        "standard": "มผช.835/2564 · เสื้อผ้าสำเร็จรูปหญิง",
+        "holders": 587,
+        "valid": 355
+      },
+      {
+        "standard": "835/2564 · WOMEN'S WEARS",
+        "holders": 558,
+        "valid": 45
+      },
+      {
+        "standard": "WOMEN'S WEARS",
+        "holders": 553,
+        "valid": 102
+      },
+      {
+        "standard": "PLASTIC PRODUCTS",
+        "holders": 432,
+        "valid": 286
+      },
+      {
+        "standard": "20/2559 · PLASTIC PRODUCTS",
+        "holders": 404,
+        "valid": 251
+      },
+      {
+        "standard": "มผช.20/2559 · ผลิตภัณฑ์จากเส้นพลาสติก",
+        "holders": 396,
+        "valid": 209
+      },
+      {
+        "standard": "CLOTH BAGS",
+        "holders": 392,
+        "valid": 279
+      },
+      {
+        "standard": "มผช.417/2558 · กระเป๋าผ้า",
+        "holders": 376,
+        "valid": 207
+      },
+      {
+        "standard": "TEXTILE CRAFTS",
+        "holders": 369,
+        "valid": 272
+      }
+    ],
+    "byProvince": [
+      {
+        "code": 50,
+        "th": "เชียงใหม่",
+        "en": "Chiang Mai",
+        "records": 3985,
+        "certified": 648,
+        "valid": 287,
+        "certifiedReachable": 0,
+        "certifiedGraded": 26
+      },
+      {
+        "code": 10,
+        "th": "กรุงเทพมหานคร",
+        "en": "Bangkok",
+        "records": 2559,
+        "certified": 472,
+        "valid": 265,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 30,
+        "th": "นครราชสีมา",
+        "en": "Nakhon Ratchasima",
+        "records": 4045,
+        "certified": 468,
+        "valid": 248,
+        "certifiedReachable": 4,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 34,
+        "th": "อุบลราชธานี",
+        "en": "Ubon Ratchathani",
+        "records": 5508,
+        "certified": 408,
+        "valid": 218,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 67,
+        "th": "เพชรบูรณ์",
+        "en": "Phetchabun",
+        "records": 1697,
+        "certified": 401,
+        "valid": 231,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 40,
+        "th": "ขอนแก่น",
+        "en": "Khon Kaen",
+        "records": 4089,
+        "certified": 373,
+        "valid": 221,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 41,
+        "th": "อุดรธานี",
+        "en": "Udon Thani",
+        "records": 2405,
+        "certified": 343,
+        "valid": 252,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 54,
+        "th": "แพร่",
+        "en": "Phrae",
+        "records": 1916,
+        "certified": 342,
+        "valid": 197,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 32,
+        "th": "สุรินทร์",
+        "en": "Surin",
+        "records": 4311,
+        "certified": 318,
+        "valid": 185,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 57,
+        "th": "เชียงราย",
+        "en": "Chiang Rai",
+        "records": 3405,
+        "certified": 312,
+        "valid": 165,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 51,
+        "th": "ลำพูน",
+        "en": "Lamphun",
+        "records": 2578,
+        "certified": 293,
+        "valid": 158,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 31,
+        "th": "บุรีรัมย์",
+        "en": "Buri Ram",
+        "records": 4288,
+        "certified": 292,
+        "valid": 146,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 33,
+        "th": "ศรีสะเกษ",
+        "en": "Si Sa Ket",
+        "records": 3676,
+        "certified": 280,
+        "valid": 194,
+        "certifiedReachable": 0,
+        "certifiedGraded": 1
+      },
+      {
+        "code": 45,
+        "th": "ร้อยเอ็ด",
+        "en": "Roi Et",
+        "records": 3970,
+        "certified": 276,
+        "valid": 141,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 16,
+        "th": "ลพบุรี",
+        "en": "Lop Buri",
+        "records": 1701,
+        "certified": 274,
+        "valid": 132,
+        "certifiedReachable": 0,
+        "certifiedGraded": 6
+      },
+      {
+        "code": 72,
+        "th": "สุพรรณบุรี",
+        "en": "Suphan Buri",
+        "records": 1721,
+        "certified": 261,
+        "valid": 164,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 47,
+        "th": "สกลนคร",
+        "en": "Sakon Nakhon",
+        "records": 3514,
+        "certified": 258,
+        "valid": 177,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 90,
+        "th": "สงขลา",
+        "en": "Songkhla",
+        "records": 1792,
+        "certified": 253,
+        "valid": 149,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 93,
+        "th": "พัทลุง",
+        "en": "Phatthalung",
+        "records": 1776,
+        "certified": 253,
+        "valid": 152,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 36,
+        "th": "ชัยภูมิ",
+        "en": "Chaiyaphum",
+        "records": 3483,
+        "certified": 252,
+        "valid": 163,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 80,
+        "th": "นครศรีธรรมราช",
+        "en": "Nakhon Si Thammarat",
+        "records": 3059,
+        "certified": 250,
+        "valid": 143,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 19,
+        "th": "สระบุรี",
+        "en": "Saraburi",
+        "records": 1554,
+        "certified": 250,
+        "valid": 158,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 14,
+        "th": "พระนครศรีอยุธยา",
+        "en": "Phra Nakhon Si Ayutthaya",
+        "records": 2447,
+        "certified": 246,
+        "valid": 164,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 22,
+        "th": "จันทบุรี",
+        "en": "Chanthaburi",
+        "records": 1465,
+        "certified": 242,
+        "valid": 130,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 11,
+        "th": "สมุทรปราการ",
+        "en": "Samut Prakan",
+        "records": 1941,
+        "certified": 237,
+        "valid": 165,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 73,
+        "th": "นครปฐม",
+        "en": "Nakhon Pathom",
+        "records": 2205,
+        "certified": 236,
+        "valid": 144,
+        "certifiedReachable": 88,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 27,
+        "th": "สระแก้ว",
+        "en": "Sa Kaeo",
+        "records": 1400,
+        "certified": 230,
+        "valid": 132,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 12,
+        "th": "นนทบุรี",
+        "en": "Nonthaburi",
+        "records": 1843,
+        "certified": 226,
+        "valid": 139,
+        "certifiedReachable": 0,
+        "certifiedGraded": 33
+      },
+      {
+        "code": 71,
+        "th": "กาญจนบุรี",
+        "en": "Kanchanaburi",
+        "records": 2534,
+        "certified": 224,
+        "valid": 138,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 48,
+        "th": "นครพนม",
+        "en": "Nakhon Phanom",
+        "records": 1927,
+        "certified": 222,
+        "valid": 131,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 35,
+        "th": "ยโสธร",
+        "en": "Yasothon",
+        "records": 2347,
+        "certified": 213,
+        "valid": 113,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 65,
+        "th": "พิษณุโลก",
+        "en": "Phitsanulok",
+        "records": 1605,
+        "certified": 211,
+        "valid": 161,
+        "certifiedReachable": 24,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 60,
+        "th": "นครสวรรค์",
+        "en": "Nakhon Sawan",
+        "records": 2111,
+        "certified": 210,
+        "valid": 134,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 13,
+        "th": "ปทุมธานี",
+        "en": "Pathum Thani",
+        "records": 1393,
+        "certified": 210,
+        "valid": 105,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 43,
+        "th": "หนองคาย",
+        "en": "Nong Khai",
+        "records": 1398,
+        "certified": 208,
+        "valid": 137,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 92,
+        "th": "ตรัง",
+        "en": "Trang",
+        "records": 1814,
+        "certified": 207,
+        "valid": 122,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 56,
+        "th": "พะเยา",
+        "en": "Phayao",
+        "records": 1464,
+        "certified": 206,
+        "valid": 118,
+        "certifiedReachable": 46,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 39,
+        "th": "หนองบัวลำภู",
+        "en": "Nong Bua Lam Phu",
+        "records": 1411,
+        "certified": 204,
+        "valid": 125,
+        "certifiedReachable": 52,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 46,
+        "th": "กาฬสินธุ์",
+        "en": "Kalasin",
+        "records": 3813,
+        "certified": 203,
+        "valid": 115,
+        "certifiedReachable": 40,
+        "certifiedGraded": 8
+      },
+      {
+        "code": 44,
+        "th": "มหาสารคาม",
+        "en": "Maha Sarakham",
+        "records": 2244,
+        "certified": 200,
+        "valid": 126,
+        "certifiedReachable": 0,
+        "certifiedGraded": 37
+      },
+      {
+        "code": 63,
+        "th": "ตาก",
+        "en": "Tak",
+        "records": 1655,
+        "certified": 200,
+        "valid": 120,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 52,
+        "th": "ลำปาง",
+        "en": "Lampang",
+        "records": 2069,
+        "certified": 197,
+        "valid": 109,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 15,
+        "th": "อ่างทอง",
+        "en": "Ang Thong",
+        "records": 1366,
+        "certified": 196,
+        "valid": 109,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 38,
+        "th": "บึงกาฬ",
+        "en": "Bueng Kan",
+        "records": 2299,
+        "certified": 194,
+        "valid": 123,
+        "certifiedReachable": 0,
+        "certifiedGraded": 6
+      },
+      {
+        "code": 70,
+        "th": "ราชบุรี",
+        "en": "Ratchaburi",
+        "records": 1855,
+        "certified": 194,
+        "valid": 105,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 24,
+        "th": "ฉะเชิงเทรา",
+        "en": "Chachoengsao",
+        "records": 1545,
+        "certified": 193,
+        "valid": 102,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 18,
+        "th": "ชัยนาท",
+        "en": "Chai Nat",
+        "records": 1017,
+        "certified": 189,
+        "valid": 111,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 55,
+        "th": "น่าน",
+        "en": "Nan",
+        "records": 1444,
+        "certified": 185,
+        "valid": 118,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 53,
+        "th": "อุตรดิตถ์",
+        "en": "Uttaradit",
+        "records": 1431,
+        "certified": 184,
+        "valid": 109,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 20,
+        "th": "ชลบุรี",
+        "en": "Chon Buri",
+        "records": 1923,
+        "certified": 182,
+        "valid": 107,
+        "certifiedReachable": 0,
+        "certifiedGraded": 9
+      },
+      {
+        "code": 61,
+        "th": "อุทัยธานี",
+        "en": "Uthai Thani",
+        "records": 890,
+        "certified": 178,
+        "valid": 119,
+        "certifiedReachable": 31,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 85,
+        "th": "ระนอง",
+        "en": "Ranong",
+        "records": 916,
+        "certified": 172,
+        "valid": 106,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 21,
+        "th": "ระยอง",
+        "en": "Rayong",
+        "records": 1496,
+        "certified": 169,
+        "valid": 91,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 84,
+        "th": "สุราษฎร์ธานี",
+        "en": "Surat Thani",
+        "records": 1984,
+        "certified": 168,
+        "valid": 99,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 25,
+        "th": "ปราจีนบุรี",
+        "en": "Prachin Buri",
+        "records": 1222,
+        "certified": 168,
+        "valid": 102,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 96,
+        "th": "นราธิวาส",
+        "en": "Narathiwat",
+        "records": 1414,
+        "certified": 166,
+        "valid": 105,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 94,
+        "th": "ปัตตานี",
+        "en": "Pattani",
+        "records": 1659,
+        "certified": 165,
+        "valid": 102,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 76,
+        "th": "เพชรบุรี",
+        "en": "Phetchaburi",
+        "records": 1332,
+        "certified": 164,
+        "valid": 96,
+        "certifiedReachable": 29,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 95,
+        "th": "ยะลา",
+        "en": "Yala",
+        "records": 1831,
+        "certified": 162,
+        "valid": 94,
+        "certifiedReachable": 1,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 62,
+        "th": "กำแพงเพชร",
+        "en": "Kamphaeng Phet",
+        "records": 1590,
+        "certified": 161,
+        "valid": 87,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 82,
+        "th": "พังงา",
+        "en": "Phang Nga",
+        "records": 1294,
+        "certified": 161,
+        "valid": 87,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 37,
+        "th": "อำนาจเจริญ",
+        "en": "Amnat Charoen",
+        "records": 2011,
+        "certified": 158,
+        "valid": 108,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 64,
+        "th": "สุโขทัย",
+        "en": "Sukhothai",
+        "records": 1351,
+        "certified": 155,
+        "valid": 95,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 26,
+        "th": "นครนายก",
+        "en": "Nakhon Nayok",
+        "records": 1027,
+        "certified": 152,
+        "valid": 76,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 17,
+        "th": "สิงห์บุรี",
+        "en": "Sing Buri",
+        "records": 1106,
+        "certified": 151,
+        "valid": 89,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 66,
+        "th": "พิจิตร",
+        "en": "Phichit",
+        "records": 1764,
+        "certified": 150,
+        "valid": 84,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 49,
+        "th": "มุกดาหาร",
+        "en": "Mukdahan",
+        "records": 1287,
+        "certified": 149,
+        "valid": 84,
+        "certifiedReachable": 0,
+        "certifiedGraded": 9
+      },
+      {
+        "code": 81,
+        "th": "กระบี่",
+        "en": "Krabi",
+        "records": 1510,
+        "certified": 145,
+        "valid": 84,
+        "certifiedReachable": 0,
+        "certifiedGraded": 12
+      },
+      {
+        "code": 74,
+        "th": "สมุทรสาคร",
+        "en": "Samut Sakhon",
+        "records": 1212,
+        "certified": 145,
+        "valid": 64,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 77,
+        "th": "ประจวบคีรีขันธ์",
+        "en": "Prachuap Khiri Khan",
+        "records": 1144,
+        "certified": 144,
+        "valid": 83,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 75,
+        "th": "สมุทรสงคราม",
+        "en": "Samut Songkhram",
+        "records": 1069,
+        "certified": 144,
+        "valid": 91,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 83,
+        "th": "ภูเก็ต",
+        "en": "Phuket",
+        "records": 820,
+        "certified": 141,
+        "valid": 78,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 91,
+        "th": "สตูล",
+        "en": "Satun",
+        "records": 945,
+        "certified": 140,
+        "valid": 81,
+        "certifiedReachable": 18,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 86,
+        "th": "ชุมพร",
+        "en": "Chumphon",
+        "records": 1054,
+        "certified": 130,
+        "valid": 78,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 42,
+        "th": "เลย",
+        "en": "Loei",
+        "records": 1351,
+        "certified": 129,
+        "valid": 64,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 23,
+        "th": "ตราด",
+        "en": "Trat",
+        "records": 871,
+        "certified": 122,
+        "valid": 75,
+        "certifiedReachable": 0,
+        "certifiedGraded": 0
+      },
+      {
+        "code": 58,
+        "th": "แม่ฮ่องสอน",
+        "en": "Mae Hong Son",
+        "records": 902,
+        "certified": 120,
+        "valid": 64,
+        "certifiedReachable": 0,
+        "certifiedGraded": 20
+      }
+    ]
+  },
   "standards": {
-    "builtAt": "2026-09-11T07:54:00.641Z",
+    "builtAt": "2026-09-11T08:53:30.133Z",
     "source": "Thai Industrial Standards Institute (TISI / สมอ.)",
     "total": 1489,
     "byCategory": {
@@ -31728,7 +32651,7 @@
     ]
   },
   "revenue": {
-    "builtAt": "2026-09-11T07:54:00.738Z",
+    "builtAt": "2026-09-11T08:53:30.222Z",
     "unit": "บาท",
     "seriesSource": "กรมพัฒนาชุมชน",
     "resourceId": "c1c39e6a-c6ab-4d31-a911-44517db7f2eb",
@@ -32158,16 +33081,16 @@
       "usableTitles": 125,
       "silentTitles": 332,
       "rowsIn": 1015991,
-      "rowsAccepted": 427147,
-      "rowsRejected": 9469,
-      "duplicatesCollapsed": 273069,
-      "records": 154078
+      "rowsAccepted": 427100,
+      "rowsRejected": 9516,
+      "duplicatesCollapsed": 273050,
+      "records": 154050
     },
     "darkness": {
-      "unclassified": 107389,
+      "unclassified": 107385,
       "unclassifiedShare": 69.7,
-      "beverage": 1563,
-      "herbal": 3178,
+      "beverage": 1562,
+      "herbal": 3172,
       "leastClassified": [
         {
           "code": 84,
@@ -32211,7 +33134,7 @@
       "reachableShare": 5.7,
       "withPrice": 0,
       "withCoordinates": 0.4,
-      "hiddenChampions": 7087,
+      "hiddenChampions": 7089,
       "worstUnreachable": [
         {
           "code": 34,
@@ -32245,13 +33168,13 @@
           "code": 50,
           "th": "เชียงใหม่",
           "en": "Chiang Mai",
-          "records": 4011,
+          "records": 3985,
           "reachable": 2
         }
       ]
     },
     "energy": {
-      "top10Share": 26.8,
+      "top10Share": 26.7,
       "mostTrusted": {
         "code": 91,
         "th": "สตูล",
@@ -32303,7 +33226,7 @@
     "temporal": {
       "dated": 20989,
       "datedShare": 13.6,
-      "undated": 133089,
+      "undated": 133061,
       "earliest": 2007,
       "latest": 2026,
       "median": 2022,
@@ -32317,7 +33240,7 @@
       "peak": [
         {
           "year": 2024,
-          "count": 4182
+          "count": 4183
         },
         {
           "year": 2014,
@@ -32325,38 +33248,38 @@
         },
         {
           "year": 2025,
-          "count": 3003
+          "count": 2993
         }
       ]
     },
     "standardsGap": [
       {
         "id": "textile",
-        "products": 13830,
+        "products": 13827,
         "standards": 110,
         "productsPerStandard": 125.7
       },
       {
         "id": "food",
-        "products": 17100,
+        "products": 17091,
         "standards": 553,
         "productsPerStandard": 30.9
       },
       {
         "id": "herbal",
-        "products": 3178,
+        "products": 3172,
         "standards": 103,
-        "productsPerStandard": 30.9
+        "productsPerStandard": 30.8
       },
       {
         "id": "craft",
-        "products": 11018,
+        "products": 11013,
         "standards": 461,
         "productsPerStandard": 23.9
       },
       {
         "id": "beverage",
-        "products": 1563,
+        "products": 1562,
         "standards": 262,
         "productsPerStandard": 6
       }
@@ -32372,7 +33295,7 @@
     }
   },
   "concentration": {
-    "top10Share": 26.8,
+    "top10Share": 26.7,
     "top10": [
       {
         "th": "อุบลราชธานี",
@@ -32402,7 +33325,7 @@
       {
         "th": "เชียงใหม่",
         "en": "Chiang Mai",
-        "records": 4011
+        "records": 3985
       },
       {
         "th": "ร้อยเอ็ด",

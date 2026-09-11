@@ -225,6 +225,17 @@ export function buildRecord(row, provenance) {
     latitude,
     longitude,
 
+    certs: (() => {
+      const cert = buildCert({
+        number: row.certNumber,
+        standardCode: row.certStandardCode,
+        standardTitle: row.certStandardTitle,
+        issued: row.certIssued,
+        expires: row.certExpires,
+      });
+      return cert ? [cert] : [];
+    })(),
+
     provenance: {
       datasetId: provenance.datasetId,
       datasetTitle: provenance.datasetTitle ?? null,
@@ -294,6 +305,75 @@ export function parseIncome(value) {
   const income = Number(match[1]);
   // Allow up to 10 billion for annual income
   return Number.isFinite(income) && income > 0 && income < 10_000_000_000 ? income : null;
+}
+
+/**
+ * Certificate dates from the มผช. holder lists. Usually ISO ("2024-06-21"),
+ * sometimes Thai-style day/month with a Buddhist-Era year ("21/06/2567").
+ * Returns YYYY-MM-DD or null. A date that cannot be read is null, never a
+ * guess — an unreadable expiry must surface as "unknown", not "valid".
+ */
+export function parseCertDate(value) {
+  const raw = normalizeText(value, '');
+  if (!raw) return null;
+  const iso = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (iso) {
+    let year = Number(iso[1]);
+    if (year >= 2400 && year <= 2700) year -= 543;
+    if (year < 1900 || year > 2200) return null;
+    const month = Number(iso[2]); const day = Number(iso[3]);
+    if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  }
+  const dmy = raw.match(/(\d{1,2})[/-](\d{1,2})[/-](\d{4})/);
+  if (dmy) {
+    let year = Number(dmy[3]);
+    if (year >= 2400 && year <= 2700) year -= 543;
+    if (year < 1900 || year > 2200) return null;
+    const month = Number(dmy[2]); const day = Number(dmy[1]);
+    if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  }
+  return null;
+}
+
+/**
+ * One มผช. (Community Product Standard) certificate carried by a source row.
+ * All fields optional; null when the row carries no certificate at all.
+ * This is provenance, never identity: two products from one certified holder
+ * share a certificate but are different records, so cert fields must never
+ * enter identitySignals().
+ */
+export function buildCert({ number, standardCode, standardTitle, issued, expires }) {
+  const cert = {
+    number: normalizeText(number, '') || null,
+    standardCode: normalizeText(standardCode, '') || null,
+    standardTitle: normalizeText(standardTitle, '') || null,
+    issued: parseCertDate(issued),
+    expires: parseCertDate(expires),
+  };
+  return (cert.number || cert.standardCode || cert.standardTitle || cert.issued || cert.expires) ? cert : null;
+}
+
+/**
+ * Certificate standing of a merged record as of a build date (YYYY-MM-DD).
+ *   valid   — at least one certificate expires on or after asOf
+ *   expired — certificates exist, every parseable expiry is before asOf
+ *   unknown — certificates exist but none carries a parseable expiry
+ *   null    — no certificate at all
+ * asOf is a parameter, not "today", so the same inputs always build the
+ * same output and the standing is stamped next to the date it was judged on.
+ */
+export function certStatus(certs, asOf) {
+  if (!certs || certs.length === 0) return null;
+  if (typeof asOf !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(asOf)) return 'unknown';
+  let anyDated = false;
+  for (const cert of certs) {
+    if (!cert.expires) continue;
+    anyDated = true;
+    if (cert.expires >= asOf) return 'valid';
+  }
+  return anyDated ? 'expired' : 'unknown';
 }
 
 /**
@@ -368,6 +448,7 @@ export function mergeRecords(records, { maxProvincesPerPhone = 1 } = {}) {
     for (const record of group.slice(1)) {
       for (const [field, value] of Object.entries(record)) {
         if (field === 'provenance') continue;
+        if (field === 'certs') continue;
         if (out[field] == null && value != null) out[field] = value;
       }
       if (record.stars != null && (out.stars == null || record.stars > out.stars)) out.stars = record.stars;
@@ -375,6 +456,22 @@ export function mergeRecords(records, { maxProvincesPerPhone = 1 } = {}) {
         out.provenance.push(record.provenance);
       }
     }
+
+    // Certificates union across the group like any other provenance: one
+    // holder certified for three products carries three certificates, and a
+    // cert row merged with a non-cert row must not lose the certificate.
+    // Distinct by number + standard + expiry so repeated filings of the same
+    // certificate (the มผช. list is snapshotted many times) count once.
+    const certs = [];
+    for (const record of group) {
+      for (const cert of record.certs ?? []) {
+        const key = [cert.number, cert.standardCode, cert.standardTitle, cert.issued, cert.expires].join('|');
+        if (!certs.some((c) => [c.number, c.standardCode, c.standardTitle, c.issued, c.expires].join('|') === key)) {
+          certs.push(cert);
+        }
+      }
+    }
+    out.certs = certs;
 
     // Which signal types actually held this group together. Only meaningful for
     // a group of more than one: a singleton was not merged by anything, and

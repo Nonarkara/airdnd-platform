@@ -46,6 +46,7 @@ export const ZONES = [
   { key: 'withStars', label: 'OPC graded', th: 'มีระดับดาว', zone: 'Class of service' },
   { key: 'withContact', label: 'Reachable', th: 'มีช่องทางติดต่อ', zone: 'Claim' },
   { key: 'withPrice', label: 'Priced', th: 'มีราคา', zone: 'Value' },
+  { key: 'withCert', label: 'State-certified', th: 'มีใบรับรอง มผช.', zone: 'Seal' },
   { key: 'withCoordinates', label: 'Mapped', th: 'มีพิกัด', zone: 'Machine key' },
 ];
 

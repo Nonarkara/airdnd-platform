@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-11T07:54:00.500Z",
+  "builtAt": "2026-09-11T08:53:29.984Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -13,14 +13,19 @@
     "resourcesAggregateEconomic": 228,
     "resourcesExcludedByTitle": 3,
     "rowsIn": 1015991,
-    "rowsAccepted": 427147,
-    "rowsRejected": 9469,
-    "recordsAfterMerge": 154078,
-    "duplicatesCollapsed": 273069,
-    "tambonPlaced": 135100
+    "rowsAccepted": 427100,
+    "rowsRejected": 9516,
+    "recordsAfterMerge": 154050,
+    "duplicatesCollapsed": 273050,
+    "tambonPlaced": 135100,
+    "certified": 17235,
+    "certValid": 10044,
+    "certExpired": 7067,
+    "certUnknown": 124,
+    "certAsOf": "2026-09-11"
   },
   "geo": {
-    "records": 154078,
+    "records": 154050,
     "withSubdistrict": 135390,
     "placed": 135100,
     "placedShare": 87.7,
@@ -30,20 +35,20 @@
   },
   "rejectReasons": {
     "no_area": 8930,
-    "no_name": 5066,
+    "no_name": 5326,
     "numeric_name": 498
   },
   "mergeBasis": {
-    "name_area": 33579,
+    "name_area": 33571,
     "registration": 70824,
     "phone": 6662
   },
   "strongestSignal": {
-    "name_area": 140498,
+    "name_area": 140470,
     "phone": 8839,
     "unmergeable": 4741
   },
-  "mergedRecords": 111065,
+  "mergedRecords": 111057,
   "resources": [
     {
       "resourceId": "000017df-6ebc-4e8f-afcc-500708549a71",
@@ -295,18 +300,18 @@
       "rowsIn": 32,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -2127,27 +2132,27 @@
       "rowsIn": 11318,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 6,
+      "mappedFields": 11,
       "map": {
         "producerName": "ชื่อ",
         "productDescription": "รายละเอียดผลิตภัณฑ์",
         "category": "กลุ่มผลิตภัณฑ์",
         "province": "จังหวัด",
         "district": "อำเภอ",
-        "subdistrict": "ตำบล"
+        "subdistrict": "ตำบล",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certStandardTitle": "ชื่อ มผช.",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ใบรับรอง",
         "เลขที่",
         "หมู่ที่",
         "ซอย",
         "ถนน",
-        "รหัสไปรษณีย์",
-        "เลขที่ มผช.",
-        "ชื่อ มผช.",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "รหัสไปรษณีย์"
       ],
       "ambiguous": [],
       "rowsAccepted": 11318,
@@ -2221,14 +2226,14 @@
       "rowsIn": 250,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -2325,18 +2330,18 @@
       "rowsIn": 1392,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
         "ประเภทมาตรฐาน",
         "วันที่ประกาศ",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ไฟล์เอกสาร"
       ],
       "ambiguous": [
@@ -3578,15 +3583,15 @@
       "rowsIn": 1489,
       "usable": false,
       "kind": "other",
-      "mappedFields": 2,
+      "mappedFields": 4,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "วันที่ประกาศ",
         "ไฟล์เอกสาร"
       ],
@@ -3813,18 +3818,18 @@
       "rowsIn": 39,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -3932,14 +3937,14 @@
       "rowsIn": 215,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -4265,18 +4270,18 @@
       "rowsIn": 46,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -4515,14 +4520,14 @@
       "rowsIn": 247,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -5394,15 +5399,15 @@
       "rowsIn": 1499,
       "usable": false,
       "kind": "other",
-      "mappedFields": 2,
+      "mappedFields": 4,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "วันที่ประกาศ",
         "ไฟล์เอกสาร"
       ],
@@ -7065,14 +7070,14 @@
       "rowsIn": 247,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -9393,18 +9398,18 @@
       "rowsIn": 46,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -10028,7 +10033,7 @@
       "rowsIn": 102,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 7,
+      "mappedFields": 11,
       "map": {
         "producerName": "ชื่อ",
         "productDescription": "รายละเอียดผลิตภัณฑ์",
@@ -10036,14 +10041,14 @@
         "subdistrict": "ตำบล",
         "address": "ที่อยู่",
         "phone": "เบอร์โทร",
-        "productName": "ชื่อผลิตภัณฑ์ (มผช.)"
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ",
+        "productName": "ชื่อผลิตภัณฑ์ (มผช.)",
+        "certStandardCode": "มาตรฐานเลขที่ มผช"
       },
       "unmappedColumns": [
-        "มาตรฐานเลขที่ มผช",
-        "หน่วยงานออกใบรับรอง",
-        "เลขที่ใบรับรอง",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "หน่วยงานออกใบรับรอง"
       ],
       "ambiguous": [],
       "rowsAccepted": 102,
@@ -10085,18 +10090,18 @@
       "rowsIn": 35,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -11455,18 +11460,18 @@
       "rowsIn": 75,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -11482,28 +11487,28 @@
       "rowsIn": 10937,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 6,
+      "mappedFields": 11,
       "map": {
         "productDescription": "รายละเอียดผลิตภัณฑ์",
         "category": "กลุ่มผลิตภัณฑ์",
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ใบรับรอง",
         "ชื่อผู้ได้รับใบรับรอง",
         "เลขที่",
         "หมู่ที่",
         "ซอย",
         "ถนน",
-        "รหัสไปรษณีย์",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "รหัสไปรษณีย์"
       ],
       "ambiguous": [
         {
@@ -11597,14 +11602,14 @@
       "rowsIn": 229,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -11824,28 +11829,28 @@
       "rowsIn": 11222,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 6,
+      "mappedFields": 11,
       "map": {
         "productDescription": "รายละเอียดผลิตภัณฑ์",
         "category": "กลุ่มผลิตภัณฑ์",
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ใบรับรอง",
         "ชื่อผู้ได้รับใบรับรอง",
         "เลขที่",
         "หมู่ที่",
         "ซอย",
         "ถนน",
-        "รหัสไปรษณีย์",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "รหัสไปรษณีย์"
       ],
       "ambiguous": [
         {
@@ -13451,28 +13456,28 @@
       "rowsIn": 11338,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 6,
+      "mappedFields": 11,
       "map": {
         "productDescription": "รายละเอียดผลิตภัณฑ์",
         "category": "กลุ่มผลิตภัณฑ์",
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ใบรับรอง",
         "ชื่อผู้ได้รับใบรับรอง",
         "เลขที่",
         "หมู่ที่",
         "ซอย",
         "ถนน",
-        "รหัสไปรษณีย์",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "รหัสไปรษณีย์"
       ],
       "ambiguous": [
         {
@@ -14327,18 +14332,18 @@
       "rowsIn": 1453,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
         "ประเภทมาตรฐาน",
         "วันที่ประกาศ",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ไฟล์เอกสาร"
       ],
       "ambiguous": [
@@ -14507,13 +14512,16 @@
       "rowsIn": 136,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 7,
+      "mappedFields": 10,
       "map": {
         "producerName": "ชื่อผู้ประกอบการ",
         "productDescription": "รายละเอียดผลิตภัณฑ์",
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certIssued": "วันออกใบรับรอง",
         "productName": "ชื่อผลิตภัณฑ์ (มผช.)",
         "phone": "เบอร์ติดต่อ"
       },
@@ -14523,9 +14531,6 @@
         "ซอย",
         "ถนน",
         "รหัสไปรษณีย์",
-        "เลขที่ใบรับรอง",
-        "เลขที่ มผช.",
-        "วันออกใบรับรอง",
         "วันใบรับรองสิ้นอายุ"
       ],
       "ambiguous": [],
@@ -15022,18 +15027,18 @@
       "rowsIn": 35,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -15144,14 +15149,14 @@
       "rowsIn": 234,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -15824,15 +15829,15 @@
       "rowsIn": 1489,
       "usable": false,
       "kind": "other",
-      "mappedFields": 2,
+      "mappedFields": 4,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "วันที่ประกาศ",
         "ไฟล์เอกสาร"
       ],
@@ -15909,16 +15914,16 @@
       "rowsIn": 1474,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ประเภทมาตรฐาน",
         "BCG Economy",
         "วันที่ประกาศ",
@@ -16586,27 +16591,27 @@
       "rowsIn": 11318,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 6,
+      "mappedFields": 11,
       "map": {
         "producerName": "ชื่อ",
         "productDescription": "รายละเอียดผลิตภัณฑ์",
         "category": "กลุ่มผลิตภัณฑ์",
         "province": "จังหวัด",
         "district": "อำเภอ",
-        "subdistrict": "ตำบล"
+        "subdistrict": "ตำบล",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certStandardTitle": "ชื่อ มผช.",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ใบรับรอง",
         "เลขที่",
         "หมู่ที่",
         "ซอย",
         "ถนน",
-        "รหัสไปรษณีย์",
-        "เลขที่ มผช.",
-        "ชื่อ มผช.",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "รหัสไปรษณีย์"
       ],
       "ambiguous": [],
       "rowsAccepted": 11318,
@@ -16621,18 +16626,18 @@
       "rowsIn": 1432,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
         "ประเภทมาตรฐาน",
         "วันที่ประกาศ",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ไฟล์เอกสาร"
       ],
       "ambiguous": [
@@ -17484,18 +17489,18 @@
       "rowsIn": 39,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -19059,20 +19064,20 @@
       "rowsIn": 114,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 5,
+      "mappedFields": 8,
       "map": {
         "producerName": "ชื่อ",
         "productDescription": "รายละเอียด",
         "category": "ประเภท",
         "address": "ที่อยู่",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ",
         "productName": "ผลิตภัณฑ์ (มผช.)"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "ประกาศ",
-        "เลขที่ใบรับรอง",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "ประกาศ"
       ],
       "ambiguous": [],
       "rowsAccepted": 113,
@@ -19383,28 +19388,28 @@
       "rowsIn": 11338,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 6,
+      "mappedFields": 11,
       "map": {
         "productDescription": "รายละเอียดผลิตภัณฑ์",
         "category": "กลุ่มผลิตภัณฑ์",
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ใบรับรอง",
         "ชื่อผู้ได้รับใบรับรอง",
         "เลขที่",
         "หมู่ที่",
         "ซอย",
         "ถนน",
-        "รหัสไปรษณีย์",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "รหัสไปรษณีย์"
       ],
       "ambiguous": [
         {
@@ -19428,18 +19433,18 @@
       "rowsIn": 90,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -19528,14 +19533,14 @@
       "rowsIn": 250,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -20023,7 +20028,7 @@
       "rowsIn": 136,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 8,
+      "mappedFields": 11,
       "map": {
         "producerName": "ชื่อผู้ประกอบการ",
         "productDescription": "รายละเอียดผลิตภัณฑ์",
@@ -20031,6 +20036,9 @@
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certIssued": "วันออกใบรับรอง",
         "productName": "ชื่อผลิตภัณฑ์ (มผช.)",
         "phone": "เบอร์ติดต่อ"
       },
@@ -20040,9 +20048,6 @@
         "ซอย",
         "ถนน",
         "รหัสไปรษณีย์",
-        "เลขที่ใบรับรอง",
-        "เลขที่ มผช.",
-        "วันออกใบรับรอง",
         "วันใบรับรองสิ้นอายุ"
       ],
       "ambiguous": [],
@@ -20521,14 +20526,14 @@
       "rowsIn": 229,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -20554,14 +20559,14 @@
       "rowsIn": 215,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -21284,34 +21289,33 @@
       "rowsIn": 831,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 4,
+      "mappedFields": 9,
       "map": {
         "productDescription": "รายละเอียดผลิตภัณฑ์",
         "address": "ที่อยู่",
         "registeredYear": "ปี",
-        "producerName": "ชื่อ มผช."
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certStandardTitle": "ชื่อ มผช.",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ",
+        "producerName": "ชื่อสถานที่ผลิต"
       },
       "unmappedColumns": [
         "รายการสถิติทางการ",
-        "เลขที่ใบรับรอง",
-        "ชื่อผู้ขอใบรับรอง",
-        "ชื่อสถานที่ผลิต",
-        "เลขที่ มผช.",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "ชื่อผู้ขอใบรับรอง"
       ],
       "ambiguous": [
         {
           "field": "producerName",
-          "chose": "ชื่อ มผช.",
+          "chose": "ชื่อสถานที่ผลิต",
           "over": [
-            "ชื่อสถานที่ผลิต",
             "ชื่อผู้ขอใบรับรอง"
           ]
         }
       ],
-      "rowsAccepted": 163,
-      "rowsRejected": 668
+      "rowsAccepted": 116,
+      "rowsRejected": 715
     },
     {
       "resourceId": "9f8fcb96-8778-4c60-88fe-16a2cb2cc423",
@@ -23943,28 +23947,28 @@
       "rowsIn": 10937,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 6,
+      "mappedFields": 11,
       "map": {
         "productDescription": "รายละเอียดผลิตภัณฑ์",
         "category": "กลุ่มผลิตภัณฑ์",
         "province": "จังหวัด",
         "district": "อำเภอ",
         "subdistrict": "ตำบล",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certNumber": "เลขที่ใบรับรอง",
+        "certStandardCode": "เลขที่ มผช.",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ใบรับรอง",
         "ชื่อผู้ได้รับใบรับรอง",
         "เลขที่",
         "หมู่ที่",
         "ซอย",
         "ถนน",
-        "รหัสไปรษณีย์",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ"
+        "รหัสไปรษณีย์"
       ],
       "ambiguous": [
         {
@@ -25239,7 +25243,7 @@
       "rowsIn": 301,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 7,
+      "mappedFields": 10,
       "map": {
         "producerName": "ชื่อ",
         "productDescription": "รายละเอียดผลิตภัณฑ์",
@@ -25247,15 +25251,15 @@
         "subdistrict": "ตำบล",
         "address": "ที่อยู่",
         "registeredYear": "Year",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันที่ออกใบรับรอง",
+        "certExpires": "ใบรับรองหมดอายุ",
         "productName": "ชื่อผลิตภัณฑ์ (มผช.)"
       },
       "unmappedColumns": [
         "Month",
         "Day",
         "ชื่อชุดข้อมูล",
-        "เลขที่ใบรับรอง",
-        "วันที่ออกใบรับรอง",
-        "ใบรับรองหมดอายุ",
         "ที่มา"
       ],
       "ambiguous": [],
@@ -25451,15 +25455,15 @@
       "rowsIn": 1499,
       "usable": false,
       "kind": "other",
-      "mappedFields": 2,
+      "mappedFields": 4,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "วันที่ประกาศ",
         "ไฟล์เอกสาร"
       ],
@@ -26061,18 +26065,18 @@
       "rowsIn": 1453,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
         "ประเภทมาตรฐาน",
         "วันที่ประกาศ",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ไฟล์เอกสาร"
       ],
       "ambiguous": [
@@ -27282,14 +27286,14 @@
       "rowsIn": 213,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -28489,18 +28493,18 @@
       "rowsIn": 32,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -29113,19 +29117,19 @@
       "rowsIn": 1453,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
         "ประเภทมาตรฐาน",
         "BCG Economy",
         "วันที่ประกาศ",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ไฟล์เอกสาร"
       ],
       "ambiguous": [
@@ -30046,14 +30050,14 @@
       "rowsIn": 213,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -31158,18 +31162,18 @@
       "rowsIn": 1421,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
         "ประเภทมาตรฐาน",
         "วันที่ประกาศ",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ไฟล์เอกสาร"
       ],
       "ambiguous": [
@@ -31694,17 +31698,17 @@
       "rowsIn": 1386,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
-        "เลขที่ มผช.",
         "ประเภทมาตรฐาน",
         "วันที่ประกาศ",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ไฟล์เอกสาร"
       ],
       "ambiguous": [
@@ -31910,19 +31914,19 @@
       "rowsIn": 1453,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
         "ประเภทมาตรฐาน",
         "BCG Economy",
         "วันที่ประกาศ",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ไฟล์เอกสาร"
       ],
       "ambiguous": [
@@ -32612,14 +32616,14 @@
       "rowsIn": 247,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -32739,14 +32743,14 @@
       "rowsIn": 247,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],
@@ -33063,18 +33067,18 @@
       "rowsIn": 90,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -33258,18 +33262,18 @@
       "rowsIn": 75,
       "usable": false,
       "kind": "other",
-      "mappedFields": 4,
+      "mappedFields": 7,
       "map": {
         "productDescription": "รายละเอียด",
         "district": "อำเภอ",
         "registeredYear": "ปี",
+        "certNumber": "เลขที่ใบรับรอง",
+        "certIssued": "วันออกใบรับรอง",
+        "certExpires": "วันหมดอายุ",
         "stars": "ระดับกลุ่ม"
       },
       "unmappedColumns": [
-        "เลขที่ใบรับรอง",
-        "รายการ",
-        "วันออกใบรับรอง",
-        "วันหมดอายุ"
+        "รายการ"
       ],
       "ambiguous": [],
       "rowsAccepted": 0,
@@ -33308,7 +33312,7 @@
       "rowsIn": 265,
       "usable": true,
       "kind": "producer",
-      "mappedFields": 7,
+      "mappedFields": 8,
       "map": {
         "producerName": "ชื่อ",
         "productDescription": "รายละเอียดผลิตภัณฑ์",
@@ -33316,11 +33320,11 @@
         "subdistrict": "ตำบล",
         "address": "ที่อยู่",
         "registeredYear": "Year",
+        "certNumber": "เลขที่ใบรับรอง",
         "productName": "ชื่อผลิตภัณฑ์ (มผช.)"
       },
       "unmappedColumns": [
         "ชื่อชุดข้อมูล",
-        "เลขที่ใบรับรอง",
         "ที่มา"
       ],
       "ambiguous": [],
@@ -33665,16 +33669,16 @@
       "rowsIn": 1474,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ประเภทมาตรฐาน",
         "BCG Economy",
         "วันที่ประกาศ",
@@ -33909,18 +33913,18 @@
       "rowsIn": 1432,
       "usable": false,
       "kind": "other",
-      "mappedFields": 3,
+      "mappedFields": 5,
       "map": {
         "category": "กลุ่มผลิตภัณฑ์",
         "website": "url",
-        "producerName": "ชื่อ มผช. ภาษาไทย"
+        "certStandardCode": "เลขที่ มผช.",
+        "producerName": "ชื่อ มผช. ภาษาไทย",
+        "certStandardTitle": "ชื่อ มผช. ภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับ",
-        "เลขที่ มผช.",
         "ประเภทมาตรฐาน",
         "วันที่ประกาศ",
-        "ชื่อ มผช. ภาษาอังกฤษ",
         "ไฟล์เอกสาร"
       ],
       "ambiguous": [
@@ -34292,14 +34296,14 @@
       "rowsIn": 234,
       "usable": false,
       "kind": "other",
-      "mappedFields": 1,
+      "mappedFields": 2,
       "map": {
-        "producerName": "ชื่อมาตรฐานภาษาไทย"
+        "producerName": "ชื่อมาตรฐานภาษาไทย",
+        "certStandardTitle": "ชื่อมาตรฐานภาษาอังกฤษ"
       },
       "unmappedColumns": [
         "ลำดับที่",
         "เลขที่ มอก.เอส",
-        "ชื่อมาตรฐานภาษาอังกฤษ",
         "กลุ่ม",
         "วันที่ประกาศ"
       ],

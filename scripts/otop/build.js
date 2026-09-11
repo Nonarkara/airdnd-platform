@@ -29,7 +29,7 @@ import { fileURLToPath } from 'node:url';
 import { discoverFieldMap, isUsableMapping, applyFieldMap, classifyResource } from '../../otop/core/field_map.js';
 import { PROVINCE_BY_CODE, PROVINCES } from '../../otop/core/provinces.js';
 import { CATEGORIES } from '../../otop/core/taxonomy.js';
-import { buildRecord, gradeRecord, mergeRecords } from '../../otop/core/record.js';
+import { buildRecord, gradeRecord, mergeRecords, certStatus } from '../../otop/core/record.js';
 import { loadTambons, tambonFor, GEO_SOURCE } from '../../otop/core/geo.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -164,6 +164,16 @@ function main() {
     return (a.productName ?? a.producerName ?? '').localeCompare(b.productName ?? b.producerName ?? '', 'th');
   });
 
+  // ── certification standing ────────────────────────────────────────────
+  // A merged record is only "certified" relative to a date: certificates
+  // lapse. The standing is judged once, here, against the build date, and
+  // stamped next to it — the frontend prints the pair and never re-judges.
+  const certAsOf = new Date().toISOString().slice(0, 10);
+  for (const record of merged) {
+    record.certAsOf = record.certs.length > 0 ? certAsOf : null;
+    record.certStatus = certStatus(record.certs, certAsOf);
+  }
+
   // ── tambon placement ──────────────────────────────────────────────────────
   // Stamp each record with the TIS-1099 code of the tambon it names, then
   // publish one small file of tambon centroids + counts so the map can draw
@@ -252,6 +262,8 @@ function main() {
       graded: items.filter((r) => r.stars != null).length,
       reachable: items.filter((r) => r.phone || r.email || r.website).length,
       corroborated: items.filter((r) => r.sourceCount > 1).length,
+      certified: items.filter((r) => r.certs.length > 0).length,
+      certValid: items.filter((r) => r.certStatus === 'valid').length,
       latestFiling: items.reduce((y, r) => (r.registeredYear != null && (y == null || r.registeredYear > y) ? r.registeredYear : y), null),
     });
   }
@@ -319,6 +331,11 @@ function main() {
       recordsAfterMerge: merged.length,
       duplicatesCollapsed: records.length - merged.length,
       tambonPlaced: placed,
+      certified: merged.filter((r) => r.certs.length > 0).length,
+      certValid: merged.filter((r) => r.certStatus === 'valid').length,
+      certExpired: merged.filter((r) => r.certStatus === 'expired').length,
+      certUnknown: merged.filter((r) => r.certStatus === 'unknown').length,
+      certAsOf,
     },
     geo: geoCoverage,
     rejectReasons: Object.fromEntries(rejectTally),
