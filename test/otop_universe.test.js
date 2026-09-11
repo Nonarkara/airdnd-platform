@@ -11,7 +11,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { nodeId, layoutUniverse, filterUniverse, danglingEdges, KIND_LAYER, LAYERS } from '../otop/core/universe.js';
+import { nodeId, layoutUniverse, filterUniverse, danglingEdges, KIND_LAYER, LAYERS, kindMaxima, edgeWidth, rankWithinKind } from '../otop/core/universe.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -79,7 +79,6 @@ test('danglingEdges finds endpoints with no node', () => {
 });
 
 // ── built artefact ───────────────────────────────────────────────
-
 test('otop_graph.json has 100+ nodes, 100+ edges, no dangling edges', () => {
   const file = path.join(__dirname, '../otop/public/otop_graph.json');
   if (!fs.existsSync(file)) return; // build stage test
@@ -91,4 +90,36 @@ test('otop_graph.json has 100+ nodes, 100+ edges, no dangling edges', () => {
   for (const k of ['root', 'region', 'province', 'category', 'agency', 'year']) {
     assert.ok(kinds.has(k), `graph has ${k} nodes`);
   }
+});
+
+// ── sizing and rank helpers ──────────────────────────────────────
+
+test('kindMaxima normalises within a kind so baht never shrinks record dots', () => {
+  const nodes = [
+    { id: 'revenue:2023', kind: 'revenue', value: 243401413838.57 },
+    { id: 'province:34', kind: 'province', value: 5508 },
+    { id: 'province:10', kind: 'province', value: 3813 },
+    { id: 'era:declare', kind: 'era', value: null },
+  ];
+  assert.deepEqual(kindMaxima(nodes), { revenue: 243401413838.57, province: 5508 });
+});
+
+test('edgeWidth is logarithmic: heavy attestations read heavier, filings stay visible', () => {
+  const max = 214918;
+  assert.ok(edgeWidth(max, max) > edgeWidth(100, max));
+  assert.ok(edgeWidth(100, max) > edgeWidth(1, max));
+  assert.ok(edgeWidth(1, max) >= 0.4);
+  assert.equal(edgeWidth(0, max), 0.5);
+  assert.equal(edgeWidth(5, 0), 0.5);
+});
+
+test('rankWithinKind ranks values within the kind, nulls last, strangers null', () => {
+  const nodes = [
+    { id: 'province:34', kind: 'province', value: 5508 },
+    { id: 'province:10', kind: 'province', value: 3813 },
+    { id: 'category:food', kind: 'category', value: 17091 },
+  ];
+  assert.deepEqual(rankWithinKind(nodes, 'province:10'), { rank: 2, of: 2 });
+  assert.deepEqual(rankWithinKind(nodes, 'category:food'), { rank: 1, of: 1 });
+  assert.equal(rankWithinKind(nodes, 'province:99'), null);
 });

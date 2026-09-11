@@ -78,3 +78,41 @@ export function danglingEdges(graph) {
   const ids = new Set(graph.nodes.map((nd) => nd.id));
   return (graph.edges ?? []).filter((e) => !ids.has(e.s) || !ids.has(e.t));
 }
+
+/**
+ * Largest numeric value per node kind. Sizes are normalised *within* a kind:
+ * the revenue node carries baht and the root carries the national record
+ * count, so a single global maximum would shrink every province, category
+ * and agency dot to the same minimum disc. Returns {kind: max}.
+ */
+export function kindMaxima(nodes) {
+  const out = {};
+  for (const nd of nodes) {
+    if (typeof nd.value !== 'number' || !Number.isFinite(nd.value)) continue;
+    if (out[nd.kind] == null || nd.value > out[nd.kind]) out[nd.kind] = nd.value;
+  }
+  return out;
+}
+
+/**
+ * Edge stroke width from a full-corpus weight. Weights run from single
+ * filings to hundreds of thousands of rows, so the scale is logarithmic:
+ * the heaviest attestation reads clearly heavier without swallowing the map.
+ */
+export function edgeWidth(w, maxW) {
+  if (!(w > 0) || !(maxW > 0)) return 0.5;
+  return 0.4 + 1.8 * (Math.log1p(w) / Math.log1p(maxW));
+}
+
+/**
+ * Rank of a node within its kind by value, 1-based, nulls last.
+ * @returns {{rank: number, of: number} | null}
+ */
+export function rankWithinKind(nodes, id) {
+  const me = nodes.find((nd) => nd.id === id);
+  if (!me) return null;
+  const peers = nodes.filter((nd) => nd.kind === me.kind);
+  const val = typeof me.value === 'number' ? me.value : -Infinity;
+  const rank = peers.filter((nd) => (typeof nd.value === 'number' ? nd.value : -Infinity) > val).length + 1;
+  return { rank, of: peers.length };
+}
