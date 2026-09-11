@@ -39,7 +39,7 @@
     "otop:all": "npm run otop:build && npm run otop:site",
     "otop:ship": "npm run otop:site && npx wrangler pages deploy dist-otop --project-name otop --branch main && npm run otop:verify",
     "otop:verify": "bash scripts/otop/verify-live.sh",
-    "test:otop": "node --test test/otop_core.test.js test/otop_insights.test.js"
+    "test:otop": "node --test test/otop_*.test.js"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",

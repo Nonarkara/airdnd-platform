@@ -41,9 +41,7 @@
     "registrationId": ["รหัสผู้ผลิต", "รหัสทะเบียน", "เลขที่ทะเบียน", "รหัส otop", "เลขทะเบียน otop", "รหัสผลิตภัณฑ์", "เลขผู้ประกอบการ", "otop_number", "otop_id", "registration_no", "product_id", "id"],
     "price": ["ราคา", "ราคาขาย", "ราคา (บาท)", "ราคาต่อหน่วย", "price", "unit_price"],
     "registeredYear": ["ปีที่ลงทะเบียน", "ปีที่จดทะเบียน", "ปีงบประมาณ", "ปี", "ปี_พศ", "ปีที่คัดสรร", "year", "fiscal_year", "registered_year", "ปี_พ.ศ."],
-    "income": ["รายได้เฉลี่ย", "รายได้", "รายได้ต่อปี", "รายได้/ปี", "income_avg", "INCOME_AVG", "income"],
-    "latitude": ["ละติจูด", "latitude", "lat", "y", "La", "Lat"],
-    "longitude": ["ลองจิจูด", "longitude", "lng", "lon", "long", "x", "lo", "Long"]
+    "income": ["รายได้เฉลี่ย", "รายได้", "รายได้ต่อปี", "รายได้/ปี", "income_avg", "INCOME_AVG", "income"]
   },
 
   "database": { "table_name": "otop_records" }

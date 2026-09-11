@@ -52,7 +52,7 @@ function writeUrl(r) {
 
 function pct(n, d) { return d > 0 ? Math.round((n / d) * 1000) / 10 : 0; }
 
-export default function Matchmaker() {
+export default function Matchmaker({ onSelectProvince }) {
   const [index, setIndex] = useState(null);
   const [revenue, setRevenue] = useState(null);
   const [error, setError] = useState(null);
@@ -208,7 +208,17 @@ export default function Matchmaker() {
                   </div>
                 </div>
               </div>
-              <a className="reset mm-row-go" href={`/?view=province&code=${p.code}`}>Open dossier →</a>
+              {onSelectProvince ? (
+                <button
+                  type="button"
+                  className="reset mm-row-go"
+                  onClick={() => onSelectProvince(p.code)}
+                >
+                  Open dossier →
+                </button>
+              ) : (
+                <a className="reset mm-row-go" href={`/?view=province&code=${p.code}`}>Open dossier →</a>
+              )}
             </li>
           );
         })}

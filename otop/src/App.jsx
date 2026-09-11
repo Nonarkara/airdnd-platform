@@ -155,6 +155,12 @@ export default function App() {
   const [insights, setInsights] = useState(null);
   const [insightsError, setInsightsError] = useState(null);
   const [requirement, setRequirement] = useState(initial.current.requirement);
+  const openMatchWithProvince = useCallback((selectedLens, code) => {
+    if (selectedLens) setLens(selectedLens);
+    setRequirement((r) => ({ ...r, provinceCodes: code ? [code] : [] }));
+    setView('match');
+    window.scrollTo({ top: 0 });
+  }, []);
   const [records, setRecords] = useState([]);
   const [plan, setPlan] = useState(null);
   const [loadingShards, setLoadingShards] = useState(false);
@@ -522,7 +528,7 @@ export default function App() {
               {!insights && !insightsError && <p className="empty">Loading the national rollup…</p>}
               {insights && provinceCode != null && (
                 <Suspense fallback={<p className="empty">Loading the province…</p>}>
-                  <ProvinceDossier insights={insights} code={provinceCode} onSelectProvince={openProvince} />
+                  <ProvinceDossier insights={insights} code={provinceCode} onSelectProvince={openProvince} onOpenMatch={openMatchWithProvince} />
                 </Suspense>
               )}
               {insights && provinceCode == null && <p className="empty">No province code in the link.</p>}
@@ -544,7 +550,7 @@ export default function App() {
                   />
                 </span>
               </div>
-              <Matchmaker />
+              <Matchmaker onSelectProvince={openProvince} />
             </div>
           </section>
         )}
@@ -586,7 +592,7 @@ export default function App() {
                   />
                 </span>
               </div>
-              <Champions />
+              <Champions onSelectProvince={openProvince} />
             </div>
           </section>
         )}

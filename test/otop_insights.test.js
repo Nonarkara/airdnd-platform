@@ -11,7 +11,13 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { signalTier } from '../otop/core/matching.js';
+import { PROVINCE_BY_CODE } from '../otop/core/provinces.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const CATEGORIES = [
   { id: 'food', th: 'อาหาร', en: 'Food' },
@@ -195,4 +201,19 @@ test('signalTier returns 0 to 3 matching expectations', () => {
   assert.equal(signalTier({ phone: '081' }), 1);
   assert.equal(signalTier({ stars: 5 }), 1);
   assert.equal(signalTier({ category: null, phone: null, stars: null }), 0);
+});
+
+test('anchors: all 77 provinces match canonical names and Pattani is ปัตตานี', () => {
+  const file = path.join(__dirname, '../otop/public/otop_anchors.json');
+  if (!fs.existsSync(file)) return; // build stage test
+  const anchors = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(anchors.provinces.length, 77);
+  for (const a of anchors.provinces) {
+    const canonical = PROVINCE_BY_CODE.get(a.code);
+    assert.ok(canonical, `province code ${a.code} exists in canonical table`);
+    assert.equal(a.name_th, canonical.th, `code ${a.code} Thai name matches canonical`);
+    assert.equal(a.name_en, canonical.en, `code ${a.code} English name matches canonical`);
+  }
+  const pattani = anchors.byCode[94];
+  assert.equal(pattani.name_th, 'ปัตตานี');
 });

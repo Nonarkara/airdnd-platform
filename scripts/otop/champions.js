@@ -77,6 +77,7 @@ function main() {
           region: r.region ?? null,
           district: r.district ?? null,
           subdistrict: r.subdistrict ?? null,
+          tambonCode: r.tambonCode ?? null,
           address: r.address ?? null,
           phone: r.phone ?? null,
           email: r.email ?? null,

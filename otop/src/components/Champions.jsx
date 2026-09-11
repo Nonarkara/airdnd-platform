@@ -44,9 +44,9 @@ function escapeCsv(v) {
 }
 
 function toCsv(rows) {
-  const header = ['stars', 'producer', 'product', 'category', 'province', 'district', 'subdistrict', 'reach', 'phone', 'email', 'website', 'address', 'sourceRowId'];
+  const header = ['stars', 'producer', 'product', 'category', 'province', 'district', 'subdistrict', 'tambon_code', 'reach', 'phone', 'email', 'website', 'address', 'sourceRowId'];
   const lines = [header.join(',')];
-  for (const r of rows) lines.push(header.map((k) => escapeCsv(r[k])).join(','));
+  for (const r of rows) lines.push(header.map((k) => escapeCsv(k === 'tambon_code' ? (r.tambonCode ?? r.tambon_code) : r[k])).join(','));
   return lines.join('\n');
 }
 
@@ -58,12 +58,13 @@ function exportList(rows, filename) {
   URL.revokeObjectURL(url);
 }
 
-export default function Champions() {
+export default function Champions({ onSelectProvince }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [filterCat, setFilterCat] = useState('all');
   const [filterReach, setFilterReach] = useState('all');
   const [filterStar, setFilterStar] = useState(5);
+  const [filterProv, setFilterProv] = useState('all');
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -79,13 +80,14 @@ export default function Champions() {
       if (c.stars < filterStar) return false;
       if (filterCat !== 'all' && c.category !== filterCat) return false;
       if (filterReach !== 'all' && c.reach !== filterReach) return false;
+      if (filterProv !== 'all' && String(c.provinceCode) !== String(filterProv)) return false;
       if (q) {
-        const blob = `${c.producerName ?? ''} ${c.productName ?? ''} ${c.provinceEn ?? ''} ${c.district ?? ''}`.toLowerCase();
+        const blob = `${c.producerName ?? ''} ${c.productName ?? ''} ${c.provinceEn ?? ''} ${c.province ?? ''} ${c.district ?? ''} ${c.subdistrict ?? ''}`.toLowerCase();
         if (!blob.includes(q)) return false;
       }
       return true;
     });
-  }, [data, filterCat, filterReach, filterStar, query]);
+  }, [data, filterCat, filterReach, filterStar, filterProv, query]);
 
   if (error) return <p className="empty">The champions list could not be loaded — {error}.</p>;
   if (!data) return <p className="empty">Loading the champions list…</p>;
@@ -135,6 +137,25 @@ export default function Champions() {
             </button>
           ))}
         </div>
+        <div className="ch-ctrl-grp">
+          <span className="t-key">Province</span>
+          <button type="button" className="ch-btn" data-active={filterProv === 'all'} onClick={() => setFilterProv('all')}>
+            <span>All ({totalChampions})</span>
+            <span className="ch-btn-th">ทั้งหมด</span>
+          </button>
+          {data.provinces.map((p) => (
+            <button
+              type="button"
+              key={p.code}
+              className="ch-btn"
+              data-active={filterProv === String(p.code)}
+              onClick={() => setFilterProv(String(p.code))}
+            >
+              <span>{p.name_en}</span>
+              <span className="ch-btn-th">{p.name_th} ({p.count})</span>
+            </button>
+          ))}
+        </div>
         <div className="ch-ctrl-grp ch-ctrl-grow">
           <input
             type="search"
@@ -176,7 +197,23 @@ export default function Champions() {
                   {CAT_EN[c.category] ?? c.category} <span className="ch-card-cat-th">{CAT_TH[c.category] ?? ''}</span>
                 </span>
                 <span className="ch-card-loc">
-                  <span className="ch-card-loc-th">{c.province}</span>
+                  {onSelectProvince ? (
+                    <button
+                      type="button"
+                      className="reset"
+                      onClick={() => onSelectProvince(c.provinceCode)}
+                      style={{ textDecoration: 'underline', cursor: 'pointer', font: 'inherit', color: 'inherit' }}
+                      title={`Open ${c.provinceEn} dossier`}
+                    >
+                      <span className="ch-card-loc-th">{c.province}</span>
+                      <span> · {c.provinceEn} →</span>
+                    </button>
+                  ) : (
+                    <>
+                      <span className="ch-card-loc-th">{c.province}</span>
+                      <span> · {c.provinceEn}</span>
+                    </>
+                  )}
                   {c.district && <span> · {c.district}</span>}
                   {c.subdistrict && <span> · {c.subdistrict}</span>}
                 </span>

@@ -29,7 +29,7 @@ function Stub({ label, value, rank, note }) {
   );
 }
 
-export default function ProvinceDossier({ insights, code, onSelectProvince }) {
+export default function ProvinceDossier({ insights, code, onSelectProvince, onOpenMatch }) {
   const [records, setRecords] = useState(null);
   const [revenue, setRevenue] = useState(null);
   const [error, setError] = useState(null);
@@ -75,6 +75,32 @@ export default function ProvinceDossier({ insights, code, onSelectProvince }) {
     // A bare number is a price or a code that landed in the name column, not a product.
     for (const r of records) if (r.productName && !/^[\d,.\s]+$/.test(r.productName)) m.set(r.productName, (m.get(r.productName) ?? 0) + 1);
     return [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20);
+  }, [records]);
+
+  const tambonStats = useMemo(() => {
+    if (!records) return { placed: 0, totalWithSubdistrict: 0, tambons: [] };
+    const m = new Map();
+    let placed = 0;
+    let totalWithSubdistrict = 0;
+    for (const r of records) {
+      if (r.subdistrict) {
+        totalWithSubdistrict++;
+        const k = `${r.district ?? ''} · ${r.subdistrict}`;
+        const t = m.get(k) ?? { name: r.subdistrict, district: r.district, records: 0, reachable: 0, graded: 0, placed: Boolean(r.tambonCode) };
+        t.records += 1;
+        if (r.phone || r.email || r.website) t.reachable += 1;
+        if (r.stars != null) t.graded += 1;
+        m.set(k, t);
+      }
+      if (r.tambonCode) placed++;
+    }
+    const tambons = [...m.values()].sort((a, b) => b.records - a.records);
+    return { placed, totalWithSubdistrict, tambons };
+  }, [records]);
+
+  const incomeRecords = useMemo(() => {
+    if (!records) return [];
+    return records.filter((r) => r.income != null);
   }, [records]);
 
   if (!p) return <p className="empty">No province with code {code}.</p>;
@@ -129,7 +155,11 @@ export default function ProvinceDossier({ insights, code, onSelectProvince }) {
       </div>
 
       <div className="dossier-actions">
-        <a className="reset" href={`/?lens=b2b&prov=${code}`}>Open in Source · B2B</a>
+        {onOpenMatch ? (
+          <button type="button" className="reset" onClick={() => onOpenMatch('b2b', code)}>Open in Source · B2B</button>
+        ) : (
+          <a className="reset" href={`/?lens=b2b&prov=${code}`}>Open in Source · B2B</a>
+        )}
         {records && <button type="button" className="reset" onClick={exportCsv}>Export this province (CSV)</button>}
       </div>
 
@@ -200,7 +230,76 @@ export default function ProvinceDossier({ insights, code, onSelectProvince }) {
               </div>
             </details>
           )}
-          <p className="t-note">District is the finest resolution these records carry. No coordinates are inferred.</p>
+          {/* ── subdistricts ─────────────────────────────────────────── */}
+          {tambonStats.tambons.length > 0 && (
+            <>
+              <h3 className="sub-h">
+                Subdistricts · ตำบล{tambonStats.tambons.length ? ` · ${tambonStats.tambons.length}` : ''}
+              </h3>
+              <div className="t-grid" role="table">
+                <div className="t-grid-row t-grid-hd" role="row">
+                  <span>Subdistrict</span><span className="t-row-num">Records</span><span className="t-row-num">Reachable</span><span className="t-row-num">Graded</span>
+                </div>
+                {tambonStats.tambons.slice(0, 12).map((t) => (
+                  <div className="t-grid-row" role="row" key={`${t.district}/${t.subdistrict}`}>
+                    <span>{t.subdistrict} {t.district ? `(${t.district})` : ''}</span>
+                    <span className="t-row-num">{n(t.records)}</span>
+                    <span className="t-row-num">{t.reachable || '—'}</span>
+                    <span className="t-row-num">{t.graded || '—'}</span>
+                  </div>
+                ))}
+              </div>
+              {tambonStats.tambons.length > 12 && (
+                <details className="t-more">
+                  <summary>All {tambonStats.tambons.length} subdistricts</summary>
+                  <div className="t-grid" role="table">
+                    {tambonStats.tambons.slice(12).map((t) => (
+                      <div className="t-grid-row" role="row" key={`${t.district}/${t.subdistrict}`}>
+                        <span>{t.subdistrict} {t.district ? `(${t.district})` : ''}</span>
+                        <span className="t-row-num">{n(t.records)}</span>
+                        <span className="t-row-num">{t.reachable || '—'}</span>
+                        <span className="t-row-num">{t.graded || '—'}</span>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
+            </>
+          )}
+          <p className="t-note">
+            Tambon centroid is the finest honest resolution available ({n(tambonStats.placed)} of {n(p.records)} records, {Math.round((tambonStats.placed / Math.max(p.records, 1)) * 100)}% placed). No street addresses or individual coordinates are guessed.
+          </p>
+
+          {/* ── filed income ─────────────────────────────────────────── */}
+          {incomeRecords.length > 0 && (
+            <>
+              <h3 className="sub-h">Filed Income · รายได้ที่แจ้ง · {incomeRecords.length} records</h3>
+              <div className="t-grid t-grid-2" role="table">
+                <div className="t-grid-row t-grid-hd" role="row">
+                  <span>Producer / Product</span><span className="t-row-num">Reported Annual Income</span>
+                </div>
+                {incomeRecords.slice(0, 10).map((r, i) => (
+                  <div className="t-grid-row" role="row" key={r.sourceRowId || i}>
+                    <span>{r.productName || r.producerName}</span>
+                    <span className="t-row-num">{baht(r.income)}</span>
+                  </div>
+                ))}
+              </div>
+              {incomeRecords.length > 10 && (
+                <details className="t-more">
+                  <summary>All {incomeRecords.length} records with filed income</summary>
+                  <div className="t-grid t-grid-2" role="table">
+                    {incomeRecords.slice(10).map((r, i) => (
+                      <div className="t-grid-row" role="row" key={r.sourceRowId || i}>
+                        <span>{r.productName || r.producerName}</span>
+                        <span className="t-row-num">{baht(r.income)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
+            </>
+          )}
 
           {/* ── products ─────────────────────────────────────────────── */}
           <h3 className="sub-h">Products · ผลิตภัณฑ์ · {n(productCount)} of {n(p.records)} records name one</h3>

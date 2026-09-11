@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-10T18:31:11.836Z",
+  "builtAt": "2026-09-11T05:23:32.567Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -11490,7 +11490,7 @@
     }
   ],
   "revenue": {
-    "builtAt": "2026-09-10T18:31:10.317Z",
+    "builtAt": "2026-09-11T05:23:28.963Z",
     "unit": "บาท",
     "seriesSource": "กรมพัฒนาชุมชน",
     "resourceId": "c1c39e6a-c6ab-4d31-a911-44517db7f2eb",

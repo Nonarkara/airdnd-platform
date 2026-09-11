@@ -283,8 +283,8 @@ export function sourcingBasins(matches, { minDepth = 2, top = 12 } = {}) {
 /** Shortlist as CSV, so a sourcing brief leaves the browser and reaches a buyer. */
 export function toCsv(matches) {
   const header = [
-    'score', 'product', 'producer', 'category', 'stars', 'province', 'district', 'subdistrict',
-    'phone', 'email', 'website', 'price_filed', 'filing_year', 'sources', 'dataset',
+    'score', 'product', 'producer', 'category', 'stars', 'province', 'district', 'subdistrict', 'tambon_code',
+    'phone', 'email', 'website', 'price_filed', 'income_filed', 'filing_year', 'sources', 'dataset',
   ];
   const escape = (v) => {
     const s = v == null ? '' : String(v);
@@ -292,8 +292,8 @@ export function toCsv(matches) {
   };
   const rows = matches.map(({ record, score }) => [
     score, record.productName, record.producerName, record.category, record.stars,
-    record.province, record.district, record.subdistrict,
-    record.phone, record.email, record.website, record.price, record.registeredYear,
+    record.province, record.district, record.subdistrict, record.tambonCode,
+    record.phone, record.email, record.website, record.price, record.income, record.registeredYear,
     record.sourceCount, record.provenance?.map((p) => p.datasetTitle ?? p.datasetId).join(' | '),
   ].map(escape).join(','));
   return [header.join(','), ...rows].join('\n');
