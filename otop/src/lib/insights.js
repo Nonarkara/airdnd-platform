@@ -56,6 +56,15 @@ export function rankOf(list, code, key) {
   return i === -1 ? null : i + 1;
 }
 
+/** The universe graph — nodes and edges for the whole-registry map. */
+export async function loadGraph() {
+  const response = await fetch('/otop_graph.json', { cache: 'no-cache' });
+  if (!response.ok) throw new Error(`otop_graph.json ${response.status}`);
+  const graph = await response.json();
+  if (!Array.isArray(graph.nodes) || !Array.isArray(graph.edges)) throw new Error('otop_graph.json has no nodes/edges');
+  return graph;
+}
+
 /** The revenue artefact itself — only the dossier needs the per-province series. */
 export async function loadRevenue() {
   const response = await fetch('/otop_revenue.json', { cache: 'no-cache' });

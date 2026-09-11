@@ -4,6 +4,8 @@ import Money from './atlas/Money.jsx';
 import Reach from './atlas/Reach.jsx';
 import Domain from './atlas/Domain.jsx';
 import Record from './atlas/Record.jsx';
+import Gaps from './atlas/Gaps.jsx';
+import Universe from './atlas/Universe.jsx';
 
 /**
  * Atlas — the registry read as one closed information package, in five
@@ -22,6 +24,8 @@ const CHAPTERS = [
   { id: 'reach',    label: 'Reach',     th: 'การเข้าถึง',           q: 'Who can be contacted?',            credit: 'Photo: Pexels' },
   { id: 'money',    label: 'Money',     th: 'เงิน',                 q: 'Where does the money move?',       credit: 'Photo: María Merlin / Pexels' },
   { id: 'record',   label: 'Record',    th: 'สภาพทะเบียน',          q: 'What is the registry\'s condition?', credit: 'Photo: María Merlin / Pexels' },
+  { id: 'gaps',     label: 'Gaps',      th: 'ช่องว่าง',               q: 'What is missing — and what to do?', credit: 'Photo: María Merlin / Pexels' },
+  { id: 'universe', label: 'Universe',  th: 'จักรวาล',                q: 'How does everything connect?', credit: 'Photo: Tony Wu / Pexels' },
 ];
 
 /** Read the active tab from the URL on first paint, defaulting to findings. */
@@ -35,7 +39,7 @@ export default function Atlas({ insights, onSelectProvince }) {
   const {
     national, byRegion, findings = [], specialization = [], qualityLeaders = [], reachGap = [],
     corroborationQuadrant = {}, hiddenChampions = [], regionIdentity = [], revenue = null,
-    catalogue = null, byYear = null, matrix = null,
+    catalogue = null, byYear = null, matrix = null, gaps = null, graph = null,
   } = insights;
   const [tab, setTab] = useState(tabFromUrl);
   // Province clicks open the dossier; the dossier holds the B2B link.
@@ -99,6 +103,8 @@ export default function Atlas({ insights, onSelectProvince }) {
       )}
       {tab === 'money' && <Money revenue={revenue} catalogue={catalogue} go={go} />}
       {tab === 'record' && <Record insights={insights} go={go} />}
+      {tab === 'gaps' && <Gaps gaps={gaps} go={go} />}
+      {tab === 'universe' && <Universe graph={graph} go={go} />}
     </>
   );
 }

@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-11T06:17:47.733Z",
+  "builtAt": "2026-09-11T07:54:02.678Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -16276,7 +16276,7 @@
     }
   ],
   "standards": {
-    "builtAt": "2026-09-11T06:17:46.030Z",
+    "builtAt": "2026-09-11T07:54:00.641Z",
     "source": "Thai Industrial Standards Institute (TISI / สมอ.)",
     "total": 1489,
     "byCategory": {
@@ -31728,7 +31728,7 @@
     ]
   },
   "revenue": {
-    "builtAt": "2026-09-11T06:17:46.118Z",
+    "builtAt": "2026-09-11T07:54:00.738Z",
     "unit": "บาท",
     "seriesSource": "กรมพัฒนาชุมชน",
     "resourceId": "c1c39e6a-c6ab-4d31-a911-44517db7f2eb",
@@ -32146,6 +32146,230 @@
     "resourcesExcludedByTitle": 3,
     "aggregateTitles": 119,
     "aggregateRows": 40852
+  },
+  "gaps": {
+    "funnel": {
+      "resourcesCached": 1294,
+      "resourcesUsable": 485,
+      "resourcesSkipped": 809,
+      "resourcesAggregateEconomic": 228,
+      "resourcesExcludedByTitle": 3,
+      "distinctTitles": 457,
+      "usableTitles": 125,
+      "silentTitles": 332,
+      "rowsIn": 1015991,
+      "rowsAccepted": 427147,
+      "rowsRejected": 9469,
+      "duplicatesCollapsed": 273069,
+      "records": 154078
+    },
+    "darkness": {
+      "unclassified": 107389,
+      "unclassifiedShare": 69.7,
+      "beverage": 1563,
+      "herbal": 3178,
+      "leastClassified": [
+        {
+          "code": 84,
+          "th": "สุราษฎร์ธานี",
+          "en": "Surat Thani",
+          "records": 1984,
+          "classifiedPct": 12.2
+        },
+        {
+          "code": 14,
+          "th": "พระนครศรีอยุธยา",
+          "en": "Phra Nakhon Si Ayutthaya",
+          "records": 2447,
+          "classifiedPct": 13.3
+        },
+        {
+          "code": 80,
+          "th": "นครศรีธรรมราช",
+          "en": "Nakhon Si Thammarat",
+          "records": 3059,
+          "classifiedPct": 13.6
+        },
+        {
+          "code": 45,
+          "th": "ร้อยเอ็ด",
+          "en": "Roi Et",
+          "records": 3970,
+          "classifiedPct": 13.7
+        },
+        {
+          "code": 47,
+          "th": "สกลนคร",
+          "en": "Sakon Nakhon",
+          "records": 3514,
+          "classifiedPct": 13.8
+        }
+      ]
+    },
+    "desert": {
+      "reachable": 8839,
+      "reachableShare": 5.7,
+      "withPrice": 0,
+      "withCoordinates": 0.4,
+      "hiddenChampions": 7087,
+      "worstUnreachable": [
+        {
+          "code": 34,
+          "th": "อุบลราชธานี",
+          "en": "Ubon Ratchathani",
+          "records": 5508,
+          "reachable": 4
+        },
+        {
+          "code": 32,
+          "th": "สุรินทร์",
+          "en": "Surin",
+          "records": 4311,
+          "reachable": 2
+        },
+        {
+          "code": 31,
+          "th": "บุรีรัมย์",
+          "en": "Buri Ram",
+          "records": 4288,
+          "reachable": 4
+        },
+        {
+          "code": 40,
+          "th": "ขอนแก่น",
+          "en": "Khon Kaen",
+          "records": 4089,
+          "reachable": 3
+        },
+        {
+          "code": 50,
+          "th": "เชียงใหม่",
+          "en": "Chiang Mai",
+          "records": 4011,
+          "reachable": 2
+        }
+      ]
+    },
+    "energy": {
+      "top10Share": 26.8,
+      "mostTrusted": {
+        "code": 91,
+        "th": "สตูล",
+        "share": 94.5
+      },
+      "leastTrusted": {
+        "code": 95,
+        "th": "ยะลา",
+        "share": 34.4
+      },
+      "quadrant": {
+        "ready": 7,
+        "documented": 65,
+        "reachable": 2,
+        "blind": 3
+      },
+      "blindProvinces": [
+        {
+          "code": 38,
+          "th": "บึงกาฬ",
+          "en": "Bueng Kan",
+          "records": 2299
+        },
+        {
+          "code": 16,
+          "th": "ลพบุรี",
+          "en": "Lop Buri",
+          "records": 1701
+        },
+        {
+          "code": 62,
+          "th": "กำแพงเพชร",
+          "en": "Kamphaeng Phet",
+          "records": 1590
+        }
+      ]
+    },
+    "silentTambons": {
+      "reference": 7436,
+      "withRecords": 7383,
+      "silent": 53,
+      "buckets": {
+        "one": 110,
+        "few": 906,
+        "cluster": 4019,
+        "basin": 2348
+      }
+    },
+    "temporal": {
+      "dated": 20989,
+      "datedShare": 13.6,
+      "undated": 133089,
+      "earliest": 2007,
+      "latest": 2026,
+      "median": 2022,
+      "missingYears": [
+        2008,
+        2009,
+        2010,
+        2012
+      ],
+      "missingYearsCount": 4,
+      "peak": [
+        {
+          "year": 2024,
+          "count": 4182
+        },
+        {
+          "year": 2014,
+          "count": 3114
+        },
+        {
+          "year": 2025,
+          "count": 3003
+        }
+      ]
+    },
+    "standardsGap": [
+      {
+        "id": "textile",
+        "products": 13830,
+        "standards": 110,
+        "productsPerStandard": 125.7
+      },
+      {
+        "id": "food",
+        "products": 17100,
+        "standards": 553,
+        "productsPerStandard": 30.9
+      },
+      {
+        "id": "herbal",
+        "products": 3178,
+        "standards": 103,
+        "productsPerStandard": 30.9
+      },
+      {
+        "id": "craft",
+        "products": 11018,
+        "standards": 461,
+        "productsPerStandard": 23.9
+      },
+      {
+        "id": "beverage",
+        "products": 1563,
+        "standards": 262,
+        "productsPerStandard": 6
+      }
+    ],
+    "revenueGap": {
+      "provincesWithData": 76,
+      "provinces": 77,
+      "missing": [
+        "กรุงเทพมหานคร"
+      ],
+      "medianGapPct": 4.7,
+      "latestFullYear": 2023
+    }
   },
   "concentration": {
     "top10Share": 26.8,

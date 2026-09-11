@@ -83,6 +83,7 @@ check_json otop_insights.json "d.byProvince.length === d.national.provincesCover
 check_json otop_meta.json     "d.counts.resourcesAggregateEconomic != null ? \`\${d.counts.resourcesAggregateEconomic} economic aggregates · \${d.counts.resourcesExcludedByTitle} excluded by title\` : 'ERR resourcesAggregateEconomic missing — old build served'" "otop_meta.json"
 check_json otop_revenue.json  "d.degraded ? 'ERR degraded: ' + d.reason : \`\${d.coverage.provincesWithData}/\${d.coverage.provinces} provinces · \${d.byCategory ? d.byCategory.years.length + ' category years · gap ' + d.reconciliation.medianGapPct + '%' : 'no category table'}\`" "otop_revenue.json"
 check_json otop_tambons.json  "d.coverage && d.tambons.length > 5000 ? \`\${d.coverage.placed.toLocaleString()} records placed across \${d.tambons.length} tambons (\${d.coverage.placedShare}%)\` : 'ERR tambon layer missing or truncated'" "otop_tambons.json"
+check_json otop_graph.json    "d.nodes.length > 100 && d.edges.length > 100 ? \`\${d.nodes.length} nodes · \${d.edges.length} edges\` : 'ERR universe graph missing or truncated'" "otop_graph.json"
 check_json p/34.json          "Array.isArray(d) ? \`shard TH-34 · \${d.length} records\` : 'ERR shard is not an array'" "province shard"
 
 # 4. The SPA fallback. Without it every deep link 404s and only the bare domain

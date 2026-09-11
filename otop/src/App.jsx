@@ -19,7 +19,7 @@ const Atlas = lazy(() => import('./components/Atlas.jsx'));
 // One province, whole — the shareable unit of reading. Only drawn on demand.
 const ProvinceDossier = lazy(() => import('./components/ProvinceDossier.jsx'));
 import { loadIndex, loadShards, planShards } from './lib/shards.js';
-import { loadInsights } from './lib/insights.js';
+import { loadInsights, loadGraph } from './lib/insights.js';
 import { matchRequirement, sourcingBasins, toCsv, PROFILES } from '../core/matching.js';
 
 const PAGE = 60;
@@ -216,8 +216,8 @@ export default function App() {
   useEffect(() => {
     if ((view !== 'atlas' && view !== 'province') || insights || insightsError) return;
     let cancelled = false;
-    loadInsights()
-      .then((data) => { if (!cancelled) setInsights(data); })
+    Promise.all([loadInsights(), loadGraph().catch(() => null)])
+      .then(([data, graph]) => { if (!cancelled) setInsights(graph ? { ...data, graph } : data); })
       .catch((error) => { if (!cancelled) setInsightsError(error.message); });
     return () => { cancelled = true; };
   }, [view, insights, insightsError]);

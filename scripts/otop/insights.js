@@ -608,6 +608,128 @@ const catalogue = (() => {
   };
 })();
 
+/**
+ * Gaps — what the registry does NOT show, in one place, so policy can start
+ * from the blanks instead of the totals. Every series here is a count of the
+ * same corpus the other chapters describe; nothing is sampled, nothing is
+ * modelled. A gap with no honest denominator is not printed.
+ */
+const gaps = (() => {
+  const total = records.length;
+  // Funnel: catalogue titles → usable producer lists → accepted rows.
+  const titles = new Set((meta.resources ?? []).map((r) => (r.datasetTitle ?? '').trim()).filter(Boolean));
+  const usableTitles = new Set((meta.resources ?? []).filter((r) => r.usable).map((r) => (r.datasetTitle ?? '').trim()).filter(Boolean));
+  const funnel = {
+    resourcesCached: meta.counts.resourcesCached,
+    resourcesUsable: meta.counts.resourcesUsable,
+    resourcesSkipped: meta.counts.resourcesSkipped ?? null,
+    resourcesAggregateEconomic: meta.counts.resourcesAggregateEconomic ?? null,
+    resourcesExcludedByTitle: meta.counts.resourcesExcludedByTitle ?? 0,
+    distinctTitles: titles.size,
+    usableTitles: usableTitles.size,
+    silentTitles: titles.size - usableTitles.size,
+    rowsIn: meta.counts.rowsIn,
+    rowsAccepted: meta.counts.rowsAccepted,
+    rowsRejected: meta.counts.rowsRejected ?? 0,
+    duplicatesCollapsed: meta.counts.duplicatesCollapsed,
+    records: total,
+  };
+  // Darkness: which categories the registry never describes.
+  const catById = Object.fromEntries(categoryMix(records).map((c) => [c.id, c]));
+  const darkness = {
+    unclassified: catById.unclassified?.count ?? 0,
+    unclassifiedShare: catById.unclassified?.share ?? null,
+    beverage: catById.beverage?.count ?? 0,
+    herbal: catById.herbal?.count ?? 0,
+    leastClassified: byProvince
+      .filter((p) => p.records > 0)
+      .map((p) => ({ code: p.code, th: p.th, en: p.en, records: p.records, classifiedPct: Math.round(((p.records - ((p.categories || []).find((c) => c.id === 'unclassified')?.count ?? 0)) / Math.max(p.records, 1)) * 1000) / 10 }))
+      .sort((a, b) => a.classifiedPct - b.classifiedPct)
+      .slice(0, 5),
+  };
+  // Contact desert: reachable, priced, mapped — and the certified unreachable.
+  const reachable = reachGap.reduce((s, p) => s + p.reachable, 0);
+  const hiddenTotal = records.filter((r) => r.stars != null && r.stars >= 4 && r.sourceCount > 1 && !r.phone && !r.email && !r.website).length;
+  const desert = {
+    reachable,
+    reachableShare: pct(reachable, total),
+    withPrice: completeness(records).withPrice,
+    withCoordinates: completeness(records).withCoordinates,
+    hiddenChampions: hiddenTotal,
+    worstUnreachable: reachGap.slice(0, 5).map((p) => ({ code: p.code, th: p.th, en: p.en, records: p.records, reachable: p.reachable })),
+  };
+  // Filing energy vs supply: who files, who corroborates, who sits blind.
+  const byCorroboration = [...byProvince].sort((a, b) => (b.corroborated / Math.max(b.records, 1)) - (a.corroborated / Math.max(a.records, 1)));
+  const energy = {
+    top10Share: concentration.top10Share,
+    mostTrusted: byCorroboration[0] ? { code: byCorroboration[0].code, th: byCorroboration[0].th, share: pct(byCorroboration[0].corroborated, byCorroboration[0].records) } : null,
+    leastTrusted: byCorroboration[byCorroboration.length - 1] ? { code: byCorroboration[byCorroboration.length - 1].code, th: byCorroboration[byCorroboration.length - 1].th, share: pct(byCorroboration[byCorroboration.length - 1].corroborated, byCorroboration[byCorroboration.length - 1].records) } : null,
+    quadrant: {
+      ready: corroborationQuadrant.ready.length,
+      documented: corroborationQuadrant.documented.length,
+      reachable: corroborationQuadrant.reachable.length,
+      blind: corroborationQuadrant.blind.length,
+    },
+    blindProvinces: corroborationQuadrant.blind.map((p) => ({ code: p.code, th: p.th, en: p.en, records: p.records })),
+  };
+  // Silent tambons: reference codes with zero placed records + size buckets.
+  // Size distribution of the basins that DO file.
+  const buckets = { one: 0, few: 0, cluster: 0, basin: 0 };
+  for (const t of tambonsList) {
+    if (t.records <= 1) buckets.one += 1;
+    else if (t.records <= 5) buckets.few += 1;
+    else if (t.records <= 20) buckets.cluster += 1;
+    else buckets.basin += 1;
+  }
+  const refTotal = meta.geo?.tambonsInReference ?? tambonsList.length;
+  const silentTambons = {
+    reference: refTotal,
+    withRecords: tambonsList.length,
+    silent: Math.max(refTotal - tambonsList.length, 0),
+    buckets,
+  };
+  // Temporal silence: dated vs undatable, missing years, spike years.
+  const v = vintage(records);
+  const yearCounts = new Map(byYear.total.map((y) => [y.year, y.count]));
+  const missingYears = [];
+  if (v.earliest != null && v.latest != null) {
+    for (let y = v.earliest; y <= v.latest; y += 1) {
+      if (!yearCounts.has(y)) missingYears.push(y);
+    }
+  }
+  const temporal = {
+    dated: v.years,
+    datedShare: pct(v.years, total),
+    undated: total - v.years,
+    earliest: v.earliest,
+    latest: v.latest,
+    median: v.median,
+    missingYears: missingYears.slice(0, 12),
+    missingYearsCount: missingYears.length,
+    peak: [...byYear.total].sort((a, b) => b.count - a.count).slice(0, 3),
+  };
+  // Standards mismatch: products per official specification, by category.
+  const stdBy = standardsPayload?.byCategory ?? null;
+  const prodBy = { food: catById.food?.count ?? 0, beverage: catById.beverage?.count ?? 0, textile: catById.textile?.count ?? 0, craft: catById.craft?.count ?? 0, herbal: catById.herbal?.count ?? 0 };
+  // standards payload keys food/beverage/decor/textile/herbal; registry craft == decor.
+  const stdMap = stdBy ? { food: stdBy.food, beverage: stdBy.beverage, textile: stdBy.textile, craft: stdBy.decor, herbal: stdBy.herbal } : null;
+  const standardsGap = stdMap ? Object.keys(prodBy).map((id) => ({
+    id,
+    products: prodBy[id],
+    standards: stdMap[id] ?? 0,
+    productsPerStandard: (stdMap[id] ?? 0) > 0 ? Math.round((prodBy[id] / stdMap[id]) * 10) / 10 : null,
+  })).sort((a, b) => (b.productsPerStandard ?? -1) - (a.productsPerStandard ?? -1)) : null;
+  // Revenue gap: who reports money vs who files paperwork.
+  const revenueGap = revenue ? {
+    provincesWithData: revenue.coverage?.provincesWithData ?? null,
+    provinces: revenue.coverage?.provinces ?? null,
+    missing: revenue.coverage?.provincesMissing ?? [],
+    medianGapPct: revenue.reconciliation?.medianGapPct ?? null,
+    latestFullYear: revenue.latestFullYear ?? null,
+  } : null;
+  return { funnel, darkness, desert, energy, silentTambons, temporal, standardsGap, revenueGap };
+})();
+
 const insights = {
   builtAt: new Date().toISOString(),
   // Carried forward so a consumer of this file alone can still tell whether it
@@ -653,6 +775,9 @@ const insights = {
   // hides the section rather than substituting).
   revenue,
   catalogue,
+
+  // Gaps: what the registry does not show — the policy chapter's numbers.
+  gaps,
 
   // Concentration: the share of all records held by the top ten provinces. A
   // registry is not a census, so a high figure is as likely to reflect where

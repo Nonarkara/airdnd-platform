@@ -481,6 +481,8 @@ html, body { overflow-x: hidden; }
 .atlas-tab-banner[data-tab='reach']    { background-image: url('/heroes/sunset-river-real.jpg'); }
 .atlas-tab-banner[data-tab='money']    { background-image: url('/heroes/market-food-real.jpg'); }
 .atlas-tab-banner[data-tab='record']   { background-image: url('/heroes/record-real.jpg'); }
+.atlas-tab-banner[data-tab='gaps']     { background-image: url('/heroes/sunset-river-real.jpg'); }
+.atlas-tab-banner[data-tab='universe'] { background-image: url('/heroes/festival-market-real.jpg'); }
 .atlas-tab-banner .atlas-tab-q {
   font-family: var(--font-mono);
   font-size: 11px;
