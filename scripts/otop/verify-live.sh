@@ -65,6 +65,17 @@ else
   bad "dossier chunk" "not referenced by the bundle"
 fi
 
+# 2c. The briefs view is the forwardable infographic layer. Its chunk is lazy,
+#     and it reads otop_briefs.json — either missing renders a wordmark and nothing.
+briefs=$(curl -sS --max-time "$TIMEOUT" "$BASE/$live_js" |
+  grep -o 'Briefs-[A-Za-z0-9_-]*\.js' | head -1)
+if [[ -n "$briefs" ]]; then
+  code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time "$TIMEOUT" "$BASE/assets/$briefs" || echo 000)
+  [[ "$code" == "200" ]] && say "briefs chunk" "200 ($briefs)" || bad "briefs chunk" "$briefs -> $code"
+else
+  bad "briefs chunk" "not referenced by the bundle"
+fi
+
 # 3. The published artefacts, checked for shape rather than status code — a
 #    truncated or half-written JSON still returns 200.
 check_json() { # url  node-expression-returning-a-string  label
@@ -86,6 +97,7 @@ check_json otop_tambons.json  "d.coverage && d.tambons.length > 5000 ? \`\${d.co
 check_json otop_graph.json    "d.nodes.length > 100 && d.edges.length > 100 ? \`\${d.nodes.length} nodes · \${d.edges.length} edges\` : 'ERR universe graph missing or truncated'" "otop_graph.json"
 check_json otop_insights.json "d.certification && d.certification.certified > 10000 ? \`\${d.certification.certified.toLocaleString()} certified · \${d.certification.valid.toLocaleString()} valid\` : 'ERR certification join missing — old build served'" "certification join"
 check_json p/34.json          "Array.isArray(d) ? \`shard TH-34 · \${d.length} records\` : 'ERR shard is not an array'" "province shard"
+check_json otop_briefs.json   "d.cards && d.cards.snapshot && d.provinces.length === 77 ? \`5 cards · \${d.provinces.length} one-liners\` : 'ERR briefs cards missing — old build served'" "otop_briefs.json"
 
 # 4. The SPA fallback. Without it every deep link 404s and only the bare domain
 #    works — which nobody notices until someone shares a link.
