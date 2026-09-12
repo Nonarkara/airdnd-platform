@@ -941,3 +941,54 @@ html, body { overflow-x: hidden; }
 .xr-bar i { display: block; height: 100%; background: var(--accent, #f59e0b); }
 .xr-foot { font-size: 0.85em; opacity: 0.85; border-top: 1px solid var(--ink, currentColor); padding-top: 1rem; }
 @media (max-width: 900px) { .xr-grid { grid-template-columns: 1fr; } }
+
+/* ── Briefs — shareable infographic cards ───────────────────────────────
+   Sharp edges, one accent, type does the work. Phone-first: one column
+   at 390px, two at desktop. Print: one card per page, ink on white. */
+.bf-lede { max-width: 76ch; }
+.bf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 900px) { .bf-grid { grid-template-columns: 1fr; } }
+.bf-card {
+  border: 1px solid var(--line-2);
+  border-top: 4px solid var(--accent);
+  background: var(--surface);
+  padding: 1.1rem 1.25rem 1rem;
+  break-inside: avoid;
+}
+.bf-q {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-3); margin: 0 0 0.4rem;
+}
+.bf-t { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; margin: 0; }
+.bf-th { font-family: var(--font-thai); font-size: 0.85em; font-weight: 500; color: var(--ink-3); }
+.bf-big {
+  font-family: var(--font-mono); font-weight: 500;
+  font-size: clamp(1.3rem, 3vw, 1.8rem); line-height: 1.15;
+  margin: 0.7rem 0 0.2rem; font-variant-numeric: tabular-nums;
+}
+.bf-sub { margin: 0 0 0.8rem; color: var(--ink-2); font-size: 13px; }
+.bf-chart { border-top: 1px solid var(--line); padding-top: 0.8rem; margin-bottom: 0.8rem; }
+.bf-gauges { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.6rem; }
+.bf-gauge { display: flex; flex-direction: column; gap: 1px; border-left: 2px solid var(--accent); padding-left: 0.6rem; }
+.bf-gauge-n { font-family: var(--font-mono); font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.bf-gauge-l { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.bf-gauge-th { font-family: var(--font-thai); font-size: 12px; color: var(--ink-3); }
+.bf-why { margin: 0 0 0.6rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.bf-why-row { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.6rem; align-items: baseline; }
+.bf-why-row dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 0; }
+.bf-why-row dd { margin: 0; font-size: 13px; color: var(--ink); }
+.bf-src { font-size: 11px; color: var(--ink-3); margin: 0 0 0.6rem; }
+.bf-src code { font-family: var(--font-mono); }
+.bf-actions { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; border-top: 1px solid var(--line); padding-top: 0.6rem; }
+.bf-prov-picker { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.8rem; }
+.bf-prov-picker select {
+  font: inherit; font-size: 13px; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line-2);
+  padding: 0.4375rem 0.5rem; min-width: 220px; max-width: 100%;
+}
+@media print {
+  .hdr, .hero, .atlas-tabs, .atlas-tab-banner, .bf-actions, .bf-prov-picker select, .cr { display: none; }
+  .bf-grid { grid-template-columns: 1fr; gap: 0; }
+  .bf-card { border: 1px solid #000; break-after: page; }
+}

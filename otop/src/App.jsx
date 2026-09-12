@@ -18,6 +18,8 @@ const ProvinceMap = lazy(() => import('./components/ProvinceMap.jsx'));
 const Atlas = lazy(() => import('./components/Atlas.jsx'));
 // One province, whole — the shareable unit of reading. Only drawn on demand.
 const ProvinceDossier = lazy(() => import('./components/ProvinceDossier.jsx'));
+// Briefs are the shareable infographic cards. Only drawn on demand.
+const Briefs = lazy(() => import('./components/Briefs.jsx'));
 import { loadIndex, loadShards, planShards } from './lib/shards.js';
 import { loadInsights, loadGraph } from './lib/insights.js';
 import { matchRequirement, sourcingBasins, toCsv, PROFILES } from '../core/matching.js';
@@ -80,12 +82,22 @@ function requirementToUrl(view, lens, r, code) {
   if (view === 'champions') p.set('view', 'champions');
   if (view === 'tides') p.set('view', 'tides');
   if (view === 'matchmaker') p.set('view', 'matchmaker');
+  if (view === 'briefs') p.set('view', 'briefs');
   if (view === 'province' && code != null) { p.set('view', 'province'); p.set('code', String(code)); }
   // Preserve the active Atlas tab across requirement/lens changes so a user
   // who lands on `?view=atlas&tab=reach` and then changes a filter does
   // not get bounced back to the findings tab.
   const currentTab = new URLSearchParams(window.location.search).get('tab');
   if (view === 'atlas' && currentTab) p.set('tab', currentTab);
+  // Preserve the active brief card + province across filter changes so a
+  // shared one-pager link does not lose its card when the requirement moves.
+  const currentParams = new URLSearchParams(window.location.search);
+  if (view === 'briefs') {
+    const card = currentParams.get('card');
+    const prov = currentParams.get('prov');
+    if (card) p.set('card', card);
+    if (prov) p.set('prov', prov);
+  }
   p.set('lens', lens);
   if (r.categories.length) p.set('cat', r.categories.join(','));
   if (r.provinceCodes.length) p.set('prov', r.provinceCodes.join(','));
@@ -139,7 +151,7 @@ export default function App() {
   // reader what any of them mean.
   const [view, setView] = useState(() => {
     const urlView = new URLSearchParams(window.location.search).get('view');
-    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker'].includes(urlView)) return urlView;
+    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs'].includes(urlView)) return urlView;
     return 'atlas';
   });
   const [provinceCode, setProvinceCode] = useState(() => {
@@ -288,6 +300,9 @@ export default function App() {
             </button>
             <button type="button" aria-current={view === 'matchmaker'} onClick={() => setView('matchmaker')}>
               <Bi en="Matchmaker" th="จับคู่" />
+            </button>
+            <button type="button" aria-current={view === 'briefs'} onClick={() => setView('briefs')}>
+              <Bi en="Briefs" th="สรุป" />
             </button>
             <button type="button" aria-current={view === 'tides'} onClick={() => setView('tides')}>
               <Bi en="Tides" th="กระแส" />
@@ -551,6 +566,27 @@ export default function App() {
                 </span>
               </div>
               <Matchmaker onSelectProvince={openProvince} />
+            </div>
+          </section>
+        )}
+
+        {view === 'briefs' && (
+          <section className="sec" id="briefs">
+            <div className="wrap">
+              <div className="sec-h">
+                <h2 className="sec-t">
+                  <Bi en="Briefs" th="สรุป" />
+                </h2>
+                <span className="sec-n">
+                  <Bi
+                    en="six forwardable cards — one number, one chart, what it means, what to do"
+                    th="การ์ดหกใบพร้อมส่งต่อ — ตัวเลขหนึ่ง ค่าแผนภูมิหนึ่ง ความหมายและทางออก"
+                  />
+                </span>
+              </div>
+              <Suspense fallback={<p className="empty">Loading the briefs…</p>}>
+                <Briefs insights={insights} onSelectProvince={openProvince} />
+              </Suspense>
             </div>
           </section>
         )}
