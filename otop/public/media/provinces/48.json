@@ -1,0 +1,62 @@
+{
+  "code": 48,
+  "iso": "TH-48",
+  "th": "นครพนม",
+  "en": "Nakhon Phanom",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 9,
+    "count": 174
+  },
+  "fetchedAt": "2026-09-14T18:58:22.925Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Nakhon Phanom Food",
+    "นครพนม อาหาร",
+    "นครพนม ผ้ามัดหมี่",
+    "นครพนม ผ้าพันคอ",
+    "นครพนม ผ้าขาวม้า",
+    "Nakhon Phanom OTOP",
+    "นครพนม โอทอป",
+    "Nakhon Phanom Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Getrocknete Chilis auf dem Markt von Si Songkhram.jpg",
+      "description": "A woman selling dried Chili out of a big plastic bag on a market in Si Songkhram , Nakhon Phanom Province, Northeastern Thailand.",
+      "author": "User:Mattes",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Getrocknete%20Chilis%20auf%20dem%20Markt%20von%20Si%20Songkhram.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/42/Getrocknete_Chilis_auf_dem_Markt_von_Si_Songkhram.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/4/42/Getrocknete_Chilis_auf_dem_Markt_von_Si_Songkhram.jpg",
+      "localPath": null,
+      "query": "Nakhon Phanom Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Lot ken shop.JPG",
+      "description": "Mobile shop selling fruit juice in Thailand.",
+      "author": "User:Mattes",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Lot%20ken%20shop.JPG",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Lot_ken_shop.JPG/960px-Lot_ken_shop.JPG",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Lot_ken_shop.JPG/960px-Lot_ken_shop.JPG",
+      "localPath": null,
+      "query": "Nakhon Phanom Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

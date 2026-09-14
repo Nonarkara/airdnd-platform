@@ -1,0 +1,28 @@
+{
+  "id": "beverage",
+  "fetchedAt": "2026-09-14T19:04:49.568Z",
+  "status": "ok",
+  "photos": [
+    {
+      "title": "File:泰國涼茶鋪2015.jpg",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E6%B3%B0%E5%9C%8B%E6%B6%BC%E8%8C%B6%E9%8B%AA2015.jpg",
+      "description": "又一陸沉 -涼茶 假 -上海水磨石 ？",
+      "author": "theblueli",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source": "Wikimedia Commons",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/7/77/%E6%B3%B0%E5%9C%8B%E6%B6%BC%E8%8C%B6%E9%8B%AA2015.jpg",
+      "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/7/77/%E6%B3%B0%E5%9C%8B%E6%B6%BC%E8%8C%B6%E9%8B%AA2015.jpg",
+      "width": 640,
+      "height": 640,
+      "mime": "image/jpeg",
+      "relevance": 0,
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Category archetype from Wikimedia Commons — not a specific producer's product.",
+      "query": "Thai herbal tea",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/77/%E6%B3%B0%E5%9C%8B%E6%B6%BC%E8%8C%B6%E9%8B%AA2015.jpg",
+      "localPath": null
+    }
+  ]
+}

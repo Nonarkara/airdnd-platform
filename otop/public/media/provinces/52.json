@@ -1,0 +1,62 @@
+{
+  "code": 52,
+  "iso": "TH-52",
+  "th": "ลำปาง",
+  "en": "Lampang",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 8.9,
+    "count": 185
+  },
+  "fetchedAt": "2026-09-14T18:58:44.118Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Lampang Food",
+    "ลำปาง อาหาร",
+    "ลำปาง แยมสับปะรด",
+    "ลำปาง สับปะรดกวน",
+    "ลำปาง กุ๊กไก่ไส้สับปะรด",
+    "Lampang OTOP",
+    "ลำปาง โอทอป",
+    "Lampang Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Samutprakarn Ancient Siam 4.jpg",
+      "description": "Ancient Siam is located close to the 33rd kilometre maker on Sukhumvit road (original route) in Bangpu Mai subdistrict, Muang Samut Prakan district. Its construction began in 1963 by Prapai Viriyaphant, the founder of the Viriyah Insurance (Public) Company Limited, and the official opening was on 11th February, 1972. Covering over 800 rai, the premise was designed and constructed to resemble the axe-like shape of Thailand. Ancient Siam is home to a number of miniatures and replicas of prominent architectural structures, e.g. palaces and temples, and other forms of art works throughout the country, divided into regions. The notable pieces are the Temple of Preah Vihear and the Dusit Maha Prasat Throne Hall. The place is regarded as a world-class open-air art and culture museum which represents roots of Thai values. Apart from the miniatures and replicas, there are constructions exquisitely created from imagination, such as “The Pavilion of the Enlightened”, “The Rainbow Bridge”, “Mount Meru”, and “The Botanical Garden of Thai Literature”, as well as buildings constructed in accordance with historical documentation, such as “Ho Phra Kaew” and “Ho Kham in Lampang”. The place also features “Floating Market” and “Traditional Marketplace” which actually offer food and souvenirs. For those who want to spend a night here, there is a camping area called “Rim Khob Fah Campsite”. Visiting the whole area is of your choice, either by bicycle, tramcar, or foot.",
+      "author": "Mr.Sivakrit Saravit",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Samutprakarn%20Ancient%20Siam%204.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/db/Samutprakarn_Ancient_Siam_4.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/d/db/Samutprakarn_Ancient_Siam_4.jpg",
+      "localPath": null,
+      "query": "Lampang Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Samutprakarn Ancient Siam 6.jpg",
+      "description": "Ancient Siam is located close to the 33rd kilometre maker on Sukhumvit road (original route) in Bangpu Mai subdistrict, Muang Samut Prakan district. Its construction began in 1963 by Prapai Viriyaphant, the founder of the Viriyah Insurance (Public) Company Limited, and the official opening was on 11th February, 1972. Covering over 800 rai, the premise was designed and constructed to resemble the axe-like shape of Thailand. Ancient Siam is home to a number of miniatures and replicas of prominent architectural structures, e.g. palaces and temples, and other forms of art works throughout the country, divided into regions. The notable pieces are the Temple of Preah Vihear and the Dusit Maha Prasat Throne Hall. The place is regarded as a world-class open-air art and culture museum which represents roots of Thai values. Apart from the miniatures and replicas, there are constructions exquisitely created from imagination, such as “The Pavilion of the Enlightened”, “The Rainbow Bridge”, “Mount Meru”, and “The Botanical Garden of Thai Literature”, as well as buildings constructed in accordance with historical documentation, such as “Ho Phra Kaew” and “Ho Kham in Lampang”. The place also features “Floating Market” and “Traditional Marketplace” which actually offer food and souvenirs. For those who want to spend a night here, there is a camping area called “Rim Khob Fah Campsite”. Visiting the whole area is of your choice, either by bicycle, tramcar, or foot.",
+      "author": "Mr.Sivakrit Saravit",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Samutprakarn%20Ancient%20Siam%206.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Samutprakarn_Ancient_Siam_6.jpg/960px-Samutprakarn_Ancient_Siam_6.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Samutprakarn_Ancient_Siam_6.jpg/960px-Samutprakarn_Ancient_Siam_6.jpg",
+      "localPath": null,
+      "query": "Lampang Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

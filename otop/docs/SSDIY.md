@@ -18,6 +18,8 @@ npm run otop:build      # normalise → resolve → shard → aggregate. PURE, n
 npm run otop:dev        # develop at http://localhost:5180
 npm run otop:ship       # build the site + deploy + verify live. ~2 min
 npm run otop:verify     # smoke-test the live site. Read-only, ~10s
+npm run otop:faces      # signature packs from shards → otop_province_faces.json (PURE)
+npm run otop:media      # Wikimedia Commons faces → media/provinces/*.json (NETWORK)
 npm test                # unit tests, including the resolution and scoring traps
 ```
 

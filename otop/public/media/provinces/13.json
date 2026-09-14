@@ -1,0 +1,46 @@
+{
+  "code": 13,
+  "iso": "TH-13",
+  "th": "ปทุมธานี",
+  "en": "Pathum Thani",
+  "dominantCategory": {
+    "id": "craft",
+    "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+    "en": "Household, Decorative & Souvenir",
+    "share": 7.3,
+    "count": 101
+  },
+  "fetchedAt": "2026-09-14T18:53:06.991Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Pathum Thani Household, Decorative & Souvenir",
+    "ปทุมธานี ของใช้ ของตกแต่ง ของที่ระลึก",
+    "ปทุมธานี กระเป๋าหนัง",
+    "ปทุมธานี กระเป๋าหนังแท้",
+    "ปทุมธานี ปลาซาบะย่างอบซีอิ๋วญี่ปุ่น",
+    "Pathum Thani OTOP",
+    "ปทุมธานี โอทอป",
+    "Pathum Thani Thai bamboo basketry"
+  ],
+  "photos": [
+    {
+      "title": "File:Dan Kwian pottery เครื่องปั้นดินเผาด่านเกวียน (016).jpg",
+      "description": "Dan Kwian pottery Products",
+      "author": "PEAK99",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Dan%20Kwian%20pottery%20%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%9B%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B9%80%E0%B8%9C%E0%B8%B2%E0%B8%94%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%81%E0%B8%A7%E0%B8%B5%E0%B8%A2%E0%B8%99%20(016).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Dan_Kwian_pottery_%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%9B%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B9%80%E0%B8%9C%E0%B8%B2%E0%B8%94%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%81%E0%B8%A7%E0%B8%B5%E0%B8%A2%E0%B8%99_%28016%29.jpg/960px-Dan_Kwian_pottery_%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%9B%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B9%80%E0%B8%9C%E0%B8%B2%E0%B8%94%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%81%E0%B8%A7%E0%B8%B5%E0%B8%A2%E0%B8%99_%28016%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Dan_Kwian_pottery_%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%9B%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B9%80%E0%B8%9C%E0%B8%B2%E0%B8%94%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%81%E0%B8%A7%E0%B8%B5%E0%B8%A2%E0%B8%99_%28016%29.jpg/960px-Dan_Kwian_pottery_%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%9B%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%94%E0%B8%B4%E0%B8%99%E0%B9%80%E0%B8%9C%E0%B8%B2%E0%B8%94%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%81%E0%B8%A7%E0%B8%B5%E0%B8%A2%E0%B8%99_%28016%29.jpg",
+      "localPath": null,
+      "query": "เครื่องปั้นดินเผา ไทย",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

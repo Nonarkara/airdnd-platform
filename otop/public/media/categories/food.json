@@ -1,0 +1,28 @@
+{
+  "id": "food",
+  "fetchedAt": "2026-09-14T19:04:48.279Z",
+  "status": "ok",
+  "photos": [
+    {
+      "title": "File:Market stall - Chiang Mai.jpg",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Market%20stall%20-%20Chiang%20Mai.jpg",
+      "description": "Thai food at a market stall, Chiang Mai, Thailand",
+      "author": "Papa November",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Market_stall_-_Chiang_Mai.jpg/960px-Market_stall_-_Chiang_Mai.jpg",
+      "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/Market_stall_-_Chiang_Mai.jpg",
+      "width": 640,
+      "height": 853,
+      "mime": "image/jpeg",
+      "relevance": 10,
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Category archetype from Wikimedia Commons — not a specific producer's product.",
+      "query": "Thai market food stall",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Market_stall_-_Chiang_Mai.jpg/960px-Market_stall_-_Chiang_Mai.jpg",
+      "localPath": null
+    }
+  ]
+}

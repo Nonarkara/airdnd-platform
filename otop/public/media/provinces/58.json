@@ -1,0 +1,62 @@
+{
+  "code": 58,
+  "iso": "TH-58",
+  "th": "แม่ฮ่องสอน",
+  "en": "Mae Hong Son",
+  "dominantCategory": {
+    "id": "textile",
+    "th": "ผ้าและเครื่องแต่งกาย",
+    "en": "Fabric & Apparel",
+    "share": 13.3,
+    "count": 120
+  },
+  "fetchedAt": "2026-09-14T18:59:15.771Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Mae Hong Son Fabric & Apparel",
+    "แม่ฮ่องสอน ผ้าและเครื่องแต่งกาย",
+    "แม่ฮ่องสอน ย่าม",
+    "แม่ฮ่องสอน ผ้าพันคอ",
+    "แม่ฮ่องสอน กระเป๋าผ้าขนาดกลาง",
+    "Mae Hong Son OTOP",
+    "แม่ฮ่องสอน โอทอป",
+    "Mae Hong Son Thai silk weaving"
+  ],
+  "photos": [
+    {
+      "title": "File:ยามเช้าในหุบเขา, อุทยานแห่งชาติน้ำตกแม่สุรินทร์ แม่ฮ่องสอน.jpg",
+      "description": "A close-up of the soft morning light filtering through the delicate winter mist atop the mountains of Mae Surin Waterfall National Park, Mae Hong Son, Northern Thailand.",
+      "author": "Prayoon Hongsathon",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%A2%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%8A%E0%B9%89%E0%B8%B2%E0%B9%83%E0%B8%99%E0%B8%AB%E0%B8%B8%E0%B8%9A%E0%B9%80%E0%B8%82%E0%B8%B2%2C%20%E0%B8%AD%E0%B8%B8%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%99%E0%B9%81%E0%B8%AB%E0%B9%88%E0%B8%87%E0%B8%8A%E0%B8%B2%E0%B8%95%E0%B8%B4%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%95%E0%B8%81%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AA%E0%B8%B8%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C%20%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AE%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/%E0%B8%A2%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%8A%E0%B9%89%E0%B8%B2%E0%B9%83%E0%B8%99%E0%B8%AB%E0%B8%B8%E0%B8%9A%E0%B9%80%E0%B8%82%E0%B8%B2%2C_%E0%B8%AD%E0%B8%B8%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%99%E0%B9%81%E0%B8%AB%E0%B9%88%E0%B8%87%E0%B8%8A%E0%B8%B2%E0%B8%95%E0%B8%B4%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%95%E0%B8%81%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AA%E0%B8%B8%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C_%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AE%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99.jpg/960px-thumbnail.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/%E0%B8%A2%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%8A%E0%B9%89%E0%B8%B2%E0%B9%83%E0%B8%99%E0%B8%AB%E0%B8%B8%E0%B8%9A%E0%B9%80%E0%B8%82%E0%B8%B2%2C_%E0%B8%AD%E0%B8%B8%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%99%E0%B9%81%E0%B8%AB%E0%B9%88%E0%B8%87%E0%B8%8A%E0%B8%B2%E0%B8%95%E0%B8%B4%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%95%E0%B8%81%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AA%E0%B8%B8%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C_%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AE%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99.jpg/960px-thumbnail.jpg",
+      "localPath": null,
+      "query": "แม่ฮ่องสอน ย่าม",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:ในหุบเขาเหนือยอดดอยปุยหลวง, อุทยานแห่งชาติน้ำตกแม่สุรินทร์ แม่ฮ่องสอน.jpg",
+      "description": "The gentle light of morning bathes the white winter mist in a soft glow, as it drifts gracefully above the countless peaks of Mae Surin Waterfall National Park in Mae Hong Son.",
+      "author": "Prayoon Hongsathon",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B9%83%E0%B8%99%E0%B8%AB%E0%B8%B8%E0%B8%9A%E0%B9%80%E0%B8%82%E0%B8%B2%E0%B9%80%E0%B8%AB%E0%B8%99%E0%B8%B7%E0%B8%AD%E0%B8%A2%E0%B8%AD%E0%B8%94%E0%B8%94%E0%B8%AD%E0%B8%A2%E0%B8%9B%E0%B8%B8%E0%B8%A2%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87%2C%20%E0%B8%AD%E0%B8%B8%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%99%E0%B9%81%E0%B8%AB%E0%B9%88%E0%B8%87%E0%B8%8A%E0%B8%B2%E0%B8%95%E0%B8%B4%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%95%E0%B8%81%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AA%E0%B8%B8%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C%20%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AE%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/%E0%B9%83%E0%B8%99%E0%B8%AB%E0%B8%B8%E0%B8%9A%E0%B9%80%E0%B8%82%E0%B8%B2%E0%B9%80%E0%B8%AB%E0%B8%99%E0%B8%B7%E0%B8%AD%E0%B8%A2%E0%B8%AD%E0%B8%94%E0%B8%94%E0%B8%AD%E0%B8%A2%E0%B8%9B%E0%B8%B8%E0%B8%A2%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87%2C_%E0%B8%AD%E0%B8%B8%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%99%E0%B9%81%E0%B8%AB%E0%B9%88%E0%B8%87%E0%B8%8A%E0%B8%B2%E0%B8%95%E0%B8%B4%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%95%E0%B8%81%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AA%E0%B8%B8%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C_%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AE%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99.jpg/960px-thumbnail.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/%E0%B9%83%E0%B8%99%E0%B8%AB%E0%B8%B8%E0%B8%9A%E0%B9%80%E0%B8%82%E0%B8%B2%E0%B9%80%E0%B8%AB%E0%B8%99%E0%B8%B7%E0%B8%AD%E0%B8%A2%E0%B8%AD%E0%B8%94%E0%B8%94%E0%B8%AD%E0%B8%A2%E0%B8%9B%E0%B8%B8%E0%B8%A2%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87%2C_%E0%B8%AD%E0%B8%B8%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%99%E0%B9%81%E0%B8%AB%E0%B9%88%E0%B8%87%E0%B8%8A%E0%B8%B2%E0%B8%95%E0%B8%B4%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%95%E0%B8%81%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AA%E0%B8%B8%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C_%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%AE%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99.jpg/960px-thumbnail.jpg",
+      "localPath": null,
+      "query": "แม่ฮ่องสอน ย่าม",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

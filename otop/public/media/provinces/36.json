@@ -1,0 +1,62 @@
+{
+  "code": 36,
+  "iso": "TH-36",
+  "th": "ชัยภูมิ",
+  "en": "Chaiyaphum",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 15.2,
+    "count": 528
+  },
+  "fetchedAt": "2026-09-14T18:56:12.130Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Chaiyaphum Food",
+    "ชัยภูมิ อาหาร",
+    "ชัยภูมิ ผ้าไหมมัดหมี่",
+    "ชัยภูมิ ผ้าขาวม้า",
+    "ชัยภูมิ ผ้าทอลายขัดพื้นฐาน",
+    "Chaiyaphum OTOP",
+    "ชัยภูมิ โอทอป",
+    "Chaiyaphum Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:ชาวชัยภูมิให้การต้อนรับนายกรัฐมนตรีอย่างอบอุ่น หลังจา - Flickr - Abhisit Vejjajiva.jpg",
+      "description": "ชาวชัยภูมิให้การต้อนรับนายกรัฐมนตรีอย่างอบอุ่น หลังจากนายกรัฐมนตรีรับประทานอาหารกลางวันร่วมกับคณะทำงานของทางจังหวัดชัยภูมิ ณ ศาลาศูนย์เยาวชนฯ อ.เมือง จังหวัดชัยภูมิ วันเสาร์ ที่ 23 ตุลาคม พ.ศ.2553 (Photographer attached to the Prime Minister of the Kingdom of Thailand : Peerapat Wimolrungkarat / พีรพัฒน์ วิมลรังครัตน์) @is50mm",
+      "author": "Government of Thailand",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%8A%E0%B8%B2%E0%B8%A7%E0%B8%8A%E0%B8%B1%E0%B8%A2%E0%B8%A0%E0%B8%B9%E0%B8%A1%E0%B8%B4%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%99%E0%B8%B2%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%B1%E0%B8%90%E0%B8%A1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B5%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%AD%E0%B8%9A%E0%B8%AD%E0%B8%B8%E0%B9%88%E0%B8%99%20%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%88%E0%B8%B2%20-%20Flickr%20-%20Abhisit%20Vejjajiva.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/%E0%B8%8A%E0%B8%B2%E0%B8%A7%E0%B8%8A%E0%B8%B1%E0%B8%A2%E0%B8%A0%E0%B8%B9%E0%B8%A1%E0%B8%B4%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%99%E0%B8%B2%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%B1%E0%B8%90%E0%B8%A1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B5%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%AD%E0%B8%9A%E0%B8%AD%E0%B8%B8%E0%B9%88%E0%B8%99_%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%88%E0%B8%B2_-_Flickr_-_Abhisit_Vejjajiva.jpg/960px-thumbnail.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/%E0%B8%8A%E0%B8%B2%E0%B8%A7%E0%B8%8A%E0%B8%B1%E0%B8%A2%E0%B8%A0%E0%B8%B9%E0%B8%A1%E0%B8%B4%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%99%E0%B8%B2%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%B1%E0%B8%90%E0%B8%A1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B5%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%AD%E0%B8%9A%E0%B8%AD%E0%B8%B8%E0%B9%88%E0%B8%99_%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%88%E0%B8%B2_-_Flickr_-_Abhisit_Vejjajiva.jpg/960px-thumbnail.jpg",
+      "localPath": null,
+      "query": "ชัยภูมิ อาหาร",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:ชาวชัยภูมิให้การต้อนรับนายกรัฐมนตรีอย่างอบอุ่น นายกรั - Flickr - Abhisit Vejjajiva.jpg",
+      "description": "ชาวชัยภูมิให้การต้อนรับนายกรัฐมนตรีอย่างอบอุ่น นายกรัฐมนตรีรับประทานอาหารกลางวันร่วมกับคณะทำงานของทางจังหวัดชัยภูมิ ณ ศาลาศูนย์เยาวชนฯ อ.เมือง จังหวัดชัยภูมิ วันเสาร์ ที่ 23 ตุลาคม พ.ศ.2553 (Photographer attached to the Prime Minister of the Kingdom of Thailand : Peerapat Wimolrungkarat / พีรพัฒน์ วิมลรังครัตน์) @is50mm",
+      "author": "Government of Thailand",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%8A%E0%B8%B2%E0%B8%A7%E0%B8%8A%E0%B8%B1%E0%B8%A2%E0%B8%A0%E0%B8%B9%E0%B8%A1%E0%B8%B4%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%99%E0%B8%B2%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%B1%E0%B8%90%E0%B8%A1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B5%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%AD%E0%B8%9A%E0%B8%AD%E0%B8%B8%E0%B9%88%E0%B8%99%20%E0%B8%99%E0%B8%B2%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%B1%20-%20Flickr%20-%20Abhisit%20Vejjajiva.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/%E0%B8%8A%E0%B8%B2%E0%B8%A7%E0%B8%8A%E0%B8%B1%E0%B8%A2%E0%B8%A0%E0%B8%B9%E0%B8%A1%E0%B8%B4%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%99%E0%B8%B2%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%B1%E0%B8%90%E0%B8%A1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B5%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%AD%E0%B8%9A%E0%B8%AD%E0%B8%B8%E0%B9%88%E0%B8%99_%E0%B8%99%E0%B8%B2%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%B1_-_Flickr_-_Abhisit_Vejjajiva.jpg/960px-thumbnail.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/%E0%B8%8A%E0%B8%B2%E0%B8%A7%E0%B8%8A%E0%B8%B1%E0%B8%A2%E0%B8%A0%E0%B8%B9%E0%B8%A1%E0%B8%B4%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%99%E0%B8%B2%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%B1%E0%B8%90%E0%B8%A1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B5%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%AD%E0%B8%9A%E0%B8%AD%E0%B8%B8%E0%B9%88%E0%B8%99_%E0%B8%99%E0%B8%B2%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%B1_-_Flickr_-_Abhisit_Vejjajiva.jpg/960px-thumbnail.jpg",
+      "localPath": null,
+      "query": "ชัยภูมิ อาหาร",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

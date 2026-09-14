@@ -1,0 +1,28 @@
+{
+  "id": "craft",
+  "fetchedAt": "2026-09-14T19:04:50.602Z",
+  "status": "ok",
+  "photos": [
+    {
+      "title": "File:Bamboo basketry of the Thai ethnic group (photographed in Diềm Village, Châu Khe Commune, Con Cuông District).jpg",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Bamboo%20basketry%20of%20the%20Thai%20ethnic%20group%20(photographed%20in%20Di%E1%BB%81m%20Village%2C%20Ch%C3%A2u%20Khe%20Commune%2C%20Con%20Cu%C3%B4ng%20District).jpg",
+      "description": "Bamboo basketry of the Thai ethnic group (photographed in Diềm Village, Châu Khe Commune, Con Cuông District)",
+      "author": "KoheiU",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Bamboo_basketry_of_the_Thai_ethnic_group_%28photographed_in_Di%E1%BB%81m_Village%2C_Ch%C3%A2u_Khe_Commune%2C_Con_Cu%C3%B4ng_District%29.jpg/960px-Bamboo_basketry_of_the_Thai_ethnic_group_%28photographed_in_Di%E1%BB%81m_Village%2C_Ch%C3%A2u_Khe_Commune%2C_Con_Cu%C3%B4ng_District%29.jpg",
+      "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Bamboo_basketry_of_the_Thai_ethnic_group_%28photographed_in_Di%E1%BB%81m_Village%2C_Ch%C3%A2u_Khe_Commune%2C_Con_Cu%C3%B4ng_District%29.jpg",
+      "width": 640,
+      "height": 853,
+      "mime": "image/jpeg",
+      "relevance": 2,
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Category archetype from Wikimedia Commons — not a specific producer's product.",
+      "query": "Thai bamboo basketry",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Bamboo_basketry_of_the_Thai_ethnic_group_%28photographed_in_Di%E1%BB%81m_Village%2C_Ch%C3%A2u_Khe_Commune%2C_Con_Cu%C3%B4ng_District%29.jpg/960px-Bamboo_basketry_of_the_Thai_ethnic_group_%28photographed_in_Di%E1%BB%81m_Village%2C_Ch%C3%A2u_Khe_Commune%2C_Con_Cu%C3%B4ng_District%29.jpg",
+      "localPath": null
+    }
+  ]
+}

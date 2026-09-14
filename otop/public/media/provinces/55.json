@@ -1,0 +1,62 @@
+{
+  "code": 55,
+  "iso": "TH-55",
+  "th": "น่าน",
+  "en": "Nan",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 6.9,
+    "count": 99
+  },
+  "fetchedAt": "2026-09-14T18:58:55.731Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Nan Food",
+    "น่าน อาหาร",
+    "น่าน ผ้าลายน้ำไหล",
+    "น่าน ผ้าคลุมไหล่",
+    "น่าน ตุง",
+    "Nan OTOP",
+    "น่าน โอทอป",
+    "Nan Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Tomato je.jpg",
+      "description": "Best Of Cheese Foods! Tomato Burger Tomato Pizza Tomato Lasagna",
+      "author": "Softeis",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Tomato%20je.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/960px-Tomato_je.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/960px-Tomato_je.jpg",
+      "localPath": null,
+      "query": "Nan Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:วัดพันเตา3.jpg",
+      "description": "This is a photo of a monument in Thailand identified by the ID",
+      "author": "Yakuzakorat",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9E%E0%B8%B1%E0%B8%99%E0%B9%80%E0%B8%95%E0%B8%B23.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9E%E0%B8%B1%E0%B8%99%E0%B9%80%E0%B8%95%E0%B8%B23.jpg/960px-%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9E%E0%B8%B1%E0%B8%99%E0%B9%80%E0%B8%95%E0%B8%B23.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9E%E0%B8%B1%E0%B8%99%E0%B9%80%E0%B8%95%E0%B8%B23.jpg/960px-%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9E%E0%B8%B1%E0%B8%99%E0%B9%80%E0%B8%95%E0%B8%B23.jpg",
+      "localPath": null,
+      "query": "น่าน ตุง",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "code": 83,
+  "iso": "TH-83",
+  "th": "ภูเก็ต",
+  "en": "Phuket",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 8.5,
+    "count": 70
+  },
+  "fetchedAt": "2026-09-14T19:02:01.884Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Phuket Food",
+    "ภูเก็ต อาหาร",
+    "ภูเก็ต ผ้าเขียนลาย",
+    "ภูเก็ต กระปุกออมสินกะลามะพร้าว",
+    "ภูเก็ต กระเป๋าควินมือ",
+    "Phuket OTOP",
+    "ภูเก็ต โอทอป",
+    "Phuket Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Market, Phuket, Thailand (173821130).jpg",
+      "description": "Market, Phuket, Thailand",
+      "author": "yeowatzup",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Market%2C%20Phuket%2C%20Thailand%20(173821130).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Market%2C_Phuket%2C_Thailand_%28173821130%29.jpg/960px-Market%2C_Phuket%2C_Thailand_%28173821130%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Market%2C_Phuket%2C_Thailand_%28173821130%29.jpg/960px-Market%2C_Phuket%2C_Thailand_%28173821130%29.jpg",
+      "localPath": null,
+      "query": "Phuket Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Market, Phuket, Thailand (173821876).jpg",
+      "description": "Market, Phuket, Thailand",
+      "author": "yeowatzup",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Market%2C%20Phuket%2C%20Thailand%20(173821876).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Market%2C_Phuket%2C_Thailand_%28173821876%29.jpg/960px-Market%2C_Phuket%2C_Thailand_%28173821876%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Market%2C_Phuket%2C_Thailand_%28173821876%29.jpg/960px-Market%2C_Phuket%2C_Thailand_%28173821876%29.jpg",
+      "localPath": null,
+      "query": "Phuket Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

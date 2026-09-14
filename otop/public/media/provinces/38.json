@@ -1,0 +1,62 @@
+{
+  "code": 38,
+  "iso": "TH-38",
+  "th": "บึงกาฬ",
+  "en": "Bueng Kan",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 17.7,
+    "count": 408
+  },
+  "fetchedAt": "2026-09-14T18:56:33.774Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Bueng Kan Food",
+    "บึงกาฬ อาหาร",
+    "บึงกาฬ ผ้าขาวม้า",
+    "บึงกาฬ เสื่อกก",
+    "บึงกาฬ ผ้าพันคอ",
+    "Bueng Kan OTOP",
+    "บึงกาฬ โอทอป",
+    "Bueng Kan Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Thai market food 01.jpg",
+      "description": "A market stall, at Thanin market in Chiang Mai, selling ready cooked food.",
+      "author": "Takeaway",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Thai%20market%20food%2001.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Thai_market_food_01.jpg/960px-Thai_market_food_01.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Thai_market_food_01.jpg/960px-Thai_market_food_01.jpg",
+      "localPath": null,
+      "query": "Thai market food stall",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Aed Ong Or.jpg",
+      "description": "Aeb Ong Or (Thai: แอ๊บอ่องออ) represents a sophisticated traditional culinary staple from Northern Thailand",
+      "author": "Thananchanok Kanchananon",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Aed%20Ong%20Or.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Aed_Ong_Or.jpg/960px-Aed_Ong_Or.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Aed_Ong_Or.jpg/960px-Aed_Ong_Or.jpg",
+      "localPath": null,
+      "query": "อาหารพื้นบ้าน ไทย",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

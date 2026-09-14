@@ -1,0 +1,46 @@
+{
+  "code": 72,
+  "iso": "TH-72",
+  "th": "สุพรรณบุรี",
+  "en": "Suphan Buri",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 8,
+    "count": 138
+  },
+  "fetchedAt": "2026-09-14T19:00:38.914Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Suphan Buri Food",
+    "สุพรรณบุรี อาหาร",
+    "สุพรรณบุรี กระเป๋าถักโครเชต์",
+    "สุพรรณบุรี กระเป๋าผ้า",
+    "สุพรรณบุรี กระเป๋าสตรี",
+    "Suphan Buri OTOP",
+    "สุพรรณบุรี โอทอป",
+    "Suphan Buri Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:2025 Samui Bike Week Food-stalls IMG20250502230400.jpg",
+      "description": "2025 Samui Bike Week, food-stall \"Mr. Crispy Pork\".",
+      "author": "Per Meistrup",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:2025%20Samui%20Bike%20Week%20Food-stalls%20IMG20250502230400.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/2025_Samui_Bike_Week_Food-stalls_IMG20250502230400.jpg/960px-2025_Samui_Bike_Week_Food-stalls_IMG20250502230400.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/2025_Samui_Bike_Week_Food-stalls_IMG20250502230400.jpg/960px-2025_Samui_Bike_Week_Food-stalls_IMG20250502230400.jpg",
+      "localPath": null,
+      "query": "Thai market food stall",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

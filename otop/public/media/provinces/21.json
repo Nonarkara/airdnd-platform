@@ -1,0 +1,62 @@
+{
+  "code": 21,
+  "iso": "TH-21",
+  "th": "ระยอง",
+  "en": "Rayong",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 4.7,
+    "count": 70
+  },
+  "fetchedAt": "2026-09-14T18:54:27.668Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Rayong Food",
+    "ระยอง อาหาร",
+    "ระยอง ปลาข้าวสารทอดกรอบ",
+    "ระยอง กระจังโหม่ง",
+    "ระยอง กระเป๋าผ้า",
+    "Rayong OTOP",
+    "ระยอง โอทอป",
+    "Rayong Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Pineapple woman, Rayong market (23180660213).jpg",
+      "description": "Pineapple woman, Rayong market",
+      "author": "Tord Remme from Norway / Thailand",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Pineapple%20woman%2C%20Rayong%20market%20(23180660213).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Pineapple_woman%2C_Rayong_market_%2823180660213%29.jpg/960px-Pineapple_woman%2C_Rayong_market_%2823180660213%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Pineapple_woman%2C_Rayong_market_%2823180660213%29.jpg/960px-Pineapple_woman%2C_Rayong_market_%2823180660213%29.jpg",
+      "localPath": null,
+      "query": "Rayong Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Street food vendor, Rayong city (24230280545).jpg",
+      "description": "Street food vendor, Rayong city",
+      "author": "Tord Remme from Norway / Thailand",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Street%20food%20vendor%2C%20Rayong%20city%20(24230280545).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Street_food_vendor%2C_Rayong_city_%2824230280545%29.jpg/960px-Street_food_vendor%2C_Rayong_city_%2824230280545%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Street_food_vendor%2C_Rayong_city_%2824230280545%29.jpg/960px-Street_food_vendor%2C_Rayong_city_%2824230280545%29.jpg",
+      "localPath": null,
+      "query": "Rayong Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

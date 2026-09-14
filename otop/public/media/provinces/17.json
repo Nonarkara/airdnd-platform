@@ -1,0 +1,46 @@
+{
+  "code": 17,
+  "iso": "TH-17",
+  "th": "สิงห์บุรี",
+  "en": "Sing Buri",
+  "dominantCategory": {
+    "id": "craft",
+    "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+    "en": "Household, Decorative & Souvenir",
+    "share": 7.7,
+    "count": 85
+  },
+  "fetchedAt": "2026-09-14T18:53:48.216Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Sing Buri Household, Decorative & Souvenir",
+    "สิงห์บุรี ของใช้ ของตกแต่ง ของที่ระลึก",
+    "สิงห์บุรี ปลาช่อนแดดเดียว",
+    "สิงห์บุรี เสื้อสำเร็จรูป",
+    "สิงห์บุรี `ทอฟฟี่มะพร้าวเสวย",
+    "Sing Buri OTOP",
+    "สิงห์บุรี โอทอป",
+    "Sing Buri Thai bamboo basketry"
+  ],
+  "photos": [
+    {
+      "title": "File:ร้าน OTOP สิห์บุรี - panoramio.jpg",
+      "description": "ร้าน OTOP สิห์บุรี",
+      "author": "::::=UT=::::",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99%20OTOP%20%E0%B8%AA%E0%B8%B4%E0%B8%AB%E0%B9%8C%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5%20-%20panoramio.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99_OTOP_%E0%B8%AA%E0%B8%B4%E0%B8%AB%E0%B9%8C%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5_-_panoramio.jpg/960px-%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99_OTOP_%E0%B8%AA%E0%B8%B4%E0%B8%AB%E0%B9%8C%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5_-_panoramio.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99_OTOP_%E0%B8%AA%E0%B8%B4%E0%B8%AB%E0%B9%8C%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5_-_panoramio.jpg/960px-%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99_OTOP_%E0%B8%AA%E0%B8%B4%E0%B8%AB%E0%B9%8C%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5_-_panoramio.jpg",
+      "localPath": null,
+      "query": "Sing Buri OTOP",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

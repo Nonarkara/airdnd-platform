@@ -1,0 +1,62 @@
+{
+  "code": 64,
+  "iso": "TH-64",
+  "th": "สุโขทัย",
+  "en": "Sukhothai",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 10.2,
+    "count": 138
+  },
+  "fetchedAt": "2026-09-14T19:00:04.684Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Sukhothai Food",
+    "สุโขทัย อาหาร",
+    "สุโขทัย ไม้กวาดดอกหญ้า",
+    "สุโขทัย กระเป๋าผ้า",
+    "สุโขทัย นกคุ้ม",
+    "Sukhothai OTOP",
+    "สุโขทัย โอทอป",
+    "Sukhothai Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Sukhothai, Thailand (49911695778).jpg",
+      "description": "Clitoria ternatea/Butterfly pea. The flower is used as a natural food colouring to colour glutinous rice. Butterfly pea flower tea is made from the ternatea flowers.",
+      "author": "Nina R from Africa",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Sukhothai%2C%20Thailand%20(49911695778).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Sukhothai%2C_Thailand_%2849911695778%29.jpg/960px-Sukhothai%2C_Thailand_%2849911695778%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Sukhothai%2C_Thailand_%2849911695778%29.jpg/960px-Sukhothai%2C_Thailand_%2849911695778%29.jpg",
+      "localPath": null,
+      "query": "Sukhothai Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Sukhothai, Thailand (49911698503).jpg",
+      "description": "Clitoria ternatea/Butterfly pea. The flower is used as a natural food colouring to colour glutinous rice. Butterfly pea flower tea is made from the ternatea flowers.",
+      "author": "Nina R from Africa",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Sukhothai%2C%20Thailand%20(49911698503).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Sukhothai%2C_Thailand_%2849911698503%29.jpg/960px-Sukhothai%2C_Thailand_%2849911698503%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Sukhothai%2C_Thailand_%2849911698503%29.jpg/960px-Sukhothai%2C_Thailand_%2849911698503%29.jpg",
+      "localPath": null,
+      "query": "Sukhothai Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

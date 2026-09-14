@@ -1,0 +1,62 @@
+{
+  "code": 70,
+  "iso": "TH-70",
+  "th": "ราชบุรี",
+  "en": "Ratchaburi",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 6.8,
+    "count": 127
+  },
+  "fetchedAt": "2026-09-14T19:00:22.090Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Ratchaburi Food",
+    "ราชบุรี อาหาร",
+    "ราชบุรี ผ้าจกทอมือ",
+    "ราชบุรี สับปะรดผลสด",
+    "ราชบุรี ข้าวหมากหวาน",
+    "Ratchaburi OTOP",
+    "ราชบุรี โอทอป",
+    "Ratchaburi Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Damoen Saduk Floating Market2.jpg",
+      "description": "Floating market of Damoen Saduk, Ratchaburi province, Thailand. Photo taken by User:Ahoerstemeier on July 13, 2003.",
+      "author": "Ahoerstemeier",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Damoen%20Saduk%20Floating%20Market2.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Damoen_Saduk_Floating_Market2.jpg/960px-Damoen_Saduk_Floating_Market2.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Damoen_Saduk_Floating_Market2.jpg/960px-Damoen_Saduk_Floating_Market2.jpg",
+      "localPath": null,
+      "query": "Ratchaburi Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Damnoen Saduak, mercado 1998 04.jpg",
+      "description": "Hats and beer at the floating market. Damnoen Saduak, Ratchaburi, Thailand",
+      "author": "LBM1948",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Damnoen%20Saduak%2C%20mercado%201998%2004.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Damnoen_Saduak%2C_mercado_1998_04.jpg/960px-Damnoen_Saduak%2C_mercado_1998_04.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Damnoen_Saduak%2C_mercado_1998_04.jpg/960px-Damnoen_Saduak%2C_mercado_1998_04.jpg",
+      "localPath": null,
+      "query": "Ratchaburi Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

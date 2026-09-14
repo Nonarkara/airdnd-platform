@@ -1,0 +1,62 @@
+{
+  "code": 26,
+  "iso": "TH-26",
+  "th": "นครนายก",
+  "en": "Nakhon Nayok",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 10.3,
+    "count": 106
+  },
+  "fetchedAt": "2026-09-14T18:55:09.448Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Nakhon Nayok Food",
+    "นครนายก อาหาร",
+    "นครนายก กระเป๋าผ้า",
+    "นครนายก กระเป๋าสะพาย",
+    "นครนายก กล้วยอบซอสมะยงชิด",
+    "Nakhon Nayok OTOP",
+    "นครนายก โอทอป",
+    "Nakhon Nayok Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:DFC 5245- Night market food stall in Sattahip, Thailand - a vendor fries skewers while customers browse the bustling rows of illuminated stalls.jpg",
+      "description": "This photo shows a bustling nighttime street food scene, likely at a Thai night market. The photo captures food vendors working at their stalls under bright lighting, with several people gathered around. In the center, there appears to be a vendor cooking or preparing food, with various containers and cooking equipment visible. The scene has the characteristic atmosphere of Southeast Asian street food culture, with multiple people engaged in food preparation and service. The lighting creates a warm, inviting ambiance typical of evening food markets, and you can see various bowls, containers, and cooking implements that suggest this is an active food preparation area serving local cuisine.",
+      "author": "Pattaya Patrol",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:DFC%205245-%20Night%20market%20food%20stall%20in%20Sattahip%2C%20Thailand%20-%20a%20vendor%20fries%20skewers%20while%20customers%20browse%20the%20bustling%20rows%20of%20illuminated%20stalls.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/DFC_5245-_Night_market_food_stall_in_Sattahip%2C_Thailand_-_a_vendor_fries_skewers_while_customers_browse_the_bustling_rows_of_illuminated_stalls.jpg/960px-DFC_5245-_Night_market_food_stall_in_Sattahip%2C_Thailand_-_a_vendor_fries_skewers_while_customers_browse_the_bustling_rows_of_illuminated_stalls.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/DFC_5245-_Night_market_food_stall_in_Sattahip%2C_Thailand_-_a_vendor_fries_skewers_while_customers_browse_the_bustling_rows_of_illuminated_stalls.jpg/960px-DFC_5245-_Night_market_food_stall_in_Sattahip%2C_Thailand_-_a_vendor_fries_skewers_while_customers_browse_the_bustling_rows_of_illuminated_stalls.jpg",
+      "localPath": null,
+      "query": "Thai market food stall",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:DFC 5231- Skewered sausages and fish balls grilling and bathing in a savory sauce at a bustling Thai street food stall.jpg",
+      "description": "This photo shows a collection of grilled seafood skewers, likely at a street food market or restaurant in Thailand. The skewers appear to contain various types of seafood including what looks like prawns/shrimp and possibly squid or other shellfish. The items are threaded on bamboo skewers and appear to be cooking or freshly cooked, with a glossy, grilled appearance. They're arranged in rows, and you can see the characteristic golden-brown color that comes from grilling. The setting suggests this is typical Thai street food or seafood barbecue, which is very popular in coastal areas like Chon Buri Province where this photo was taken. The shallow depth of field creates a nice focus on the foreground skewers while the background remains softly blurred.",
+      "author": "Pattaya Patrol",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:DFC%205231-%20Skewered%20sausages%20and%20fish%20balls%20grilling%20and%20bathing%20in%20a%20savory%20sauce%20at%20a%20bustling%20Thai%20street%20food%20stall.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/DFC_5231-_Skewered_sausages_and_fish_balls_grilling_and_bathing_in_a_savory_sauce_at_a_bustling_Thai_street_food_stall.jpg/960px-DFC_5231-_Skewered_sausages_and_fish_balls_grilling_and_bathing_in_a_savory_sauce_at_a_bustling_Thai_street_food_stall.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/DFC_5231-_Skewered_sausages_and_fish_balls_grilling_and_bathing_in_a_savory_sauce_at_a_bustling_Thai_street_food_stall.jpg/960px-DFC_5231-_Skewered_sausages_and_fish_balls_grilling_and_bathing_in_a_savory_sauce_at_a_bustling_Thai_street_food_stall.jpg",
+      "localPath": null,
+      "query": "Thai market food stall",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

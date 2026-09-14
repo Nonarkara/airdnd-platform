@@ -14,7 +14,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
-import { photoForRecord } from '../../core/photos.js';
+import { photoForRecord, loadPhotosForProvince, attributionLine } from '../../core/photos.js';
 import { matchStandardForProduct } from '../../core/standards.js';
 
 async function loadChampions() {
@@ -78,6 +78,7 @@ export default function Champions({ onSelectProvince }) {
   const [query, setQuery] = useState('');
 
   const [showPhotos, setShowPhotos] = useState(true);
+  const [mediaTick, setMediaTick] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -104,6 +105,17 @@ export default function Champions({ onSelectProvince }) {
 
   if (error) return <p className="empty">Could not load champions — {error}.</p>;
   if (!data) return <p className="empty">Loading reachable champions…</p>;
+
+  // Warm Commons manifests for provinces on the current shortlist so photoForRecord can resolve sync.
+  useEffect(() => {
+    if (!showPhotos || filtered.length === 0) return;
+    const codes = [...new Set(filtered.map((c) => c.provinceCode).filter((c) => c != null))];
+    let cancelled = false;
+    Promise.all(codes.map((code) => loadPhotosForProvince(code))).then(() => {
+      if (!cancelled) setMediaTick((n) => n + 1);
+    });
+    return () => { cancelled = true; };
+  }, [showPhotos, filtered]);
 
   const cats = ['all', ...new Set(data.champions.map((c) => c.category).filter(Boolean))];
   const reaches = ['all', 'phone', 'email', 'web'];
@@ -198,7 +210,7 @@ export default function Champions({ onSelectProvince }) {
 
       <div className="ch-cards">
         {filtered.map((c) => {
-          const photo = showPhotos ? photoForRecord(c) : null;
+          const photo = showPhotos ? photoForRecord(c) : null; void mediaTick;
           const std = matchStandardForProduct(c.productName || c.producerName, standards, c.category);
           return (
             <article key={c.sourceRowId ?? `${c.producerName}-${c.provinceCode}-${c.productName}`} className="ch-card" data-stars={c.stars}>
@@ -213,8 +225,8 @@ export default function Champions({ onSelectProvince }) {
                       className="ch-card-img"
                     />
                     <div className="ch-card-img-cap">
-                      <span>{photo.caption}</span>
-                      <span className="ch-card-img-attr">{photo.author ? `${photo.author} · ` : ''}{photo.source}</span>
+                      <span>{photo.caption || photo.description || photo.title}</span>
+                      <span className="ch-card-img-attr">{attributionLine(photo)}{photo.isExactProducer ? '' : ' · illustrative'}</span>
                     </div>
                   </div>
                 )}

@@ -1,14 +1,109 @@
+import { useMemo, useState } from 'react';
 import { Chapter, n, pct } from './fmt.jsx';
 import Composition, { categoryParts } from './Composition.jsx';
 
 /** What is made where? Leads with the heatmap; everything else sits below it. */
-export default function Domain({ national, byRegion, regionIdentity, matrix, byYear, specialization, qualityLeaders, topBasins, go }) {
+export default function Domain({ national, byRegion, byProvince = [], regionIdentity, matrix, byYear, specialization, qualityLeaders, topBasins, go }) {
   const unclassified = national.categories?.find((c) => c.id === 'unclassified');
   const classifiedCount = national.records - (unclassified?.count ?? 0);
   const href = (code) => `/?view=province&code=${code}`;
+  const catOptions = (matrix?.categories?.length ? matrix.categories : (national.categories || []).filter((c) => c.id !== 'unclassified'));
+  const [exploreCat, setExploreCat] = useState(catOptions[0]?.id ?? 'textile');
+
+  const categoryLeague = useMemo(() => {
+    if (!exploreCat || !byProvince.length) return [];
+    return byProvince
+      .map((p) => {
+        const cell = (p.categories || []).find((c) => c.id === exploreCat);
+        return {
+          code: p.code,
+          th: p.th,
+          en: p.en,
+          count: cell?.count ?? 0,
+          share: cell?.share ?? 0,
+          records: p.records,
+        };
+      })
+      .filter((r) => r.count > 0)
+      .sort((a, b) => b.count - a.count || b.share - a.share);
+  }, [byProvince, exploreCat]);
+
+  const exploreLabel = catOptions.find((c) => c.id === exploreCat);
 
   return (
     <Chapter id="domain" q="What is made where?" title="Domain" th="ผลิตภัณฑ์">
+      {/* ── Category × geography explorer (all 77) ──────────────────────── */}
+      {byProvince.length > 0 && catOptions.length > 0 && (
+        <>
+          <h3 className="sub-h">Category explorer · เปรียบเทียบข้ามจังหวัด</h3>
+          <p className="t-note">
+            Pick a product category and rank all provinces that carry it. Counts are registry
+            tallies (declared + inferred), not production volume. The heatmap below still shows
+            the densest {matrix?.rows?.length ?? 25} provinces × five categories.
+          </p>
+          <div className="cat-explore-tabs" role="tablist" aria-label="Category explorer">
+            {catOptions.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                role="tab"
+                className="cat-explore-tab"
+                aria-selected={exploreCat === c.id}
+                data-active={exploreCat === c.id ? '1' : '0'}
+                onClick={() => setExploreCat(c.id)}
+              >
+                <span>{c.en}</span>
+                <span className="cat-explore-th">{c.th}</span>
+              </button>
+            ))}
+          </div>
+          {exploreLabel && (
+            <p className="t-note">
+              <strong>{exploreLabel.en}</strong> · {exploreLabel.th}
+              {exploreLabel.total != null ? ` · national ${n(exploreLabel.total)} classified records` : ''}
+              {' · '}{categoryLeague.length} provinces with at least one record
+            </p>
+          )}
+          <div className="t-grid" role="table" aria-label={`Provinces ranked by ${exploreCat}`}>
+            <div className="t-grid-row t-grid-hd" role="row">
+              <span>#</span>
+              <span>Province</span>
+              <span className="t-row-num">Records</span>
+              <span className="t-row-num">Share of province</span>
+            </div>
+            {categoryLeague.slice(0, 15).map((r, i) => (
+              <div className="t-grid-row" role="row" key={r.code}>
+                <span>{i + 1}</span>
+                <a href={href(r.code)} onClick={(e) => { e.preventDefault(); go(r.code); }}>
+                  <span className="t-row-th">{r.th}</span>
+                  <span className="t-row-en"> · {r.en}</span>
+                </a>
+                <span className="t-row-num">{n(r.count)}</span>
+                <span className="t-row-num">{r.share}%</span>
+              </div>
+            ))}
+          </div>
+          {categoryLeague.length > 15 && (
+            <details className="t-more">
+              <summary>All {categoryLeague.length} provinces in {exploreLabel?.en ?? exploreCat}</summary>
+              <div className="t-grid" role="table">
+                {categoryLeague.slice(15).map((r, i) => (
+                  <div className="t-grid-row" role="row" key={r.code}>
+                    <span>{i + 16}</span>
+                    <a href={href(r.code)} onClick={(e) => { e.preventDefault(); go(r.code); }}>
+                      <span className="t-row-th">{r.th}</span>
+                      <span className="t-row-en"> · {r.en}</span>
+                    </a>
+                    <span className="t-row-num">{n(r.count)}</span>
+                    <span className="t-row-num">{r.share}%</span>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
+        </>
+      )}
+
       {/* ── HEATMAP — provinces × categories ────────────────────────────── */}
       {matrix && matrix.rows.length > 0 && matrix.categories.length > 0 && (
         <>

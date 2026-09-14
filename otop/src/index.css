@@ -992,3 +992,47 @@ html, body { overflow-x: hidden; }
   .bf-grid { grid-template-columns: 1fr; gap: 0; }
   .bf-card { border: 1px solid #000; break-after: page; }
 }
+
+/* Province media placeholder + category explorer */
+.dossier-craft-ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(245, 158, 11, 0.08),
+    rgba(245, 158, 11, 0.08) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+.dossier-craft-ph-mark {
+  font: 700 1.4rem var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+}
+.dossier-face { margin: 0.5rem 0 1rem; }
+.dossier-face-cats { margin: 0.5rem 0; }
+.cat-explore-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.6rem 0 0.8rem;
+}
+.cat-explore-tab {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  padding: 0.35rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+}
+.cat-explore-tab[data-active="1"] {
+  background: var(--ink, currentColor);
+  color: var(--ground, #fff);
+}
+.cat-explore-th { font-size: 0.78em; opacity: 0.8; }

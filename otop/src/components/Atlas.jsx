@@ -89,7 +89,8 @@ export default function Atlas({ insights, onSelectProvince }) {
       {tab === 'findings' && <Findings findings={findings} />}
       {tab === 'domain' && (
         <Domain
-          national={national} byRegion={byRegion} regionIdentity={regionIdentity}
+          national={national} byRegion={byRegion} byProvince={insights.byProvince}
+          regionIdentity={regionIdentity}
           matrix={matrix} byYear={byYear} specialization={specialization}
           qualityLeaders={qualityLeaders} topBasins={insights.topBasins} go={go}
         />
