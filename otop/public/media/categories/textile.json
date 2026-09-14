@@ -1,0 +1,28 @@
+{
+  "id": "textile",
+  "fetchedAt": "2026-09-14T19:04:47.283Z",
+  "status": "ok",
+  "photos": [
+    {
+      "title": "File:Thai Silk Weaving 1 - Ban Tha Sawang.jpg",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Thai%20Silk%20Weaving%201%20-%20Ban%20Tha%20Sawang.jpg",
+      "description": "A person weaving silk at a loom, Ban Tha Sawang, Surin Province, Thailand",
+      "author": "JJ Harrison ( https://www.jjharrison.com.au/ )",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Thai_Silk_Weaving_1_-_Ban_Tha_Sawang.jpg/960px-Thai_Silk_Weaving_1_-_Ban_Tha_Sawang.jpg",
+      "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Thai_Silk_Weaving_1_-_Ban_Tha_Sawang.jpg",
+      "width": 640,
+      "height": 427,
+      "mime": "image/jpeg",
+      "relevance": 10,
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Category archetype from Wikimedia Commons — not a specific producer's product.",
+      "query": "Thai silk weaving",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Thai_Silk_Weaving_1_-_Ban_Tha_Sawang.jpg/960px-Thai_Silk_Weaving_1_-_Ban_Tha_Sawang.jpg",
+      "localPath": null
+    }
+  ]
+}

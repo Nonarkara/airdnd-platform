@@ -95,3 +95,12 @@ export function monthlyPoints(years) {
   }
   return out;
 }
+
+/** Signature pack — top categories, named products, champions per province. */
+export async function loadProvinceFaces() {
+  const response = await fetch('/otop_province_faces.json', { cache: 'no-cache' });
+  if (!response.ok) throw new Error(`otop_province_faces.json ${response.status}`);
+  const faces = await response.json();
+  if (!Array.isArray(faces.provinces)) throw new Error('otop_province_faces.json has no provinces');
+  return faces;
+}

@@ -1,0 +1,62 @@
+{
+  "code": 33,
+  "iso": "TH-33",
+  "th": "ศรีสะเกษ",
+  "en": "Si Sa Ket",
+  "dominantCategory": {
+    "id": "textile",
+    "th": "ผ้าและเครื่องแต่งกาย",
+    "en": "Fabric & Apparel",
+    "share": 7.3,
+    "count": 269
+  },
+  "fetchedAt": "2026-09-14T18:56:07.256Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Si Sa Ket Fabric & Apparel",
+    "ศรีสะเกษ ผ้าและเครื่องแต่งกาย",
+    "ศรีสะเกษ ผ้ายกดอก",
+    "ศรีสะเกษ ผ้าไหมมัดหมี่",
+    "ศรีสะเกษ ผ้าขาวม้า",
+    "Si Sa Ket OTOP",
+    "ศรีสะเกษ โอทอป",
+    "Si Sa Ket Thai silk weaving"
+  ],
+  "photos": [
+    {
+      "title": "File:Weaving Thai Silk, circa 1964 (49233012606).jpg",
+      "description": "From the Warren Smith Collection (COLL/5713) at the Archives Branch, Marine Corps History Division OFFICIAL USMC PHOTOGRAPH",
+      "author": "USMC Archives from Quantico, USA",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Weaving%20Thai%20Silk%2C%20circa%201964%20(49233012606).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Weaving_Thai_Silk%2C_circa_1964_%2849233012606%29.jpg/960px-Weaving_Thai_Silk%2C_circa_1964_%2849233012606%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Weaving_Thai_Silk%2C_circa_1964_%2849233012606%29.jpg/960px-Weaving_Thai_Silk%2C_circa_1964_%2849233012606%29.jpg",
+      "localPath": null,
+      "query": "Thai silk weaving",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:A GIRL OF Hmong TRIBE CHIANG MAI THAILAND 02.jpg",
+      "description": "The Hmong are a hill tribe in Thailand that migrated from China. They are the second largest hill tribe in Thailand, and are known for their colorful embroidery, hemp textiles, and batik techniques.",
+      "author": "DEBA PRASAD ROY",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:A%20GIRL%20OF%20Hmong%20TRIBE%20CHIANG%20MAI%20THAILAND%2002.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/A_GIRL_OF_Hmong_TRIBE_CHIANG_MAI_THAILAND_02.jpg/960px-A_GIRL_OF_Hmong_TRIBE_CHIANG_MAI_THAILAND_02.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/A_GIRL_OF_Hmong_TRIBE_CHIANG_MAI_THAILAND_02.jpg/960px-A_GIRL_OF_Hmong_TRIBE_CHIANG_MAI_THAILAND_02.jpg",
+      "localPath": null,
+      "query": "batik Thailand",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "code": 85,
+  "iso": "TH-85",
+  "th": "ระนอง",
+  "en": "Ranong",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 8.4,
+    "count": 77
+  },
+  "fetchedAt": "2026-09-14T19:02:17.153Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Ranong Food",
+    "ระนอง อาหาร",
+    "ระนอง กระเป๋าผ้า",
+    "ระนอง ไม้กวาดดอกอ้อ",
+    "ระนอง กระเป๋าผ้าปาเต๊ะ",
+    "Ranong OTOP",
+    "ระนอง โอทอป",
+    "Ranong Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:DurianSellerRanong.JPG",
+      "description": "Durian Seller On Market Street, Ranong.",
+      "author": "(WT-en) Gcollins at English Wikivoyage",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:DurianSellerRanong.JPG",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/DurianSellerRanong.JPG",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e3/DurianSellerRanong.JPG",
+      "localPath": null,
+      "query": "Ranong Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

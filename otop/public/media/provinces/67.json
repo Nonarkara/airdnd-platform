@@ -1,0 +1,62 @@
+{
+  "code": 67,
+  "iso": "TH-67",
+  "th": "เพชรบูรณ์",
+  "en": "Phetchabun",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 19.1,
+    "count": 324
+  },
+  "fetchedAt": "2026-09-14T19:00:20.950Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Phetchabun Food",
+    "เพชรบูรณ์ อาหาร",
+    "เพชรบูรณ์ ผักและผลไม้หยี",
+    "เพชรบูรณ์ กระเป๋าผ้า",
+    "เพชรบูรณ์ ผ้าพิมพ์ลายจากพืช",
+    "Phetchabun OTOP",
+    "เพชรบูรณ์ โอทอป",
+    "Phetchabun Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Monk takes to receive food from villagers.jpg",
+      "description": "monk takes to receive food from villagers.Phetchabun, Thailand, 2006.",
+      "author": "Photo by User:Tevaprapas , 2006 - Tevaprapas Makklay ( เทวประภาส มากคล้าย ), User:Tevaprapas",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Monk%20takes%20to%20receive%20food%20from%20villagers.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Monk_takes_to_receive_food_from_villagers.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Monk_takes_to_receive_food_from_villagers.jpg",
+      "localPath": null,
+      "query": "Phetchabun Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Monk takes to receive food from villagers..jpg",
+      "description": "monk takes to receive food from villagers.Phetchabun, Thailand, 2006.",
+      "author": "Photo by User:Tevaprapas , 2006 - Tevaprapas Makklay ( เทวประภาส มากคล้าย ), User:Tevaprapas",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Monk%20takes%20to%20receive%20food%20from%20villagers..jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Monk_takes_to_receive_food_from_villagers..jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/1/11/Monk_takes_to_receive_food_from_villagers..jpg",
+      "localPath": null,
+      "query": "Phetchabun Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

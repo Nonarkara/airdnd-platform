@@ -5,8 +5,9 @@ import { ZONES, rankOf, loadRevenue, baht, monthlyPoints } from '../lib/insights
 import { loadShards } from '../lib/shards.js';
 import { toCsv } from '../../core/matching.js';
 import { REGION_LABEL } from '../lib/labels.js';
-import { photosForProvince } from '../../core/photos.js';
+import { loadPhotosForProvince, attributionLine } from '../../core/photos.js';
 import { matchStandardForProduct } from '../../core/standards.js';
+import { loadProvinceFaces } from '../lib/insights.js';
 
 /**
  * One province, whole. The unit of reading the Atlas lacks: a governor, a CDD
@@ -35,6 +36,9 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
   const [records, setRecords] = useState(null);
   const [revenue, setRevenue] = useState(null);
   const [error, setError] = useState(null);
+  const [mediaPhotos, setMediaPhotos] = useState([]);
+  const [mediaReady, setMediaReady] = useState(false);
+  const [face, setFace] = useState(null);
 
   const { byProvince, reachGap = [], national } = insights;
   const ordered = useMemo(() => [...byProvince].sort((a, b) => a.code - b.code), [byProvince]);
@@ -57,6 +61,31 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
     loadRevenue().then((r) => { if (!cancelled) setRevenue(r); }).catch(() => {});
     return () => { cancelled = true; };
   }, [revenue]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setMediaPhotos([]);
+    setMediaReady(false);
+    loadPhotosForProvince(code).then((photos) => {
+      if (!cancelled) {
+        setMediaPhotos(photos);
+        setMediaReady(true);
+      }
+    });
+    return () => { cancelled = true; };
+  }, [code]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setFace(null);
+    loadProvinceFaces()
+      .then((faces) => {
+        if (cancelled) return;
+        setFace((faces.provinces || []).find((p) => p.code === code) ?? null);
+      })
+      .catch(() => { if (!cancelled) setFace(null); });
+    return () => { cancelled = true; };
+  }, [code]);
 
   const districts = useMemo(() => {
     if (!records) return [];
@@ -195,24 +224,107 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
         {records && <button type="button" className="reset" onClick={exportCsv}>Export this province (CSV)</button>}
       </div>
 
-      {/* ── craft heritage & photography ────────────────────────────── */}
-      {photosForProvince(code).map((photo) => (
-        <div key={photo.title} className="dossier-craft">
+      {/* ── signature face + license-safe media ─────────────────────── */}
+      <h3 className="sub-h">Known for · จังหวัดนี้ขึ้นชื่อเรื่องอะไร</h3>
+      {face ? (
+        <div className="dossier-face">
+          {face.dominantCategory && (
+            <p className="t-note">
+              Dominant classified category in the registry:{' '}
+              <strong>{face.dominantCategory.en}</strong> ({face.dominantCategory.th}) ·{' '}
+              {n(face.dominantCategory.count)} records · {face.dominantCategory.share}% of this province.
+              Unclassified rows are excluded from the mix.
+            </p>
+          )}
+          {face.categories?.length > 0 && (
+            <div className="t-stubs dossier-face-cats">
+              {face.categories.map((c) => (
+                <Stub key={c.id} label={c.en} value={n(c.count)} note={`${c.share}% · ${c.th}`} />
+              ))}
+            </div>
+          )}
+          {face.topProducts?.length > 0 && (
+            <>
+              <p className="t-note">
+                Most-repeated product names in the shard ({face.productNameCoverage}% of rows carry a usable name).
+                Counts are filings, not sales.
+              </p>
+              <div className="t-ranked">
+                {face.topProducts.map((tp) => (
+                  <div key={tp.name} className="t-ranked-row">
+                    <span>{tp.name}</span>
+                    <span className="t-row-num">{n(tp.count)}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+          {face.champions?.count > 0 && (
+            <>
+              <p className="t-note">
+                Reachable champions (4–5★ with contact) from this province: {n(face.champions.count)}.
+              </p>
+              <div className="t-ranked">
+                {face.champions.sample.map((c, i) => (
+                  <div key={`${c.producerName}-${i}`} className="t-ranked-row">
+                    <span>
+                      {'★'.repeat(c.stars)} {c.productName || c.producerName}
+                      {c.district ? ` · ${c.district}` : ''}
+                    </span>
+                    <span className="t-row-num">{c.reach}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+          {face.champions?.count === 0 && (
+            <p className="t-note">No reachable 4–5★ champions recorded for this province in the champions artefact.</p>
+          )}
+        </div>
+      ) : (
+        <p className="t-note">Loading the province signature pack…</p>
+      )}
+
+      {!mediaReady ? (
+        <p className="t-note">Looking up open-license photos…</p>
+      ) : mediaPhotos.length > 0 ? mediaPhotos.map((photo) => (
+        <div key={photo.filePage || photo.url} className="dossier-craft">
           <div className="dossier-craft-banner">
             <div className="dossier-craft-media">
-              <img src={photo.url} alt={photo.title} className="dossier-craft-img" loading="lazy" />
+              <img src={photo.url} alt={photo.description || photo.title} className="dossier-craft-img" loading="lazy" />
             </div>
             <div className="dossier-craft-body">
-              <span className="t-key">Craft Heritage · ภูมิปัญญาท้องถิ่น</span>
-              <h4 className="dossier-craft-title">{photo.titleTh} · {photo.title}</h4>
-              <p className="dossier-craft-note">{photo.heritageNote}</p>
+              <span className="t-key">Open-license face · ภาพประกอบเปิดสิทธิ์</span>
+              <h4 className="dossier-craft-title">{photo.description || photo.title}</h4>
+              <p className="dossier-craft-note">{photo.representationNote}</p>
               <p className="dossier-craft-meta">
-                <span>Craft: {photo.craft}</span> · <span>Photo: {photo.author} ({photo.source} · {photo.license})</span>
+                {attributionLine(photo)}
+                {photo.licenseUrl && (
+                  <> · <a href={photo.licenseUrl} target="_blank" rel="noopener noreferrer">license</a></>
+                )}
+                {photo.filePage && (
+                  <> · <a href={photo.filePage} target="_blank" rel="noopener noreferrer">Commons</a></>
+                )}
               </p>
             </div>
           </div>
         </div>
-      ))}
+      )) : (
+        <div className="dossier-craft dossier-craft-placeholder" role="img" aria-label="No open-license photo">
+          <div className="dossier-craft-banner">
+            <div className="dossier-craft-media dossier-craft-ph">
+              <span className="dossier-craft-ph-mark">{p.iso}</span>
+            </div>
+            <div className="dossier-craft-body">
+              <span className="t-key">No safe photo yet · ยังไม่มีภาพเปิดสิทธิ์</span>
+              <p className="dossier-craft-note">
+                Wikimedia Commons returned no CC BY / CC BY-SA / public-domain hit that matched this
+                province&apos;s registry category mix. Showing a placeholder rather than a wrong product photo.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── money ────────────────────────────────────────────────────── */}
       <h3 className="sub-h">Money · รายได้จากการจำหน่าย</h3>

@@ -1,0 +1,46 @@
+{
+  "code": 91,
+  "iso": "TH-91",
+  "th": "สตูล",
+  "en": "Satun",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 7.1,
+    "count": 67
+  },
+  "fetchedAt": "2026-09-14T19:02:50.184Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Satun Food",
+    "สตูล อาหาร",
+    "สตูล เครื่องประดับไข่มุก",
+    "สตูล 1. ประเภทอาหาร เช่น ขนมผูกรัก ขนมพื้นบ้าน อาหารทะเลแปรรูป น้ำพริก กาแฟโบราณ 2. ประเภทผ้าและเครื่องแต่งกาย เช่น ผ้าบาติก ปาเต๊ะ เสื้อผ้าสำเร็จรูป กระเป๋า 3. ประเภทของใช้ ของที่ระลึก เช่น พวงกุญแจ กล่องทิชชู 4. ประเภทสมุนไพรที่ไม่ใช่อาหาร เช่น น้ำมันนวด ลูกปะคบ น้ำผึ้ง สบู่ โลชั่นสมุนไพร ยาหม่อง",
+    "สตูล ขนมผูกรัก",
+    "Satun OTOP",
+    "สตูล โอทอป",
+    "Satun Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Bunga Kuda.jpg",
+      "description": "Bunga Kuda, tradional dessert of Satun and Perlis of Malaysia.",
+      "author": "Oatz",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Bunga%20Kuda.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Bunga_Kuda.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Bunga_Kuda.jpg",
+      "localPath": null,
+      "query": "Satun Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

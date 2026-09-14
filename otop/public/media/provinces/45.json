@@ -1,0 +1,62 @@
+{
+  "code": 45,
+  "iso": "TH-45",
+  "th": "ร้อยเอ็ด",
+  "en": "Roi Et",
+  "dominantCategory": {
+    "id": "textile",
+    "th": "ผ้าและเครื่องแต่งกาย",
+    "en": "Fabric & Apparel",
+    "share": 5.1,
+    "count": 202
+  },
+  "fetchedAt": "2026-09-14T19:04:04.548Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Roi Et Fabric & Apparel",
+    "ร้อยเอ็ด ผ้าและเครื่องแต่งกาย",
+    "ร้อยเอ็ด ผ้าคลุมไหล่",
+    "ร้อยเอ็ด ผ้าพันคอ",
+    "ร้อยเอ็ด ผ้าไหมมัดหมี่",
+    "Roi Et OTOP",
+    "ร้อยเอ็ด โอทอป",
+    "Roi Et Thai silk weaving"
+  ],
+  "photos": [
+    {
+      "title": "File:WKIS Banner ver1 2022.png",
+      "description": "แบนเนอร์โครงการวิกิภาคอีสาน เวอร์ชั่น 1/2022 ฝั่งซ้าย ใช้เฟรมเป็นแผนที่แสดงอาณาเขตภาคอีสาน ภายในเป็นคอลลาจรวบรวมเอกลักษณ์ประจำภาคอีสาน เรียงจากซ้ายไปขวา ได้แก่ แถวที่ 1- 1.หมอแคนกำลังบรรเลงเพลงให้กับหมอลำ พร้อมกับสวมโสร่ง และพันผ้าขาวม้า 2.ขบวนแห่บั้งไฟพญานาค ในงานประเพณีบุญบั้งไฟ ฮีตบุญเดือนหก จังหวัดร้อยเอ็ด 3.พระธาตุพนม แถวที่ 2 - 4.ตัวเมืองขอนแก่น 5.อาหารอีสาน ประกอบด้วย ไก่ย่าง ข้าวเหนียว และส้มตำ 6.หญิงชาวอีสานสวมชุดพื้นเมือง นุ่งผ้าซิ่น พันผ้าขาวม้า ทัดดอกคูณ กำลังฟ้อนรำในขบวนแห่บุญบั้งไฟ แถวที่ 3 - 7.ทุ่งกุลาร้องไห้ 8.อุทยานประวัติศาสตร์พนมรุ้ง บุรีรัมย์ ด้านล่างเขียนข้อความ \"วิกิพีเดียภาคอีสาน\" ด้วยตัวไทน้อย และ \"โครงการวิกิภาคอีสาน\" ด้วยภาษาไทย และภาษาอังกฤษ ฝั่งขวา เป็นธงประจำจังหวัดในภาคอีสาน พร้อมด้วยชื่อจังหวัดกำกับ ทั้ง 20 จังหวัด",
+      "author": "NELLA32",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:WKIS%20Banner%20ver1%202022.png",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/WKIS_Banner_ver1_2022.png/960px-WKIS_Banner_ver1_2022.png",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/WKIS_Banner_ver1_2022.png/960px-WKIS_Banner_ver1_2022.png",
+      "localPath": null,
+      "query": "ร้อยเอ็ด ผ้าพันคอ",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Weaving Thai Silk, circa 1964 (49233012606).jpg",
+      "description": "From the Warren Smith Collection (COLL/5713) at the Archives Branch, Marine Corps History Division OFFICIAL USMC PHOTOGRAPH",
+      "author": "USMC Archives from Quantico, USA",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Weaving%20Thai%20Silk%2C%20circa%201964%20(49233012606).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Weaving_Thai_Silk%2C_circa_1964_%2849233012606%29.jpg/960px-Weaving_Thai_Silk%2C_circa_1964_%2849233012606%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Weaving_Thai_Silk%2C_circa_1964_%2849233012606%29.jpg/960px-Weaving_Thai_Silk%2C_circa_1964_%2849233012606%29.jpg",
+      "localPath": null,
+      "query": "Thai silk weaving",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

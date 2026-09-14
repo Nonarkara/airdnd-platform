@@ -1,0 +1,62 @@
+{
+  "code": 47,
+  "iso": "TH-47",
+  "th": "สกลนคร",
+  "en": "Sakon Nakhon",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 5.8,
+    "count": 203
+  },
+  "fetchedAt": "2026-09-14T18:58:21.744Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Sakon Nakhon Food",
+    "สกลนคร อาหาร",
+    "สกลนคร ผ้าพันคอ",
+    "สกลนคร ผ้าคลุมไหล่",
+    "สกลนคร ผ้ามัดหมี่",
+    "Sakon Nakhon OTOP",
+    "สกลนคร โอทอป",
+    "Sakon Nakhon Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:PBair SNO-BKK meal.jpg",
+      "description": "PBair inflight meal served during a Sakon Nakhon → Bangkok (Thailand) flight in 2004, at left: LEO beer, at the right: a desert called “Maprao”.",
+      "author": "User:Mattes",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:PBair%20SNO-BKK%20meal.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/PBair_SNO-BKK_meal.jpg/960px-PBair_SNO-BKK_meal.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/PBair_SNO-BKK_meal.jpg/960px-PBair_SNO-BKK_meal.jpg",
+      "localPath": null,
+      "query": "Sakon Nakhon Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Meat products for sale.JPG",
+      "description": "Meat products for sale, seen in Thailand ( Tesco Lotus Superstore Sakon Nakhon ).",
+      "author": "User:Mattes",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Meat%20products%20for%20sale.JPG",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Meat_products_for_sale.JPG/960px-Meat_products_for_sale.JPG",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Meat_products_for_sale.JPG/960px-Meat_products_for_sale.JPG",
+      "localPath": null,
+      "query": "Sakon Nakhon Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

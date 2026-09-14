@@ -1,0 +1,62 @@
+{
+  "code": 95,
+  "iso": "TH-95",
+  "th": "ยะลา",
+  "en": "Yala",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 24.9,
+    "count": 456
+  },
+  "fetchedAt": "2026-09-14T19:03:09.261Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Yala Food",
+    "ยะลา อาหาร",
+    "ยะลา ทุเรียนกวน",
+    "ยะลา เสื้อผ้าสตรี",
+    "ยะลา ปลาส้ม",
+    "Yala OTOP",
+    "ยะลา โอทอป",
+    "Yala Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Bird catch it foods.jpg",
+      "description": "A bird catch it food in yala forest. WILDLIFE PHOTOGRAPHY",
+      "author": "Pramod Thilanka",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Bird%20catch%20it%20foods.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Bird_catch_it_foods.jpg/960px-Bird_catch_it_foods.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Bird_catch_it_foods.jpg/960px-Bird_catch_it_foods.jpg",
+      "localPath": null,
+      "query": "Yala Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:YalaRabbit.jpg",
+      "description": "yala national park",
+      "author": "Dilumk123",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:YalaRabbit.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/YalaRabbit.jpg/960px-YalaRabbit.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/YalaRabbit.jpg/960px-YalaRabbit.jpg",
+      "localPath": null,
+      "query": "Yala Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

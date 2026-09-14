@@ -1,0 +1,62 @@
+{
+  "code": 96,
+  "iso": "TH-96",
+  "th": "นราธิวาส",
+  "en": "Narathiwat",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 8.8,
+    "count": 125
+  },
+  "fetchedAt": "2026-09-14T19:03:11.721Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Narathiwat Food",
+    "นราธิวาส อาหาร",
+    "นราธิวาส ผ้าคลุมผม",
+    "นราธิวาส กรอบรูปใบไม้สีทอง",
+    "นราธิวาส ผ้าคลุมผมสตรี",
+    "Narathiwat OTOP",
+    "นราธิวาส โอทอป",
+    "Narathiwat Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:WIKI Love Eart 05HARABARA.jpg",
+      "description": "จักจั่นงวงแดง ลักษณะ เป็นแมลงที่มีสีสันโดดเด่นสวยงามชนิดหนึ่ง คล้ายจั๊กจั่นงวงช้าง มีงวงยื่นออกมาจากส่วนหัว สีส้มไปจนถึงสีแดง ดวงตาใส ส่วนของปีกมีสีสันสวยงาม สร้างความกลมกลืนให้เข้ากับธรรมชาติ อาศัย ในผืนป่าลึกทางตอนใต้ของไทย เขตรักษาพันธุ์สัตว์ป่าฮาลา-บาลา จ.นราธิวาส มีบทบาทสำคัญโดยมักจะเป็นอาหารให้กับสัตว์ชนิดอื่น ซึ่งไม่สามารถป้องกันภัยให้กับตัวเองได้ เพียงแต่ หากมีสิ่งแปลกปลอมเข้าใกล้มัน มันก็จะดีดตัวออกมาจากที่ตั้ง เสียงร้องของจักจั่น ยังเป็นตัวบ่งชี้ถึงความอุดมสมบูรณ์ของธรรมชาติ เป็นสัญญาณบอกย่างเข้าฤดูร้อน ใช้ชีวิตส่วนใหญ่อยู่ใต้ดิน ขณะที่ยังเป็นตัวอ่อน อาศัยดูดน้ำเลี้ยงจากรากพืข เมื่อใกล้เต็มวัย จะคลานออกมาขึ้นผิวดิน และลอกคราบ เข้าสู่ตัวเต็มวัย",
+      "author": "Cat2you",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:WIKI%20Love%20Eart%2005HARABARA.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/WIKI_Love_Eart_05HARABARA.jpg/960px-WIKI_Love_Eart_05HARABARA.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/WIKI_Love_Eart_05HARABARA.jpg/960px-WIKI_Love_Eart_05HARABARA.jpg",
+      "localPath": null,
+      "query": "นราธิวาส อาหาร",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:ท้องสนามหลวง.JPG",
+      "description": "This is a photo of a monument in Thailand identified by the ID",
+      "author": "Yakuzakorat",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%97%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87.JPG",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/%E0%B8%97%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87.JPG/960px-%E0%B8%97%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87.JPG",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/%E0%B8%97%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87.JPG/960px-%E0%B8%97%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87.JPG",
+      "localPath": null,
+      "query": "นราธิวาส อาหาร",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

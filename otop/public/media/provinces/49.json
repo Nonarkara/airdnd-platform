@@ -1,0 +1,46 @@
+{
+  "code": 49,
+  "iso": "TH-49",
+  "th": "มุกดาหาร",
+  "en": "Mukdahan",
+  "dominantCategory": {
+    "id": "textile",
+    "th": "ผ้าและเครื่องแต่งกาย",
+    "en": "Fabric & Apparel",
+    "share": 29.6,
+    "count": 381
+  },
+  "fetchedAt": "2026-09-14T18:58:37.487Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Mukdahan Fabric & Apparel",
+    "มุกดาหาร ผ้าและเครื่องแต่งกาย",
+    "มุกดาหาร เสื้อเย็บมือ",
+    "มุกดาหาร ไม้กวาดดอกหญ้า",
+    "มุกดาหาร ตะกร้าพลาสติก",
+    "Mukdahan OTOP",
+    "มุกดาหาร โอทอป",
+    "Mukdahan Thai silk weaving"
+  ],
+  "photos": [
+    {
+      "title": "File:Javanese batik ca. 1871.png",
+      "description": "Batik sarong thought to be from the workshop owned by Carolina Josephina von Franquemont (1817-1867), the earliest known Eurasian female entrepreneur. Her pieces are distinctive and were highly prized for decades after her workshop was destroyed in 1867 by a volcanic eruption in which she is believed to have perished. The sarongs (hip wrappers) attributed to her workshop in the collection all have their ends sewn together, indicating they had already been worn when acquired; sarongs purchased new would be unsewn. It could not be determined how the King acquired these pieces and whether it was on the first trip or a later one. But they are among the rarest pieces in any batik collection. Note the rich green dye, for which von Franquemont was famous. Attributed to the workshop of Carolina Josephina von Franquemont, Semarang, Java. Sarung (sewn). Hand-drawn wax resist, brush-and-vat-dyed on plain weave cotton. 109.3 x 104 cm. Bureau of the Royal Household, Inv. #18.",
+      "author": "Photo courtesy of the Queen Sirikit Museum of Textiles, Bangkok.",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Javanese%20batik%20ca.%201871.png",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Javanese_batik_ca._1871.png/960px-Javanese_batik_ca._1871.png",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Javanese_batik_ca._1871.png/960px-Javanese_batik_ca._1871.png",
+      "localPath": null,
+      "query": "batik Thailand",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

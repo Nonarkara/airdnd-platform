@@ -1,0 +1,62 @@
+{
+  "code": 15,
+  "iso": "TH-15",
+  "th": "อ่างทอง",
+  "en": "Ang Thong",
+  "dominantCategory": {
+    "id": "craft",
+    "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+    "en": "Household, Decorative & Souvenir",
+    "share": 9.4,
+    "count": 128
+  },
+  "fetchedAt": "2026-09-14T18:53:25.801Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Ang Thong Household, Decorative & Souvenir",
+    "อ่างทอง ของใช้ ของตกแต่ง ของที่ระลึก",
+    "อ่างทอง กลองเอกราช",
+    "อ่างทอง ขนม",
+    "อ่างทอง กระเป๋าถือสตรี",
+    "Ang Thong OTOP",
+    "อ่างทอง โอทอป",
+    "Ang Thong Thai bamboo basketry"
+  ],
+  "photos": [
+    {
+      "title": "File:Ang Thong (2024) - khanom hantra ขนมหันตรา 01.jpg",
+      "description": "This traditional Thai sweet is called \"khanom hantra\" (ขนมหันตรา) chicken-stuffed variation",
+      "author": "Chainwit.",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Ang%20Thong%20(2024)%20-%20khanom%20hantra%20%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%AB%E0%B8%B1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B2%2001.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Ang_Thong_%282024%29_-_khanom_hantra_%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%AB%E0%B8%B1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B2_01.jpg/960px-Ang_Thong_%282024%29_-_khanom_hantra_%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%AB%E0%B8%B1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B2_01.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Ang_Thong_%282024%29_-_khanom_hantra_%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%AB%E0%B8%B1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B2_01.jpg/960px-Ang_Thong_%282024%29_-_khanom_hantra_%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%AB%E0%B8%B1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B2_01.jpg",
+      "localPath": null,
+      "query": "อ่างทอง ขนม",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Ang Thong (2024) - khanom kuan on ขนมกวนอ่อน.jpg",
+      "description": "This traditional Thai sweet is called khanom kuan on (ขนมกวนอ่อน)",
+      "author": "Chainwit.",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Ang%20Thong%20(2024)%20-%20khanom%20kuan%20on%20%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%81%E0%B8%A7%E0%B8%99%E0%B8%AD%E0%B9%88%E0%B8%AD%E0%B8%99.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Ang_Thong_%282024%29_-_khanom_kuan_on_%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%81%E0%B8%A7%E0%B8%99%E0%B8%AD%E0%B9%88%E0%B8%AD%E0%B8%99.jpg/960px-Ang_Thong_%282024%29_-_khanom_kuan_on_%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%81%E0%B8%A7%E0%B8%99%E0%B8%AD%E0%B9%88%E0%B8%AD%E0%B8%99.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Ang_Thong_%282024%29_-_khanom_kuan_on_%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%81%E0%B8%A7%E0%B8%99%E0%B8%AD%E0%B9%88%E0%B8%AD%E0%B8%99.jpg/960px-Ang_Thong_%282024%29_-_khanom_kuan_on_%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%81%E0%B8%A7%E0%B8%99%E0%B8%AD%E0%B9%88%E0%B8%AD%E0%B8%99.jpg",
+      "localPath": null,
+      "query": "อ่างทอง ขนม",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

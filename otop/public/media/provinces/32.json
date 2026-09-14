@@ -1,0 +1,62 @@
+{
+  "code": 32,
+  "iso": "TH-32",
+  "th": "สุรินทร์",
+  "en": "Surin",
+  "dominantCategory": {
+    "id": "textile",
+    "th": "ผ้าและเครื่องแต่งกาย",
+    "en": "Fabric & Apparel",
+    "share": 9.3,
+    "count": 399
+  },
+  "fetchedAt": "2026-09-14T18:55:50.212Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Surin Fabric & Apparel",
+    "สุรินทร์ ผ้าและเครื่องแต่งกาย",
+    "สุรินทร์ ผ้าไหมมัดหมี่",
+    "สุรินทร์ ผ้ายกดอก",
+    "สุรินทร์ ผ้าคลุมไหล่",
+    "Surin OTOP",
+    "สุรินทร์ โอทอป",
+    "Surin Thai silk weaving"
+  ],
+  "photos": [
+    {
+      "title": "File:Thai Silk Skirt - Ban Tha Sawang.jpg",
+      "description": "A skirt made from handwoven, handmade silk with natural dyes from Ban Tha Sawang, Surin Province, Thailand",
+      "author": "JJ Harrison ( https://www.jjharrison.com.au/ )",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Thai%20Silk%20Skirt%20-%20Ban%20Tha%20Sawang.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Thai_Silk_Skirt_-_Ban_Tha_Sawang.jpg/960px-Thai_Silk_Skirt_-_Ban_Tha_Sawang.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Thai_Silk_Skirt_-_Ban_Tha_Sawang.jpg/960px-Thai_Silk_Skirt_-_Ban_Tha_Sawang.jpg",
+      "localPath": null,
+      "query": "Surin Thai silk weaving",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:A GIRL OF Hmong TRIBE CHIANG MAI THAILAND 01.jpg",
+      "description": "The Hmong are a hill tribe in Thailand that migrated from China. They are the second largest hill tribe in Thailand, and are known for their colorful embroidery, hemp textiles, and batik techniques.",
+      "author": "DEBA PRASAD ROY",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:A%20GIRL%20OF%20Hmong%20TRIBE%20CHIANG%20MAI%20THAILAND%2001.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/A_GIRL_OF_Hmong_TRIBE_CHIANG_MAI_THAILAND_01.jpg/960px-A_GIRL_OF_Hmong_TRIBE_CHIANG_MAI_THAILAND_01.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/A_GIRL_OF_Hmong_TRIBE_CHIANG_MAI_THAILAND_01.jpg/960px-A_GIRL_OF_Hmong_TRIBE_CHIANG_MAI_THAILAND_01.jpg",
+      "localPath": null,
+      "query": "batik Thailand",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

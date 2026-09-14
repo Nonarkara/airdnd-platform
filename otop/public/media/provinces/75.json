@@ -1,0 +1,46 @@
+{
+  "code": 75,
+  "iso": "TH-75",
+  "th": "สมุทรสงคราม",
+  "en": "Samut Songkhram",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 20.3,
+    "count": 217
+  },
+  "fetchedAt": "2026-09-14T19:01:26.289Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Samut Songkhram Food",
+    "สมุทรสงคราม อาหาร",
+    "สมุทรสงคราม น้ำตาลมะพร้าว",
+    "สมุทรสงคราม ส้มโอขาวใหญ่",
+    "สมุทรสงคราม ส้มโอ",
+    "Samut Songkhram OTOP",
+    "สมุทรสงคราม โอทอป",
+    "Samut Songkhram Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:DFC 2960 Two women in traditional Thai outfits cook and serve food at a thatched market stall during an outdoor evening event.jpg",
+      "description": "The photo shows a food stall or small restaurant with a thatched roof overhang. Two people are wearing traditional saris - one in bright orange and the other in pink - and appear to be serving food at what looks like a food station or buffet setup. There's a menu board visible on the left side of the image. The setting appears to be an evening event or market, with some lighting visible in the background. Various food items and serving trays can be seen on the table in front of them. The atmosphere suggests this might be at a cultural festival, market, or special event featuring traditional cuisine.",
+      "author": "PattayaPatrol",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:DFC%202960%20Two%20women%20in%20traditional%20Thai%20outfits%20cook%20and%20serve%20food%20at%20a%20thatched%20market%20stall%20during%20an%20outdoor%20evening%20event.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/DFC_2960_Two_women_in_traditional_Thai_outfits_cook_and_serve_food_at_a_thatched_market_stall_during_an_outdoor_evening_event.jpg/960px-DFC_2960_Two_women_in_traditional_Thai_outfits_cook_and_serve_food_at_a_thatched_market_stall_during_an_outdoor_evening_event.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/DFC_2960_Two_women_in_traditional_Thai_outfits_cook_and_serve_food_at_a_thatched_market_stall_during_an_outdoor_evening_event.jpg/960px-DFC_2960_Two_women_in_traditional_Thai_outfits_cook_and_serve_food_at_a_thatched_market_stall_during_an_outdoor_evening_event.jpg",
+      "localPath": null,
+      "query": "Thai market food stall",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

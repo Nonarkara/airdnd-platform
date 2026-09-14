@@ -1,0 +1,62 @@
+{
+  "code": 53,
+  "iso": "TH-53",
+  "th": "อุตรดิตถ์",
+  "en": "Uttaradit",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 8.8,
+    "count": 126
+  },
+  "fetchedAt": "2026-09-14T18:58:45.238Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Uttaradit Food",
+    "อุตรดิตถ์ อาหาร",
+    "อุตรดิตถ์ ข้าวกล้องไรซ์เบอร์รี่",
+    "อุตรดิตถ์ ทุเรียนหมอนทอง",
+    "อุตรดิตถ์ ทุเรียนหลงลับแล",
+    "Uttaradit OTOP",
+    "อุตรดิตถ์ โอทอป",
+    "Uttaradit Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:The food market in Uttaradit municipality.jpg",
+      "description": "the food market in Uttaradit municipality, Mueang Uttaradit , Uttaradit Province , Thailand .",
+      "author": "ผู้สร้างสรรค์ผลงาน/ส่งข้อมูลเก็บในคลังข้อมูลเสรีวิกิมีเดียคอมมอนส์ - เทวประภาส มากคล้าย",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:The%20food%20market%20in%20Uttaradit%20municipality.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/The_food_market_in_Uttaradit_municipality.jpg/960px-The_food_market_in_Uttaradit_municipality.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/The_food_market_in_Uttaradit_municipality.jpg/960px-The_food_market_in_Uttaradit_municipality.jpg",
+      "localPath": null,
+      "query": "Uttaradit Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Food wrapped in Thai leaves.jpg",
+      "description": "food wrapped in Thai leaves in Ban Pa Sao , Pa Sao subdistrict, Mueang Uttaradit , Uttaradit Province , Thailand .",
+      "author": "ผู้สร้างสรรค์ผลงาน/ส่งข้อมูลเก็บในคลังข้อมูลเสรีวิกิมีเดียคอมมอนส์ - เทวประภาส มากคล้าย",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Food%20wrapped%20in%20Thai%20leaves.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Food_wrapped_in_Thai_leaves.jpg/960px-Food_wrapped_in_Thai_leaves.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Food_wrapped_in_Thai_leaves.jpg/960px-Food_wrapped_in_Thai_leaves.jpg",
+      "localPath": null,
+      "query": "Uttaradit Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

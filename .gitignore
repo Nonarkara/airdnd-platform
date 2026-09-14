@@ -67,3 +67,6 @@ public/og/default.png
 dist-otop/
 otop/data/raw/*.json
 !otop/data/raw/manifest.json
+
+# OTOP — optional downloaded Commons thumbs (manifests are committed; imgs regenerable)
+otop/public/media/provinces/img/

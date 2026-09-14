@@ -1,234 +1,208 @@
 /**
- * Verified license-free photography registry for Thai OTOP products and crafts.
+ * License-safe photography for OTOP — manifests from Wikimedia Commons.
  *
- * ── Editorial Law & Dieter Rams Non-Negotiables ────────────────────────────
+ * Honesty rules (enforced in code + UI):
+ * 1. Prefer exact imageUrl on a registry/intake record when present.
+ * 2. Else load province (or category) media manifests written by
+ *    `scripts/otop/fetch-province-media.mjs` — CC BY / CC BY-SA / PD / CC0 only,
+ *    with author + license URL stored alongside the image.
+ * 3. Illustrative craft photos are NEVER claimed as a named producer's product
+ *    shot (`isExactProducer: false`, `representation: 'illustrative'`).
+ * 4. No safe hit → null / empty. The UI shows a placeholder — never a wrong
+ *    product photo and never an unlabeled AI stand-in.
  *
- * 1. Every photo is free for commercial and editorial use (Unsplash, Wikimedia Commons,
- *    or CC0 Public Domain).
- * 2. Every entry explicitly states photographer, source, and license.
- * 3. Honesty of representation: A photo of a craft tradition is marked as
- *    `isExactProducer: false` with the caption "Authentic regional craft tradition · {craft}".
- *    It is never falsely presented as the individual producer's facility if it is an
- *    illustrative regional reference.
+ * The old hard-coded Unsplash map with invented heritage captions is gone.
+ * Attribution is always visible: "Photo: … / License: …".
  */
 
-export const CATEGORY_PHOTOS = {
-  textile: {
-    url: 'https://images.unsplash.com/photo-1606744824163-985d376605aa?auto=format&fit=crop&w=800&q=80',
-    title: 'Thai Handwoven Silk & Loom',
-    titleTh: 'การทอผ้าไหมไทยโบราณ',
-    author: 'Adirek Stock',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free commercial use)',
-    craft: 'Handwoven Silk & Textiles',
-    craftTh: 'ผ้าทอมือและสิ่งทอพื้นเมือง',
-  },
-  food: {
-    url: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=800&q=80',
-    title: 'Traditional Thai Herbs & Food Preparation',
-    titleTh: 'เครื่องปรุงและอาหารพื้นถิ่นไทย',
-    author: 'Chanon',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free commercial use)',
-    craft: 'Traditional Food & Recipe Preservation',
-    craftTh: 'อาหารพื้นถิ่นและเกษตรแปรรูป',
-  },
-  beverage: {
-    url: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80',
-    title: 'Thai Herbal Tea & Infusion',
-    titleTh: 'ชาสมุนไพรและเครื่องดื่มพื้นบ้าน',
-    author: 'Tea Craft',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free commercial use)',
-    craft: 'Artisanal Herbal Teas & Beverages',
-    craftTh: 'เครื่องดื่มและชาสมุนไพร',
-  },
-  furnishing: {
-    url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80',
-    title: 'Traditional Bamboo & Rattan Basketry',
-    titleTh: 'งานจักสานไม้ไผ่และหวาย',
-    author: 'Craft Heritage',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free commercial use)',
-    craft: 'Wickerwork & Handcrafted Home Furnishings',
-    craftTh: 'ของใช้ ของตกแต่ง และเครื่องจักสาน',
-  },
-  herbal: {
-    url: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80',
-    title: 'Thai Herbal Compress & Natural Aromatherapy',
-    titleTh: 'ลูกประคบและสมุนไพรไทยแปรรูป',
-    author: 'Aroma Siam',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free commercial use)',
-    craft: 'Non-Food Herbal Wellness & Balms',
-    craftTh: 'สมุนไพรแปรรูปและเวชสำอางชุมชน',
-  },
-};
+/** In-memory cache of fetched manifests (browser) or sync stubs (tests). */
+const provinceCache = new Map();
+const categoryCache = new Map();
 
-export const PROVINCIAL_CRAFT_PHOTOS = {
-  // 15 Ang Thong — Wickerwork center of Central Thailand
-  15: {
-    url: 'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&w=800&q=80',
-    title: 'Ang Thong Bang Chao Cha Wickerwork',
-    titleTh: 'เครื่องจักสานบางเจ้าฉ่า อ่างทอง',
-    author: 'Thai Craft Archive',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free)',
-    craft: 'Fine Bamboo Basketry (จักสานไม้ไผ่)',
-    heritageNote: 'Bang Chao Cha has practiced bamboo wickerwork since the Ayutthaya period; UNESCO recognised heritage craft.',
-  },
-  // 46 Kalasin — Phrae Wa Silk capital
-  46: {
-    url: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80',
-    title: 'Phrae Wa Silk of Kalasin',
-    titleTh: 'ผ้าไหมแพรวาบ้านโพน กาฬสินธุ์',
-    author: 'Isan Silk Heritage',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free)',
-    craft: 'Phrae Wa Brocade Weaving (ไหมแพรวา)',
-    heritageNote: 'Known as the "Queen of Silk", handwoven by the Phu Thai community of Ban Phon.',
-  },
-  // 50 Chiang Mai — Celadon & Lanna Woodcarving
-  50: {
-    url: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=800&q=80',
-    title: 'Chiang Mai Celadon & Stoneware Ceramics',
-    titleTh: 'เครื่องปั้นดินเผาศิลาดล เชียงใหม่',
-    author: 'Lanna Arts',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free)',
-    craft: 'Wood-ash Glazed Celadon (ศิลาดล)',
-    heritageNote: 'High-fired stoneware with distinctive jade-green cracked glaze derived from natural wood ash.',
-  },
-  // 38 Bueng Kan — Natural rubber & Mekong riverside craft
-  38: {
-    url: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80',
-    title: 'Bueng Kan Mekong Handcrafted Goods',
-    titleTh: 'หัตถกรรมริมโขง บึงกาฬ',
-    author: 'Mekong Studio',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free)',
-    craft: 'Rubber Innovation & Local Weaving',
-    heritageNote: "Thailand's 77th province, leader in natural rubber processing and Mekong artisanal wares.",
-  },
-  // 53 Uttaradit — Broom making & Laplae weaving
-  53: {
-    url: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80',
-    title: 'Uttaradit Laplae Handwoven Textiles & Crafts',
-    titleTh: 'ผ้าทอตีนจกและหัตถกรรมลับแล อุตรดิตถ์',
-    author: 'Northern Heritage',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free)',
-    craft: 'Tin Chok Weaving & Kong Grass Brooms',
-    heritageNote: 'Ancient Laplae woven textiles with intricate geometric foot-patterns (ตีนจก).',
-  },
-  // 75 Phetchaburi — Traditional desserts & palm sugar
-  75: {
-    url: 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=800&q=80',
-    title: 'Phetchaburi Palmyra Palm Sweets',
-    titleTh: 'ขนมหวานเมืองเพชรและน้ำตาลโตนด',
-    author: 'Dessert Siam',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free)',
-    craft: 'Artisanal Palm Sugar Processing (น้ำตาลโตนด)',
-    heritageNote: 'UNESCO City of Gastronomy; famous for Khanom Mor Gaeng and wood-boiled palmyra sugar.',
-  },
-  // 80 Nakhon Si Thammarat — Yan Lipao & Shadow Puppetry
-  80: {
-    url: 'https://images.unsplash.com/photo-1607344645866-009c320b5ab8?auto=format&fit=crop&w=800&q=80',
-    title: 'Nakhon Si Thammarat Yan Lipao Basketry',
-    titleTh: 'จักสานย่านลิเภา นครศรีธรรมราช',
-    author: 'Southern Craft',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free)',
-    craft: 'Yan Lipao Vine Weaving & Nielloware (เครื่องถม)',
-    heritageNote: 'Intricate royal weaving using wild fern vines (Lygodium), requiring months of artisanal handwork.',
-  },
-  // 94 Pattani — Traditional Batik & Hand-drawn Wax Textiles
-  94: {
-    url: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80',
-    title: 'Pattani Hand-drawn Batik Fabric',
-    titleTh: 'ผ้าบาติกเขียนมือ ปัตตานี',
-    author: 'Malay Heritage',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free)',
-    craft: 'Canting Wax-resist Batik (ผ้าบาติกเขียนเทียน)',
-    heritageNote: 'Vibrant maritime motifs and natural coastal flora drawn using copper canting pens.',
-  },
-};
+/** Optional sync fixtures for unit tests — never used in production UI. */
+export let TEST_PROVINCE_MEDIA = null;
+export let TEST_CATEGORY_MEDIA = null;
 
-/**
- * Resolve an honest, attributed photograph for an OTOP record.
- * Order of specificity:
- * 1. Exact image URL attached to the record (if present from data.go.th or scraper)
- * 2. Provincial signature craft photo (if province has a documented heritage craft)
- * 3. Categorical craft archetype photo
- *
- * @param {Object} record - The canonical OTOP record
- * @returns {Object|null} Attributed photo object with URL, caption, craft type, and source
- */
-export function photoForRecord(record) {
-  if (!record) return null;
+export function __setTestMedia({ provinces = null, categories = null } = {}) {
+  TEST_PROVINCE_MEDIA = provinces;
+  TEST_CATEGORY_MEDIA = categories;
+  provinceCache.clear();
+  categoryCache.clear();
+}
 
-  // 1. Exact image URL directly on record
-  if (record.imageUrl) {
-    return {
-      url: record.imageUrl,
-      caption: record.productName || record.producerName || 'OTOP Product',
-      craft: record.category || 'OTOP Product',
-      source: 'Official Registry / Scraped Ingestion',
-      license: 'Public Ingestion',
-      isExactProducer: true,
-    };
-  }
-
-  // 2. Provincial specialty match
-  const provPhoto = PROVINCIAL_CRAFT_PHOTOS[record.provinceCode];
-  if (provPhoto) {
-    return {
-      url: provPhoto.url,
-      caption: provPhoto.titleTh,
-      titleEn: provPhoto.title,
-      craft: provPhoto.craft,
-      source: provPhoto.source,
-      license: provPhoto.license,
-      author: provPhoto.author,
-      heritageNote: provPhoto.heritageNote,
-      isExactProducer: false,
-    };
-  }
-
-  // 3. Category archetype match
-  const catKey = record.category?.toLowerCase();
-  const catPhoto = CATEGORY_PHOTOS[catKey];
-  if (catPhoto) {
-    return {
-      url: catPhoto.url,
-      caption: catPhoto.titleTh,
-      titleEn: catPhoto.title,
-      craft: catPhoto.craftTh,
-      source: catPhoto.source,
-      license: catPhoto.license,
-      author: catPhoto.author,
-      isExactProducer: false,
-    };
-  }
-
-  // Fallback default craft
+function normalizePhoto(raw, extras = {}) {
+  if (!raw) return null;
+  const url = raw.url || raw.thumbUrl || raw.localPath;
+  if (!url) return null;
   return {
-    url: CATEGORY_PHOTOS.furnishing.url,
-    caption: 'หัตถกรรมชุมชนไทย',
-    titleEn: 'Thai Artisanal Craft',
-    craft: 'ภูมิปัญญาท้องถิ่น',
-    source: 'Unsplash',
-    license: 'Unsplash License (Free)',
-    isExactProducer: false,
+    url: raw.localPath ? `/${raw.localPath.replace(/^\//, '')}` : url,
+    thumbUrl: raw.thumbUrl || url,
+    title: raw.title || raw.description || 'Open-license craft photograph',
+    titleTh: raw.titleTh || null,
+    description: raw.description || null,
+    author: raw.author || 'Unknown',
+    source: raw.source || 'Wikimedia Commons',
+    license: raw.license || 'Unknown',
+    licenseUrl: raw.licenseUrl || null,
+    filePage: raw.filePage || null,
+    craft: raw.craft || extras.craft || null,
+    isExactProducer: Boolean(raw.isExactProducer),
+    representation: raw.representation || (raw.isExactProducer ? 'exact' : 'illustrative'),
+    representationNote:
+      raw.representationNote
+      || (raw.isExactProducer
+        ? null
+        : 'Illustrative open-license photograph — not a photo of a specific listed producer.'),
+    query: raw.query || null,
+    ...extras,
   };
 }
 
 /**
- * Get photos relevant for a whole province (for the Province Dossier).
+ * Resolve an honest, attributed photograph for an OTOP record.
+ * Sync path uses TEST_* fixtures or already-warmed caches; production UI
+ * should prefer `loadPhotosForProvince` / async warm-up.
  */
-export function photosForProvince(provinceCode) {
-  const specific = PROVINCIAL_CRAFT_PHOTOS[provinceCode];
-  return specific ? [specific] : [];
+export function photoForRecord(record) {
+  if (!record) return null;
+
+  if (record.imageUrl) {
+    return {
+      url: record.imageUrl,
+      caption: record.productName || record.producerName || 'OTOP Product',
+      titleEn: record.productName || record.producerName || 'OTOP Product',
+      craft: record.category || 'OTOP Product',
+      author: null,
+      source: 'Registry / intake',
+      license: 'As published with the source record',
+      licenseUrl: null,
+      isExactProducer: true,
+      representation: 'exact',
+      representationNote: null,
+    };
+  }
+
+  const prov = photosForProvinceSync(record.provinceCode);
+  if (prov[0]) {
+    return {
+      ...prov[0],
+      caption: prov[0].description || prov[0].title,
+      titleEn: prov[0].title,
+      craft: prov[0].craft || record.category || null,
+    };
+  }
+
+  const cat = photosForCategorySync(record.category);
+  if (cat[0]) {
+    return {
+      ...cat[0],
+      caption: cat[0].description || cat[0].title,
+      titleEn: cat[0].title,
+      craft: record.category || null,
+    };
+  }
+
+  return null; // honest empty — UI placeholder
 }
+
+function photosForProvinceSync(provinceCode) {
+  if (provinceCode == null) return [];
+  const code = Number(provinceCode);
+  if (TEST_PROVINCE_MEDIA?.[code]) {
+    return (TEST_PROVINCE_MEDIA[code].photos || []).map((p) => normalizePhoto(p)).filter(Boolean);
+  }
+  if (provinceCache.has(code)) {
+    const m = provinceCache.get(code);
+    return (m?.photos || []).map((p) => normalizePhoto(p, {
+      craft: m.dominantCategory?.en || null,
+    })).filter(Boolean);
+  }
+  return [];
+}
+
+function photosForCategorySync(categoryId) {
+  if (!categoryId) return [];
+  if (TEST_CATEGORY_MEDIA?.[categoryId]) {
+    return (TEST_CATEGORY_MEDIA[categoryId].photos || []).map((p) => normalizePhoto(p)).filter(Boolean);
+  }
+  if (categoryCache.has(categoryId)) {
+    const m = categoryCache.get(categoryId);
+    return (m?.photos || []).map((p) => normalizePhoto(p)).filter(Boolean);
+  }
+  return [];
+}
+
+/** Sync helper used by dossier when manifest already loaded / tests. */
+export function photosForProvince(provinceCode) {
+  return photosForProvinceSync(provinceCode);
+}
+
+/**
+ * Fetch a province media manifest. Returns [] on miss / no_safe_hit.
+ * Caches in memory for the session.
+ */
+export async function loadPhotosForProvince(provinceCode) {
+  const code = Number(provinceCode);
+  if (!Number.isFinite(code)) return [];
+  if (TEST_PROVINCE_MEDIA?.[code]) return photosForProvinceSync(code);
+  if (provinceCache.has(code)) return photosForProvinceSync(code);
+
+  try {
+    const res = await fetch(`/media/provinces/${code}.json`, { cache: 'force-cache' });
+    if (!res.ok) {
+      provinceCache.set(code, { status: 'missing', photos: [] });
+      return [];
+    }
+    const manifest = await res.json();
+    provinceCache.set(code, manifest);
+    return photosForProvinceSync(code);
+  } catch {
+    provinceCache.set(code, { status: 'error', photos: [] });
+    return [];
+  }
+}
+
+export async function loadPhotosForCategory(categoryId) {
+  if (!categoryId) return [];
+  if (TEST_CATEGORY_MEDIA?.[categoryId]) return photosForCategorySync(categoryId);
+  if (categoryCache.has(categoryId)) return photosForCategorySync(categoryId);
+  try {
+    const res = await fetch(`/media/categories/${categoryId}.json`, { cache: 'force-cache' });
+    if (!res.ok) {
+      categoryCache.set(categoryId, { status: 'missing', photos: [] });
+      return [];
+    }
+    const manifest = await res.json();
+    categoryCache.set(categoryId, manifest);
+    return photosForCategorySync(categoryId);
+  } catch {
+    categoryCache.set(categoryId, { status: 'error', photos: [] });
+    return [];
+  }
+}
+
+export async function loadProvinceMediaIndex() {
+  try {
+    const res = await fetch('/media/provinces/index.json', { cache: 'force-cache' });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+/** Attribution line for captions — always visible next to the image. */
+export function attributionLine(photo) {
+  if (!photo) return '';
+  if (photo.isExactProducer) {
+    return `Source: ${photo.source}`;
+  }
+  const who = photo.author ? `Photo: ${photo.author}` : 'Photo: unknown author';
+  const lic = photo.license ? `License: ${photo.license}` : '';
+  return [who, photo.source, lic].filter(Boolean).join(' · ');
+}
+
+// Re-export empty maps so older imports of CATEGORY_PHOTOS / PROVINCIAL_CRAFT_PHOTOS
+// do not crash; they are intentionally empty — use manifests instead.
+export const CATEGORY_PHOTOS = {};
+export const PROVINCIAL_CRAFT_PHOTOS = {};

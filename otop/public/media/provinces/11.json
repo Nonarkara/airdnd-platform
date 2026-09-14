@@ -1,0 +1,46 @@
+{
+  "code": 11,
+  "iso": "TH-11",
+  "th": "สมุทรปราการ",
+  "en": "Samut Prakan",
+  "dominantCategory": {
+    "id": "craft",
+    "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+    "en": "Household, Decorative & Souvenir",
+    "share": 5.1,
+    "count": 99
+  },
+  "fetchedAt": "2026-09-14T18:52:48.965Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Samut Prakan Household, Decorative & Souvenir",
+    "สมุทรปราการ ของใช้ ของตกแต่ง ของที่ระลึก",
+    "สมุทรปราการ กระเป๋าผ้า",
+    "สมุทรปราการ กุ้งเหยียด",
+    "สมุทรปราการ ชุดจากผ้าขาวม้า",
+    "Samut Prakan OTOP",
+    "สมุทรปราการ โอทอป",
+    "Samut Prakan Thai bamboo basketry"
+  ],
+  "photos": [
+    {
+      "title": "File:Aichi Prefectural Ceramic Museum (107).jpg",
+      "description": "Dish with peony motif, celadon Sawankhalok kilns 15th-16th century, Thailand Aichi Prefectural Ceramic Museum (Gift of Ms. Nishigaki Chiyoko)",
+      "author": "Gryffindor",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Aichi%20Prefectural%20Ceramic%20Museum%20(107).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Aichi_Prefectural_Ceramic_Museum_%28107%29.jpg/960px-Aichi_Prefectural_Ceramic_Museum_%28107%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Aichi_Prefectural_Ceramic_Museum_%28107%29.jpg/960px-Aichi_Prefectural_Ceramic_Museum_%28107%29.jpg",
+      "localPath": null,
+      "query": "เครื่องปั้นดินเผา ไทย",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "code": 74,
+  "iso": "TH-74",
+  "th": "สมุทรสาคร",
+  "en": "Samut Sakhon",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 10.1,
+    "count": 122
+  },
+  "fetchedAt": "2026-09-14T19:01:10.468Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Samut Sakhon Food",
+    "สมุทรสาคร อาหาร",
+    "สมุทรสาคร กระเป๋าผ้า",
+    "สมุทรสาคร ครีมนวดผม น้ำมันมะพร้าว",
+    "สมุทรสาคร น้ำตาลมะพร้าวน้ำหอม",
+    "Samut Sakhon OTOP",
+    "สมุทรสาคร โอทอป",
+    "Samut Sakhon Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:มหาชัย.jpg",
+      "description": "Mahachai market",
+      "author": "Pra25satawat",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%8A%E0%B8%B1%E0%B8%A2.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%8A%E0%B8%B1%E0%B8%A2.jpg/960px-%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%8A%E0%B8%B1%E0%B8%A2.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%8A%E0%B8%B1%E0%B8%A2.jpg/960px-%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%8A%E0%B8%B1%E0%B8%A2.jpg",
+      "localPath": null,
+      "query": "สมุทรสาคร อาหาร",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "code": 31,
+  "iso": "TH-31",
+  "th": "บุรีรัมย์",
+  "en": "Buri Ram",
+  "dominantCategory": {
+    "id": "textile",
+    "th": "ผ้าและเครื่องแต่งกาย",
+    "en": "Fabric & Apparel",
+    "share": 6.7,
+    "count": 286
+  },
+  "fetchedAt": "2026-09-14T18:55:33.392Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Buri Ram Fabric & Apparel",
+    "บุรีรัมย์ ผ้าและเครื่องแต่งกาย",
+    "บุรีรัมย์ ผ้าไหมมัดหมี่",
+    "บุรีรัมย์ ผ้าคลุมไหล่",
+    "บุรีรัมย์ ผ้ามัดหมี่",
+    "Buri Ram OTOP",
+    "บุรีรัมย์ โอทอป",
+    "Buri Ram Thai silk weaving"
+  ],
+  "photos": [
+    {
+      "title": "File:Silk weaving machine 02.jpg",
+      "description": "Silk weaving machine in Bangkok, Thailand. Jim Thomson House",
+      "author": "Olena Zakharian",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Silk%20weaving%20machine%2002.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Silk_weaving_machine_02.jpg/960px-Silk_weaving_machine_02.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Silk_weaving_machine_02.jpg/960px-Silk_weaving_machine_02.jpg",
+      "localPath": null,
+      "query": "Thai silk weaving",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Silk weaving machine 01.jpg",
+      "description": "Silk weaving machine in Bangkok, Thailand. Jim Thomson House",
+      "author": "Olena Zakharian",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Silk%20weaving%20machine%2001.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Silk_weaving_machine_01.jpg/960px-Silk_weaving_machine_01.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Silk_weaving_machine_01.jpg/960px-Silk_weaving_machine_01.jpg",
+      "localPath": null,
+      "query": "Thai silk weaving",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

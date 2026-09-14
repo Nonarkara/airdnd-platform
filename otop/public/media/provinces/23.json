@@ -1,0 +1,62 @@
+{
+  "code": 23,
+  "iso": "TH-23",
+  "th": "ตราด",
+  "en": "Trat",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 8.2,
+    "count": 71
+  },
+  "fetchedAt": "2026-09-14T18:54:45.613Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Trat Food",
+    "ตราด อาหาร",
+    "ตราด ผ้าฝ้าย",
+    "ตราด เม็ดมะม่วงหิมพานต์อบเกลือ",
+    "ตราด ลูกชิ้นหมูเต็งหนึ่ง",
+    "Trat OTOP",
+    "ตราด โอทอป",
+    "Trat Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:EB1911 Alimentary Canal Fig. 3.—Valvulae Conniventes.jpg",
+      "description": "Alimentary Canal Fig. 3.—Valvulae Conniventes, from Encyclopædia Britannica 1911",
+      "author": "A. Birmingham; Cunningham",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:EB1911%20Alimentary%20Canal%20Fig.%203.%E2%80%94Valvulae%20Conniventes.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/EB1911_Alimentary_Canal_Fig._3.%E2%80%94Valvulae_Conniventes.jpg/960px-EB1911_Alimentary_Canal_Fig._3.%E2%80%94Valvulae_Conniventes.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/EB1911_Alimentary_Canal_Fig._3.%E2%80%94Valvulae_Conniventes.jpg/960px-EB1911_Alimentary_Canal_Fig._3.%E2%80%94Valvulae_Conniventes.jpg",
+      "localPath": null,
+      "query": "Trat Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Motorbike food stall, Hua Hin (8288362869).jpg",
+      "description": "One of the must do things in Thailand is eating local food 'in the street', there are literally hundreds and hundreds of foodstalls everywhere you go. The Hua Hin night market is a great place to wander, barter at the hundreds of stalls and pick up a bargain while you sample food from the many stalls. This stall seems to be selling maily fruit",
+      "author": "Ian Gratton from Sutton-n-Craven, North Yorkshire, England",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Motorbike%20food%20stall%2C%20Hua%20Hin%20(8288362869).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Motorbike_food_stall%2C_Hua_Hin_%288288362869%29.jpg/960px-Motorbike_food_stall%2C_Hua_Hin_%288288362869%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Motorbike_food_stall%2C_Hua_Hin_%288288362869%29.jpg/960px-Motorbike_food_stall%2C_Hua_Hin_%288288362869%29.jpg",
+      "localPath": null,
+      "query": "Thai market food stall",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

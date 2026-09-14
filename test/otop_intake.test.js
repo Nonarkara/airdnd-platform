@@ -35,49 +35,74 @@ test('parseOtopPost resolves province from district shorthand (e.g. อ.ลั�
   assert.equal(parsed.provinceCode, 53);
 });
 
-test('photoForRecord prioritizes exact photo, then provincial specialty, then category archetype', () => {
-  // 1. Exact photo on record
-  const recordWithImage = {
+test('photoForRecord prioritizes exact photo; illustrative Commons come from test fixtures', async () => {
+  const { __setTestMedia } = await import('../otop/core/photos.js');
+  __setTestMedia({
+    provinces: {
+      46: {
+        photos: [{
+          url: 'https://upload.wikimedia.org/wikipedia/commons/test-silk.jpg',
+          title: 'File:test-silk.jpg',
+          description: 'Thai silk',
+          author: 'Commons Author',
+          license: 'CC BY-SA 4.0',
+          source: 'Wikimedia Commons',
+          isExactProducer: false,
+          representation: 'illustrative',
+        }],
+      },
+    },
+    categories: {
+      food: {
+        photos: [{
+          url: 'https://upload.wikimedia.org/wikipedia/commons/test-food.jpg',
+          title: 'File:test-food.jpg',
+          description: 'Thai food',
+          author: 'Food Author',
+          license: 'CC BY 4.0',
+          source: 'Wikimedia Commons',
+          isExactProducer: false,
+        }],
+      },
+    },
+  });
+
+  const exact = photoForRecord({
     producerName: 'กลุ่มแม่บ้าน',
     provinceCode: 46,
     category: 'textile',
     imageUrl: 'https://images.example.com/real_craft.jpg',
-  };
-  const exact = photoForRecord(recordWithImage);
+  });
   assert.equal(exact.isExactProducer, true);
   assert.equal(exact.url, 'https://images.example.com/real_craft.jpg');
 
-  // 2. Provincial craft specialty (e.g. Kalasin Phrae Wa silk)
-  const kalasinRecord = {
+  const provMatch = photoForRecord({
     producerName: 'วิสาหกิจชุมชน',
     provinceCode: 46,
     category: 'textile',
-  };
-  const provMatch = photoForRecord(kalasinRecord);
+  });
   assert.equal(provMatch.isExactProducer, false);
-  assert.ok(provMatch.url.includes('unsplash.com'));
-  assert.equal(provMatch.author, 'Isan Silk Heritage');
-  assert.ok(provMatch.craft.includes('แพรวา'));
+  assert.equal(provMatch.representation, 'illustrative');
+  assert.ok(provMatch.url.includes('wikimedia.org'));
+  assert.equal(provMatch.author, 'Commons Author');
 
-  // 3. Category archetype
-  const genericFood = {
+  const catMatch = photoForRecord({
     producerName: 'กลุ่มเกษตรกร',
-    provinceCode: 999, // unknown province
+    provinceCode: 999,
     category: 'food',
-  };
-  const catMatch = photoForRecord(genericFood);
+  });
   assert.equal(catMatch.isExactProducer, false);
-  assert.equal(catMatch.titleEn, CATEGORY_PHOTOS.food.title);
   assert.ok(catMatch.license);
+
+  // Hard-coded Unsplash maps intentionally empty.
+  assert.equal(Object.keys(CATEGORY_PHOTOS).length, 0);
+  assert.equal(Object.keys(PROVINCIAL_CRAFT_PHOTOS).length, 0);
+  __setTestMedia({});
 });
 
-test('photosForProvince returns curated craft photos for supported heritage provinces', () => {
-  const chiangMai = photosForProvince(50);
-  assert.equal(chiangMai.length, 1);
-  assert.ok(chiangMai[0].title.includes('Celadon'));
-
-  const unknown = photosForProvince(999);
-  assert.equal(unknown.length, 0);
+test('photosForProvince is empty without a warmed manifest (placeholder path)', () => {
+  assert.equal(photosForProvince(50).length, 0);
+  assert.equal(photosForProvince(999).length, 0);
 });
 
 test('enrichOtopWithAi degrades cleanly without Gemini API key', async () => {

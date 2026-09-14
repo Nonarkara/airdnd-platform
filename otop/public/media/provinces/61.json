@@ -1,0 +1,46 @@
+{
+  "code": 61,
+  "iso": "TH-61",
+  "th": "อุทัยธานี",
+  "en": "Uthai Thani",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 33.9,
+    "count": 302
+  },
+  "fetchedAt": "2026-09-14T18:59:32.375Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Uthai Thani Food",
+    "อุทัยธานี อาหาร",
+    "อุทัยธานี ผ้าขาวม้า",
+    "อุทัยธานี พรมเช็ดเท้า",
+    "อุทัยธานี กระเป๋าผ้า",
+    "Uthai Thani OTOP",
+    "อุทัยธานี โอทอป",
+    "Uthai Thani Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Banana rotee stall (11900303024).jpg",
+      "description": "Banana rotee stall",
+      "author": "Andrea Schaffer from Sydney, Australia",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Banana%20rotee%20stall%20(11900303024).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Banana_rotee_stall_%2811900303024%29.jpg/960px-Banana_rotee_stall_%2811900303024%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Banana_rotee_stall_%2811900303024%29.jpg/960px-Banana_rotee_stall_%2811900303024%29.jpg",
+      "localPath": null,
+      "query": "Thai market food stall",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

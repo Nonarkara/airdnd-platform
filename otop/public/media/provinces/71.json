@@ -1,0 +1,62 @@
+{
+  "code": 71,
+  "iso": "TH-71",
+  "th": "กาญจนบุรี",
+  "en": "Kanchanaburi",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 22.7,
+    "count": 574
+  },
+  "fetchedAt": "2026-09-14T19:00:23.325Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Kanchanaburi Food",
+    "กาญจนบุรี อาหาร",
+    "กาญจนบุรี กล้วยฉาบ",
+    "กาญจนบุรี กล้วยตาก",
+    "กาญจนบุรี พริกแกงเผ็ด",
+    "Kanchanaburi OTOP",
+    "กาญจนบุรี โอทอป",
+    "Kanchanaburi Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Kanchanaburi P1100811.JPG",
+      "description": "Kanchanaburi, Thailand",
+      "author": "Deror Avi",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Kanchanaburi%20P1100811.JPG",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Kanchanaburi_P1100811.JPG/960px-Kanchanaburi_P1100811.JPG",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Kanchanaburi_P1100811.JPG/960px-Kanchanaburi_P1100811.JPG",
+      "localPath": null,
+      "query": "Kanchanaburi Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Kanchanaburi P1100812.JPG",
+      "description": "Kanchanaburi, Thailand",
+      "author": "Deror Avi",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Kanchanaburi%20P1100812.JPG",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Kanchanaburi_P1100812.JPG/960px-Kanchanaburi_P1100812.JPG",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Kanchanaburi_P1100812.JPG/960px-Kanchanaburi_P1100812.JPG",
+      "localPath": null,
+      "query": "Kanchanaburi Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

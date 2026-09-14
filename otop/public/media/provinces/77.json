@@ -1,0 +1,62 @@
+{
+  "code": 77,
+  "iso": "TH-77",
+  "th": "ประจวบคีรีขันธ์",
+  "en": "Prachuap Khiri Khan",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 8.5,
+    "count": 97
+  },
+  "fetchedAt": "2026-09-14T19:01:30.958Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Prachuap Khiri Khan Food",
+    "ประจวบคีรีขันธ์ อาหาร",
+    "ประจวบคีรีขันธ์ ขนมปังชีสเชคไส้สับปะรด",
+    "ประจวบคีรีขันธ์ น้ำมันมะพร้าวสกัดเย็น",
+    "ประจวบคีรีขันธ์ มะม่วงอบแห้ง",
+    "Prachuap Khiri Khan OTOP",
+    "ประจวบคีรีขันธ์ โอทอป",
+    "Prachuap Khiri Khan Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Hua Hin Station - 2017-04-14 (041).jpg",
+      "description": "Hua Hin Railway Station , Hua Hin District , Prachuap Khiri Khan Province , Thailand .",
+      "author": "Iudexvivorum",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Hua%20Hin%20Station%20-%202017-04-14%20(041).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Hua_Hin_Station_-_2017-04-14_%28041%29.jpg/960px-Hua_Hin_Station_-_2017-04-14_%28041%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Hua_Hin_Station_-_2017-04-14_%28041%29.jpg/960px-Hua_Hin_Station_-_2017-04-14_%28041%29.jpg",
+      "localPath": null,
+      "query": "Prachuap Khiri Khan Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:The Migrant of Hat Wanakon.jpg",
+      "description": "A detailed photograph of a Blue-throated Bee-eater (Merops viridis) with insect prey at Hat Wanakon National Park, Prachuap Khiri Khan Province, Thailand. The image documents a crucial ecological phenomenon: the annual migration of this species from Indonesia to breed, nest, and lay eggs during the early rainy season. Hat Wanakon National Park offers the perfect microhabitat, featuring sandy terrain ideal for burrow nesting, surrounded by mature trees and abundant food resources. This photograph captures the bird foraging in a well-managed sanctuary free from human disturbance.",
+      "author": "Kriangsak Hongchumpae",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:The%20Migrant%20of%20Hat%20Wanakon.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/The_Migrant_of_Hat_Wanakon.jpg/960px-The_Migrant_of_Hat_Wanakon.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/The_Migrant_of_Hat_Wanakon.jpg/960px-The_Migrant_of_Hat_Wanakon.jpg",
+      "localPath": null,
+      "query": "Prachuap Khiri Khan Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

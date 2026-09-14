@@ -1,0 +1,30 @@
+{
+  "builtAt": "2026-09-14T19:04:53.523Z",
+  "categories": [
+    {
+      "id": "textile",
+      "status": "ok",
+      "photos": 1
+    },
+    {
+      "id": "food",
+      "status": "ok",
+      "photos": 1
+    },
+    {
+      "id": "beverage",
+      "status": "ok",
+      "photos": 1
+    },
+    {
+      "id": "craft",
+      "status": "ok",
+      "photos": 1
+    },
+    {
+      "id": "herbal",
+      "status": "no_safe_hit",
+      "photos": 0
+    }
+  ]
+}
