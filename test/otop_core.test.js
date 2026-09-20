@@ -13,7 +13,7 @@ import {
 } from '../otop/core/record.js';
 
 const prov = (datasetId = 'ds1', resourceId = 'r1') => ({ datasetId, resourceId, retrievedAt: '2026-09-08T00:00:00Z' });
-const row = (over = {}) => ({ sourceRowId: 'x#0', producerName: 'กลุ่มทดสอบ', productName: 'ผ้าทอ', province: 'บุรีรัมย์', ...over });
+const row = (over = {}) => ({ sourceRowId: 'x#0', producerName: 'กลุ่มทดสอบ', productName: 'ผ้าทอ', province: 'บุรีรัมย์', provinceCode: 31, provenance: prov(), ...over });
 
 test('77 provinces, unique codes, NESDC region totals reconcile', () => {
   assert.equal(PROVINCES.length, 77);
@@ -237,4 +237,51 @@ test('tallyByTambon groups matcher output or bare records, counts reachability, 
   assert.equal(out.maxN, 2);
   assert.equal(tallyByTambon(matches, { max: 1 }).rows.length, 1);
   assert.equal(tallyByTambon(matches, { max: 0 }).placeable, 3); // placeable is counted before the cap
+});
+
+test('over-merge guard: phone spanning 2+ provinces is withdrawn as identity', () => {
+  const r1 = { ...row(), phone: '0812345678', provinceCode: 10, sourceRowId: 'ds1#0' };
+  const r2 = { ...row(), phone: '0812345678', provinceCode: 30, sourceRowId: 'ds1#1' };
+  const withdrawn = findOverbroadSignals([r1, r2]);
+  assert.equal(withdrawn.size, 1, 'one phone signal withdrawn');
+  const key = `tel:0812345678`;
+  assert.equal(withdrawn.has(key), true);
+});
+
+test('over-merge guard: phone scoped to one province is NOT withdrawn', () => {
+  const r1 = { ...row(), phone: '0812345678', provinceCode: 10, sourceRowId: 'ds1#0' };
+  const r2 = { ...row(), phone: '0812345678', provinceCode: 10, sourceRowId: 'ds1#1' };
+  const withdrawn = findOverbroadSignals([r1, r2]);
+  assert.equal(withdrawn.size, 0, 'no withdrawal for single-province phone');
+});
+
+test('tax ID is NEVER withdrawn even if it spans provinces', () => {
+  const r1 = { ...row(), taxId: '1234567890123', provinceCode: 10, sourceRowId: 'ds1#0' };
+  const r2 = { ...row(), taxId: '1234567890123', provinceCode: 30, sourceRowId: 'ds1#1' };
+  const withdrawn = findOverbroadSignals([r1, r2]);
+  assert.equal(withdrawn.size, 0, 'tax ID must never be withdrawn');
+  const merged = mergeRecords([r1, r2]);
+  assert.equal(merged.length, 1, 'same tax ID merges into one entity');
+  assert.equal(merged[0].mergedFrom, 2, 'both records merged');
+});
+
+test('ranked key trap: a low-signal registration number does not block a phone match', () => {
+  const r1 = { ...row(), phone: '0811111111', registrationId: 'P-002', provinceCode: 10, sourceRowId: 'ds1#0' };
+  const r2 = { ...row(), phone: '0811111111', registrationId: 'P-999', provinceCode: 10, sourceRowId: 'ds2#0' };
+  const merged = mergeRecords([r1, r2]);
+  assert.equal(merged.length, 1, 'phone match wins over registration numbers');
+});
+
+test('buildRecord throws if provenance is missing', () => {
+  assert.throws(() => buildRecord(row(), null), /provenance/);
+  assert.throws(() => buildRecord(row(), {}), /provenance/);
+  assert.throws(() => buildRecord(row(), { datasetId: 'x' }), /provenance/);
+});
+
+test('gradeRecord rejects no-name and no-area rows, never silently dropping them', () => {
+  const noName = { ...row(), producerName: null, productName: null, province: 'บุรีรัมย์' };
+  const noArea = { ...row(), province: null, provinceCode: null };
+  assert.deepEqual(gradeRecord(noName).rejects, ['no_name']);
+  assert.deepEqual(gradeRecord(noArea).rejects, ['no_area']);
+  assert.equal(gradeRecord(row()).ok, true);
 });
