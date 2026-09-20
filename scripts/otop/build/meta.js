@@ -5,8 +5,11 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const FLAT_LIMIT = 20_000;
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+const ROOT_DATA_DIR = path.join(ROOT, 'otop', 'data');
 
 export function writeMeta(OUT_DIR, source, degraded, config, cacheLength, recordsLength, merged, resourceReports, rejectTally, certAsOf, geoCoverage, shards) {
   const flatPath = path.join(OUT_DIR, 'otop.json');
@@ -57,8 +60,16 @@ export function writeMeta(OUT_DIR, source, degraded, config, cacheLength, record
     mergeBasis,
     strongestSignal,
     mergedRecords: merged.filter((r) => r.mergedFrom > 1).length,
-    resources: resourceReports,
   };
+  // The served sidecar must stay small: the browser fetches otop_meta.json on
+  // every page load and reads only the counts above. The per-resource reports
+  // (~1.9 MB) are consumed at build time only — by `insights.js` and
+  // `datasets.js` — so they live beside the raw cache, never in public/, never
+  // in the deploy.
+  fs.writeFileSync(
+    path.join(ROOT_DATA_DIR, 'meta-resources.json'),
+    JSON.stringify({ builtAt: meta.builtAt, resources: resourceReports }),
+  );
   fs.writeFileSync(path.join(OUT_DIR, 'otop_meta.json'), JSON.stringify(meta, null, 2));
   return meta;
 }

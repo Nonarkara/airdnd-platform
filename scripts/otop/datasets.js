@@ -24,6 +24,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
 const MANIFEST = path.join(ROOT, 'otop/data/raw/manifest.json');
 const META = path.join(ROOT, 'otop/public/otop_meta.json');
+// Per-resource reports live beside the raw cache since the meta split — the
+// served otop_meta.json no longer carries them. Fallback for stale checkouts.
+const META_RESOURCES = path.join(ROOT, 'otop/data/meta-resources.json');
 const OUT = path.join(ROOT, 'otop/public/otop_datasets.json');
 
 // Order matters: first matching shelf wins. A revenue table for producers is
@@ -55,8 +58,11 @@ function main() {
   const manifest = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
   const discovered = manifest.datasets ?? [];
   const meta = fs.existsSync(META) ? JSON.parse(fs.readFileSync(META, 'utf8')) : null;
+  const resourceReports = fs.existsSync(META_RESOURCES)
+    ? (JSON.parse(fs.readFileSync(META_RESOURCES, 'utf8')).resources ?? [])
+    : (meta?.resources ?? []);
   const byTitle = new Map();
-  for (const r of meta?.resources ?? []) {
+  for (const r of resourceReports) {
     if (!byTitle.has(r.datasetTitle)) byTitle.set(r.datasetTitle, r);
   }
 
@@ -87,7 +93,7 @@ function main() {
     totals: {
       discovered: discovered.length,
       pulled: pulledCount,
-      rowsIn: (meta?.resources ?? []).reduce((n, r) => n + (r.rowsIn ?? 0), 0),
+      rowsIn: resourceReports.reduce((n, r) => n + (r.rowsIn ?? 0), 0),
     },
     groups: ordered.map((g) => ({
       ...g,

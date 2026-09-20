@@ -39,6 +39,10 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
   const [mediaPhotos, setMediaPhotos] = useState([]);
   const [mediaReady, setMediaReady] = useState(false);
   const [face, setFace] = useState(null);
+  // The full 1,489-standard TISI list, fetched on demand — no longer inlined
+  // in otop_insights.json, which the Atlas view would have paid for on every
+  // visit. Same URL Champions fetches, so the browser fetches it once.
+  const [standards, setStandards] = useState(null);
 
   const { byProvince, reachGap = [], national } = insights;
   const ordered = useMemo(() => [...byProvince].sort((a, b) => a.code - b.code), [byProvince]);
@@ -61,6 +65,15 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
     loadRevenue().then((r) => { if (!cancelled) setRevenue(r); }).catch(() => {});
     return () => { cancelled = true; };
   }, [revenue]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/otop_standards.json', { cache: 'no-cache' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((s) => { if (!cancelled && s?.standards) setStandards(s); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -136,8 +149,8 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
   }, [records]);
 
   const matchedStandards = useMemo(() => {
-    if (!records || !insights.standards?.standards) return [];
-    const allStandards = insights.standards.standards;
+    if (!records || !standards?.standards) return [];
+    const allStandards = standards.standards;
     const seen = new Set();
     const list = [];
     for (const r of records) {
@@ -150,7 +163,7 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
       }
     }
     return list;
-  }, [records, insights.standards]);
+  }, [records, standards]);
 
   const certifiedRecords = useMemo(() => {
     if (!records) return [];

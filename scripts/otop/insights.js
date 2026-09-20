@@ -44,6 +44,15 @@ if (!index.totals || typeof index.totals.records !== 'number') {
   process.exit(1);
 }
 
+// Per-resource reports moved out of otop_meta.json (1.9 MB the browser was
+// parsing on every page load for five counts). Build-time consumers read them
+// from the sidecar's data file; the fallback keeps a stale checkout's
+// meta.resources working so the build never silently loses the funnel.
+const resourcesPath = path.join(ROOT, 'otop/data/meta-resources.json');
+const metaResources = fs.existsSync(resourcesPath)
+  ? (JSON.parse(fs.readFileSync(resourcesPath, 'utf8')).resources ?? [])
+  : (meta.resources ?? []);
+
 /**
  * Read the corpus back out of the province shards rather than from a flat file.
  * Above 20,000 records the flat file is not written at all, so the shards are
@@ -666,7 +675,7 @@ const revenue = (() => {
  * what happens when this number lives in a handoff note instead of here.
  */
 const catalogue = (() => {
-  const agg = (meta.resources ?? []).filter((r) => r.kind === 'aggregate-economic');
+  const agg = metaResources.filter((r) => r.kind === 'aggregate-economic');
   return {
     resourcesCached: meta.counts.resourcesCached,
     resourcesUsable: meta.counts.resourcesUsable,
@@ -687,8 +696,8 @@ const catalogue = (() => {
 const gaps = (() => {
   const total = records.length;
   // Funnel: catalogue titles → usable producer lists → accepted rows.
-  const titles = new Set((meta.resources ?? []).map((r) => (r.datasetTitle ?? '').trim()).filter(Boolean));
-  const usableTitles = new Set((meta.resources ?? []).filter((r) => r.usable).map((r) => (r.datasetTitle ?? '').trim()).filter(Boolean));
+  const titles = new Set(metaResources.map((r) => (r.datasetTitle ?? '').trim()).filter(Boolean));
+  const usableTitles = new Set(metaResources.filter((r) => r.usable).map((r) => (r.datasetTitle ?? '').trim()).filter(Boolean));
   const funnel = {
     resourcesCached: meta.counts.resourcesCached,
     resourcesUsable: meta.counts.resourcesUsable,
@@ -840,8 +849,18 @@ const insights = {
   // State certification: the มผช. holder join, judged at build time.
   certification,
 
-  // Technical standards and geographic basins
-  standards: standardsPayload,
+  // Technical standards and geographic basins. Only the summary keys are
+  // inlined — the full 1,489-standard list is already published as
+  // otop_standards.json, and inlining it here doubled the artefact the
+  // default Atlas view parses (630 KB of it read by nobody on this page).
+  standards: standardsPayload
+    ? {
+        builtAt: standardsPayload.builtAt ?? null,
+        source: standardsPayload.source ?? null,
+        total: standardsPayload.total,
+        byCategory: standardsPayload.byCategory,
+      }
+    : null,
   topBasins,
 
   // Revenue aggregates (null when the revenue stage degraded — the Atlas
