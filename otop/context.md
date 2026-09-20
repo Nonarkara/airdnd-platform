@@ -71,6 +71,12 @@ zero; 4.7% median table gap); certification (5 buyer-ready); geography
 
 - Guardrails: 34 core tests (`test/otop_core.test.js`: over-merge, ranked-key
   trap, provenance, grade rejects) + 151 total, all green.
+- **Perf fix (21a286d):** default-view payload 2.7 MB → ~547 KB. Served
+  `otop_meta.json` is 1.2 KB (per-resource reports live in
+  `otop/data/meta-resources.json`, build-time only); `otop_insights.json` no
+  longer inlines the 1,489-standard list (`otop_standards.json` is the one
+  copy; ProvinceDossier + Champions fetch it on demand). Dead `lib/load.js`
+  deleted.
 - `test/heartbeat.test.js` removed (Supabase-env contamination of OTOP suite).
 - Known, not introduced today: 2 pre-existing eslint `react-hooks/refs`
   errors in `App.jsx` state init; `npm audit` transitives (brace-expansion,
