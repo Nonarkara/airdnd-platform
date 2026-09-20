@@ -166,6 +166,56 @@
   color: var(--color-cream);
 }
 
+.map-quickjump-chip.is-selected {
+  border-color: var(--color-action);
+  color: var(--color-action);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.map-quickjump-chip.is-selected .map-quickjump-count {
+  background: transparent;
+  color: var(--color-action);
+  border-color: var(--color-action);
+}
+
+.map-quickjump-clear {
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--color-line);
+  background: transparent;
+  color: var(--color-cream-dim);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.map-quickjump-clear:hover,
+.map-quickjump-clear:focus-visible {
+  border-color: var(--color-action);
+  color: var(--color-action);
+  outline: none;
+}
+
+.map-city-filter-indicator {
+  margin: 0 0 0.75rem;
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+  color: var(--color-cream-dim);
+}
+
+.map-city-filter-indicator strong {
+  color: var(--color-action);
+  font-weight: 600;
+}
+
+.map-city-filter-indicator small {
+  margin-left: 0.6rem;
+  opacity: 0.75;
+}
+
 /* Data source filter row — Telegram vs Longdo chips + search input. */
 .listing-map-datasources {
   display: flex;
@@ -298,7 +348,6 @@
   width: 14px;
   height: 14px;
   box-sizing: border-box;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .longdo-pin:hover {
@@ -322,7 +371,6 @@
   font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .longdo-cluster span {

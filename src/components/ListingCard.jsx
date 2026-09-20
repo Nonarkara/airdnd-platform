@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import {
   formatSourceChannelName,
   getSafeListingGalleryUrls,
+  getLatestPhotoUrl,
   isListingNew,
   formatTimeAgo,
   coverVariant,
@@ -26,7 +27,9 @@ function priceDisplay(listing) {
 function ListingCard({ listing, onClick, priority = false }) {
   const { t } = useLanguage();
   const galleryUrls = getSafeListingGalleryUrls(listing);
-  const primaryImage = galleryUrls[0] || null;
+  // Latest photo leads: the card points to the freshest set, not the first archived.
+  const primaryImage = getLatestPhotoUrl(listing) || galleryUrls[0] || null;
+  const photoCount = galleryUrls.length;
   const localFallback = primaryImage ? `/images/${primaryImage.split('/').pop()}` : null;
   const photoCandidates = useMemo(
     () => [primaryImage, localFallback].filter((u, i, arr) => u && arr.indexOf(u) === i),
@@ -78,6 +81,11 @@ function ListingCard({ listing, onClick, priority = false }) {
               onError={photo.onError}
             />
           </div>
+        )}
+        {photoCount > 0 && (
+          <span className="lcard__photo-count" title={`${photoCount} photo${photoCount === 1 ? '' : 's'}`}>
+            {photoCount}P
+          </span>
         )}
       </div>
 

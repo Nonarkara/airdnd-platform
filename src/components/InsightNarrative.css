@@ -2,7 +2,7 @@
   background: var(--bg-2);
   border: 1px solid var(--line);
   padding: var(--s4);
-  border-radius: var(--r-md);
+  border-radius: 0;
   margin-bottom: var(--s5);
   font-family: var(--font-mono);
   position: relative;
@@ -68,7 +68,6 @@
 }
 
 @keyframes pulse-dot {
-  0% { box-shadow: 0 0 0 0 rgba(255, 179, 71, 0.7); }
-  70% { box-shadow: 0 0 0 6px rgba(255, 179, 71, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 179, 71, 0); }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
 }

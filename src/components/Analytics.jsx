@@ -377,7 +377,7 @@ export default function Analytics() {
       </PageBanner>
       <InsightNarrative analytics={data} mode="global" />
       <FieldIntelligence listings={listings} />
-      <VisualCharts analytics={data} />
+      <VisualCharts analytics={data} eumems={euphemisms} />
       <section className="an-stats-grid">
         <Stat label="Active Businesses" value={data.total} />
         <Stat label="Image Reuse Rate" value={data.reuseRate} unit="%" />

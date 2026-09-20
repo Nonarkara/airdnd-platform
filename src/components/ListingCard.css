@@ -7,6 +7,24 @@
 .cv6 { background: #2a2418; }
 .cv1 .photo__glyph { color: var(--mango); }
 
+.lcard__photo-count {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  z-index: 2;
+  padding: 1px 3px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
 .lcard__venue { min-width: 0; }
 
 .lcard__name-row {
