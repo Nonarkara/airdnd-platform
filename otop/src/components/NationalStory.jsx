@@ -242,6 +242,44 @@ export default function NationalStory() {
         </div>
       </section>
 
+      <section className="ns-ch">
+        <Title en="Chapter 6 · What the public says" th="บทที่ 6 · เสียงของประชาชน" />
+        <Pull>Outside the registry, producers say they cannot sell online, tourists say they cannot find the makers again — and the airport tills say curation sells.</Pull>
+        <P>
+          The producers' own account is precise. Among 3-star OTOP groups in Chiang Rai, 11 of 13
+          cite marketing and PR as the blocker: members are mostly elderly, with no online skills,
+          no product photography, and no practice talking to customers through social media — while
+          raw-material costs rise faster than the prices they can charge.{' '}
+          <Source href="https://so06.tci-thaijo.org/index.php/JMSD/article/download/257433/175873">Peer-reviewed study, JMSD via ThaiJO</Source>.
+        </P>
+        <P>
+          Curation is the proven way through. The OTOP Select airport stores carry 186 products
+          from 64 producers at Don Mueang alone, and Suvarnabhumi plus Phuket cleared 324 million
+          baht — foot traffic plus a trusted shelf, not a longer catalogue.{' '}
+          <Source href="https://thailand.go.th/public/event-detail/otop-select-erzielt-umstze-in-millionenhhe-und-begrt-touristen-aus-aller-welt">thailand.go.th, 2024-09-09</Source>.
+        </P>
+        <P>
+          Tourists already love the product when they can touch it: the OTOP night market in
+          Patong holds 4.2 stars across some six thousand public reviews, praised for variety,
+          bargaining, and street food — the same discovery that dies the moment the trip ends.{' '}
+          <Source href="https://airial.travel/attractions/thailand/tambon-kathu/otop-patong-night-market-phuket-QkwG5jxC">Public review aggregation</Source>.
+        </P>
+        <P>
+          That ending is the discovery gap this site exists to close. An expat shop serving
+          long-stay visitors describes its whole mission as the days otherwise spent searching
+          markets or retracing a journey to a distant village — the maker is real, the route
+          back is not.{' '}
+          <Source href="https://otopthailand.com/about-me">otopthailand.com</Source>.
+          And the trust anchor buyers already recognise is the grade: the official five-star
+          showcase lists 569 products, a tiny curated shelf above a 154,078-row registry.{' '}
+          <Source href="https://otop5star.com/">otop5star.com</Source>.
+        </P>
+        <div className="ns-stats">
+          <Stat label="Groups citing marketing pain" th="กลุ่มที่ขายออนไลน์ไม่เป็น" value="11 of 13" sub="3-star groups, Chiang Rai study" />
+          <Stat label="Airport Select sales" th="ยอดขายสนามบิน" value="฿324M+" sub="Suvarnabhumi + Phuket" />
+        </div>
+      </section>
+
       <footer className="ns-foot">
         <p>
           Architect: <strong>Dr Non Arkaraprasertkul</strong> · PhD Anthropologist (Harvard),

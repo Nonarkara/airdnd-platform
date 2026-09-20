@@ -10,6 +10,8 @@ import DemandTides from './components/DemandTides.jsx';
 import Matchmaker from './components/Matchmaker.jsx';
 import History from './components/History.jsx';
 import CrossReferences from './components/CrossReferences.jsx';
+import DataBank from './components/DataBank.jsx';
+import ViewHero from './components/ViewHero.jsx';
 
 // Leaflet is ~150KB and only the B2B lens draws a map. Split it so the B2C
 // path never pays for it.
@@ -40,7 +42,7 @@ export default function App() {
   // reader what any of them mean.
   const [view, setView] = useState(() => {
     const urlView = new URLSearchParams(window.location.search).get('view');
-    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs'].includes(urlView)) return urlView;
+    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs', 'bank'].includes(urlView)) return urlView;
     return 'atlas';
   });
   const [provinceCode, setProvinceCode] = useState(() => {
@@ -207,6 +209,9 @@ export default function App() {
             </button>
             <button type="button" aria-current={view === 'crossrefs'} onClick={() => setView('crossrefs')}>
               <Bi en="Cross-refs" th="เชื่อมโยง" />
+            </button>
+            <button type="button" aria-current={view === 'bank'} onClick={() => setView('bank')}>
+              <Bi en="Data Bank" th="คลังข้อมูล" />
             </button>
             {view === 'province' && <button type="button" aria-current>
               <Bi en="Province" th="จังหวัด" />
@@ -390,17 +395,14 @@ export default function App() {
         {view === 'atlas' && (
           <section className="sec" id="atlas">
             <div className="wrap">
-              <div className="sec-h">
-                <h2 className="sec-t">
-                  <Bi en="Atlas" th="แผนที่ข้อมูล" />
-                </h2>
-                <span className="sec-n">
-                  <Bi
-                    en="the whole registry as one information package — and the zones it left blank"
-                    th="ทะเบียนทั้งหมดในรูปแบบชุดข้อมูลเดียว — และช่องว่างที่เหลืออยู่"
-                  />
-                </span>
-              </div>
+              <ViewHero
+                eyebrow={<Bi en="Atlas" th="แผนที่ข้อมูล" />}
+                headline="The whole registry as one package."
+                stake={<Bi
+                  en="Seven chapters, one question each — start with Findings: what the data says. Then the zones it left blank."
+                  th="เจ็ดบท บทละหนึ่งคำถาม — เริ่มที่ Findings แล้วดูช่องว่างที่ข้อมูลไม่ครอบคลุม"
+                />}
+              />
               {insightsError && (
                 <p className="empty">The national rollup could not be loaded — {insightsError}. Nothing is shown rather than something substituted.</p>
               )}
@@ -443,17 +445,14 @@ export default function App() {
         {view === 'matchmaker' && (
           <section className="sec" id="matchmaker">
             <div className="wrap">
-              <div className="sec-h">
-                <h2 className="sec-t">
-                  <Bi en="The Matchmaker" th="จับคู่" />
-                </h2>
-                <span className="sec-n">
-                  <Bi
-                    en="where the supply is, where the money already is — the triangulation one³ does for everything"
-                    th="ที่ไหนมีอุปทาน ที่ไหนมีเงิน — สามเหลี่ยมเดียวที่ one³ ใช้ทุกอย่าง"
-                  />
-                </span>
-              </div>
+              <ViewHero
+                eyebrow={<Bi en="The Matchmaker" th="จับคู่" />}
+                headline="Where the supply is, where the money already is."
+                stake={<Bi
+                  en="Provinces ranked by supply × demand × routability — pick a category and read the triangle."
+                  th="จัดอันดับจังหวัดจากอุปทาน × อุปสงค์ × การเข้าถึง — เลือกประเภทแล้วอ่านสามเหลี่ยม"
+                />}
+              />
               <Matchmaker onSelectProvince={openProvince} />
             </div>
           </section>
@@ -462,17 +461,14 @@ export default function App() {
         {view === 'briefs' && (
           <section className="sec" id="briefs">
             <div className="wrap">
-              <div className="sec-h">
-                <h2 className="sec-t">
-                  <Bi en="Briefs" th="สรุป" />
-                </h2>
-                <span className="sec-n">
-                  <Bi
-                    en="six forwardable cards — one number, one chart, what it means, what to do"
-                    th="การ์ดหกใบพร้อมส่งต่อ — ตัวเลขหนึ่ง ค่าแผนภูมิหนึ่ง ความหมายและทางออก"
-                  />
-                </span>
-              </div>
+              <ViewHero
+                eyebrow={<Bi en="Briefs" th="สรุป" />}
+                headline="Six forwardable cards."
+                stake={<Bi
+                  en="One number, one chart, what it means, what to do — copy the link or export the image."
+                  th="หนึ่งตัวเลข หนึ่งแผนภูมิ ความหมายและทางออก — ส่งลิงก์หรือบันทึกภาพได้"
+                />}
+              />
               <Suspense fallback={<p className="empty">Loading the briefs…</p>}>
                 <Briefs insights={insights} onSelectProvince={openProvince} />
               </Suspense>
@@ -483,17 +479,14 @@ export default function App() {
         {view === 'tides' && (
           <section className="sec" id="tides">
             <div className="wrap">
-              <div className="sec-h">
-                <h2 className="sec-t">
-                  <Bi en="Demand Tides" th="กระแสความต้องการ" />
-                </h2>
-                <span className="sec-n">
-                  <Bi
-                    en="77 provinces × 5 categories = 385 cells, each a 3-year revenue trajectory"
-                    th="77 จังหวัด × 5 ประเภท = 385 เซลล์ แต่ละเซลล์คือแนวโน้ม 3 ปี"
-                  />
-                </span>
-              </div>
+              <ViewHero
+                eyebrow={<Bi en="Demand Tides" th="กระแสความต้องการ" />}
+                headline="Where is your category moving — and where is it stalling?"
+                stake={<Bi
+                  en="385 cells, each a 3-year revenue trajectory. Green up, red down, grey flat — a province beating the national row is doing real work."
+                  th="385 เซลล์ แต่ละเซลล์คือแนวโน้มรายได้ 3 ปี — จังหวัดที่ชนะค่าเฉลี่ยประเทศกำลังทำงานจริง"
+                />}
+              />
               {insightsError && <p className="empty">The revenue artefact could not be loaded — {insightsError}.</p>}
               {!insights && !insightsError && <p className="empty">Loading the revenue artefact…</p>}
               {insights && <Suspense fallback={<p className="empty">Loading the demand grid…</p>}>
@@ -506,17 +499,14 @@ export default function App() {
         {view === 'champions' && (
           <section className="sec" id="champions">
             <div className="wrap">
-              <div className="sec-h">
-                <h2 className="sec-t">
-                  <Bi en="Reachable Champions" th="แชมป์ที่ติดต่อได้" />
-                </h2>
-                <span className="sec-n">
-                  <Bi
-                    en="4-5★ OTOP producers the registry says CAN be reached — the buyer's starting list"
-                    th="ผู้ผลิต 4-5 ดาวที่ติดต่อได้ — รายชื่อตั้งต้นสำหรับผู้ซื้อ"
-                  />
-                </span>
-              </div>
+              <ViewHero
+                eyebrow={<Bi en="Reachable Champions" th="แชมป์ที่ติดต่อได้" />}
+                headline="The buyer's starting list."
+                stake={<Bi
+                  en="4–5★ producers the registry says CAN be reached — out of 154,078 records, only the few carrying both a grade and a contact."
+                  th="ผู้ผลิต 4–5 ดาวที่ติดต่อได้ — จาก 154,078 รายการ เหลือเพียงไม่กี่รายที่มีทั้งคะแนนและช่องทางติดต่อ"
+                />}
+              />
               <Champions onSelectProvince={openProvince} />
             </div>
           </section>
@@ -525,6 +515,14 @@ export default function App() {
         {view === 'story' && (
           <section className="sec" id="story">
             <div className="wrap">
+              <ViewHero
+                eyebrow={<Bi en="Story" th="เรื่องเล่า" />}
+                headline="The map, the money, and the names no one can route to."
+                stake={<Bi
+                  en="Five chapters plus what the public says — every number a row in the source."
+                  th="ห้าบทพร้อมเสียงของประชาชน — ทุกตัวเลขมาจากข้อมูลจริง"
+                />}
+              />
               <NationalStory />
             </div>
           </section>
@@ -533,17 +531,14 @@ export default function App() {
         {view === 'history' && (
           <section className="sec" id="history">
             <div className="wrap">
-              <div className="sec-h">
-                <h2 className="sec-t">
-                  <Bi en="OTOP: 25 Years" th="25 ปี" />
-                </h2>
-                <span className="sec-n">
-                  <Bi
-                    en="the seed, the boom, the silence, the platform — every event in the public record"
-                    th="เมล็ดพันธุ์ ความเฟื่องฟู ความเงียบ และแพลตฟอร์ม"
-                  />
-                </span>
-              </div>
+              <ViewHero
+                eyebrow={<Bi en="OTOP: 25 Years" th="25 ปี" />}
+                headline="The seed, the boom, the silence, the platform."
+                stake={<Bi
+                  en="Where OTOP came from — and what the 5★ grade actually scores."
+                  th="ที่มาของ OTOP — และความหมายจริงของคะแนน 5 ดาว"
+                />}
+              />
               <History />
             </div>
           </section>
@@ -552,18 +547,31 @@ export default function App() {
         {view === 'crossrefs' && (
           <section className="sec" id="crossrefs">
             <div className="wrap">
-              <div className="sec-h">
-                <h2 className="sec-t">
-                  <Bi en="Cross-references" th="เชื่อมโยงข้อมูล" />
-                </h2>
-                <span className="sec-n">
-                  <Bi
-                    en="OTOP joined with the country the producers sit in — population, tourism, internet"
-                    th="OTOP เชื่อมกับประเทศที่ผู้ผลิตอยู่อาศัย — ประชากร ท่องเที่ยว อินเทอร์เน็ต"
-                  />
-                </span>
-              </div>
+              <ViewHero
+                eyebrow={<Bi en="Cross-references" th="เชื่อมโยงข้อมูล" />}
+                headline="OTOP against the country it sits in."
+                stake={<Bi
+                  en="Per-capita supply, tourist money vs reachable records, broadband vs reachability — Phuket's 14.1M tourists against near-zero reachable records."
+                  th="อุปทานต่อหัว เงินท่องเที่ยวกับผู้ผลิตที่ติดต่อได้ — ภูเก็ตนักท่องเที่ยว 14.1 ล้าน แต่แทบไม่มีรายการที่ติดต่อได้"
+                />}
+              />
               <CrossReferences />
+            </div>
+          </section>
+        )}
+
+        {view === 'bank' && (
+          <section className="sec" id="bank">
+            <div className="wrap">
+              <ViewHero
+                eyebrow={<Bi en="Data Bank" th="คลังข้อมูล" />}
+                headline="726 datasets from data.go.th — the whole bank behind this site."
+                stake={<Bi
+                  en="Every list the portal returned, shelved by kind. Pick a shelf: the pulled rows show what the build actually read."
+                  th="ทุกรายการที่พอร์ทัลส่งมา จัดเป็นหมวดหมู่ — แถวที่ดึงมาแสดงสิ่งที่ระบบอ่านจริง"
+                />}
+              />
+              <DataBank />
             </div>
           </section>
         )}

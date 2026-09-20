@@ -16,7 +16,8 @@ npm run otop:dev     # ③ localhost:5180 · npm run otop:site → dist-otop/ �
 ```
 
 `otop:build` = `build.js` (orchestrator) + `standards` + `revenue` +
-`insights` + `champions` + `anchors` + `graph` + `briefs` + `province-faces`.
+`insights` + `champions` + `anchors` + `graph` + `briefs` + `province-faces` +
+`datasets` (Data Bank inventory → `otop_datasets.json`).
 `build.js` itself is split: `scripts/otop/build/` holds `read_cache`,
 `process_resources`, `certificate`, `tambon`, `shards`, `index`, `meta`.
 `npm run otop:verify` smoke-tests the live deploy (15 checks).
@@ -45,11 +46,17 @@ State + routing + view shells only. Leaves live elsewhere: 15+ components in
 `components/` (Atlas, ProvinceDossier, Briefs, ProvinceMap lazy-split),
 `lib/` holds `shards`, `insights`, `requirement` (URL round-trip),
 `completeness` (condition-of-record rollup); `components/Bi.jsx` holds the
-bilingual chip + hero gauge. Bilingual EN/TH throughout; `lang="th"` on Thai
-spans (screen-reader pronunciation). One wordmark per viewport (header = nav +
-status only). Shared province links open phone-first on the dossier. Design
-tokens: workspace `AGENTS.md` §3 (one amber accent, zero radius/gradient/
-shadow); this file adds project fact, never loosens that law.
+bilingual chip + hero gauge. Every tab opens with a `ViewHero` (the question,
+the striking fact, the stake) reusing sec-h/sec-t/sec-n — zero new CSS.
+Views: match, atlas, province, matchmaker, briefs, tides, champions, story
+(+ public-voices chapter: producer pain, airport curation, tourist love,
+discovery gap, grade trust — all sourced), history, crossrefs, **bank**
+(Data Bank: 726 datasets on 7 shelves, 1/3 list + 2/3 detail).
+Bilingual EN/TH throughout; `lang="th"` on Thai spans (screen-reader
+pronunciation). One wordmark per viewport (header = nav + status only).
+Shared province links open phone-first on the dossier. Design tokens:
+workspace `AGENTS.md` §3 (one amber accent, zero radius/gradient/shadow);
+this file adds project fact, never loosens that law.
 
 ## Data (national pull, reconciled)
 

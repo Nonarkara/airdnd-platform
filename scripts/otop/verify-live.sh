@@ -97,9 +97,10 @@ check_json otop_tambons.json  "d.coverage && d.tambons.length > 5000 ? \`\${d.co
 check_json otop_graph.json    "d.nodes.length > 100 && d.edges.length > 100 ? \`\${d.nodes.length} nodes · \${d.edges.length} edges\` : 'ERR universe graph missing or truncated'" "otop_graph.json"
 check_json otop_insights.json "d.certification && d.certification.certified > 10000 ? \`\${d.certification.certified.toLocaleString()} certified · \${d.certification.valid.toLocaleString()} valid\` : 'ERR certification join missing — old build served'" "certification join"
 check_json p/34.json          "Array.isArray(d) ? \`shard TH-34 · \${d.length} records\` : 'ERR shard is not an array'" "province shard"
-check_json otop_briefs.json   "d.cards && d.cards.snapshot && d.provinces.length === 77 ? \`5 cards · \${d.provinces.length} one-liners\` : 'ERR briefs cards missing — old build served'" "otop_briefs.json"
+check_json otop_briefs.json   "d.cards && d.cards.snapshot && d.provinces.length === 77 ? \`6 cards · \${d.provinces.length} one-liners\` : 'ERR briefs cards missing — old build served'" "otop_briefs.json"
 check_json otop_province_faces.json "d.provinces && d.provinces.length === 77 ? \`\${d.provinces.length} signature packs · \${d.counts.withNamedProducts} with named products\` : 'ERR province faces missing'" "otop_province_faces.json"
 check_json media/provinces/index.json "d.counts && d.counts.provinces >= 1 ? \`\${d.counts.withPhotos}/\${d.counts.provinces} provinces with licensed photos\` : 'ERR province media index missing'" "province media index"
+check_json otop_datasets.json "d.totals && d.totals.discovered > 500 && d.groups.length >= 7 ? \`\${d.totals.discovered} discovered · \${d.totals.pulled} pulled · \${d.groups.length} shelves\` : 'ERR data bank missing — old build served'" "otop_datasets.json"
 
 # 4. The SPA fallback. Without it every deep link 404s and only the bare domain
 #    works — which nobody notices until someone shares a link.

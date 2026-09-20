@@ -62,6 +62,7 @@ export function requirementToUrl(view, lens, r, code) {
   if (view === 'tides') p.set('view', 'tides');
   if (view === 'matchmaker') p.set('view', 'matchmaker');
   if (view === 'briefs') p.set('view', 'briefs');
+  if (view === 'bank') p.set('view', 'bank');
   if (view === 'province' && code != null) { p.set('view', 'province'); p.set('code', String(code)); }
   // Preserve the active Atlas tab across requirement/lens changes so a user
   // who lands on `?view=atlas&tab=reach` and then changes a filter does
