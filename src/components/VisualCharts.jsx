@@ -64,6 +64,14 @@ export default function VisualCharts({ analytics, eumems }) {
   // Message type funnel
   const maxMsgType = Math.max(...(messageTypeRows || []).map(([, c]) => c), 1);
 
+  // Linguistic decoder accepts either an array of {label, count, implied}
+  // or a plain {label: count} map. Object.entries on the array form would
+  // render the row object itself as a React child (React error #31).
+  const eumemRows = Array.isArray(eumems)
+    ? eumems.map((e) => [e.label, e.count])
+    : Object.entries(eumems || {});
+  const maxEumem = Math.max(...eumemRows.map(([, c]) => c), 1);
+
   return (
     <div className="visual-charts-container">
       {/* Price Distribution */}
@@ -181,14 +189,13 @@ export default function VisualCharts({ analytics, eumems }) {
       </section>
 
       {/* Linguistic Decoder - if euphemisms provided */}
-      {eumems && (
+      {eumems && eumemRows.length > 0 && (
         <section className="chart-section">
           <h3>Linguistic Decoder</h3>
           <p className="chart-sub">How parlours describe themselves in community posts.</p>
           <div className="linguistic-decoder">
-            {Object.entries(eumems || {}).map(([label, count]) => {
-              const max = Math.max(...Object.values(eumems || {}), 1);
-              const pct = max > 0 ? (count / max) * 100 : 0;
+            {eumemRows.map(([label, count]) => {
+              const pct = maxEumem > 0 ? (count / maxEumem) * 100 : 0;
               return (
                 <div key={label} className="linguistic-row">
                   <span className="linguistic-label">{label}</span>
