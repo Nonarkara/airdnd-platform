@@ -167,31 +167,32 @@ export default function Analytics() {
   const load = async () => {
     setIsRefreshing(true);
     try {
-      const [patternResponse, feedResponse] = await Promise.all([
-        fetch('/patterns.json', { cache: 'no-store' }),
-        fetch('/feed.json', { cache: 'no-store' }),
-      ]);
-      const patternData = patternResponse.ok ? await patternResponse.json() : null;
-      const feedRows = feedResponse.ok ? await feedResponse.json() : [];
-      if (patternData) setPatterns(patternData);
+    // All three snapshot files start in parallel — data.json no longer waits
+    // behind patterns/feed before first paint.
+    const [patternData, feedRows, snapshotRows] = await Promise.all([
+      fetch('/patterns.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      fetch('/feed.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
+      hasLoadedRef.current
+        ? Promise.resolve(null)
+        : fetch('/data.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+    ]);
+    if (patternData) setPatterns(patternData);
 
-      if (!hasLoadedRef.current) {
-        // First paint renders the cached snapshot immediately instead of
-        // holding the page behind "Loading industry data..." while the live
-        // query answers. The query below (bounded by ANALYTICS_TIMEOUT_MS)
-        // upgrades the page when it resolves; the badge names the tier.
-        const snapshotResponse = await fetch('/data.json', { cache: 'no-store' });
-        const snapshotRows = snapshotResponse.ok ? await snapshotResponse.json() : [];
-        if (Array.isArray(snapshotRows) && snapshotRows.length > 0) {
-          setListings(snapshotRows.map(snapshotToAnalyticsListing));
-          setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
-          setAnalysisNow(Date.now());
-          setLastRefreshed(new Date());
-          setIsSnapshot(true);
-        }
-        hasLoadedRef.current = true;
-        setLoading(false);
+    if (!hasLoadedRef.current) {
+      // First paint renders the cached snapshot immediately instead of
+      // holding the page behind "Loading industry data..." while the live
+      // query answers. The query below (bounded by ANALYTICS_TIMEOUT_MS)
+      // upgrades the page when it resolves; the badge names the tier.
+      if (Array.isArray(snapshotRows) && snapshotRows.length > 0) {
+        setListings(snapshotRows.map(snapshotToAnalyticsListing));
+        setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
+        setAnalysisNow(Date.now());
+        setLastRefreshed(new Date());
+        setIsSnapshot(true);
       }
+      hasLoadedRef.current = true;
+      setLoading(false);
+    }
 
       console.log('Fetching live listings from Firestore for analytics...');
       const q = query(collection(db, 'companions'), orderBy('updatedAt', 'desc'), limit(1200));
@@ -391,6 +392,7 @@ export default function Analytics() {
         <h1 id="an-title">{t.pages?.analytics?.title || 'Thailand Massage & Spa Industry'}</h1>
         <p>
           {(t.pages?.analytics?.lead || 'Real-time market intelligence from {total} businesses across {cities}+ cities. Mined from {messages} community messages and {photos} archived photos. Every figure on this page traces back to a specific listing — click any row to read the source.')
+            .replace('Real-time', isSnapshot ? 'Snapshot' : 'Real-time')
             .replace('{total}', String(data.total ?? '—'))
             .replace('{cities}', String(data.cities?.length ?? '—'))
             .replace('{messages}', data.msgCount?.toLocaleString?.() || String(data.msgCount || '—'))
