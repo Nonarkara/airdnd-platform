@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { formatTelDisplay } from '../lib/normalization';
@@ -128,6 +128,8 @@ export default function Analytics() {
   const [healthSnap, setHealthSnap] = useState(null);
   const [economyData, setEconomyData] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isSnapshot, setIsSnapshot] = useState(false);
+  const hasLoadedRef = useRef(false);
 
   // Pull the precomputed product-patterns dataset (Methodology §08).
   useEffect(() => {
@@ -165,9 +167,35 @@ export default function Analytics() {
   const load = async () => {
     setIsRefreshing(true);
     try {
+      const [patternResponse, feedResponse] = await Promise.all([
+        fetch('/patterns.json', { cache: 'no-store' }),
+        fetch('/feed.json', { cache: 'no-store' }),
+      ]);
+      const patternData = patternResponse.ok ? await patternResponse.json() : null;
+      const feedRows = feedResponse.ok ? await feedResponse.json() : [];
+      if (patternData) setPatterns(patternData);
+
+      if (!hasLoadedRef.current) {
+        // First paint renders the cached snapshot immediately instead of
+        // holding the page behind "Loading industry data..." while the live
+        // query answers. The query below (bounded by ANALYTICS_TIMEOUT_MS)
+        // upgrades the page when it resolves; the badge names the tier.
+        const snapshotResponse = await fetch('/data.json', { cache: 'no-store' });
+        const snapshotRows = snapshotResponse.ok ? await snapshotResponse.json() : [];
+        if (Array.isArray(snapshotRows) && snapshotRows.length > 0) {
+          setListings(snapshotRows.map(snapshotToAnalyticsListing));
+          setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
+          setAnalysisNow(Date.now());
+          setLastRefreshed(new Date());
+          setIsSnapshot(true);
+        }
+        hasLoadedRef.current = true;
+        setLoading(false);
+      }
+
       console.log('Fetching live listings from Firestore for analytics...');
       const q = query(collection(db, 'companions'), orderBy('updatedAt', 'desc'), limit(1200));
-      const querySnapshot = await getDocs(q);
+      const querySnapshot = await withTimeout(getDocs(q), ANALYTICS_TIMEOUT_MS, 'Live listings query');
       const liveListings = [];
       querySnapshot.forEach((doc) => {
         const docData = doc.data();
@@ -177,20 +205,13 @@ export default function Analytics() {
         });
       });
 
-      const [patternResponse, feedResponse] = await Promise.all([
-        fetch('/patterns.json', { cache: 'no-store' }),
-        fetch('/feed.json', { cache: 'no-store' }),
-      ]);
-      const patternData = patternResponse.ok ? await patternResponse.json() : null;
-      const feedRows = feedResponse.ok ? await feedResponse.json() : [];
-
-      if (patternData) setPatterns(patternData);
       setListings(liveListings.map(snapshotToAnalyticsListing));
       setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
       setAnalysisNow(Date.now());
       setLastRefreshed(new Date());
+      setIsSnapshot(false);
     } catch (error) {
-      console.warn('Live Firestore analytics failed, falling back to snapshots:', error);
+      console.warn('Live analytics failed, falling back to snapshots:', error);
       const [snapshotResponse, patternResponse, feedResponse] = await Promise.all([
         fetch('/data.json', { cache: 'no-store' }),
         fetch('/patterns.json', { cache: 'no-store' }),
@@ -204,6 +225,7 @@ export default function Analytics() {
       setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
       setAnalysisNow(Date.now());
       setLastRefreshed(new Date());
+      setIsSnapshot(true);
     } finally {
       setLoading(false);
       setIsRefreshing(false);
@@ -361,7 +383,7 @@ export default function Analytics() {
           >
             {isRefreshing ? (t.common?.refreshing || 'Refreshing…') : (t.common?.refresh || 'Refresh')}
           </button>
-          <span className="an-badge">{t.pages?.analytics?.badge || 'Industry Intelligence'}</span>
+          <span className="an-badge">{isSnapshot ? (t.pages?.analytics?.cachedBadge || 'Cached snapshot') : (t.pages?.analytics?.badge || 'Industry Intelligence')}</span>
         </div>
       </header>
 
