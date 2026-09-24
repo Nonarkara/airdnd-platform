@@ -40,9 +40,8 @@ function Header({
   const linkTabs = [
     { id: 'intel', label: t.nav?.intel || 'Intel', href: '/intel' },
     { id: 'insights', label: t.nav?.insights || 'Insights', href: '/insights' },
-    { id: 'health', label: t.nav?.health || 'HIV / STI', href: '/health' },
+    { id: 'health', label: t.nav?.health || 'STDs', href: '/health' },
     { id: 'publicworks', label: t.nav?.publicWorks || 'Public Works', href: '/public-works' },
-    { id: 'places', label: t.nav?.places || 'Photos', href: '/places' },
     { id: 'analytics', label: t.nav?.analytics || 'Analytics', href: '/analytics' },
     { id: 'methodology', label: t.nav?.methodology || 'Method', href: '/methodology' },
   ];

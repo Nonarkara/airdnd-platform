@@ -365,7 +365,7 @@ function Methodology() {
         <p style={{ marginTop: '1.5rem' }}>
           By tracking the velocity of entity resolution (how fast a new provider alias is recognized)
           against its sentiment decay, the AI forms an <strong>Activity Heatmap</strong> (visible in the Analytics dashboard),
-          which serves as a predictive indicator for booking contention.
+          which signals booking contention in real time.
         </p>
       </section>
 

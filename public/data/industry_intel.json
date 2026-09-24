@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastUpdated": "2026-09-08T09:16:52.771Z",
+    "lastUpdated": "2026-09-12T16:51:30.151Z",
     "engineVersion": "2.4.0-pro",
     "status": "ACTIVE_TELEMETRY",
     "sourcesMonitoredCount": 16,
@@ -119,7 +119,7 @@
   "tacticalWire": [
     {
       "id": "wire-101",
-      "timestamp": "2026-09-08T08:58:52.772Z",
+      "timestamp": "2026-09-12T16:33:30.152Z",
       "type": "LINEUP_DISPATCH",
       "category": "Sensual Oil / B2B",
       "area": "Sukhumvit Soi 24",
@@ -131,7 +131,7 @@
     },
     {
       "id": "wire-102",
-      "timestamp": "2026-09-08T08:31:52.772Z",
+      "timestamp": "2026-09-12T16:06:30.152Z",
       "type": "PRICE_UPDATE",
       "category": "Nuru Massage",
       "area": "Ratchada Soi 7 (Huai Khwang)",
@@ -143,7 +143,7 @@
     },
     {
       "id": "wire-103",
-      "timestamp": "2026-09-08T07:41:52.772Z",
+      "timestamp": "2026-09-12T15:16:30.152Z",
       "type": "SAFETY_ADVISORY",
       "category": "Whisper Network",
       "area": "Soi Buakhao",
@@ -155,7 +155,7 @@
     },
     {
       "id": "wire-104",
-      "timestamp": "2026-09-08T06:56:52.772Z",
+      "timestamp": "2026-09-12T14:31:30.152Z",
       "type": "NEW_OPENING",
       "category": "VIP Spa Lounge",
       "area": "Thonglor Soi 13",
@@ -167,7 +167,7 @@
     },
     {
       "id": "wire-105",
-      "timestamp": "2026-09-08T05:46:52.772Z",
+      "timestamp": "2026-09-12T13:21:30.152Z",
       "type": "REGULATORY_NOTE",
       "category": "Nightlife Compliance",
       "area": "Silom / Patpong Corridor",
@@ -179,7 +179,7 @@
     },
     {
       "id": "wire-106",
-      "timestamp": "2026-09-08T03:56:52.772Z",
+      "timestamp": "2026-09-12T11:31:30.152Z",
       "type": "DEMAND_SPIKE",
       "category": "Late Night Sensual",
       "area": "Chang Klan / Loi Kroh",

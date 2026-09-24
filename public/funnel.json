@@ -1,40 +1,39 @@
 {
-  "generatedAt": "2026-09-08T13:12:37.473Z",
+  "generatedAt": "2026-09-24T00:28:21.252Z",
   "shown": {
-    "cards": 84,
-    "withPhoto": 81,
-    "deployablePhotoCards": 81,
+    "cards": 99,
+    "withPhoto": 95,
+    "deployablePhotoCards": 85,
     "photoFilesTracked": 0,
-    "photoFilesMissing": 0,
-    "unverifiedLocation": 5,
-    "channelsRepresented": 5,
+    "photoFilesMissing": 10,
+    "unverifiedLocation": 10,
+    "channelsRepresented": 3,
     "channels": [
-      "@chanelmassage",
       "@relaxsociety2020",
       "@relaxsocietymassage",
-      "dialog:2025289026",
       "dialog:2381945815"
     ]
   },
   "snapshot": {
-    "newestPostAt": "2026-09-08T12:50:47.000Z",
+    "newestPostAt": "2026-09-23T23:34:40.000Z",
     "ageDays": 0
   },
   "intake": {
     "channelsConfigured": 12
   },
   "archive": {
-    "messages": 85646,
-    "photos": 25202,
-    "personaPosts": 4011,
-    "businesses": 92,
-    "duplicationFactor": 43.6
+    "messages": 100355,
+    "photos": 37529,
+    "personaPosts": 7148,
+    "businesses": 110,
+    "duplicationFactor": 65
   },
   "feed": {
     "degraded": false,
-    "builtAt": "2026-09-08T13:06:08.331Z"
+    "builtAt": "2026-09-24T00:15:31.939Z"
   },
   "warnings": [
-    "5 of 12 configured channels are represented"
+    "10 of 10 local photo paths are not committed and will 404 in production",
+    "3 of 12 configured channels are represented"
   ]
 }

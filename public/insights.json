@@ -1,103 +1,105 @@
 {
-  "generatedAt": "2026-08-03T20:04:40.042Z",
+  "generatedAt": "2026-09-12T16:52:10.180Z",
   "corpus": {
-    "personaPosts": 4011,
-    "uniqueBusinesses": 92,
-    "duplicationFactor": 43.6,
-    "maxAliases": 49,
+    "personaPosts": 7148,
+    "uniqueBusinesses": 110,
+    "duplicationFactor": 65,
+    "maxAliases": 59,
     "aliasDist": {
-      "1": 43,
-      "2-4": 40,
-      "5-9": 6,
+      "1": 48,
+      "2-4": 46,
+      "5-9": 12,
       "10-19": 1,
-      "20+": 2
+      "20+": 3
     },
-    "photosArchived": 25202,
-    "messagesTotal": 85646,
-    "channels": 7
+    "photosArchived": 37529,
+    "messagesTotal": 100355,
+    "channels": 9
   },
   "prices": {
-    "mentions": 313,
+    "mentions": 317,
     "median": 200,
     "p25": 200,
     "p75": 200,
     "p95": 700,
     "hist": {
       "100": 6,
-      "200": 246,
+      "200": 250,
       "300": 17,
       "500": 1,
-      "700": 42,
+      "600": 1,
+      "700": 41,
       "900": 1
     }
   },
   "postingHours": [
-    51,
-    31,
-    34,
-    7,
+    69,
+    39,
+    48,
+    12,
     0,
-    17,
-    33,
-    63,
-    202,
-    461,
-    456,
-    373,
-    272,
-    260,
-    260,
-    195,
-    208,
-    213,
-    251,
-    220,
-    142,
-    109,
-    90,
-    63
+    22,
+    45,
+    89,
+    346,
+    891,
+    891,
+    592,
+    487,
+    462,
+    459,
+    374,
+    391,
+    378,
+    438,
+    353,
+    273,
+    221,
+    159,
+    109
   ],
   "postingDays": [
-    587,
-    661,
-    581,
-    478,
-    541,
-    553,
-    610
+    885,
+    1044,
+    1110,
+    982,
+    1011,
+    979,
+    1137
   ],
   "closing": {
     "byHour": {
-      "0": 21,
-      "2": 217,
-      "3": 286,
+      "0": 22,
+      "2": 520,
+      "3": 442,
       "4": 1,
-      "20": 6,
+      "18": 11,
+      "20": 10,
       "21": 2,
-      "22": 679,
-      "23": 1416,
-      "24": 52
+      "22": 1258,
+      "23": 2205,
+      "24": 66
     },
-    "evening": 2097,
-    "afterMidnight": 504
+    "evening": 3465,
+    "afterMidnight": 963
   },
   "channels": {
     "shares": [
       [
         "@relaxsociety2020",
-        3118
+        5636
       ],
       [
         "@relaxsocietymassage",
-        714
+        1243
       ],
       [
         "@keawjaojormmassage",
-        81
+        121
       ],
       [
         "@chanelmassage",
-        54
+        90
       ],
       [
         "ชโนทัย นวดเพื่อสุขภาพ พระราม2",
@@ -105,58 +107,52 @@
       ],
       [
         "Baannine Massage Spa",
-        5
+        17
+      ],
+      [
+        "unknown",
+        1
       ],
       [
         "The​ nicha​ spa",
         1
       ]
     ],
-    "hhi": 6367
+    "hhi": 6524
   },
   "activity": {
-    "active7d": 42,
+    "active7d": 51,
     "active30d": 62,
-    "avgLifespanDays": 36.5,
-    "maxLifespanDays": 102.9
+    "avgLifespanDays": 49.8,
+    "maxLifespanDays": 104
   },
   "euphemisms": {
-    "aroma": 857,
-    "oil": 161,
-    "b2b": 197,
-    "shower": 33,
+    "aroma": 1341,
+    "oil": 241,
+    "b2b": 265,
+    "shower": 101,
     "freestyle": 0
   },
   "contact": {
-    "phone": 97,
-    "line": 40,
-    "telegram": 40,
-    "maps": 75
+    "phone": 98,
+    "line": 38,
+    "telegram": 43,
+    "maps": 74
   },
   "topNetworks": [
     {
       "phoneMasked": "086•••9154",
-      "identities": 49,
+      "identities": 59,
       "businessNames": [
-        "The Bank Massage Club",
+        "Relax Society Massage",
         "Massage Listing บางใหญ",
         "สาวเหนือ นวดลงศอกได้ คุยเก่ง",
         "Louis Spa Bangyai"
       ]
     },
     {
-      "phoneMasked": "083•••6969",
-      "identities": 21,
-      "businessNames": [
-        "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
-        "นวดเก่ง ชำนาญการใช้มือ",
-        "คำหอม นวดเพื่อสุขภาพ",
-        "LOUISSPA"
-      ]
-    },
-    {
       "phoneMasked": "080•••4296",
-      "identities": 14,
+      "identities": 38,
       "businessNames": [
         "PP Spa พระราม 2",
         "Relax Society Massage",
@@ -165,31 +161,42 @@
       ]
     },
     {
-      "phoneMasked": "095•••9639",
-      "identities": 9,
+      "phoneMasked": "083•••6969",
+      "identities": 28,
       "businessNames": [
-        "RELAXO SPA✅สนามบินน้ำ",
+        "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
+        "นวดเก่ง ชำนาญการใช้มือ",
+        "LOUISSPA",
+        "คำหอม นวดเพื่อสุขภาพ"
+      ]
+    },
+    {
+      "phoneMasked": "095•••9639",
+      "identities": 11,
+      "businessNames": [
         "RELAXO SPA",
+        "RELAXO SPA✅สนามบินน้ำ",
         "RELAXO SPA✅สนามบินน้ำ นนทบุร",
         "บริการดีมาก นวดเก่งทุกคน"
       ]
     },
     {
-      "phoneMasked": "083•••6938",
-      "identities": 6,
-      "businessNames": [
-        "นวดดี บิ้วเก่ง เป็นกันเอง",
-        "www.massagehotelbangkok.com",
-        "@ Louis Spa Bangyai"
-      ]
-    },
-    {
       "phoneMasked": "094•••1202",
-      "identities": 6,
+      "identities": 9,
       "businessNames": [
         "นวดดีตามใจไม่หวงตัว ดูเเลดีสุด",
         "the SWAN spa",
         "Relax Society Massage"
+      ]
+    },
+    {
+      "phoneMasked": "083•••6938",
+      "identities": 8,
+      "businessNames": [
+        "คำหอม นวดเพื่อสุขภาพ",
+        "นวดดี บิ้วเก่ง เป็นกันเอง",
+        "www.massagehotelbangkok.com",
+        "@ Louis Spa Bangyai"
       ]
     }
   ]

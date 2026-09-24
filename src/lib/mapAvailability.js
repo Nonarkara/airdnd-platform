@@ -36,7 +36,17 @@ export function isOpenAt(hours, date = new Date()) {
   if (!range) return null;
   if (range.startMinutes === 0 && range.endMinutes === 24 * 60) return true;
 
-  const currentMinutes = date.getHours() * 60 + date.getMinutes();
+  // Thai venues operate in Thailand local time (Asia/Bangkok, UTC+7).
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Bangkok',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  }).formatToParts(date);
+  const hour = Number(parts.find((p) => p.type === 'hour')?.value || 0);
+  const minute = Number(parts.find((p) => p.type === 'minute')?.value || 0);
+  const currentMinutes = (hour % 24) * 60 + minute;
+
   const { startMinutes, endMinutes } = range;
   if (startMinutes === endMinutes) return true;
   if (endMinutes > startMinutes) {

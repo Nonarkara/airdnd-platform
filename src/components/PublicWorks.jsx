@@ -28,7 +28,7 @@ export default function PublicWorks() {
         <h1 id="pw-title">Infrastructure & Urban Density</h1>
         <p>
           Analyzing the intersection of the grey economy and public goods. 
-          Locations of venues naturally align with public transit corridors and commercial zoning density.
+          Venues concentrate along transit corridors and dense commercial zones.
         </p>
       </PageBanner>
 
@@ -56,7 +56,7 @@ export default function PublicWorks() {
           <section className="an-card an-wide">
             <h2>Municipal Zoning Districts</h2>
             <p className="an-card-sub">
-              How businesses align with designated commercial and residential zones.
+              How businesses distribute across commercial and residential zones.
             </p>
             <div className="an-table">
               <div className="an-table-head">

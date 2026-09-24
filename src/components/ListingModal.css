@@ -23,7 +23,7 @@
   overflow-y: auto;
   border: 1px solid var(--color-line);
   background: var(--color-bg);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  box-shadow: var(--sh-lg);
   animation: modal-in 0.24s var(--ease-out);
 }
 
@@ -66,7 +66,7 @@
   height: 2.35rem;
   place-items: center;
   border: 1px solid var(--color-line-soft);
-  border-radius: var(--radius-xs);
+  border-radius: 0;
   background: rgba(2, 4, 7, 0.76);
   color: var(--color-cream);
   font-size: 1.25rem;
@@ -294,7 +294,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   border: 1px solid var(--color-line-soft);
-  border-radius: var(--radius-xs);
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -462,7 +462,7 @@ a.metric-link .metric-value {
   min-height: 2.65rem;
   padding: 0 0.9rem;
   border: 1px solid var(--color-line-soft);
-  border-radius: var(--radius-xs);
+  border-radius: 0;
   background: rgba(247, 251, 255, 0.04);
   color: var(--color-cream-soft);
   font-family: var(--font-mono);
@@ -472,7 +472,7 @@ a.metric-link .metric-value {
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
-  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .modal-contact-btn:hover,
@@ -501,10 +501,6 @@ a.metric-link .metric-value {
   border-color: var(--berry);
   background: var(--berry);
   color: oklch(91% 0 0);
-}
-
-.modal-signal-btn.signal-inquire:hover {
-  box-shadow: none;
 }
 
 .modal-owner-hint {
