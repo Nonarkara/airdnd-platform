@@ -301,7 +301,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   backdrop-filter: none; border-bottom: 1px solid var(--line);
 }
 .site-header__in { max-width: var(--maxw); margin: 0 auto; min-height: var(--header-h); padding-inline: var(--gutter); display: flex; align-items: center; gap: var(--s6); }
-.site-header__in--nav-first { gap: var(--s4); }
+/* Navigation owns a full row; utilities never squeeze destination labels. */
+.site-header__in--nav-first { flex-wrap: wrap; gap: 0; padding-block: 0; }
+.site-header__in--nav-first .nav { flex: 0 0 100%; min-width: 0; order: 1; padding-top: 0; border-top: 0; }
+.site-header__in--nav-first .spacer { display: none; }
+.site-header__in--nav-first .header-actions { order: 2; width: 100%; margin: 0; padding-block: 6px; flex-wrap: nowrap; overflow-x: auto; border-top: 1px solid var(--line); }
+.site-header__in--nav-first .header-actions > * { flex-shrink: 0; }
+.site-header__in--nav-first .nav > * { min-height: 44px; display: inline-flex; align-items: center; padding: 10px 14px; font-size: 14px; letter-spacing: .01em; text-transform: none; white-space: nowrap; }
+.site-header__in--nav-first .nav > :first-child { padding-left: 0; }
+.site-header__in--nav-first .nav { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+.site-header__in--nav-first .nav::-webkit-scrollbar { display: block; height: 3px; }
 /* Brand mark reserved for hero only — do not reintroduce beside a page wordmark. */
 .brand { display: none; }
 .brand__mark {

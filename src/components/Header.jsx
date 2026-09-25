@@ -21,7 +21,6 @@ function Header({
   sourceLabel,
   theme,
   setTheme,
-  activeView,
   setActiveView,
   metrics,
 }) {
@@ -71,6 +70,7 @@ function Header({
   };
 
   const currentPath = location.pathname;
+  const isViewActive = (id) => (currentPath === '/' && id === (location.search.includes('view=feed') ? 'feed' : 'directory')) || (currentPath === '/map' && id === 'map');
   const isLinkActive = (href) => currentPath === href || currentPath.startsWith(`${href}/`);
 
   return (
@@ -81,10 +81,10 @@ function Header({
             <button
               key={tab.id}
               type="button"
-              className={`nav-link-btn${activeView === tab.id ? ' is-active' : ''}`}
+              className={`nav-link-btn${isViewActive(tab.id) ? ' is-active' : ''}`}
               onClick={() => goView(tab)}
               role="tab"
-              aria-selected={activeView === tab.id}
+              aria-selected={isViewActive(tab.id)}
               aria-controls={`${tab.id}-panel`}
             >
               {tab.label}
