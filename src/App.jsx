@@ -782,7 +782,7 @@ function App() {
         path="/public-works"
         element={(
           <Suspense fallback={<div className="page-shell-loading">Loading public works…</div>}>
-            <PublicWorks />
+            <PublicWorks listings={allListings} dataState={dataState} />
           </Suspense>
         )}
       />
