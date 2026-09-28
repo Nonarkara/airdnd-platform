@@ -36,14 +36,28 @@ const SNAPSHOT_FILE = path.join(ROOT, 'public', 'data.json');
 const COLLECTOR_STATE_FILE = path.join(ROOT, '.sabai-scraper-state.json');
 fs.mkdirSync(LOG_DIR, { recursive: true });
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
-  { auth: { persistSession: false } },
-);
+// Built on first use, not at import. computeHealth/computeCollectorHealth below
+// are pure and are imported by the test suite and by anything that only needs to
+// *evaluate* a snapshot. Constructing the client at module scope made the whole
+// file unimportable without credentials, and it failed with a Supabase stack
+// trace instead of a sentence naming the missing variable.
+let supabaseClient = null;
+
+function getSupabase() {
+  if (supabaseClient) return supabaseClient;
+  const url = process.env.VITE_SUPABASE_URL;
+  const key = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) {
+    throw new Error(
+      'heartbeat: set VITE_SUPABASE_URL and VITE_SUPABASE_SERVICE_ROLE_KEY in .env',
+    );
+  }
+  supabaseClient = createClient(url, key, { auth: { persistSession: false } });
+  return supabaseClient;
+}
 
 async function pullSnapshot() {
-  const { data, error } = await supabase
+  const { data, error } = await getSupabase()
     .from('companions')
     .select('*')
     .order('updated_at', { ascending: false, nullsFirst: false })

@@ -27,6 +27,7 @@ import {
 import { syncListingsToFirestore } from './firestore_sync.js';
 
 import { cleanDisplayText, normalizeText } from '../src/lib/normalization.js';
+import { reportCapability } from './capability_report.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
@@ -83,6 +84,14 @@ if (!process.env.TELEGRAM_SESSION) {
 }
 
 const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
+// A present key is not a working key — this says only whether one was supplied.
+// Revocation and quota exhaustion surface through reportCapabilityFailure at the
+// call site, because no startup check can predict them.
+reportCapability('gemini-enrichment', {
+  enabled: Boolean(ai),
+  reason: 'neither GEMINI_API_KEY nor GOOGLE_API_KEY is set in .env',
+  remedy: 'set GEMINI_API_KEY — enrichment runs unvalidated until the first call',
+});
 const stringSession = new StringSession(process.env.TELEGRAM_SESSION);
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
