@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import { reportCapability } from './capability_report.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,6 +18,14 @@ const supabase =
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;
+
+// Announced at import, not per send: the scraper calls this every cycle and a
+// per-call notice would bury itself.
+reportCapability('telegram-notify', {
+  enabled: Boolean(BOT_TOKEN),
+  reason: 'TELEGRAM_BOT_TOKEN missing from .env',
+  remedy: 'set TELEGRAM_BOT_TOKEN; the chat id is auto-discovered on first run',
+});
 const BASE_URL = `https://api.telegram.org/bot${BOT_TOKEN}`;
 const publicDir = path.join(__dirname, '../public');
 

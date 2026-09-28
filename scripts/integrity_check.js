@@ -2,29 +2,56 @@ import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { reportCapability, reportCapabilityFailure, clearCapabilityFailures } from './capability_report.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_SERVICE_ROLE_KEY
-);
+// Same treatment as scripts/heartbeat.js, and for the same reason: built at
+// module scope, this threw "supabaseUrl is required" before any other line in
+// the file could run — including the alerting notice below, which exists
+// precisely to be readable when configuration is incomplete.
+let supabaseClient = null;
+
+function getSupabase() {
+  if (supabaseClient) return supabaseClient;
+  const url = process.env.VITE_SUPABASE_URL;
+  const key = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) {
+    throw new Error(
+      'integrity_check: set VITE_SUPABASE_URL and VITE_SUPABASE_SERVICE_ROLE_KEY in .env',
+    );
+  }
+  supabaseClient = createClient(url, key);
+  return supabaseClient;
+}
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;
 
+// Announced at import, not on the first alert attempt. If integrity checks run
+// clean for a week, an announcement deferred to first use means the operator
+// learns the alarm is dead at exactly the moment they needed it to fire. The
+// whole point is to find out before then.
+const ALERTING_ARMED = reportCapability('telegram-alerting', {
+  enabled: Boolean(TELEGRAM_BOT_TOKEN && TELEGRAM_NOTIFY_CHAT_ID),
+  reason: 'TELEGRAM_BOT_TOKEN or TELEGRAM_NOTIFY_CHAT_ID missing from .env',
+  remedy: 'copy both from the .env that scripts/notify.js already uses',
+});
+
 async function sendTelegramAlert(message) {
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_NOTIFY_CHAT_ID) return;
+  // Was a bare `return`. The reason it is disabled was already stated at import.
+  if (!ALERTING_ARMED) return;
   try {
     await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: TELEGRAM_NOTIFY_CHAT_ID, text: message, parse_mode: 'HTML' }),
     });
+    clearCapabilityFailures('telegram-alerting');
   } catch (err) {
-    console.error('[ALERT] Telegram notification failed:', err.message);
+    reportCapabilityFailure('telegram-alerting', err);
   }
 }
 
@@ -36,7 +63,7 @@ async function runIntegrityCheck() {
   const alerts = [];
 
   // Load all listings
-  const { data: listings, error } = await supabase
+  const { data: listings, error } = await getSupabase()
     .from('companions')
     .select('id, phone, phone_normalized, canonical_key, latitude, longitude, maps_url')
     .limit(10000);
