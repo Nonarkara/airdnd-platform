@@ -1,6 +1,7 @@
 import { getApps, initializeApp } from 'firebase/app';
 import { doc, getFirestore, writeBatch } from 'firebase/firestore';
 import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
+import { getGeoIndex } from './lib/geo.js';
 
 const FIREBASE_CONFIG = {
   projectId: 'sub-i-platform-v3',
@@ -36,7 +37,7 @@ function getDocumentId(listing) {
 }
 
 export async function syncListingsToFirestore(listings) {
-  const publicListings = canonicalizePublicListings(listings, { source: 'supabase', allowUnverified: true })
+  const publicListings = canonicalizePublicListings(listings, { source: 'supabase', allowUnverified: true, geoIndex: getGeoIndex() })
     .map(stripUndefined)
     .filter((listing) => getDocumentId(listing));
 

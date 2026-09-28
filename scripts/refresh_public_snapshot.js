@@ -15,6 +15,7 @@ const supabase = createClient(supabaseUrl, key, {
 
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getGeoIndex } from './lib/geo.js';
 
 const firebaseConfig = {
   projectId: "sub-i-platform-v3",
@@ -49,7 +50,7 @@ try {
   rawData = data || [];
 }
 
-const publicListings = canonicalizePublicListings(rawData, { source: 'snapshot', allowUnverified: true })
+const publicListings = canonicalizePublicListings(rawData, { source: 'snapshot', allowUnverified: true, geoIndex: getGeoIndex() })
   .filter((listing) => validatePublicListing(listing).ok);
 console.log(`Canonicalized ${publicListings.length} unique parlour listings`);
 
@@ -163,6 +164,11 @@ const slimListings = publicListings.map((listing) => ({
   mapsUrl: listing.mapsUrl,
   latitude: listing.latitude,
   longitude: listing.longitude,
+  geoPrecision: listing.geoPrecision,
+  geoRadiusKm: listing.geoRadiusKm,
+  geoSource: listing.geoSource,
+  geoUnit: listing.geoUnit,
+  geoNote: listing.geoNote,
   isSafeImage: listing.isSafeImage,
   mentionCount: listing.mentionCount,
   aliasNames: Array.isArray(listing.aliasNames) ? listing.aliasNames : [],

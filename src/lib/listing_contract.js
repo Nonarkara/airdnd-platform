@@ -1,4 +1,5 @@
 import { CITY_PATTERNS, cleanDisplayText, normalizeText, normalizePhone, inferCityFromLocation } from './normalization.js';
+import { placeListings } from './place_resolver.js';
 
 export const DEFAULT_PUBLIC_LOCATION = 'Bangkok, Thailand';
 export const DEFAULT_PUBLIC_IMAGE = '/mockups/109748.jpg';
@@ -527,6 +528,7 @@ export function normalizePublicListing(rawListing, options = {}) {
     mapsUrl: mapsUrl || null,
     latitude: isValidCoordinates(latitude, longitude) ? latitude : null,
     longitude: isValidCoordinates(latitude, longitude) ? longitude : null,
+    ...pickGeoFields(rawListing),
     rawText: normalizeText(rawListing.rawText || rawListing.raw_text, null),
     sourceMessageIds: normalizeArray(rawListing.sourceMessageIds || rawListing.source_message_ids),
     allPhotoUrls: normalizeArray(rawListing.allPhotoUrls || rawListing.photo_urls),
@@ -709,6 +711,32 @@ export function mergeCanonicalGroup(listings) {
   return merged;
 }
 
+// How precisely a listing is placed, and why. Written by placeListings() in
+// src/lib/place_resolver.js; carried unchanged through every copy of the data.
+export const GEO_FIELDS = ['geoPrecision', 'geoRadiusKm', 'geoSource', 'geoUnit', 'geoNote'];
+
+function pickGeoFields(raw) {
+  const out = {};
+  for (const field of GEO_FIELDS) {
+    const snake = field.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
+    const value = raw?.[field] ?? raw?.[snake];
+    if (value !== undefined && value !== null) out[field] = value;
+  }
+  return out;
+}
+
+/**
+ * Re-place every listing against its own address. Stored coordinates are a
+ * claim, not a fact: this is where a claim contradicted by the listing's own
+ * words, or belonging to a cluster the data proves fabricated, is replaced by
+ * the administrative unit the address actually names.
+ */
+export function applyPlacement(listings, geoIndex) {
+  if (!geoIndex || !Array.isArray(listings) || listings.length === 0) return listings;
+  const placed = placeListings(listings, geoIndex);
+  return listings.map((listing) => ({ ...listing, ...(placed.get(listing.id) || {}) }));
+}
+
 export function canonicalizePublicListings(listings, options = {}) {
   const normalized = (Array.isArray(listings) ? listings : [])
     .map((listing) => normalizePublicListing(listing, {
@@ -728,10 +756,11 @@ export function canonicalizePublicListings(listings, options = {}) {
     groups.get(key).push(listing);
   });
 
-  return [...groups.values()]
+  const merged = [...groups.values()]
     .map((group) => mergeCanonicalGroup(group))
     .filter((listing) => listing && (options.allowUnverified || validatePublicListing(listing).ok))
     .sort((left, right) => getFreshnessValue(right) - getFreshnessValue(left));
+  return options.geoIndex ? applyPlacement(merged, options.geoIndex) : merged;
 }
 
 function parseCoordinatePair(latitude, longitude) {
@@ -754,35 +783,6 @@ function isChromeFixture(lat, lng) {
     || GOOGLE_CHROME_FIXTURES.has(`${lat.toFixed(4)},${lng.toFixed(4)}`);
 }
 
-// Final fallback for Google's JS-rendered place pages, where the static HTML
-// no longer contains @lat,lng or !3d!4d markers. Without a real geocoding API,
-// bare-text bbox scanning is unreliable (Google's HTML chrome contains the
-// same default coordinates on every page) — so this fallback is intentionally
-// conservative: it only returns a hit when the float pair sits in Thailand's
-// bbox AND is not the known chrome fixture.
-function extractThailandBboxCoords(text) {
-  const re = /(-?\d{1,3}\.\d{4,10})/g;
-  const found = [];
-  let m;
-  while ((m = re.exec(text)) !== null) {
-    const val = Number.parseFloat(m[1]);
-    if (Number.isFinite(val)) {
-      found.push({ val, pos: m.index });
-    }
-  }
-  for (let i = 0; i < found.length; i += 1) {
-    const a = found[i];
-    if (a.val < 5 || a.val > 21) continue;
-    for (let j = i + 1; j < found.length && found[j].pos - a.pos < 800; j += 1) {
-      const b = found[j];
-      if (b.val < 97 || b.val > 106) continue;
-      if (isChromeFixture(a.val, b.val)) continue;
-      return parseCoordinatePair(a.val, b.val);
-    }
-  }
-  return null;
-}
-
 export function extractCoordinatesFromText(value) {
   const text = normalizeText(value, '');
   if (!text) {
@@ -795,19 +795,22 @@ export function extractCoordinatesFromText(value) {
   try {
     decoded = decodeURIComponent(decoded);
   } catch {
-    // keep raw text — the bare-bbox fallback below handles the JS-rendered case.
+    // keep raw text
   }
+  // Order matters: !3d…!4d… is the place marker; @lat,lng is only where the
+  // map viewport happens to be centred. Place first, viewport last.
   const patterns = [
-    /@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/,
     /!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/,
     /\/dir\/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)(?:[/?#]|$)/,
+    /[?&](?:q|query|destination)=(-?\d+\.\d{3,})(?:%2C|,)\s*(-?\d+\.\d{3,})/,
+    /@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/,
     /(?:center|ll)=(-?\d+(?:\.\d+)?)(?:%2C|,)(-?\d+(?:\.\d+)?)/,
   ];
 
   for (const pattern of patterns) {
     const match = decoded.match(pattern);
     const coords = match ? parseCoordinatePair(match[1], match[2]) : null;
-    if (coords) {
+    if (coords && !isChromeFixture(coords[0], coords[1])) {
       return coords;
     }
   }
@@ -815,11 +818,15 @@ export function extractCoordinatesFromText(value) {
   const lngLatMatch = decoded.match(/!2d(-?\d+(?:\.\d+)?)!3d(-?\d+(?:\.\d+)?)/);
   if (lngLatMatch) {
     const swapped = parseCoordinatePair(lngLatMatch[2], lngLatMatch[1]);
-    if (swapped) return swapped;
+    if (swapped && !isChromeFixture(swapped[0], swapped[1])) return swapped;
   }
 
-  // Google JS-rendered place pages: pair bare floats inside Thailand's bbox.
-  return extractThailandBboxCoords(decoded);
+  // No explicit marker: no coordinate. The previous fallback paired any two
+  // floats inside Thailand's bounding box, and on Google's JS-rendered pages
+  // those floats are page chrome — it pinned fourteen different businesses to
+  // one point in north Bangkok. An unplaced listing is placed later from its
+  // own address (src/lib/place_resolver.js); a fabricated point is a lie.
+  return null;
 }
 
 async function followMapsRedirects(fetchImpl, initialUrl, options) {
@@ -889,14 +896,17 @@ export async function resolveGoogleMapsData(mapsUrl, options = {}) {
     const redirectResult = await followMapsRedirects(fetchImpl, mapsUrl, requestOptions);
     const finalUrl = redirectResult.finalUrl || redirectResult.response?.url || mapsUrl;
     const urlCandidates = redirectResult.urls.join(' ');
-    let coords = extractCoordinatesFromText(urlCandidates);
+    // Coordinates come from the redirect chain's URLs only — that is where
+    // Google writes the place (…/place/NAME/@…/data=…!3dLAT!4dLNG). A page
+    // body carries viewport defaults and chrome that look like coordinates and
+    // are not; it is read for address text, never for a position.
+    const coords = extractCoordinatesFromText(urlCandidates);
     let address = redirectResult.urls.map((url) => extractMapsAddress(url)).find(Boolean) || '';
 
-    if ((!coords || !address) && !redirectResult.error && typeof redirectResult.response?.text === 'function') {
+    if (!address && !redirectResult.error && typeof redirectResult.response?.text === 'function') {
       try {
         const body = await redirectResult.response.text();
-        coords = coords || extractCoordinatesFromText(body);
-        address = address || extractMapsAddress(body) || extractMapsAddress(finalUrl);
+        address = extractMapsAddress(body) || extractMapsAddress(finalUrl);
       } catch {
         address = address || extractMapsAddress(finalUrl);
       }
@@ -906,6 +916,7 @@ export async function resolveGoogleMapsData(mapsUrl, options = {}) {
       finalUrl,
       latitude: coords?.[0] ?? null,
       longitude: coords?.[1] ?? null,
+      coordinateSource: coords ? 'maps-url' : null,
       address,
       canonicalMapsKey: buildMapsKey(mapsUrl),
     };

@@ -8,6 +8,11 @@ const __dirname = path.dirname(__filename);
 const CACHE_FILE = path.join(__dirname, '../.maps_cache.json');
 
 const CACHE_FAILURE_TTL_MS = 24 * 60 * 60 * 1000;
+// v2: coordinates are read from the redirect chain only. Every v1 entry may
+// hold a point scraped from Google page chrome (fourteen businesses resolved to
+// one fixture), so v1 entries — successes and failures alike — are ignored and
+// re-resolved rather than trusted.
+const CACHE_VERSION = 2;
 const DEFAULT_DELAY_MS = 500;
 const GEOCODER_USER_AGENT = 'SabaiSabaiBot/1.0 (+https://sabaisabai-airdnd.pages.dev)';
 
@@ -44,7 +49,7 @@ export async function resolveGoogleMapsDataCached(mapsUrl, options = {}) {
   const { delayMs = DEFAULT_DELAY_MS, ...resolverOptions } = options;
 
   const cache = loadCache();
-  const cached = cache[mapsUrl];
+  const cached = cache[mapsUrl]?.v === CACHE_VERSION ? cache[mapsUrl] : null;
   const now = Date.now();
 
   // If successfully resolved before, return it
@@ -80,6 +85,7 @@ export async function resolveGoogleMapsDataCached(mapsUrl, options = {}) {
     const result = await resolveGoogleMapsData(mapsUrl, requestOptions);
     if (result && result.latitude && result.longitude) {
       cache[mapsUrl] = {
+        v: CACHE_VERSION,
         latitude: result.latitude,
         longitude: result.longitude,
         address: result.address,
@@ -92,6 +98,7 @@ export async function resolveGoogleMapsDataCached(mapsUrl, options = {}) {
       return result;
     } else {
       cache[mapsUrl] = {
+        v: CACHE_VERSION,
         failed: true,
         failedAt: now,
         reason: 'no coords resolved'

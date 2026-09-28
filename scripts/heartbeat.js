@@ -22,6 +22,7 @@ import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import { execSync } from 'child_process';
 import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
+import { getGeoIndex } from './lib/geo.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -68,7 +69,7 @@ async function pullSnapshot() {
 }
 
 function writeSnapshot(rows) {
-  const publicListings = canonicalizePublicListings(rows, { source: 'snapshot' });
+  const publicListings = canonicalizePublicListings(rows, { source: 'snapshot', geoIndex: getGeoIndex() });
   const slim = publicListings.map((l) => ({
     id: l.id,
     canonicalKey: l.canonicalKey,
@@ -98,6 +99,11 @@ function writeSnapshot(rows) {
     mapsUrl: l.mapsUrl,
     latitude: l.latitude,
     longitude: l.longitude,
+    geoPrecision: l.geoPrecision,
+    geoRadiusKm: l.geoRadiusKm,
+    geoSource: l.geoSource,
+    geoUnit: l.geoUnit,
+    geoNote: l.geoNote,
     isSafeImage: l.isSafeImage,
     mentionCount: l.mentionCount,
   })).sort((left, right) => {
