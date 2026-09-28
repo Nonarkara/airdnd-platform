@@ -1,0 +1,1444 @@
+{
+  "builtAt": "2026-09-20T17:12:13.365Z",
+  "source": "data.go.th",
+  "degraded": false,
+  "reason": null,
+  "national": {
+    "records": 154050,
+    "corroboratedShare": 68.7,
+    "duplicatesCollapsed": 273050,
+    "completeness": {
+      "records": 154050,
+      "withContact": 5.7,
+      "withStars": 9,
+      "withPrice": 0,
+      "withIncome": 0.1,
+      "withSubdistrict": 87.9,
+      "withCoordinates": 0.4,
+      "withTambon": 87.7,
+      "withCert": 11.2,
+      "categoryDeclared": 12.2,
+      "categoryInferred": 13,
+      "categoryUnknown": 74.8
+    }
+  },
+  "cards": {
+    "snapshot": {
+      "headline": "154,050 producers · 5.7% reachable · 9% OPC-graded · 68.7% corroborated",
+      "soWhat": "The registry knows names, not routes. A buyer cannot dial 9 of 10 rows.",
+      "nowWhat": "Put phone + category + price on the registration form. Every chart here moves when the form moves."
+    },
+    "reach": {
+      "headline": "8,839 reachable of 154,050 filed",
+      "soWhat": "อุบลราชธานี holds the deepest gap: 5,504 producers no one can telephone.",
+      "nowWhat": "Run the contact-drive in Ubon Ratchathani first — most names, most lift per visit."
+    },
+    "domain": {
+      "headline": "Food leads classified supply (17,091); 107,385 unclassified",
+      "soWhat": "Seven of ten rows carry no category. The domain chapter reads what was filed, not what is made.",
+      "nowWhat": "Make category a required dropdown on the form — one field recovers the whole chapter."
+    },
+    "money": {
+      "headline": "243.4B ฿ in 2567 BE (9 of 12 months)",
+      "soWhat": "Money and names are different datasets. Totals say how much moved, never who earned it.",
+      "nowWhat": "Read either money filing, never their average — the two series disagree by design."
+    },
+    "champions": {
+      "headline": "2,947 certified 4–5★ producers with no contact channel",
+      "soWhat": "สุรินทร์ holds the most (304 of 386 4–5★). The certificate is on file; the route is not.",
+      "nowWhat": "Hand the hidden list to the contact-drive. Certified names, not cold calls."
+    }
+  },
+  "provinces": [
+    {
+      "code": 34,
+      "th": "อุบลราชธานี",
+      "en": "Ubon Ratchathani",
+      "region": "northeast",
+      "records": 5508,
+      "reachablePct": 0.1,
+      "graded": 425,
+      "graded45": 228,
+      "hiddenChampions": 183,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 758
+      },
+      "action": "Call the 183 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 32,
+      "th": "สุรินทร์",
+      "en": "Surin",
+      "region": "northeast",
+      "records": 4311,
+      "reachablePct": 0,
+      "graded": 455,
+      "graded45": 386,
+      "hiddenChampions": 304,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 399
+      },
+      "action": "Call the 304 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 31,
+      "th": "บุรีรัมย์",
+      "en": "Buri Ram",
+      "region": "northeast",
+      "records": 4288,
+      "reachablePct": 0.1,
+      "graded": 400,
+      "graded45": 303,
+      "hiddenChampions": 224,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 286
+      },
+      "action": "Call the 224 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 40,
+      "th": "ขอนแก่น",
+      "en": "Khon Kaen",
+      "region": "northeast",
+      "records": 4089,
+      "reachablePct": 0.1,
+      "graded": 356,
+      "graded45": 179,
+      "hiddenChampions": 143,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 342
+      },
+      "action": "Call the 143 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 30,
+      "th": "นครราชสีมา",
+      "en": "Nakhon Ratchasima",
+      "region": "northeast",
+      "records": 4045,
+      "reachablePct": 9.9,
+      "graded": 313,
+      "graded45": 228,
+      "hiddenChampions": 174,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 638
+      },
+      "action": "Call the 174 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 50,
+      "th": "เชียงใหม่",
+      "en": "Chiang Mai",
+      "region": "north",
+      "records": 3985,
+      "reachablePct": 0.1,
+      "graded": 441,
+      "graded45": 353,
+      "hiddenChampions": 277,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 513
+      },
+      "action": "Call the 277 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 45,
+      "th": "ร้อยเอ็ด",
+      "en": "Roi Et",
+      "region": "northeast",
+      "records": 3970,
+      "reachablePct": 0.3,
+      "graded": 275,
+      "graded45": 186,
+      "hiddenChampions": 145,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 202
+      },
+      "action": "Call the 145 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 46,
+      "th": "กาฬสินธุ์",
+      "en": "Kalasin",
+      "region": "northeast",
+      "records": 3813,
+      "reachablePct": 58.4,
+      "graded": 934,
+      "graded45": 652,
+      "hiddenChampions": 231,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 1609
+      },
+      "action": "Call the 231 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 33,
+      "th": "ศรีสะเกษ",
+      "en": "Si Sa Ket",
+      "region": "northeast",
+      "records": 3676,
+      "reachablePct": 0,
+      "graded": 455,
+      "graded45": 293,
+      "hiddenChampions": 141,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 269
+      },
+      "action": "Call the 141 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 47,
+      "th": "สกลนคร",
+      "en": "Sakon Nakhon",
+      "region": "northeast",
+      "records": 3514,
+      "reachablePct": 0.1,
+      "graded": 232,
+      "graded45": 192,
+      "hiddenChampions": 158,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 203
+      },
+      "action": "Call the 158 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 36,
+      "th": "ชัยภูมิ",
+      "en": "Chaiyaphum",
+      "region": "northeast",
+      "records": 3483,
+      "reachablePct": 0.1,
+      "graded": 278,
+      "graded45": 202,
+      "hiddenChampions": 170,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 528
+      },
+      "action": "Call the 170 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 57,
+      "th": "เชียงราย",
+      "en": "Chiang Rai",
+      "region": "north",
+      "records": 3405,
+      "reachablePct": 0.1,
+      "graded": 304,
+      "graded45": 228,
+      "hiddenChampions": 171,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 205
+      },
+      "action": "Call the 171 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 80,
+      "th": "นครศรีธรรมราช",
+      "en": "Nakhon Si Thammarat",
+      "region": "south",
+      "records": 3059,
+      "reachablePct": 0,
+      "graded": 207,
+      "graded45": 155,
+      "hiddenChampions": 111,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 167
+      },
+      "action": "Call the 111 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 51,
+      "th": "ลำพูน",
+      "en": "Lamphun",
+      "region": "north",
+      "records": 2578,
+      "reachablePct": 0.2,
+      "graded": 478,
+      "graded45": 421,
+      "hiddenChampions": 147,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 1052
+      },
+      "action": "Call the 147 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 10,
+      "th": "กรุงเทพมหานคร",
+      "en": "Bangkok",
+      "region": "central",
+      "records": 2559,
+      "reachablePct": 0.2,
+      "graded": 419,
+      "graded45": 317,
+      "hiddenChampions": 238,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 262
+      },
+      "action": "Call the 238 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 71,
+      "th": "กาญจนบุรี",
+      "en": "Kanchanaburi",
+      "region": "west",
+      "records": 2534,
+      "reachablePct": 0.1,
+      "graded": 113,
+      "graded45": 80,
+      "hiddenChampions": 70,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 574
+      },
+      "action": "Call the 70 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 14,
+      "th": "พระนครศรีอยุธยา",
+      "en": "Phra Nakhon Si Ayutthaya",
+      "region": "central",
+      "records": 2447,
+      "reachablePct": 0.3,
+      "graded": 123,
+      "graded45": 74,
+      "hiddenChampions": 57,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 150
+      },
+      "action": "Call the 57 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 41,
+      "th": "อุดรธานี",
+      "en": "Udon Thani",
+      "region": "northeast",
+      "records": 2405,
+      "reachablePct": 0.1,
+      "graded": 212,
+      "graded45": 142,
+      "hiddenChampions": 111,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 263
+      },
+      "action": "Call the 111 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 35,
+      "th": "ยโสธร",
+      "en": "Yasothon",
+      "region": "northeast",
+      "records": 2347,
+      "reachablePct": 0.3,
+      "graded": 158,
+      "graded45": 94,
+      "hiddenChampions": 74,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 622
+      },
+      "action": "Call the 74 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 38,
+      "th": "บึงกาฬ",
+      "en": "Bueng Kan",
+      "region": "northeast",
+      "records": 2299,
+      "reachablePct": 1.8,
+      "graded": 133,
+      "graded45": 81,
+      "hiddenChampions": 45,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 408
+      },
+      "action": "Call the 45 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 44,
+      "th": "มหาสารคาม",
+      "en": "Maha Sarakham",
+      "region": "northeast",
+      "records": 2244,
+      "reachablePct": 0.1,
+      "graded": 346,
+      "graded45": 240,
+      "hiddenChampions": 190,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 164
+      },
+      "action": "Call the 190 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 73,
+      "th": "นครปฐม",
+      "en": "Nakhon Pathom",
+      "region": "central",
+      "records": 2205,
+      "reachablePct": 4.1,
+      "graded": 158,
+      "graded45": 107,
+      "hiddenChampions": 77,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 128
+      },
+      "action": "Call the 77 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 60,
+      "th": "นครสวรรค์",
+      "en": "Nakhon Sawan",
+      "region": "central",
+      "records": 2111,
+      "reachablePct": 0.2,
+      "graded": 167,
+      "graded45": 113,
+      "hiddenChampions": 74,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 139
+      },
+      "action": "Call the 74 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 52,
+      "th": "ลำปาง",
+      "en": "Lampang",
+      "region": "north",
+      "records": 2069,
+      "reachablePct": 0.1,
+      "graded": 174,
+      "graded45": 132,
+      "hiddenChampions": 102,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 185
+      },
+      "action": "Call the 102 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 37,
+      "th": "อำนาจเจริญ",
+      "en": "Amnat Charoen",
+      "region": "northeast",
+      "records": 2011,
+      "reachablePct": 0.1,
+      "graded": 119,
+      "graded45": 93,
+      "hiddenChampions": 68,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 341
+      },
+      "action": "Call the 68 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 84,
+      "th": "สุราษฎร์ธานี",
+      "en": "Surat Thani",
+      "region": "south",
+      "records": 1984,
+      "reachablePct": 0.1,
+      "graded": 85,
+      "graded45": 62,
+      "hiddenChampions": 46,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 80
+      },
+      "action": "Call the 46 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 11,
+      "th": "สมุทรปราการ",
+      "en": "Samut Prakan",
+      "region": "central",
+      "records": 1941,
+      "reachablePct": 0.1,
+      "graded": 127,
+      "graded45": 99,
+      "hiddenChampions": 66,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 99
+      },
+      "action": "Call the 66 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 48,
+      "th": "นครพนม",
+      "en": "Nakhon Phanom",
+      "region": "northeast",
+      "records": 1927,
+      "reachablePct": 0.2,
+      "graded": 198,
+      "graded45": 167,
+      "hiddenChampions": 136,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 174
+      },
+      "action": "Call the 136 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 20,
+      "th": "ชลบุรี",
+      "en": "Chon Buri",
+      "region": "east",
+      "records": 1923,
+      "reachablePct": 0.9,
+      "graded": 153,
+      "graded45": 113,
+      "hiddenChampions": 84,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 103
+      },
+      "action": "Call the 84 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 54,
+      "th": "แพร่",
+      "en": "Phrae",
+      "region": "north",
+      "records": 1916,
+      "reachablePct": 0.3,
+      "graded": 178,
+      "graded45": 143,
+      "hiddenChampions": 111,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 237
+      },
+      "action": "Call the 111 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 70,
+      "th": "ราชบุรี",
+      "en": "Ratchaburi",
+      "region": "west",
+      "records": 1855,
+      "reachablePct": 1.1,
+      "graded": 158,
+      "graded45": 128,
+      "hiddenChampions": 101,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 127
+      },
+      "action": "Call the 101 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 12,
+      "th": "นนทบุรี",
+      "en": "Nonthaburi",
+      "region": "central",
+      "records": 1843,
+      "reachablePct": 0.3,
+      "graded": 458,
+      "graded45": 347,
+      "hiddenChampions": 192,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 503
+      },
+      "action": "Call the 192 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 95,
+      "th": "ยะลา",
+      "en": "Yala",
+      "region": "south",
+      "records": 1831,
+      "reachablePct": 24.7,
+      "graded": 91,
+      "graded45": 63,
+      "hiddenChampions": 43,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 456
+      },
+      "action": "Call the 43 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 92,
+      "th": "ตรัง",
+      "en": "Trang",
+      "region": "south",
+      "records": 1814,
+      "reachablePct": 0.1,
+      "graded": 105,
+      "graded45": 80,
+      "hiddenChampions": 54,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 119
+      },
+      "action": "Call the 54 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 90,
+      "th": "สงขลา",
+      "en": "Songkhla",
+      "region": "south",
+      "records": 1792,
+      "reachablePct": 0.1,
+      "graded": 194,
+      "graded45": 138,
+      "hiddenChampions": 110,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 135
+      },
+      "action": "Call the 110 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 93,
+      "th": "พัทลุง",
+      "en": "Phatthalung",
+      "region": "south",
+      "records": 1776,
+      "reachablePct": 0,
+      "graded": 165,
+      "graded45": 132,
+      "hiddenChampions": 91,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 666
+      },
+      "action": "Call the 91 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 66,
+      "th": "พิจิตร",
+      "en": "Phichit",
+      "region": "central",
+      "records": 1764,
+      "reachablePct": 32.2,
+      "graded": 84,
+      "graded45": 63,
+      "hiddenChampions": 51,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 437
+      },
+      "action": "Call the 51 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 72,
+      "th": "สุพรรณบุรี",
+      "en": "Suphan Buri",
+      "region": "central",
+      "records": 1721,
+      "reachablePct": 0.2,
+      "graded": 148,
+      "graded45": 95,
+      "hiddenChampions": 68,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 138
+      },
+      "action": "Call the 68 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 16,
+      "th": "ลพบุรี",
+      "en": "Lop Buri",
+      "region": "central",
+      "records": 1701,
+      "reachablePct": 0.2,
+      "graded": 95,
+      "graded45": 74,
+      "hiddenChampions": 62,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 116
+      },
+      "action": "Call the 62 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 67,
+      "th": "เพชรบูรณ์",
+      "en": "Phetchabun",
+      "region": "central",
+      "records": 1697,
+      "reachablePct": 6,
+      "graded": 92,
+      "graded45": 56,
+      "hiddenChampions": 41,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 324
+      },
+      "action": "Call the 41 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 94,
+      "th": "ปัตตานี",
+      "en": "Pattani",
+      "region": "south",
+      "records": 1659,
+      "reachablePct": 0,
+      "graded": 121,
+      "graded45": 88,
+      "hiddenChampions": 67,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 134
+      },
+      "action": "Call the 67 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 63,
+      "th": "ตาก",
+      "en": "Tak",
+      "region": "west",
+      "records": 1655,
+      "reachablePct": 0.3,
+      "graded": 117,
+      "graded45": 75,
+      "hiddenChampions": 64,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 94
+      },
+      "action": "Call the 64 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 65,
+      "th": "พิษณุโลก",
+      "en": "Phitsanulok",
+      "region": "central",
+      "records": 1605,
+      "reachablePct": 63.7,
+      "graded": 94,
+      "graded45": 65,
+      "hiddenChampions": 47,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 632
+      },
+      "action": "Call the 47 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 62,
+      "th": "กำแพงเพชร",
+      "en": "Kamphaeng Phet",
+      "region": "central",
+      "records": 1590,
+      "reachablePct": 8.8,
+      "graded": 112,
+      "graded45": 69,
+      "hiddenChampions": 53,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 108
+      },
+      "action": "Call the 53 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 19,
+      "th": "สระบุรี",
+      "en": "Saraburi",
+      "region": "central",
+      "records": 1554,
+      "reachablePct": 0.2,
+      "graded": 124,
+      "graded45": 82,
+      "hiddenChampions": 63,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 118
+      },
+      "action": "Call the 63 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 24,
+      "th": "ฉะเชิงเทรา",
+      "en": "Chachoengsao",
+      "region": "east",
+      "records": 1545,
+      "reachablePct": 0.3,
+      "graded": 124,
+      "graded45": 93,
+      "hiddenChampions": 62,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 142
+      },
+      "action": "Call the 62 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 81,
+      "th": "กระบี่",
+      "en": "Krabi",
+      "region": "south",
+      "records": 1510,
+      "reachablePct": 0.3,
+      "graded": 164,
+      "graded45": 129,
+      "hiddenChampions": 98,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 700
+      },
+      "action": "Call the 98 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 21,
+      "th": "ระยอง",
+      "en": "Rayong",
+      "region": "east",
+      "records": 1496,
+      "reachablePct": 0.1,
+      "graded": 85,
+      "graded45": 56,
+      "hiddenChampions": 37,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 70
+      },
+      "action": "Call the 37 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 22,
+      "th": "จันทบุรี",
+      "en": "Chanthaburi",
+      "region": "east",
+      "records": 1465,
+      "reachablePct": 0.8,
+      "graded": 135,
+      "graded45": 117,
+      "hiddenChampions": 104,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 131
+      },
+      "action": "Call the 104 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 56,
+      "th": "พะเยา",
+      "en": "Phayao",
+      "region": "north",
+      "records": 1464,
+      "reachablePct": 58.6,
+      "graded": 176,
+      "graded45": 113,
+      "hiddenChampions": 96,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 480
+      },
+      "action": "Call the 96 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 55,
+      "th": "น่าน",
+      "en": "Nan",
+      "region": "north",
+      "records": 1444,
+      "reachablePct": 0.3,
+      "graded": 129,
+      "graded45": 109,
+      "hiddenChampions": 70,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 99
+      },
+      "action": "Call the 70 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 53,
+      "th": "อุตรดิตถ์",
+      "en": "Uttaradit",
+      "region": "north",
+      "records": 1431,
+      "reachablePct": 0.9,
+      "graded": 95,
+      "graded45": 81,
+      "hiddenChampions": 61,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 126
+      },
+      "action": "Call the 61 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 96,
+      "th": "นราธิวาส",
+      "en": "Narathiwat",
+      "region": "south",
+      "records": 1414,
+      "reachablePct": 0.1,
+      "graded": 105,
+      "graded45": 76,
+      "hiddenChampions": 59,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 125
+      },
+      "action": "Call the 59 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 39,
+      "th": "หนองบัวลำภู",
+      "en": "Nong Bua Lam Phu",
+      "region": "northeast",
+      "records": 1411,
+      "reachablePct": 55.1,
+      "graded": 173,
+      "graded45": 122,
+      "hiddenChampions": 95,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 162
+      },
+      "action": "Call the 95 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 27,
+      "th": "สระแก้ว",
+      "en": "Sa Kaeo",
+      "region": "east",
+      "records": 1400,
+      "reachablePct": 1.5,
+      "graded": 107,
+      "graded45": 60,
+      "hiddenChampions": 42,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 168
+      },
+      "action": "Call the 42 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 43,
+      "th": "หนองคาย",
+      "en": "Nong Khai",
+      "region": "northeast",
+      "records": 1398,
+      "reachablePct": 0.2,
+      "graded": 155,
+      "graded45": 71,
+      "hiddenChampions": 58,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 186
+      },
+      "action": "Call the 58 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 13,
+      "th": "ปทุมธานี",
+      "en": "Pathum Thani",
+      "region": "central",
+      "records": 1393,
+      "reachablePct": 0.1,
+      "graded": 122,
+      "graded45": 71,
+      "hiddenChampions": 48,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 101
+      },
+      "action": "Call the 48 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 15,
+      "th": "อ่างทอง",
+      "en": "Ang Thong",
+      "region": "central",
+      "records": 1366,
+      "reachablePct": 9.7,
+      "graded": 98,
+      "graded45": 75,
+      "hiddenChampions": 32,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 128
+      },
+      "action": "Call the 32 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 42,
+      "th": "เลย",
+      "en": "Loei",
+      "region": "northeast",
+      "records": 1351,
+      "reachablePct": 0.2,
+      "graded": 98,
+      "graded45": 79,
+      "hiddenChampions": 66,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 95
+      },
+      "action": "Call the 66 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 64,
+      "th": "สุโขทัย",
+      "en": "Sukhothai",
+      "region": "central",
+      "records": 1351,
+      "reachablePct": 7.6,
+      "graded": 144,
+      "graded45": 123,
+      "hiddenChampions": 65,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 138
+      },
+      "action": "Call the 65 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 76,
+      "th": "เพชรบุรี",
+      "en": "Phetchaburi",
+      "region": "west",
+      "records": 1332,
+      "reachablePct": 41.7,
+      "graded": 82,
+      "graded45": 71,
+      "hiddenChampions": 56,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 536
+      },
+      "action": "Call the 56 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 82,
+      "th": "พังงา",
+      "en": "Phang Nga",
+      "region": "south",
+      "records": 1294,
+      "reachablePct": 0.1,
+      "graded": 134,
+      "graded45": 111,
+      "hiddenChampions": 89,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 118
+      },
+      "action": "Call the 89 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 49,
+      "th": "มุกดาหาร",
+      "en": "Mukdahan",
+      "region": "northeast",
+      "records": 1287,
+      "reachablePct": 0.2,
+      "graded": 183,
+      "graded45": 136,
+      "hiddenChampions": 122,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 381
+      },
+      "action": "Call the 122 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 25,
+      "th": "ปราจีนบุรี",
+      "en": "Prachin Buri",
+      "region": "east",
+      "records": 1222,
+      "reachablePct": 0.2,
+      "graded": 74,
+      "graded45": 43,
+      "hiddenChampions": 35,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 115
+      },
+      "action": "Call the 35 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 74,
+      "th": "สมุทรสาคร",
+      "en": "Samut Sakhon",
+      "region": "central",
+      "records": 1212,
+      "reachablePct": 0.1,
+      "graded": 107,
+      "graded45": 79,
+      "hiddenChampions": 52,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 122
+      },
+      "action": "Call the 52 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 77,
+      "th": "ประจวบคีรีขันธ์",
+      "en": "Prachuap Khiri Khan",
+      "region": "west",
+      "records": 1144,
+      "reachablePct": 0.3,
+      "graded": 55,
+      "graded45": 41,
+      "hiddenChampions": 27,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 97
+      },
+      "action": "Call the 27 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 17,
+      "th": "สิงห์บุรี",
+      "en": "Sing Buri",
+      "region": "central",
+      "records": 1106,
+      "reachablePct": 0.5,
+      "graded": 53,
+      "graded45": 36,
+      "hiddenChampions": 27,
+      "topCategory": {
+        "id": "craft",
+        "en": "Household, Decorative & Souvenir",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "count": 85
+      },
+      "action": "Call the 27 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 75,
+      "th": "สมุทรสงคราม",
+      "en": "Samut Songkhram",
+      "region": "central",
+      "records": 1069,
+      "reachablePct": 0.3,
+      "graded": 65,
+      "graded45": 59,
+      "hiddenChampions": 38,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 217
+      },
+      "action": "Call the 38 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 86,
+      "th": "ชุมพร",
+      "en": "Chumphon",
+      "region": "south",
+      "records": 1054,
+      "reachablePct": 0.2,
+      "graded": 44,
+      "graded45": 42,
+      "hiddenChampions": 33,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 73
+      },
+      "action": "Call the 33 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 26,
+      "th": "นครนายก",
+      "en": "Nakhon Nayok",
+      "region": "central",
+      "records": 1027,
+      "reachablePct": 0,
+      "graded": 41,
+      "graded45": 34,
+      "hiddenChampions": 21,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 106
+      },
+      "action": "Call the 21 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 18,
+      "th": "ชัยนาท",
+      "en": "Chai Nat",
+      "region": "central",
+      "records": 1017,
+      "reachablePct": 0.1,
+      "graded": 77,
+      "graded45": 56,
+      "hiddenChampions": 47,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 286
+      },
+      "action": "Call the 47 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 91,
+      "th": "สตูล",
+      "en": "Satun",
+      "region": "south",
+      "records": 945,
+      "reachablePct": 68.5,
+      "graded": 60,
+      "graded45": 47,
+      "hiddenChampions": 36,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 67
+      },
+      "action": "Call the 36 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 85,
+      "th": "ระนอง",
+      "en": "Ranong",
+      "region": "south",
+      "records": 916,
+      "reachablePct": 0,
+      "graded": 75,
+      "graded45": 47,
+      "hiddenChampions": 35,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 77
+      },
+      "action": "Call the 35 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 58,
+      "th": "แม่ฮ่องสอน",
+      "en": "Mae Hong Son",
+      "region": "north",
+      "records": 902,
+      "reachablePct": 0.2,
+      "graded": 192,
+      "graded45": 144,
+      "hiddenChampions": 123,
+      "topCategory": {
+        "id": "textile",
+        "en": "Fabric & Apparel",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "count": 120
+      },
+      "action": "Call the 123 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 61,
+      "th": "อุทัยธานี",
+      "en": "Uthai Thani",
+      "region": "central",
+      "records": 890,
+      "reachablePct": 53.1,
+      "graded": 87,
+      "graded45": 66,
+      "hiddenChampions": 53,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 302
+      },
+      "action": "Call the 53 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 23,
+      "th": "ตราด",
+      "en": "Trat",
+      "region": "east",
+      "records": 871,
+      "reachablePct": 0.1,
+      "graded": 58,
+      "graded45": 45,
+      "hiddenChampions": 32,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 71
+      },
+      "action": "Call the 32 certified 4–5★ producers first — vetted names, missing phones."
+    },
+    {
+      "code": 83,
+      "th": "ภูเก็ต",
+      "en": "Phuket",
+      "region": "south",
+      "records": 820,
+      "reachablePct": 0.4,
+      "graded": 68,
+      "graded45": 56,
+      "hiddenChampions": 35,
+      "topCategory": {
+        "id": "food",
+        "en": "Food",
+        "th": "อาหาร",
+        "count": 70
+      },
+      "action": "Call the 35 certified 4–5★ producers first — vetted names, missing phones."
+    }
+  ],
+  "revenue": {
+    "latestFullYear": 2023,
+    "provincesWithData": 76
+  }
+}

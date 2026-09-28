@@ -30,7 +30,23 @@
     "health:research": "node scripts/build_health_research.js",
     "verify:maps": "node scripts/gmaps_verify.js",
     "verify:maps:dry": "node scripts/gmaps_verify.js --dry-run",
-    "start": "node server.js"
+    "start": "node server.js",
+    "otop:fetch": "node scripts/otop/fetch.js",
+    "otop:discover": "node scripts/otop/fetch.js --discover",
+    "otop:standards": "node scripts/otop/standards.js",
+    "otop:briefs": "node scripts/otop/briefs.js",
+    "otop:intake": "node scripts/otop/intake_pipeline.js",
+    "otop:build": "node scripts/otop/build.js && node scripts/otop/standards.js && node scripts/otop/revenue.js && node scripts/otop/insights.js && node scripts/otop/champions.js && node scripts/otop/anchors.js && node scripts/otop/graph.js && node scripts/otop/briefs.js && node scripts/otop/province-faces.js && node scripts/otop/datasets.js",
+    "otop:datasets": "node scripts/otop/datasets.js",
+    "otop:dev": "vite --config vite.otop.config.js",
+    "otop:site": "vite build --config vite.otop.config.js",
+    "otop:all": "npm run otop:build && npm run otop:site",
+    "otop:ship": "npm run otop:site && npx wrangler pages deploy dist-otop --project-name otop --branch main && npm run otop:verify",
+    "otop:verify": "bash scripts/otop/verify-live.sh",
+    "test:otop": "node --test test/otop_*.test.js",
+    "otop:faces": "node scripts/otop/province-faces.js",
+    "otop:media": "node scripts/otop/fetch-province-media.mjs",
+    "otop:media:cache": "node scripts/otop/fetch-province-media.mjs --cache --categories"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",
@@ -67,6 +83,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "satori": "^0.26.0",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "wrangler": "^4.130.0"
   }
 }

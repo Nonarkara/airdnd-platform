@@ -1,0 +1,62 @@
+{
+  "code": 10,
+  "iso": "TH-10",
+  "th": "กรุงเทพมหานคร",
+  "en": "Bangkok",
+  "dominantCategory": {
+    "id": "craft",
+    "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+    "en": "Household, Decorative & Souvenir",
+    "share": 10.2,
+    "count": 262
+  },
+  "fetchedAt": "2026-09-14T18:52:35.751Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Bangkok Household, Decorative & Souvenir",
+    "กรุงเทพมหานคร ของใช้ ของตกแต่ง ของที่ระลึก",
+    "กรุงเทพมหานคร รองเท้า",
+    "กรุงเทพมหานคร กระเป๋าผ้า",
+    "กรุงเทพมหานคร เครื่องประดับหินสี",
+    "Bangkok OTOP",
+    "กรุงเทพมหานคร โอทอป",
+    "Bangkok Thai bamboo basketry"
+  ],
+  "photos": [
+    {
+      "title": "File:Bamboo basketry of the Thai ethnic group (photographed in Diềm Village, Châu Khe Commune, Con Cuông District).jpg",
+      "description": "Bamboo basketry of the Thai ethnic group (photographed in Diềm Village, Châu Khe Commune, Con Cuông District)",
+      "author": "KoheiU",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Bamboo%20basketry%20of%20the%20Thai%20ethnic%20group%20(photographed%20in%20Di%E1%BB%81m%20Village%2C%20Ch%C3%A2u%20Khe%20Commune%2C%20Con%20Cu%C3%B4ng%20District).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Bamboo_basketry_of_the_Thai_ethnic_group_%28photographed_in_Di%E1%BB%81m_Village%2C_Ch%C3%A2u_Khe_Commune%2C_Con_Cu%C3%B4ng_District%29.jpg/960px-Bamboo_basketry_of_the_Thai_ethnic_group_%28photographed_in_Di%E1%BB%81m_Village%2C_Ch%C3%A2u_Khe_Commune%2C_Con_Cu%C3%B4ng_District%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Bamboo_basketry_of_the_Thai_ethnic_group_%28photographed_in_Di%E1%BB%81m_Village%2C_Ch%C3%A2u_Khe_Commune%2C_Con_Cu%C3%B4ng_District%29.jpg/960px-Bamboo_basketry_of_the_Thai_ethnic_group_%28photographed_in_Di%E1%BB%81m_Village%2C_Ch%C3%A2u_Khe_Commune%2C_Con_Cu%C3%B4ng_District%29.jpg",
+      "localPath": null,
+      "query": "Thai bamboo basketry",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Siam 1904 b (60).jpg",
+      "description": "Original caption : Making rattan ropes. Uploader's caption : —",
+      "author": "G. P. Putnam's Sons",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Siam%201904%20b%20(60).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Siam_1904_b_%2860%29.jpg/960px-Siam_1904_b_%2860%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Siam_1904_b_%2860%29.jpg/960px-Siam_1904_b_%2860%29.jpg",
+      "localPath": null,
+      "query": "Thai rattan craft",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

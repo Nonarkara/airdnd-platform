@@ -1,0 +1,62 @@
+{
+  "code": 34,
+  "iso": "TH-34",
+  "th": "อุบลราชธานี",
+  "en": "Ubon Ratchathani",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 13.8,
+    "count": 758
+  },
+  "fetchedAt": "2026-09-14T18:56:08.406Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Ubon Ratchathani Food",
+    "อุบลราชธานี อาหาร",
+    "อุบลราชธานี ผ้าขาวม้า",
+    "อุบลราชธานี พรมเช็ดเท้า",
+    "อุบลราชธานี ตะกร้าพลาสติก",
+    "Ubon Ratchathani OTOP",
+    "อุบลราชธานี โอทอป",
+    "Ubon Ratchathani Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Ubon Ratchathani, Thailand (Unsplash).jpg",
+      "description": "Ubon Ratchathani, Thailand",
+      "author": "Kawin Harasai kawin",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Ubon%20Ratchathani%2C%20Thailand%20(Unsplash).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Ubon_Ratchathani%2C_Thailand_%28Unsplash%29.jpg/960px-Ubon_Ratchathani%2C_Thailand_%28Unsplash%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Ubon_Ratchathani%2C_Thailand_%28Unsplash%29.jpg/960px-Ubon_Ratchathani%2C_Thailand_%28Unsplash%29.jpg",
+      "localPath": null,
+      "query": "Ubon Ratchathani Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Food (Unsplash).jpg",
+      "description": "Ubon Ratchathani, Thailand",
+      "author": "Kawin Harasai kawin",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Food%20(Unsplash).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Food_%28Unsplash%29.jpg/960px-Food_%28Unsplash%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Food_%28Unsplash%29.jpg/960px-Food_%28Unsplash%29.jpg",
+      "localPath": null,
+      "query": "Ubon Ratchathani Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

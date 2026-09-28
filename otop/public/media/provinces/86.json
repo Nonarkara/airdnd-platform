@@ -1,0 +1,46 @@
+{
+  "code": 86,
+  "iso": "TH-86",
+  "th": "ชุมพร",
+  "en": "Chumphon",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 6.9,
+    "count": 73
+  },
+  "fetchedAt": "2026-09-14T19:02:32.283Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Chumphon Food",
+    "ชุมพร อาหาร",
+    "ชุมพร น้ำตาลมะพร้าว",
+    "ชุมพร รองเท้าหนังวัว",
+    "ชุมพร กล้วยเล็บมือนางกวน? ดรีม",
+    "Chumphon OTOP",
+    "ชุมพร โอทอป",
+    "Chumphon Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:ร้าน بسم الله.jpg",
+      "description": "ร้าน بسم الله",
+      "author": "Poom2014",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99%20%D8%A8%D8%B3%D9%85%20%D8%A7%D9%84%D9%84%D9%87.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99_%D8%A8%D8%B3%D9%85_%D8%A7%D9%84%D9%84%D9%87.jpg/960px-%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99_%D8%A8%D8%B3%D9%85_%D8%A7%D9%84%D9%84%D9%87.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99_%D8%A8%D8%B3%D9%85_%D8%A7%D9%84%D9%84%D9%87.jpg/960px-%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99_%D8%A8%D8%B3%D9%85_%D8%A7%D9%84%D9%84%D9%87.jpg",
+      "localPath": null,
+      "query": "Chumphon Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "code": 90,
+  "iso": "TH-90",
+  "th": "สงขลา",
+  "en": "Songkhla",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 7.5,
+    "count": 135
+  },
+  "fetchedAt": "2026-09-14T19:02:33.833Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Songkhla Food",
+    "สงขลา อาหาร",
+    "สงขลา เครื่องแกงเผ็ด",
+    "สงขลา เครื่องแกงส้ม",
+    "สงขลา มะม่วงเบาแช่อิ่ม",
+    "Songkhla OTOP",
+    "สงขลา โอทอป",
+    "Songkhla Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Wat Tham Khao Rup Chang - 119 Cunda's Food Offering (14478173449).jpg",
+      "description": "119 Cunda's Food Offering, Wat Tham Khao Rup Chang, Sadao, Thailand Photograph from Wat Tham Khao Rup Chang in Songkhla Province , Thailand taken by Anandajoti .",
+      "author": "Photo Dharma from Penang, Malaysia",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Wat%20Tham%20Khao%20Rup%20Chang%20-%20119%20Cunda's%20Food%20Offering%20(14478173449).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Wat_Tham_Khao_Rup_Chang_-_119_Cunda%27s_Food_Offering_%2814478173449%29.jpg/960px-Wat_Tham_Khao_Rup_Chang_-_119_Cunda%27s_Food_Offering_%2814478173449%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Wat_Tham_Khao_Rup_Chang_-_119_Cunda%27s_Food_Offering_%2814478173449%29.jpg/960px-Wat_Tham_Khao_Rup_Chang_-_119_Cunda%27s_Food_Offering_%2814478173449%29.jpg",
+      "localPath": null,
+      "query": "Songkhla Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Wat Tham Khao Rup Chang - 129 Cunda's Food Offering (14684679693).jpg",
+      "description": "129 Cunda's Food Offering, Wat Tham Khao Rup Chang, Sadao, Thailand Photograph from Wat Tham Khao Rup Chang in Songkhla Province , Thailand taken by Anandajoti .",
+      "author": "Photo Dharma from Penang, Malaysia",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Wat%20Tham%20Khao%20Rup%20Chang%20-%20129%20Cunda's%20Food%20Offering%20(14684679693).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Wat_Tham_Khao_Rup_Chang_-_129_Cunda%27s_Food_Offering_%2814684679693%29.jpg/960px-Wat_Tham_Khao_Rup_Chang_-_129_Cunda%27s_Food_Offering_%2814684679693%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Wat_Tham_Khao_Rup_Chang_-_129_Cunda%27s_Food_Offering_%2814684679693%29.jpg/960px-Wat_Tham_Khao_Rup_Chang_-_129_Cunda%27s_Food_Offering_%2814684679693%29.jpg",
+      "localPath": null,
+      "query": "Songkhla Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

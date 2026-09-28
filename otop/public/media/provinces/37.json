@@ -1,0 +1,62 @@
+{
+  "code": 37,
+  "iso": "TH-37",
+  "th": "อำนาจเจริญ",
+  "en": "Amnat Charoen",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 17,
+    "count": 341
+  },
+  "fetchedAt": "2026-09-14T18:56:22.918Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Amnat Charoen Food",
+    "อำนาจเจริญ อาหาร",
+    "อำนาจเจริญ ข้าวหอมมะลิ",
+    "อำนาจเจริญ ข้าวกล้อง",
+    "อำนาจเจริญ ข้าวกล้องหอมมะลิ",
+    "Amnat Charoen OTOP",
+    "อำนาจเจริญ โอทอป",
+    "Amnat Charoen Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:DFC 2568 A bustling night market food stall in Thailand with customers browsing grilled skewers and a vendor preparing orders under warm hanging lights.jpg",
+      "description": "This photo shows a nighttime street food scene, likely in Thailand, as suggested by the Thai script visible on a red sign. The setting appears to be a small street market or food stall area with string lights hanging overhead to provide illumination. In the foreground, there's a food vendor stall with what appears to be various food items on display. The atmosphere is typical of an Asian night market with its characteristic warm lighting against the dark night background. There are a few people visible near the stalls, including someone browsing the offerings. The scene captures the vibrant street food culture that's common throughout Southeast Asia, where evening markets come alive after sunset and serve as important social and culinary gathering spots.",
+      "author": "PattayaPatrol",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:DFC%202568%20A%20bustling%20night%20market%20food%20stall%20in%20Thailand%20with%20customers%20browsing%20grilled%20skewers%20and%20a%20vendor%20preparing%20orders%20under%20warm%20hanging%20lights.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/DFC_2568_A_bustling_night_market_food_stall_in_Thailand_with_customers_browsing_grilled_skewers_and_a_vendor_preparing_orders_under_warm_hanging_lights.jpg/960px-DFC_2568_A_bustling_night_market_food_stall_in_Thailand_with_customers_browsing_grilled_skewers_and_a_vendor_preparing_orders_under_warm_hanging_lights.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/DFC_2568_A_bustling_night_market_food_stall_in_Thailand_with_customers_browsing_grilled_skewers_and_a_vendor_preparing_orders_under_warm_hanging_lights.jpg/960px-DFC_2568_A_bustling_night_market_food_stall_in_Thailand_with_customers_browsing_grilled_skewers_and_a_vendor_preparing_orders_under_warm_hanging_lights.jpg",
+      "localPath": null,
+      "query": "Thai market food stall",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:เนื้อวัวดิบ.jpg",
+      "description": "This media has been taken in the country: Thailand",
+      "author": "Wittayawatfirst",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B9%80%E0%B8%99%E0%B8%B7%E0%B9%89%E0%B8%AD%E0%B8%A7%E0%B8%B1%E0%B8%A7%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/%E0%B9%80%E0%B8%99%E0%B8%B7%E0%B9%89%E0%B8%AD%E0%B8%A7%E0%B8%B1%E0%B8%A7%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg/960px-%E0%B9%80%E0%B8%99%E0%B8%B7%E0%B9%89%E0%B8%AD%E0%B8%A7%E0%B8%B1%E0%B8%A7%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/%E0%B9%80%E0%B8%99%E0%B8%B7%E0%B9%89%E0%B8%AD%E0%B8%A7%E0%B8%B1%E0%B8%A7%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg/960px-%E0%B9%80%E0%B8%99%E0%B8%B7%E0%B9%89%E0%B8%AD%E0%B8%A7%E0%B8%B1%E0%B8%A7%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg",
+      "localPath": null,
+      "query": "อาหารพื้นบ้าน ไทย",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

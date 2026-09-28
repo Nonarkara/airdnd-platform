@@ -1,0 +1,62 @@
+{
+  "code": 84,
+  "iso": "TH-84",
+  "th": "สุราษฎร์ธานี",
+  "en": "Surat Thani",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 4,
+    "count": 80
+  },
+  "fetchedAt": "2026-09-14T19:02:03.132Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Surat Thani Food",
+    "สุราษฎร์ธานี อาหาร",
+    "สุราษฎร์ธานี กาแฟสดสวนสละอาทิตย์",
+    "สุราษฎร์ธานี กาละแม",
+    "สุราษฎร์ธานี เงาะอบแห้ง",
+    "Surat Thani OTOP",
+    "สุราษฎร์ธานี โอทอป",
+    "Surat Thani Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Khao Sok, Asian noodle soup, Surat Thani, Thailand.jpg",
+      "description": "Thai/Chinese style noodle soup. A wonderfully warming Asian noodle soup: rice noodles with fragrant spices and coconut milk, ginger, chilli, lemongrass, garlic and coriander. Sugar, nam pla (fish sauce), dried chilli and chilli in vinegar provided in jars on the table. Surat Thani, Thailand.",
+      "author": "Vyacheslav Argenberg",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Khao%20Sok%2C%20Asian%20noodle%20soup%2C%20Surat%20Thani%2C%20Thailand.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Khao_Sok%2C_Asian_noodle_soup%2C_Surat_Thani%2C_Thailand.jpg/960px-Khao_Sok%2C_Asian_noodle_soup%2C_Surat_Thani%2C_Thailand.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Khao_Sok%2C_Asian_noodle_soup%2C_Surat_Thani%2C_Thailand.jpg/960px-Khao_Sok%2C_Asian_noodle_soup%2C_Surat_Thani%2C_Thailand.jpg",
+      "localPath": null,
+      "query": "Surat Thani Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Talat, Surat Thani, Thailand, 26 April 2025 - Food.jpg",
+      "description": "แกงจืดเต้าหู้หมูสับ minced pork & tofu soup",
+      "author": "Sharon Hahn Darlin",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Talat%2C%20Surat%20Thani%2C%20Thailand%2C%2026%20April%202025%20-%20Food.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Talat%2C_Surat_Thani%2C_Thailand%2C_26_April_2025_-_Food.jpg/960px-Talat%2C_Surat_Thani%2C_Thailand%2C_26_April_2025_-_Food.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Talat%2C_Surat_Thani%2C_Thailand%2C_26_April_2025_-_Food.jpg/960px-Talat%2C_Surat_Thani%2C_Thailand%2C_26_April_2025_-_Food.jpg",
+      "localPath": null,
+      "query": "Surat Thani Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

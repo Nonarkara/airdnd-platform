@@ -6,6 +6,12 @@
       "runtimeExecutable": "/opt/homebrew/bin/node",
       "runtimeArgs": ["node_modules/.bin/vite", "--port", "5174"],
       "port": 5174
+    },
+    {
+      "name": "otop",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--config", "vite.otop.config.js"],
+      "port": 5180
     }
   ]
 }

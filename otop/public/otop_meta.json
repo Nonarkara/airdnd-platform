@@ -1,0 +1,52 @@
+{
+  "builtAt": "2026-09-20T17:12:01.983Z",
+  "source": "data.go.th",
+  "degraded": false,
+  "reason": null,
+  "portal": "https://data.go.th",
+  "shardCount": 77,
+  "flatFileWritten": false,
+  "counts": {
+    "resourcesCached": 1294,
+    "resourcesUsable": 485,
+    "resourcesSkipped": 809,
+    "resourcesAggregateEconomic": 228,
+    "resourcesExcludedByTitle": 3,
+    "rowsIn": 1015991,
+    "rowsAccepted": 427100,
+    "rowsRejected": 9516,
+    "recordsAfterMerge": 154050,
+    "duplicatesCollapsed": 273050,
+    "tambonPlaced": 135100,
+    "certified": 17235,
+    "certValid": 9588,
+    "certExpired": 7523,
+    "certUnknown": 124,
+    "certAsOf": "2026-09-20"
+  },
+  "geo": {
+    "records": 154050,
+    "withSubdistrict": 135390,
+    "placed": 135100,
+    "placedShare": 87.7,
+    "unplacedWithSubdistrict": 290,
+    "tambonsWithRecords": 7383,
+    "tambonsInReference": 7436
+  },
+  "rejectReasons": {
+    "no_area": 8930,
+    "no_name": 5326,
+    "numeric_name": 498
+  },
+  "mergeBasis": {
+    "name_area": 33571,
+    "registration": 70824,
+    "phone": 6662
+  },
+  "strongestSignal": {
+    "name_area": 140470,
+    "phone": 8839,
+    "unmergeable": 4741
+  },
+  "mergedRecords": 111057
+}

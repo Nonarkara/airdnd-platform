@@ -1,0 +1,62 @@
+{
+  "code": 65,
+  "iso": "TH-65",
+  "th": "พิษณุโลก",
+  "en": "Phitsanulok",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 39.4,
+    "count": 632
+  },
+  "fetchedAt": "2026-09-14T19:00:06.099Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Phitsanulok Food",
+    "พิษณุโลก อาหาร",
+    "พิษณุโลก ไม้กวาดดอกหญ้า",
+    "พิษณุโลก กล้วยฉาบ",
+    "พิษณุโลก ผ้าขาวม้า",
+    "Phitsanulok OTOP",
+    "พิษณุโลก โอทอป",
+    "Phitsanulok Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:03 Ban Bang Krathum Bananas.jpg",
+      "description": "Dried bananas packaged in Ban Bang Krathum, Bang Krathum, Phitsanulok, Thailand",
+      "author": "Kborland",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:03%20Ban%20Bang%20Krathum%20Bananas.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9c/03_Ban_Bang_Krathum_Bananas.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9c/03_Ban_Bang_Krathum_Bananas.jpg",
+      "localPath": null,
+      "query": "Phitsanulok Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:31 Bowl of Termites (May 16 2001).JPG",
+      "description": "Bowl of termites collected for food in Ban Dongphayom, Phitsanulok, Thailand",
+      "author": "Kborland",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:31%20Bowl%20of%20Termites%20(May%2016%202001).JPG",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/31_Bowl_of_Termites_%28May_16_2001%29.JPG",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/d/df/31_Bowl_of_Termites_%28May_16_2001%29.JPG",
+      "localPath": null,
+      "query": "Phitsanulok Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "code": 63,
+  "iso": "TH-63",
+  "th": "ตาก",
+  "en": "Tak",
+  "dominantCategory": {
+    "id": "textile",
+    "th": "ผ้าและเครื่องแต่งกาย",
+    "en": "Fabric & Apparel",
+    "share": 5.7,
+    "count": 94
+  },
+  "fetchedAt": "2026-09-14T19:04:31.475Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Tak Fabric & Apparel",
+    "ตาก ผ้าและเครื่องแต่งกาย",
+    "ตาก จี้เงินประดับอัญมณี",
+    "ตาก ข้าวไรซ์เบอร์รี่",
+    "ตาก เครื่องประดับเงินแบบมีลวดลาย",
+    "Tak OTOP",
+    "ตาก โอทอป",
+    "Tak Thai silk weaving"
+  ],
+  "photos": [
+    {
+      "title": "File:Batik Ngawi banner.jpg",
+      "description": "A photo of a banner made of Ngawi motif batik cloth on display",
+      "author": "YT Arty",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Batik%20Ngawi%20banner.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Batik_Ngawi_banner.jpg/960px-Batik_Ngawi_banner.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Batik_Ngawi_banner.jpg/960px-Batik_Ngawi_banner.jpg",
+      "localPath": null,
+      "query": "Thai batik cloth",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

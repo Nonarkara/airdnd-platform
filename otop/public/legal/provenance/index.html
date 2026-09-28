@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fdf3df" />
+  <meta name="description" content="one³ — data provenance and license. The exact source of every record, the licence terms, and what we add on top of it." />
+  <title>Data provenance &amp; license · one³ — OTOP registry intelligence</title>
+  <link rel="stylesheet" href="/legal/legal.css" />
+  <link rel="canonical" href="https://otop.nonarkara.org/legal/provenance/" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content · ข้ามไปยังเนื้อหา</a>
+
+  <main id="main" class="shell">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <a href="/">one³</a>
+      <span class="sep">·</span>
+      <a href="/legal/">Fine print</a>
+      <span class="sep">·</span>
+      <span class="now">Data provenance &amp; license</span>
+      <span class="sep">·</span>
+      <span lang="th">แหล่งที่มาและสัญญาอนุญาต</span>
+    </nav>
+
+    <span class="eyebrow">Section 3 · Data provenance &amp; license</span>
+    <span class="eyebrow-th">ส่วนที่ 3 · แหล่งที่มาของข้อมูลและสัญญาอนุญาต</span>
+
+    <h1>Data provenance &amp; license</h1>
+    <span lang="th" class="lead-th">แหล่งที่มาของข้อมูลและสัญญาอนุญาต — ข้อมูลมาจากไหน อนุญาตให้ใช้อย่างไร เราเพิ่มอะไรบ้าง</span>
+
+    <p class="subhead">Every record on this site traces back to a single point: the open OTOP catalogue published by the Department of Community Development on Thailand's central open-data portal, <span class="mono">data.go.th</span>. This page names the source, the licence, the attribution, and the things we add on top.</p>
+
+    <h2>1. The source <span lang="th" class="bi-th">แหล่งที่มา</span></h2>
+    <table class="legal-table">
+      <tbody>
+        <tr><td>Publisher</td><td>Department of Community Development (กรมการพัฒนาชุมชน), Ministry of Interior, Royal Government of Thailand</td></tr>
+        <tr><td>Open-data portal</td><td><a href="https://data.go.th">data.go.th</a> — operated by the Digital Government Agency (DGA)</td></tr>
+        <tr><td>Mirror used by us</td><td><a href="https://gdcatalog.go.th">gdcatalog.go.th</a> — provincial mirrors of the same catalogue</td></tr>
+        <tr><td>Programme in charge</td><td>Bureau of Local Wisdom and Community Enterprise Promotion (สำนักส่งเสริมภูมิปัญญาท้องถิ่นและวิสาหกิจชุมชน)</td></tr>
+        <tr><td>Programme contact</td><td>Mr Warong Saengmuang, Director · 0-2141-6005 · <span class="mono">secr@cdd.mail.go.th</span></td></tr>
+        <tr><td>Official portal (separate surface)</td><td><a href="https://otop.cdd.go.th">otop.cdd.go.th</a> — the Odoo-backed CDD operator portal, the most authoritative non-open-data view</td></tr>
+      </tbody>
+    </table>
+    <p>The site pulls the open CSV catalogue directly. We do not scrape the <span class="mono">otop.cdd.go.th</span> portal, and we do not use the token-gated <span class="mono">otopapi.cdd.go.th:3000</span> endpoint; both are out of bounds for us. Everything you see on this site traces back to a CSV on <span class="mono">data.go.th</span> and its provincial mirrors.</p>
+
+    <h2>2. The licences we re-publish under <span lang="th" class="bi-th">สัญญาอนุญาตที่ใช้เผยแพร่</span></h2>
+    <p>The <span class="mono">data.go.th</span> portal operates under the <strong>EGA Open Government License</strong>, which is compatible with the family of open licences listed below. Individual datasets in the OTOP catalogue carry per-resource licence tags; the most common in our pull are:</p>
+    <table class="legal-table">
+      <thead><tr><th>Tag</th><th>Licence</th><th>Use permitted</th><th>Attribution required?</th><th>Share-alike required?</th></tr></thead>
+      <tbody>
+        <tr><td>G0</td><td>Open Data Common (ODbL-family)</td><td>Copy, modify, redistribute, commercial and non-commercial</td><td>Yes</td><td>Yes (for the database right)</td></tr>
+        <tr><td>G1</td><td>Creative Commons Attribution 4.0 (CC BY 4.0)</td><td>Copy, modify, redistribute, commercial and non-commercial</td><td>Yes</td><td>No</td></tr>
+        <tr><td>G2</td><td>CC BY-NonCommercial 4.0</td><td>Copy, modify, redistribute, non-commercial only</td><td>Yes</td><td>No</td></tr>
+        <tr><td>G3.1</td><td>CC BY-ShareAlike 4.0</td><td>Copy, modify, redistribute; modifications must use the same licence</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td>G3.2</td><td>CC BY-NC-SA 4.0</td><td>Non-commercial copy, modify, redistribute; share-alike</td><td>Yes</td><td>Yes</td></tr>
+      </tbody>
+    </table>
+    <p>The per-resource licence tag is preserved in our raw cache and is the licence under which each record is re-published here. Where the source tag is unclear, we default to the most permissive G0 / Open Data Common reading.</p>
+
+    <h2>3. What the licence does <em>not</em> cover <span lang="th" class="bi-th">สิ่งที่สัญญาอนุญาตไม่ครอบคลุม</span></h2>
+    <p>The OGD licence and the CC family permit the <em>use of the data</em>. They do <strong>not</strong> cover the <em>personal data contained within the data</em>. The NSTDA presentation on Thailand's open-data programme (2018) is explicit on this point: <em>"การอนุญาตให้ใช้ข้อมูลนี้ ไม่ครอบคลุมถึง 'ข้อมูลส่วนบุคคลที่อยู่ในเนื้อหาข้อมูล'"</em> — the licence to use the data does not extend to the personal data within it. We therefore treat the producer names, addresses, and phone numbers in the registry under the Personal Data Protection Act B.E. 2562, on the lawful bases explained in our <a href="/legal/privacy/">Privacy policy</a>.</p>
+
+    <h2>4. How to cite this site <span lang="th" class="bi-th">วิธีอ้างอิงเว็บไซต์นี้</span></h2>
+    <p>If you use a number, finding, or visualisation from this site in academic, journalistic, or policy work, please cite both the source and this site. A complete citation looks like this:</p>
+    <blockquote class="callout">
+      <em>one³ — OTOP registry intelligence</em>, derived from the OTOP catalogue published by the Department of Community Development on <span class="mono">data.go.th</span>. Retrieved from <span class="mono">https://otop.nonarkara.org/?view=crossrefs</span> on 10 September 2026.
+    </blockquote>
+    <p>For a record-level citation, use the OTOP registry number and the permalink on the province dossier or record view.</p>
+
+    <h2>5. What we add on top of the source <span lang="th" class="bi-th">สิ่งที่เราเพิ่มบนข้อมูลต้นฉบับ</span></h2>
+    <p>The following are our work, not the source's. They are covered by the site's terms of use, not by the OGD licence.</p>
+    <table class="legal-table">
+      <thead><tr><th>What we add</th><th>Why</th><th>Where it shows</th></tr></thead>
+      <tbody>
+        <tr><td>Producer dedup (phone-based union-find)</td><td>One business with one phone appears once, regardless of how many names it posts under</td><td>Matchmaker, Atlas, search</td></tr>
+        <tr><td>Contact tier (none / phone / phone + address / corroborated)</td><td>A producer you can actually call and locate is more useful than a name only</td><td>Matchmaker</td></tr>
+        <tr><td>Completeness gate (category, contact, star grade, distinct product name)</td><td>Drops the 80% of records that are name-only stubs by default; opt-in with <span class="mono">?all=1</span></td><td>Matchmaker, Atlas</td></tr>
+        <tr><td>Province dossier</td><td>All records for one province on one page, with category, channel, and year filings</td><td>Atlas → Geography</td></tr>
+        <tr><td>16-year filings time series</td><td>When did the registry grow, by category</td><td>Atlas → Record</td></tr>
+        <tr><td>25×5 category heatmap</td><td>Which provinces are specialised in which category</td><td>Atlas → Geography</td></tr>
+        <tr><td>Cross-references (population, tourism, internet)</td><td>The registry against the country the producers sit in</td><td>Atlas → Geography</td></tr>
+        <tr><td>Findings block (7 plain-language claims)</td><td>Lead with the answer, not the count</td><td>Atlas → Findings</td></tr>
+        <tr><td>OTOP: 25 Years (17-chapter history)</td><td>OVOP Oita 1979 → OTOP Thailand 2001 → 2025, every chapter cited</td><td>History</td></tr>
+        <tr><td>Reachable Champions ranking</td><td>5-star producers you can actually reach</td><td>Champions</td></tr>
+        <tr><td>Demand Tides (33 months, by category)</td><td>The OTOP revenue series from the CDD, normalised</td><td>Tides</td></tr>
+        <tr><td>National Story</td><td>One province, the whole story</td><td>Story</td></tr>
+              <tr><td>Tambon placement <span lang="th" class="bi-th">ตำแหน่งระดับตำบล</span></td><td>87.9% of records name their ตำบล but 0.4% carry coordinates. We place each record at the centroid of the tambon it names, using <a href="https://github.com/DevelopedbyWill/thailand-canonical-admin-names">Thailand Canonical Admin Names v1.0.0</a> by William J. Reynolds (CC BY 4.0). This is the unit the source asserted, not the producer&rsquo;s address, and the map says so.</td><td>Supply map; <code>otop_tambons.json</code></td></tr>
+</tbody>
+    </table>
+    <p>These derived fields are not facts about the producer in the world; they are facts about the record as published. A "no contact channel" tier means the published record on <span class="mono">data.go.th</span> carries no phone number; it does not mean the producer has no phone. The distinction matters and we hold it.</p>
+
+    <h2>6. Provenance per page <span lang="th" class="bi-th">การระบุแหล่งที่มาในทุกหน้า</span></h2>
+    <p>Every record view and every province dossier carries a footer line of the form <em>"Source: Department of Community Development, <span class="mono">data.go.th</span> · last refreshed on &lt;date&gt;"</em>. The site meta view (<span class="mono">/?view=atlas</span> → Record → "Last refreshed") shows the build timestamp. If a number on this site is wrong, the source is the place to correct it first; we will follow.</p>
+
+    <h2>7. Contact <span lang="th" class="bi-th">ติดต่อ</span></h2>
+    <div class="contact-box">
+      <span class="cb-key">Source / licence / attribution queries</span>
+      <p><a href="mailto:non@nonarkara.org">non@nonarkara.org</a> · response within 14 days.</p>
+    </div>
+
+    <div class="page-foot">
+      <div><span class="pf-key">Section · </span><span class="pf-val">3 of 5 · Data provenance &amp; license</span></div>
+      <div><span class="pf-key">Last updated · </span><span class="pf-val">10 September 2026</span></div>
+      <div><span class="pf-key">Next · </span><span class="pf-val"><a href="/legal/disclaimer/">4 · Disclaimer →</a></span></div>
+      <div><span class="pf-key">Back · </span><span class="pf-val"><a href="/legal/privacy/">← Privacy policy</a></span></div>
+    </div>
+  </main>
+</body>
+</html>

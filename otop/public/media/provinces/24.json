@@ -1,0 +1,62 @@
+{
+  "code": 24,
+  "iso": "TH-24",
+  "th": "ฉะเชิงเทรา",
+  "en": "Chachoengsao",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 9.2,
+    "count": 142
+  },
+  "fetchedAt": "2026-09-14T18:54:46.932Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Chachoengsao Food",
+    "ฉะเชิงเทรา อาหาร",
+    "ฉะเชิงเทรา มะม่วงกวน",
+    "ฉะเชิงเทรา มะม่วงแช่อิ่ม",
+    "ฉะเชิงเทรา เจลว่านหางจระเข้",
+    "Chachoengsao OTOP",
+    "ฉะเชิงเทรา โอทอป",
+    "Chachoengsao Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Bang Wua, Bang Pakong District, Chachoengsao, Thailand - panoramio.jpg",
+      "description": "Bang Wua, Bang Pakong District, Chachoengsao, Thailand",
+      "author": "azq123",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Bang%20Wua%2C%20Bang%20Pakong%20District%2C%20Chachoengsao%2C%20Thailand%20-%20panoramio.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Bang_Wua%2C_Bang_Pakong_District%2C_Chachoengsao%2C_Thailand_-_panoramio.jpg/960px-Bang_Wua%2C_Bang_Pakong_District%2C_Chachoengsao%2C_Thailand_-_panoramio.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Bang_Wua%2C_Bang_Pakong_District%2C_Chachoengsao%2C_Thailand_-_panoramio.jpg/960px-Bang_Wua%2C_Bang_Pakong_District%2C_Chachoengsao%2C_Thailand_-_panoramio.jpg",
+      "localPath": null,
+      "query": "Chachoengsao Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Bang Wua, Bang Pakong District, Chachoengsao, Thailand - panoramio (3).jpg",
+      "description": "Bang Wua, Bang Pakong District, Chachoengsao, Thailand",
+      "author": "azq123",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Bang%20Wua%2C%20Bang%20Pakong%20District%2C%20Chachoengsao%2C%20Thailand%20-%20panoramio%20(3).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Bang_Wua%2C_Bang_Pakong_District%2C_Chachoengsao%2C_Thailand_-_panoramio_%283%29.jpg/960px-Bang_Wua%2C_Bang_Pakong_District%2C_Chachoengsao%2C_Thailand_-_panoramio_%283%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Bang_Wua%2C_Bang_Pakong_District%2C_Chachoengsao%2C_Thailand_-_panoramio_%283%29.jpg/960px-Bang_Wua%2C_Bang_Pakong_District%2C_Chachoengsao%2C_Thailand_-_panoramio_%283%29.jpg",
+      "localPath": null,
+      "query": "Chachoengsao Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

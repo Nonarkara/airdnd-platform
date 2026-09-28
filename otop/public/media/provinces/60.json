@@ -1,0 +1,62 @@
+{
+  "code": 60,
+  "iso": "TH-60",
+  "th": "นครสวรรค์",
+  "en": "Nakhon Sawan",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 6.6,
+    "count": 139
+  },
+  "fetchedAt": "2026-09-14T18:59:18.303Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Nakhon Sawan Food",
+    "นครสวรรค์ อาหาร",
+    "นครสวรรค์ พรมเช็ดเท้า",
+    "นครสวรรค์ กระเป๋าเชือกร่ม หมวก",
+    "นครสวรรค์ กล้วยกวนกะทิสด",
+    "Nakhon Sawan OTOP",
+    "นครสวรรค์ โอทอป",
+    "Nakhon Sawan Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Soy milk bottles.jpg",
+      "description": "\"Vitamilk\" (ไวตามิลค์) Soy milk bottles",
+      "author": "Love Krittaya",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Soy%20milk%20bottles.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Soy_milk_bottles.jpg/960px-Soy_milk_bottles.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Soy_milk_bottles.jpg/960px-Soy_milk_bottles.jpg",
+      "localPath": null,
+      "query": "Nakhon Sawan Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:นิวทายโหล้ง.jpg",
+      "description": "นิวทายโหล้ง ร้านอาหารกวางตุ้งเก่าแก่มากกว่า 60 ปี เดิมทีเปิดอยู่ที่แยกเฉลิมบุรี เยาวราช แต่ปัจจุบันย้ายมาอยู่ที่ ถ.นครสวรรค์ ย่านนางเลิ้ง",
+      "author": "Phoebus 28",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%99%E0%B8%B4%E0%B8%A7%E0%B8%97%E0%B8%B2%E0%B8%A2%E0%B9%82%E0%B8%AB%E0%B8%A5%E0%B9%89%E0%B8%87.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/%E0%B8%99%E0%B8%B4%E0%B8%A7%E0%B8%97%E0%B8%B2%E0%B8%A2%E0%B9%82%E0%B8%AB%E0%B8%A5%E0%B9%89%E0%B8%87.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/2/22/%E0%B8%99%E0%B8%B4%E0%B8%A7%E0%B8%97%E0%B8%B2%E0%B8%A2%E0%B9%82%E0%B8%AB%E0%B8%A5%E0%B9%89%E0%B8%87.jpg",
+      "localPath": null,
+      "query": "นครสวรรค์ อาหาร",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

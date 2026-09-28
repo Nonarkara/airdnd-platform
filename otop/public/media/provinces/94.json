@@ -1,0 +1,62 @@
+{
+  "code": 94,
+  "iso": "TH-94",
+  "th": "ปัตตานี",
+  "en": "Pattani",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 8.1,
+    "count": 134
+  },
+  "fetchedAt": "2026-09-14T19:03:07.442Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Pattani Food",
+    "ปัตตานี อาหาร",
+    "ปัตตานี หมวกกะปิเยาะ",
+    "ปัตตานี กระเป๋าผ้า",
+    "ปัตตานี ผ้าบาติก",
+    "Pattani OTOP",
+    "ปัตตานี โอทอป",
+    "Pattani Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:A palte of Boiled Pisum sativum (Pattani).jpg",
+      "description": "பட்டாணி அவியல்.",
+      "author": "Thamizhpparithi Maari",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:A%20palte%20of%20Boiled%20Pisum%20sativum%20(Pattani).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/A_palte_of_Boiled_Pisum_sativum_%28Pattani%29.jpg/960px-A_palte_of_Boiled_Pisum_sativum_%28Pattani%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/A_palte_of_Boiled_Pisum_sativum_%28Pattani%29.jpg/960px-A_palte_of_Boiled_Pisum_sativum_%28Pattani%29.jpg",
+      "localPath": null,
+      "query": "Pattani Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Pattani Sundal.jpg",
+      "description": "Pattani Sundal",
+      "author": "Booradleyp1",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Pattani%20Sundal.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Pattani_Sundal.jpg/960px-Pattani_Sundal.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Pattani_Sundal.jpg/960px-Pattani_Sundal.jpg",
+      "localPath": null,
+      "query": "Pattani Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

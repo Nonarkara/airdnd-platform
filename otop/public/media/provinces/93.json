@@ -1,0 +1,46 @@
+{
+  "code": 93,
+  "iso": "TH-93",
+  "th": "พัทลุง",
+  "en": "Phatthalung",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 37.5,
+    "count": 666
+  },
+  "fetchedAt": "2026-09-14T19:03:06.260Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Phatthalung Food",
+    "พัทลุง อาหาร",
+    "พัทลุง เครื่องแกงกะทิ",
+    "พัทลุง เครื่องแกงส้ม",
+    "พัทลุง ปลาดุกร้า",
+    "Phatthalung OTOP",
+    "พัทลุง โอทอป",
+    "Phatthalung Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Khuan Khanun, Khuan Khanun District, Phatthalung, Thailand - panoramio.jpg",
+      "description": "Khuan Khanun, Khuan Khanun District, Phatthalung, Thailand",
+      "author": "malamai@hotmail.com",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Khuan%20Khanun%2C%20Khuan%20Khanun%20District%2C%20Phatthalung%2C%20Thailand%20-%20panoramio.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Khuan_Khanun%2C_Khuan_Khanun_District%2C_Phatthalung%2C_Thailand_-_panoramio.jpg/960px-Khuan_Khanun%2C_Khuan_Khanun_District%2C_Phatthalung%2C_Thailand_-_panoramio.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Khuan_Khanun%2C_Khuan_Khanun_District%2C_Phatthalung%2C_Thailand_-_panoramio.jpg/960px-Khuan_Khanun%2C_Khuan_Khanun_District%2C_Phatthalung%2C_Thailand_-_panoramio.jpg",
+      "localPath": null,
+      "query": "Phatthalung Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

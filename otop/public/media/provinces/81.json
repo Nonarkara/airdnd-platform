@@ -1,0 +1,62 @@
+{
+  "code": 81,
+  "iso": "TH-81",
+  "th": "กระบี่",
+  "en": "Krabi",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 46.4,
+    "count": 700
+  },
+  "fetchedAt": "2026-09-14T19:01:46.271Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Krabi Food",
+    "กระบี่ อาหาร",
+    "กระบี่ FALSE",
+    "กระบี่ เครื่องแกงกะทิ",
+    "กระบี่ กระเป๋าผ้า",
+    "Krabi OTOP",
+    "กระบี่ โอทอป",
+    "Krabi Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Railay beach, fast food, Krabi province, Thailand 2018 1.jpg",
+      "description": "Fast food restaurants on Railay Beach in the Krabi Province , Thailand , March 2018",
+      "author": "Karelj",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Railay%20beach%2C%20fast%20food%2C%20Krabi%20province%2C%20Thailand%202018%201.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Railay_beach%2C_fast_food%2C_Krabi_province%2C_Thailand_2018_1.jpg/960px-Railay_beach%2C_fast_food%2C_Krabi_province%2C_Thailand_2018_1.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Railay_beach%2C_fast_food%2C_Krabi_province%2C_Thailand_2018_1.jpg/960px-Railay_beach%2C_fast_food%2C_Krabi_province%2C_Thailand_2018_1.jpg",
+      "localPath": null,
+      "query": "Krabi Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:2016-04-09 Street food vendors in Krabi Town 03.jpg",
+      "description": "Street food vendors in Krabi Town",
+      "author": "Maksym Kozlenko",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:2016-04-09%20Street%20food%20vendors%20in%20Krabi%20Town%2003.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/2016-04-09_Street_food_vendors_in_Krabi_Town_03.jpg/960px-2016-04-09_Street_food_vendors_in_Krabi_Town_03.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/2016-04-09_Street_food_vendors_in_Krabi_Town_03.jpg/960px-2016-04-09_Street_food_vendors_in_Krabi_Town_03.jpg",
+      "localPath": null,
+      "query": "Krabi Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

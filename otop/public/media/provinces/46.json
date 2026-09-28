@@ -1,0 +1,62 @@
+{
+  "code": 46,
+  "iso": "TH-46",
+  "th": "กาฬสินธุ์",
+  "en": "Kalasin",
+  "dominantCategory": {
+    "id": "textile",
+    "th": "ผ้าและเครื่องแต่งกาย",
+    "en": "Fabric & Apparel",
+    "share": 42.2,
+    "count": 1609
+  },
+  "fetchedAt": "2026-09-14T19:04:12.123Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Kalasin Fabric & Apparel",
+    "กาฬสินธุ์ ผ้าและเครื่องแต่งกาย",
+    "กาฬสินธุ์ ผ้าขาวม้า",
+    "กาฬสินธุ์ เสื่อกก",
+    "กาฬสินธุ์ ผ้าไหมแพรวา",
+    "Kalasin OTOP",
+    "กาฬสินธุ์ โอทอป",
+    "Kalasin Thai silk weaving"
+  ],
+  "photos": [
+    {
+      "title": "File:Weaving Thai Silk, circa 1964 (49232548733).jpg",
+      "description": "From the Warren Smith Collection (COLL/5713) at the Archives Branch, Marine Corps History Division OFFICIAL USMC PHOTOGRAPH",
+      "author": "USMC Archives from Quantico, USA",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Weaving%20Thai%20Silk%2C%20circa%201964%20(49232548733).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Weaving_Thai_Silk%2C_circa_1964_%2849232548733%29.jpg/960px-Weaving_Thai_Silk%2C_circa_1964_%2849232548733%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Weaving_Thai_Silk%2C_circa_1964_%2849232548733%29.jpg/960px-Weaving_Thai_Silk%2C_circa_1964_%2849232548733%29.jpg",
+      "localPath": null,
+      "query": "Thai silk weaving",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Jim Thompson Thai Silk Hand Weaving Gallery by Don Ramey Logan.jpg",
+      "description": "Jim Thompson Thai Silk Hand Weaving Gallery by Don Ramey Logan",
+      "author": "Don Ramey Logan",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Jim%20Thompson%20Thai%20Silk%20Hand%20Weaving%20Gallery%20by%20Don%20Ramey%20Logan.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Jim_Thompson_Thai_Silk_Hand_Weaving_Gallery_by_Don_Ramey_Logan.jpg/960px-Jim_Thompson_Thai_Silk_Hand_Weaving_Gallery_by_Don_Ramey_Logan.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Jim_Thompson_Thai_Silk_Hand_Weaving_Gallery_by_Don_Ramey_Logan.jpg/960px-Jim_Thompson_Thai_Silk_Hand_Weaving_Gallery_by_Don_Ramey_Logan.jpg",
+      "localPath": null,
+      "query": "Thai silk weaving",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

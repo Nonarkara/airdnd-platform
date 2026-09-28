@@ -1,0 +1,46 @@
+{
+  "code": 82,
+  "iso": "TH-82",
+  "th": "พังงา",
+  "en": "Phang Nga",
+  "dominantCategory": {
+    "id": "textile",
+    "th": "ผ้าและเครื่องแต่งกาย",
+    "en": "Fabric & Apparel",
+    "share": 9.1,
+    "count": 118
+  },
+  "fetchedAt": "2026-09-14T19:04:46.347Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Phang Nga Fabric & Apparel",
+    "พังงา ผ้าและเครื่องแต่งกาย",
+    "พังงา เครื่องประดับมุก",
+    "พังงา สร้อยคอมุก",
+    "พังงา สร้อยคอไข่มุก",
+    "Phang Nga OTOP",
+    "พังงา โอทอป",
+    "Phang Nga Thai silk weaving"
+  ],
+  "photos": [
+    {
+      "title": "File:King Chulalongkorn's 1901 Trip to Java - \"Kain\" cloth in Jogja.png",
+      "description": "Female painters of \"Kain\" cloth in Jogja - a photograph from King Chulalongkorn's 1901 trip to Java in his diary",
+      "author": "Chulalongkorn",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:King%20Chulalongkorn's%201901%20Trip%20to%20Java%20-%20%22Kain%22%20cloth%20in%20Jogja.png",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/King_Chulalongkorn%27s_1901_Trip_to_Java_-_%22Kain%22_cloth_in_Jogja.png/960px-King_Chulalongkorn%27s_1901_Trip_to_Java_-_%22Kain%22_cloth_in_Jogja.png",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/King_Chulalongkorn%27s_1901_Trip_to_Java_-_%22Kain%22_cloth_in_Jogja.png/960px-King_Chulalongkorn%27s_1901_Trip_to_Java_-_%22Kain%22_cloth_in_Jogja.png",
+      "localPath": null,
+      "query": "Thai batik cloth",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

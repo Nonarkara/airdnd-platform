@@ -1,0 +1,62 @@
+{
+  "code": 56,
+  "iso": "TH-56",
+  "th": "พะเยา",
+  "en": "Phayao",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 32.8,
+    "count": 480
+  },
+  "fetchedAt": "2026-09-14T18:58:56.578Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Phayao Food",
+    "พะเยา อาหาร",
+    "พะเยา พรมเช็ดเท้า",
+    "พะเยา ไม้กวาดดอกหญ้า",
+    "พะเยา น้ำพริกลาบ",
+    "Phayao OTOP",
+    "พะเยา โอทอป",
+    "Phayao Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:ตลาดนัด กว๊านพะเยา Phayao Lake Market at night.jpg",
+      "description": "Phayao Lake night food Market",
+      "author": "Chainwit.",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%95%E0%B8%A5%E0%B8%B2%E0%B8%94%E0%B8%99%E0%B8%B1%E0%B8%94%20%E0%B8%81%E0%B8%A7%E0%B9%8A%E0%B8%B2%E0%B8%99%E0%B8%9E%E0%B8%B0%E0%B9%80%E0%B8%A2%E0%B8%B2%20Phayao%20Lake%20Market%20at%20night.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/%E0%B8%95%E0%B8%A5%E0%B8%B2%E0%B8%94%E0%B8%99%E0%B8%B1%E0%B8%94_%E0%B8%81%E0%B8%A7%E0%B9%8A%E0%B8%B2%E0%B8%99%E0%B8%9E%E0%B8%B0%E0%B9%80%E0%B8%A2%E0%B8%B2_Phayao_Lake_Market_at_night.jpg/960px-%E0%B8%95%E0%B8%A5%E0%B8%B2%E0%B8%94%E0%B8%99%E0%B8%B1%E0%B8%94_%E0%B8%81%E0%B8%A7%E0%B9%8A%E0%B8%B2%E0%B8%99%E0%B8%9E%E0%B8%B0%E0%B9%80%E0%B8%A2%E0%B8%B2_Phayao_Lake_Market_at_night.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/%E0%B8%95%E0%B8%A5%E0%B8%B2%E0%B8%94%E0%B8%99%E0%B8%B1%E0%B8%94_%E0%B8%81%E0%B8%A7%E0%B9%8A%E0%B8%B2%E0%B8%99%E0%B8%9E%E0%B8%B0%E0%B9%80%E0%B8%A2%E0%B8%B2_Phayao_Lake_Market_at_night.jpg/960px-%E0%B8%95%E0%B8%A5%E0%B8%B2%E0%B8%94%E0%B8%99%E0%B8%B1%E0%B8%94_%E0%B8%81%E0%B8%A7%E0%B9%8A%E0%B8%B2%E0%B8%99%E0%B8%9E%E0%B8%B0%E0%B9%80%E0%B8%A2%E0%B8%B2_Phayao_Lake_Market_at_night.jpg",
+      "localPath": null,
+      "query": "Phayao Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:ลาบดิบ.jpg",
+      "description": "Raw meat Larb in Phayao",
+      "author": "Chainwit.",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%A5%E0%B8%B2%E0%B8%9A%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/%E0%B8%A5%E0%B8%B2%E0%B8%9A%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg/960px-%E0%B8%A5%E0%B8%B2%E0%B8%9A%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/%E0%B8%A5%E0%B8%B2%E0%B8%9A%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg/960px-%E0%B8%A5%E0%B8%B2%E0%B8%9A%E0%B8%94%E0%B8%B4%E0%B8%9A.jpg",
+      "localPath": null,
+      "query": "Phayao Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

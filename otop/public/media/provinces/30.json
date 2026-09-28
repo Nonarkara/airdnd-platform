@@ -1,0 +1,62 @@
+{
+  "code": 30,
+  "iso": "TH-30",
+  "th": "นครราชสีมา",
+  "en": "Nakhon Ratchasima",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 15.8,
+    "count": 638
+  },
+  "fetchedAt": "2026-09-14T18:55:25.430Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Nakhon Ratchasima Food",
+    "นครราชสีมา อาหาร",
+    "นครราชสีมา ขนมดอกจอก",
+    "นครราชสีมา ขนมทองม้วน",
+    "นครราชสีมา ข้าวหอมมะลิ",
+    "Nakhon Ratchasima OTOP",
+    "นครราชสีมา โอทอป",
+    "Nakhon Ratchasima Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Cope Tiger 13 130313-F-RG147-651.jpg",
+      "description": "Exercise Cope Tiger 13 directors with the U.S. Air Force, the Royal Thai Air Force and the Singapore Air Force serve food to students during a visit at a school in Nakhon Ratchasima province, Thailand, March 13, 2013. Airmen from each country donated computer equipment, school supplies and athletic gear to the school during the event. Cope Tiger is an annual multilateral aerial exercise designed to improve readiness and cooperation between U.S., Thai and Singaporean forces. (U.S. Air Force photo by 2nd Lt. Jake Bailey/Released)",
+      "author": "2nd Lt. Jacob Bailey",
+      "license": "Public domain",
+      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Cope%20Tiger%2013%20130313-F-RG147-651.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Cope_Tiger_13_130313-F-RG147-651.jpg/960px-Cope_Tiger_13_130313-F-RG147-651.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Cope_Tiger_13_130313-F-RG147-651.jpg/960px-Cope_Tiger_13_130313-F-RG147-651.jpg",
+      "localPath": null,
+      "query": "Nakhon Ratchasima Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Yellow Pumpkin drinks (Unsplash).jpg",
+      "description": "Yellow Pumpkin, Nakhon Ratchasima, Thailand",
+      "author": "Noom Peerapong imnoom",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Yellow%20Pumpkin%20drinks%20(Unsplash).jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Yellow_Pumpkin_drinks_%28Unsplash%29.jpg/960px-Yellow_Pumpkin_drinks_%28Unsplash%29.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Yellow_Pumpkin_drinks_%28Unsplash%29.jpg/960px-Yellow_Pumpkin_drinks_%28Unsplash%29.jpg",
+      "localPath": null,
+      "query": "Nakhon Ratchasima Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

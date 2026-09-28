@@ -1,0 +1,8004 @@
+{
+  "builtAt": "2026-09-20T17:12:15.392Z",
+  "source": "data.go.th",
+  "degraded": false,
+  "reason": null,
+  "honesty": {
+    "note": "Signature packs are registry counts only — repeated product names and category tallies, not claims about production volume or heritage fame.",
+    "topProducts": 8,
+    "topCategories": 5,
+    "championFilter": {
+      "minStars": 4,
+      "requireContact": true
+    }
+  },
+  "counts": {
+    "provinces": 77,
+    "shardsRead": 77,
+    "shardsFailed": 0,
+    "withDominantCategory": 77,
+    "withNamedProducts": 77,
+    "withChampions": 4
+  },
+  "provinces": [
+    {
+      "code": 10,
+      "iso": "TH-10",
+      "th": "กรุงเทพมหานคร",
+      "en": "Bangkok",
+      "region": "central",
+      "records": 2559,
+      "classified": 821,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 10.2,
+        "count": 262
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 262,
+          "share": 10.2
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 257,
+          "share": 10
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 152,
+          "share": 5.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 136,
+          "share": 5.3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 14,
+          "share": 0.5
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "รองเท้า",
+          "count": 5
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 4
+        },
+        {
+          "name": "เครื่องประดับหินสี",
+          "count": 4
+        },
+        {
+          "name": "กระเป๋าผ้าด้นมือ",
+          "count": 3
+        },
+        {
+          "name": "ดอกไม้ประดิษฐ์จากดินไทย",
+          "count": 3
+        },
+        {
+          "name": "ต้นไม้มงคล",
+          "count": 3
+        },
+        {
+          "name": "เรือจำลอง",
+          "count": 3
+        },
+        {
+          "name": "กรอบรูปภาพประกอบทราย",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 17.4,
+      "shardRows": 2559,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Bangkok Household, Decorative & Souvenir",
+        "กรุงเทพมหานคร ของใช้ ของตกแต่ง ของที่ระลึก",
+        "กรุงเทพมหานคร รองเท้า",
+        "กรุงเทพมหานคร กระเป๋าผ้า",
+        "กรุงเทพมหานคร เครื่องประดับหินสี",
+        "Bangkok OTOP",
+        "กรุงเทพมหานคร โอทอป"
+      ]
+    },
+    {
+      "code": 11,
+      "iso": "TH-11",
+      "th": "สมุทรปราการ",
+      "en": "Samut Prakan",
+      "region": "central",
+      "records": 1941,
+      "classified": 328,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 5.1,
+        "count": 99
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 99,
+          "share": 5.1
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 97,
+          "share": 5
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 92,
+          "share": 4.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 39,
+          "share": 2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 1,
+          "share": 0.1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 3
+        },
+        {
+          "name": "กุ้งเหยียด",
+          "count": 2
+        },
+        {
+          "name": "ชุดจากผ้าขาวม้า",
+          "count": 2
+        },
+        {
+          "name": "น้ำพริกนรกปลาสลิด",
+          "count": 2
+        },
+        {
+          "name": "พรมเอนกประสงค์",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าผักตบชวาและติดลายเดคูพาด",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้ากันน้ำพู่ประดิษฐ์",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้าบัวบาน",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 6.5,
+      "shardRows": 1941,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Samut Prakan Household, Decorative & Souvenir",
+        "สมุทรปราการ ของใช้ ของตกแต่ง ของที่ระลึก",
+        "สมุทรปราการ กระเป๋าผ้า",
+        "สมุทรปราการ กุ้งเหยียด",
+        "สมุทรปราการ ชุดจากผ้าขาวม้า",
+        "Samut Prakan OTOP",
+        "สมุทรปราการ โอทอป"
+      ]
+    },
+    {
+      "code": 12,
+      "iso": "TH-12",
+      "th": "นนทบุรี",
+      "en": "Nonthaburi",
+      "region": "central",
+      "records": 1843,
+      "classified": 1638,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 27.3,
+        "count": 503
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 503,
+          "share": 27.3
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 457,
+          "share": 24.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 329,
+          "share": 17.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 256,
+          "share": 13.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 93,
+          "share": 5
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 25
+        },
+        {
+          "name": "เครื่องประดับหินสี",
+          "count": 8
+        },
+        {
+          "name": "เสื้อผ้าสำเร็จรูปสตรี",
+          "count": 7
+        },
+        {
+          "name": "เครื่องปั้นดินเผา",
+          "count": 6
+        },
+        {
+          "name": "งานประดิษฐ์จากผ้า",
+          "count": 6
+        },
+        {
+          "name": "ต้นไม้มงคล",
+          "count": 6
+        },
+        {
+          "name": "เสื้อสตรี",
+          "count": 6
+        },
+        {
+          "name": "กล่องไม้ติดกระดาษสา",
+          "count": 5
+        }
+      ],
+      "productNameCoverage": 81.3,
+      "shardRows": 1843,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nonthaburi Food",
+        "นนทบุรี อาหาร",
+        "นนทบุรี กระเป๋าผ้า",
+        "นนทบุรี เครื่องประดับหินสี",
+        "นนทบุรี เสื้อผ้าสำเร็จรูปสตรี",
+        "Nonthaburi OTOP",
+        "นนทบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 13,
+      "iso": "TH-13",
+      "th": "ปทุมธานี",
+      "en": "Pathum Thani",
+      "region": "central",
+      "records": 1393,
+      "classified": 281,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 7.3,
+        "count": 101
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 101,
+          "share": 7.3
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 97,
+          "share": 7
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 47,
+          "share": 3.4
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 30,
+          "share": 2.2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 6,
+          "share": 0.4
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กระเป๋าหนัง",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าหนังแท้",
+          "count": 2
+        },
+        {
+          "name": "ปลาซาบะย่างอบซีอิ๋วญี่ปุ่น",
+          "count": 2
+        },
+        {
+          "name": "ผลิตภัณฑ์ประดิษฐ์จากหนังวัวแท้",
+          "count": 2
+        },
+        {
+          "name": "โมบายฮวงจุ้ย",
+          "count": 2
+        },
+        {
+          "name": "สร้อยคอหินสี",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้ากันน้ำลดโลกร้อน",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 8.7,
+      "shardRows": 1393,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Pathum Thani Household, Decorative & Souvenir",
+        "ปทุมธานี ของใช้ ของตกแต่ง ของที่ระลึก",
+        "ปทุมธานี กระเป๋าหนัง",
+        "ปทุมธานี กระเป๋าหนังแท้",
+        "ปทุมธานี ปลาซาบะย่างอบซีอิ๋วญี่ปุ่น",
+        "Pathum Thani OTOP",
+        "ปทุมธานี โอทอป"
+      ]
+    },
+    {
+      "code": 14,
+      "iso": "TH-14",
+      "th": "พระนครศรีอยุธยา",
+      "en": "Phra Nakhon Si Ayutthaya",
+      "region": "central",
+      "records": 2447,
+      "classified": 326,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 6.1,
+        "count": 150
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 150,
+          "share": 6.1
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 89,
+          "share": 3.6
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 66,
+          "share": 2.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 12,
+          "share": 0.5
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 9,
+          "share": 0.4
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เมล่อน",
+          "count": 3
+        },
+        {
+          "name": "แหวนไข่มุก สุภาพร",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋า",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าจากผ้า",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าช้อปปิ้ง",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าถักจากเชือก",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าสะพายข้าง (กระเป๋าผ้า)",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 5.3,
+      "shardRows": 2447,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phra Nakhon Si Ayutthaya Household, Decorative & Souvenir",
+        "พระนครศรีอยุธยา ของใช้ ของตกแต่ง ของที่ระลึก",
+        "พระนครศรีอยุธยา เมล่อน",
+        "พระนครศรีอยุธยา แหวนไข่มุก สุภาพร",
+        "พระนครศรีอยุธยา กระเป๋า",
+        "Phra Nakhon Si Ayutthaya OTOP",
+        "พระนครศรีอยุธยา โอทอป"
+      ]
+    },
+    {
+      "code": 15,
+      "iso": "TH-15",
+      "th": "อ่างทอง",
+      "en": "Ang Thong",
+      "region": "central",
+      "records": 1366,
+      "classified": 345,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 9.4,
+        "count": 128
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 128,
+          "share": 9.4
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 108,
+          "share": 7.9
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 71,
+          "share": 5.2
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 35,
+          "share": 2.6
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 3,
+          "share": 0.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กลองเอกราช",
+          "count": 5
+        },
+        {
+          "name": "ขนม",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าถือสตรี",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าผ้าขาวม้า",
+          "count": 2
+        },
+        {
+          "name": "เก้าอี้ชุดดอกลีลาวดี",
+          "count": 2
+        },
+        {
+          "name": "ขนมไทย",
+          "count": 2
+        },
+        {
+          "name": "ข้าวไรซ์เบอร์รี่",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 12.1,
+      "shardRows": 1366,
+      "champions": {
+        "count": 32,
+        "sample": [
+          {
+            "productName": "กระเป๋าถือสตรี",
+            "producerName": "กลุ่มออมทรัพย์เพื่อการผลิตจักสานบ้านตลาดใหม่",
+            "category": "textile",
+            "stars": 5,
+            "reach": "phone",
+            "district": null
+          },
+          {
+            "productName": "กระเป๋าทรงเหลี่ยมลายตะขอ",
+            "producerName": "กลุ่มอาชีพจักสานไม้ไผ่บางเจ้าฉ่า",
+            "category": "craft",
+            "stars": 5,
+            "reach": "phone",
+            "district": null
+          },
+          {
+            "productName": "กระเป๋าผ้าไทย",
+            "producerName": "วิสาหกิจชุมชนแม่บ้านเกษตรกรหนองแม่ไก่",
+            "category": "textile",
+            "stars": 5,
+            "reach": "phone",
+            "district": null
+          },
+          {
+            "productName": "กระเป๋าหนังวัว",
+            "producerName": "ณัชชาเครื่องหนัง",
+            "category": "textile",
+            "stars": 5,
+            "reach": "phone",
+            "district": null
+          },
+          {
+            "productName": "ข้าว กข. 43",
+            "producerName": "ทุ่งวิเศษ",
+            "category": "food",
+            "stars": 5,
+            "reach": "phone",
+            "district": null
+          }
+        ]
+      },
+      "mediaQuerySeeds": [
+        "Ang Thong Household, Decorative & Souvenir",
+        "อ่างทอง ของใช้ ของตกแต่ง ของที่ระลึก",
+        "อ่างทอง กลองเอกราช",
+        "อ่างทอง ขนม",
+        "อ่างทอง กระเป๋าถือสตรี",
+        "Ang Thong OTOP",
+        "อ่างทอง โอทอป"
+      ]
+    },
+    {
+      "code": 16,
+      "iso": "TH-16",
+      "th": "ลพบุรี",
+      "en": "Lop Buri",
+      "region": "central",
+      "records": 1701,
+      "classified": 334,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 6.8,
+        "count": 116
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 116,
+          "share": 6.8
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 94,
+          "share": 5.5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 92,
+          "share": 5.4
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 19,
+          "share": 1.1
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 13,
+          "share": 0.8
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 16
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 6
+        },
+        {
+          "name": "ผลิตภัณฑ์จากเส้นพลาสติก",
+          "count": 6
+        },
+        {
+          "name": "เสื้อผ้าสำเร็จรูปหญิง",
+          "count": 5
+        },
+        {
+          "name": "ไข่เค็ม",
+          "count": 3
+        },
+        {
+          "name": "ผลิตภัณฑ์จากเชือก",
+          "count": 3
+        },
+        {
+          "name": "ผลิตภัณฑ์จากวัสดุปั้นสำเร็จรูป",
+          "count": 3
+        },
+        {
+          "name": "ผลิตภัณฑ์ประดิษฐ์จากเศษผ้า",
+          "count": 3
+        }
+      ],
+      "productNameCoverage": 10.6,
+      "shardRows": 1701,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Lop Buri Fabric & Apparel",
+        "ลพบุรี ผ้าและเครื่องแต่งกาย",
+        "ลพบุรี ผ้ามัดหมี่",
+        "ลพบุรี กระเป๋าผ้า",
+        "ลพบุรี ผลิตภัณฑ์จากเส้นพลาสติก",
+        "Lop Buri OTOP",
+        "ลพบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 17,
+      "iso": "TH-17",
+      "th": "สิงห์บุรี",
+      "en": "Sing Buri",
+      "region": "central",
+      "records": 1106,
+      "classified": 199,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 7.7,
+        "count": 85
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 85,
+          "share": 7.7
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 64,
+          "share": 5.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 43,
+          "share": 3.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 5,
+          "share": 0.5
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 2,
+          "share": 0.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ปลาช่อนแดดเดียว",
+          "count": 2
+        },
+        {
+          "name": "เสื้อสำเร็จรูป",
+          "count": 2
+        },
+        {
+          "name": "`ทอฟฟี่มะพร้าวเสวย",
+          "count": 1
+        },
+        {
+          "name": "กระเทียมผสมพริกไทยดำ",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าจักสานหวายไม้มงคล 9 ชนิด",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าถัก",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้าบุหนัง ทรงไหสี่หู",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าสตังค์ หนังแท้ทำมือ",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 5.2,
+      "shardRows": 1106,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Sing Buri Household, Decorative & Souvenir",
+        "สิงห์บุรี ของใช้ ของตกแต่ง ของที่ระลึก",
+        "สิงห์บุรี ปลาช่อนแดดเดียว",
+        "สิงห์บุรี เสื้อสำเร็จรูป",
+        "สิงห์บุรี `ทอฟฟี่มะพร้าวเสวย",
+        "Sing Buri OTOP",
+        "สิงห์บุรี โอทอป"
+      ]
+    },
+    {
+      "code": 18,
+      "iso": "TH-18",
+      "th": "ชัยนาท",
+      "en": "Chai Nat",
+      "region": "central",
+      "records": 1017,
+      "classified": 581,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 28.1,
+        "count": 286
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 286,
+          "share": 28.1
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 144,
+          "share": 14.2
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 98,
+          "share": 9.6
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 41,
+          "share": 4
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 12,
+          "share": 1.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ส้มโอขาวแตงกวา",
+          "count": 5
+        },
+        {
+          "name": "ข้าวสารปลอดภัย",
+          "count": 4
+        },
+        {
+          "name": "หมูกระจก",
+          "count": 4
+        },
+        {
+          "name": "กระยาสารท",
+          "count": 3
+        },
+        {
+          "name": "กล้วยกวน",
+          "count": 3
+        },
+        {
+          "name": "กล้วยตาก",
+          "count": 3
+        },
+        {
+          "name": "กล้วยตากพลังงานแสงอาทิตย์",
+          "count": 3
+        },
+        {
+          "name": "กล้วยเบรคแตก",
+          "count": 3
+        }
+      ],
+      "productNameCoverage": 48.6,
+      "shardRows": 1017,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Chai Nat Food",
+        "ชัยนาท อาหาร",
+        "ชัยนาท ส้มโอขาวแตงกวา",
+        "ชัยนาท ข้าวสารปลอดภัย",
+        "ชัยนาท หมูกระจก",
+        "Chai Nat OTOP",
+        "ชัยนาท โอทอป"
+      ]
+    },
+    {
+      "code": 19,
+      "iso": "TH-19",
+      "th": "สระบุรี",
+      "en": "Saraburi",
+      "region": "central",
+      "records": 1554,
+      "classified": 347,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 7.6,
+        "count": 118
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 118,
+          "share": 7.6
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 103,
+          "share": 6.6
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 86,
+          "share": 5.5
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 21,
+          "share": 1.4
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 19,
+          "share": 1.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 4
+        },
+        {
+          "name": "พรมเอนกประสงค์",
+          "count": 3
+        },
+        {
+          "name": "หมูกระจกติดมัน",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าหนังแท้",
+          "count": 2
+        },
+        {
+          "name": "ไม้กวาดทางมะพร้าว",
+          "count": 2
+        },
+        {
+          "name": "ย่าม",
+          "count": 2
+        },
+        {
+          "name": "องุ่นกวน",
+          "count": 2
+        },
+        {
+          "name": "กระชายผง",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 8.2,
+      "shardRows": 1554,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Saraburi Household, Decorative & Souvenir",
+        "สระบุรี ของใช้ ของตกแต่ง ของที่ระลึก",
+        "สระบุรี พรมเช็ดเท้า",
+        "สระบุรี พรมเอนกประสงค์",
+        "สระบุรี หมูกระจกติดมัน",
+        "Saraburi OTOP",
+        "สระบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 20,
+      "iso": "TH-20",
+      "th": "ชลบุรี",
+      "en": "Chon Buri",
+      "region": "east",
+      "records": 1923,
+      "classified": 316,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 5.4,
+        "count": 103
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 103,
+          "share": 5.4
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 101,
+          "share": 5.3
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 70,
+          "share": 3.6
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 37,
+          "share": 1.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 5,
+          "share": 0.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 4
+        },
+        {
+          "name": "ครีมบำรุงหน้ามะพร้าว",
+          "count": 3
+        },
+        {
+          "name": "เฉาก๊วยโบราณ",
+          "count": 3
+        },
+        {
+          "name": "มะม่วงดองแช่อิ่ม",
+          "count": 3
+        },
+        {
+          "name": "กระติ๊บข้าว",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าปักไหมพรม",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าผ้าทอมือซาโอริ",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าสานเส้นพลาสติก",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 9,
+      "shardRows": 1923,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Chon Buri Household, Decorative & Souvenir",
+        "ชลบุรี ของใช้ ของตกแต่ง ของที่ระลึก",
+        "ชลบุรี กระเป๋าผ้า",
+        "ชลบุรี ครีมบำรุงหน้ามะพร้าว",
+        "ชลบุรี เฉาก๊วยโบราณ",
+        "Chon Buri OTOP",
+        "ชลบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 21,
+      "iso": "TH-21",
+      "th": "ระยอง",
+      "en": "Rayong",
+      "region": "east",
+      "records": 1496,
+      "classified": 231,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 4.7,
+        "count": 70
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 70,
+          "share": 4.7
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 56,
+          "share": 3.7
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 55,
+          "share": 3.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 39,
+          "share": 2.6
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 11,
+          "share": 0.7
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ปลาข้าวสารทอดกรอบ",
+          "count": 2
+        },
+        {
+          "name": "กระจังโหม่ง",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้าต่อลาย",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้าฝ้าย",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้า Handmade/พวงกุญแจประดิษฐ์จากเศษผ้า",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าสะพายคาด แบบสายเดี่ยว ตรา chalud",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าใส่สตางค์หนังแท้",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 5.7,
+      "shardRows": 1496,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Rayong Food",
+        "ระยอง อาหาร",
+        "ระยอง ปลาข้าวสารทอดกรอบ",
+        "ระยอง กระจังโหม่ง",
+        "ระยอง กระเป๋าผ้า",
+        "Rayong OTOP",
+        "ระยอง โอทอป"
+      ]
+    },
+    {
+      "code": 22,
+      "iso": "TH-22",
+      "th": "จันทบุรี",
+      "en": "Chanthaburi",
+      "region": "east",
+      "records": 1465,
+      "classified": 383,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 8.9,
+        "count": 131
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 131,
+          "share": 8.9
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 120,
+          "share": 8.2
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 81,
+          "share": 5.5
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 42,
+          "share": 2.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 9,
+          "share": 0.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ชุดนพเก้า",
+          "count": 3
+        },
+        {
+          "name": "กรดควันไม้ W.T.",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าเชือกร่ม",
+          "count": 2
+        },
+        {
+          "name": "สร้อยสังวาล เขียวระย้า บางกะจะ",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋า",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้าปักชาวเขา",
+          "count": 1
+        },
+        {
+          "name": "กระโปรงสตรีชนเผ่าม้ง",
+          "count": 1
+        },
+        {
+          "name": "กล้วยตาก",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 10,
+      "shardRows": 1465,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Chanthaburi Fabric & Apparel",
+        "จันทบุรี ผ้าและเครื่องแต่งกาย",
+        "จันทบุรี ชุดนพเก้า",
+        "จันทบุรี กรดควันไม้ W.T.",
+        "จันทบุรี กระเป๋าเชือกร่ม",
+        "Chanthaburi OTOP",
+        "จันทบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 23,
+      "iso": "TH-23",
+      "th": "ตราด",
+      "en": "Trat",
+      "region": "east",
+      "records": 871,
+      "classified": 168,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 8.2,
+        "count": 71
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 71,
+          "share": 8.2
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 38,
+          "share": 4.4
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 36,
+          "share": 4.1
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 17,
+          "share": 2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 6,
+          "share": 0.7
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าฝ้าย",
+          "count": 2
+        },
+        {
+          "name": "เม็ดมะม่วงหิมพานต์อบเกลือ",
+          "count": 2
+        },
+        {
+          "name": "ลูกชิ้นหมูเต็งหนึ่ง",
+          "count": 2
+        },
+        {
+          "name": "ก. ไก่ ตังเมกรอบ",
+          "count": 1
+        },
+        {
+          "name": "กล้วยตาก",
+          "count": 1
+        },
+        {
+          "name": "กล้วยหักมุกอบกรอบหน้าทะเรียนทรงเครื่อง",
+          "count": 1
+        },
+        {
+          "name": "กะปิเกาะช้าง",
+          "count": 1
+        },
+        {
+          "name": "กะปิเคยแท้ ตรา ตาหนึก",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 6.8,
+      "shardRows": 871,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Trat Food",
+        "ตราด อาหาร",
+        "ตราด ผ้าฝ้าย",
+        "ตราด เม็ดมะม่วงหิมพานต์อบเกลือ",
+        "ตราด ลูกชิ้นหมูเต็งหนึ่ง",
+        "Trat OTOP",
+        "ตราด โอทอป"
+      ]
+    },
+    {
+      "code": 24,
+      "iso": "TH-24",
+      "th": "ฉะเชิงเทรา",
+      "en": "Chachoengsao",
+      "region": "east",
+      "records": 1545,
+      "classified": 326,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 9.2,
+        "count": 142
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 142,
+          "share": 9.2
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 101,
+          "share": 6.5
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 44,
+          "share": 2.8
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 31,
+          "share": 2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 8,
+          "share": 0.5
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "มะม่วงกวน",
+          "count": 7
+        },
+        {
+          "name": "มะม่วงแช่อิ่ม",
+          "count": 6
+        },
+        {
+          "name": "เจลว่านหางจระเข้",
+          "count": 2
+        },
+        {
+          "name": "ผลิตภัณฑ์กะลามะพร้าว",
+          "count": 2
+        },
+        {
+          "name": "สับปะรดกวน",
+          "count": 2
+        },
+        {
+          "name": "หมูแดดเดียว",
+          "count": 2
+        },
+        {
+          "name": "กระเช้าหนังเทียม",
+          "count": 1
+        },
+        {
+          "name": "กระทงจากเปลือกข้าวโพด",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 10.6,
+      "shardRows": 1545,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Chachoengsao Food",
+        "ฉะเชิงเทรา อาหาร",
+        "ฉะเชิงเทรา มะม่วงกวน",
+        "ฉะเชิงเทรา มะม่วงแช่อิ่ม",
+        "ฉะเชิงเทรา เจลว่านหางจระเข้",
+        "Chachoengsao OTOP",
+        "ฉะเชิงเทรา โอทอป"
+      ]
+    },
+    {
+      "code": 25,
+      "iso": "TH-25",
+      "th": "ปราจีนบุรี",
+      "en": "Prachin Buri",
+      "region": "east",
+      "records": 1222,
+      "classified": 226,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 9.4,
+        "count": 115
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 115,
+          "share": 9.4
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 42,
+          "share": 3.4
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 41,
+          "share": 3.4
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 23,
+          "share": 1.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 5,
+          "share": 0.4
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กล่องเอนกประสงค์",
+          "count": 2
+        },
+        {
+          "name": "ทองพับเห็ด 3 อย่าง",
+          "count": 2
+        },
+        {
+          "name": "เปลญวน",
+          "count": 2
+        },
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 2
+        },
+        {
+          "name": "ไม้กวาด",
+          "count": 2
+        },
+        {
+          "name": "กระเป็าทรงเอจากผักตบชวา",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้าฝ้ายทอมือปักริบบิ้น",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าใส่เอกสาร",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 6.2,
+      "shardRows": 1222,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Prachin Buri Household, Decorative & Souvenir",
+        "ปราจีนบุรี ของใช้ ของตกแต่ง ของที่ระลึก",
+        "ปราจีนบุรี กล่องเอนกประสงค์",
+        "ปราจีนบุรี ทองพับเห็ด 3 อย่าง",
+        "ปราจีนบุรี เปลญวน",
+        "Prachin Buri OTOP",
+        "ปราจีนบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 26,
+      "iso": "TH-26",
+      "th": "นครนายก",
+      "en": "Nakhon Nayok",
+      "region": "central",
+      "records": 1027,
+      "classified": 178,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 10.3,
+        "count": 106
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 106,
+          "share": 10.3
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 24,
+          "share": 2.3
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 24,
+          "share": 2.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 18,
+          "share": 1.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 6,
+          "share": 0.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าสะพาย",
+          "count": 1
+        },
+        {
+          "name": "กล้วยอบซอสมะยงชิด",
+          "count": 1
+        },
+        {
+          "name": "กาสิณีสบู่ไหมน้ำผึ้งทองคำ",
+          "count": 1
+        },
+        {
+          "name": "กุ้งจ่อม \"ไฮโซ\"",
+          "count": 1
+        },
+        {
+          "name": "ข้าวเกรียบเห็ด 3 อย่าง",
+          "count": 1
+        },
+        {
+          "name": "ข้าวยำสมุนไพร ปักษ์ใต้",
+          "count": 1
+        },
+        {
+          "name": "ไข่เค็ม ไอดินกลิ่นมะดัน",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 4,
+      "shardRows": 1027,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nakhon Nayok Food",
+        "นครนายก อาหาร",
+        "นครนายก กระเป๋าผ้า",
+        "นครนายก กระเป๋าสะพาย",
+        "นครนายก กล้วยอบซอสมะยงชิด",
+        "Nakhon Nayok OTOP",
+        "นครนายก โอทอป"
+      ]
+    },
+    {
+      "code": 27,
+      "iso": "TH-27",
+      "th": "สระแก้ว",
+      "en": "Sa Kaeo",
+      "region": "east",
+      "records": 1400,
+      "classified": 330,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 12,
+        "count": 168
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 168,
+          "share": 12
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 77,
+          "share": 5.5
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 66,
+          "share": 4.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 10,
+          "share": 0.7
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 9,
+          "share": 0.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 9
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 5
+        },
+        {
+          "name": "เสื่อกก",
+          "count": 4
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 3
+        },
+        {
+          "name": "เมล่อน",
+          "count": 3
+        },
+        {
+          "name": "ชั้นวางของ",
+          "count": 2
+        },
+        {
+          "name": "ผักสลัด",
+          "count": 2
+        },
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 9,
+      "shardRows": 1400,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Sa Kaeo Household, Decorative & Souvenir",
+        "สระแก้ว ของใช้ ของตกแต่ง ของที่ระลึก",
+        "สระแก้ว ผ้าขาวม้า",
+        "สระแก้ว ไม้กวาดดอกหญ้า",
+        "สระแก้ว เสื่อกก",
+        "Sa Kaeo OTOP",
+        "สระแก้ว โอทอป"
+      ]
+    },
+    {
+      "code": 30,
+      "iso": "TH-30",
+      "th": "นครราชสีมา",
+      "en": "Nakhon Ratchasima",
+      "region": "northeast",
+      "records": 4045,
+      "classified": 1143,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 15.8,
+        "count": 638
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 638,
+          "share": 15.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 228,
+          "share": 5.6
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 209,
+          "share": 5.2
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 42,
+          "share": 1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 26,
+          "share": 0.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ขนมดอกจอก",
+          "count": 23
+        },
+        {
+          "name": "ขนมทองม้วน",
+          "count": 20
+        },
+        {
+          "name": "ข้าวหอมมะลิ",
+          "count": 18
+        },
+        {
+          "name": "กระยาสารท",
+          "count": 15
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 14
+        },
+        {
+          "name": "ขนมไทย",
+          "count": 10
+        },
+        {
+          "name": "ผ้าทอลายขัด",
+          "count": 9
+        },
+        {
+          "name": "ขนมนางเล็ด",
+          "count": 8
+        }
+      ],
+      "productNameCoverage": 20,
+      "shardRows": 4045,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nakhon Ratchasima Food",
+        "นครราชสีมา อาหาร",
+        "นครราชสีมา ขนมดอกจอก",
+        "นครราชสีมา ขนมทองม้วน",
+        "นครราชสีมา ข้าวหอมมะลิ",
+        "Nakhon Ratchasima OTOP",
+        "นครราชสีมา โอทอป"
+      ]
+    },
+    {
+      "code": 31,
+      "iso": "TH-31",
+      "th": "บุรีรัมย์",
+      "en": "Buri Ram",
+      "region": "northeast",
+      "records": 4288,
+      "classified": 684,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 6.7,
+        "count": 286
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 286,
+          "share": 6.7
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 213,
+          "share": 5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 156,
+          "share": 3.6
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 19,
+          "share": 0.4
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 10,
+          "share": 0.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 58
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 23
+        },
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 22
+        },
+        {
+          "name": "ผ้าทอลายขัด",
+          "count": 20
+        },
+        {
+          "name": "ผ้าไหมพื้นเรียบ",
+          "count": 12
+        },
+        {
+          "name": "เสื่อกก",
+          "count": 8
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 7
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 5
+        }
+      ],
+      "productNameCoverage": 9.4,
+      "shardRows": 4288,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Buri Ram Fabric & Apparel",
+        "บุรีรัมย์ ผ้าและเครื่องแต่งกาย",
+        "บุรีรัมย์ ผ้าไหมมัดหมี่",
+        "บุรีรัมย์ ผ้าคลุมไหล่",
+        "บุรีรัมย์ ผ้ามัดหมี่",
+        "Buri Ram OTOP",
+        "บุรีรัมย์ โอทอป"
+      ]
+    },
+    {
+      "code": 32,
+      "iso": "TH-32",
+      "th": "สุรินทร์",
+      "en": "Surin",
+      "region": "northeast",
+      "records": 4311,
+      "classified": 756,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 9.3,
+        "count": 399
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 399,
+          "share": 9.3
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 195,
+          "share": 4.5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 143,
+          "share": 3.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 10,
+          "share": 0.2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 9,
+          "share": 0.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 45
+        },
+        {
+          "name": "ผ้ายกดอก",
+          "count": 20
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 10
+        },
+        {
+          "name": "ผ้าไหมสีพื้น",
+          "count": 8
+        },
+        {
+          "name": "ผ้าไหมยกดอก",
+          "count": 7
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่ยกดอก",
+          "count": 6
+        },
+        {
+          "name": "ผ้าไหมยกดอกลายลูกแก้ว",
+          "count": 6
+        },
+        {
+          "name": "ผ้าไหมลายลูกแก้ว",
+          "count": 6
+        }
+      ],
+      "productNameCoverage": 10.6,
+      "shardRows": 4311,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Surin Fabric & Apparel",
+        "สุรินทร์ ผ้าและเครื่องแต่งกาย",
+        "สุรินทร์ ผ้าไหมมัดหมี่",
+        "สุรินทร์ ผ้ายกดอก",
+        "สุรินทร์ ผ้าคลุมไหล่",
+        "Surin OTOP",
+        "สุรินทร์ โอทอป"
+      ]
+    },
+    {
+      "code": 33,
+      "iso": "TH-33",
+      "th": "ศรีสะเกษ",
+      "en": "Si Sa Ket",
+      "region": "northeast",
+      "records": 3676,
+      "classified": 716,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 7.3,
+        "count": 269
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 269,
+          "share": 7.3
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 223,
+          "share": 6.1
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 196,
+          "share": 5.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 18,
+          "share": 0.5
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 10,
+          "share": 0.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้ายกดอก",
+          "count": 29
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 28
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 10
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 10
+        },
+        {
+          "name": "ผ้าลายลูกแก้ว",
+          "count": 8
+        },
+        {
+          "name": "ผ้าไหมลายลูกแก้ว",
+          "count": 8
+        },
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 8
+        },
+        {
+          "name": "เสื้อผ้าสำเร็จรูปหญิง",
+          "count": 8
+        }
+      ],
+      "productNameCoverage": 12.4,
+      "shardRows": 3676,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Si Sa Ket Fabric & Apparel",
+        "ศรีสะเกษ ผ้าและเครื่องแต่งกาย",
+        "ศรีสะเกษ ผ้ายกดอก",
+        "ศรีสะเกษ ผ้าไหมมัดหมี่",
+        "ศรีสะเกษ ผ้าขาวม้า",
+        "Si Sa Ket OTOP",
+        "ศรีสะเกษ โอทอป"
+      ]
+    },
+    {
+      "code": 34,
+      "iso": "TH-34",
+      "th": "อุบลราชธานี",
+      "en": "Ubon Ratchathani",
+      "region": "northeast",
+      "records": 5508,
+      "classified": 2121,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 13.8,
+        "count": 758
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 758,
+          "share": 13.8
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 619,
+          "share": 11.2
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 531,
+          "share": 9.6
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 152,
+          "share": 2.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 61,
+          "share": 1.1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 26
+        },
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 23
+        },
+        {
+          "name": "ตะกร้าพลาสติก",
+          "count": 22
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 17
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 16
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 15
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 14
+        },
+        {
+          "name": "ผ้ากาบบัว",
+          "count": 13
+        }
+      ],
+      "productNameCoverage": 31.9,
+      "shardRows": 5508,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Ubon Ratchathani Food",
+        "อุบลราชธานี อาหาร",
+        "อุบลราชธานี ผ้าขาวม้า",
+        "อุบลราชธานี พรมเช็ดเท้า",
+        "อุบลราชธานี ตะกร้าพลาสติก",
+        "Ubon Ratchathani OTOP",
+        "อุบลราชธานี โอทอป"
+      ]
+    },
+    {
+      "code": 35,
+      "iso": "TH-35",
+      "th": "ยโสธร",
+      "en": "Yasothon",
+      "region": "northeast",
+      "records": 2347,
+      "classified": 1712,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 26.5,
+        "count": 622
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 622,
+          "share": 26.5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 496,
+          "share": 21.1
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 483,
+          "share": 20.6
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 81,
+          "share": 3.5
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 30,
+          "share": 1.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เสื่อกก",
+          "count": 95
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 56
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 35
+        },
+        {
+          "name": "กระติบข้าว",
+          "count": 33
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 30
+        },
+        {
+          "name": "ตะกร้าพลาสติก",
+          "count": 29
+        },
+        {
+          "name": "ข้าวกล้องงอก",
+          "count": 27
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 24
+        }
+      ],
+      "productNameCoverage": 70.2,
+      "shardRows": 2347,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Yasothon Food",
+        "ยโสธร อาหาร",
+        "ยโสธร เสื่อกก",
+        "ยโสธร ผ้าขาวม้า",
+        "ยโสธร ไม้กวาดดอกหญ้า",
+        "Yasothon OTOP",
+        "ยโสธร โอทอป"
+      ]
+    },
+    {
+      "code": 36,
+      "iso": "TH-36",
+      "th": "ชัยภูมิ",
+      "en": "Chaiyaphum",
+      "region": "northeast",
+      "records": 3483,
+      "classified": 1291,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 15.2,
+        "count": 528
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 528,
+          "share": 15.2
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 400,
+          "share": 11.5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 192,
+          "share": 5.5
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 99,
+          "share": 2.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 72,
+          "share": 2.1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 47
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 31
+        },
+        {
+          "name": "ผ้าทอลายขัดพื้นฐาน",
+          "count": 25
+        },
+        {
+          "name": "ผ้าทอลายขัด",
+          "count": 24
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 18
+        },
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 15
+        },
+        {
+          "name": "ผ้าขิด",
+          "count": 13
+        },
+        {
+          "name": "ผ้าโทเรมัดหมี่",
+          "count": 10
+        }
+      ],
+      "productNameCoverage": 34.2,
+      "shardRows": 3483,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Chaiyaphum Food",
+        "ชัยภูมิ อาหาร",
+        "ชัยภูมิ ผ้าไหมมัดหมี่",
+        "ชัยภูมิ ผ้าขาวม้า",
+        "ชัยภูมิ ผ้าทอลายขัดพื้นฐาน",
+        "Chaiyaphum OTOP",
+        "ชัยภูมิ โอทอป"
+      ]
+    },
+    {
+      "code": 37,
+      "iso": "TH-37",
+      "th": "อำนาจเจริญ",
+      "en": "Amnat Charoen",
+      "region": "northeast",
+      "records": 2011,
+      "classified": 537,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 17,
+        "count": 341
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 341,
+          "share": 17
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 106,
+          "share": 5.3
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 65,
+          "share": 3.2
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 21,
+          "share": 1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 4,
+          "share": 0.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ข้าวหอมมะลิ",
+          "count": 43
+        },
+        {
+          "name": "ข้าวกล้อง",
+          "count": 28
+        },
+        {
+          "name": "ข้าวกล้องหอมมะลิ",
+          "count": 19
+        },
+        {
+          "name": "ข้าวกล้องงอก",
+          "count": 16
+        },
+        {
+          "name": "ข้าวอินทรีย์",
+          "count": 8
+        },
+        {
+          "name": "ผ้าฯ",
+          "count": 8
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 8
+        },
+        {
+          "name": "ข้าวกล้องงอกหอมมะลิ",
+          "count": 5
+        }
+      ],
+      "productNameCoverage": 19.6,
+      "shardRows": 2011,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Amnat Charoen Food",
+        "อำนาจเจริญ อาหาร",
+        "อำนาจเจริญ ข้าวหอมมะลิ",
+        "อำนาจเจริญ ข้าวกล้อง",
+        "อำนาจเจริญ ข้าวกล้องหอมมะลิ",
+        "Amnat Charoen OTOP",
+        "อำนาจเจริญ โอทอป"
+      ]
+    },
+    {
+      "code": 38,
+      "iso": "TH-38",
+      "th": "บึงกาฬ",
+      "en": "Bueng Kan",
+      "region": "northeast",
+      "records": 2299,
+      "classified": 1290,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 17.7,
+        "count": 408
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 408,
+          "share": 17.7
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 371,
+          "share": 16.1
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 358,
+          "share": 15.6
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 106,
+          "share": 4.6
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 47,
+          "share": 2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 40
+        },
+        {
+          "name": "เสื่อกก",
+          "count": 17
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 16
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 14
+        },
+        {
+          "name": "กล้วยฉาบ",
+          "count": 12
+        },
+        {
+          "name": "ปลาส้ม",
+          "count": 12
+        },
+        {
+          "name": "ปลาร้าบอง",
+          "count": 10
+        },
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 10
+        }
+      ],
+      "productNameCoverage": 56.3,
+      "shardRows": 2299,
+      "champions": {
+        "count": 26,
+        "sample": [
+          {
+            "productName": "กระเป๋าสตางค์",
+            "producerName": "กลุ่มทอผ้าย้อมครามบ้านดงสาร",
+            "category": "textile",
+            "stars": 5,
+            "reach": "phone",
+            "district": "เซกา"
+          },
+          {
+            "productName": "ไข่เค็ม",
+            "producerName": "กลุ่มไข่เค็มบ้านคำสมบูรณ์",
+            "category": "food",
+            "stars": 5,
+            "reach": "phone",
+            "district": "บึงโขงหลง"
+          },
+          {
+            "productName": "แจกัน",
+            "producerName": "กลุ่มผลิตภัณฑ์รากไม้กลางดงศรีชมภู",
+            "category": "craft",
+            "stars": 5,
+            "reach": "phone",
+            "district": "โซ่พิสัย"
+          },
+          {
+            "productName": "ชุดกาแฟ",
+            "producerName": "กลุ่มอาชีพหัตถกรรมตอไม้บ้านโนนทรายทอง",
+            "category": "craft",
+            "stars": 5,
+            "reach": "phone",
+            "district": "ปากคาด"
+          },
+          {
+            "productName": "น้ำพริกตาแดง",
+            "producerName": "นางเพียงเพชร ถิ่นสีฐาน",
+            "category": "food",
+            "stars": 5,
+            "reach": "phone",
+            "district": "พรเจริญ"
+          }
+        ]
+      },
+      "mediaQuerySeeds": [
+        "Bueng Kan Food",
+        "บึงกาฬ อาหาร",
+        "บึงกาฬ ผ้าขาวม้า",
+        "บึงกาฬ เสื่อกก",
+        "บึงกาฬ ผ้าพันคอ",
+        "Bueng Kan OTOP",
+        "บึงกาฬ โอทอป"
+      ]
+    },
+    {
+      "code": 39,
+      "iso": "TH-39",
+      "th": "หนองบัวลำภู",
+      "en": "Nong Bua Lam Phu",
+      "region": "northeast",
+      "records": 1411,
+      "classified": 366,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 11.5,
+        "count": 162
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 162,
+          "share": 11.5
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 108,
+          "share": 7.7
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 81,
+          "share": 5.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 11,
+          "share": 0.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 4,
+          "share": 0.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าฝ้ายมัดหมี่",
+          "count": 11
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 8
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 6
+        },
+        {
+          "name": "กระติ๊บข้าว",
+          "count": 5
+        },
+        {
+          "name": "ผ้าขิด",
+          "count": 5
+        },
+        {
+          "name": "ผ้าขิดไหม",
+          "count": 5
+        },
+        {
+          "name": "ผ้าขิดยกดอก",
+          "count": 4
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 4
+        }
+      ],
+      "productNameCoverage": 12.3,
+      "shardRows": 1411,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nong Bua Lam Phu Food",
+        "หนองบัวลำภู อาหาร",
+        "หนองบัวลำภู ผ้าฝ้ายมัดหมี่",
+        "หนองบัวลำภู ผ้าคลุมไหล่",
+        "หนองบัวลำภู ผ้าไหมมัดหมี่",
+        "Nong Bua Lam Phu OTOP",
+        "หนองบัวลำภู โอทอป"
+      ]
+    },
+    {
+      "code": 40,
+      "iso": "TH-40",
+      "th": "ขอนแก่น",
+      "en": "Khon Kaen",
+      "region": "northeast",
+      "records": 4089,
+      "classified": 709,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 8.4,
+        "count": 342
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 342,
+          "share": 8.4
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 189,
+          "share": 4.6
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 118,
+          "share": 2.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 37,
+          "share": 0.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 23,
+          "share": 0.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 38
+        },
+        {
+          "name": "ผ้าฝ้ายมัดหมี่",
+          "count": 13
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 11
+        },
+        {
+          "name": "เสื่อกก",
+          "count": 11
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 8
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 8
+        },
+        {
+          "name": "ผ้าทอลายขัด",
+          "count": 7
+        },
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 6
+        }
+      ],
+      "productNameCoverage": 8.7,
+      "shardRows": 4089,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Khon Kaen Fabric & Apparel",
+        "ขอนแก่น ผ้าและเครื่องแต่งกาย",
+        "ขอนแก่น ผ้าไหมมัดหมี่",
+        "ขอนแก่น ผ้าฝ้ายมัดหมี่",
+        "ขอนแก่น ผ้าคลุมไหล่",
+        "Khon Kaen OTOP",
+        "ขอนแก่น โอทอป"
+      ]
+    },
+    {
+      "code": 41,
+      "iso": "TH-41",
+      "th": "อุดรธานี",
+      "en": "Udon Thani",
+      "region": "northeast",
+      "records": 2405,
+      "classified": 539,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 10.9,
+        "count": 263
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 263,
+          "share": 10.9
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 133,
+          "share": 5.5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 114,
+          "share": 4.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 21,
+          "share": 0.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 8,
+          "share": 0.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 11
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 8
+        },
+        {
+          "name": "เสื้อผ้าสำเร็จรูป",
+          "count": 7
+        },
+        {
+          "name": "ผ้ามัดหมี่ย้อมคราม",
+          "count": 6
+        },
+        {
+          "name": "เสื่อกก",
+          "count": 6
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 5
+        },
+        {
+          "name": "ผ้าฝ้ายมัดหมี่",
+          "count": 5
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 4
+        }
+      ],
+      "productNameCoverage": 8.9,
+      "shardRows": 2405,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Udon Thani Fabric & Apparel",
+        "อุดรธานี ผ้าและเครื่องแต่งกาย",
+        "อุดรธานี ผ้ามัดหมี่",
+        "อุดรธานี ผ้าขาวม้า",
+        "อุดรธานี เสื้อผ้าสำเร็จรูป",
+        "Udon Thani OTOP",
+        "อุดรธานี โอทอป"
+      ]
+    },
+    {
+      "code": 42,
+      "iso": "TH-42",
+      "th": "เลย",
+      "en": "Loei",
+      "region": "northeast",
+      "records": 1351,
+      "classified": 215,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 7,
+        "count": 95
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 95,
+          "share": 7
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 62,
+          "share": 4.6
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 35,
+          "share": 2.6
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 15,
+          "share": 1.1
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 8,
+          "share": 0.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 3
+        },
+        {
+          "name": "ถ้วยน้ำชาหินแกรนิต",
+          "count": 2
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 2
+        },
+        {
+          "name": "มะพร้าวแก้วเส้น",
+          "count": 2
+        },
+        {
+          "name": "กระติ๊บข้าว",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าปลา",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าไม้ไผ่รมควัน",
+          "count": 1
+        },
+        {
+          "name": "กระโปรง ปักมือ",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 7.6,
+      "shardRows": 1351,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Loei Food",
+        "เลย อาหาร",
+        "เลย ผ้ามัดหมี่",
+        "เลย ถ้วยน้ำชาหินแกรนิต",
+        "เลย ผ้าไหมมัดหมี่",
+        "Loei OTOP",
+        "เลย โอทอป"
+      ]
+    },
+    {
+      "code": 43,
+      "iso": "TH-43",
+      "th": "หนองคาย",
+      "en": "Nong Khai",
+      "region": "northeast",
+      "records": 1398,
+      "classified": 347,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 13.3,
+        "count": 186
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 186,
+          "share": 13.3
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 82,
+          "share": 5.9
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 68,
+          "share": 4.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 7,
+          "share": 0.5
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 4,
+          "share": 0.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เสื่อกก",
+          "count": 6
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 5
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 5
+        },
+        {
+          "name": "กระติ๊บข้าว",
+          "count": 4
+        },
+        {
+          "name": "กระติบข้าว",
+          "count": 3
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 3
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าเสื่อกก",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 11.3,
+      "shardRows": 1398,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nong Khai Household, Decorative & Souvenir",
+        "หนองคาย ของใช้ ของตกแต่ง ของที่ระลึก",
+        "หนองคาย เสื่อกก",
+        "หนองคาย ผ้าขาวม้า",
+        "หนองคาย ไม้กวาดดอกหญ้า",
+        "Nong Khai OTOP",
+        "หนองคาย โอทอป"
+      ]
+    },
+    {
+      "code": 44,
+      "iso": "TH-44",
+      "th": "มหาสารคาม",
+      "en": "Maha Sarakham",
+      "region": "northeast",
+      "records": 2244,
+      "classified": 485,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 7.3,
+        "count": 164
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 164,
+          "share": 7.3
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 154,
+          "share": 6.9
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 146,
+          "share": 6.5
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 18,
+          "share": 0.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 3,
+          "share": 0.1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 39
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 11
+        },
+        {
+          "name": "ผ้าทอลายขัด",
+          "count": 9
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 8
+        },
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 7
+        },
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 6
+        },
+        {
+          "name": "ข้าวกล้อง",
+          "count": 5
+        },
+        {
+          "name": "ที่นอนบุฟองน้ำ",
+          "count": 5
+        }
+      ],
+      "productNameCoverage": 15.6,
+      "shardRows": 2244,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Maha Sarakham Fabric & Apparel",
+        "มหาสารคาม ผ้าและเครื่องแต่งกาย",
+        "มหาสารคาม ผ้าไหมมัดหมี่",
+        "มหาสารคาม ผ้าขาวม้า",
+        "มหาสารคาม ผ้าทอลายขัด",
+        "Maha Sarakham OTOP",
+        "มหาสารคาม โอทอป"
+      ]
+    },
+    {
+      "code": 45,
+      "iso": "TH-45",
+      "th": "ร้อยเอ็ด",
+      "en": "Roi Et",
+      "region": "northeast",
+      "records": 3970,
+      "classified": 542,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 5.1,
+        "count": 202
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 202,
+          "share": 5.1
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 162,
+          "share": 4.1
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 155,
+          "share": 3.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 14,
+          "share": 0.4
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 9,
+          "share": 0.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 20
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 16
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 10
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 8
+        },
+        {
+          "name": "เสื่อกก",
+          "count": 8
+        },
+        {
+          "name": "ตะกร้าพลาสติก",
+          "count": 7
+        },
+        {
+          "name": "ข้าวหอมมะลิ",
+          "count": 5
+        },
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 5
+        }
+      ],
+      "productNameCoverage": 7.2,
+      "shardRows": 3970,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Roi Et Fabric & Apparel",
+        "ร้อยเอ็ด ผ้าและเครื่องแต่งกาย",
+        "ร้อยเอ็ด ผ้าคลุมไหล่",
+        "ร้อยเอ็ด ผ้าพันคอ",
+        "ร้อยเอ็ด ผ้าไหมมัดหมี่",
+        "Roi Et OTOP",
+        "ร้อยเอ็ด โอทอป"
+      ]
+    },
+    {
+      "code": 46,
+      "iso": "TH-46",
+      "th": "กาฬสินธุ์",
+      "en": "Kalasin",
+      "region": "northeast",
+      "records": 3813,
+      "classified": 3392,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 42.2,
+        "count": 1609
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 1609,
+          "share": 42.2
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 864,
+          "share": 22.7
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 720,
+          "share": 18.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 161,
+          "share": 4.2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 38,
+          "share": 1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 113
+        },
+        {
+          "name": "เสื่อกก",
+          "count": 98
+        },
+        {
+          "name": "ผ้าไหมแพรวา",
+          "count": 78
+        },
+        {
+          "name": "ผ้าห่ม",
+          "count": 55
+        },
+        {
+          "name": "ผ้าพื้นเมือง",
+          "count": 45
+        },
+        {
+          "name": "กล้วยฉาบ",
+          "count": 40
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 40
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 39
+        }
+      ],
+      "productNameCoverage": 89.8,
+      "shardRows": 3813,
+      "champions": {
+        "count": 31,
+        "sample": [
+          {
+            "productName": "กระเป๋าผ้าแพรวา",
+            "producerName": "กลุ่มอาชีพสตรีทอผ้าพื้นเมืองและตัดเย็บ",
+            "category": "textile",
+            "stars": 5,
+            "reach": "phone",
+            "district": "คำม่วง"
+          },
+          {
+            "productName": "ผ้าขาวม้า",
+            "producerName": "นางสาววรรณี ปรีชื่น",
+            "category": "textile",
+            "stars": 5,
+            "reach": "phone",
+            "district": "กมลาไสย"
+          },
+          {
+            "productName": "ผ้าขาวม้า",
+            "producerName": "นาย นิวัฒน์ ฉ่ำสบาย",
+            "category": "food",
+            "stars": 5,
+            "reach": "phone",
+            "district": "เขาวง"
+          },
+          {
+            "productName": "ผ้าคลุมไหล่",
+            "producerName": "กลุ่มทอผ้าพื้นเมืองบ้านโนนนคร",
+            "category": "textile",
+            "stars": 5,
+            "reach": "phone",
+            "district": "เมืองกาฬสินธุ์"
+          },
+          {
+            "productName": "ผ้าคลุมไหล่",
+            "producerName": "กลุ่มเย็บด้วยจักรปักด้วยมือ",
+            "category": "food",
+            "stars": 5,
+            "reach": "phone",
+            "district": "กมลาไสย"
+          }
+        ]
+      },
+      "mediaQuerySeeds": [
+        "Kalasin Fabric & Apparel",
+        "กาฬสินธุ์ ผ้าและเครื่องแต่งกาย",
+        "กาฬสินธุ์ ผ้าขาวม้า",
+        "กาฬสินธุ์ เสื่อกก",
+        "กาฬสินธุ์ ผ้าไหมแพรวา",
+        "Kalasin OTOP",
+        "กาฬสินธุ์ โอทอป"
+      ]
+    },
+    {
+      "code": 47,
+      "iso": "TH-47",
+      "th": "สกลนคร",
+      "en": "Sakon Nakhon",
+      "region": "northeast",
+      "records": 3514,
+      "classified": 485,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 5.8,
+        "count": 203
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 203,
+          "share": 5.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 185,
+          "share": 5.3
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 71,
+          "share": 2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 18,
+          "share": 0.5
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 8,
+          "share": 0.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าพันคอ",
+          "count": 25
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 20
+        },
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 16
+        },
+        {
+          "name": "ผ้าทอลายขัด",
+          "count": 10
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 8
+        },
+        {
+          "name": "ผ้าพันคอย้อมคราม",
+          "count": 7
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 5
+        },
+        {
+          "name": "ผ้ามัดหมี่ย้อมคราม",
+          "count": 5
+        }
+      ],
+      "productNameCoverage": 6.7,
+      "shardRows": 3514,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Sakon Nakhon Food",
+        "สกลนคร อาหาร",
+        "สกลนคร ผ้าพันคอ",
+        "สกลนคร ผ้าคลุมไหล่",
+        "สกลนคร ผ้ามัดหมี่",
+        "Sakon Nakhon OTOP",
+        "สกลนคร โอทอป"
+      ]
+    },
+    {
+      "code": 48,
+      "iso": "TH-48",
+      "th": "นครพนม",
+      "en": "Nakhon Phanom",
+      "region": "northeast",
+      "records": 1927,
+      "classified": 425,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 9,
+        "count": 174
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 174,
+          "share": 9
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 150,
+          "share": 7.8
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 81,
+          "share": 4.2
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 13,
+          "share": 0.7
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 7,
+          "share": 0.4
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 13
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 10
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 8
+        },
+        {
+          "name": "ผ้าไหมมัดหมี่",
+          "count": 8
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 7
+        },
+        {
+          "name": "กระติบข้าว",
+          "count": 4
+        },
+        {
+          "name": "ข้าวฮางงอกไรซ์เบอร์รี่",
+          "count": 4
+        },
+        {
+          "name": "ผ้าทอลายขัด",
+          "count": 4
+        }
+      ],
+      "productNameCoverage": 11.4,
+      "shardRows": 1927,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nakhon Phanom Food",
+        "นครพนม อาหาร",
+        "นครพนม ผ้ามัดหมี่",
+        "นครพนม ผ้าพันคอ",
+        "นครพนม ผ้าขาวม้า",
+        "Nakhon Phanom OTOP",
+        "นครพนม โอทอป"
+      ]
+    },
+    {
+      "code": 49,
+      "iso": "TH-49",
+      "th": "มุกดาหาร",
+      "en": "Mukdahan",
+      "region": "northeast",
+      "records": 1287,
+      "classified": 990,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 29.6,
+        "count": 381
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 381,
+          "share": 29.6
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 277,
+          "share": 21.5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 274,
+          "share": 21.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 34,
+          "share": 2.6
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 24,
+          "share": 1.9
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เสื้อเย็บมือ",
+          "count": 26
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 24
+        },
+        {
+          "name": "ตะกร้าพลาสติก",
+          "count": 21
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 18
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 18
+        },
+        {
+          "name": "ไม้กวาดดอกแขม",
+          "count": 18
+        },
+        {
+          "name": "ผ้าทอลายขัด",
+          "count": 16
+        },
+        {
+          "name": "เสื่อกก",
+          "count": 16
+        }
+      ],
+      "productNameCoverage": 71.8,
+      "shardRows": 1287,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Mukdahan Fabric & Apparel",
+        "มุกดาหาร ผ้าและเครื่องแต่งกาย",
+        "มุกดาหาร เสื้อเย็บมือ",
+        "มุกดาหาร ไม้กวาดดอกหญ้า",
+        "มุกดาหาร ตะกร้าพลาสติก",
+        "Mukdahan OTOP",
+        "มุกดาหาร โอทอป"
+      ]
+    },
+    {
+      "code": 50,
+      "iso": "TH-50",
+      "th": "เชียงใหม่",
+      "en": "Chiang Mai",
+      "region": "north",
+      "records": 3985,
+      "classified": 1009,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 12.9,
+        "count": 513
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 513,
+          "share": 12.9
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 210,
+          "share": 5.3
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 154,
+          "share": 3.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 82,
+          "share": 2.1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 50,
+          "share": 1.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เสื้อผ้าสำเร็จรูปหญิง",
+          "count": 22
+        },
+        {
+          "name": "เสื้อผ้าสำเร็จรูปสตรี",
+          "count": 6
+        },
+        {
+          "name": "เสื้อสตรี",
+          "count": 6
+        },
+        {
+          "name": "เสื้อสำเร็จรูปสตรี",
+          "count": 6
+        },
+        {
+          "name": "เสื้อสำเร็จรูปหญิง",
+          "count": 6
+        },
+        {
+          "name": "เสื้อสำเร็จรูป",
+          "count": 5
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 4
+        },
+        {
+          "name": "ลูกประคบสมุนไพร",
+          "count": 3
+        }
+      ],
+      "productNameCoverage": 11,
+      "shardRows": 3985,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Chiang Mai Fabric & Apparel",
+        "เชียงใหม่ ผ้าและเครื่องแต่งกาย",
+        "เชียงใหม่ เสื้อผ้าสำเร็จรูปหญิง",
+        "เชียงใหม่ เสื้อผ้าสำเร็จรูปสตรี",
+        "เชียงใหม่ เสื้อสตรี",
+        "Chiang Mai OTOP",
+        "เชียงใหม่ โอทอป"
+      ]
+    },
+    {
+      "code": 51,
+      "iso": "TH-51",
+      "th": "ลำพูน",
+      "en": "Lamphun",
+      "region": "north",
+      "records": 2578,
+      "classified": 1336,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 40.8,
+        "count": 1052
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 1052,
+          "share": 40.8
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 183,
+          "share": 7.1
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 58,
+          "share": 2.2
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 36,
+          "share": 1.4
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 7,
+          "share": 0.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้ายก",
+          "count": 216
+        },
+        {
+          "name": "เสื้อผ้าสำเร็จรูปหญิง",
+          "count": 183
+        },
+        {
+          "name": "เสื้อผ้าสำเร็จรูปชาย",
+          "count": 34
+        },
+        {
+          "name": "ผ้าไหมยกดอกลำพูน",
+          "count": 23
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 20
+        },
+        {
+          "name": "ผ้าไหมยกดอก",
+          "count": 16
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 15
+        },
+        {
+          "name": "เสื้อผ้าสำเร็จรูป",
+          "count": 14
+        }
+      ],
+      "productNameCoverage": 41,
+      "shardRows": 2578,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Lamphun Fabric & Apparel",
+        "ลำพูน ผ้าและเครื่องแต่งกาย",
+        "ลำพูน ผ้ายก",
+        "ลำพูน เสื้อผ้าสำเร็จรูปหญิง",
+        "ลำพูน เสื้อผ้าสำเร็จรูปชาย",
+        "Lamphun OTOP",
+        "ลำพูน โอทอป"
+      ]
+    },
+    {
+      "code": 52,
+      "iso": "TH-52",
+      "th": "ลำปาง",
+      "en": "Lampang",
+      "region": "north",
+      "records": 2069,
+      "classified": 396,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 8.9,
+        "count": 185
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 185,
+          "share": 8.9
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 95,
+          "share": 4.6
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 70,
+          "share": 3.4
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 24,
+          "share": 1.2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 22,
+          "share": 1.1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "แยมสับปะรด",
+          "count": 4
+        },
+        {
+          "name": "สับปะรดกวน",
+          "count": 4
+        },
+        {
+          "name": "กุ๊กไก่ไส้สับปะรด",
+          "count": 3
+        },
+        {
+          "name": "กุ๊กไก่ผำไส้สับปะรด ตราแม่หนิงภูดอย",
+          "count": 2
+        },
+        {
+          "name": "ข้าวแต๋นน้ำแตงโม",
+          "count": 2
+        },
+        {
+          "name": "ข้าวแต๋นหน้าน้ำอ้อย",
+          "count": 2
+        },
+        {
+          "name": "คุ้กกี้สอดไส้สับปะรด",
+          "count": 2
+        },
+        {
+          "name": "คุกกี้ไส้สับปะรด",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 10.8,
+      "shardRows": 2069,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Lampang Food",
+        "ลำปาง อาหาร",
+        "ลำปาง แยมสับปะรด",
+        "ลำปาง สับปะรดกวน",
+        "ลำปาง กุ๊กไก่ไส้สับปะรด",
+        "Lampang OTOP",
+        "ลำปาง โอทอป"
+      ]
+    },
+    {
+      "code": 53,
+      "iso": "TH-53",
+      "th": "อุตรดิตถ์",
+      "en": "Uttaradit",
+      "region": "north",
+      "records": 1431,
+      "classified": 275,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 8.8,
+        "count": 126
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 126,
+          "share": 8.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 84,
+          "share": 5.9
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 41,
+          "share": 2.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 22,
+          "share": 1.5
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 2,
+          "share": 0.1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ข้าวกล้องไรซ์เบอร์รี่",
+          "count": 3
+        },
+        {
+          "name": "ทุเรียนหมอนทอง",
+          "count": 3
+        },
+        {
+          "name": "ทุเรียนหลงลับแล",
+          "count": 3
+        },
+        {
+          "name": "น้ำผึ้ง",
+          "count": 2
+        },
+        {
+          "name": "ผ้าจกลายโบราณลายข้าวพันก้อน",
+          "count": 2
+        },
+        {
+          "name": "ผ้าซิ่นตีนจกลายโบราณ",
+          "count": 2
+        },
+        {
+          "name": "กระดาษใยกล้วย",
+          "count": 1
+        },
+        {
+          "name": "กระเทียมดอง",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 7.5,
+      "shardRows": 1431,
+      "champions": {
+        "count": 1,
+        "sample": [
+          {
+            "productName": "เรณูทุเรียนกวน",
+            "producerName": "กลุ่มวิสาหกิจชุมชนรักษ์ลับแล",
+            "category": "food",
+            "stars": 5,
+            "reach": "phone",
+            "district": null
+          }
+        ]
+      },
+      "mediaQuerySeeds": [
+        "Uttaradit Food",
+        "อุตรดิตถ์ อาหาร",
+        "อุตรดิตถ์ ข้าวกล้องไรซ์เบอร์รี่",
+        "อุตรดิตถ์ ทุเรียนหมอนทอง",
+        "อุตรดิตถ์ ทุเรียนหลงลับแล",
+        "Uttaradit OTOP",
+        "อุตรดิตถ์ โอทอป"
+      ]
+    },
+    {
+      "code": 54,
+      "iso": "TH-54",
+      "th": "แพร่",
+      "en": "Phrae",
+      "region": "north",
+      "records": 1916,
+      "classified": 589,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 12.4,
+        "count": 237
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 237,
+          "share": 12.4
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 155,
+          "share": 8.1
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 82,
+          "share": 4.3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 75,
+          "share": 3.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 40,
+          "share": 2.1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "สุรากลั่นชุมชน",
+          "count": 25
+        },
+        {
+          "name": "สบู่ก้อนกลีเซอรีน",
+          "count": 10
+        },
+        {
+          "name": "ผ้าจก",
+          "count": 6
+        },
+        {
+          "name": "ผ้าทอตีนจก",
+          "count": 6
+        },
+        {
+          "name": "แคบหมู",
+          "count": 5
+        },
+        {
+          "name": "ผักและผลไม้ทอดกรอบ",
+          "count": 4
+        },
+        {
+          "name": "ผักและผลไม้แห้ง",
+          "count": 3
+        },
+        {
+          "name": "ผ้าซิ่นตีนจก",
+          "count": 3
+        }
+      ],
+      "productNameCoverage": 13.7,
+      "shardRows": 1916,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phrae Food",
+        "แพร่ อาหาร",
+        "แพร่ สุรากลั่นชุมชน",
+        "แพร่ สบู่ก้อนกลีเซอรีน",
+        "แพร่ ผ้าจก",
+        "Phrae OTOP",
+        "แพร่ โอทอป"
+      ]
+    },
+    {
+      "code": 55,
+      "iso": "TH-55",
+      "th": "น่าน",
+      "en": "Nan",
+      "region": "north",
+      "records": 1444,
+      "classified": 311,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 6.9,
+        "count": 99
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 99,
+          "share": 6.9
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 97,
+          "share": 6.7
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 56,
+          "share": 3.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 34,
+          "share": 2.4
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 25,
+          "share": 1.7
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าลายน้ำไหล",
+          "count": 4
+        },
+        {
+          "name": "ผ้าคลุมไหล่",
+          "count": 3
+        },
+        {
+          "name": "ตุง",
+          "count": 2
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 2
+        },
+        {
+          "name": "ผ้าขิด",
+          "count": 2
+        },
+        {
+          "name": "ผ้าจก",
+          "count": 2
+        },
+        {
+          "name": "ผ้าทอลายขิด",
+          "count": 2
+        },
+        {
+          "name": "กระท้อนอบแห้ง",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 9.2,
+      "shardRows": 1444,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nan Food",
+        "น่าน อาหาร",
+        "น่าน ผ้าลายน้ำไหล",
+        "น่าน ผ้าคลุมไหล่",
+        "น่าน ตุง",
+        "Nan OTOP",
+        "น่าน โอทอป"
+      ]
+    },
+    {
+      "code": 56,
+      "iso": "TH-56",
+      "th": "พะเยา",
+      "en": "Phayao",
+      "region": "north",
+      "records": 1464,
+      "classified": 1104,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 32.8,
+        "count": 480
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 480,
+          "share": 32.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 251,
+          "share": 17.1
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 245,
+          "share": 16.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 75,
+          "share": 5.1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 53,
+          "share": 3.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 18
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 15
+        },
+        {
+          "name": "น้ำพริกลาบ",
+          "count": 11
+        },
+        {
+          "name": "กระเป๋า",
+          "count": 10
+        },
+        {
+          "name": "กระเป๋าผักตบชวา",
+          "count": 9
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 8
+        },
+        {
+          "name": "กระเป๋าถือ",
+          "count": 7
+        },
+        {
+          "name": "กล้วยฉาบ",
+          "count": 7
+        }
+      ],
+      "productNameCoverage": 73.2,
+      "shardRows": 1464,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phayao Food",
+        "พะเยา อาหาร",
+        "พะเยา พรมเช็ดเท้า",
+        "พะเยา ไม้กวาดดอกหญ้า",
+        "พะเยา น้ำพริกลาบ",
+        "Phayao OTOP",
+        "พะเยา โอทอป"
+      ]
+    },
+    {
+      "code": 57,
+      "iso": "TH-57",
+      "th": "เชียงราย",
+      "en": "Chiang Rai",
+      "region": "north",
+      "records": 3405,
+      "classified": 587,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 6,
+        "count": 205
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 205,
+          "share": 6
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 146,
+          "share": 4.3
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 129,
+          "share": 3.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 79,
+          "share": 2.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 28,
+          "share": 0.8
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "สับปะรดภูแล",
+          "count": 16
+        },
+        {
+          "name": "ชาอู่หลงก้านอ่อน",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าถักโครเชต์",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าเอนกประสงค์",
+          "count": 2
+        },
+        {
+          "name": "กล้วยตาก",
+          "count": 2
+        },
+        {
+          "name": "เครื่องประดับ (กำไลไม้มงคล)",
+          "count": 2
+        },
+        {
+          "name": "ชาอู่หลง เบอร์ 12",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 8.9,
+      "shardRows": 3405,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Chiang Rai Fabric & Apparel",
+        "เชียงราย ผ้าและเครื่องแต่งกาย",
+        "เชียงราย สับปะรดภูแล",
+        "เชียงราย ชาอู่หลงก้านอ่อน",
+        "เชียงราย กระเป๋าถักโครเชต์",
+        "Chiang Rai OTOP",
+        "เชียงราย โอทอป"
+      ]
+    },
+    {
+      "code": 58,
+      "iso": "TH-58",
+      "th": "แม่ฮ่องสอน",
+      "en": "Mae Hong Son",
+      "region": "north",
+      "records": 902,
+      "classified": 271,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 13.3,
+        "count": 120
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 120,
+          "share": 13.3
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 74,
+          "share": 8.2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 37,
+          "share": 4.1
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 26,
+          "share": 2.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 14,
+          "share": 1.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ย่าม",
+          "count": 13
+        },
+        {
+          "name": "ผ้าพันคอ",
+          "count": 6
+        },
+        {
+          "name": "กระเป๋าผ้าขนาดกลาง",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าลีซอขนาดกลาง",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าสะพาย",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าสะพายขนาดกลาง",
+          "count": 3
+        },
+        {
+          "name": "ชุดเดรสสตรี",
+          "count": 3
+        },
+        {
+          "name": "เสื้อกะเหรี่ยง",
+          "count": 3
+        }
+      ],
+      "productNameCoverage": 21.5,
+      "shardRows": 902,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Mae Hong Son Fabric & Apparel",
+        "แม่ฮ่องสอน ผ้าและเครื่องแต่งกาย",
+        "แม่ฮ่องสอน ย่าม",
+        "แม่ฮ่องสอน ผ้าพันคอ",
+        "แม่ฮ่องสอน กระเป๋าผ้าขนาดกลาง",
+        "Mae Hong Son OTOP",
+        "แม่ฮ่องสอน โอทอป"
+      ]
+    },
+    {
+      "code": 60,
+      "iso": "TH-60",
+      "th": "นครสวรรค์",
+      "en": "Nakhon Sawan",
+      "region": "central",
+      "records": 2111,
+      "classified": 355,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 6.6,
+        "count": 139
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 139,
+          "share": 6.6
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 115,
+          "share": 5.4
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 48,
+          "share": 2.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 39,
+          "share": 1.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 14,
+          "share": 0.7
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 4
+        },
+        {
+          "name": "กระเป๋าเชือกร่ม หมวก",
+          "count": 2
+        },
+        {
+          "name": "กล้วยกวนกะทิสด",
+          "count": 2
+        },
+        {
+          "name": "ข้าวไรซ์เบอร์รี่",
+          "count": 2
+        },
+        {
+          "name": "เปลเกลียวหนัง",
+          "count": 2
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 2
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าคุณนายไฮโซ (เชือกมัดฟาง)",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 8.2,
+      "shardRows": 2111,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nakhon Sawan Food",
+        "นครสวรรค์ อาหาร",
+        "นครสวรรค์ พรมเช็ดเท้า",
+        "นครสวรรค์ กระเป๋าเชือกร่ม หมวก",
+        "นครสวรรค์ กล้วยกวนกะทิสด",
+        "Nakhon Sawan OTOP",
+        "นครสวรรค์ โอทอป"
+      ]
+    },
+    {
+      "code": 61,
+      "iso": "TH-61",
+      "th": "อุทัยธานี",
+      "en": "Uthai Thani",
+      "region": "central",
+      "records": 890,
+      "classified": 669,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 33.9,
+        "count": 302
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 302,
+          "share": 33.9
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 182,
+          "share": 20.4
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 140,
+          "share": 15.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 28,
+          "share": 3.1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 17,
+          "share": 1.9
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 12
+        },
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 12
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 10
+        },
+        {
+          "name": "ไม้กวาดทางมะพร้าว",
+          "count": 8
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 6
+        },
+        {
+          "name": "กระเป๋าผ้าทอมือ",
+          "count": 5
+        },
+        {
+          "name": "งานประดิษฐ์จากผ้า",
+          "count": 5
+        },
+        {
+          "name": "ทุเรียนหมอนทอง",
+          "count": 5
+        }
+      ],
+      "productNameCoverage": 66.6,
+      "shardRows": 890,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Uthai Thani Food",
+        "อุทัยธานี อาหาร",
+        "อุทัยธานี ผ้าขาวม้า",
+        "อุทัยธานี พรมเช็ดเท้า",
+        "อุทัยธานี กระเป๋าผ้า",
+        "Uthai Thani OTOP",
+        "อุทัยธานี โอทอป"
+      ]
+    },
+    {
+      "code": 62,
+      "iso": "TH-62",
+      "th": "กำแพงเพชร",
+      "en": "Kamphaeng Phet",
+      "region": "central",
+      "records": 1590,
+      "classified": 266,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 6.8,
+        "count": 108
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 108,
+          "share": 6.8
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 85,
+          "share": 5.3
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 54,
+          "share": 3.4
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 14,
+          "share": 0.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 5,
+          "share": 0.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 3
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าถักเชือกร่ม",
+          "count": 2
+        },
+        {
+          "name": "กล้วยมะลิอ่องอบแห้ง ตรากล้วยแดดดี",
+          "count": 2
+        },
+        {
+          "name": "ผ้าซิ่นตีนจก",
+          "count": 2
+        },
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 2
+        },
+        {
+          "name": "หนังสติ๊กทรงช้าง",
+          "count": 2
+        },
+        {
+          "name": "กระจกกัดลาย",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 8.3,
+      "shardRows": 1590,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Kamphaeng Phet Household, Decorative & Souvenir",
+        "กำแพงเพชร ของใช้ ของตกแต่ง ของที่ระลึก",
+        "กำแพงเพชร ผ้าขาวม้า",
+        "กำแพงเพชร ไม้กวาดดอกหญ้า",
+        "กำแพงเพชร กระเป๋าถักเชือกร่ม",
+        "Kamphaeng Phet OTOP",
+        "กำแพงเพชร โอทอป"
+      ]
+    },
+    {
+      "code": 63,
+      "iso": "TH-63",
+      "th": "ตาก",
+      "en": "Tak",
+      "region": "west",
+      "records": 1655,
+      "classified": 283,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 5.7,
+        "count": 94
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 94,
+          "share": 5.7
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 86,
+          "share": 5.2
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 64,
+          "share": 3.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 22,
+          "share": 1.3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 17,
+          "share": 1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "จี้เงินประดับอัญมณี",
+          "count": 4
+        },
+        {
+          "name": "ข้าวไรซ์เบอร์รี่",
+          "count": 2
+        },
+        {
+          "name": "เครื่องประดับเงินแบบมีลวดลาย",
+          "count": 2
+        },
+        {
+          "name": "ต้นไม้หยกมงคล",
+          "count": 2
+        },
+        {
+          "name": "กรอบพระเงินแกะลาย",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าถักใยกัญชง",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าสะพาย",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 7.3,
+      "shardRows": 1655,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Tak Fabric & Apparel",
+        "ตาก ผ้าและเครื่องแต่งกาย",
+        "ตาก จี้เงินประดับอัญมณี",
+        "ตาก ข้าวไรซ์เบอร์รี่",
+        "ตาก เครื่องประดับเงินแบบมีลวดลาย",
+        "Tak OTOP",
+        "ตาก โอทอป"
+      ]
+    },
+    {
+      "code": 64,
+      "iso": "TH-64",
+      "th": "สุโขทัย",
+      "en": "Sukhothai",
+      "region": "central",
+      "records": 1351,
+      "classified": 405,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 10.2,
+        "count": 138
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 138,
+          "share": 10.2
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 135,
+          "share": 10
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 97,
+          "share": 7.2
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 28,
+          "share": 2.1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 7,
+          "share": 0.5
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 4
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 3
+        },
+        {
+          "name": "นกคุ้ม",
+          "count": 3
+        },
+        {
+          "name": "กระดิ่งมงคล",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋า",
+          "count": 2
+        },
+        {
+          "name": "แชมพูสมุนไพร",
+          "count": 2
+        },
+        {
+          "name": "น้ำปลาแท้ตราปลาสร้อย",
+          "count": 2
+        },
+        {
+          "name": "ป้ายไม้สัก",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 17.6,
+      "shardRows": 1351,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Sukhothai Food",
+        "สุโขทัย อาหาร",
+        "สุโขทัย ไม้กวาดดอกหญ้า",
+        "สุโขทัย กระเป๋าผ้า",
+        "สุโขทัย นกคุ้ม",
+        "Sukhothai OTOP",
+        "สุโขทัย โอทอป"
+      ]
+    },
+    {
+      "code": 65,
+      "iso": "TH-65",
+      "th": "พิษณุโลก",
+      "en": "Phitsanulok",
+      "region": "central",
+      "records": 1605,
+      "classified": 1139,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 39.4,
+        "count": 632
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 632,
+          "share": 39.4
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 237,
+          "share": 14.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 145,
+          "share": 9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 93,
+          "share": 5.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 32,
+          "share": 2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 17
+        },
+        {
+          "name": "กล้วยฉาบ",
+          "count": 16
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 11
+        },
+        {
+          "name": "ไข่เค็ม",
+          "count": 9
+        },
+        {
+          "name": "กล้วยกวน",
+          "count": 8
+        },
+        {
+          "name": "น้ำพริกแกงเผ็ด",
+          "count": 8
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 7
+        },
+        {
+          "name": "กระยาสารท",
+          "count": 6
+        }
+      ],
+      "productNameCoverage": 65.5,
+      "shardRows": 1605,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phitsanulok Food",
+        "พิษณุโลก อาหาร",
+        "พิษณุโลก ไม้กวาดดอกหญ้า",
+        "พิษณุโลก กล้วยฉาบ",
+        "พิษณุโลก ผ้าขาวม้า",
+        "Phitsanulok OTOP",
+        "พิษณุโลก โอทอป"
+      ]
+    },
+    {
+      "code": 66,
+      "iso": "TH-66",
+      "th": "พิจิตร",
+      "en": "Phichit",
+      "region": "central",
+      "records": 1764,
+      "classified": 898,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 24.8,
+        "count": 437
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 437,
+          "share": 24.8
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 248,
+          "share": 14.1
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 101,
+          "share": 5.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 87,
+          "share": 4.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 25,
+          "share": 1.4
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ส้มโอ",
+          "count": 18
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 11
+        },
+        {
+          "name": "กระเป๋าผักตบชวา",
+          "count": 8
+        },
+        {
+          "name": "กล้วยฉาบ",
+          "count": 7
+        },
+        {
+          "name": "ดอกไม้จันทน์",
+          "count": 7
+        },
+        {
+          "name": "กล้วยตาก",
+          "count": 6
+        },
+        {
+          "name": "พริกแกง",
+          "count": 6
+        },
+        {
+          "name": "กระเป๋า",
+          "count": 4
+        }
+      ],
+      "productNameCoverage": 43.1,
+      "shardRows": 1764,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phichit Food",
+        "พิจิตร อาหาร",
+        "พิจิตร ส้มโอ",
+        "พิจิตร ไม้กวาดดอกหญ้า",
+        "พิจิตร กระเป๋าผักตบชวา",
+        "Phichit OTOP",
+        "พิจิตร โอทอป"
+      ]
+    },
+    {
+      "code": 67,
+      "iso": "TH-67",
+      "th": "เพชรบูรณ์",
+      "en": "Phetchabun",
+      "region": "central",
+      "records": 1697,
+      "classified": 562,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 19.1,
+        "count": 324
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 324,
+          "share": 19.1
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 94,
+          "share": 5.5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 76,
+          "share": 4.5
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 54,
+          "share": 3.2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 14,
+          "share": 0.8
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผักและผลไม้หยี",
+          "count": 13
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 10
+        },
+        {
+          "name": "ผ้าพิมพ์ลายจากพืช",
+          "count": 10
+        },
+        {
+          "name": "ผ้ามัดหมี่",
+          "count": 10
+        },
+        {
+          "name": "ผลิตภัณฑ์ประดิษฐ์จากไม้",
+          "count": 7
+        },
+        {
+          "name": "ลูกประคบสมุนไพร",
+          "count": 7
+        },
+        {
+          "name": "ข้าวหลาม",
+          "count": 6
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 6
+        }
+      ],
+      "productNameCoverage": 22.6,
+      "shardRows": 1697,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phetchabun Food",
+        "เพชรบูรณ์ อาหาร",
+        "เพชรบูรณ์ ผักและผลไม้หยี",
+        "เพชรบูรณ์ กระเป๋าผ้า",
+        "เพชรบูรณ์ ผ้าพิมพ์ลายจากพืช",
+        "Phetchabun OTOP",
+        "เพชรบูรณ์ โอทอป"
+      ]
+    },
+    {
+      "code": 70,
+      "iso": "TH-70",
+      "th": "ราชบุรี",
+      "en": "Ratchaburi",
+      "region": "west",
+      "records": 1855,
+      "classified": 345,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 6.8,
+        "count": 127
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 127,
+          "share": 6.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 85,
+          "share": 4.6
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 65,
+          "share": 3.5
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 38,
+          "share": 2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 30,
+          "share": 1.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าจกทอมือ",
+          "count": 3
+        },
+        {
+          "name": "สับปะรดผลสด",
+          "count": 3
+        },
+        {
+          "name": "ข้าวหมากหวาน",
+          "count": 2
+        },
+        {
+          "name": "ไชโป๊วหวาน ชนิดฝอย",
+          "count": 2
+        },
+        {
+          "name": "น้ำมะพร้าวนมสด",
+          "count": 2
+        },
+        {
+          "name": "น้ำมะพร้าวสด",
+          "count": 2
+        },
+        {
+          "name": "ผงข้าวกล้องงอก รสหวานออริจินัล",
+          "count": 2
+        },
+        {
+          "name": "กระเช้าสีดาปลาตะเพียน",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 9.7,
+      "shardRows": 1855,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Ratchaburi Food",
+        "ราชบุรี อาหาร",
+        "ราชบุรี ผ้าจกทอมือ",
+        "ราชบุรี สับปะรดผลสด",
+        "ราชบุรี ข้าวหมากหวาน",
+        "Ratchaburi OTOP",
+        "ราชบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 71,
+      "iso": "TH-71",
+      "th": "กาญจนบุรี",
+      "en": "Kanchanaburi",
+      "region": "west",
+      "records": 2534,
+      "classified": 1181,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 22.7,
+        "count": 574
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 574,
+          "share": 22.7
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 222,
+          "share": 8.8
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 205,
+          "share": 8.1
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 108,
+          "share": 4.3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 72,
+          "share": 2.8
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กล้วยฉาบ",
+          "count": 9
+        },
+        {
+          "name": "กล้วยตาก",
+          "count": 8
+        },
+        {
+          "name": "พริกแกงเผ็ด",
+          "count": 8
+        },
+        {
+          "name": "ไข่เค็ม",
+          "count": 7
+        },
+        {
+          "name": "ไม้กวาดทางมะพร้าว",
+          "count": 5
+        },
+        {
+          "name": "ผ้าขาวม้า",
+          "count": 4
+        },
+        {
+          "name": "พรมเช็ดเท้า",
+          "count": 4
+        },
+        {
+          "name": "พวงกุญแจ",
+          "count": 4
+        }
+      ],
+      "productNameCoverage": 44.8,
+      "shardRows": 2534,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Kanchanaburi Food",
+        "กาญจนบุรี อาหาร",
+        "กาญจนบุรี กล้วยฉาบ",
+        "กาญจนบุรี กล้วยตาก",
+        "กาญจนบุรี พริกแกงเผ็ด",
+        "Kanchanaburi OTOP",
+        "กาญจนบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 72,
+      "iso": "TH-72",
+      "th": "สุพรรณบุรี",
+      "en": "Suphan Buri",
+      "region": "central",
+      "records": 1721,
+      "classified": 378,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 8,
+        "count": 138
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 138,
+          "share": 8
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 134,
+          "share": 7.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 66,
+          "share": 3.8
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 24,
+          "share": 1.4
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 16,
+          "share": 0.9
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กระเป๋าถักโครเชต์",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าสตรี",
+          "count": 2
+        },
+        {
+          "name": "ข้าวเหนียวแดง",
+          "count": 2
+        },
+        {
+          "name": "ธูปหอม",
+          "count": 2
+        },
+        {
+          "name": "ผ้าถุงทอมือ",
+          "count": 2
+        },
+        {
+          "name": "กรงแมวเล็กผักตบชวา",
+          "count": 1
+        },
+        {
+          "name": "กรอบรูปโมเดิรน์ โชว์ 2 ด้าน",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 8.8,
+      "shardRows": 1721,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Suphan Buri Food",
+        "สุพรรณบุรี อาหาร",
+        "สุพรรณบุรี กระเป๋าถักโครเชต์",
+        "สุพรรณบุรี กระเป๋าผ้า",
+        "สุพรรณบุรี กระเป๋าสตรี",
+        "Suphan Buri OTOP",
+        "สุพรรณบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 73,
+      "iso": "TH-73",
+      "th": "นครปฐม",
+      "en": "Nakhon Pathom",
+      "region": "central",
+      "records": 2205,
+      "classified": 362,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 5.8,
+        "count": 128
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 128,
+          "share": 5.8
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 108,
+          "share": 4.9
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 74,
+          "share": 3.4
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 38,
+          "share": 1.7
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 14,
+          "share": 0.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผลิตภัณฑ์จากผักตบชวา",
+          "count": 7
+        },
+        {
+          "name": "เครื่องเบญจรงค์",
+          "count": 5
+        },
+        {
+          "name": "ดอกไม้ประดิษฐ์",
+          "count": 5
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 4
+        },
+        {
+          "name": "งานประดิษฐ์จากผ้า",
+          "count": 3
+        },
+        {
+          "name": "แชมพู",
+          "count": 3
+        },
+        {
+          "name": "ผลิตภัณฑ์จากเส้นพลาสติก",
+          "count": 3
+        },
+        {
+          "name": "ผลิตภัณฑ์ประดิษฐ์จากเศษผ้า",
+          "count": 3
+        }
+      ],
+      "productNameCoverage": 11.2,
+      "shardRows": 2205,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nakhon Pathom Household, Decorative & Souvenir",
+        "นครปฐม ของใช้ ของตกแต่ง ของที่ระลึก",
+        "นครปฐม ผลิตภัณฑ์จากผักตบชวา",
+        "นครปฐม เครื่องเบญจรงค์",
+        "นครปฐม ดอกไม้ประดิษฐ์",
+        "Nakhon Pathom OTOP",
+        "นครปฐม โอทอป"
+      ]
+    },
+    {
+      "code": 74,
+      "iso": "TH-74",
+      "th": "สมุทรสาคร",
+      "en": "Samut Sakhon",
+      "region": "central",
+      "records": 1212,
+      "classified": 290,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 10.1,
+        "count": 122
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 122,
+          "share": 10.1
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 60,
+          "share": 5
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 56,
+          "share": 4.6
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 35,
+          "share": 2.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 17,
+          "share": 1.4
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 2
+        },
+        {
+          "name": "ครีมนวดผม น้ำมันมะพร้าว",
+          "count": 2
+        },
+        {
+          "name": "น้ำตาลมะพร้าวน้ำหอม",
+          "count": 2
+        },
+        {
+          "name": "น้ำมะพร้าวพร้อมดื่ม 100% บ้านวังนางกุ",
+          "count": 2
+        },
+        {
+          "name": "น้ำหวานจากดอกมะพร้าว",
+          "count": 2
+        },
+        {
+          "name": "ผลิตภัณฑ์จากกะลามะพร้าว",
+          "count": 2
+        },
+        {
+          "name": "มะพร้าวน้ำกะทิอบกรอบ",
+          "count": 2
+        },
+        {
+          "name": "มะพร้าวน้ำหอม",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 14.6,
+      "shardRows": 1212,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Samut Sakhon Food",
+        "สมุทรสาคร อาหาร",
+        "สมุทรสาคร กระเป๋าผ้า",
+        "สมุทรสาคร ครีมนวดผม น้ำมันมะพร้าว",
+        "สมุทรสาคร น้ำตาลมะพร้าวน้ำหอม",
+        "Samut Sakhon OTOP",
+        "สมุทรสาคร โอทอป"
+      ]
+    },
+    {
+      "code": 75,
+      "iso": "TH-75",
+      "th": "สมุทรสงคราม",
+      "en": "Samut Songkhram",
+      "region": "central",
+      "records": 1069,
+      "classified": 351,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 20.3,
+        "count": 217
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 217,
+          "share": 20.3
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 48,
+          "share": 4.5
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 42,
+          "share": 3.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 31,
+          "share": 2.9
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 13,
+          "share": 1.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "น้ำตาลมะพร้าว",
+          "count": 28
+        },
+        {
+          "name": "ส้มโอขาวใหญ่",
+          "count": 8
+        },
+        {
+          "name": "ส้มโอ",
+          "count": 6
+        },
+        {
+          "name": "ข้าวตู",
+          "count": 3
+        },
+        {
+          "name": "มะพร้าวน้ำหอม",
+          "count": 3
+        },
+        {
+          "name": "ไม้กวาดทางมะพร้าว",
+          "count": 3
+        },
+        {
+          "name": "น้ำตาลมะพร้าว (ก้อน)",
+          "count": 2
+        },
+        {
+          "name": "น้ำตาลมะพร้าวน้ำหอม",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 22,
+      "shardRows": 1069,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Samut Songkhram Food",
+        "สมุทรสงคราม อาหาร",
+        "สมุทรสงคราม น้ำตาลมะพร้าว",
+        "สมุทรสงคราม ส้มโอขาวใหญ่",
+        "สมุทรสงคราม ส้มโอ",
+        "Samut Songkhram OTOP",
+        "สมุทรสงคราม โอทอป"
+      ]
+    },
+    {
+      "code": 76,
+      "iso": "TH-76",
+      "th": "เพชรบุรี",
+      "en": "Phetchaburi",
+      "region": "west",
+      "records": 1332,
+      "classified": 895,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 40.2,
+        "count": 536
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 536,
+          "share": 40.2
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 125,
+          "share": 9.4
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 96,
+          "share": 7.2
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 96,
+          "share": 7.2
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 42,
+          "share": 3.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ขนมหม้อแกง",
+          "count": 14
+        },
+        {
+          "name": "กล้วยกวน",
+          "count": 10
+        },
+        {
+          "name": "ขนมทองม้วน",
+          "count": 7
+        },
+        {
+          "name": "สับปะรดกวน",
+          "count": 7
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 6
+        },
+        {
+          "name": "กาละแม",
+          "count": 6
+        },
+        {
+          "name": "ขนมชั้น",
+          "count": 6
+        },
+        {
+          "name": "ขนมบ้าบิ่น",
+          "count": 6
+        }
+      ],
+      "productNameCoverage": 60.1,
+      "shardRows": 1332,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phetchaburi Food",
+        "เพชรบุรี อาหาร",
+        "เพชรบุรี ขนมหม้อแกง",
+        "เพชรบุรี กล้วยกวน",
+        "เพชรบุรี ขนมทองม้วน",
+        "Phetchaburi OTOP",
+        "เพชรบุรี โอทอป"
+      ]
+    },
+    {
+      "code": 77,
+      "iso": "TH-77",
+      "th": "ประจวบคีรีขันธ์",
+      "en": "Prachuap Khiri Khan",
+      "region": "west",
+      "records": 1144,
+      "classified": 194,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 8.5,
+        "count": 97
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 97,
+          "share": 8.5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 50,
+          "share": 4.4
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 20,
+          "share": 1.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 15,
+          "share": 1.3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 12,
+          "share": 1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ขนมปังชีสเชคไส้สับปะรด",
+          "count": 4
+        },
+        {
+          "name": "น้ำมันมะพร้าวสกัดเย็น",
+          "count": 2
+        },
+        {
+          "name": "มะม่วงอบแห้ง",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าผ้าภีม",
+          "count": 1
+        },
+        {
+          "name": "กระยาสารทธัญพืชงาดำ",
+          "count": 1
+        },
+        {
+          "name": "กล้วยกวนผสมกะทิ",
+          "count": 1
+        },
+        {
+          "name": "กล้วยเบรคแตก",
+          "count": 1
+        },
+        {
+          "name": "กล้วยเล็บมือนางอบพลังงานแสงอาทิตย์",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 5,
+      "shardRows": 1144,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Prachuap Khiri Khan Food",
+        "ประจวบคีรีขันธ์ อาหาร",
+        "ประจวบคีรีขันธ์ ขนมปังชีสเชคไส้สับปะรด",
+        "ประจวบคีรีขันธ์ น้ำมันมะพร้าวสกัดเย็น",
+        "ประจวบคีรีขันธ์ มะม่วงอบแห้ง",
+        "Prachuap Khiri Khan OTOP",
+        "ประจวบคีรีขันธ์ โอทอป"
+      ]
+    },
+    {
+      "code": 80,
+      "iso": "TH-80",
+      "th": "นครศรีธรรมราช",
+      "en": "Nakhon Si Thammarat",
+      "region": "south",
+      "records": 3059,
+      "classified": 416,
+      "dominantCategory": {
+        "id": "craft",
+        "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+        "en": "Household, Decorative & Souvenir",
+        "share": 5.5,
+        "count": 167
+      },
+      "categories": [
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 167,
+          "share": 5.5
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 102,
+          "share": 3.3
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 96,
+          "share": 3.1
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 32,
+          "share": 1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 19,
+          "share": 0.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ส้มโอทับทิมสยาม",
+          "count": 9
+        },
+        {
+          "name": "กำไลถมทอง",
+          "count": 5
+        },
+        {
+          "name": "กระเป๋าย่านลิเภา",
+          "count": 4
+        },
+        {
+          "name": "กระเป๋าหูไม้",
+          "count": 4
+        },
+        {
+          "name": "ผ้าบาติก",
+          "count": 4
+        },
+        {
+          "name": "ผ้ามัดย้อม",
+          "count": 4
+        },
+        {
+          "name": "กระเช้าของขวัญ",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าถือ",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 6.8,
+      "shardRows": 3059,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Nakhon Si Thammarat Household, Decorative & Souvenir",
+        "นครศรีธรรมราช ของใช้ ของตกแต่ง ของที่ระลึก",
+        "นครศรีธรรมราช ส้มโอทับทิมสยาม",
+        "นครศรีธรรมราช กำไลถมทอง",
+        "นครศรีธรรมราช กระเป๋าย่านลิเภา",
+        "Nakhon Si Thammarat OTOP",
+        "นครศรีธรรมราช โอทอป"
+      ]
+    },
+    {
+      "code": 81,
+      "iso": "TH-81",
+      "th": "กระบี่",
+      "en": "Krabi",
+      "region": "south",
+      "records": 1510,
+      "classified": 1260,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 46.4,
+        "count": 700
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 700,
+          "share": 46.4
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 277,
+          "share": 18.3
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 169,
+          "share": 11.2
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 76,
+          "share": 5
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 38,
+          "share": 2.5
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "FALSE",
+          "count": 44
+        },
+        {
+          "name": "เครื่องแกงกะทิ",
+          "count": 27
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 14
+        },
+        {
+          "name": "กล้วยฉาบ",
+          "count": 14
+        },
+        {
+          "name": "กะปิ",
+          "count": 13
+        },
+        {
+          "name": "ผ้ามัดย้อม",
+          "count": 11
+        },
+        {
+          "name": "น้ำพริกกุ้งเสียบ",
+          "count": 9
+        },
+        {
+          "name": "สร้อยคอมุก",
+          "count": 9
+        }
+      ],
+      "productNameCoverage": 88.4,
+      "shardRows": 1510,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Krabi Food",
+        "กระบี่ อาหาร",
+        "กระบี่ FALSE",
+        "กระบี่ เครื่องแกงกะทิ",
+        "กระบี่ กระเป๋าผ้า",
+        "Krabi OTOP",
+        "กระบี่ โอทอป"
+      ]
+    },
+    {
+      "code": 82,
+      "iso": "TH-82",
+      "th": "พังงา",
+      "en": "Phang Nga",
+      "region": "south",
+      "records": 1294,
+      "classified": 210,
+      "dominantCategory": {
+        "id": "textile",
+        "th": "ผ้าและเครื่องแต่งกาย",
+        "en": "Fabric & Apparel",
+        "share": 9.1,
+        "count": 118
+      },
+      "categories": [
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 118,
+          "share": 9.1
+        },
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 50,
+          "share": 3.9
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 40,
+          "share": 3.1
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 2,
+          "share": 0.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เครื่องประดับมุก",
+          "count": 6
+        },
+        {
+          "name": "สร้อยคอมุก",
+          "count": 6
+        },
+        {
+          "name": "สร้อยคอไข่มุก",
+          "count": 5
+        },
+        {
+          "name": "ผ้าบาติก",
+          "count": 4
+        },
+        {
+          "name": "หมวกมัดย้อม",
+          "count": 3
+        },
+        {
+          "name": "ขนมเต้าส้อไส้หวานไข่เค็ม",
+          "count": 2
+        },
+        {
+          "name": "ชุดไข่มุก",
+          "count": 2
+        },
+        {
+          "name": "ชุดสร้อยมุก",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 10.4,
+      "shardRows": 1294,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phang Nga Fabric & Apparel",
+        "พังงา ผ้าและเครื่องแต่งกาย",
+        "พังงา เครื่องประดับมุก",
+        "พังงา สร้อยคอมุก",
+        "พังงา สร้อยคอไข่มุก",
+        "Phang Nga OTOP",
+        "พังงา โอทอป"
+      ]
+    },
+    {
+      "code": 83,
+      "iso": "TH-83",
+      "th": "ภูเก็ต",
+      "en": "Phuket",
+      "region": "south",
+      "records": 820,
+      "classified": 177,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 8.5,
+        "count": 70
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 70,
+          "share": 8.5
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 64,
+          "share": 7.8
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 19,
+          "share": 2.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 19,
+          "share": 2.3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 5,
+          "share": 0.6
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าเขียนลาย",
+          "count": 2
+        },
+        {
+          "name": "กระปุกออมสินกะลามะพร้าว",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าควินมือ",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าราตรี",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าสตางค์จากผ้าปาเต๊ะ",
+          "count": 1
+        },
+        {
+          "name": "กะปิหวานเมืองถลาง (เกลือเคย)",
+          "count": 1
+        },
+        {
+          "name": "กาแฟปรุงสำเร็จชนิดผงผสมชาไทย สูตรไม่ผสมน้ำตาล",
+          "count": 1
+        },
+        {
+          "name": "ขนมตาล",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 8.5,
+      "shardRows": 820,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phuket Food",
+        "ภูเก็ต อาหาร",
+        "ภูเก็ต ผ้าเขียนลาย",
+        "ภูเก็ต กระปุกออมสินกะลามะพร้าว",
+        "ภูเก็ต กระเป๋าควินมือ",
+        "Phuket OTOP",
+        "ภูเก็ต โอทอป"
+      ]
+    },
+    {
+      "code": 84,
+      "iso": "TH-84",
+      "th": "สุราษฎร์ธานี",
+      "en": "Surat Thani",
+      "region": "south",
+      "records": 1984,
+      "classified": 243,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 4,
+        "count": 80
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 80,
+          "share": 4
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 66,
+          "share": 3.3
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 50,
+          "share": 2.5
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 42,
+          "share": 2.1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 5,
+          "share": 0.3
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กาแฟสดสวนสละอาทิตย์",
+          "count": 2
+        },
+        {
+          "name": "กาละแม",
+          "count": 2
+        },
+        {
+          "name": "เงาะอบแห้ง",
+          "count": 2
+        },
+        {
+          "name": "ผ้าเพ้นท์",
+          "count": 2
+        },
+        {
+          "name": "กระทงจากเปลือกข้าวโพดรูปนก",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋ากะละมะพร้าว",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าถักโครเชต์",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าถือเชือกกล้วย",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 4.3,
+      "shardRows": 1984,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Surat Thani Food",
+        "สุราษฎร์ธานี อาหาร",
+        "สุราษฎร์ธานี กาแฟสดสวนสละอาทิตย์",
+        "สุราษฎร์ธานี กาละแม",
+        "สุราษฎร์ธานี เงาะอบแห้ง",
+        "Surat Thani OTOP",
+        "สุราษฎร์ธานี โอทอป"
+      ]
+    },
+    {
+      "code": 85,
+      "iso": "TH-85",
+      "th": "ระนอง",
+      "en": "Ranong",
+      "region": "south",
+      "records": 916,
+      "classified": 207,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 8.4,
+        "count": 77
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 77,
+          "share": 8.4
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 58,
+          "share": 6.3
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 54,
+          "share": 5.9
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 10,
+          "share": 1.1
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 8,
+          "share": 0.9
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 3
+        },
+        {
+          "name": "ไม้กวาดดอกอ้อ",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าผ้าปาเต๊ะ",
+          "count": 2
+        },
+        {
+          "name": "เม็ดมะม่วงหิมพานต์อบเกลือ",
+          "count": 2
+        },
+        {
+          "name": "ก๊กซิมบี้",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าหนังแท้",
+          "count": 1
+        },
+        {
+          "name": "กะปิ",
+          "count": 1
+        },
+        {
+          "name": "กะปิเกาะช้าง",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 8.2,
+      "shardRows": 916,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Ranong Food",
+        "ระนอง อาหาร",
+        "ระนอง กระเป๋าผ้า",
+        "ระนอง ไม้กวาดดอกอ้อ",
+        "ระนอง กระเป๋าผ้าปาเต๊ะ",
+        "Ranong OTOP",
+        "ระนอง โอทอป"
+      ]
+    },
+    {
+      "code": 86,
+      "iso": "TH-86",
+      "th": "ชุมพร",
+      "en": "Chumphon",
+      "region": "south",
+      "records": 1054,
+      "classified": 172,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 6.9,
+        "count": 73
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 73,
+          "share": 6.9
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 35,
+          "share": 3.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 32,
+          "share": 3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 22,
+          "share": 2.1
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 10,
+          "share": 0.9
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "น้ำตาลมะพร้าว",
+          "count": 2
+        },
+        {
+          "name": "รองเท้าหนังวัว",
+          "count": 2
+        },
+        {
+          "name": "กล้วยเล็บมือนางกวน? ดรีม",
+          "count": 1
+        },
+        {
+          "name": "กล้วยเล็บมือนางอบ ชุบช็อกโกแลต",
+          "count": 1
+        },
+        {
+          "name": "กล้วยเล็บมือนางอบชุปแป้งทอด ตราระพีบานาน่า",
+          "count": 1
+        },
+        {
+          "name": "กล้วยเล็บมือนางอบแห้ง ตราภุมรินทร์",
+          "count": 1
+        },
+        {
+          "name": "กล้วยเล็บมือนางอบแห้ง ตราระพีบานาน่า",
+          "count": 1
+        },
+        {
+          "name": "กล้วยหอมทองกรอบ ตรา ฮ๊อม หอม",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 4.4,
+      "shardRows": 1054,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Chumphon Food",
+        "ชุมพร อาหาร",
+        "ชุมพร น้ำตาลมะพร้าว",
+        "ชุมพร รองเท้าหนังวัว",
+        "ชุมพร กล้วยเล็บมือนางกวน? ดรีม",
+        "Chumphon OTOP",
+        "ชุมพร โอทอป"
+      ]
+    },
+    {
+      "code": 90,
+      "iso": "TH-90",
+      "th": "สงขลา",
+      "en": "Songkhla",
+      "region": "south",
+      "records": 1792,
+      "classified": 420,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 7.5,
+        "count": 135
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 135,
+          "share": 7.5
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 125,
+          "share": 7
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 115,
+          "share": 6.4
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 24,
+          "share": 1.3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 21,
+          "share": 1.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เครื่องแกงเผ็ด",
+          "count": 5
+        },
+        {
+          "name": "เครื่องแกงส้ม",
+          "count": 4
+        },
+        {
+          "name": "มะม่วงเบาแช่อิ่ม",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋าถือเชือกใยปอ",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าหนัง",
+          "count": 2
+        },
+        {
+          "name": "น้ำพริกไตปลาแห้ง",
+          "count": 2
+        },
+        {
+          "name": "น้ำพริกบูดู บูดู",
+          "count": 2
+        },
+        {
+          "name": "ปลากระตัก",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 11,
+      "shardRows": 1792,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Songkhla Food",
+        "สงขลา อาหาร",
+        "สงขลา เครื่องแกงเผ็ด",
+        "สงขลา เครื่องแกงส้ม",
+        "สงขลา มะม่วงเบาแช่อิ่ม",
+        "Songkhla OTOP",
+        "สงขลา โอทอป"
+      ]
+    },
+    {
+      "code": 91,
+      "iso": "TH-91",
+      "th": "สตูล",
+      "en": "Satun",
+      "region": "south",
+      "records": 945,
+      "classified": 185,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 7.1,
+        "count": 67
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 67,
+          "share": 7.1
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 66,
+          "share": 7
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 41,
+          "share": 4.3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 10,
+          "share": 1.1
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 1,
+          "share": 0.1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เครื่องประดับไข่มุก",
+          "count": 4
+        },
+        {
+          "name": "1. ประเภทอาหาร เช่น ขนมผูกรัก ขนมพื้นบ้าน อาหารทะเลแปรรูป น้ำพริก กาแฟโบราณ 2. ประเภทผ้าและเครื่องแต่งกาย เช่น ผ้าบาติก ปาเต๊ะ เสื้อผ้าสำเร็จรูป กระเป๋า 3. ประเภทของใช้ ของที่ระลึก เช่น พวงกุญแจ กล่องทิชชู 4. ประเภทสมุนไพรที่ไม่ใช่อาหาร เช่น น้ำมันนวด ลูกปะคบ น้ำผึ้ง สบู่ โลชั่นสมุนไพร ยาหม่อง",
+          "count": 2
+        },
+        {
+          "name": "ขนมผูกรัก",
+          "count": 2
+        },
+        {
+          "name": "ฝาชีคลุ้ม",
+          "count": 2
+        },
+        {
+          "name": "เสื้อสำเร็จรูป",
+          "count": 2
+        },
+        {
+          "name": "กระจาดรูปดาว",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าบุฟองน้ำผ้าปาเต๊ะ",
+          "count": 1
+        },
+        {
+          "name": "กระเป๋าผ้าเพนท์",
+          "count": 1
+        }
+      ],
+      "productNameCoverage": 6.8,
+      "shardRows": 945,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Satun Food",
+        "สตูล อาหาร",
+        "สตูล เครื่องประดับไข่มุก",
+        "สตูล 1. ประเภทอาหาร เช่น ขนมผูกรัก ขนมพื้นบ้าน อาหารทะเลแปรรูป น้ำพริก กาแฟโบราณ 2. ประเภทผ้าและเครื่องแต่งกาย เช่น ผ้าบาติก ปาเต๊ะ เสื้อผ้าสำเร็จรูป กระเป๋า 3. ประเภทของใช้ ของที่ระลึก เช่น พวงกุญแจ กล่องทิชชู 4. ประเภทสมุนไพรที่ไม่ใช่อาหาร เช่น น้ำมันนวด ลูกปะคบ น้ำผึ้ง สบู่ โลชั่นสมุนไพร ยาหม่อง",
+        "สตูล ขนมผูกรัก",
+        "Satun OTOP",
+        "สตูล โอทอป"
+      ]
+    },
+    {
+      "code": 92,
+      "iso": "TH-92",
+      "th": "ตรัง",
+      "en": "Trang",
+      "region": "south",
+      "records": 1814,
+      "classified": 293,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 6.6,
+        "count": 119
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 119,
+          "share": 6.6
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 102,
+          "share": 5.6
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 49,
+          "share": 2.7
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 14,
+          "share": 0.8
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 9,
+          "share": 0.5
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เค้กสามรส",
+          "count": 3
+        },
+        {
+          "name": "ข้าวเบายอดม่วง",
+          "count": 2
+        },
+        {
+          "name": "ตะกร้า",
+          "count": 2
+        },
+        {
+          "name": "ปลาสีเสียด",
+          "count": 2
+        },
+        {
+          "name": "ผลิตภัณฑ์จากก้านจาก",
+          "count": 2
+        },
+        {
+          "name": "ผ้าบาติก",
+          "count": 2
+        },
+        {
+          "name": "ผ้าปาเต๊ะเพ้นท์",
+          "count": 2
+        },
+        {
+          "name": "รองเท้าเพื่อสุขภาพ (T&S shop)",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 5.8,
+      "shardRows": 1814,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Trang Food",
+        "ตรัง อาหาร",
+        "ตรัง เค้กสามรส",
+        "ตรัง ข้าวเบายอดม่วง",
+        "ตรัง ตะกร้า",
+        "Trang OTOP",
+        "ตรัง โอทอป"
+      ]
+    },
+    {
+      "code": 93,
+      "iso": "TH-93",
+      "th": "พัทลุง",
+      "en": "Phatthalung",
+      "region": "south",
+      "records": 1776,
+      "classified": 1125,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 37.5,
+        "count": 666
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 666,
+          "share": 37.5
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 192,
+          "share": 10.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 153,
+          "share": 8.6
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 78,
+          "share": 4.4
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 36,
+          "share": 2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "เครื่องแกงกะทิ",
+          "count": 26
+        },
+        {
+          "name": "เครื่องแกงส้ม",
+          "count": 13
+        },
+        {
+          "name": "ปลาดุกร้า",
+          "count": 10
+        },
+        {
+          "name": "สละลอยแก้ว",
+          "count": 10
+        },
+        {
+          "name": "กระเป๋ากระจูด",
+          "count": 7
+        },
+        {
+          "name": "กล้วยกรอบแก้ว",
+          "count": 6
+        },
+        {
+          "name": "กล้วยฉาบ",
+          "count": 6
+        },
+        {
+          "name": "ข้าวสังข์หยด",
+          "count": 6
+        }
+      ],
+      "productNameCoverage": 57.8,
+      "shardRows": 1776,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Phatthalung Food",
+        "พัทลุง อาหาร",
+        "พัทลุง เครื่องแกงกะทิ",
+        "พัทลุง เครื่องแกงส้ม",
+        "พัทลุง ปลาดุกร้า",
+        "Phatthalung OTOP",
+        "พัทลุง โอทอป"
+      ]
+    },
+    {
+      "code": 94,
+      "iso": "TH-94",
+      "th": "ปัตตานี",
+      "en": "Pattani",
+      "region": "south",
+      "records": 1659,
+      "classified": 269,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 8.1,
+        "count": 134
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 134,
+          "share": 8.1
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 84,
+          "share": 5.1
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 45,
+          "share": 2.7
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 4,
+          "share": 0.2
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 2,
+          "share": 0.1
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "หมวกกะปิเยาะ",
+          "count": 4
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 3
+        },
+        {
+          "name": "ผ้าบาติก",
+          "count": 3
+        },
+        {
+          "name": "ลูกหยีกวนไม่มีเมล็ด",
+          "count": 3
+        },
+        {
+          "name": "ข้าวเกรียบปลา",
+          "count": 2
+        },
+        {
+          "name": "เครื่องแกงกะทิสำเร็จรูป",
+          "count": 2
+        },
+        {
+          "name": "ผ้าพิมพ์",
+          "count": 2
+        },
+        {
+          "name": "พวงกุญแจ",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 7.3,
+      "shardRows": 1659,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Pattani Food",
+        "ปัตตานี อาหาร",
+        "ปัตตานี หมวกกะปิเยาะ",
+        "ปัตตานี กระเป๋าผ้า",
+        "ปัตตานี ผ้าบาติก",
+        "Pattani OTOP",
+        "ปัตตานี โอทอป"
+      ]
+    },
+    {
+      "code": 95,
+      "iso": "TH-95",
+      "th": "ยะลา",
+      "en": "Yala",
+      "region": "south",
+      "records": 1831,
+      "classified": 828,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 24.9,
+        "count": 456
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 456,
+          "share": 24.9
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 206,
+          "share": 11.3
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 97,
+          "share": 5.3
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 43,
+          "share": 2.3
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 26,
+          "share": 1.4
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ทุเรียนกวน",
+          "count": 12
+        },
+        {
+          "name": "เสื้อผ้าสตรี",
+          "count": 12
+        },
+        {
+          "name": "ปลาส้ม",
+          "count": 10
+        },
+        {
+          "name": "ไม้กวาดดอกหญ้า",
+          "count": 9
+        },
+        {
+          "name": "โรตีกรอบ",
+          "count": 9
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 7
+        },
+        {
+          "name": "ทุเรียนทอด",
+          "count": 7
+        },
+        {
+          "name": "ผ้าบาติก",
+          "count": 7
+        }
+      ],
+      "productNameCoverage": 40.5,
+      "shardRows": 1831,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Yala Food",
+        "ยะลา อาหาร",
+        "ยะลา ทุเรียนกวน",
+        "ยะลา เสื้อผ้าสตรี",
+        "ยะลา ปลาส้ม",
+        "Yala OTOP",
+        "ยะลา โอทอป"
+      ]
+    },
+    {
+      "code": 96,
+      "iso": "TH-96",
+      "th": "นราธิวาส",
+      "en": "Narathiwat",
+      "region": "south",
+      "records": 1414,
+      "classified": 306,
+      "dominantCategory": {
+        "id": "food",
+        "th": "อาหาร",
+        "en": "Food",
+        "share": 8.8,
+        "count": 125
+      },
+      "categories": [
+        {
+          "id": "food",
+          "th": "อาหาร",
+          "en": "Food",
+          "count": 125,
+          "share": 8.8
+        },
+        {
+          "id": "textile",
+          "th": "ผ้าและเครื่องแต่งกาย",
+          "en": "Fabric & Apparel",
+          "count": 89,
+          "share": 6.3
+        },
+        {
+          "id": "craft",
+          "th": "ของใช้ ของตกแต่ง ของที่ระลึก",
+          "en": "Household, Decorative & Souvenir",
+          "count": 82,
+          "share": 5.8
+        },
+        {
+          "id": "herbal",
+          "th": "สมุนไพรที่ไม่ใช่อาหาร",
+          "en": "Non-food Herbal",
+          "count": 7,
+          "share": 0.5
+        },
+        {
+          "id": "beverage",
+          "th": "เครื่องดื่ม",
+          "en": "Beverages",
+          "count": 3,
+          "share": 0.2
+        }
+      ],
+      "topProducts": [
+        {
+          "name": "ผ้าคลุมผม",
+          "count": 4
+        },
+        {
+          "name": "กรอบรูปใบไม้สีทอง",
+          "count": 3
+        },
+        {
+          "name": "ผ้าคลุมผมสตรี",
+          "count": 3
+        },
+        {
+          "name": "ผ้าปาเต๊ะ",
+          "count": 3
+        },
+        {
+          "name": "กระเป๋ากระจูด",
+          "count": 2
+        },
+        {
+          "name": "กระเป๋าผ้า",
+          "count": 2
+        },
+        {
+          "name": "ขนมโดนัท",
+          "count": 2
+        },
+        {
+          "name": "ทุเรียนกวน",
+          "count": 2
+        }
+      ],
+      "productNameCoverage": 11.2,
+      "shardRows": 1414,
+      "champions": {
+        "count": 0,
+        "sample": []
+      },
+      "mediaQuerySeeds": [
+        "Narathiwat Food",
+        "นราธิวาส อาหาร",
+        "นราธิวาส ผ้าคลุมผม",
+        "นราธิวาส กรอบรูปใบไม้สีทอง",
+        "นราธิวาส ผ้าคลุมผมสตรี",
+        "Narathiwat OTOP",
+        "นราธิวาส โอทอป"
+      ]
+    }
+  ]
+}

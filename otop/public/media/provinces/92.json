@@ -1,0 +1,62 @@
+{
+  "code": 92,
+  "iso": "TH-92",
+  "th": "ตรัง",
+  "en": "Trang",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 6.6,
+    "count": 119
+  },
+  "fetchedAt": "2026-09-14T19:02:51.666Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Trang Food",
+    "ตรัง อาหาร",
+    "ตรัง เค้กสามรส",
+    "ตรัง ข้าวเบายอดม่วง",
+    "ตรัง ตะกร้า",
+    "Trang OTOP",
+    "ตรัง โอทอป",
+    "Trang Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Trang, Thailand, April 2025 - sweets.jpg",
+      "description": "Trang, Thailand, April 2025",
+      "author": "Sharon Hahn Darlin",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Trang%2C%20Thailand%2C%20April%202025%20-%20sweets.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Trang%2C_Thailand%2C_April_2025_-_sweets.jpg/960px-Trang%2C_Thailand%2C_April_2025_-_sweets.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Trang%2C_Thailand%2C_April_2025_-_sweets.jpg/960px-Trang%2C_Thailand%2C_April_2025_-_sweets.jpg",
+      "localPath": null,
+      "query": "Trang Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:Vietnamese \"banh trang tron\".JPG",
+      "description": "Bánh tráng trộn bán tại TPHCM",
+      "author": "Memberofc1",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Vietnamese%20%22banh%20trang%20tron%22.JPG",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vietnamese_%22banh_trang_tron%22.JPG/960px-Vietnamese_%22banh_trang_tron%22.JPG",
+      "localPath": null,
+      "query": "Trang Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

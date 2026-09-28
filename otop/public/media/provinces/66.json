@@ -1,0 +1,46 @@
+{
+  "code": 66,
+  "iso": "TH-66",
+  "th": "พิจิตร",
+  "en": "Phichit",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 24.8,
+    "count": 437
+  },
+  "fetchedAt": "2026-09-14T19:00:19.698Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Phichit Food",
+    "พิจิตร อาหาร",
+    "พิจิตร ส้มโอ",
+    "พิจิตร ไม้กวาดดอกหญ้า",
+    "พิจิตร กระเป๋าผักตบชวา",
+    "Phichit OTOP",
+    "พิจิตร โอทอป",
+    "Phichit Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:Amphawa Floating Market 15.jpg",
+      "description": "Open-air food stall, Amphawa Floating Market",
+      "author": "Rangan Datta Wiki",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:Amphawa%20Floating%20Market%2015.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Amphawa_Floating_Market_15.jpg/960px-Amphawa_Floating_Market_15.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Amphawa_Floating_Market_15.jpg/960px-Amphawa_Floating_Market_15.jpg",
+      "localPath": null,
+      "query": "Thai market food stall",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}

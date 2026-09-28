@@ -1,0 +1,62 @@
+{
+  "code": 76,
+  "iso": "TH-76",
+  "th": "เพชรบุรี",
+  "en": "Phetchaburi",
+  "dominantCategory": {
+    "id": "food",
+    "th": "อาหาร",
+    "en": "Food",
+    "share": 40.2,
+    "count": 536
+  },
+  "fetchedAt": "2026-09-14T19:01:29.535Z",
+  "status": "ok",
+  "honesty": {
+    "note": "Photos are open-license illustrations tied to this province's registry category/product mix. They are not photographs of specific listed OTOP producers unless isExactProducer is true."
+  },
+  "queriesAttempted": [
+    "Phetchaburi Food",
+    "เพชรบุรี อาหาร",
+    "เพชรบุรี ขนมหม้อแกง",
+    "เพชรบุรี กล้วยกวน",
+    "เพชรบุรี ขนมทองม้วน",
+    "Phetchaburi OTOP",
+    "เพชรบุรี โอทอป",
+    "Phetchaburi Thai market food stall"
+  ],
+  "photos": [
+    {
+      "title": "File:หอฉันวัดปากอ่าว.jpg",
+      "description": "พื้นที่ของพระสงฆ์",
+      "author": "Vesh P.",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%AB%E0%B8%AD%E0%B8%89%E0%B8%B1%E0%B8%99%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9B%E0%B8%B2%E0%B8%81%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%A7.jpg",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/%E0%B8%AB%E0%B8%AD%E0%B8%89%E0%B8%B1%E0%B8%99%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9B%E0%B8%B2%E0%B8%81%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%A7.jpg/960px-%E0%B8%AB%E0%B8%AD%E0%B8%89%E0%B8%B1%E0%B8%99%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9B%E0%B8%B2%E0%B8%81%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%A7.jpg",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/%E0%B8%AB%E0%B8%AD%E0%B8%89%E0%B8%B1%E0%B8%99%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9B%E0%B8%B2%E0%B8%81%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%A7.jpg/960px-%E0%B8%AB%E0%B8%AD%E0%B8%89%E0%B8%B1%E0%B8%99%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9B%E0%B8%B2%E0%B8%81%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%A7.jpg",
+      "localPath": null,
+      "query": "Phetchaburi Food",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    },
+    {
+      "title": "File:วัดเขาบันไดอิฐ จังหวัดเพชรบุรี 01.JPG",
+      "description": "This is a photo of a monument in Thailand identified by the ID",
+      "author": "KengCH",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source": "Wikimedia Commons",
+      "filePage": "https://commons.wikimedia.org/wiki/File:%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%82%E0%B8%B2%E0%B8%9A%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%94%E0%B8%AD%E0%B8%B4%E0%B8%90%20%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%9E%E0%B8%8A%E0%B8%A3%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5%2001.JPG",
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%82%E0%B8%B2%E0%B8%9A%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%94%E0%B8%AD%E0%B8%B4%E0%B8%90_%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%9E%E0%B8%8A%E0%B8%A3%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5_01.JPG/960px-%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%82%E0%B8%B2%E0%B8%9A%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%94%E0%B8%AD%E0%B8%B4%E0%B8%90_%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%9E%E0%B8%8A%E0%B8%A3%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5_01.JPG",
+      "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%82%E0%B8%B2%E0%B8%9A%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%94%E0%B8%AD%E0%B8%B4%E0%B8%90_%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%9E%E0%B8%8A%E0%B8%A3%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5_01.JPG/960px-%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%82%E0%B8%B2%E0%B8%9A%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%94%E0%B8%AD%E0%B8%B4%E0%B8%90_%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%80%E0%B8%9E%E0%B8%8A%E0%B8%A3%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5_01.JPG",
+      "localPath": null,
+      "query": "เพชรบุรี อาหาร",
+      "isExactProducer": false,
+      "representation": "illustrative",
+      "representationNote": "Open-license photograph of a craft, place, or product type associated with this province's registry mix — not a photo of a specific listed producer."
+    }
+  ]
+}
