@@ -755,15 +755,17 @@ export function applyPlacement(listings, geoIndex) {
  * turns a gallery of 300 re-posts into its handful of real photos. Links to
  * pictures that were not published are left as they are.
  */
+export function rewritePhotoUrl(url, photoMap) {
+  if (!photoMap || typeof url !== 'string' || !url) return url;
+  const clean = url.split(/[?#]/)[0];
+  let name = clean.slice(clean.lastIndexOf('/') + 1);
+  try { name = decodeURIComponent(name); } catch { /* keep raw */ }
+  return photoMap.get(name) || url;
+}
+
 export function applyPhotoMap(listing, photoMap) {
   if (!photoMap || !listing) return listing;
-  const rewrite = (url) => {
-    if (typeof url !== 'string' || !url) return url;
-    const clean = url.split(/[?#]/)[0];
-    let name = clean.slice(clean.lastIndexOf('/') + 1);
-    try { name = decodeURIComponent(name); } catch { /* keep raw */ }
-    return photoMap.get(name) || url;
-  };
+  const rewrite = (url) => rewritePhotoUrl(url, photoMap);
   const gallery = [...new Set((Array.isArray(listing.allPhotoUrls) ? listing.allPhotoUrls : []).map(rewrite).filter(Boolean))];
   const imageUrl = rewrite(listing.imageUrl);
   return { ...listing, imageUrl, allPhotoUrls: gallery };

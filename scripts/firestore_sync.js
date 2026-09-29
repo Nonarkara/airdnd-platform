@@ -1,6 +1,19 @@
+/**
+ * Firestore is what the live site reads. syncListingsToFirestore is called by
+ * the scraper every cycle. Run directly, this file re-points photo links:
+ *
+ *   node scripts/firestore_sync.js           # report: links still on Supabase
+ *   node scripts/firestore_sync.js --apply   # rewrite them to published copies
+ *
+ * The scraper only re-syncs the listings in its snapshot; this reaches every
+ * document, and changes nothing but imageUrl / allPhotoUrls.
+ */
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { getApps, initializeApp } from 'firebase/app';
-import { doc, getFirestore, writeBatch } from 'firebase/firestore';
-import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
+import { collection, doc, getDocs, getFirestore, writeBatch } from 'firebase/firestore';
+import { applyPhotoMap, canonicalizePublicListings } from '../src/lib/listing_contract.js';
+import { isListingMediaSafe } from '../src/lib/listings.js';
 import { getGeoIndex } from './lib/geo.js';
 import { getPhotoMap } from './lib/photo_map.js';
 
@@ -75,3 +88,67 @@ export async function syncFeedToFirestore(feedCards) {
   return synced;
 }
 
+
+const SUPABASE_STORAGE = /supabase\.co\/storage\//;
+
+function countStorageLinks(listing) {
+  const urls = [listing.imageUrl, ...(Array.isArray(listing.allPhotoUrls) ? listing.allPhotoUrls : [])];
+  return urls.filter((url) => typeof url === 'string' && SUPABASE_STORAGE.test(url)).length;
+}
+
+/**
+ * docs: [{ id, data }] as read from the companions collection.
+ * Returns the photo-field updates the published-photo map implies, and how
+ * many links would still depend on the Supabase bucket afterwards.
+ */
+export function planPhotoRelink(docs, photoMap) {
+  const updates = [];
+  let before = 0;
+  let after = 0;
+  let hidden = 0;
+  for (const { id, data } of docs) {
+    before += countStorageLinks(data);
+    const next = photoMap ? applyPhotoMap(data, photoMap) : data;
+    // A screened-out listing's photos are never shown, so its leftover links
+    // cannot blank anything on the site.
+    if (isListingMediaSafe(next)) after += countStorageLinks(next);
+    else hidden += countStorageLinks(next);
+    const changed = next.imageUrl !== data.imageUrl
+      || JSON.stringify(next.allPhotoUrls || []) !== JSON.stringify(data.allPhotoUrls || []);
+    if (changed) {
+      updates.push({ id, fields: stripUndefined({ imageUrl: next.imageUrl ?? null, allPhotoUrls: next.allPhotoUrls }) });
+    }
+  }
+  return { updates, stats: { documents: docs.length, supabaseLinksBefore: before, supabaseLinksAfter: after, hiddenLinksAfter: hidden, documentsChanged: updates.length } };
+}
+
+async function relinkPhotos({ apply }) {
+  const photoMap = getPhotoMap();
+  if (!photoMap) {
+    console.log('No data/photo_map.json yet — run scripts/publish_photos.js --upload first.');
+  }
+  const snap = await getDocs(collection(db, 'companions'));
+  const docs = snap.docs.map((d) => ({ id: d.id, data: d.data() }));
+  const { updates, stats } = planPhotoRelink(docs, photoMap);
+  console.log(`documents ${stats.documents} · photo links on Supabase now ${stats.supabaseLinksBefore} · after re-pointing ${stats.supabaseLinksAfter} shown + ${stats.hiddenLinksAfter} on screened-out listings (never shown) · documents to update ${stats.documentsChanged}`);
+  if (!apply) {
+    console.log('Dry run — nothing written. Add --apply to write.');
+    return stats;
+  }
+  for (let offset = 0; offset < updates.length; offset += 400) {
+    const batch = writeBatch(db);
+    for (const { id, fields } of updates.slice(offset, offset + 400)) batch.update(doc(db, 'companions', id), fields);
+    await batch.commit();
+    console.log(`updated ${Math.min(offset + 400, updates.length)}/${updates.length}`);
+  }
+  console.log(stats.supabaseLinksAfter === 0
+    ? 'SAFE — no photo shown on the site depends on Supabase any more.'
+    : `NOT YET SAFE — ${stats.supabaseLinksAfter} shown photo links still point at Supabase: pictures missing from the archive folders given to publish_photos.js, or on no listing in the database.`);
+  return stats;
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  relinkPhotos({ apply: process.argv.includes('--apply') })
+    .then(() => process.exit(0))
+    .catch((error) => { console.error(error.message); process.exit(1); });
+}

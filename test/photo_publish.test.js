@@ -198,3 +198,43 @@ test('the R2 client refuses to run without credentials', async () => {
   const { createR2Client } = await import('../scripts/lib/r2_client.js');
   assert.throws(() => createR2Client({ bucket: 'b' }), /R2_ACCESS_KEY_ID/);
 });
+
+test('a link to an already-published copy still counts as a reference to that picture', async () => {
+  const { planPublication } = await import('../scripts/publish_photos.js');
+  const { rewritePhotoUrl } = await import('../src/lib/listing_contract.js');
+  const shaA = 'a'.repeat(64);
+  const shaB = 'b'.repeat(64);
+  const photos = [
+    { key: 'a1.jpg', sha: shaA, dhash: null, bytes: 100 },
+    { key: 'b1.jpg', sha: shaB, dhash: null, bytes: 100 },
+  ];
+  // feed.json after a previous run: its links already point at R2.
+  const map = new Map([['a1.jpg', `https://photos.example/photos/${shaA}.jpg`], ['b1.jpg', `https://photos.example/photos/${shaB}.jpg`]]);
+  const feedUrl = (name) => rewritePhotoUrl(`https://x.supabase.co/storage/v1/object/public/listing-photos/t/${name}`, map);
+  assert.equal(feedUrl('a1.jpg'), map.get('a1.jpg'));
+  assert.equal(feedUrl('z9.jpg'), 'https://x.supabase.co/storage/v1/object/public/listing-photos/t/z9.jpg', 'unpublished links are left alone');
+
+  const { clusters, stats } = planPublication({
+    photos,
+    references: [{ urls: [feedUrl('a1.jpg')], safe: true }, { urls: [feedUrl('b1.jpg')], safe: false }],
+  });
+  const status = Object.fromEntries(clusters.map((c) => [c.canonical, c.status]));
+  assert.deepEqual(status, { 'a1.jpg': 'publish', 'b1.jpg': 'withheld' });
+  assert.equal(stats.referencesToMissingFiles, 0);
+});
+
+test('Firestore re-pointing touches only photo fields and counts what the site would still load from Supabase', async () => {
+  const { planPhotoRelink } = await import('../scripts/firestore_sync.js');
+  const sb = (name) => `https://x.supabase.co/storage/v1/object/public/listing-photos/t/${name}`;
+  const pub = (sha) => `https://photos.example/photos/${sha}.jpg`;
+  const map = new Map([['a1.jpg', pub('a')], ['a2.jpg', pub('a')], ['b1.jpg', pub('b')]]);
+  const docs = [
+    { id: '1', data: { name: 'Garden Spa', isSafeImage: true, imageUrl: sb('a2.jpg'), allPhotoUrls: [sb('a1.jpg'), sb('a2.jpg'), sb('z9.jpg')] } },
+    { id: '2', data: { name: 'Screened', isSafeImage: false, imageUrl: sb('x1.jpg'), allPhotoUrls: [sb('x1.jpg')] } },
+    { id: '3', data: { name: 'Done', isSafeImage: true, imageUrl: pub('b'), allPhotoUrls: [pub('b')] } },
+  ];
+  const { updates, stats } = planPhotoRelink(docs, map);
+  assert.deepEqual(updates, [{ id: '1', fields: { imageUrl: pub('a'), allPhotoUrls: [pub('a'), sb('z9.jpg')] } }]);
+  assert.deepEqual(stats, { documents: 3, supabaseLinksBefore: 6, supabaseLinksAfter: 1, hiddenLinksAfter: 2, documentsChanged: 1 });
+  assert.equal(planPhotoRelink(docs, null).updates.length, 0, 'no map, no writes');
+});

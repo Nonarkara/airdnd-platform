@@ -7,6 +7,7 @@
 | Where | What | After this branch |
 |---|---|---|
 | **Browser** | 2nd-tier listing fetch + a realtime websocket to `companions` | **Removed.** Browser reads Firestore → `data.json`. The supabase-js client no longer ships in the bundle. |
+| **Browser — photos** | Listing galleries and the Live feed show pictures straight from the Supabase bucket: **34,414 photo links** in the live Firestore data point at `…supabase.co/storage/…` | **Still true until step 6 is done.** Switch off before publishing the photos and every gallery on the site goes blank. `scripts/publish_photos.js` moves them; the listing export and the feed then point at the new copies. |
 | **Scraper** (`telegram_scraper.js` → `listing_pipeline.js`, `photo_storage.js`) | Writes listings, raw messages, photo metadata; uploads every photo to the bucket | Unchanged until you set `LOCAL_DB=1` (opt-in local SQLite store). |
 | **Heartbeat** (launchd) + its jobs `refresh_feed_snapshot`, `compute_patterns`; **integrity check** | Read Supabase | Follow the same `LOCAL_DB=1` switch. |
 | **GitHub Actions** `.github/workflows/scraper.yml` | Runs the scraper **every 30 minutes** in the cloud with Supabase secrets — in parallel with the Mac daemon | Still on. See step 4. |
@@ -113,19 +114,81 @@ and restart the daemon (`./scripts/daemon.sh`). The scraper, heartbeat, feed and
 
 To roll back at any point: remove the two lines from `.env` and restart.
 
-### Step 6 — A second copy of the photos
+### Step 6 — Publish the photos to Cloudflare R2 (the site needs this; ~1 hour setup, then three commands)
 
-The Drive backup never worked, so after cutover the photos would live on one disk. Pick one and set it up before step 8:
+The website shows its photos from the Supabase bucket today, so this step is not optional: it is what keeps the galleries alive after step 8. It also gives the photos their second home (the Drive backup never worked).
 
-- **Cloudflare R2** (recommended): the website already lives on Cloudflare; 10 GB free, then ~$0.015/GB-month, no download fees; would also allow a public photo gallery later.
-- **A second external drive**, copied weekly.
-- **Fix the Drive upload** in `scripts/google_export.js` — note 7.5 GB exceeds free Drive (15 GB shared with Gmail) within months.
+**What gets published.** Every picture, once. The script fingerprints all ~58,000 files twice — exact bytes (SHA-256) and what the picture looks like (a 64-bit perceptual hash that survives Telegram's re-compression and resizing) — and keeps the largest copy of each picture. Then it applies the site's safety rule to each *picture*, not each file:
+
+| A picture that appears on … | Goes |
+|---|---|
+| at least one listing or feed card shown with photos, and no screened-out one | **published** |
+| any listing flagged `is_safe_image = false` | **withheld** — stays in the archive |
+| no listing or feed card at all (nothing has ever screened it) | **archive only** |
+
+Cost: at most ~7.5 GB of unique pictures. R2's free 10 GB is per account and your account already has 12 other buckets (map tiles, podcast, Ikigai…), so part of this may be billed at $0.015/GB-month — about $0.11/month for all 7.5 GB. Viewing is free (no egress fees).
+
+**One-time setup (Cloudflare dashboard, logged in as you; checked against Cloudflare's docs 2026-09-29):**
+
+1. Left menu → **R2 object storage** → **Create bucket**. Name: `sabai-photos-apac` (not `sabai-photos`: that name was briefly created in Eastern North America on 2026-09-29 and deleted, and R2 would reuse that location for the same name). Under **Location**, choose **Asia-Pacific (APAC)** from the list. (A bucket's location can never be changed later; APAC keeps uncached photos close to Thai visitors.) → **Create bucket**. Check: bucket → **Settings** → *Bucket details* should say APAC.
+2. In the bucket → **Settings** → under **Custom Domains** → **Add** → type `photos.nonarkara.org` → **Continue** → review the DNS record → **Connect Domain**. Status goes from *Initializing* to *Active* in a few minutes (refresh the page). Leave **Public Development URL** disabled. (If `nonarkara.org` is not accepted, the domain lives in a different Cloudflare account from R2 — tell me.)
+3. Back to the **R2 object storage** overview → section **Account Details** → **Manage** next to **API Tokens** → **Create Account API token**. Name it `sabai-photos-publisher`. Permissions: **Object Read & Write**. Scope: **Apply to specific buckets only** → `sabai-photos-apac`. → **Create Account API token**. The next page shows **Access Key ID** and **Secret Access Key** once — keep it open. Your **Account ID** is also under Account Details on the overview page.
+4. On the Mac, open `.env` in the project folder (`open -e .env`) and add at the bottom, pasting your values:
+
+```
+R2_ACCOUNT_ID=<Account ID>
+R2_ACCESS_KEY_ID=<Access Key ID>
+R2_SECRET_ACCESS_KEY=<Secret Access Key>
+R2_BUCKET=sabai-photos-apac
+PHOTO_PUBLIC_BASE_URL=https://photos.nonarkara.org
+```
+
+Save and close.
+
+**Run it (Terminal, project folder, with the export drive from step 3 plugged in):**
+
+```
+node scripts/publish_photos.js --archive /Volumes/Backup/sabai-supabase-export/storage/listing-photos
+```
+
+That is a dry run: it fingerprints everything (the first time takes a while; it remembers, so reruns are fast) and prints how many files, how many unique pictures, and how many will be published / withheld / archived. Nothing is uploaded. If the numbers look sane:
+
+```
+node scripts/publish_photos.js --archive /Volumes/Backup/sabai-supabase-export/storage/listing-photos --upload
+```
+
+It ends in `COMPLETE` or `INCOMPLETE`; rerun until `COMPLETE` (already-uploaded pictures are skipped). It writes `data/photo_map.json` — the list of old file name → new link.
+
+**Put the new links on the site.** The live site reads its listings from Firestore; the running scraper re-points the listings in its snapshot on its next cycle by itself (it notices the new `data/photo_map.json`, no restart). To reach *every* listing in Firestore, and to get a verdict:
+
+```
+node scripts/firestore_sync.js
+```
+
+A dry run. It prints how many photo links on the site still point at Supabase now, and how many would after re-pointing. Then:
+
+```
+node scripts/firestore_sync.js --apply
+```
+
+It changes only the two photo fields of each listing and ends with **SAFE** or **NOT YET SAFE** (with the count). Links left on screened-out listings are never shown, so they don't count against it. If it says NOT YET SAFE, don't switch off — send me the numbers.
+
+Then refresh the two files the site ships and deploy as in step 1:
+
+```
+npm run snapshot:refresh
+node scripts/refresh_feed_snapshot.js
+```
+
+Check by eye: open the live site, open any listing with photos, right-click a photo → *Copy Image Address* → it should begin `https://photos.nonarkara.org/photos/`. Do the same on a card in the LIVE tab. From then on, rerun the `--upload` command whenever new photos have arrived (weekly is enough); the scraper, heartbeat and feed apply the new map on their own.
+
+Keep the export drive as the cold copy. R2 is the second.
 
 ### Step 7 — Update what the site says about itself
 
 `src/components/Methodology.jsx`, `FAQ.jsx`, `Paper.jsx`, `Insights.jsx` and `src/translations.js` describe Supabase and real-time subscriptions. Rewrite to the new truth: local store → Firestore → Cloudflare Pages.
 
-### Step 8 — Switch off (only after steps 3–7)
+### Step 8 — Switch off (only after steps 3–7, and only once step 6 said SAFE)
 
 Checked against Supabase's documentation (2026-09-29): **a project on a paid plan cannot be paused**, and downgrading an organisation that has more projects than the free plan allows **pauses all of its projects** — you then choose which to resume. For you that is exactly the right sequence:
 

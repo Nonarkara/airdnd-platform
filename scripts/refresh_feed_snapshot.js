@@ -20,6 +20,8 @@ import { fileURLToPath } from 'url';
 import { openDataClient } from './lib/data_store.js';
 import dotenv from 'dotenv';
 import { formatTelLink, formatLineUrl, formatTelegramUrl, formatMapsUrl, inferCityFromLocation } from '../src/lib/normalization.js';
+import { rewritePhotoUrl } from '../src/lib/listing_contract.js';
+import { getPhotoMap } from './lib/photo_map.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -321,8 +323,11 @@ async function main() {
   // Index photos by group / telegram_message_id
   const photosByGid = new Map();
   const photosByTmId = new Map();
+  // Published photos (scripts/publish_photos.js) replace their Supabase links,
+  // so the feed survives the bucket being switched off; the rest stay as-is.
+  const photoMap = getPhotoMap();
   for (const p of photos) {
-    const url = p.supabase_url || p.drive_url;
+    const url = rewritePhotoUrl(p.supabase_url || p.drive_url, photoMap);
     if (!url) continue;
     if (p.grouped_id) {
       const arr = photosByGid.get(p.grouped_id) || [];

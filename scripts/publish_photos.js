@@ -77,10 +77,16 @@ export function planPublication({ photos, references, threshold = 6 }) {
   const canonical = clusterPhotos(photos, { threshold });
   const refs = new Map();
   const known = new Set(photos.map((p) => p.key));
+  // A reference may already point at a published copy (photos/<sha256>.jpg,
+  // e.g. feed.json after a previous run); it still counts for that picture.
+  const bySha = new Map();
+  for (const p of photos) if (p.sha && !bySha.has(p.sha)) bySha.set(p.sha, p.key);
+  const PUBLISHED = /^([0-9a-f]{64})\.[a-z0-9]+$/i;
   let missing = 0;
   for (const { urls, safe } of references) {
     for (const url of urls) {
-      const name = basenameOf(url);
+      let name = basenameOf(url);
+      if (!known.has(name)) name = bySha.get(PUBLISHED.exec(name)?.[1]?.toLowerCase()) || name;
       if (!known.has(name)) { missing += 1; continue; }
       const r = refs.get(name) || { safe: 0, unsafe: 0 };
       r[safe ? 'safe' : 'unsafe'] += 1;
