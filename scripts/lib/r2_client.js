@@ -1,7 +1,7 @@
 /**
- * Minimal Cloudflare R2 client over its S3-compatible API: HEAD and PUT, signed
- * with AWS Signature V4 (aws4). Two verbs are all publishing needs, and they do
- * not justify the full AWS SDK.
+ * Minimal Cloudflare R2 client over its S3-compatible API: HEAD, PUT and
+ * DELETE, signed with AWS Signature V4 (aws4). Three verbs are all publishing
+ * needs, and they do not justify the full AWS SDK.
  *
  * Endpoint: https://<account id>.r2.cloudflarestorage.com, path-style, region
  * "auto". Credentials come from an R2 API token (Access Key ID + Secret).
@@ -54,6 +54,11 @@ export function createR2Client({ accountId, accessKeyId, secretAccessKey, bucket
       const res = await request(transport, signed('PUT', key, { body, headers }), body);
       if (res.status !== 200) throw new Error(`R2 PUT ${key}: HTTP ${res.status} ${res.body.slice(0, 200)}`);
       return true;
+    },
+    async remove(key) {
+      const res = await request(transport, signed('DELETE', key));
+      if (res.status === 204 || res.status === 200 || res.status === 404) return true;
+      throw new Error(`R2 DELETE ${key}: HTTP ${res.status} ${res.body.slice(0, 200)}`);
     },
   };
 }

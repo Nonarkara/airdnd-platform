@@ -230,6 +230,16 @@ async function main() {
   console.log(`publish ${s.publish} · withheld by safety screen ${s.withheld} · archive only (on no listing) ${s.archiveOnly}`);
   if (s.referencesToMissingFiles) console.log(`${s.referencesToMissingFiles} listing photo links point at files not in these folders — add the Supabase export with --archive`);
 
+  const objectKey = (photo) => `photos/${photo.sha}${photo.jpeg ? '.jpg' : path.extname(photo.key).toLowerCase()}`;
+  // A picture can be published today and withheld tomorrow (a listing that
+  // carries it gets flagged). Its copy must then leave the bucket, not just
+  // the map: listings that already hold the link would keep showing it.
+  const withheldKeys = [...new Set(plan.clusters
+    .filter((c) => c.status === 'withheld')
+    .flatMap((c) => c.members.map((m) => objectKey(byName.get(m)))))];
+  const withheldInBucket = withheldKeys.filter((key) => ledger.uploaded[key]);
+  if (withheldInBucket.length) console.log(`${withheldInBucket.length} previously published picture(s) are now withheld and will be removed from the bucket`);
+
   if (!upload) {
     console.log('\nDry run — nothing uploaded. Re-run with --upload to publish.');
     return;
@@ -247,7 +257,6 @@ async function main() {
   });
 
   const publish = plan.clusters.filter((c) => c.status === 'publish');
-  const objectKey = (photo) => `photos/${photo.sha}${photo.jpeg ? '.jpg' : path.extname(photo.key).toLowerCase()}`;
   const contentType = (photo) => (photo.jpeg ? 'image/jpeg' : { '.png': 'image/png', '.webp': 'image/webp', '.gif': 'image/gif' }[path.extname(photo.key).toLowerCase()] || 'application/octet-stream');
   const failed = [];
   let uploaded = 0;
@@ -276,6 +285,20 @@ async function main() {
     }
   }));
   process.stdout.write('\n');
+
+  let removed = 0;
+  for (const key of withheldKeys) {
+    try {
+      if (ledger.uploaded[key] || await r2.exists(key)) {
+        await r2.remove(key);
+        removed += 1;
+      }
+      delete ledger.uploaded[key];
+    } catch (error) {
+      failed.push({ key, reason: error.message });
+    }
+  }
+  if (removed) console.log(`removed ${removed} withheld picture(s) from the bucket`);
   saveJson(LEDGER_PATH, ledger);
 
   // The map names only objects confirmed in the bucket, so the site never links
@@ -290,7 +313,7 @@ async function main() {
   saveJson(MAP_PATH, { version: 1, generatedAt: new Date().toISOString(), baseUrl, stats: s, map });
   console.log(`photo map: ${Object.keys(map).length} file names → ${publish.length - failed.length} published pictures (${path.relative(ROOT, MAP_PATH)})`);
   if (failed.length) {
-    console.log(`${failed.length} uploads failed — run the same command again to retry. First: ${failed[0].key}: ${failed[0].reason}`);
+    console.log(`${failed.length} uploads or removals failed — run the same command again to retry. First: ${failed[0].key}: ${failed[0].reason}`);
     process.exitCode = 1;
   } else {
     console.log('COMPLETE — refresh the snapshot / Firestore sync to put the new links on the site.');

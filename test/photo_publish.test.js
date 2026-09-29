@@ -118,6 +118,7 @@ function fakeR2() {
         puts.push(req.url);
         res.writeHead(200); res.end(); return;
       }
+      if (req.method === 'DELETE') { objects.delete(req.url); res.writeHead(204); res.end(); return; }
       res.writeHead(405); res.end();
     });
   });
@@ -189,6 +190,19 @@ test('publish end to end: one copy per picture, screened, idempotent, and the ga
     }], { source: 'snapshot', allowUnverified: true, photoMap: new Map(Object.entries(map)) });
     assert.equal(listing.imageUrl, map['a1.jpg']);
     assert.deepEqual(listing.allPhotoUrls, [map['a1.jpg'], map['d1.jpg']]);
+
+    // The listing is flagged later: its pictures leave the bucket, not only the map.
+    const flag = openLocalDb(dbPath);
+    flag.prepare('UPDATE companions SET is_safe_image = 0 WHERE id = 1').run();
+    flag.close();
+    const dry = await run(process.execPath, args.filter((a) => a !== '--upload'), { env, cwd: process.cwd() });
+    assert.match(dry.stdout, /2 previously published picture\(s\) are now withheld and will be removed/);
+    assert.equal(r2.objects.size, 2, 'a dry run removes nothing');
+    const third = await run(process.execPath, args, { env, cwd: process.cwd() });
+    assert.match(third.stdout, /removed 2 withheld picture\(s\) from the bucket/);
+    assert.match(third.stdout, /COMPLETE/);
+    assert.equal(r2.objects.size, 0);
+    assert.deepEqual(JSON.parse(fs.readFileSync(env.PHOTO_MAP_PATH, 'utf8')).map, {});
   } finally {
     r2.server.close();
   }
