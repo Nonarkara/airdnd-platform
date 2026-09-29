@@ -17,7 +17,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createClient } from '@supabase/supabase-js';
+import { openDataClient } from './lib/data_store.js';
 import dotenv from 'dotenv';
 import { formatTelLink, formatLineUrl, formatTelegramUrl, formatMapsUrl, inferCityFromLocation } from '../src/lib/normalization.js';
 
@@ -39,11 +39,8 @@ try {
 const FEED_LIMIT = 800;        // pull recent N listing-classified messages
 const PAGE = 1000;
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
-  { auth: { persistSession: false } },
-);
+// Reads whichever store the scraper writes to (LOCAL_DB=1 → local SQLite).
+const supabase = await openDataClient('refresh_feed_snapshot');
 
 async function pullRecentListingMessages() {
   // Two-pass pull to stay within Supabase's PostgREST limit.

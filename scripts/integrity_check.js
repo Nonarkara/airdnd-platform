@@ -1,8 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { reportCapability, reportCapabilityFailure, clearCapabilityFailures } from './capability_report.js';
+import { openDataClient } from './lib/data_store.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,16 +14,8 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 // precisely to be readable when configuration is incomplete.
 let supabaseClient = null;
 
-function getSupabase() {
-  if (supabaseClient) return supabaseClient;
-  const url = process.env.VITE_SUPABASE_URL;
-  const key = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) {
-    throw new Error(
-      'integrity_check: set VITE_SUPABASE_URL and VITE_SUPABASE_SERVICE_ROLE_KEY in .env',
-    );
-  }
-  supabaseClient = createClient(url, key);
+async function getSupabase() {
+  if (!supabaseClient) supabaseClient = await openDataClient('integrity_check');
   return supabaseClient;
 }
 
@@ -63,7 +55,7 @@ async function runIntegrityCheck() {
   const alerts = [];
 
   // Load all listings
-  const { data: listings, error } = await getSupabase()
+  const { data: listings, error } = (await getSupabase())
     .from('companions')
     .select('id, phone, phone_normalized, canonical_key, latitude, longitude, maps_url')
     .limit(10000);

@@ -12,7 +12,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createClient } from '@supabase/supabase-js';
+import { openDataClient } from './lib/data_store.js';
 import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,11 +20,8 @@ const __dirname = path.dirname(__filename);
 const ROOT = path.join(__dirname, '..');
 dotenv.config({ path: path.join(ROOT, '.env') });
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
-  { auth: { persistSession: false } },
-);
+// Reads whichever store the scraper writes to (LOCAL_DB=1 → local SQLite).
+const supabase = await openDataClient('compute_patterns');
 
 const PAGE = 1000;
 async function pullAll(table, columns = '*') {

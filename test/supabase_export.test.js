@@ -148,3 +148,65 @@ test('an export imports into the local store as a faithful copy — ids, JSON, a
   assert.equal(readTable(db, 'channel_messages').length, 1);
   delete process.env.LOCAL_DB_PATH;
 });
+
+test('with LOCAL_DB=1 the heartbeat query reads the local store, not Supabase', async () => {
+  const dir = tmp();
+  const saved = { LOCAL_DB: process.env.LOCAL_DB, LOCAL_DB_PATH: process.env.LOCAL_DB_PATH, URL: process.env.VITE_SUPABASE_URL };
+  process.env.LOCAL_DB_PATH = path.join(dir, 'sabai.db');
+  process.env.LOCAL_DB = '1';
+  delete process.env.VITE_SUPABASE_URL; // prove no Supabase credentials are needed
+  try {
+    const { openLocalDb } = await import('../scripts/lib/local_store.js');
+    const db = openLocalDb(process.env.LOCAL_DB_PATH);
+    db.prepare("INSERT INTO companions (id, name, updated_at) VALUES (1, 'Older', '2026-09-01T00:00:00Z'), (2, 'Newer', '2026-09-28T00:00:00Z')").run();
+    const { openDataClient, isLocalStore } = await import('../scripts/lib/data_store.js');
+    assert.equal(isLocalStore(), true);
+    const client = await openDataClient('heartbeat');
+    // The heartbeat's own query shape.
+    const { data, error } = await client.from('companions').select('*')
+      .order('updated_at', { ascending: false, nullsFirst: false })
+      .order('created_at', { ascending: false, nullsFirst: false })
+      .limit(1000);
+    assert.equal(error, null);
+    assert.deepEqual(data.map((r) => r.name), ['Newer', 'Older']);
+  } finally {
+    for (const [k, v] of Object.entries({ LOCAL_DB: saved.LOCAL_DB, LOCAL_DB_PATH: saved.LOCAL_DB_PATH, VITE_SUPABASE_URL: saved.URL })) {
+      if (v === undefined) delete process.env[k]; else process.env[k] = v;
+    }
+  }
+});
+
+test('the local shim answers the feed and patterns jobs\' query shapes', async () => {
+  const dir = tmp();
+  const { openLocalDb } = await import('../scripts/lib/local_store.js');
+  const { createLocalSupabaseShim } = await import('../scripts/lib/supabase_local_shim.js');
+  const db = openLocalDb(path.join(dir, 'sabai.db'));
+  const insert = db.prepare('INSERT INTO channel_messages (id, telegram_message_id, channel_id, message_type, message_date, grouped_id) VALUES (?, ?, ?, ?, ?, ?)');
+  for (let i = 1; i <= 25; i += 1) insert.run(i, 100 + i, 'c', i % 5 === 0 ? 'discussion' : 'listing', `2026-09-${String(i).padStart(2, '0')}T00:00:00Z`, i <= 3 ? 'g1' : null);
+  const client = createLocalSupabaseShim(db);
+
+  // refresh_feed_snapshot: newest listing messages, cursor-paged with lt().
+  const page1 = await client.from('channel_messages').select('*').eq('message_type', 'listing')
+    .order('message_date', { ascending: false }).limit(5);
+  assert.deepEqual(page1.data.map((r) => r.id), [24, 23, 22, 21, 19]);
+  const page2 = await client.from('channel_messages').select('*').eq('message_type', 'listing')
+    .order('message_date', { ascending: false }).limit(5).lt('message_date', page1.data.at(-1).message_date);
+  assert.deepEqual(page2.data.map((r) => r.id), [18, 17, 16, 14, 13]);
+
+  // refresh_feed_snapshot: photos by grouped_id / message id with in().
+  const grouped = await client.from('channel_messages').select('*').in('grouped_id', ['g1', 'nope']);
+  assert.equal(grouped.data.length, 3);
+  assert.deepEqual((await client.from('channel_messages').select('*').in('id', [])).data, []);
+
+  // compute_patterns: pull everything in id order with range().
+  const all = [];
+  for (let from = 0; ; from += 10) {
+    const { data } = await client.from('channel_messages').select('*').order('id', { ascending: true }).range(from, from + 9);
+    all.push(...data);
+    if (data.length < 10) break;
+  }
+  assert.deepEqual(all.map((r) => r.id), Array.from({ length: 25 }, (_, i) => i + 1));
+
+  // Column names are spliced into SQL: anything but an identifier is refused.
+  await assert.rejects(async () => { await client.from('channel_messages').select('*').eq('id; DROP TABLE companions', 1); });
+});

@@ -77,14 +77,33 @@ class FilterQuery {
     this.filters = [];
     this.orders = [];
     this.limitN = null;
+    this.offsetN = null;
   }
 
-  eq(column, value) {
-    this.filters.push([column, value]);
+  // Filters as [column, operator, value]. Column names are spliced into SQL,
+  // so they are checked against a plain-identifier pattern first.
+  _filter(column, op, value) {
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(column)) throw new Error(`invalid column name: ${column}`);
+    this.filters.push([column, op, value]);
     return this;
   }
 
+  eq(column, value) { return this._filter(column, '=', value); }
+
+  neq(column, value) { return this._filter(column, '!=', value); }
+
+  gt(column, value) { return this._filter(column, '>', value); }
+
+  gte(column, value) { return this._filter(column, '>=', value); }
+
+  lt(column, value) { return this._filter(column, '<', value); }
+
+  lte(column, value) { return this._filter(column, '<=', value); }
+
+  in(column, values) { return this._filter(column, 'IN', Array.isArray(values) ? values : [values]); }
+
   order(column, options = {}) {
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(column)) throw new Error(`invalid column name: ${column}`);
     this.orders.push({ column, ascending: options.ascending !== false });
     return this;
   }
@@ -94,13 +113,30 @@ class FilterQuery {
     return this;
   }
 
+  /** PostgREST range(from, to) is inclusive on both ends. */
+  range(from, to) {
+    this.offsetN = Math.max(0, Math.floor(from));
+    this.limitN = Math.max(0, Math.floor(to) - Math.floor(from) + 1);
+    return this;
+  }
+
   _whereClause() {
     if (this.filters.length === 0) {
       return { sql: '', params: [] };
     }
-    const sql = ` WHERE ${this.filters.map(([col]) => `${col} = ?`).join(' AND ')}`;
-    const params = this.filters.map(([, val]) => (val === undefined ? null : val));
-    return { sql, params };
+    const parts = [];
+    const params = [];
+    for (const [col, op, val] of this.filters) {
+      if (op === 'IN') {
+        if (val.length === 0) { parts.push('0'); continue; }
+        parts.push(`${col} IN (${val.map(() => '?').join(', ')})`);
+        params.push(...val.map((v) => (v === undefined ? null : v)));
+      } else {
+        parts.push(`${col} ${op} ?`);
+        params.push(val === undefined ? null : val);
+      }
+    }
+    return { sql: ` WHERE ${parts.join(' AND ')}`, params };
   }
 
   _runSelect() {
@@ -111,6 +147,9 @@ class FilterQuery {
     }
     if (Number.isFinite(this.limitN)) {
       sql += ` LIMIT ${Math.max(0, Math.floor(this.limitN))}`;
+      if (Number.isFinite(this.offsetN)) sql += ` OFFSET ${this.offsetN}`;
+    } else if (Number.isFinite(this.offsetN)) {
+      sql += ` LIMIT -1 OFFSET ${this.offsetN}`;
     }
     const rows = this.ctx.db.prepare(sql).all(...params).map((row) => fromStorageRow(this.table, row));
     return { data: rows, error: null };

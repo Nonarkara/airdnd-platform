@@ -18,11 +18,11 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import { execSync } from 'child_process';
 import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
 import { getGeoIndex } from './lib/geo.js';
+import { openDataClient } from './lib/data_store.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,21 +44,13 @@ fs.mkdirSync(LOG_DIR, { recursive: true });
 // trace instead of a sentence naming the missing variable.
 let supabaseClient = null;
 
-function getSupabase() {
-  if (supabaseClient) return supabaseClient;
-  const url = process.env.VITE_SUPABASE_URL;
-  const key = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) {
-    throw new Error(
-      'heartbeat: set VITE_SUPABASE_URL and VITE_SUPABASE_SERVICE_ROLE_KEY in .env',
-    );
-  }
-  supabaseClient = createClient(url, key, { auth: { persistSession: false } });
+async function getSupabase() {
+  if (!supabaseClient) supabaseClient = await openDataClient('heartbeat');
   return supabaseClient;
 }
 
 async function pullSnapshot() {
-  const { data, error } = await getSupabase()
+  const { data, error } = (await getSupabase())
     .from('companions')
     .select('*')
     .order('updated_at', { ascending: false, nullsFirst: false })
