@@ -23,7 +23,15 @@
 
 The rows are cheap; **the photos force the paid plan.** Growth is ~1.2 GB/month.
 
-The organisation holds **three** active projects — `AirDnD`, `Thailand Geopolitical Watch`, `Ops Monitoring`. The free plan allows two active projects. Decide what happens to the other two before downgrading the plan (step 8); nothing here touches them.
+The organisation holds **three** active projects, and on the Pro plan each extra project adds ~$10/month of compute on top of the $25 plan (Supabase's own example for three projects: ~$45/month):
+
+| Project | Database | Stored files | Fits free tier? |
+|---|---|---|---|
+| AirDnD | 241 MB | 7.6 GB | **No** — storage 7.6× over |
+| Thailand Geopolitical Watch | 34 MB | none | Yes |
+| Ops Monitoring | 32 MB | none | Yes |
+
+So once AirDnD's photos are out, the whole organisation can drop to the free plan (two active projects allowed; paused projects don't count) — **$0/month.**
 
 ## 3. The finding that sets the order of operations
 
@@ -119,9 +127,14 @@ The Drive backup never worked, so after cutover the photos would live on one dis
 
 ### Step 8 — Switch off (only after steps 3–7)
 
-1. Supabase dashboard → AirDnD → Settings → **Pause project**. Paused free-tier projects stay restorable for 90 days — this is the safety net.
-2. Decide the other two projects, then downgrade the organisation plan.
-3. After 30 quiet days: remove the Supabase variables from `.env` and the GitHub secrets, then delete the project.
+Checked against Supabase's documentation (2026-09-29): **a project on a paid plan cannot be paused**, and downgrading an organisation that has more projects than the free plan allows **pauses all of its projects** — you then choose which to resume. For you that is exactly the right sequence:
+
+1. Supabase dashboard → organisation → Billing → change plan to **Free**. All three projects pause.
+2. Resume **Thailand Geopolitical Watch** and **Ops Monitoring** (dashboard → project → *Resume project*). Both fit the free tier.
+3. Leave **AirDnD** paused. A paused project can be restored with one click for **90 days** — that is the safety net if anything was missed. It is not charged while paused.
+4. After 30 quiet days: remove the Supabase variables from `.env` and the GitHub repository secrets, download the final backup from the paused project's page if you want a last copy, then delete it (Settings → General → Delete project). Deletion is permanent — database, backups and every stored file.
+
+Unused time on the Pro plan is returned as Supabase credits, not refunded.
 
 ## 5. Risk to watch after the switch: Firestore quota
 
