@@ -68,7 +68,9 @@ test('clustering keeps one copy per picture — the largest file', () => {
   ].map(({ key, buf }) => ({ key, sha: sha256(buf), dhash: dHashJpeg(buf)?.hash || null, bytes: buf.length }));
 
   const canonical = clusterPhotos(photos);
-  assert.equal(canonical.get('repost-lowq.jpg'), 'exact-copy.jpg' < 'original.jpg' ? 'exact-copy.jpg' : 'original.jpg');
+  // original.jpg and exact-copy.jpg are the same size; the tie goes to the
+  // alphabetically first name, so the choice is stable across runs.
+  assert.equal(canonical.get('repost-lowq.jpg'), 'exact-copy.jpg');
   assert.equal(canonical.get('original.jpg'), canonical.get('exact-copy.jpg'));
   assert.equal(canonical.get('different.jpg'), 'different.jpg');
   assert.equal(canonical.get('not-a-jpeg.png'), 'not-a-jpeg.png');
