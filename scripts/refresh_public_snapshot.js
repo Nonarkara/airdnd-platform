@@ -16,6 +16,7 @@ const supabase = createClient(supabaseUrl, key, {
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { getGeoIndex } from './lib/geo.js';
+import { getPhotoMap } from './lib/photo_map.js';
 
 const firebaseConfig = {
   projectId: "sub-i-platform-v3",
@@ -50,7 +51,7 @@ try {
   rawData = data || [];
 }
 
-const publicListings = canonicalizePublicListings(rawData, { source: 'snapshot', allowUnverified: true, geoIndex: getGeoIndex() })
+const publicListings = canonicalizePublicListings(rawData, { source: 'snapshot', allowUnverified: true, geoIndex: getGeoIndex(), photoMap: getPhotoMap() })
   .filter((listing) => validatePublicListing(listing).ok);
 console.log(`Canonicalized ${publicListings.length} unique parlour listings`);
 

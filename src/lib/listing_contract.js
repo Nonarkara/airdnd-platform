@@ -2,6 +2,15 @@ import { CITY_PATTERNS, cleanDisplayText, normalizeText, normalizePhone, inferCi
 import { placeListings } from './place_resolver.js';
 
 export const DEFAULT_PUBLIC_LOCATION = 'Bangkok, Thailand';
+
+/**
+ * Is a stored safety flag set to "not safe"? Data sources disagree on how to
+ * say no: Postgres returns false, SQLite 0, CSV and Sheets exports "0" or
+ * "false". Missing means safe — the column defaults to true.
+ */
+export function isFlaggedUnsafe(value) {
+  return value === false || value === 0 || (typeof value === 'string' && /^(0|false|f|no)$/i.test(value.trim()));
+}
 export const DEFAULT_PUBLIC_IMAGE = '/mockups/109748.jpg';
 
 // Re-export from normalization utility for backward compatibility
@@ -489,7 +498,7 @@ export function normalizePublicListing(rawListing, options = {}) {
   const location = cleanLocationLabel(rawListing.location);
   const mapsUrl = normalizeUrl(rawListing.mapsUrl || rawListing.maps_url);
   const imageUrl = normalizeText(rawListing.imageUrl || rawListing.image_url, null);
-  const isSafeImage = rawListing.is_safe_image !== false && rawListing.isSafeImage !== false;
+  const isSafeImage = !isFlaggedUnsafe(rawListing.is_safe_image) && !isFlaggedUnsafe(rawListing.isSafeImage);
   const safeImageUrl =
     isSafeImage && (source === 'backup' || !imageUrl?.startsWith('/mockups/'))
       ? imageUrl
@@ -737,6 +746,29 @@ export function applyPlacement(listings, geoIndex) {
   return listings.map((listing) => ({ ...listing, ...(placed.get(listing.id) || {}) }));
 }
 
+/**
+ * Point a listing's photos at their published copies and drop duplicates.
+ *
+ * photoMap: file name → public URL, written by scripts/publish_photos.js for
+ * every copy of every published picture. Several file names map to one URL
+ * when they are the same picture, so rewriting then de-duplicating is what
+ * turns a gallery of 300 re-posts into its handful of real photos. Links to
+ * pictures that were not published are left as they are.
+ */
+export function applyPhotoMap(listing, photoMap) {
+  if (!photoMap || !listing) return listing;
+  const rewrite = (url) => {
+    if (typeof url !== 'string' || !url) return url;
+    const clean = url.split(/[?#]/)[0];
+    let name = clean.slice(clean.lastIndexOf('/') + 1);
+    try { name = decodeURIComponent(name); } catch { /* keep raw */ }
+    return photoMap.get(name) || url;
+  };
+  const gallery = [...new Set((Array.isArray(listing.allPhotoUrls) ? listing.allPhotoUrls : []).map(rewrite).filter(Boolean))];
+  const imageUrl = rewrite(listing.imageUrl);
+  return { ...listing, imageUrl, allPhotoUrls: gallery };
+}
+
 export function canonicalizePublicListings(listings, options = {}) {
   const normalized = (Array.isArray(listings) ? listings : [])
     .map((listing) => normalizePublicListing(listing, {
@@ -760,7 +792,8 @@ export function canonicalizePublicListings(listings, options = {}) {
     .map((group) => mergeCanonicalGroup(group))
     .filter((listing) => listing && (options.allowUnverified || validatePublicListing(listing).ok))
     .sort((left, right) => getFreshnessValue(right) - getFreshnessValue(left));
-  return options.geoIndex ? applyPlacement(merged, options.geoIndex) : merged;
+  const withPhotos = options.photoMap ? merged.map((listing) => applyPhotoMap(listing, options.photoMap)) : merged;
+  return options.geoIndex ? applyPlacement(withPhotos, options.geoIndex) : withPhotos;
 }
 
 function parseCoordinatePair(latitude, longitude) {

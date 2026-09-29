@@ -10,7 +10,7 @@
 // archiveChannelMessages) and the photo-archive writer keep working unchanged
 // against a local database instead of Supabase.
 
-import { JSON_COLUMNS, tableColumns } from './local_store.js';
+import { JSON_COLUMNS, restoreBooleans, tableColumns } from './local_store.js';
 
 function toStorageValue(table, column, value) {
   if (value === undefined) {
@@ -39,7 +39,7 @@ function fromStorageRow(table, row) {
       }
     }
   }
-  return plain;
+  return restoreBooleans(table, plain);
 }
 
 function normalizeError(error) {

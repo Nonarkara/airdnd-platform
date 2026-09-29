@@ -140,7 +140,7 @@ test('an export imports into the local store as a faithful copy — ids, JSON, a
   const [company] = readTable(db, 'companions');
   assert.equal(company.id, 325);
   assert.deepEqual(company.user_feedback, [{ q: 1 }]);
-  assert.equal(company.is_safe_image, 0);
+  assert.equal(company.is_safe_image, false); // a real boolean, not 0 — see BOOLEAN_COLUMNS
   const [photo] = readTable(db, 'photo_archive');
   assert.equal(photo.linked_companion_id, 325);
   // Re-running is safe: upsert by id, no duplicates.
@@ -209,4 +209,26 @@ test('the local shim answers the feed and patterns jobs\' query shapes', async (
 
   // Column names are spliced into SQL: anything but an identifier is refused.
   await assert.rejects(async () => { await client.from('channel_messages').select('*').eq('id; DROP TABLE companions', 1); });
+});
+
+test('an unsafe-content flag survives the local store — 0 must read back as false', async () => {
+  const dir = tmp();
+  const { openLocalDb, readTable } = await import('../scripts/lib/local_store.js');
+  const { createLocalSupabaseShim } = await import('../scripts/lib/supabase_local_shim.js');
+  const { normalizePublicListing, isFlaggedUnsafe } = await import('../src/lib/listing_contract.js');
+  const { isListingMediaSafe } = await import('../src/lib/listings.js');
+  const db = openLocalDb(path.join(dir, 'sabai.db'));
+  db.prepare("INSERT INTO companions (id, name, is_safe_image) VALUES (1, 'Flagged', 0), (2, 'Fine', 1)").run();
+  db.prepare("INSERT INTO companions (id, name) VALUES (3, 'Default')").run();
+
+  const viaShim = (await createLocalSupabaseShim(db).from('companions').select('*').order('id')).data;
+  assert.deepEqual(viaShim.map((r) => r.is_safe_image), [false, true, true]);
+  assert.deepEqual(readTable(db, 'companions').map((r) => r.is_safe_image), [false, true, true]);
+
+  // Defence in depth: the contract itself treats every spelling of "no" as unsafe.
+  for (const no of [false, 0, '0', 'false', 'FALSE', 'f', 'no']) assert.equal(isFlaggedUnsafe(no), true, String(no));
+  for (const yes of [true, 1, '1', 'true', undefined, null]) assert.equal(isFlaggedUnsafe(yes), false, String(yes));
+  const raw = { id: 9, name: 'Raw', phone: '0811111111', image_url: '/images/x.jpg', is_safe_image: 0 };
+  assert.equal(normalizePublicListing(raw, { source: 'snapshot', allowUnverified: true })?.isSafeImage, false);
+  assert.equal(isListingMediaSafe({ is_safe_image: 0 }), false);
 });

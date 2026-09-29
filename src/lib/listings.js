@@ -1,5 +1,6 @@
 import {
   canonicalizePublicListings,
+  isFlaggedUnsafe,
   hasMatchedPublicMedia,
   isBadPublicName,
   buildPhoneKey,
@@ -577,7 +578,7 @@ export function hasUnsafeVisualSignal(listing) {
 }
 
 export function isListingMediaSafe(listing) {
-  return listing?.isSafeImage !== false && !hasUnsafeVisualSignal(listing);
+  return !isFlaggedUnsafe(listing?.isSafeImage) && !isFlaggedUnsafe(listing?.is_safe_image) && !hasUnsafeVisualSignal(listing);
 }
 
 export function getSafeListingGalleryUrls(listing) {

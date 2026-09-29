@@ -22,6 +22,7 @@ import dotenv from 'dotenv';
 import { execSync } from 'child_process';
 import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
 import { getGeoIndex } from './lib/geo.js';
+import { getPhotoMap } from './lib/photo_map.js';
 import { openDataClient } from './lib/data_store.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -61,7 +62,7 @@ async function pullSnapshot() {
 }
 
 function writeSnapshot(rows) {
-  const publicListings = canonicalizePublicListings(rows, { source: 'snapshot', geoIndex: getGeoIndex() });
+  const publicListings = canonicalizePublicListings(rows, { source: 'snapshot', geoIndex: getGeoIndex(), photoMap: getPhotoMap() });
   const slim = publicListings.map((l) => ({
     id: l.id,
     canonicalKey: l.canonicalKey,

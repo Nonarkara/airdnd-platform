@@ -9,6 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import { canonicalizePublicListings, validatePublicListing } from '../../src/lib/listing_contract.js';
 import { getGeoIndex } from './geo.js';
+import { getPhotoMap } from './photo_map.js';
 import { readTable } from './local_store.js';
 
 /**
@@ -96,7 +97,7 @@ function snapshotFreshnessValue(listing) {
  * @param {{ deployablePhotoUrl: Function, deployablePhotoUrls: Function }} photos
  */
 export function buildSnapshotListings(rows, photos) {
-  const publicListings = canonicalizePublicListings(rows, { source: 'snapshot', allowUnverified: true, geoIndex: getGeoIndex() })
+  const publicListings = canonicalizePublicListings(rows, { source: 'snapshot', allowUnverified: true, geoIndex: getGeoIndex(), photoMap: getPhotoMap() })
     .filter((listing) => validatePublicListing(listing).ok);
 
   return publicListings.map((listing) => ({

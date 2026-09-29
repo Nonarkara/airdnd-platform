@@ -62,7 +62,8 @@ test('shim round-trips rows and (de)serializes JSON columns', async () => {
     assert.equal(data.length, 1);
     assert.deepEqual(data[0].tags, ['aroma', 'thai']);
     assert.deepEqual(data[0].metrics, { availability_status: 'available' });
-    assert.equal(data[0].is_safe_image, 1);
+  // Booleans read back as booleans: an integer 0 would slip past `!== false` safety checks.
+    assert.equal(data[0].is_safe_image, true);
 
     const rowId = data[0].id;
     const { error: updateError } = await shim

@@ -44,6 +44,22 @@ export const JSON_COLUMNS = {
   signals: ['payload'],
 };
 
+// Columns that are boolean in Postgres. SQLite stores them as 1/0, and 0 is
+// not `false`: read back unconverted, `is_safe_image = 0` passed every
+// `!== false` safety check, so after cutover every unsafe-content flag would
+// have silently stopped working. Converted back to real booleans on read.
+export const BOOLEAN_COLUMNS = {
+  companions: ['is_safe_image'],
+  channel_messages: ['has_media'],
+};
+
+export function restoreBooleans(table, row) {
+  for (const column of BOOLEAN_COLUMNS[table] || []) {
+    if (row[column] === 0 || row[column] === 1) row[column] = row[column] === 1;
+  }
+  return row;
+}
+
 // Columns the live Supabase schema holds that the first version of this store
 // left out. A migration that silently drops them would lose the full original
 // Telegram message (raw_json — the research corpus), Drive links, and the
@@ -236,6 +252,6 @@ export function readTable(db, table) {
         }
       }
     }
-    return plain;
+    return restoreBooleans(table, plain);
   });
 }
