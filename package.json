@@ -50,7 +50,11 @@
     "test:otop": "node --test test/otop_*.test.js",
     "otop:faces": "node scripts/otop/province-faces.js",
     "otop:media": "node scripts/otop/fetch-province-media.mjs",
-    "otop:media:cache": "node scripts/otop/fetch-province-media.mjs --cache --categories"
+    "otop:media:cache": "node scripts/otop/fetch-province-media.mjs --cache --categories",
+    "geo:index": "node scripts/build_geo_index.js",
+    "geo:relocate": "node scripts/relocate_listings.js",
+    "exit:export": "node scripts/supabase_export.js",
+    "exit:import": "node scripts/import_supabase_export.js"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",

@@ -37,10 +37,21 @@ export const DEFAULT_DB_PATH = path.join(__dirname, '..', '..', 'data', 'sabai.d
 // Columns that hold JSON in Postgres (jsonb) and must be (de)serialized when
 // crossing the SQLite boundary so the pipeline keeps seeing real arrays/objects.
 export const JSON_COLUMNS = {
-  companions: ['tags', 'metrics', 'photo_urls', 'source_message_ids', 'service_tags', 'drive_photo_urls'],
-  channel_messages: [],
+  companions: ['tags', 'metrics', 'photo_urls', 'source_message_ids', 'service_tags', 'drive_photo_urls', 'user_feedback'],
+  channel_messages: ['raw_json'],
   photo_archive: [],
   page_views: ['payload'],
+  signals: ['payload'],
+};
+
+// Columns the live Supabase schema holds that the first version of this store
+// left out. A migration that silently drops them would lose the full original
+// Telegram message (raw_json — the research corpus), Drive links, and the
+// photo→listing links. Added idempotently to existing databases.
+const FIDELITY_COLUMNS = {
+  companions: { user_feedback: "TEXT DEFAULT '[]'" },
+  channel_messages: { photo_url: 'TEXT', cluster_id: 'INTEGER', raw_json: 'TEXT' },
+  photo_archive: { drive_url: 'TEXT', linked_companion_id: 'INTEGER' },
 };
 
 const SCHEMA = `
@@ -151,7 +162,27 @@ CREATE TABLE IF NOT EXISTS page_views (
   created_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 CREATE INDEX IF NOT EXISTS idx_page_views_session ON page_views (session_id);
+
+CREATE TABLE IF NOT EXISTS signals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_id TEXT,
+  listing_id INTEGER,
+  signal_type TEXT,
+  country TEXT,
+  city TEXT,
+  payload TEXT DEFAULT '{}',
+  created_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
 `;
+
+function ensureFidelityColumns(db) {
+  for (const [table, columns] of Object.entries(FIDELITY_COLUMNS)) {
+    const have = new Set(db.prepare(`PRAGMA table_info(${table})`).all().map((row) => row.name));
+    for (const [column, type] of Object.entries(columns)) {
+      if (!have.has(column)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+    }
+  }
+}
 
 /**
  * Open (creating if needed) the local SQLite database and ensure the schema
@@ -168,6 +199,7 @@ export function openLocalDb(dbPath = process.env.LOCAL_DB_PATH || DEFAULT_DB_PAT
   db.exec('PRAGMA journal_mode = WAL;');
   db.exec('PRAGMA foreign_keys = ON;');
   db.exec(SCHEMA);
+  ensureFidelityColumns(db);
   return db;
 }
 

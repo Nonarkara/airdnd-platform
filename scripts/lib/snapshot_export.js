@@ -8,6 +8,7 @@
 import fs from 'fs';
 import path from 'path';
 import { canonicalizePublicListings, validatePublicListing } from '../../src/lib/listing_contract.js';
+import { getGeoIndex } from './geo.js';
 import { readTable } from './local_store.js';
 
 /**
@@ -95,7 +96,7 @@ function snapshotFreshnessValue(listing) {
  * @param {{ deployablePhotoUrl: Function, deployablePhotoUrls: Function }} photos
  */
 export function buildSnapshotListings(rows, photos) {
-  const publicListings = canonicalizePublicListings(rows, { source: 'snapshot', allowUnverified: true })
+  const publicListings = canonicalizePublicListings(rows, { source: 'snapshot', allowUnverified: true, geoIndex: getGeoIndex() })
     .filter((listing) => validatePublicListing(listing).ok);
 
   return publicListings.map((listing) => ({
@@ -129,6 +130,11 @@ export function buildSnapshotListings(rows, photos) {
     mapsUrl: listing.mapsUrl,
     latitude: listing.latitude,
     longitude: listing.longitude,
+    geoPrecision: listing.geoPrecision,
+    geoRadiusKm: listing.geoRadiusKm,
+    geoSource: listing.geoSource,
+    geoUnit: listing.geoUnit,
+    geoNote: listing.geoNote,
     isSafeImage: listing.isSafeImage,
     mentionCount: listing.mentionCount,
     aliasNames: Array.isArray(listing.aliasNames) ? listing.aliasNames : [],
