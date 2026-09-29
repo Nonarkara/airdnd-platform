@@ -34,8 +34,8 @@
 // Tone marks, thanthakhat, mai taikhu and paiyannoi. Listings drop and misplace
 // these constantly ("บางใหญ" for บางใหญ่); matching without them is safe
 // because no two administrative names differ only by tone mark.
-const THAI_MARKS = /[็-์ฯ]/g;
-const INVISIBLES = /[​-‍﻿ ]/g;
+const THAI_MARKS = /[\u0E47-\u0E4C\u0E2F]/g;
+const INVISIBLES = /[\u200B-\u200D\uFEFF\u00A0]/g;
 
 export function thKey(value) {
   return String(value ?? '')
@@ -153,8 +153,8 @@ function findProvince(text, index) {
   return best?.province || null;
 }
 
-const DISTRICT_MARKER = /(?:เขต|อำเภอ|อ\.)\s*([฀-๿]+)/g;
-const TAMBON_MARKER = /(?:แขวง|ตำบล|ต\.)\s*([฀-๿]+)/g;
+const DISTRICT_MARKER = /(?:เขต|อำเภอ|อ\.)\s*([\u0E00-\u0E7F]+)/g;
+const TAMBON_MARKER = /(?:แขวง|ตำบล|ต\.)\s*([\u0E00-\u0E7F]+)/g;
 
 function markedNames(text, pattern) {
   const out = [];

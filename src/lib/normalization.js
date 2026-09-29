@@ -258,17 +258,36 @@ export function formatTelegramUrl(value) {
 // Maps URL. Prefers a coordinate-based search URL when lat/lng are known
 // (deterministic, no shortlink expansion). Falls back to a whitelisted Google
 // Maps URL when only a maps_url is available.
-export function formatMapsUrl(rawUrl, latitude, longitude) {
+/**
+ * The link a "Maps" button opens — i.e. where a person will actually travel.
+ *
+ * Order of trust:
+ *   1. The shop's own shared Google Maps link. The poster put it there; Google
+ *      resolves it to the real place on the reader's device. This used to lose
+ *      to stored coordinates, which sent readers to fabricated points.
+ *   2. Coordinates — only when placement says they are exact. A subdistrict or
+ *      district centroid is a statement about uncertainty, never a destination.
+ *   3. A Google Maps search for the listing's own name and address, so Google
+ *      finds the shop rather than us guessing a point for it.
+ *
+ * @param {object} [options] { precision, name, location } — precision is the
+ *   listing's geoPrecision. Legacy callers without it keep coordinates only
+ *   when no shop link exists.
+ */
+export function formatMapsUrl(rawUrl, latitude, longitude, options = {}) {
+  const { precision, name, location } = options;
+  const s = String(rawUrl || '').trim();
+  if (s && /^https?:\/\/(?:www\.)?(?:google\.com\/maps|maps\.google\.com|maps\.app\.goo\.gl|goo\.gl\/maps|share\.google|g\.co\/kgs)/i.test(s)) {
+    return s.replace(/^http:/, 'https:').replace(/…$/, '');
+  }
   const lat = Number.parseFloat(latitude);
   const lng = Number.parseFloat(longitude);
-  if (Number.isFinite(lat) && Number.isFinite(lng)) {
+  if (Number.isFinite(lat) && Number.isFinite(lng) && (precision === undefined || precision === 'exact')) {
     return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
   }
-  if (!rawUrl) return null;
-  const s = String(rawUrl).trim();
-  if (!s) return null;
-  if (/^https?:\/\/(?:www\.)?(?:google\.com\/maps|maps\.google\.com|maps\.app\.goo\.gl|goo\.gl\/maps|share\.google|g\.co\/kgs)/i.test(s)) {
-    return s.replace(/^http:/, 'https:');
+  const query = [name, location].map((part) => String(part || '').trim()).filter(Boolean).join(' ');
+  if (precision !== undefined && query && !/^bangkok,\s*thailand$/i.test(query)) {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
   }
   return null;
 }

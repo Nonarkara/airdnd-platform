@@ -13,10 +13,10 @@ import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import { listings as backupListings } from './data/mockData';
 import { auth, db } from './lib/firebase';
-import { supabase } from './lib/supabase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
 import { initSession } from './lib/tracker';
+import { ensurePlacement } from './lib/placement_client';
 import {
   SOURCE_LABELS,
   createIntakeSummary,
@@ -34,7 +34,6 @@ const REFRESH_INTERVAL_MS = 30_000;
 // before we know we have every operator. A 1200-doc cap silently dropped venues.
 const LIVE_QUERY_LIMIT = 10000;
 const LIVE_FETCH_TIMEOUT_MS = 6_500;
-const REALTIME_REFRESH_DEBOUNCE_MS = 1_200;
 const ALL_LOCATIONS_VALUE = 'all-locations';
 const ALL_TAGS_VALUE = 'all-tags';
 const normalizedBackupListings = normalizeListings(backupListings, {
@@ -82,13 +81,11 @@ function promotionScore(listing) {
 }
 const DATA_SOURCE_NOTES = {
   automatic: {
-    supabase: 'Directory is up to date with the latest listings.',
     firestore: 'Directory is up to date with the latest listings (via Firestore).',
     snapshot: 'Showing a recent snapshot while the live connection catches up.',
     backup: 'Showing cached listings. Live updates will resume shortly.',
   },
   manual: {
-    supabase: 'Directory refreshed with the latest listings.',
     firestore: 'Directory refreshed with the latest listings (via Firestore).',
     snapshot: 'Refreshed with the most recent snapshot.',
     backup: 'Refreshed with cached listings.',
@@ -186,32 +183,6 @@ function sortListings(listings, sortBy) {
 }
 
 
-async function fetchLiveListings() {
-  const { data, error } = await supabase
-    .from('companions')
-    .select('*')
-    .order('updated_at', { ascending: false, nullsFirst: false })
-    .order('created_at', { ascending: false, nullsFirst: false })
-    .limit(LIVE_QUERY_LIMIT);
-
-  if (error) {
-    throw new Error(sanitizeLoadError(error));
-  }
-
-  if (!Array.isArray(data) || data.length === 0) {
-    throw new Error('No live data available.');
-  }
-
-  const validatedData = validateListingsPayload(data);
-  if (validatedData.length === 0) {
-    throw new Error('Live data failed validation.');
-  }
-
-  return normalizeListings(
-    validatedData,
-    { source: 'supabase', isFallback: false },
-  );
-}
 async function fetchLiveListingsFromFirestore() {
   // Full collection — persona-posts must be merged before the phone inventory
   // is complete. Truncation silently drops operators.
@@ -266,8 +237,8 @@ async function loadListingsWithFallback(mode = 'automatic') {
   let liveResult = null;
   let liveError = null;
 
-  // Firestore first — it is the scraper's direct sync target and stays fresh
-  // even when the free-tier Supabase instance pauses or its REST API stalls.
+  // Firestore is the scraper's direct sync target; the static snapshot is the
+  // fallback. Supabase is no longer read from the browser (tasks/supabase-exit.md).
   try {
     const firestoreListings = await withTimeout(
       fetchLiveListingsFromFirestore(),
@@ -282,25 +253,6 @@ async function loadListingsWithFallback(mode = 'automatic') {
     };
   } catch (error) {
     liveError = new Error(sanitizeLoadError(error, 'Live Firestore request timed out.'));
-    try {
-      console.log('Firestore failed, attempting Supabase fetch...');
-      const liveListings = await withTimeout(
-        fetchLiveListings(),
-        LIVE_FETCH_TIMEOUT_MS,
-        'Live Supabase request timed out.',
-      );
-      liveResult = {
-        listings: liveListings,
-        source: 'supabase',
-        note: notes.supabase,
-        warning: null,
-      };
-      liveError = null;
-    } catch (sbError) {
-      liveError = new Error(
-        `Firestore failed (${liveError.message}) and Supabase failed (${sanitizeLoadError(sbError, 'Live Supabase request timed out.')})`
-      );
-    }
   }
 
   try {
@@ -387,7 +339,6 @@ function App() {
   const isActiveRef = useRef(true);
   const loadInFlightRef = useRef(false);
   const pendingAutoRefreshRef = useRef(false);
-  const realtimeRefreshTimerRef = useRef(null);
   const manualLoadRef = useRef(async () => {});
 
   const t = tCtx;
@@ -541,6 +492,7 @@ function App() {
         }));
 
         const result = await loadListingsWithFallback();
+        result.listings = await ensurePlacement(result.listings);
         if (!isActiveRef.current) {
           return;
         }
@@ -577,6 +529,7 @@ function App() {
         }));
 
         const result = await loadListingsWithFallback(mode);
+        result.listings = await ensurePlacement(result.listings);
         if (!isActiveRef.current) {
           return;
         }
@@ -593,50 +546,20 @@ function App() {
         void loadListings();
       }
     };
-    const scheduleRealtimeRefresh = () => {
-      if (document.visibilityState !== 'visible' || realtimeRefreshTimerRef.current !== null) {
-        return;
-      }
-
-      realtimeRefreshTimerRef.current = window.setTimeout(() => {
-        realtimeRefreshTimerRef.current = null;
-        void loadListings();
-      }, REALTIME_REFRESH_DEBOUNCE_MS);
-    };
-
     void loadListings();
     const intervalId = window.setInterval(refreshIfVisible, REFRESH_INTERVAL_MS);
     document.addEventListener('visibilitychange', refreshIfVisible);
     window.addEventListener('focus', refreshIfVisible);
     window.addEventListener('online', refreshIfVisible);
 
-    const liveChannel = supabase
-      .channel('companions-live')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'companions' },
-        scheduleRealtimeRefresh,
-      )
-      .subscribe((status, error) => {
-        if (error) {
-          console.warn('Live listing subscription unavailable:', error.message);
-        } else if (status === 'CHANNEL_ERROR') {
-          console.warn(`Live listing subscription unavailable: ${status}`);
-        }
-      });
-
     return () => {
       isActiveRef.current = false;
       manualLoadRef.current = async () => {};
       pendingAutoRefreshRef.current = false;
       window.clearInterval(intervalId);
-      if (realtimeRefreshTimerRef.current !== null) {
-        window.clearTimeout(realtimeRefreshTimerRef.current);
-      }
       document.removeEventListener('visibilitychange', refreshIfVisible);
       window.removeEventListener('focus', refreshIfVisible);
       window.removeEventListener('online', refreshIfVisible);
-      supabase.removeChannel(liveChannel);
     };
   }, []);
 

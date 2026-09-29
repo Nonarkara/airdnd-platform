@@ -308,11 +308,22 @@
 .aura-level-3 { z-index: 1000 !important; }
 .aura-level-2 { z-index: 900 !important; }
 .aura-level-1 { opacity: 0.82; }
-.listing-pin.availability-available { background: var(--color-status); }
-.listing-pin.availability-open { background: var(--color-data); }
+.listing-pin.availability-available { background: var(--color-status); color: var(--color-status); }
+.listing-pin.availability-open { background: var(--color-data); color: var(--color-data); }
 .listing-pin.availability-closed,
-.listing-pin.availability-unavailable { background: var(--color-danger); }
-.listing-pin.availability-unknown { background: var(--color-cream-muted); }
+.listing-pin.availability-unavailable { background: var(--color-danger); color: var(--color-danger); }
+.listing-pin.availability-unknown { background: var(--color-cream-muted); color: var(--color-cream-muted); }
+
+/* Placement precision. An exact pin is a filled dot. A pin placed at the
+   centre of the subdistrict or district the listing names becomes a ring in
+   the same availability colour, so "somewhere in this area" never reads as
+   "here". District rings are dashed: coarser, and visibly so. */
+.listing-pin.precision-tambon,
+.listing-pin.precision-district {
+  background: transparent !important;
+  border: 2px solid currentColor;
+}
+.listing-pin.precision-district { border-style: dashed; }
 
 .listing-pin:hover {
   transform: scale(1.5);
@@ -377,6 +388,16 @@
 .popup-availability--closed,
 .popup-availability--unavailable { color: var(--color-danger); }
 .popup-availability--unknown { color: var(--color-cream-muted); }
+
+.popup-precision {
+  margin-top: 5px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--color-cream-muted);
+}
+.popup-precision--tambon,
+.popup-precision--district { color: #f59e0b; }
 
 .leaflet-tooltip.user-location-label {
   border: 1px solid var(--color-action) !important;

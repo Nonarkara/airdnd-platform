@@ -24,71 +24,6 @@ import './ListingMap.css';
 
 const BANGKOK_CENTER = [13.7563, 100.5018];
 const DEFAULT_ZOOM = 11;
-const AREA_COORDINATES = [
-  // Nonthaburi / North Bangkok
-  { patterns: ['เมืองทอง', 'muang thong'], coords: [13.912, 100.548] },
-  { patterns: ['ปากเกร็ด', 'pak kret'], coords: [13.914, 100.504] },
-  { patterns: ['บางใหญ่', 'bang yai', 'วัดลาดปลาดุก'], coords: [13.876, 100.411] },
-  { patterns: ['บางกรวย', 'bang kruai'], coords: [13.805, 100.472] },
-  { patterns: ['นนทบุรี', 'นนทบุร', 'nonthaburi'], coords: [13.86, 100.514] },
-  { patterns: ['บางพลัด', 'bang phlat', 'บางอ้อ', 'bang o'], coords: [13.795, 100.501] },
-
-  // Pathum Thani / Far North
-  { patterns: ['รังสิต', 'rangsit'], coords: [13.99, 100.617] },
-  { patterns: ['ลำลูกกา', 'lam luk ka'], coords: [13.932, 100.724] },
-  { patterns: ['คลอง 4', 'คลอง4', 'คลอง6', 'คลอง 6'], coords: [13.969, 100.661] },
-  { patterns: ['ดอนเมือง', 'don mueang', 'สนามบินดอนเมือง'], coords: [13.926, 100.607] },
-  { patterns: ['หลักสี่', 'lak si', 'สะพานใหม่', 'saphan mai'], coords: [13.882, 100.576] },
-  { patterns: ['บางเขน', 'bang khen', 'วัดพระศรีมหาธาตุ'], coords: [13.869, 100.571] },
-  { patterns: ['พหลโยธิน', 'phahon yothin', 'phahonyothin'], coords: [13.826, 100.567] },
-
-  // East / Lat Phrao / Nawamin
-  { patterns: ['ลาดพร้าว', 'lat phrao', 'โชคชัย4', 'โชคชัย 4', 'สตรีวิทยา2', 'สตรีวิทยา 2'], coords: [13.81, 100.594] },
-  { patterns: ['รามอินทรา', 'ramintra', 'ram intra'], coords: [13.852, 100.626] },
-  { patterns: ['นวมินทร์', 'นวมินทร', 'nawamin'], coords: [13.816, 100.647] },
-  { patterns: ['บึงกุ่ม', 'bueng kum'], coords: [13.790, 100.649] },
-  { patterns: ['มีนบุรี', 'min buri', 'สามวา', 'sam wa'], coords: [13.814, 100.735] },
-  { patterns: ['หนองจอก', 'nong chok'], coords: [13.835, 100.838] },
-  { patterns: ['ลาดกระบัง', 'lat krabang'], coords: [13.728, 100.771] },
-  { patterns: ['สุวรรณภูมิ', 'suvarnabhumi', 'บางพลี', 'bang phli'], coords: [13.691, 100.750] },
-
-  // Central / Sukhumvit corridor
-  { patterns: ['สุขุมวิท', 'sukhumvit', 'ทองหล่อ', 'thonglor', 'อโศก', 'asok', 'เอกมัย', 'ekkamai'], coords: [13.735, 100.566] },
-  { patterns: ['รัชดา', 'ratchada', 'ห้วยขวาง', 'huai khwang'], coords: [13.773, 100.574] },
-  { patterns: ['จตุจักร', 'chatuchak', 'ม.กษัตริย์ศึก', 'สวนจตุจักร'], coords: [13.799, 100.553] },
-  { patterns: ['สะพานควาย', 'saphan khwai', 'อารีย์', 'ari', 'สามเสน', 'sam sen'], coords: [13.783, 100.547] },
-  { patterns: ['ปทุมวัน', 'pathum wan', 'สยาม', 'siam', 'ราชประสงค์', 'ratchaprasong', 'ประตูน้ำ', 'pratunam'], coords: [13.744, 100.535] },
-  { patterns: ['ดุสิต', 'dusit', 'นางเลิ้ง', 'nang loeng'], coords: [13.773, 100.519] },
-  { patterns: ['พระราม9', 'พระราม 9', 'rama 9', 'rama9', 'รามา9', 'รามา 9'], coords: [13.756, 100.563] },
-
-  // Far East / On Nut / Prawet
-  { patterns: ['อ่อนนุช', 'on nut', 'on-nut'], coords: [13.704, 100.601] },
-  { patterns: ['อุดมสุข', 'udom suk', 'udomsuk'], coords: [13.686, 100.616] },
-  { patterns: ['ประเวศ', 'prawet'], coords: [13.698, 100.637] },
-  { patterns: ['พัฒนาการ', 'phatthakan', 'pattanakan'], coords: [13.724, 100.617] },
-
-  // South Bangkok
-  { patterns: ['บางนา', 'bang na', 'แบริ่ง', 'bearing', 'สำโรง', 'samrong'], coords: [13.666, 100.612] },
-  { patterns: ['สาทร', 'sathorn', 'สีลม', 'silom'], coords: [13.724, 100.529] },
-  { patterns: ['บางรัก', 'bang rak', 'สี่พระยา', 'si phraya'], coords: [13.726, 100.521] },
-  { patterns: ['ยานนาวา', 'yan nawa', 'yannawa'], coords: [13.705, 100.537] },
-  { patterns: ['ดาวคะนอง', 'dao khanong', 'ราษฎร์บูรณะ', 'rat burana', 'ratburana'], coords: [13.673, 100.516] },
-  { patterns: ['สมุทรปราการ', 'samut prakan', 'ปากน้ำ', 'pak nam', 'พระประแดง', 'phra pradaeng'], coords: [13.599, 100.600] },
-  { patterns: ['บางขุนเทียน', 'bang khun thian'], coords: [13.655, 100.468] },
-
-  // West Bangkok / Thonburi
-  { patterns: ['ธนบุรี', 'thonburi', 'วงเวียนใหญ่', 'wong wian yai'], coords: [13.722, 100.491] },
-  { patterns: ['ปิ่นเกล้า', 'pin klao', 'บางกอกน้อย', 'bang kok noi'], coords: [13.771, 100.485] },
-  { patterns: ['ท่าพระ', 'tha phra', 'บางแค', 'bang khae'], coords: [13.712, 100.430] },
-  { patterns: ['ตลิ่งชัน', 'taling chan'], coords: [13.784, 100.449] },
-  { patterns: ['บางกอกใหญ่', 'bang kok yai', 'บางกอกใหญ', 'วัดอรุณ', 'wat arun'], coords: [13.743, 100.494] },
-
-  // Outlying / Other
-  { patterns: ['ศาลายา', 'salaya'], coords: [13.793, 100.322] },
-  { patterns: ['สมุทรสาคร', 'samut sakhon', 'มหาชัย', 'mahachai'], coords: [13.547, 100.274] },
-  { patterns: ['นครปฐม', 'nakhon pathom', 'nakhonpathom'], coords: [13.819, 100.064] },
-  { patterns: ['ปทุมธานี', 'pathum thani', 'pathumthani', 'คลองหลวง', 'khlong luang'], coords: [14.020, 100.525] },
-];
 const CITY_COORDINATES = {
   Bangkok: BANGKOK_CENTER,
   Nonthaburi: [13.86, 100.514],
@@ -178,53 +113,47 @@ const imergDate = (() => {
   return d.toISOString().slice(0, 10);
 })();
 
-function createStableOffset(listing, radius = 0.012) {
-  const key = String(listing?.id || listing?.phone || listing?.name || '');
-  let hash = 0;
-  for (let i = 0; i < key.length; i += 1) {
-    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
-  }
-
-  const angle = ((hash % 360) * Math.PI) / 180;
-  const distance = (((hash >>> 8) % 100) / 100) * radius;
-  return [Math.sin(angle) * distance, Math.cos(angle) * distance];
-}
-
-function getApproximateCoordinates(listing) {
-  const haystack = [
-    listing?.name,
-    listing?.location,
-    listing?.city,
-    listing?.description,
-  ].filter(Boolean).join(' ').toLowerCase();
-
-  const area = AREA_COORDINATES.find(({ patterns }) =>
-    patterns.some((pattern) => haystack.includes(pattern.toLowerCase())),
-  );
-  const cityCoords = CITY_COORDINATES[listing?.city];
-  // Every listing earns a pin. Matched district → tight scatter; known city →
-  // medium scatter; otherwise fall back to Bangkok with a wide stable scatter
-  // so unmapped supply is still visible (approximate, flagged as 'area').
-  const baseCoords = area?.coords || cityCoords || BANGKOK_CENTER;
-  const radius = area ? 0.008 : cityCoords ? 0.025 : 0.055;
-
-  const [latOffset, lngOffset] = createStableOffset(listing, radius);
-  return [baseCoords[0] + latOffset, baseCoords[1] + lngOffset];
-}
+// Where a pin goes is decided by the placement verdict (src/lib/place_resolver.js),
+// never here. Exact points are drawn as points; a subdistrict or district is
+// drawn at its centre with the uncertainty stated; anything vaguer is listed,
+// not pinned. There is no jitter: scattering a stack of identical guesses made
+// fabricated density look like a real neighbourhood.
+const PINNABLE = new Set(['exact', 'tambon', 'district']);
 
 function getListingCoordinates(listing) {
   const latitude = Number.parseFloat(listing?.latitude);
   const longitude = Number.parseFloat(listing?.longitude);
-  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
-    return { coords: [latitude, longitude], precision: 'exact' };
-  }
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+  const precision = listing?.geoPrecision || 'exact';
+  if (!PINNABLE.has(precision)) return null;
+  return { coords: [latitude, longitude], precision, radiusKm: Number(listing?.geoRadiusKm) || null };
+}
 
-  const approximate = getApproximateCoordinates(listing);
-  if (approximate) {
-    return { coords: approximate, precision: 'area' };
-  }
+function unitLabel(listing, { withProvince = true } = {}) {
+  const unit = listing?.geoUnit;
+  if (!unit) return '';
+  const parts = [unit.tambon?.th, unit.district?.th, withProvince ? unit.province?.th : null].filter(Boolean);
+  return parts.join(' · ');
+}
 
-  return null;
+function describePrecision(listing, precision) {
+  if (precision === 'exact') {
+    if (listing?.geoSource === 'maps-verified') return 'Pinned from the shop\'s map link · confirmed by its address';
+    if (listing?.geoSource === 'maps-link') return 'Pinned from coordinates in the shop\'s own link';
+    return 'Pinned from the shop\'s map link';
+  }
+  const radius = Number(listing?.geoRadiusKm);
+  const within = Number.isFinite(radius) ? ` · within ~${radius < 1 ? radius.toFixed(1) : Math.round(radius)} km` : '';
+  const scope = precision === 'tambon' ? 'Somewhere in' : 'Somewhere in district';
+  return `${scope} ${unitLabel(listing, { withProvince: false }) || 'the named area'}${within}`;
+}
+
+function mapsHrefFor(listing) {
+  return formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude, {
+    precision: listing.geoPrecision || 'exact',
+    name: listing.name,
+    location: listing.location,
+  });
 }
 
 function escapeHtml(value) {
@@ -240,9 +169,7 @@ function buildPopupHtml(listing, precision, availability) {
   const lines = [];
   lines.push(`<strong style="font-size:14px">${escapeHtml(listing.name || 'Unknown')}</strong>`);
   if (listing.location) lines.push(`<div style="font-size:11px;color:#888;margin-top:2px">${escapeHtml(listing.location)}</div>`);
-  if (precision === 'area') {
-    lines.push('<div style="margin-top:5px;font-size:10px;color:#9fc2ff;font-family:monospace;text-transform:uppercase">Area-level pin</div>');
-  }
+  lines.push(`<div class="popup-precision popup-precision--${escapeHtml(precision)}">${escapeHtml(describePrecision(listing, precision))}</div>`);
   lines.push(`<div class="popup-availability popup-availability--${escapeHtml(availability.state)}">${escapeHtml(availability.label)}</div>`);
 
   const meta = [];
@@ -253,7 +180,7 @@ function buildPopupHtml(listing, precision, availability) {
   const links = [];
   const telHref = formatTelLink(listing.phone);
   const lineHref = formatLineUrl(listing.lineUrl);
-  const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude);
+  const mapsHref = mapsHrefFor(listing);
   if (telHref) links.push(`<a href="${escapeHtml(telHref)}" style="color:#c8102e">Tel</a>`);
   if (lineHref) links.push(`<a href="${escapeHtml(lineHref)}" target="_blank" rel="noopener noreferrer" style="color:#06c755">LINE</a>`);
   if (mapsHref) links.push(`<a href="${escapeHtml(mapsHref)}" target="_blank" rel="noopener noreferrer" style="color:#4285f4">Maps</a>`);
@@ -300,11 +227,11 @@ function getAuraClass(listing) {
   return 'aura-level-1';
 }
 
-function createPinIcon(listing, availability) {
+function createPinIcon(listing, availability, precision = 'exact') {
   const mentions = Number(listing.mentionCount) || Number(listing.mention_count) || 1;
   const size = mentions > 10 ? 22 : mentions > 3 ? 16 : 10;
   return L.divIcon({
-    className: `listing-pin ${getAuraClass(listing)} availability-${availability.state}`,
+    className: `listing-pin ${getAuraClass(listing)} availability-${availability.state} precision-${precision}`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
     popupAnchor: [0, -(size / 2 + 3)],
@@ -355,38 +282,13 @@ export default function ListingMap({
       if (coordinateResult) withCoords.push({ listing, ...coordinateResult });
       else withoutCoords.push(listing);
     });
-
-    // De-stack shared centroids. The scraper assigns a district/province centroid
-    // when it can't geocode a precise address, so dozens of listings pile onto a
-    // single coordinate (14 on Bangkok-center alone) and the map reads as "1 pin
-    // for 100 listings". Spread any shared coordinate with a stable per-listing
-    // offset so the real supply density becomes visible.
-    const buckets = new Map();
-    withCoords.forEach((pin) => {
-      const key = `${pin.coords[0].toFixed(3)},${pin.coords[1].toFixed(3)}`;
-      if (!buckets.has(key)) buckets.set(key, []);
-      buckets.get(key).push(pin);
-    });
-    buckets.forEach((group) => {
-      if (group.length <= 1) return;
-      // Fixed radius — must NOT depend on group.length, or bucket sizes shifting
-      // between 30s refreshes would move every pin and make the map "bounce".
-      // Each listing's offset is deterministic (hash of its id), so pins are
-      // stable across refreshes.
-      group.forEach((pin) => {
-        const [dLat, dLng] = createStableOffset(pin.listing, 0.016);
-        pin.coords = [pin.coords[0] + dLat, pin.coords[1] + dLng];
-        pin.precision = 'area';
-      });
-    });
-
     return { pins: withCoords, pendingListings: withoutCoords };
   }, [listings]);
   const exactPinCount = pins.filter((pin) => pin.precision === 'exact').length;
   const areaPinCount = pins.length - exactPinCount;
   const pinSummary = [
-    exactPinCount > 0 ? `${exactPinCount} verified pins` : null,
-    areaPinCount > 0 ? `${areaPinCount} area pins` : null,
+    exactPinCount > 0 ? `${exactPinCount} exact` : null,
+    areaPinCount > 0 ? `${areaPinCount} by subdistrict or district` : null,
   ].filter(Boolean).join(' · ') || '0 mapped pins';
 
   const nearby = useMemo(() => {
@@ -407,7 +309,7 @@ export default function ListingMap({
         total: matches.length,
         available: matches.filter((pin) => pin.availability.state === 'available').length,
         open: matches.filter((pin) => pin.availability.state === 'open').length,
-        approximate: matches.filter((pin) => pin.precision === 'area').length,
+        approximate: matches.filter((pin) => pin.precision !== 'exact').length,
       };
     };
     return {
@@ -725,10 +627,10 @@ export default function ListingMap({
     if (!markersRef.current || !mapInstanceRef.current) return;
     markersRef.current.clearLayers();
 
-    for (const { listing, coords, precision } of pins) {
+    for (const { listing, coords, precision, radiusKm } of pins) {
       const availability = getAvailability(listing, nowMs);
-      const marker = L.marker(coords, { 
-        icon: createPinIcon(listing, availability),
+      const marker = L.marker(coords, {
+        icon: createPinIcon(listing, availability, precision),
         alt: listing.name || 'Listing location',
         title: listing.name || 'Listing location',
       });
@@ -736,6 +638,26 @@ export default function ListingMap({
         maxWidth: 260,
         className: 'listing-popup',
       });
+      // An approximate pin shows its honest extent while it is being read, so
+      // "somewhere in this subdistrict" is drawn as an area, not implied as a point.
+      if (precision !== 'exact' && radiusKm) {
+        let ring = null;
+        marker.on('popupopen', () => {
+          ring = L.circle(coords, {
+            radius: radiusKm * 1000,
+            color: '#f59e0b',
+            weight: 1,
+            dashArray: '4 4',
+            fillColor: '#f59e0b',
+            fillOpacity: 0.06,
+            interactive: false,
+          }).addTo(mapInstanceRef.current);
+        });
+        marker.on('popupclose', () => {
+          if (ring) ring.remove();
+          ring = null;
+        });
+      }
       // Tooltip on hover
       marker.bindTooltip(`<strong>${escapeHtml(listing.name || 'Unknown')}</strong>`, {
         direction: 'top',
@@ -945,7 +867,7 @@ export default function ListingMap({
               >
                 <span>{pin.listing.name || 'Unknown'}</span>
                 <small>{pin.availability.label}</small>
-                <strong>{pin.precision === 'area' ? '~' : ''}{formatDistance(pin.distance)}</strong>
+                <strong>{pin.precision !== 'exact' ? '~' : ''}{formatDistance(pin.distance)}</strong>
               </button>
             )) : <small className="map-nearest-empty">No mapped places within 10 km.</small>}
           </div>
@@ -1036,14 +958,17 @@ export default function ListingMap({
       {pendingListings.length > 0 && (
         <div className="listing-map-pending">
           <div className="pending-header">
-            <span className="section-kicker">PENDING LOCATION</span>
-            <p>{pendingListings.length} listings are active but have no confirmed map coordinates.</p>
+            <span className="section-kicker">NOT PINNED</span>
+            <p>
+              {pendingListings.length} active listings name no place finer than a province, so they are
+              listed here rather than given a pin that would imply a location nobody stated.
+            </p>
           </div>
           <div className="pending-list">
             {pendingListings.map((listing) => {
               const telHref = formatTelLink(listing.phone);
               const lineHref = formatLineUrl(listing.lineUrl);
-              const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude);
+              const mapsHref = mapsHrefFor(listing);
               return (
                 <div key={listing.id} className="pending-row">
                   <span className="pending-name">
@@ -1056,7 +981,7 @@ export default function ListingMap({
                       {listing.name || '—'}
                     </button>
                   </span>
-                  <span className="pending-location">{listing.location || '—'}</span>
+                  <span className="pending-location">{unitLabel(listing) || listing.location || '—'}</span>
                   <span className="pending-contacts">
                     {telHref && <a href={telHref}>{formatTelDisplay(listing.phone) || listing.phone}</a>}
                     {mapsHref && <a href={mapsHref} target="_blank" rel="noreferrer">Maps</a>}

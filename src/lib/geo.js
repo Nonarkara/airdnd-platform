@@ -62,8 +62,18 @@ export function classifyArea(listing) {
 export function listingCoords(listing) {
   const lat = Number.parseFloat(listing?.latitude);
   const lng = Number.parseFloat(listing?.longitude);
-  if (Number.isFinite(lat) && Number.isFinite(lng) && lat !== 0 && lng !== 0) {
+  const hasPoint = Number.isFinite(lat) && Number.isFinite(lng) && lat !== 0 && lng !== 0;
+  // The placement verdict (src/lib/place_resolver.js) decides what a stored
+  // coordinate means. Without this, "nearest to you" ranked by points that were
+  // fabricated — the same fourteen shops always "closest" to north Bangkok.
+  const precision = listing?.geoPrecision;
+  if (hasPoint && (precision === undefined || precision === 'exact')) {
     return { coords: [lat, lng], precision: 'exact', areaLabel: null };
+  }
+  if (hasPoint && (precision === 'tambon' || precision === 'district')) {
+    const unit = listing.geoUnit || {};
+    const areaLabel = [unit.tambon?.th, unit.district?.th].filter(Boolean).join(' · ') || null;
+    return { coords: [lat, lng], precision: 'approximate', areaLabel };
   }
   const areaName = classifyArea(listing);
   if (areaName) {
