@@ -24,6 +24,7 @@ import {
 } from '../lib/normalization';
 import { trackSignal, isListingSaved } from '../lib/tracker';
 import './ListingModal.css';
+import ListingCategory from './ListingCategory';
 
 function ListingModal({ listing, onClose, t }) {
   const contentRef = useRef(null);
@@ -441,6 +442,8 @@ function ListingModal({ listing, onClose, t }) {
               <span className="modal-owner-label">For business owners</span>
               <p>Is this your listing? <a href="mailto:hello@sabaisabai.dev?subject=Claim Listing" target="_blank" rel="noopener noreferrer">Claim or update it</a> to keep your information accurate.</p>
             </div>
+
+            <ListingCategory listing={listing} />
 
             <div className="modal-description">
               <h3>{t.modal.about}</h3>

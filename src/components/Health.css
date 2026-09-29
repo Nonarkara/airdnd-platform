@@ -384,3 +384,38 @@
   .health-hypotheses { grid-template-columns: 1fr; }
   .health-bars-row { grid-template-columns: 5rem 1fr auto; }
 }
+
+/* ─── Outreach planner ─────────────────────────────────────────────────────── */
+.outreach-audiences {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  border: 1px solid var(--line-2);
+  margin: 1rem 0 0.5rem;
+}
+.outreach-audiences button {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid var(--line-2);
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink-3);
+  font: inherit;
+}
+.outreach-audiences button:last-child { border-right: 0; }
+.outreach-audiences button strong { font-size: var(--fs-xs); letter-spacing: 0.04em; text-transform: uppercase; }
+.outreach-audiences button span { font-size: 11px; }
+.outreach-audiences button { border-bottom: 2px solid transparent; }
+.outreach-audiences button.is-on { color: var(--ink); border-bottom-color: #f59e0b; }
+.outreach-lead { color: var(--ink-2); }
+.outreach-signals { margin: 0.25rem 0 1rem; padding-left: 1.1rem; color: var(--ink-3); font-size: var(--fs-xs); line-height: 1.6; }
+.outreach-table-wrap { overflow-x: auto; }
+.outreach-table td small { display: block; color: var(--ink-4); font-size: 10px; }
+.outreach-table th.is-focus, .outreach-table td.is-focus { color: var(--ink); }
+.outreach-table th:not(.is-focus):not(:first-child):not(:nth-child(2)):not(:last-child),
+.outreach-table td.mono:not(.is-focus):not(:nth-child(2)) { color: var(--ink-4); }
+.outreach-table tr.is-unplaced td { color: var(--ink-3); }
+.outreach-orgs { font-size: 11px; color: var(--ink-3); min-width: 220px; }

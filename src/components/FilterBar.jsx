@@ -16,6 +16,9 @@ function FilterBar({
   setActivePriceTier,
   activeOpenStatus = 'all',
   setActiveOpenStatus,
+  categoryGroups = [],
+  activeCategory = 'all',
+  setActiveCategory,
   onOpenDistrictDrawer,
   onRefresh,
   isRefreshing,
@@ -61,6 +64,28 @@ function FilterBar({
           ))}
         </select>
       </div>
+
+      {categoryGroups.length > 0 && setActiveCategory && (
+        <div className="filter-field">
+          <label htmlFor="filter-category">Category · หมวด</label>
+          <select
+            id="filter-category"
+            value={activeCategory}
+            onChange={(event) => setActiveCategory(event.target.value)}
+          >
+            <option value="all">All categories · ทั้งหมด</option>
+            {categoryGroups.map((group) => (
+              <optgroup key={group.label} label={group.label}>
+                {group.options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label} ({option.count})
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="filter-field">
         <label htmlFor="filter-activity">{t.filters.activity}</label>

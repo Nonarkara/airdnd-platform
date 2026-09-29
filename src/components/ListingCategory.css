@@ -1,0 +1,102 @@
+/* Category & support — matches .modal-intel: one ruled panel, mono labels,
+   no radius, no shadow. Amber is not used here: nothing in this panel is an
+   alert, it is information. */
+.listing-category {
+  margin-top: 1.25rem;
+  padding: 14px 16px;
+  border: 1px solid var(--line-2);
+  background: var(--surface-2);
+}
+
+.listing-category-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--ink-4);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.listing-category-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.listing-category-chips li {
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  border: 1px solid var(--line-2);
+  padding: 3px 8px;
+}
+
+.listing-support {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-2);
+}
+
+.listing-support-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px 16px;
+  margin: 0;
+}
+
+.listing-support-facts dt {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  display: flex;
+  flex-direction: column;
+}
+
+.listing-support-facts dt small {
+  color: var(--ink-4);
+  font-size: 10px;
+}
+
+.listing-support-facts dd {
+  margin: 2px 0 0;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.listing-support-orgs {
+  margin: 12px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.listing-support-orgs span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 3px;
+}
+
+.listing-support-note {
+  margin: 10px 0 0;
+  font-size: 10px;
+  color: var(--ink-4);
+}
+
+.listing-support-none {
+  font-family: var(--font-sans, inherit);
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+.listing-support-note a {
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

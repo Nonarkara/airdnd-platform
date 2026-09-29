@@ -17,6 +17,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
 import { initSession } from './lib/tracker';
 import { ensurePlacement } from './lib/placement_client';
+import { attachCategories, categoryFilterGroups, matchesCategory } from './lib/taxonomy';
 import {
   SOURCE_LABELS,
   createIntakeSummary,
@@ -314,6 +315,7 @@ function App() {
   const [activeActivity, setActiveActivity] = useState(ALL_TAGS_VALUE);
   const [activePriceTier, setActivePriceTier] = useState('all');
   const [activeOpenStatus, setActiveOpenStatus] = useState('all');
+  const [activeCategory, setActiveCategory] = useState('all');
   const [isDistrictDrawerOpen, setIsDistrictDrawerOpen] = useState(false);
   const [sortBy, setSortBy] = useState(DEFAULT_SORT);
   const [selectedListing, setSelectedListing] = useState(null);
@@ -492,7 +494,7 @@ function App() {
         }));
 
         const result = await loadListingsWithFallback();
-        result.listings = await ensurePlacement(result.listings);
+        result.listings = attachCategories(await ensurePlacement(result.listings));
         if (!isActiveRef.current) {
           return;
         }
@@ -529,7 +531,7 @@ function App() {
         }));
 
         const result = await loadListingsWithFallback(mode);
-        result.listings = await ensurePlacement(result.listings);
+        result.listings = attachCategories(await ensurePlacement(result.listings));
         if (!isActiveRef.current) {
           return;
         }
@@ -585,6 +587,8 @@ function App() {
     [allListings, t.filters.allTags],
   );
 
+  const categoryGroups = useMemo(() => categoryFilterGroups(allListings), [allListings]);
+
   const filteredListings = useMemo(
     () =>
       sortListings(
@@ -621,12 +625,25 @@ function App() {
             (activeOpenStatus === '247' && /24\s*ชั่วโมง|24\s*hrs|24\s*hours/i.test(listing.hours || '')) ||
             (activeOpenStatus === 'open' && (listing.isOpenNow || /24|เปิด|open/i.test(listing.hours || '')));
 
-          return matchesLocation && matchesActivity && matchesSearch && matchesPriceTier && matchesOpenStatus;
+          const matchesCategoryFilter = activeCategory === 'all' || (listing.category && matchesCategory(listing.category, activeCategory));
+
+          return matchesLocation && matchesActivity && matchesSearch && matchesPriceTier && matchesOpenStatus && matchesCategoryFilter;
         }),
         sortBy,
       ),
-    [activeActivity, activeLocation, activePriceTier, activeOpenStatus, allListings, deferredSearchTerm, sortBy],
+    [activeActivity, activeCategory, activeLocation, activePriceTier, activeOpenStatus, allListings, deferredSearchTerm, sortBy],
   );
+
+  // One definition for the filter bar and the empty-grid prompt. The grid's
+  // copy used to omit price, open-now and category, so a grid filtered to
+  // nothing by one of those offered no way to clear it.
+  const hasActiveFilters = Boolean(searchTerm.trim())
+    || activeLocation !== ALL_LOCATIONS_VALUE
+    || activeActivity !== ALL_TAGS_VALUE
+    || activePriceTier !== 'all'
+    || activeOpenStatus !== 'all'
+    || activeCategory !== 'all'
+    || sortBy !== DEFAULT_SORT;
 
   const clearFilters = () => {
     setSearchTerm('');
@@ -634,6 +651,7 @@ function App() {
     setActiveActivity(ALL_TAGS_VALUE);
     setActivePriceTier('all');
     setActiveOpenStatus('all');
+    setActiveCategory('all');
     setSortBy(DEFAULT_SORT);
   };
 
@@ -963,6 +981,9 @@ function App() {
                     activeLocation={activeLocation}
                     setActiveLocation={setActiveLocation}
                     activityOptions={activityOptions}
+                    categoryGroups={categoryGroups}
+                    activeCategory={activeCategory}
+                    setActiveCategory={setActiveCategory}
                     activeActivity={activeActivity}
                     setActiveActivity={setActiveActivity}
                     activePriceTier={activePriceTier}
@@ -976,14 +997,7 @@ function App() {
                     onRefresh={handleRefresh}
                     isRefreshing={dataState.isRefreshing}
                     onClearFilters={clearFilters}
-                    hasActiveFilters={
-                      Boolean(searchTerm.trim()) ||
-                      activeLocation !== ALL_LOCATIONS_VALUE ||
-                      activeActivity !== ALL_TAGS_VALUE ||
-                      activePriceTier !== 'all' ||
-                      activeOpenStatus !== 'all' ||
-                      sortBy !== DEFAULT_SORT
-                    }
+                    hasActiveFilters={hasActiveFilters}
                     resultCount={filteredListings.length}
                     t={t}
                   />
@@ -995,12 +1009,7 @@ function App() {
                     t={t}
                     dataState={displayDataState}
                     onClearFilters={clearFilters}
-                    hasActiveFilters={
-                      Boolean(searchTerm.trim()) ||
-                      activeLocation !== ALL_LOCATIONS_VALUE ||
-                      activeActivity !== ALL_TAGS_VALUE ||
-                      sortBy !== DEFAULT_SORT
-                    }
+                    hasActiveFilters={hasActiveFilters}
                     isLoading={dataState.isLoading}
                   />
                 </ErrorBoundary>

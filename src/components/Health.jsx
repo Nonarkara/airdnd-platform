@@ -8,6 +8,7 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 import PageBanner from './PageBanner';
 import './Health.css';
+import OutreachPlanner from './OutreachPlanner';
 
 function formatBaht(n) {
   if (n == null || Number.isNaN(Number(n))) return '—';
@@ -19,7 +20,7 @@ function Health({ listings = [] }) {
   const page = t.pages?.health || {};
   const [bundle, setBundle] = useState(null);
   const [error, setError] = useState(null);
-  const [lens, setLens] = useState('public');
+  const [lens, setLens] = useState('outreach');
 
   useEffect(() => {
     let cancelled = false;
@@ -76,6 +77,7 @@ function Health({ listings = [] }) {
 
       <nav className="health-lenses" aria-label="Research lenses">
         {[
+          { id: 'outreach', label: 'Outreach planner' },
           { id: 'public', label: 'Public epidemic' },
           { id: 'services', label: 'Services · BE 2568' },
           { id: 'parlour', label: 'Parlour corridor' },
@@ -93,8 +95,14 @@ function Health({ listings = [] }) {
         ))}
       </nav>
 
+      {lens === 'outreach' && (
+        <section className="health-lens-body">
+          <OutreachPlanner listings={listings} />
+        </section>
+      )}
+
       {error && <p className="health-error">{error}</p>}
-      {!matrix && !error && <p className="health-loading">Loading provincial case matrix…</p>}
+      {lens !== 'outreach' && !matrix && !error && <p className="health-loading">Loading provincial case matrix…</p>}
 
       {matrix && (
         <>
