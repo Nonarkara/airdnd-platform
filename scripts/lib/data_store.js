@@ -32,3 +32,14 @@ export async function openDataClient(who) {
   const { createClient } = await import('@supabase/supabase-js');
   return createClient(url, key, { auth: { persistSession: false } });
 }
+
+/**
+ * Like openDataClient, but for optional features (the bot's database copy,
+ * the demand digest): returns null instead of throwing when neither the
+ * local store nor Supabase is configured.
+ */
+export async function openOptionalDataClient(who) {
+  if (isLocalStore()) return openDataClient(who);
+  if (!process.env.VITE_SUPABASE_URL || !process.env.VITE_SUPABASE_SERVICE_ROLE_KEY) return null;
+  return openDataClient(who);
+}

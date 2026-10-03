@@ -154,7 +154,7 @@ test('publish end to end: one copy per picture, screened, idempotent, and the ga
   const env = {
     ...process.env,
     LOCAL_DB: '1', LOCAL_DB_PATH: dbPath,
-    PHOTO_LEDGER_PATH: path.join(dir, 'ledger.json'), PHOTO_MAP_PATH: path.join(dir, 'map.json'),
+    PHOTO_LEDGER_PATH: path.join(dir, 'ledger.json'), PHOTO_MAP_PATH: path.join(dir, 'map.json'), OPS_STATUS_PATH: path.join(dir, 'ops-status.json'),
     R2_ACCOUNT_ID: 'acct', R2_ACCESS_KEY_ID: 'test-key', R2_SECRET_ACCESS_KEY: 'test-secret', R2_BUCKET: 'sabai-photos',
     R2_ENDPOINT: `http://127.0.0.1:${r2.port}`, PHOTO_PUBLIC_BASE_URL: 'https://photos.example/',
   };
@@ -165,6 +165,9 @@ test('publish end to end: one copy per picture, screened, idempotent, and the ga
     assert.match(first.stdout, /publish 2 · withheld by safety screen 1 · archive only \(on no listing\) 1/);
     assert.match(first.stdout, /COMPLETE/);
     assert.equal(r2.puts.length, 2, 'one upload per published picture');
+    const status = JSON.parse(fs.readFileSync(env.OPS_STATUS_PATH, 'utf8')).photos;
+    assert.equal(status.ok, true);
+    assert.equal(status.published, 2, 'the watchdog can see the nightly run');
     for (const [, obj] of r2.objects) {
       assert.equal(obj.type, 'image/jpeg');
       assert.match(obj.cache, /immutable/);

@@ -55,7 +55,8 @@ async function runIntegrityCheck() {
   const alerts = [];
 
   // Load all listings
-  const { data: listings, error } = (await getSupabase())
+  const client = await getSupabase();
+  const { data: listings, error } = await client
     .from('companions')
     .select('id, phone, phone_normalized, canonical_key, latitude, longitude, maps_url')
     .limit(10000);

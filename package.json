@@ -28,7 +28,7 @@
     "test": "node --test",
     "bot": "node scripts/telegram_bot.js",
     "userbot": "node scripts/userbot.js",
-    "userbot:daemon": "chmod +x scripts/daemon.sh && ./scripts/daemon.sh",
+    "userbot:daemon": "node scripts/ops/launchd.js install",
     "sociology:compute": "node scripts/compute_sociology.js",
     "research:compute": "node scripts/compute_research.js",
     "health:research": "node scripts/build_health_research.js",
@@ -54,7 +54,15 @@
     "geo:index": "node scripts/build_geo_index.js",
     "geo:relocate": "node scripts/relocate_listings.js",
     "exit:export": "node scripts/supabase_export.js",
-    "exit:import": "node scripts/import_supabase_export.js"
+    "exit:import": "node scripts/import_supabase_export.js",
+    "ops:install": "node scripts/ops/launchd.js install",
+    "ops:status": "node scripts/ops/launchd.js status",
+    "ops:start": "node scripts/ops/launchd.js start",
+    "ops:stop": "node scripts/ops/launchd.js stop",
+    "ops:uninstall": "node scripts/ops/launchd.js uninstall",
+    "ops:doctor": "node scripts/ops/doctor.js",
+    "ops:backup": "node scripts/backup_db.js",
+    "ops:test-alert": "node scripts/ops/alert.js"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",

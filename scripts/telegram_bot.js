@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import TelegramBot from 'node-telegram-bot-api';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
-import { createClient } from '@supabase/supabase-js';
+import { openOptionalDataClient, isLocalStore } from './lib/data_store.js';
 import { uploadPhoto, appendToSheet } from './google_service.js';
 import {
   dedupeListings,
@@ -23,8 +23,6 @@ const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 const driveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 const sheetId = process.env.GOOGLE_SHEET_ID;
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 const forwardGroupId = process.env.TELEGRAM_FORWARD_GROUP_ID
   ? Number(process.env.TELEGRAM_FORWARD_GROUP_ID)
   : null;
@@ -43,10 +41,8 @@ if (!botToken || !geminiApiKey) {
     .readdirSync(mockupsDir)
     .filter((file) => file.endsWith('.jpg') || file.endsWith('.png'));
   const pendingPhotos = [];
-  const supabase =
-    supabaseUrl && supabaseServiceRoleKey
-      ? createClient(supabaseUrl, supabaseServiceRoleKey)
-      : null;
+  // Same store as the collector: LOCAL_DB=1 → the Mac's SQLite file.
+  const supabase = await openOptionalDataClient('telegram_bot');
 
   function buildPrompt(rawText) {
     return `
@@ -255,7 +251,7 @@ ${rawText}
   } else {
     console.log('Forward pipeline active for all chats (no TELEGRAM_FORWARD_GROUP_ID set)');
   }
-  console.log(`Supabase: ${supabase ? 'connected' : 'not configured'}`);
+  console.log(`Listing store: ${supabase ? (isLocalStore() ? 'local SQLite' : 'Supabase') : 'not configured'}`);
 
   function isForwardedMessage(msg) {
     return !!(msg.forward_from_chat || msg.forward_from || msg.forward_origin);

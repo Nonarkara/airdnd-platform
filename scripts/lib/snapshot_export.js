@@ -9,6 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import { canonicalizePublicListings, validatePublicListing } from '../../src/lib/listing_contract.js';
 import { getGeoIndex } from './geo.js';
+import { categorizeListing } from '../../src/lib/taxonomy.js';
 import { getPhotoMap } from './photo_map.js';
 import { readTable } from './local_store.js';
 
@@ -138,6 +139,7 @@ export function buildSnapshotListings(rows, photos) {
     geoNote: listing.geoNote,
     isSafeImage: listing.isSafeImage,
     mentionCount: listing.mentionCount,
+    category: categorizeListing(listing),
     aliasNames: Array.isArray(listing.aliasNames) ? listing.aliasNames : [],
     aliasCount: listing.aliasCount || ((listing.aliasNames?.length || 0) + 1),
     credibility: computeCredibility(listing),

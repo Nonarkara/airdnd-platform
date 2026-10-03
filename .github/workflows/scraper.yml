@@ -1,10 +1,12 @@
 name: Air-DnD Telegram Scraper Pipeline
 
+# Manual only. The collector runs on the always-on Mac (npm run ops:install).
+# On a schedule this job was a second client on the same Telegram session —
+# which gets the session revoked (AUTH_KEY_DUPLICATED) — and it writes to
+# Supabase, which is being switched off. It last ran on 2026-06-17, and its
+# last ten runs all failed.
 on:
-  schedule:
-    # Run every 30 minutes
-    - cron: '*/30 * * * *'
-  workflow_dispatch: # Allow manual trigger from the GitHub UI
+  workflow_dispatch: # Manual trigger from the GitHub UI only
 
 jobs:
   scrape-and-sync:

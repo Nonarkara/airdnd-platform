@@ -14,6 +14,7 @@ import { getApps, initializeApp } from 'firebase/app';
 import { collection, doc, getDocs, getFirestore, writeBatch } from 'firebase/firestore';
 import { applyPhotoMap, canonicalizePublicListings } from '../src/lib/listing_contract.js';
 import { isListingMediaSafe } from '../src/lib/listings.js';
+import { categorizeListing } from '../src/lib/taxonomy.js';
 import { getGeoIndex } from './lib/geo.js';
 import { getPhotoMap } from './lib/photo_map.js';
 
@@ -52,6 +53,9 @@ function getDocumentId(listing) {
 
 export async function syncListingsToFirestore(listings) {
   const publicListings = canonicalizePublicListings(listings, { source: 'supabase', allowUnverified: true, geoIndex: getGeoIndex(), photoMap: getPhotoMap() })
+    // Categorised here, on the Mac, after placement (a shop's format depends
+    // on whether it can be placed) — so every reader of Firestore gets them.
+    .map((listing) => ({ ...listing, category: categorizeListing(listing) }))
     .map(stripUndefined)
     .filter((listing) => getDocumentId(listing));
 

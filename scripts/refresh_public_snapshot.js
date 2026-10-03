@@ -1,17 +1,23 @@
 import fs from 'fs';
 import path from 'path';
-import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import { canonicalizePublicListings, validatePublicListing } from '../src/lib/listing_contract.js';
+import { isLocalStore, openDataClient } from './lib/data_store.js';
+import { categorizeListing } from '../src/lib/taxonomy.js';
 
 dotenv.config();
 
-const DEFAULT_SUPABASE_URL = 'https://fehdtfncbutesgadjsxp.supabase.co';
-const supabaseUrl = process.env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL;
-const key = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_mf3Wmwk6mMO-EoYaDxMUvA_CihTsTBF';
-const supabase = createClient(supabaseUrl, key, {
-  auth: { persistSession: false },
-});
+// Once the Mac's SQLite store is the source of truth (LOCAL_DB=1), the
+// snapshot is built from it — not from Firestore, which is only a copy.
+if (isLocalStore()) {
+  const { openLocalDb } = await import('./lib/local_store.js');
+  const { exportSnapshotFromDb } = await import('./lib/snapshot_export.js');
+  const db = openLocalDb();
+  const { count, outPath } = exportSnapshotFromDb(db, { publicDir: path.join(process.cwd(), 'public') });
+  db.close();
+  console.log(`Refreshed ${path.relative(process.cwd(), outPath)} with ${count} canonical public listing(s) from the local store.`);
+  process.exit(0);
+}
 
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
@@ -37,6 +43,13 @@ try {
   console.log(`Pulled ${rawData.length} raw docs from Firestore`);
 } catch (fsErr) {
   console.warn(`Firestore pull failed (${fsErr.message}), falling back to Supabase...`);
+  let supabase;
+  try {
+    supabase = await openDataClient('refresh_public_snapshot');
+  } catch (error) {
+    console.error(`Could not refresh snapshot: ${error.message}`);
+    process.exit(1);
+  }
   const { data, error } = await supabase
     .from('companions')
     .select('*')
@@ -172,6 +185,7 @@ const slimListings = publicListings.map((listing) => ({
   geoNote: listing.geoNote,
   isSafeImage: listing.isSafeImage,
   mentionCount: listing.mentionCount,
+  category: categorizeListing(listing),
   aliasNames: Array.isArray(listing.aliasNames) ? listing.aliasNames : [],
   aliasCount: listing.aliasCount || ((listing.aliasNames?.length || 0) + 1),
   credibility: computeCredibility(listing),

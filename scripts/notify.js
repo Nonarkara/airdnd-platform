@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createClient } from '@supabase/supabase-js';
+import { openOptionalDataClient } from './lib/data_store.js';
 import dotenv from 'dotenv';
 import { reportCapability } from './capability_report.js';
 
@@ -9,12 +9,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-const supabase =
-  supabaseUrl && supabaseServiceRoleKey
-    ? createClient(supabaseUrl, supabaseServiceRoleKey)
-    : null;
+// Opened on first use, from the same store the collector writes to.
+let storePromise = null;
+const getStore = () => (storePromise ||= openOptionalDataClient('notify').catch(() => null));
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;
@@ -213,7 +210,9 @@ export async function notifyListings(listings) {
  * Designed to run every 15 minutes via cron or the scraper loop.
  */
 export async function notifyDemandSignals(sinceMinutes = 15) {
-  if (!BOT_TOKEN || !supabase) return;
+  if (!BOT_TOKEN) return;
+  const supabase = await getStore();
+  if (!supabase) return;
 
   const chatId = await discoverChatId();
   if (!chatId) return;

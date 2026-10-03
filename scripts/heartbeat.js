@@ -21,9 +21,16 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { execSync } from 'child_process';
 import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
+import { categorizeListing } from '../src/lib/taxonomy.js';
 import { getGeoIndex } from './lib/geo.js';
 import { getPhotoMap } from './lib/photo_map.js';
-import { openDataClient } from './lib/data_store.js';
+import { isLocalStore, openDataClient } from './lib/data_store.js';
+import os from 'os';
+import { readLatestBackup } from './lib/db_backup.js';
+import { rotateLogs } from './ops/rotate_logs.js';
+import { readStatus, recordStatus } from './ops/status.js';
+import { buildChecks, evaluateChecks, loadState, saveState } from './ops/watchdog.js';
+import { pingHealthcheck, sendOwnerAlert } from './ops/alert.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,8 +57,9 @@ async function getSupabase() {
   return supabaseClient;
 }
 
-async function pullSnapshot() {
-  const { data, error } = (await getSupabase())
+export async function pullSnapshot() {
+  const client = await getSupabase();
+  const { data, error } = await client
     .from('companions')
     .select('*')
     .order('updated_at', { ascending: false, nullsFirst: false })
@@ -99,6 +107,7 @@ function writeSnapshot(rows) {
     geoNote: l.geoNote,
     isSafeImage: l.isSafeImage,
     mentionCount: l.mentionCount,
+    category: categorizeListing(l),
   })).sort((left, right) => {
     const leftTime = new Date(left.postedAt || left.updatedAt || left.createdAt || 0).getTime();
     const rightTime = new Date(right.postedAt || right.updatedAt || right.createdAt || 0).getTime();
@@ -264,6 +273,47 @@ async function main() {
       `${JSON.stringify(entry)}\n`,
     );
     console.log(JSON.stringify({ summary: { ok: entry.ok ?? false, total: entry.snapshotCount, ageHours: entry.ageHours, error: entry.error } }));
+    recordStatus('heartbeat', { ok: !entry.error, snapshotCount: entry.snapshotCount, error: entry.error });
+    await watch(entry);
+  }
+}
+
+function freeBytes(dir) {
+  try {
+    const st = fs.statfsSync(dir);
+    return st.bavail * st.bsize;
+  } catch {
+    return null;
+  }
+}
+
+// Logs, checks, alerts. Never allowed to fail the heartbeat itself.
+async function watch(entry) {
+  try {
+    const rotated = rotateLogs(LOG_DIR);
+    if (rotated.length) console.log(`rotated logs: ${rotated.join(', ')}`);
+    const status = readStatus();
+    const backupDir = path.resolve(process.env.BACKUP_DIR || path.join(ROOT, 'backups'));
+    const checks = buildChecks({
+      collector: entry.collector || computeCollectorHealth(),
+      data: Number.isFinite(entry.ageHours) ? { ageHours: entry.ageHours } : null,
+      freeBytes: freeBytes(ROOT),
+      localStore: isLocalStore(),
+      backup: status.backup || readLatestBackup(backupDir),
+      r2: Boolean(process.env.R2_BUCKET && process.env.PHOTO_PUBLIC_BASE_URL),
+      photos: status.photos,
+      heartbeatError: entry.error,
+    });
+    const statePath = path.join(LOG_DIR, 'watchdog-state.json');
+    const { messages, state } = evaluateChecks(checks, loadState(statePath));
+    saveState(statePath, state);
+    for (const message of messages) {
+      const result = await sendOwnerAlert(`Sabai · ${os.hostname()}\n${message}`, { logDir: LOG_DIR });
+      console.log(`alert ${result.sent ? 'sent' : `logged only (${result.reason})`}: ${message}`);
+    }
+    await pingHealthcheck(checks.every((check) => check.ok));
+  } catch (error) {
+    console.error(`watchdog: ${error.message}`);
   }
 }
 

@@ -212,7 +212,14 @@ export function openLocalDb(dbPath = process.env.LOCAL_DB_PATH || DEFAULT_DB_PAT
   fs.mkdirSync(path.dirname(resolved), { recursive: true });
 
   const db = new DatabaseSync(resolved);
+  // Several processes share this file (collector, bot, heartbeat jobs, photo
+  // publishing, backups). Without a busy timeout a second writer fails at once
+  // with "database is locked"; with it, it waits its turn. Set before WAL,
+  // which itself needs the lock. synchronous=NORMAL is crash-safe under WAL
+  // (a power cut can lose the last commit, never corrupt the file).
+  db.exec('PRAGMA busy_timeout = 15000;');
   db.exec('PRAGMA journal_mode = WAL;');
+  db.exec('PRAGMA synchronous = NORMAL;');
   db.exec('PRAGMA foreign_keys = ON;');
   db.exec(SCHEMA);
   ensureFidelityColumns(db);

@@ -10,7 +10,7 @@
 | **Browser — photos** | Listing galleries and the Live feed show pictures straight from the Supabase bucket: **34,414 photo links** in the live Firestore data point at `…supabase.co/storage/…` | **Still true until step 6 is done.** Switch off before publishing the photos and every gallery on the site goes blank. `scripts/publish_photos.js` moves them; the listing export and the feed then point at the new copies. |
 | **Scraper** (`telegram_scraper.js` → `listing_pipeline.js`, `photo_storage.js`) | Writes listings, raw messages, photo metadata; uploads every photo to the bucket | Unchanged until you set `LOCAL_DB=1` (opt-in local SQLite store). |
 | **Heartbeat** (launchd) + its jobs `refresh_feed_snapshot`, `compute_patterns`; **integrity check** | Read Supabase | Follow the same `LOCAL_DB=1` switch. |
-| **GitHub Actions** `.github/workflows/scraper.yml` | Runs the scraper **every 30 minutes** in the cloud with Supabase secrets — in parallel with the Mac daemon | Still on. See step 4. |
+| **GitHub Actions** `.github/workflows/scraper.yml` | Ran the scraper every 30 minutes in the cloud with Supabase secrets, in parallel with the Mac | **Manual-only now** (last run 2026-06-17). See step 4. |
 | **render.yaml** worker | Configured to run the scraper on Render | Check whether it is deployed (step 4). |
 | ~25 analysis scripts (`compute_*`, `audit_*`, `cleanup_*`, `backfill_*`, …) | Read Supabase directly | Run manually; they stop working after cutover until pointed at the local store. Nothing runs them automatically. |
 | Display copy | `Methodology.jsx`, `FAQ.jsx`, `Paper.jsx`, `Insights.jsx`, `translations.js` describe "Supabase … real-time subscriptions" | Still true until cutover; update at step 7. |
@@ -85,34 +85,28 @@ Also download Supabase's own database backup as a second copy: Supabase dashboar
 
 ### Step 4 — One collector, not two
 
-The GitHub Actions workflow and the Mac daemon both run the scraper against the same Telegram session — a known cause of `AUTH_KEY_DUPLICATED` — and after cutover the cloud runner cannot reach a database on the Mac.
+Two clients on one Telegram session get it revoked (`AUTH_KEY_DUPLICATED`). Handled:
 
-1. Confirm the Mac daemon is the one collecting: `ps aux | grep telegram_scraper`.
-2. Disable the schedule: in `.github/workflows/scraper.yml` delete the two lines `schedule:` and `- cron: '*/30 * * * *'` (keep `workflow_dispatch:`), commit, push.
-3. Render dashboard: if an `airdnd-live-intake` worker is running, suspend it.
+- The GitHub Actions schedule is removed (manual-only); it had not run since 2026-06-17.
+- On the old Mac, stop everything: `tasks/m3-operations.md`, Part A.
+- Render dashboard: if an `airdnd-live-intake` worker is running, suspend it.
+- On the M3 itself a second collector refuses to start (`data/collector.lock`).
 
-### Step 5 — Build the local database and run both side by side (1 day)
-
-```
-LOCAL_DB_PATH=/Volumes/Backup/sabai/sabai.db npm run exit:import -- --from /Volumes/Backup/sabai-supabase-export
-```
-
-It must end with `COMPLETE — every exported row is in the local store.` The copy is faithful: original ids, every column (including each message's full original Telegram JSON), nothing re-deduplicated.
-
-Then add to `.env`:
+### Step 5 — Build the local database and switch to it (1 day of watching)
 
 ```
-LOCAL_DB=1
-LOCAL_DB_PATH=/Volumes/Backup/sabai/sabai.db
+npm run exit:import -- --from /Volumes/Backup/sabai-supabase-export
 ```
 
-and restart the daemon (`./scripts/daemon.sh`). The scraper, heartbeat, feed and patterns jobs and the integrity check all switch together. Watch for a day:
+It must end with `COMPLETE — every exported row is in the local store.` The copy is faithful: original ids, every column (including each message's full original Telegram JSON), nothing re-deduplicated. Keep the database on the M3's internal disk (the default, `data/sabai.db`); put backups on the external drive.
 
-- heartbeat log shows fresh snapshots;
-- the site's listings keep updating (Firestore sync is unchanged);
+Then add `LOCAL_DB=1` and `BACKUP_DIR=/Volumes/<drive>/sabai-backups` to `.env` and run `npm run ops:install` (details: `tasks/m3-operations.md`, Parts C–E). Every worker switches together: collector, bot, heartbeat and its jobs, integrity check, snapshot refresh. Watch for a day:
+
+- `npm run ops:doctor` shows nothing marked ✗;
+- the site's listings keep updating (the collector still syncs Firestore every cycle);
 - `node scripts/integrity_check.js` passes.
 
-To roll back at any point: remove the two lines from `.env` and restart.
+To roll back at any point: remove `LOCAL_DB=1` from `.env` and run `npm run ops:install` again.
 
 ### Step 6 — Publish the photos to Cloudflare R2 (the site needs this; ~1 hour setup, then three commands)
 

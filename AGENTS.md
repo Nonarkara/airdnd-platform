@@ -61,7 +61,10 @@ Cloudflare Pages (static deploy)
 | `scripts/photo_storage.js` | Photo download, structured local storage, Supabase Storage upload, metadata archive |
 | `scripts/notify.js` | Push new listings to owner's Telegram |
 | `scripts/google_export.js` | Upload photos to Drive, append rows to Sheets (uses OAuth token.json) |
-| `scripts/daemon.sh` | Persistent process manager with log rotation and exponential backoff |
+| `scripts/ops/launchd.js` | Workers under launchd, generated for this Mac: `npm run ops:install / ops:status / ops:stop / ops:start` (collector, bot, heartbeat, backup, photos) |
+| `scripts/ops/doctor.js` | `npm run ops:doctor` — full machine check, prints the fix for each problem |
+| `scripts/ops/watchdog.js` | Run by the heartbeat: alerts to the owner's Telegram on stall / disk / backup / photo failures, and on recovery |
+| `scripts/backup_db.js` | Nightly verified SQLite backup with 7-daily + 4-weekly rotation (`npm run ops:backup`) |
 | `scripts/userbot.js` | Interactive Telegram session auth (handles AUTH_KEY_DUPLICATED) |
 | `scripts/google_reauth.js` | Google OAuth re-auth flow (opens browser, catches redirect) |
 | `scripts/google_apps_script.js` | Google Apps Script for the BI Dashboard sheet (runs hourly in Google) |
@@ -145,7 +148,7 @@ Phone-based dedup was the critical insight from analyzing the collected data. Wi
 
 Total monthly cost: **$0**
 
-The daemon runs locally via macOS launchd (`~/Library/LaunchAgents/com.sabai.scraper.plist`). For production: deploy worker to Render (render.yaml configured).
+Everything runs on one always-on Mac (the M3) under launchd: `npm run ops:install` generates the jobs for whatever folder and Node it finds, retires the old `com.sabai.scraper`/`daemon.sh` setup, and a lock file keeps it to one collector per Mac. Data lives in local SQLite (`LOCAL_DB=1`). See `tasks/m3-operations.md`. Do not also run the Render worker or the GitHub workflow: one Telegram session, one client.
 
 ### Deploying to Cloudflare Pages
 
@@ -215,7 +218,7 @@ Supabase Management API: token via `npx supabase login`
 
 ## How To Resume Work
 
-1. **Check scraper**: `ps aux | grep telegram_scraper` — if not running, start with `./scripts/daemon.sh`
+1. **Check the machine**: `npm run ops:doctor` (and `npm run ops:status`) — if workers are not running: `npm run ops:install`
 2. **Check data freshness**: compare Supabase timestamps vs `public/data.json`
 3. **Refresh snapshot**: pull from Supabase → write to `data.json` → build → deploy
 4. **Re-auth Telegram**: if AUTH_KEY_DUPLICATED, run `node scripts/userbot.js`

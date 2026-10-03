@@ -204,6 +204,11 @@ async function main() {
 
   const { default: dotenv } = await import('dotenv');
   dotenv.config({ path: path.join(ROOT, '.env'), quiet: true });
+  // Extra archive folders from .env (colon-separated), e.g. the Supabase export,
+  // so the nightly worker needs no arguments.
+  for (const dir of String(process.env.PHOTO_ARCHIVE_DIRS || '').split(':').filter(Boolean)) {
+    if (!archives.includes(path.resolve(dir))) archives.push(path.resolve(dir));
+  }
   const log = (line) => process.stdout.write(`\r${line.padEnd(64)}`);
 
   const files = [...new Set(archives.flatMap((dir) => walk(dir)))];
@@ -312,6 +317,8 @@ async function main() {
   }
   saveJson(MAP_PATH, { version: 1, generatedAt: new Date().toISOString(), baseUrl, stats: s, map });
   console.log(`photo map: ${Object.keys(map).length} file names → ${publish.length - failed.length} published pictures (${path.relative(ROOT, MAP_PATH)})`);
+  const { recordStatus } = await import('./ops/status.js');
+  recordStatus('photos', { ok: failed.length === 0, published: publish.length - failed.length, uploaded, removed, failed: failed.length, error: failed[0]?.reason });
   if (failed.length) {
     console.log(`${failed.length} uploads or removals failed — run the same command again to retry. First: ${failed[0].key}: ${failed[0].reason}`);
     process.exitCode = 1;
@@ -321,5 +328,12 @@ async function main() {
 }
 
 if (isMainThread && process.argv[1] === __filename) {
-  main().catch((error) => { console.error(`\n${error.message}`); process.exit(1); });
+  main().catch(async (error) => {
+    console.error(`\n${error.message}`);
+    if (process.argv.includes('--upload')) {
+      const { recordStatus } = await import('./ops/status.js');
+      recordStatus('photos', { ok: false, error: error.message });
+    }
+    process.exit(1);
+  });
 }

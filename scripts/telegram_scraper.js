@@ -27,6 +27,7 @@ import {
 } from './photo_storage.js';
 import { syncListingsToFirestore } from './firestore_sync.js';
 import { openLocalDb } from './lib/local_store.js';
+import { acquireSingleInstanceLock } from './lib/single_instance.js';
 import { createLocalSupabaseShim } from './lib/supabase_local_shim.js';
 
 import { cleanDisplayText, normalizeText } from '../src/lib/normalization.js';
@@ -1437,6 +1438,13 @@ function savePersistedState(state) {
 }
 
 async function main() {
+  const lock = acquireSingleInstanceLock(path.join(__dirname, '..', 'data', 'collector.lock'));
+  if (!lock.ok) {
+    const h = lock.holder || {};
+    console.error(`Another collector is already running on ${h.host || 'this Mac'} (pid ${h.pid}, since ${h.startedAt}). Two collectors on one Telegram session get it revoked (AUTH_KEY_DUPLICATED), so this one stops. Stop the other first: npm run ops:status`);
+    process.exit(75);
+  }
+
   const client = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
   });
