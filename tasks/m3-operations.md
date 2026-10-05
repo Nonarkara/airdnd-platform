@@ -97,6 +97,12 @@ npm install
    ```
    `TELEGRAM_BOT_TOKEN` and `TELEGRAM_NOTIFY_CHAT_ID` are probably already there: they are what sends you new-listing notifications. Alerts use the same two.
 
+   **Where things live, by size (measured 5 Oct):** the database is small (285 MB in Supabase) and written in small batches every 30 s, so keep it on the **internal** disk: an external drive that's unplugged or not yet mounted after a restart would stop the collector, and there's no space to gain. The photos are the heavy part: 9.3 GB so far, arriving at **~5.6 GB a month**. With ~26 GB free inside, put new photos on the external drive too:
+   ```
+   PHOTO_ARCHIVE_DIR=/Volumes/<drive>/sabai-photos
+   ```
+   (The collector saves there from then on; photo publishing reads it automatically.)
+
 ## Part D — Make the M3 an always-on machine
 
 In Terminal (it asks for your Mac password; nothing appears as you type it):

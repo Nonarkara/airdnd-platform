@@ -199,11 +199,18 @@ async function main() {
   const argv = process.argv.slice(2);
   const upload = argv.includes('--upload');
   // --only-archive: use just the folders given, not the Mac's default archive.
-  const archives = argv.includes('--only-archive') ? [] : [path.join(ROOT, 'public', 'images')];
+  // Default archive: wherever the collector saves photos (PHOTO_ARCHIVE_DIR,
+  // e.g. an external drive) and the repo's public/images. Read after .env.
+  const archives = [];
+  const defaultArchives = () => (argv.includes('--only-archive') ? [] : [...new Set([
+    process.env.PHOTO_ARCHIVE_DIR ? path.resolve(process.env.PHOTO_ARCHIVE_DIR) : null,
+    path.join(ROOT, 'public', 'images'),
+  ].filter(Boolean))]);
   argv.forEach((a, i) => { if (a === '--archive' && argv[i + 1]) archives.push(path.resolve(argv[i + 1])); });
 
   const { default: dotenv } = await import('dotenv');
   dotenv.config({ path: path.join(ROOT, '.env'), quiet: true });
+  for (const dir of defaultArchives()) if (!archives.includes(dir)) archives.unshift(dir);
   // Extra archive folders from .env (colon-separated), e.g. the Supabase export,
   // so the nightly worker needs no arguments.
   for (const dir of String(process.env.PHOTO_ARCHIVE_DIRS || '').split(':').filter(Boolean)) {

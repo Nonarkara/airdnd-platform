@@ -190,7 +190,7 @@ export function diagnose(f, now = Date.now()) {
   for (const [label, bytes] of [['Project disk', f.freeRoot], ['Database disk', f.freeDb]]) {
     if (bytes == null) continue;
     if (bytes < 5 * GB) fail(`${label}: only ${(bytes / GB).toFixed(1)} GB free`, 'free space or move photos/backups to an external drive');
-    else if (bytes < 20 * GB) warn(`${label}: ${(bytes / GB).toFixed(0)} GB free (photos grow ~1.2 GB a month)`, 'plan an external drive');
+    else if (bytes < 20 * GB) warn(`${label}: ${(bytes / GB).toFixed(0)} GB free (photos arrive at ~5–6 GB a month)`, 'put new photos on an external drive: PHOTO_ARCHIVE_DIR=/Volumes/<drive>/sabai-photos in .env');
   }
 
   if (f.power) {

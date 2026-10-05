@@ -20,9 +20,9 @@
 | | Size | Free tier |
 |---|---|---|
 | Database (all tables) | 241 MB | 500 MB — fits |
-| **Photo bucket `listing-photos`** | **7.6 GB · 59,246 files** | **1 GB** |
+| **Photo bucket `listing-photos`** | **7.6 GB · 59,246 files** (29 Sep) → **9.3 GB · 68,734 files** (5 Oct) | **1 GB** |
 
-The rows are cheap; **the photos force the paid plan.** Growth is ~1.2 GB/month.
+The rows are cheap (the whole database is 285 MB); **the photos force the paid plan.** Measured intake, 21 Sep – 4 Oct: ~190 MB of photos a day, **≈ 5.6 GB a month** (an earlier estimate of 1.2 GB/month was wrong).
 
 The organisation holds **three** active projects, and on the Pro plan each extra project adds ~$10/month of compute on top of the $25 plan (Supabase's own example for three projects: ~$45/month):
 
@@ -120,7 +120,7 @@ The website shows its photos from the Supabase bucket today, so this step is not
 | any listing flagged `is_safe_image = false` | **withheld** — stays in the archive |
 | no listing or feed card at all (nothing has ever screened it) | **archive only** |
 
-Cost: at most ~7.5 GB of unique pictures. R2's free 10 GB is per account and your account already has 12 other buckets (map tiles, podcast, Ikigai…), so part of this may be billed at $0.015/GB-month — about $0.11/month for all 7.5 GB. Viewing is free (no egress fees).
+Cost: the bucket holds 9.3 GB of files (5 Oct); unique, screened pictures are fewer, and only those are published. R2's free 10 GB is per account and shared with your 12 other buckets, so expect to pay $0.015/GB-month beyond it — about $0.15/month per 10 GB. Intake adds ≈ 5.6 GB of raw files a month before deduplication. Viewing is free (no egress fees).
 
 **One-time setup (Cloudflare dashboard, logged in as you; checked against Cloudflare's docs 2026-09-29):**
 
