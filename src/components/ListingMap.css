@@ -1015,6 +1015,9 @@
   display: inline-block;
 }
 
+.map-architecture-dot--esri,
+.map-architecture-dot--osm,
+.map-architecture-dot--satellite,
 .map-architecture-dot--carto { background: var(--color-data, #36C7FF); }
 .map-architecture-dot--ok { background: var(--color-status, #34d399); }
 .map-architecture-dot.is-on { background: var(--color-action, #f59e0b); }

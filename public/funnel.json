@@ -1,21 +1,23 @@
 {
-  "generatedAt": "2026-09-24T00:28:21.252Z",
+  "generatedAt": "2026-10-11T08:20:54.147Z",
   "shown": {
-    "cards": 99,
-    "withPhoto": 95,
-    "deployablePhotoCards": 85,
-    "photoFilesTracked": 0,
-    "photoFilesMissing": 10,
-    "unverifiedLocation": 10,
-    "channelsRepresented": 3,
+    "cards": 104,
+    "withPhoto": 101,
+    "deployablePhotoCards": 101,
+    "photoFilesTracked": 1,
+    "photoFilesMissing": 0,
+    "unverifiedLocation": 26,
+    "channelsRepresented": 5,
     "channels": [
+      "@chanelmassage",
+      "@keawjaojormmassage",
       "@relaxsociety2020",
       "@relaxsocietymassage",
       "dialog:2381945815"
     ]
   },
   "snapshot": {
-    "newestPostAt": "2026-09-23T23:34:40.000Z",
+    "newestPostAt": "2026-10-11T08:11:07.000Z",
     "ageDays": 0
   },
   "intake": {
@@ -30,10 +32,9 @@
   },
   "feed": {
     "degraded": false,
-    "builtAt": "2026-09-24T00:15:31.939Z"
+    "builtAt": "2026-10-11T07:50:09.512Z"
   },
   "warnings": [
-    "10 of 10 local photo paths are not committed and will 404 in production",
-    "3 of 12 configured channels are represented"
+    "5 of 12 configured channels are represented"
   ]
 }

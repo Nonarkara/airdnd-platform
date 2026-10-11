@@ -129,10 +129,7 @@ function FeedCard({ card, onOpen, isFreshest, t }) {
   const photos = displayCard.displayPhotoUrls;
   const primary = displayCard.displayPrimaryPhoto;
   const localFallback = primary ? `/images/${primary.split('/').pop()}` : null;
-  const photoCandidates = useMemo(
-    () => [primary, localFallback].filter((u, i, arr) => u && arr.indexOf(u) === i),
-    [primary, localFallback],
-  );
+  const photoCandidates = [primary, localFallback].filter((u, i, arr) => u && arr.indexOf(u) === i);
   const photo = useCardPhoto(photoCandidates);
   const extraCount = Math.max(0, photos.length - 1);
   const postCount = card.postCount || 1;

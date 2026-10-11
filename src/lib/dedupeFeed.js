@@ -12,7 +12,7 @@ export function dedupeFeed(feed) {
   const representative = new Map(); // key -> { at, card } standing in for this run
   const out = [];
   for (const item of sorted) {
-    const key = (item.name || '').toLowerCase().trim().replace(/[\s​]+/g, ' ');
+    const key = (item.name || '').toLowerCase().trim().replace(/[\s\u200B]+/g, ' ');
     if (!key || key.length < 2) { out.push({ ...item, postCount: 1 }); continue; }
     const thisTime = new Date(item.messageDate).getTime();
     const prev = representative.get(key);

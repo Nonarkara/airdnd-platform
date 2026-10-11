@@ -117,7 +117,7 @@ async function fetchCsv(key, { refresh = false } = {}) {
 /** data.go.th ships a mix of UTF-8 and TIS-620; sniff rather than assume. */
 function decode(buf) {
   const utf8 = buf.toString('utf8');
-  if (!utf8.includes('�')) return utf8.replace(/^﻿/, '');
+  if (!utf8.includes('�')) return utf8.replace(/^\uFEFF/, '');
   return new TextDecoder('windows-874').decode(buf);
 }
 

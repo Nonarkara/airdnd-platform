@@ -101,13 +101,18 @@ function VenueDetail({ index, t }) {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [dateFilter, setDateFilter] = useState('');
+  const [prevSlug, setPrevSlug] = useState(slug);
 
-  useEffect(() => {
-    let cancelled = false;
+  if (prevSlug !== slug) {
+    setPrevSlug(slug);
     setLoading(true);
     setError(null);
     setPage(1);
     setDateFilter('');
+  }
+
+  useEffect(() => {
+    let cancelled = false;
     fetch(`/data/place_photos/${slug}.json`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then((d) => {

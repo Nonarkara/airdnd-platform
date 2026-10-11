@@ -21,7 +21,13 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { channelSlug } from '../lib/channel';
 import 'leaflet.heat';
+import { createListingPinIcon } from './ListingPin';
+import MapActivityRail from './MapActivityRail';
+import MapTimeStrip from './MapTimeStrip';
 import './ListingMap.css';
+import './ListingPin.css';
+import './MapActivityRail.css';
+import './MapTimeStrip.css';
 
 const BANGKOK_CENTER = [13.7563, 100.5018];
 const DEFAULT_ZOOM = 11;
@@ -303,30 +309,11 @@ function buildPopupHtml(listing, precision, availability) {
   return lines.join('');
 }
 
-function getAuraClass(listing) {
-  const mentions = Number(listing.mentionCount) || Number(listing.mention_count) || 1;
-  const dataScore =
-    (listing.description && listing.description.length > 20 && listing.description !== 'Details for this listing are still being collected.' ? 1 : 0) +
-    (listing.phone || listing.lineUrl || listing.telegramUrl || listing.mapsUrl ? 1 : 0) +
-    (listing.priceLabel && listing.priceLabel !== 'Rate on request' ? 1 : 0) +
-    (listing.imageUrl && !listing.imageUrl.startsWith('/mockups/') ? 1 : 0);
-  const activityBonus = mentions > 10 ? 2 : mentions > 3 ? 1 : 0;
-  const total = dataScore + activityBonus;
-  if (total >= 4) return 'aura-level-3';
-  if (total >= 2) return 'aura-level-2';
-  return 'aura-level-1';
-}
-
-function createPinIcon(listing, availability) {
-  const mentions = Number(listing.mentionCount) || Number(listing.mention_count) || 1;
-  const size = mentions > 10 ? 22 : mentions > 3 ? 16 : 10;
-  return L.divIcon({
-    className: `listing-pin ${getAuraClass(listing)} availability-${availability.state}`,
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
-    popupAnchor: [0, -(size / 2 + 3)],
-    tooltipAnchor: [size / 2 + 3, 0],
-  });
+function createPinIcon(listing, availability, nowMs) {
+  // Delegate to ListingPin — keeps the freshness-state logic out of the
+  // map file. The earlier 3-tier mention-volume sizing is preserved; the
+  // new fresh/active/recent/stale states are layered on via ListingPin.css.
+  return createListingPinIcon(listing, availability, nowMs);
 }
 
 // Longdo POI marker — small teal square with a thin amber border. The shape
@@ -400,12 +387,12 @@ export default function ListingMap({
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [epidemicRows, setEpidemicRows] = useState([]);
   const [epidemicMeta, setEpidemicMeta] = useState(null);
-  // basemap = 'carto' (default) or 'osm' (auto-fallback when Carto tiles fail).
-  const [basemapStatus, setBasemapStatus] = useState({ mode: 'carto', errors: 0 });
+  // basemap = 'esri' (default) or 'osm' (fallback or choice) or 'satellite'.
+  const [basemapStatus, setBasemapStatus] = useState({ mode: 'esri', errors: 0 });
   const [overlayError, setOverlayError] = useState(null);
   // Mirror of the basemap state for use inside the tile-error closure (avoids
   // re-creating the map effect on every state update).
-  const basemapStatusRef = useRef({ mode: 'carto', theme: 'dark' });
+  const basemapStatusRef = useRef({ mode: 'esri', theme: 'dark' });
   // Longdo POI directory (CC BY-SA 4.0): separate dataset, separate marker
   // layer, separate color. Fetched on mount and on mapMode reset.
   const [longdoPois, setLongdoPois] = useState([]);
@@ -583,15 +570,45 @@ export default function ListingMap({
       wheelPxPerZoomLevel: 140,
     });
 
-    // Base layers — dark vector, light vector, and satellite.
-    const dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-      maxZoom: 19,
-    });
-    const light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-      maxZoom: 19,
-    });
+    // Base layers — Esri Canvas (keyless, unwatermarked), OpenStreetMap, and Satellite.
+    // Esri Canvas stops at z16 for this region — use maxNativeZoom: 16 and maxZoom: 19
+    // so Leaflet overzooms rather than requesting 404s or blank ground.
+    const esriDarkBase = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      {
+        attribution: '&copy; <a href="https://www.esri.com/">Esri</a>, HERE, Garmin &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
+        maxNativeZoom: 16,
+        maxZoom: 19,
+      },
+    );
+    const esriDarkLabels = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+      {
+        attribution: '',
+        maxNativeZoom: 16,
+        maxZoom: 19,
+      },
+    );
+    const dark = L.layerGroup([esriDarkBase, esriDarkLabels]);
+
+    const esriLightBase = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      {
+        attribution: '&copy; <a href="https://www.esri.com/">Esri</a>, HERE, Garmin &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
+        maxNativeZoom: 16,
+        maxZoom: 19,
+      },
+    );
+    const esriLightLabels = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+      {
+        attribution: '',
+        maxNativeZoom: 16,
+        maxZoom: 19,
+      },
+    );
+    const light = L.layerGroup([esriLightBase, esriLightLabels]);
+
     const satellite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
@@ -599,14 +616,9 @@ export default function ListingMap({
         maxZoom: 19,
       },
     );
-    // OSM raster fallback — used automatically if Carto tiles fail (rate-limit,
-    // network, or "API Key Required" from a corporate proxy). No key required.
-    const osmDark = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19,
-      crossOrigin: true,
-    });
-    const osmLight = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+    // OpenStreetMap standard raster — 100% keyless open data
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 19,
       crossOrigin: true,
@@ -615,36 +627,34 @@ export default function ListingMap({
     darkLayerRef.current = dark;
     lightLayerRef.current = light;
 
-    // If Carto tiles keep failing, auto-switch to OSM raster so the basemap
-    // never goes blank. Threshold: 8 errors within 30s of mount.
+    // If Esri tiles fail, auto-switch to OSM raster so the basemap never goes blank.
     const tileErrorCounters = new Map();
-    let cartoErrors = 0;
-    const cartoErrorWindow = [];
+    let esriErrors = 0;
+    const esriErrorWindow = [];
     const handleTileError = (label, fallback) => (e) => {
       const now = Date.now();
       const next = (tileErrorCounters.get(label) || 0) + 1;
       tileErrorCounters.set(label, next);
-      if (label === 'carto') {
-        cartoErrorWindow.push(now);
-        while (cartoErrorWindow.length && now - cartoErrorWindow[0] > 30_000) cartoErrorWindow.shift();
-        cartoErrors = cartoErrorWindow.length;
-        if (cartoErrors >= 8 && basemapStatusRef.current.mode === 'carto') {
+      if (label === 'esri') {
+        esriErrorWindow.push(now);
+        while (esriErrorWindow.length && now - esriErrorWindow[0] > 30_000) esriErrorWindow.shift();
+        esriErrors = esriErrorWindow.length;
+        if (esriErrors >= 8 && basemapStatusRef.current.mode === 'esri') {
           const currentBase = basemapStatusRef.current.theme === 'light' ? light : dark;
           map.removeLayer(currentBase);
           fallback.addTo(map);
-          setBasemapStatus({ mode: 'osm', errors: cartoErrors });
+          setBasemapStatus({ mode: 'osm', errors: esriErrors });
         }
       } else {
         if (next === 5) {
           setOverlayError(label === 'aqi' ? 'Air-quality tiles unavailable right now' : 'Precipitation tiles unavailable right now');
         }
       }
-      // eslint-disable-next-line no-console
       console.warn(`[ListingMap] tile error (${label})`, e?.error || e);
     };
-    dark.on('tileerror', handleTileError('carto', osmDark));
-    light.on('tileerror', handleTileError('carto', osmLight));
-    basemapStatusRef.current = { mode: 'carto', theme: 'dark' };
+    esriDarkBase.on('tileerror', handleTileError('esri', osm));
+    esriLightBase.on('tileerror', handleTileError('esri', osm));
+    basemapStatusRef.current = { mode: 'esri', theme: 'dark' };
 
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     if (currentTheme === 'light') {
@@ -690,11 +700,21 @@ export default function ListingMap({
 
     const layerControl = L.control
       .layers(
-        { 'Dark Map': dark, 'Light Map': light, Satellite: satellite, 'OSM (fallback)': osmDark },
+        { 'Dark Map': dark, 'Light Map': light, Satellite: satellite, OpenStreetMap: osm },
         { 'Air Quality (PM2.5)': aqi, 'Precipitation (IMERG)': rain, 'Demand Heatmap': heatLayer },
         { position: 'topright', collapsed: true },
       )
       .addTo(map);
+
+    map.on('baselayerchange', (e) => {
+      if (e.name === 'OpenStreetMap') {
+        setBasemapStatus({ mode: 'osm', errors: 0 });
+      } else if (e.name === 'Satellite') {
+        setBasemapStatus({ mode: 'satellite', errors: 0 });
+      } else {
+        setBasemapStatus({ mode: 'esri', errors: 0 });
+      }
+    });
 
     // Fetch infrastructure data and add layers
     fetch('/data/infrastructure.json')
@@ -982,7 +1002,7 @@ export default function ListingMap({
     for (const { listing, coords, precision } of visiblePins) {
       const availability = getAvailability(listing, nowMs);
       const marker = L.marker(coords, {
-        icon: createPinIcon(listing, availability),
+        icon: createPinIcon(listing, availability, nowMs),
         alt: listing.name || 'Listing location',
         title: listing.name || 'Listing location',
       });
@@ -1452,7 +1472,10 @@ export default function ListingMap({
           <span><i className="availability-key availability-key--open" />Open · check slot</span>
           <span><i className="availability-key availability-key--unknown" />Check availability</span>
           <span><i className="availability-key availability-key--closed" />Closed / unavailable</span>
+          <span><i className="availability-key availability-key--fresh" />Fresh (≤30 min)</span>
         </div>
+        <MapActivityRail />
+        <MapTimeStrip />
         <div className="data-source-legend" aria-label="Data source legend">
           <span><i className="map-source-swatch map-source-swatch--telegram" />Telegram broadcasts ({pins.length})</span>
           {/* CC BY-SA 4.0 wants a link back to the source, not just text. Pulled
@@ -1487,7 +1510,7 @@ export default function ListingMap({
         </div>
         <div className="map-architecture-strip" aria-label="Map architecture">
           <span className="map-architecture-pill">
-            <i className="map-architecture-dot map-architecture-dot--carto" />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap (fallback)' : 'CARTO'}
+            <i className={`map-architecture-dot map-architecture-dot--${basemapStatus.mode}`} />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap' : basemapStatus.mode === 'satellite' ? 'Satellite' : 'Esri Canvas'}
           </span>
           <span className="map-architecture-pill" aria-live="polite">
             <i className={`map-architecture-dot${aqiActive ? ' is-on' : ''}`} />AQI {aqiActive ? 'on' : 'off'}
