@@ -1,0 +1,135 @@
+# Report-only security scan.
+# Findings are written to the job summary and uploaded as artifacts.
+# They do not fail this workflow.
+#
+# Code scanning is not available: this is a private repository on a personal
+# account, and the code scanning API returns 403 (GitHub Code Security is not
+# enabled). SARIF is not uploaded to code scanning.
+#
+# Every action is pinned to a full commit SHA. checkout v7 and upload-artifact
+# v7 run on Node 24. Node 20 was removed from GitHub-hosted runners on
+# 2026-09-23, so Node 20 actions cannot start.
+
+name: Security
+
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Report-only scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: write
+    env:
+      SEMGREP_VERSION: "1.180.0"
+      TRIVY_VERSION: "v0.70.0"
+      SEMGREP_SEND_METRICS: "off"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Prepare report directory
+        run: |
+          mkdir -p "${RUNNER_TEMP}/security-reports"
+          echo "REPORT_DIR=${RUNNER_TEMP}/security-reports" >> "${GITHUB_ENV}"
+
+      - name: Install Semgrep OSS
+        run: |
+          if ! command -v pipx >/dev/null 2>&1; then
+            python3 -m pip install --user pipx
+            export PATH="${HOME}/.local/bin:${PATH}"
+          fi
+          pipx install "semgrep==${SEMGREP_VERSION}"
+          bin_dir="$(pipx environment --value PIPX_BIN_DIR 2>/dev/null || true)"
+          if [ -z "${bin_dir}" ]; then
+            bin_dir="${HOME}/.local/bin"
+          fi
+          echo "${bin_dir}" >> "${GITHUB_PATH}"
+          export PATH="${bin_dir}:${PATH}"
+          command -v semgrep
+          semgrep --version
+
+      - name: Semgrep OSS
+        id: semgrep
+        continue-on-error: true
+        run: |
+          set +e
+          semgrep scan \
+            --metrics=off \
+            --disable-version-check \
+            --max-target-bytes 1000000 \
+            --config p/javascript \
+            --config p/react \
+            --config p/nodejs \
+            --config p/expressjs \
+            --config p/secrets \
+            --config p/github-actions \
+            --json \
+            --output "${REPORT_DIR}/semgrep.json" \
+            --quiet
+          code=$?
+          printf '%s\n' "${code}" > "${REPORT_DIR}/semgrep.exit"
+          if [ "${code}" -eq 0 ]; then
+            echo "Semgrep finished. Findings, if any, are reported and do not fail the job."
+          else
+            echo "Semgrep exited ${code}. Report-only: the job continues."
+          fi
+          exit 0
+
+      - name: Trivy filesystem scan
+        id: trivy
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          format: json
+          output: ${{ runner.temp }}/security-reports/trivy.json
+          exit-code: "0"
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          version: v0.70.0
+          timeout: 20m
+          cache: "false"
+          hide-progress: "true"
+
+      - name: Record Trivy outcome
+        if: always()
+        run: printf '%s\n' "${{ steps.trivy.outcome }}" > "${REPORT_DIR}/trivy.outcome"
+
+      - name: Write job summary
+        if: always()
+        env:
+          SECURITY_REPORT_DIR: ${{ runner.temp }}/security-reports
+          SEMGREP_JSON: ${{ runner.temp }}/security-reports/semgrep.json
+          TRIVY_JSON: ${{ runner.temp }}/security-reports/trivy.json
+          SEMGREP_REDACTED: semgrep.redacted.json
+          TRIVY_REDACTED: trivy.redacted.json
+          SUMMARY_MD: security-summary.md
+          FINDINGS_JSON: security-findings.json
+        run: python3 .github/scripts/security_summary.py
+
+      - name: Upload scan reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: security-reports
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            semgrep.redacted.json
+            trivy.redacted.json
+            security-summary.md
+            security-findings.json
