@@ -1,4 +1,5 @@
 const en = {
+  cadence: { kicker: 'Posting cadence', title: 'How often each place posts', subtitle: 'Counts only, built from stored channel posts. Bangkok time.', today: 'new listings today', dailyLabel: 'New listings per day, last 14 days', topLabel: 'Most frequent posters', colName: 'Place', colChannel: 'Channel', colPosts: 'Posts', colPerWeek: 'Per week', colFirst: 'First seen', colLast: 'Last seen', note: 'Aggregates only. No message text, phone numbers or sender details are published.' },
   header: { tagline: 'Thailand wellness intelligence' },
   nav: {
     primary: 'Primary',
@@ -260,6 +261,7 @@ const en = {
 // (non-looped) is applied via CSS — translations only supply the strings.
 // First-person pronoun never used in UI copy (third-person / imperative register).
 const th = {
+  cadence: { ...en.cadence, kicker: 'ความถี่การโพสต์', title: 'แต่ละร้านโพสต์บ่อยแค่ไหน', subtitle: 'เป็นตัวเลขสรุปเท่านั้น จากโพสต์ที่เก็บไว้ในช่องทาง เวลากรุงเทพฯ', today: 'รายการใหม่วันนี้', dailyLabel: 'รายการใหม่ต่อวัน 14 วันล่าสุด', topLabel: 'ร้านที่โพสต์บ่อยที่สุด', colName: 'ร้าน', colChannel: 'ช่องทาง', colPosts: 'โพสต์', colPerWeek: 'ต่อสัปดาห์', colFirst: 'พบครั้งแรก', colLast: 'พบล่าสุด', note: 'แสดงเฉพาะข้อมูลสรุป ไม่เผยแพร่ข้อความ เบอร์โทร หรือข้อมูลผู้ส่ง' },
   ...en,
   header: { tagline: 'ข้อมูลสุขภาพและสปาของไทยแบบเรียลไทม์' },
   nav: {
@@ -487,6 +489,7 @@ const th = {
 // Register: Shanghai professional (Yangpu District fieldwork). Natural, not
 // machine-translated. Simplified characters throughout.
 const zh = {
+  cadence: { ...en.cadence, kicker: '发帖频率', title: '各店铺发帖频率', subtitle: '仅为统计数字，基于已存储的频道帖子。曼谷时间。', today: '今日新增', dailyLabel: '近14天每日新增', topLabel: '发帖最频繁的店铺', colName: '店铺', colChannel: '频道', colPosts: '帖子数', colPerWeek: '每周', colFirst: '首次出现', colLast: '最近出现', note: '仅发布汇总数据，不公开消息内容、电话号码或发送者信息。' },
   ...en,
   header: { tagline: '泰国健康与水疗实时情报' },
   nav: {
@@ -712,6 +715,7 @@ const zh = {
 
 // ─── Korean ───────────────────────────────────────────────────────────────────
 const ko = {
+  cadence: { ...en.cadence },
   ...en,
   header: { tagline: '태국 웰니스 실시간 정보' },
   nav: {
