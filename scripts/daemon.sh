@@ -6,8 +6,8 @@
 DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$DIR"
 
-SCRAPER_LOG="/tmp/sabai-scraper.log"
-BOT_LOG="/tmp/sabai-bot.log"
+SCRAPER_LOG="$DIR/logs/sabai-scraper.log"
+BOT_LOG="$DIR/logs/sabai-bot.log"
 BOT_PID_FILE="/tmp/sabai-bot.pid"
 MAX_LOG_BYTES=10485760  # 10MB
 BACKOFF=10
