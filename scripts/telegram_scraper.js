@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { withCycleTimeout, CycleTimeoutError } from '../src/lib/cycle_timeout.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { TelegramClient } from 'telegram';
@@ -1402,6 +1403,8 @@ function savePersistedState(state) {
   }
 }
 
+const cycleTimeoutMs = Math.max(60_000, Number.parseInt(process.env.INTAKE_CYCLE_TIMEOUT_MS || '600000', 10));
+
 async function main() {
   const client = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
@@ -1441,12 +1444,20 @@ async function main() {
 
       try {
         await refreshSupabaseAvailability();
-        const result = await runTelegramScrape(client, resolvedTargets, state);
+        const result = await withCycleTimeout(
+          runTelegramScrape(client, resolvedTargets, state),
+          cycleTimeoutMs,
+        );
         savePersistedState(state);
         console.log(
           `Scrape cycle complete. Extracted: ${result.extractedListings}, snapshot size: ${result.snapshotCount}.`,
         );
       } catch (error) {
+        if (error instanceof CycleTimeoutError) {
+          console.error(`${error.message}; exiting so the daemon restarts a fresh Telegram session.`);
+          savePersistedState(state);
+          process.exit(1);
+        }
         console.error('Error fetching or parsing Telegram messages:', error.message);
         if (!watchMode) {
           process.exitCode = 1;
