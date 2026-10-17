@@ -1,0 +1,177 @@
+/* ============================================================================
+   MapActivityRail — right-side "Now" panel.
+   --------------------------------------------------------------------------
+   Sits over the map's top-right corner on desktop; falls under the map on
+   mobile. Brutalist treatment — hairline borders, mono timestamps, single
+   amber accent for fresh rows.
+
+   The rail is OPTIONAL chrome. If feed.json fails or returns empty, the
+   component returns null and the map gets the full canvas.
+   ============================================================================ */
+
+.map-activity-rail {
+  position: absolute;
+  top: clamp(0.5rem, 1.2vw, 0.85rem);
+  right: clamp(0.5rem, 1.2vw, 0.85rem);
+  width: clamp(15rem, 22vw, 18rem);
+  max-height: 60vh;
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: var(--font-text);
+  pointer-events: auto;
+}
+
+/* Head ── "Now · live intake" + count */
+.map-activity-rail__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--surface);
+}
+
+.map-activity-rail__kicker {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.map-activity-rail__count {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--mango);
+}
+
+/* List */
+.map-activity-rail__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.map-activity-rail__item {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--color-line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  cursor: default;
+}
+
+.map-activity-rail__item:last-child {
+  border-bottom: 0;
+}
+
+.map-activity-rail__row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.map-activity-rail__name {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.map-activity-rail__pill {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border: 1px solid currentColor;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.map-activity-rail__pill.is-fresh  { color: var(--mango); }
+.map-activity-rail__pill.is-active { color: var(--ink); border-color: var(--ink); }
+.map-activity-rail__pill.is-recent { color: var(--ink-3); border-color: var(--ink-3); }
+.map-activity-rail__pill.is-stale,
+.map-activity-rail__pill.is-unknown { color: var(--ink-4); border-color: var(--ink-4); }
+
+/* Right edge of the rail — a colored tick that mirrors the freshness state.
+   Acts as a scannable signal column even when the pill text scrolls out. */
+.map-activity-rail__item {
+  border-left: 2px solid transparent;
+  padding-left: calc(0.75rem - 2px);
+}
+
+.map-activity-rail__item.is-fresh  { border-left-color: var(--mango); }
+.map-activity-rail__item.is-active { border-left-color: var(--ink); }
+.map-activity-rail__item.is-recent { border-left-color: var(--ink-3); }
+.map-activity-rail__item.is-stale,
+.map-activity-rail__item.is-unknown { border-left-color: var(--ink-4); }
+
+/* Meta line ── channel · city · cross-posted */
+.map-activity-rail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+.map-activity-rail__channel {
+  color: var(--ink-2);
+}
+
+.map-activity-rail__city {
+  color: var(--ink-3);
+}
+
+.map-activity-rail__cross {
+  color: var(--ink-3);
+}
+
+/* ── Touch targets ── */
+.map-activity-rail__item {
+  min-height: 44px;
+}
+
+/* ── Mobile: rail collapses under the map. ─────────────────────────────── */
+@media (max-width: 720px) {
+  .map-activity-rail {
+    position: static;
+    width: 100%;
+    max-height: none;
+    margin-top: 0.5rem;
+    border: 1px solid var(--color-line);
+    backdrop-filter: none;
+  }
+  .map-activity-rail__list {
+    max-height: 14rem;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .map-activity-rail { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}

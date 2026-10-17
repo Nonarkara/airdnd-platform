@@ -179,6 +179,35 @@
   }
 }
 
+/* iPad portrait + foldable open (≤1024px and >680px) — three columns
+   of filters with the search + result-count spanning the full width.
+   Three cols is the sweet spot for 7-inch widths: two feels sparse,
+   four makes the labels truncate. */
+@media (max-width: 1024px) and (min-width: 681px) {
+  .filter-bar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    position: relative;
+    top: auto;
+  }
+
+  .filter-search,
+  .filter-actions,
+  .filter-results-count {
+    grid-column: 1 / -1;
+  }
+
+  .filter-field {
+    min-width: 0;
+  }
+}
+
+/* Foldable open (≤840px) — two columns. */
+@media (max-width: 840px) and (min-width: 681px) {
+  .filter-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .filter-district-matrix-btn {
   display: inline-flex;
   align-items: center;

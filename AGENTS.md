@@ -165,6 +165,24 @@ npx wrangler pages deploy dist --project-name sabaisabai-airdnd
 
 Live URL: `https://sabaisabai-airdnd.pages.dev`
 
+### Photo file counts — the pipeline owns them, not you
+
+Cloudflare Pages has a 20k-file deploy cap. This has been "fixed" five separate
+times by agents writing ad-hoc prune/photo-sync workarounds (vite prune,
+dist prune, syncing photos into `public/images`, vercelignore). Do not write
+another. The build chain owns the solve:
+
+- `npm run build` runs `verify:snapshot -- --quiet` first and fails the deploy
+  if the snapshot is dishonest (missing photo files, stale, phantom channels).
+- `npm run places:build` rebuilds the `/places` gallery from Supabase
+  `photo_archive` and caps per-channel rows; it degrades to an empty index
+  (marked `degraded`) rather than poisoning a deploy when the data plane
+  is down.
+- Photo storage/archiving is `scripts/photo_storage.js` + `scripts/stage_snapshot_photos.js`.
+
+If a photo count or file-limit problem appears, fix it in the pipeline (or
+report it), never by a one-off script that prunes or re-locates assets.
+
 ### Deploying the scraper to Render
 
 The `render.yaml` has two services:

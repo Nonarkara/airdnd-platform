@@ -8,7 +8,7 @@
 .chart-section {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--r-lg);
+  border-radius: 0;
   padding: var(--s5);
 }
 
@@ -42,7 +42,7 @@
 .histogram-bar {
   width: 100%;
   background: var(--mango);
-  border-radius: var(--r-sm) var(--r-sm) 0 0;
+  border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -81,7 +81,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: var(--r-sm);
+  border-radius: 0;
   padding: var(--s2);
   text-align: center;
   transition: transform 0.2s;
@@ -102,4 +102,227 @@
   font-weight: 700;
   margin-top: var(--s1);
   opacity: 0.8;
+}
+
+/* Engagement Heatmap Hour */
+.heatmap-hour-grid {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  gap: var(--s2);
+}
+
+.heatmap-hour-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+}
+
+.heatmap-hour-bar {
+  width: 60%;
+  height: 70%;
+  background: var(--mango);
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.heatmap-hour-val {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: auto;
+}
+
+.heatmap-hour-level {
+  font-size: var(--fs-xxs);
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.heatmap-hour-emoji {
+  font-size: var(--fs-sm);
+  margin-top: 2px;
+}
+
+.heatmap-hour-label {
+  font-size: var(--fs-xxs);
+  text-transform: uppercase;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* Day-of-week */
+.day-bar-chart {
+  display: flex;
+}
+
+.day-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 4px;
+}
+
+.day-bar {
+  width: 20px;
+  height: 100px;
+  background: var(--mango);
+  border-radius: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.day-bar-val {
+  font-size: var(--fs-xxs);
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: auto;
+}
+
+.day-bar-label {
+  font-size: var(--fs-xxs);
+  text-transform: uppercase;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* Nickname Cloud */
+.nick-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.nick-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  padding: 4px 8px;
+  background: var(--bg-inset);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-base);
+  white-space: nowrap;
+}
+
+/* Service Quality Tags */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: var(--bg-inset);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+}
+
+/* Linguistic Decoder */
+.linguistic-decoder {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linguistic-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.linguistic-label {
+  min-width: 120px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.linguistic-bar {
+  flex: 1;
+  height: 24px;
+  background: var(--line);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.linguistic-fill {
+  height: 100%;
+  background: var(--mango);
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.3s ease;
+}
+
+.linguistic-count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--bg);
+}
+
+.linguistic-level {
+  font-size: var(--fs-xxs);
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-left: 8px;
+}
+
+/* Message Type Funnel */
+.funnel-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.funnel-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.funnel-label {
+  min-width: 100px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.funnel-track {
+  flex: 1;
+  height: 24px;
+  background: var(--line);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.funnel-fill {
+  height: 100%;
+  background: var(--mango);
+  border-radius: 0;
+  transition: width 0.3s ease;
+}
+
+/* Message Type Funnel - alternative colors */
+.funnel-row.listing .funnel-fill {
+  background: var(--action);
+}
+
+.funnel-row.feedback .funnel-fill {
+  background: var(--status);
 }

@@ -515,6 +515,34 @@ export function getListingMediaCount(listing) {
   return getListingGalleryUrls(listing).length;
 }
 
+// ─── Photo helpers ──────────────────────────────────────────────────────────
+// Extract the latest photo URL from a listing's gallery.
+// Order of precedence: imageUrl > image_url > allPhotoUrls (newest-first) > photo_urls (newest-first).
+// This ensures the Live-mode card always points to the freshest photo set.
+
+export function getLatestPhotoUrl(listing) {
+  // 1. Check imageUrl / image_url first — these are the pipeline's hero-image rotations
+  if (listing.imageUrl && !listing.imageUrl.startsWith('/mockups/')) return listing.imageUrl;
+  if (listing.image_url && !listing.image_url.startsWith('/mockups/')) return listing.image_url;
+
+  // 2. allPhotoUrls is already newest-first after pipeline reversal
+  if (Array.isArray(listing.allPhotoUrls) && listing.allPhotoUrls.length > 0) {
+    // Filter out mockups and pick the first valid one (newest)
+    for (const url of listing.allPhotoUrls) {
+      if (url && !url.startsWith('/mockups/')) return url;
+    }
+  }
+
+  // 3. photo_urls as fallback (also newest-first after reversal)
+  if (Array.isArray(listing.photo_urls) && listing.photo_urls.length > 0) {
+    for (const url of listing.photo_urls) {
+      if (url && !url.startsWith('/mockups/')) return url;
+    }
+  }
+
+  return null;
+}
+
 // ─── Venue identity (shared by ListingCard + FeedCard) ─────────────────────
 // One implementation instead of two — previously ListingCard alone had this
 // letter-avatar fallback and FeedCard had none, so a broken feed photo just

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import {
   formatSourceChannelName,
   getSafeListingGalleryUrls,
+  getLatestPhotoUrl,
   isListingNew,
   formatTimeAgo,
   coverVariant,
@@ -10,6 +11,7 @@ import {
 import { useCardPhoto } from '../lib/useCardPhoto';
 import { trackListingClick, trackSignal, isListingSaved } from '../lib/tracker';
 import { useLanguage } from '../context/LanguageContext';
+import { listingCoords, getNearestTransit } from '../lib/geo';
 import './ListingCard.css';
 
 function priceDisplay(listing) {
@@ -25,13 +27,22 @@ function priceDisplay(listing) {
 function ListingCard({ listing, onClick, priority = false }) {
   const { t } = useLanguage();
   const galleryUrls = getSafeListingGalleryUrls(listing);
-  const primaryImage = galleryUrls[0] || null;
+  // Latest photo leads: the card points to the freshest set, not the first archived.
+  const primaryImage = getLatestPhotoUrl(listing) || galleryUrls[0] || null;
+  const photoCount = galleryUrls.length;
   const localFallback = primaryImage ? `/images/${primaryImage.split('/').pop()}` : null;
   const photoCandidates = useMemo(
     () => [primaryImage, localFallback].filter((u, i, arr) => u && arr.indexOf(u) === i),
     [primaryImage, localFallback],
   );
   const photo = useCardPhoto(photoCandidates);
+
+  const coordsInfo = useMemo(() => listingCoords(listing), [listing]);
+  const transit = useMemo(() => (coordsInfo ? getNearestTransit(coordsInfo.coords) : null), [coordsInfo]);
+  const isAvailableNow = useMemo(() => {
+    const textBlob = `${listing.description || ''} ${(listing.tags || []).join(' ')} ${(listing.serviceTags || []).join(' ')}`.toLowerCase();
+    return /ว่าง|พร้อม|available|walk[ -]?in|คิวว่าง/i.test(textBlob);
+  }, [listing]);
 
   const sourceName = formatSourceChannelName(listing.sourceChannel) || listing.sourceChannel || '';
   const isNew = isListingNew(listing);
@@ -71,15 +82,22 @@ function ListingCard({ listing, onClick, priority = false }) {
             />
           </div>
         )}
+        {photoCount > 0 && (
+          <span className="lcard__photo-count" title={`${photoCount} photo${photoCount === 1 ? '' : 's'}`}>
+            {photoCount}P
+          </span>
+        )}
       </div>
 
       <div className="lcard__venue">
         <div className="lcard__name-row">
           <span className="lcard__name">{listing.name}</span>
-          {isNew && <span className="tag-mango tag">{t.card?.newBadge || 'New'}</span>}
+          {isAvailableNow && <span className="tag-available tag" style={{ background: '#059669', color: '#fff', fontSize: '10px', padding: '2px 6px', fontWeight: 700 }}>⚡ Ready</span>}
+          {isNew && !isAvailableNow && <span className="tag-mango tag">{t.card?.newBadge || 'New'}</span>}
         </div>
         <div className="lcard__meta">
           {tag && <span>{tag}</span>}
+          {transit && <span className="lcard__transit" style={{ color: 'var(--data)', fontFamily: 'var(--font-mono)' }}>{transit.tag}</span>}
           {sourceName && <span className="lcard__src">{sourceName}</span>}
         </div>
       </div>

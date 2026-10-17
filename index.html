@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover is required for the env(safe-area-inset-*) CSS
+         to work on iOS (notch + home indicator) and on Android edge-to-edge
+         displays. Without it the safe-area values resolve to 0 and the
+         header can sit under the notch on iPad Pro 11" landscape. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta
       name="description"
       content="Sabai Sabai 2.0 — Community intelligence for Thailand wellness. Real listings, real photos, real-time updates from trusted community sources."

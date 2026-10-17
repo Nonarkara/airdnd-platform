@@ -321,6 +321,55 @@ export function useMarketAnalytics(listings, msgStats, patterns, analysisNow) {
     const last24h = listings.filter((l) => (analysisNow - new Date(l.created_at).getTime()) / 3600000 <= 24).length;
     const velocity = Math.round((last24h / total) * 100);
 
+    // ── Temporal trends (week-over-week) ──────────────────────────────────
+    const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
+    const thisWeek = listings.filter((l) => {
+      const t = new Date(l.created_at).getTime();
+      return t >= analysisNow - oneWeekMs && t <= analysisNow;
+    });
+    const lastWeek = listings.filter((l) => {
+      const t = new Date(l.created_at).getTime();
+      return t >= analysisNow - 2 * oneWeekMs && t < analysisNow - oneWeekMs;
+    });
+
+    const trendListings = lastWeek.length > 0
+      ? Math.round(((thisWeek.length - lastWeek.length) / lastWeek.length) * 100)
+      : thisWeek.length > 0 ? 100 : 0;
+
+    const thisWeekPrices = thisWeek.map((l) => {
+      const v = parseFloat(String(l.price || '0').replace(/[^0-9.]/g, ''));
+      return Number.isFinite(v) && v > 0 ? v : null;
+    }).filter(Boolean);
+    const lastWeekPrices = lastWeek.map((l) => {
+      const v = parseFloat(String(l.price || '0').replace(/[^0-9.]/g, ''));
+      return Number.isFinite(v) && v > 0 ? v : null;
+    }).filter(Boolean);
+    const avgPrice = (arr) => arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+    const thisWeekAvgPrice = avgPrice(thisWeekPrices);
+    const lastWeekAvgPrice = avgPrice(lastWeekPrices);
+    const trendPrice = lastWeekAvgPrice > 0
+      ? Math.round(((thisWeekAvgPrice - lastWeekAvgPrice) / lastWeekAvgPrice) * 100)
+      : 0;
+
+    // Posting volume trend (messages this week vs last week)
+    const msgsThisWeek = (msgStats.msgs || []).filter((m) => {
+      const t = new Date(m.message_date).getTime();
+      return t >= analysisNow - oneWeekMs && t <= analysisNow;
+    }).length;
+    const msgsLastWeek = (msgStats.msgs || []).filter((m) => {
+      const t = new Date(m.message_date).getTime();
+      return t >= analysisNow - 2 * oneWeekMs && t < analysisNow - oneWeekMs;
+    }).length;
+    const trendActivity = msgsLastWeek > 0
+      ? Math.round(((msgsThisWeek - msgsLastWeek) / msgsLastWeek) * 100)
+      : msgsThisWeek > 0 ? 100 : 0;
+
+    const trends = {
+      listings: { delta: trendListings, thisWeek: thisWeek.length, lastWeek: lastWeek.length },
+      price: { delta: trendPrice, thisWeek: Math.round(thisWeekAvgPrice), lastWeek: Math.round(lastWeekAvgPrice) },
+      activity: { delta: trendActivity, thisWeek: msgsThisWeek, lastWeek: msgsLastWeek },
+    };
+
     // Most mentioned (clickable)
     const topMentioned = listings.filter((l) => (l.mention_count || 0) > 1)
       .sort((a, b) => (b.mention_count || 0) - (a.mention_count || 0)).slice(0, 12);
@@ -601,6 +650,37 @@ export function useMarketAnalytics(listings, msgStats, patterns, analysisNow) {
       return { soi: shape(counts.soi), road: shape(counts.road), rama: shape(counts.rama, 6), bts: shape(counts.bts, 6) };
     })();
 
+    // 7b. District-level venue density — extract district names from location
+    //     text and compute per-district counts + coordinate centroids.
+    const districtDensity = (() => {
+      const DISTRICT_RE = /(?:แขวง|เขต|อ\.|อำเภอ|distRICT)\s*([฀-๿a-zA-Z0-9]{1,30})/gi;
+      const districts = new Map();
+      listings.forEach((l) => {
+        const text = `${l.location || ''} ${l.description || ''}`;
+        let m;
+        while ((m = DISTRICT_RE.exec(text)) !== null) {
+          const name = (m[1] || '').trim();
+          if (!name || name.length < 2) continue;
+          if (!districts.has(name)) districts.set(name, { count: 0, lats: [], lngs: [] });
+          const d = districts.get(name);
+          d.count += 1;
+          if (Number.isFinite(l.latitude) && Number.isFinite(l.longitude)) {
+            d.lats.push(l.latitude);
+            d.lngs.push(l.longitude);
+          }
+        }
+      });
+      return [...districts.entries()]
+        .map(([name, d]) => ({
+          name,
+          count: d.count,
+          lat: d.lats.length > 0 ? +(d.lats.reduce((a, b) => a + b, 0) / d.lats.length).toFixed(6) : null,
+          lng: d.lngs.length > 0 ? +(d.lngs.reduce((a, b) => a + b, 0) / d.lngs.length).toFixed(6) : null,
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 20);
+    })();
+
     // 4. Shannon entropy of source-channel distribution.
     //    H = -Σ p_i log2 p_i — measures how evenly spread parlour discovery
     //    is across channels. Higher = more diverse sources; lower = a
@@ -721,10 +801,12 @@ export function useMarketAnalytics(listings, msgStats, patterns, analysisNow) {
       msgCount: msgStats.msgCount, photoCount: msgStats.photoCount,
       messageTypeRows, corpusCounts, funFacts,
       reuseRate, uniqueImages, lastUpdate, dataFreshnessHours, velocity,
+      trends,
       monthRows,
       channelSNR, mentionPower, lifecycle, channelEntropy,
       credibility, discoveredLexicon, locationAtlas,
       activityHeatmap, maxHeatmapValue,
+      districtDensity,
     };
   }, [analysisNow, listings, msgStats, patterns]);
 }

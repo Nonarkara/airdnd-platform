@@ -80,4 +80,20 @@ function pruneHeavyPublicDirs() {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), pruneHeavyPublicDirs()],
+  build: {
+    rollupOptions: {
+      output: {
+        // The single main chunk had grown past 1MB (gzip 318KB) and delayed
+        // first paint ~4s on every page. Vendor frameworks load as parallel
+        // cacheable chunks instead.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          if (id.includes('firebase')) return 'vendor-firebase';
+          if (id.includes('leaflet')) return 'vendor-leaflet';
+          if (id.includes('react')) return 'vendor-react';
+          return undefined;
+        },
+      },
+    },
+  },
 })

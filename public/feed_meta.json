@@ -1,7 +1,6 @@
 {
-  "degraded": true,
-  "source": "data.json",
-  "reason": "Supabase unavailable: supabase.co | 522: Connection timed out",
-  "cards": 106,
-  "builtAt": "2026-08-24T03:34:30.842Z"
+  "degraded": false,
+  "source": "channel_messages",
+  "cards": 178,
+  "builtAt": "2026-10-11T15:39:42.568Z"
 }

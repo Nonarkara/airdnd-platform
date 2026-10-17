@@ -392,7 +392,7 @@ export default function Sociology() {
         <h2>The Faceless Gallery</h2>
 
         <p className="soc-lead">
-          The anonymization extends from language to the visual presentation. Photography in this gray market operates not as portraiture, but as advertising under constraint. Photos systematically obscure faces — via aggressive cropping, extreme angles, or digital stickers — to maintain an "identity firewall" against legal, social, and platform repercussions, while heavily emphasizing bodily attributes.
+          The anonymization extends from language to the visual presentation. Photography in this gray market operates not as portraiture, but as advertising under constraint. Photos systematically obscure faces — via aggressive cropping, extreme angles, or digital stickers — to maintain an "identity firewall" against legal, social, and platform repercussions, while foregrounding bodily presentation.
         </p>
 
         <p className="soc-note">

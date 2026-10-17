@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import './InsightNarrative.css';
 
 /**
@@ -7,29 +7,33 @@ import './InsightNarrative.css';
  * Focuses on psychological narratives: Urban Commoditization, Alpha Gravity, and High-Value Discretion.
  */
 export default function InsightNarrative({ analytics, mode = 'spatial' }) {
-  const [typedText, setTypedText] = useState('');
-  
   const narrative = useMemo(() => {
     if (!analytics) return 'Awaiting spatial data stream...';
 
     const sentences = [];
 
     if (mode === 'spatial') {
-      const { totalMentions, avgPrice, avgMentions, peakHour, topPerformers, bestValue, visibleCount } = analytics;
-      
+      const { avgPrice, avgMentions, peakHour, topPerformers, bestValue, visibleCount, priceMedian } = analytics;
+
       if (visibleCount === 0) {
         return "The current viewport contains no known listings. The intelligence grid is offline for this sector.";
       }
 
       // Compute HHI (Herfindahl-Hirschman Index) based on mention share in the current viewport
       let hhi = 0;
-      if (visibleCount > 0 && totalMentions > 0 && Array.isArray(topPerformers)) {
-        let sumSquares = 0;
+      let totalMentions = 0;
+      if (visibleCount > 0 && Array.isArray(topPerformers)) {
         topPerformers.forEach((p) => {
-          const share = (p.computedMentions || 0) / totalMentions;
-          sumSquares += (share * 100) ** 2;
+          totalMentions += p.computedMentions || 0;
         });
-        hhi = Math.round(sumSquares);
+        if (totalMentions > 0) {
+          let sumSquares = 0;
+          topPerformers.forEach((p) => {
+            const share = (p.computedMentions || 0) / totalMentions;
+            sumSquares += (share * 100) ** 2;
+          });
+          hhi = Math.round(sumSquares);
+        }
       }
 
       // 1. Density & HHI Concentration
@@ -45,24 +49,24 @@ export default function InsightNarrative({ analytics, mode = 'spatial' }) {
       if (topPerformers && topPerformers.length > 0) {
         const top = topPerformers[0];
         if (top.computedMentions > (avgMentions || 0) * 2) {
-          sentences.push(`We detect significant attention asymmetry radiating from "${top.name || 'a dominant player'}". Commanding a disproportionate ${top.computedMentions} mentions, this provider holds a strong local indexing advantage.`);
+          sentences.push(`"${top.name || 'a dominant player'}" pulls ${top.computedMentions} mentions, ${Math.round((top.computedMentions || 0) / (avgMentions || 1))}x the market average. Strong local indexing advantage.`);
         } else {
-          sentences.push(`Attention dynamics here are egalitarian; no single operator monopolizes the local feeds, leading to a fluid discovery landscape.`);
+          sentences.push(`No single operator dominates the local feeds; discovery stays fluid across venues.`);
         }
       }
 
-      // 3. Price Deviation from the Bangkok Median (฿1,800/hr)
+      // 3. Price Level Assessment
       if (avgPrice) {
-        const medianBaseline = 1800;
+        const medianBaseline = priceMedian || 1800;
         const priceDev = Math.round(((avgPrice - medianBaseline) / medianBaseline) * 100);
         const devSign = priceDev >= 0 ? '+' : '';
-        
+
         if (priceDev > 35) {
-           sentences.push(`Pricing indicators point to a high price deviation (${devSign}${priceDev}% from Bangkok median, average: ฿${avgPrice.toLocaleString()}). Operators here trade volume for high-value discretion and premium placement.`);
+           sentences.push(`Pricing indicators point to a premium level (${devSign}${priceDev}% above benchmark, average: ฿${avgPrice.toLocaleString()}). Operators here focus on high-value discretion and premium placement.`);
         } else if (priceDev < -15) {
-           sentences.push(`Pricing indicators show a negative price deviation (${priceDev}% from Bangkok median, average: ฿${avgPrice.toLocaleString()}), typical of high-velocity transit zones optimizing for rapid turnover.`);
+           sentences.push(`Pricing indicators show a value-focused level (${priceDev}% below benchmark, average: ฿${avgPrice.toLocaleString()}), typical of high-velocity transit zones optimizing for rapid turnover.`);
         } else {
-           sentences.push(`Pricing conforms to the city median (${devSign}${priceDev}% deviation, average: ฿${avgPrice.toLocaleString()}), reflecting stable middle-class threshold alignment.`);
+           sentences.push(`Pricing aligns with benchmark levels (${devSign}${priceDev}% deviation, average: ฿${avgPrice.toLocaleString()}), reflecting stable market positioning.`);
         }
       } else {
         sentences.push(`The lack of numeric price labels indicates a highly psychological, inquiry-based booking model designed to filter demand prior to contact.`);
@@ -80,28 +84,28 @@ export default function InsightNarrative({ analytics, mode = 'spatial' }) {
       }
     } else if (mode === 'global') {
       const { total, velocity, dataFreshnessHours, channelEntropy, mentionPower } = analytics;
-      
+
       sentences.push(`The macro-intelligence grid is currently rendering ${total} active nodes.`);
-      
+
       if (channelEntropy && channelEntropy.evenness) {
         if (channelEntropy.evenness > 0.7) {
           sentences.push(`The structural integrity of discovery is highly resilient (Entropy Evenness: ${Math.round(channelEntropy.evenness * 100)}%). Consumers are utilizing diverse, fragmented channels to navigate the market.`);
         } else {
-          sentences.push(`Discovery is dangerously centralized into a singular echo chamber. A shift in one platform's algorithm could destabilize this entire ecosystem.`);
+          sentences.push(`Discovery is centralized into one echo chamber. A single platform's algorithm shift could destabilize the whole market.`);
         }
       }
 
       if (mentionPower && mentionPower.alpha) {
         if (mentionPower.alpha > 1.2) {
-          sentences.push(`We are witnessing a brutal Winner-Takes-All psychological paradigm (Power-Law α=${mentionPower.alpha}). The top 1% of providers are siphoning the vast majority of social capital and attention.`);
+          sentences.push(`Winner-takes-all dynamics (Power-Law α=${mentionPower.alpha}). Top providers take most of the attention and social capital.`);
         } else {
           sentences.push(`The attention economy is surprisingly egalitarian (α=${mentionPower.alpha}), allowing mid-tier operators to carve out sustainable, loyal micro-communities.`);
         }
       }
-      
+
       if (dataFreshnessHours !== undefined) {
         if (dataFreshnessHours < 2) {
-          sentences.push(`Data vectors are hyper-fresh, reflecting immediate market psychology.`);
+          sentences.push(`Data is hyper-fresh; this read reflects the current market.`);
         } else {
           sentences.push(`The structural narrative remains stable, anchored by data collected ${dataFreshnessHours} hours ago.`);
         }
@@ -111,30 +115,16 @@ export default function InsightNarrative({ analytics, mode = 'spatial' }) {
     return sentences.join(' ');
   }, [analytics, mode]);
 
-  // Terminal-style Typewriter effect
-  useEffect(() => {
-    setTypedText('');
-    let i = 0;
-    const intervalId = setInterval(() => {
-      setTypedText(narrative.substring(0, i));
-      i++;
-      if (i > narrative.length) clearInterval(intervalId);
-    }, 15); // slightly slower for reading pacing
-    
-    return () => clearInterval(intervalId);
-  }, [narrative]);
-
   if (!analytics) return null;
 
   return (
     <div className="insight-narrative-container professional-terminal">
       <div className="insight-narrative-header">
         <span className="live-dot pulse" />
-        <span className="kicker">SABAI TERMINAL // PSYCHO-ANALYTICS</span>
+        <span className="kicker">MARKET READ // {mode === 'global' ? 'FULL CORPUS' : 'THIS VIEWPORT'}</span>
       </div>
       <p className="insight-narrative-text">
-        {typedText}
-        <span className="cursor blink">|</span>
+        {narrative}
       </p>
     </div>
   );

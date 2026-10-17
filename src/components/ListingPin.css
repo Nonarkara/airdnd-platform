@@ -1,0 +1,84 @@
+/* ============================================================================
+   ListingPin — freshness-state visual encoding
+   --------------------------------------------------------------------------
+   Layered ON TOP of the existing `.listing-pin` rules in ListingMap.css.
+   The map's existing availability-* classes still drive the base fill;
+   these states override color, add the pulse for fresh pins, and hollow
+   out stale pins.
+
+   Single accent law: fresh = --mango (amber). All other states use
+   --ink-* tokens. No second accent.
+   ============================================================================ */
+
+/* ── fresh ─ posted in the last 30 minutes. Pulse a ring outward. ──────────── */
+.listing-pin--fresh {
+  background: var(--mango) !important;
+  border-color: var(--bg) !important;
+  box-shadow: 0 0 0 2px var(--mango);
+  animation: none;
+}
+
+.listing-pin--fresh::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border: 1.5px solid var(--mango);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: listing-pin-fresh-pulse 2.4s cubic-bezier(0.4, 0.05, 0.15, 1) infinite;
+}
+
+@keyframes listing-pin-fresh-pulse {
+  0%   { transform: scale(1);   opacity: 0.9; }
+  80%  { transform: scale(2.0); opacity: 0;   }
+  100% { transform: scale(2.0); opacity: 0;   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .listing-pin--fresh::after { animation: none; opacity: 0; }
+}
+
+/* ── active ─ posted in the last 4 hours. Solid amber, no pulse. ─────────── */
+.listing-pin--active {
+  background: var(--mango) !important;
+  border-color: var(--bg) !important;
+}
+
+/* ── recent ─ posted in the last 24 hours. Warm ink. ──────────────────────── */
+.listing-pin--recent {
+  background: var(--ink-2) !important;
+  border-color: var(--bg) !important;
+}
+
+/* ── stale ─ posted > 24h ago. Hollow ring, muted. ────────────────────────── */
+.listing-pin--stale {
+  background: transparent !important;
+  border-color: var(--ink-3) !important;
+  border-width: 1.5px !important;
+  opacity: 0.65;
+}
+
+.listing-pin--stale:hover {
+  opacity: 1;
+}
+
+/* ── area-level precision ─ no exact coords. Smaller, dashed-feel via border. */
+.listing-pin.is-area-level {
+  border-style: dashed !important;
+}
+
+/* Legend swatch ── mirrors the fresh pin's appearance for the in-map legend. */
+.availability-key--fresh {
+  background: var(--mango);
+  border-color: var(--bg);
+  position: relative;
+}
+.availability-key--fresh::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border: 1.5px solid var(--mango);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: listing-pin-fresh-pulse 2.4s cubic-bezier(0.4, 0.05, 0.15, 1) infinite;
+}

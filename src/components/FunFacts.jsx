@@ -8,7 +8,7 @@ function tmpl(str, vars) {
 
 export default function FunFacts({ listings, metrics }) {
   const { t } = useLanguage();
-  const tf = t.funFacts || {};
+  const tf = useMemo(() => t?.funFacts || {}, [t?.funFacts]);
 
   const facts = useMemo(() => {
     if (!listings || listings.length === 0) return [];

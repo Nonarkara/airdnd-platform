@@ -88,6 +88,65 @@
   line-height: 1.1;
 }
 
+.masthead__stat--link {
+  cursor: pointer;
+}
+
+.masthead__stat-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.4rem 0.55rem;
+  margin: -0.4rem -0.55rem;
+  border: 1px solid transparent;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.masthead__stat-link:hover,
+.masthead__stat-link:focus-visible {
+  border-color: var(--mango);
+  background: rgba(245, 158, 11, 0.08);
+  outline: none;
+}
+
+.masthead__stat-link dt {
+  color: var(--mango) !important;
+}
+
+.masthead__cta-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.6rem;
+}
+
+.masthead__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--mango);
+  background: transparent;
+  color: var(--mango);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.masthead__cta:hover,
+.masthead__cta:focus-visible {
+  background: var(--mango);
+  color: var(--bg, #0a0a0c);
+  outline: none;
+}
+
+.masthead__cta-arrow {
+  font-size: 1rem;
+  line-height: 1;
+}
+
 .masthead__sync {
   font-size: var(--fs-body) !important;
   color: var(--navy, var(--ink)) !important;
@@ -103,4 +162,75 @@
   .masthead__title {
     font-size: clamp(2.1rem, 11vw, 2.8rem);
   }
+}
+
+/* iPad portrait + large foldable (≤1024px) — three-column stats grid is
+   denser than 2-col at 7" widths without going full desktop. The hero
+   stays in 2-col at this width because the 4-quadrant stat grid is the
+   feature that benefits most from one extra column. */
+@media (max-width: 1024px) and (min-width: 681px) {
+  .masthead__stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* The 'CHANNELS' / 'SYNCED' pair was 1fr 1fr — keep them side-by-side
+     inside a 2-col mini-grid even when the outer grid is 3-col. */
+  .masthead__stats > div:nth-child(7),
+  .masthead__stats > div:nth-child(8) {
+    grid-column: span 1;
+  }
+
+  /* Re-flow the bottom row so the two wide cells still sit in a 2-col
+     sub-grid rather than two full-width rows. */
+  .masthead__stats {
+    grid-template-areas:
+      'a b c'
+      'd e f'
+      'g h h';
+  }
+
+  .masthead__stats > div:nth-child(1) { grid-area: a; }
+  .masthead__stats > div:nth-child(2) { grid-area: b; }
+  .masthead__stats > div:nth-child(3) { grid-area: c; }
+  .masthead__stats > div:nth-child(4) { grid-area: d; }
+  .masthead__stats > div:nth-child(5) { grid-area: e; }
+  .masthead__stats > div:nth-child(6) { grid-area: f; }
+  .masthead__stats > div:nth-child(7) { grid-area: g; }
+  .masthead__stats > div:nth-child(8) { grid-area: h; }
+}
+
+/* Foldable phone closed (≤360px) — 2-col stays, but tighten padding and
+   prevent the title from forcing a horizontal scroll on cover displays. */
+@media (max-width: 360px) {
+  .masthead__title {
+    font-size: clamp(1.8rem, 9vw, 2.2rem);
+  }
+
+  .masthead__sub,
+  .masthead__pulse {
+    max-width: 100%;
+  }
+
+  .masthead__stats > div {
+    padding: 10px 10px;
+  }
+
+  .masthead__cta {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Intake provenance — the funnel written by verify_snapshot.js. Same mono
+   instrument voice as the pulse line, one notch quieter; a rule above it so
+   it reads as a footnote to the claim, not part of it. */
+.masthead__provenance {
+  margin: 0.6rem 0 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  opacity: 0.78;
+  max-width: 62ch;
 }

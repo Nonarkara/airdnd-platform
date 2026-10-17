@@ -10,6 +10,7 @@ import {
 } from '../src/lib/listing_contract.js';
 import { resolveGoogleMapsDataCached as resolveGoogleMapsData } from './geocoder_cache.js';
 import { CITY_PATTERNS, cleanDisplayText, normalizeText, normalizePhone, inferCityFromLocation } from '../src/lib/normalization.js';
+import { classifyVenueTier } from '../src/lib/venue_tiers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -371,6 +372,12 @@ export function parseModelJson(text) {
     return parsed.listings;
   }
 
+  // Small local models under a json_object response mode sometimes return one
+  // bare object instead of the requested array — accept it as a single item.
+  if (parsed && typeof parsed === 'object') {
+    return [parsed];
+  }
+
   return [];
 }
 
@@ -442,6 +449,7 @@ export function normalizeExtractedListings(rawListings, options = {}) {
         serviceTags,
         userFeedbackSummary,
         isSafeImage: listing?.isSafeImage !== false,
+        complianceTier: classifyVenueTier(listing).key,
       };
     })
     .filter(Boolean);
@@ -502,7 +510,33 @@ export function dedupeListings(listings) {
   const seenIdentifiers = new Set();
   const seenNameLocations = new Set();
   const seenFingerprints = new Set();
+  const identifierOwners = new Map();
+  const nameLocationOwners = new Map();
+  const cityImageOwners = new Map();
+  const fingerprintOwners = new Map();
   const deduped = [];
+
+  // When a re-post folds into its survivor, its photos must survive too:
+  // append unseen gallery URLs so parlor gallery updates are never lost to
+  // dedup. One card per business, every photo kept.
+  function absorbPhotos(survivor, dropped) {
+    if (!survivor || !dropped) return;
+    const extraPhotos = [...(dropped.allPhotoUrls || [])].filter(
+      (url) => url && !(survivor.allPhotoUrls || []).includes(url),
+    );
+    if (extraPhotos.length > 0) {
+      survivor.allPhotoUrls = [...(survivor.allPhotoUrls || []), ...extraPhotos];
+    }
+    if ((!survivor.imageUrl || survivor.imageUrl.startsWith('/mockups/')) && dropped.imageUrl) {
+      survivor.imageUrl = dropped.imageUrl;
+    }
+    const extraIds = [...(dropped.sourceMessageIds || [])].filter(
+      (id) => !(survivor.sourceMessageIds || []).includes(id),
+    );
+    if (extraIds.length > 0) {
+      survivor.sourceMessageIds = [...(survivor.sourceMessageIds || []), ...extraIds];
+    }
+  }
 
   const prioritizedListings = [...(Array.isArray(listings) ? listings : [])].sort((left, right) => {
     const matchedDelta = Number(hasMatchedMedia(right)) - Number(hasMatchedMedia(left));
@@ -525,34 +559,47 @@ export function dedupeListings(listings) {
     const imageUrl = normalizeText(listing?.imageUrl || listing?.image_url);
 
     if (identifierKey && seenIdentifiers.has(identifierKey)) {
+      absorbPhotos(identifierOwners.get(identifierKey), listing);
       continue;
     }
 
     if (nameLocationKey && seenNameLocations.has(nameLocationKey)) {
+      absorbPhotos(nameLocationOwners.get(nameLocationKey), listing);
       continue;
     }
 
     if (!fingerprint || seenFingerprints.has(fingerprint)) {
+      if (fingerprint && fingerprintOwners.has(fingerprint)) {
+        absorbPhotos(fingerprintOwners.get(fingerprint), listing);
+      }
       continue;
     }
 
-    // New: Prevent duplicate images within the same location/city in a single batch
-    // This catches re-posts that change the description slightly but keep the same image
+    // Same photo re-posted in the same city under a slightly different
+    // description or staff name is the same business — fold it, keeping its
+    // photos. Phone/canonical matching at the DB layer is the stronger signal
+    // for cross-city cases; this batch-level check stays strict so one photo
+    // never produces two cards.
     if (imageUrl && !imageUrl.startsWith('/mockups/')) {
       const cityKey = `${listing.city || 'Bangkok'}|${imageUrl}`;
       if (seenFingerprints.has(cityKey)) {
+        absorbPhotos(cityImageOwners.get(cityKey), listing);
         continue;
       }
       seenFingerprints.add(cityKey);
+      cityImageOwners.set(cityKey, listing);
     }
 
     if (identifierKey) {
       seenIdentifiers.add(identifierKey);
+      identifierOwners.set(identifierKey, listing);
     }
     if (nameLocationKey) {
       seenNameLocations.add(nameLocationKey);
+      nameLocationOwners.set(nameLocationKey, listing);
     }
     seenFingerprints.add(fingerprint);
+    fingerprintOwners.set(fingerprint, listing);
     deduped.push(listing);
   }
 
@@ -613,23 +660,26 @@ export function writeSnapshotListings(listings) {
     return false;
   }
 
-  // Strip bulky BI fields from snapshot to keep frontend payload slim
-  const slimListings = normalizedListings.map(({ rawText, sourceMessageIds, allPhotoUrls, userFeedbackSummary, userRating, serviceTags, ...rest }) => rest);
+  // Strip bulky BI fields from snapshot to keep frontend payload slim — but
+  // KEEP the photo gallery (capped): stripping allPhotoUrls meant data.json
+  // carried one hero photo per parlor while the other ~25k archived photos
+  // never reached the frontend, and the build pruned their files from dist.
+  const slimListings = normalizedListings.map(({ rawText, sourceMessageIds, allPhotoUrls, userFeedbackSummary, userRating, serviceTags, ...rest }) => ({
+    ...rest,
+    ...(Array.isArray(allPhotoUrls) && allPhotoUrls.length > 0
+      ? { allPhotoUrls: [...new Set(allPhotoUrls)].slice(0, 12) }
+      : {}),
+  }));
 
   fs.writeFileSync(snapshotPath, JSON.stringify(slimListings, null, 2));
   console.log(`Saved ${slimListings.length} listing(s) to public/data.json`);
   return true;
 }
 
-export function classifyMessageType(text) {
-  if (!text || text.length < 5) return 'unknown';
-  if (/(?:คลิป|clip|vdo|video|โป้|โป๊|18\+|xxx|porn|nude|onlyfans|เสียว|หลุด|กลุ่มลับ|vip\s*group)/i.test(text)) return 'spam';
-  if (/(?:ประกาศ|announcement|admin|rule|กฎ|กติกา|ข้อตกลง)/i.test(text)) return 'admin';
-  if (/(?:รีวิว|review|ประสบการณ์|experience|ไปมา|เคยไป|recommend|แนะนำ|ดีมาก|แย่|สะอาด|clean|คุ้ม|worth|ประทับใจ|ไม่ประทับ)/i.test(text)) return 'feedback';
-  if (/(?:ใครเคย|สอบถาม|เป็นยังไง|ที่ไหน|ราคาเท่าไหร่|มีใครรู้|แนะนำหน่อย|\?$)/i.test(text)) return 'discussion';
-  if (/(?:ร้าน|shop|spa|สปา|นวด|massage|clinic|คลินิก|health|สุขภาพ|therap|ราคา|price|baht|บาท|฿|โทร|tel|phone|line\s*(?:id)?|จอง|booking)/i.test(text)) return 'listing';
-  return 'unknown';
-}
+// The classifier lives in src/lib so it can be unit-tested without pulling in
+// the Supabase client this module initialises at import time.
+import { classifyMessageType } from '../src/lib/message_classifier.js';
+export { classifyMessageType };
 
 export async function archiveChannelMessages(supabase, messages, channelId, channelName, companionIdMap = new Map()) {
   if (!supabase || !Array.isArray(messages) || messages.length === 0) return 0;
@@ -927,6 +977,9 @@ export async function insertListingsIfPossible(supabase, listings) {
       if (listing.serviceTags?.length) row.service_tags = listing.serviceTags;
       if (listing.userFeedbackSummary) row.discussion_notes = listing.userFeedbackSummary;
       if (listing.isSafeImage === false) row.is_safe_image = false;
+      if (listing.complianceTier && listing.complianceTier !== 'unclassified') {
+        row.compliance_tier = listing.complianceTier;
+      }
 
       // Geocoding: resolve coordinates from Google Maps URL
       if (listing.mapsUrl && !row.latitude) {
