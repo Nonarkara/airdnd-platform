@@ -12,6 +12,7 @@ import History from './components/History.jsx';
 import CrossReferences from './components/CrossReferences.jsx';
 import DataBank from './components/DataBank.jsx';
 import ViewHero from './components/ViewHero.jsx';
+import Find from './components/Find.jsx';
 
 // Leaflet is ~150KB and only the B2B lens draws a map. Split it so the B2C
 // path never pays for it.
@@ -35,15 +36,16 @@ export default function App() {
   const initial = useRef(requirementFromUrl());
   const [state, setState] = useState({ status: 'loading' });
   const [lens, setLens] = useState(initial.current.lens);
-  // Atlas is the home view: the headline findings + specialization +
-  // quality leaders + 77-province rollup. The match view is a tool a buyer
-  // reaches for when they have a specific sourcing brief; landing there
-  // first would show 3,665 of a province's records before telling the
-  // reader what any of them mean.
+  // Find is the home view: a search-first, phone-first landing. The most
+  // useful single thing this site can do is end a session with a phone call
+  // to a producer you can actually reach. Atlas, Match, Matchmaker, Briefs,
+  // Tides, Champions, Story, History, Cross-refs remain reachable from the
+  // nav and from deep links; the difference is that a fresh visitor lands on
+  // the thing they can use, not the thing they can read about.
   const [view, setView] = useState(() => {
     const urlView = new URLSearchParams(window.location.search).get('view');
-    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs', 'bank'].includes(urlView)) return urlView;
-    return 'atlas';
+    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs', 'bank', 'find'].includes(urlView)) return urlView;
+    return 'find';
   });
   const [provinceCode, setProvinceCode] = useState(() => {
     const c = Number(new URLSearchParams(window.location.search).get('code'));
@@ -55,6 +57,8 @@ export default function App() {
     else { setView('province'); setProvinceCode(code); }
     window.scrollTo({ top: 0 });
   }, []);
+  // Find lives next to the dossier, not under Atlas. It is a one-question
+  // search box with the phone as the prominent affordance.
   const [insights, setInsights] = useState(null);
   const [insightsError, setInsightsError] = useState(null);
   const [requirement, setRequirement] = useState(initial.current.requirement);
@@ -180,6 +184,9 @@ export default function App() {
             per viewport — two stacked wordmarks read as an unfinished template. */}
         <div className="wrap hdr-in">
           <nav className="hdr-nav">
+            <button type="button" aria-current={view === 'find'} onClick={() => setView('find')}>
+              <Bi en="Find" th="ค้นหา" />
+            </button>
             <button type="button" aria-current={view === 'match' && lens === 'b2b'} onClick={() => { setView('match'); setLens('b2b'); }}>
               <Bi en="Source" th="แหล่ง" /> · <Bi en="B2B" th="ธุรกิจสู่ธุรกิจ" />
             </button>
@@ -188,27 +195,6 @@ export default function App() {
             </button>
             <button type="button" aria-current={view === 'atlas'} onClick={() => openProvince(null)}>
               <Bi en="Atlas" th="แผนที่ข้อมูล" />
-            </button>
-            <button type="button" aria-current={view === 'matchmaker'} onClick={() => setView('matchmaker')}>
-              <Bi en="Matchmaker" th="จับคู่" />
-            </button>
-            <button type="button" aria-current={view === 'briefs'} onClick={() => setView('briefs')}>
-              <Bi en="Briefs" th="สรุป" />
-            </button>
-            <button type="button" aria-current={view === 'tides'} onClick={() => setView('tides')}>
-              <Bi en="Tides" th="กระแส" />
-            </button>
-            <button type="button" aria-current={view === 'champions'} onClick={() => setView('champions')}>
-              <Bi en="Champions" th="แชมป์" />
-            </button>
-            <button type="button" aria-current={view === 'story'} onClick={() => setView('story')}>
-              <Bi en="Story" th="เรื่องเล่า" />
-            </button>
-            <button type="button" aria-current={view === 'history'} onClick={() => setView('history')}>
-              <Bi en="History" th="25 ปี" />
-            </button>
-            <button type="button" aria-current={view === 'crossrefs'} onClick={() => setView('crossrefs')}>
-              <Bi en="Cross-refs" th="เชื่อมโยง" />
             </button>
             <button type="button" aria-current={view === 'bank'} onClick={() => setView('bank')}>
               <Bi en="Data Bank" th="คลังข้อมูล" />
@@ -232,14 +218,41 @@ export default function App() {
             <p className="hero-mark-sub">One Tambon · One Product · One Platform</p>
             <p className="hero-th">หนึ่งตำบล หนึ่งผลิตภัณฑ์ หนึ่งแพลตฟอร์ม</p>
             <p className="hero-sub">
-              Thailand's OTOP registry as a working directory for matching demand to supply.
-              State a requirement; get a ranked shortlist, the reason for the ranking, and an
-              explicit account of what the registry cannot tell you.
+              {view === 'find' && (
+                <Bi
+                  en="Type a thing. Pick a place. Get a list of names and phone numbers you can call right now."
+                  th="พิมพ์สิ่งที่ต้องการ เลือกจังหวัด รับรายชื่อและเบอร์โทรที่โทรหาได้วันนี้"
+                />
+              )}
+              {view === 'atlas' && (
+                <Bi
+                  en="Read the registry as data — five chapters, one question each. The whole national rollup, in one place."
+                  th="อ่านข้อมูลทะเบียนเป็นข้อมูล — ห้าบท หนึ่งคำถามต่อบท ภาพรวมทั้งประเทศในที่เดียว"
+                />
+              )}
+              {view === 'bank' && (
+                <Bi
+                  en="Where the data came from, what we added, and how to cite it. The provenance of every number on this site."
+                  th="ข้อมูลมาจากไหน เราเพิ่มอะไร อ้างอิงอย่างไร แหล่งที่มาของตัวเลขทุกตัวบนเว็บนี้"
+                />
+              )}
+              {view === 'match' && (
+                <Bi
+                  en="State a requirement; get a ranked shortlist, the reason for the ranking, and an explicit account of what the registry cannot tell you."
+                  th="ระบุความต้องการ รับรายชื่อจัดอันดับ เหตุผลในการจัดอันดับ และสิ่งที่ทะเบียนบอกไม่ได้"
+                />
+              )}
+              {view !== 'find' && view !== 'atlas' && view !== 'bank' && view !== 'match' && (
+                <Bi
+                  en="Thailand's OTOP registry as a working directory for matching demand to supply."
+                  th="ทะเบียน OTOP ของไทยในฐานะไดเรกทอรีที่ทำงานได้ เพื่อจับคู่อุปสงค์กับอุปทาน"
+                />
+              )}
             </p>
 
-            {/* A shared province link opens on a phone: the province, not the
-                national gauges, must be the first thing under the wordmark. */}
-            {view !== 'province' && <div className="gauges">
+            {/* The gauges are the wrong thing on Find — the search box is the
+                right thing. Hide them when the user has come to use the site. */}
+            {view !== 'province' && view !== 'find' && <div className="gauges">
               <Gauge n={totals.records.toLocaleString()} label="Records" th="รายการ" />
               <Gauge n={totals.producers.toLocaleString()} label="Producers" th="ผู้ผลิต" />
               <Gauge n={`${totals.provincesWithRecords}/77`} label="Provinces" th="จังหวัด" />
@@ -249,7 +262,15 @@ export default function App() {
           </div>
         </section>
 
-        {view !== 'province' && <div className="wrap"><ProvenanceBanner meta={meta} /></div>}
+        {view !== 'province' && view !== 'find' && <div className="wrap"><ProvenanceBanner meta={meta} /></div>}
+
+        {view === 'find' && (
+          <section className="sec sec-find" id="find">
+            <div className="wrap">
+              <Find onOpenProvince={openProvince} />
+            </div>
+          </section>
+        )}
 
         {view === 'match' && (<>
         <section className="sec" id="match">

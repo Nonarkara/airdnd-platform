@@ -54,6 +54,7 @@ export function requirementFromUrl() {
 
 export function requirementToUrl(view, lens, r, code) {
   const p = new URLSearchParams();
+  if (view === 'find') p.set('view', 'find');
   if (view === 'atlas') p.set('view', 'atlas');
   if (view === 'story') p.set('view', 'story');
   if (view === 'history') p.set('view', 'history');

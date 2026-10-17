@@ -1049,3 +1049,275 @@ html, body { overflow-x: hidden; }
 .bank-row { padding: 0.5rem 0; border-bottom: 1px solid currentColor; }
 .bank-row-t { font-weight: 600; }
 .bank-row-meta { font-size: 0.85em; opacity: 0.8; }
+
+/* ─── Find view — search-first, phone-first landing ───
+ * The most useful single thing on the site: a search box that ends with a
+ * phone call. The phone is the prominent affordance; everything else is
+ * metadata underneath.
+ */
+
+.sec-find { padding-top: 0.5rem; }
+
+.find { padding: 0.5rem 0 3rem; }
+
+.find-head { margin-bottom: 1.5rem; }
+.find-h {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.find-summary {
+  font-size: 1rem;
+  color: var(--ink-2, currentColor);
+  opacity: 0.85;
+  margin: 0 0 0.6rem;
+  max-width: 60ch;
+}
+.find-stats {
+  font-size: 0.85rem;
+  color: var(--ink-3, currentColor);
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+}
+.find-stats strong {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 1.05rem;
+  color: var(--ink, currentColor);
+  font-weight: 700;
+}
+.find-stats-sep { opacity: 0.35; }
+.find-bar {
+  flex: 0 0 160px;
+  height: 4px;
+  margin-left: 0.5rem;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: currentColor;
+  opacity: 0.18;
+}
+.find-bar::-webkit-progress-bar { background: currentColor; opacity: 0.18; }
+.find-bar::-webkit-progress-value { background: var(--accent, #c99518); opacity: 1; }
+.find-bar::-moz-progress-bar { background: var(--accent, #c99518); }
+
+.find-controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  background: var(--surface, rgba(255, 250, 239, 0.6));
+  border: 1px solid var(--line, currentColor);
+}
+@media (min-width: 720px) {
+  .find-controls {
+    grid-template-columns: 1.4fr 1fr 0.7fr auto;
+    align-items: end;
+  }
+}
+.find-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.78rem;
+  color: var(--ink-3, currentColor);
+  letter-spacing: 0.04em;
+}
+.find-lbl { text-transform: uppercase; font-weight: 700; }
+.find-controls input[type='search'],
+.find-controls select {
+  font-family: var(--font-text, inherit);
+  font-size: 1rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line, currentColor);
+  background: var(--bg, #fdf3df);
+  color: var(--ink, currentColor);
+  width: 100%;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.find-controls input[type='search']:focus,
+.find-controls select:focus {
+  outline: 2px solid var(--accent, #c99518);
+  outline-offset: -1px;
+}
+.find-phone-toggle {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.4rem !important;
+  padding-bottom: 0.55rem;
+  font-size: 0.85rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap;
+}
+.find-phone-toggle input { width: 1.1rem; height: 1.1rem; }
+
+.find-meta {
+  font-size: 0.88rem;
+  color: var(--ink-2, currentColor);
+  margin: 0.5rem 0 0.5rem;
+  min-height: 1.4em;
+}
+.find-qecho { color: var(--ink, currentColor); font-weight: 700; }
+
+.find-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line, currentColor);
+}
+.find-row {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line, currentColor);
+  display: grid;
+  gap: 0.25rem;
+  position: relative;
+}
+.find-row.s5 { border-left: 3px solid var(--accent, #c99518); padding-left: 0.7rem; }
+.find-row.s4 { border-left: 3px solid var(--accent-2, #a8780c); padding-left: 0.7rem; }
+.find-row.no-phone { opacity: 0.7; }
+
+.find-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.find-row-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink, currentColor);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.find-row-name:hover { border-bottom-color: currentColor; }
+.find-row-stars {
+  font-family: var(--font-mono, monospace);
+  color: var(--accent-2, #a8780c);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.find-row-phone {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.phone-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: var(--accent-2, #a8780c);
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 1px;
+}
+.phone-link:hover { color: var(--silk, #a02050); }
+.phone-icon { font-size: 1.1rem; }
+.phone-num { font-size: 1.15rem; }
+.phone-action {
+  font-family: var(--font-text, inherit);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin-left: 0.2rem;
+}
+.phone-muted {
+  color: var(--ink-3, currentColor);
+  font-style: italic;
+  font-size: 0.95rem;
+  font-family: var(--font-text, inherit);
+  font-weight: 400;
+}
+
+.find-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.6rem;
+  font-size: 0.82rem;
+  color: var(--ink-2, currentColor);
+  align-items: baseline;
+}
+.find-row-prov {
+  background: none;
+  border: 1px solid var(--line, currentColor);
+  color: var(--ink-2, currentColor);
+  font-family: var(--font-text, inherit);
+  font-size: 0.78rem;
+  padding: 0.1rem 0.45rem;
+  cursor: pointer;
+  text-align: left;
+}
+.find-row-prov:hover { color: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
+.find-row-product { font-style: italic; }
+.find-row-cat {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+.find-row-regid {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  opacity: 0.55;
+  margin-left: auto;
+}
+
+.find-empty {
+  padding: 2rem 0;
+  text-align: center;
+  color: var(--ink-3, currentColor);
+  font-style: italic;
+}
+.find-more {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+  justify-content: center;
+}
+.btn-line {
+  background: none;
+  border: 1px solid var(--accent, #c99518);
+  color: var(--accent-2, #a8780c);
+  padding: 0.45rem 0.9rem;
+  font-family: var(--font-text, inherit);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.btn-line:hover { background: var(--accent, #c99518); color: var(--bg, #fdf3df); }
+
+.find-caveat {
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--ink-3, currentColor);
+  font-style: italic;
+  border-top: 1px solid var(--line, currentColor);
+  padding-top: 0.75rem;
+}
+
+/* Mobile: stack find controls */
+@media (max-width: 720px) {
+  .find-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+  .find-q { grid-column: 1 / -1; }
+  .find-phone-toggle { grid-column: 1 / -1; padding: 0.4rem 0; }
+  .find-row-meta { font-size: 0.78rem; }
+  .find-row-name { font-size: 1rem; }
+  .phone-num { font-size: 1.05rem; }
+  .phone-action { display: none; }
+}
