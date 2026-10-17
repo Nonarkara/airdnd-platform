@@ -644,7 +644,9 @@ export function mergeCanonicalGroup(listings) {
       source: listing?.dataSource || listing?.data_source || 'supabase',
       allowUnverified: true,
     }))
-    .filter(Boolean);
+    .filter(Boolean)
+    // Freshest mention first, so unioned photos/tags lead with the newest post.
+    .sort((left, right) => getFreshnessValue(right) - getFreshnessValue(left));
 
   if (normalized.length === 0) {
     return null;
@@ -685,6 +687,15 @@ export function mergeCanonicalGroup(listings) {
     mentionCount: normalized.reduce((sum, listing) => sum + (Number(listing.mentionCount) || 1), 0),
     isSafeImage: normalized.every((listing) => listing.isSafeImage !== false),
   };
+
+  // A parlour that re-posts keeps its best-quality fields, but its timestamps
+  // follow the latest Telegram mention — otherwise a venue advertising every
+  // hour still reads "posted 6 days ago" and drops down the freshness sort.
+  const freshest = normalized[0];
+  if (getFreshnessValue(freshest) > getFreshnessValue(survivor)) {
+    if (freshest.postedAt) merged.postedAt = freshest.postedAt;
+    if (freshest.updatedAt) merged.updatedAt = freshest.updatedAt;
+  }
 
   const primaryName = String(merged.name || '').trim();
   merged.aliasNames = [
