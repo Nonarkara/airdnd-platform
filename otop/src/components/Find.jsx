@@ -92,6 +92,7 @@ export default function Find({ onOpenProvince }) {
   const [onlyContactable, setOnlyContactable] = useState(initial.onlyContactable);
   const [limit, setLimit] = useState(PAGE);
   const [recents, setRecents] = useState(() => recentSearches());
+  const [shareState, setShareState] = useState('idle'); // 'idle' | 'copied' | 'failed'
 
   // Push the current filter state to recents whenever the user pauses
   // meaningfully. The 800ms debounce keeps us from writing on every
@@ -105,6 +106,57 @@ export default function Find({ onOpenProvince }) {
     }, 800);
     return () => clearTimeout(t);
   }, [query, provinceCode, stars, onlyContactable]);
+
+  // Reset all filters back to the default. A buyer who has narrowed to
+  // "5★ silk in Chiang Mai with a phone" sometimes wants to widen from
+  // there. One click, not four.
+  function resetFilters() {
+    setQuery('');
+    setProvinceCode(ALL_PROVINCES);
+    setStars(STAR_ANY);
+    setOnlyContactable(false);
+    setLimit(PAGE);
+  }
+
+  const isFiltered =
+    (query && query.trim()) ||
+    (provinceCode && provinceCode !== ALL_PROVINCES) ||
+    (stars && stars !== STAR_ANY) ||
+    onlyContactable;
+
+  // Copy the current search URL to the clipboard. The URL is the share
+  // surface — a colleague can open the same search on their machine.
+  // No new write surface, no account, no tracking. The share state
+  // shows a brief "copied" affordance so the user knows it worked.
+  async function copyShareLink() {
+    if (typeof window === 'undefined') return;
+    const url = window.location.href;
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        setShareState('copied');
+        setTimeout(() => setShareState('idle'), 1800);
+        return;
+      }
+    } catch {}
+    // Fallback for browsers without async clipboard: a hidden textarea.
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'absolute';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      setShareState(ok ? 'copied' : 'failed');
+      setTimeout(() => setShareState('idle'), 1800);
+    } catch {
+      setShareState('failed');
+      setTimeout(() => setShareState('idle'), 1800);
+    }
+  }
 
   // Load index.
   useEffect(() => {
@@ -343,6 +395,31 @@ export default function Find({ onOpenProvince }) {
             {onlyContactable ? <span> <span className="muted">·</span> <Bi en="phone" th="มีเบอร์" /></span> : null}
           </>
         )}
+      </div>
+
+      <div className="find-actions">
+        {isFiltered && (
+          <button type="button" className="btn-line" onClick={resetFilters}>
+            <Bi en="Reset filters" th="ล้างตัวกรอง" />
+          </button>
+        )}
+        <button
+          type="button"
+          className={`btn-line btn-share${shareState !== 'idle' ? ` is-${shareState}` : ''}`}
+          onClick={copyShareLink}
+          disabled={shareState === 'copied'}
+        >
+          {shareState === 'copied' ? (
+            <Bi en="Link copied" th="คัดลอกลิงก์แล้ว" />
+          ) : shareState === 'failed' ? (
+            <Bi en="Copy failed — share the URL" th="คัดลอกไม่สำเร็จ — ส่ง URL นี้" />
+          ) : (
+            <>
+              <Bi en="Copy share link" th="คัดลอกลิงก์" />
+              <span className="muted"> · <Bi en="URL" th="URL" /></span>
+            </>
+          )}
+        </button>
       </div>
 
       {recents.length > 0 && (

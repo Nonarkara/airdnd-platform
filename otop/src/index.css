@@ -1511,3 +1511,26 @@ html, body { overflow-x: hidden; }
   border: 1px solid var(--accent, #c99518);
 }
 .find-banner-cta:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
+
+/* ─── Find action row: reset + share ───
+ * The buyer workflow's two housekeeping actions. Reset clears the
+ * filters; Copy share link puts the current URL on the clipboard so
+ * a colleague can open the same search.
+ */
+.find-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0 0 0.75rem;
+  flex-wrap: wrap;
+}
+.find-actions .btn-line { font-size: 0.78rem; padding: 0.35rem 0.7rem; }
+.find-actions .btn-share.is-copied {
+  background: var(--accent, #c99518);
+  color: var(--bg, #fdf3df);
+  border-color: var(--accent, #c99518);
+}
+.find-actions .btn-share.is-failed {
+  border-color: var(--crimson, #8a1c1c);
+  color: var(--crimson, #8a1c1c);
+}
