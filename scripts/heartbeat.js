@@ -18,7 +18,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createClient } from '@supabase/supabase-js';
+import { createDataClient } from './lib/local_db.js';
 import dotenv from 'dotenv';
 import { execSync } from 'child_process';
 import { canonicalizePublicListings } from '../src/lib/listing_contract.js';
@@ -41,11 +41,7 @@ fs.mkdirSync(LOG_DIR, { recursive: true });
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
-  { auth: { persistSession: false } },
-);
+const supabase = createDataClient(); // local Postgres on the M3
 
 // ── Operator alerting ────────────────────────────────────────────────────────
 // Sends Telegram alerts when the pipeline is degraded. Rate-limited: no

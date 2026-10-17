@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Telegram intake on the M3 (replaces the Render worker `airdnd-live-intake`).
+  NOT loaded until /Volumes/Data/AirDnD/intake/airdnd-platform/.env has
+  TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_SESSION (and GEMINI_API_KEY).
+  Stop the Render worker first: the same TELEGRAM_SESSION must never run in two
+  places at once (Telegram revokes it with AUTH_KEY_DUPLICATED).
+  Install: cp to ~/Library/LaunchAgents && launchctl bootstrap gui/$(id -u) <plist>
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>org.nonarkara.airdnd-intake</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>scripts/telegram_scraper.js</string>
+    <string>--watch</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Volumes/Data/AirDnD/intake/airdnd-platform</string>
+  <key>KeepAlive</key><true/>
+  <key>RunAtLoad</key><true/>
+  <key>ThrottleInterval</key><integer>30</integer>
+  <key>StandardOutPath</key><string>/Volumes/Data/AirDnD/logs/intake.log</string>
+  <key>StandardErrorPath</key><string>/Volumes/Data/AirDnD/logs/intake.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>DATABASE_URL</key><string>postgresql://localhost:5432/airdnd</string>
+    <key>PHOTO_ROOT</key><string>/Volumes/Data/AirDnD/photos</string>
+    <key>TELEGRAM_SOURCE_TARGETS</key><string>@relaxsociety2020,dialog:2025289026,@keawjaojormmassage,dialog:2381945815,dialog:2491020966,@relaxsocietymassage,dialog:2647876733,@naarsom,@chanelmassage,@dreamgirlspav2,dialog:3769808713,@newmassagerama5</string>
+    <key>TELEGRAM_FETCH_LIMIT</key><string>80</string>
+    <key>TELEGRAM_POLL_INTERVAL_MS</key><string>30000</string>
+    <key>SNAPSHOT_LISTING_LIMIT</key><string>400</string>
+    <key>GEMINI_PARSE_TIMEOUT_MS</key><string>8000</string>
+    <key>AI_ENRICHMENT_PER_CYCLE</key><string>5</string>
+    <key>NODE_OPTIONS</key><string>--max-old-space-size=768</string>
+  </dict>
+</dict>
+</plist>

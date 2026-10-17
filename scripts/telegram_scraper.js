@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import { TelegramClient } from 'telegram';
 import { StringSession } from 'telegram/sessions/index.js';
 import { GoogleGenAI } from '@google/genai';
-import { createClient } from '@supabase/supabase-js';
+import { createDataClient } from './lib/local_db.js';
 import dotenv from 'dotenv';
 import {
   archiveChannelMessages,
@@ -179,15 +179,10 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 // Fail-fast fetch: Supabase free tier can stall for days (522s) — without a
 // timeout every pipeline call blocks serially and the whole scraper hangs.
-const configuredSupabase =
-  supabaseUrl && supabaseServiceRoleKey
-    ? createClient(supabaseUrl, supabaseServiceRoleKey, {
-        global: {
-          fetch: (url, opts = {}) =>
-            fetch(url, { ...opts, signal: AbortSignal.timeout(8_000) }),
-        },
-      })
-    : null;
+// Local data station on the M3 (DATABASE_URL, default localhost/airdnd).
+// Supabase is retired; the variable keeps its old name to keep the diff small.
+void supabaseUrl; void supabaseServiceRoleKey;
+const configuredSupabase = createDataClient();
 
 const domainConfigPath = path.join(__dirname, '../domain.config.json');
 let domainConfig = {};

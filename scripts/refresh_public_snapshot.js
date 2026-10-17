@@ -1,52 +1,59 @@
 import fs from 'fs';
 import path from 'path';
-import { createClient } from '@supabase/supabase-js';
+import { createDataClient, closeDataClient } from './lib/local_db.js';
+import { rewriteMediaUrl } from '../src/lib/media.js';
 import dotenv from 'dotenv';
 import { canonicalizePublicListings, validatePublicListing } from '../src/lib/listing_contract.js';
 
 dotenv.config();
 
-const DEFAULT_SUPABASE_URL = 'https://fehdtfncbutesgadjsxp.supabase.co';
-const supabaseUrl = process.env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL;
-const key = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_mf3Wmwk6mMO-EoYaDxMUvA_CihTsTBF';
-const supabase = createClient(supabaseUrl, key, {
-  auth: { persistSession: false },
-});
-
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
-
-const firebaseConfig = {
-  projectId: "sub-i-platform-v3",
-  appId: "1:190320143184:web:3ee20b36c95e0e856f5a55",
-  storageBucket: "sub-i-platform-v3.firebasestorage.app",
-  apiKey: "AIzaSyDeleUD1kuPIY4ibNhHMOHQ08QhLGnp7NI",
-  authDomain: "sub-i-platform-v3.firebaseapp.com",
-};
+const PHOTOS_PER_LISTING = Number(process.env.SNAPSHOT_PHOTOS_PER_LISTING || 12);
 
 let rawData = [];
-
 try {
-  console.log('Fetching companions from Firestore...');
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const snap = await getDocs(collection(db, 'companions'));
-  rawData = snap.docs.map(d => d.data());
-  console.log(`Pulled ${rawData.length} raw docs from Firestore`);
-} catch (fsErr) {
-  console.warn(`Firestore pull failed (${fsErr.message}), falling back to Supabase...`);
-  const { data, error } = await supabase
+  const db = createDataClient();
+  const { data, error } = await db
     .from('companions')
     .select('*')
     .order('updated_at', { ascending: false, nullsFirst: false })
     .order('created_at', { ascending: false, nullsFirst: false })
-    .limit(2000);
-
-  if (error) {
-    console.error(`Could not refresh snapshot: ${error.message}`);
-    process.exit(1);
-  }
+    .limit(5000);
+  if (error) throw new Error(error.message);
   rawData = data || [];
+  console.log(`Pulled ${rawData.length} companions from local Postgres`);
+} catch (dbErr) {
+  console.error(`Could not refresh snapshot from local Postgres: ${dbErr.message}`);
+  process.exit(1);
+} finally {
+  await closeDataClient();
+}
+
+// Bridge until the Telegram intake runs on the M3: the old cloud worker still
+// writes fresh posts to Firestore (not to Postgres). Merge only the Firestore
+// docs posted after the newest Postgres row, so the snapshot is never staler
+// than the intake. Disable with SNAPSHOT_FIRESTORE_DELTA=0.
+if (process.env.SNAPSHOT_FIRESTORE_DELTA !== '0') {
+  const latestPg = rawData.reduce((max, row) => {
+    const t = Date.parse(row.updated_at || row.created_at || 0);
+    return Number.isFinite(t) && t > max ? t : max;
+  }, 0);
+  try {
+    const { initializeApp } = await import('firebase/app');
+    const { getFirestore, collection, getDocs, query, where } = await import('firebase/firestore');
+    const app = initializeApp({
+      projectId: 'sub-i-platform-v3',
+      appId: '1:190320143184:web:3ee20b36c95e0e856f5a55',
+      apiKey: 'AIzaSyDeleUD1kuPIY4ibNhHMOHQ08QhLGnp7NI',
+      authDomain: 'sub-i-platform-v3.firebaseapp.com',
+    });
+    const since = new Date(latestPg || 0).toISOString();
+    const snap = await getDocs(query(collection(getFirestore(app), 'companions'), where('postedAt', '>', since)));
+    const fresh = snap.docs.map((d) => ({ ...d.data(), id: d.data().id || d.id }));
+    console.log(`Merged ${fresh.length} Firestore doc(s) posted after ${since}`);
+    rawData = [...rawData, ...fresh];
+  } catch (fsErr) {
+    console.warn(`Firestore delta skipped: ${fsErr.message}`);
+  }
 }
 
 const publicListings = canonicalizePublicListings(rawData, { source: 'snapshot', allowUnverified: true })
@@ -91,7 +98,8 @@ function deployablePhotoUrl(url) {
     return imageIndex.get(path.basename(url)) || null;
   }
 
-  return url;
+  // Legacy Supabase storage URLs map 1:1 onto the airdnd-media Pages project.
+  return rewriteMediaUrl(url);
 }
 
 function deployablePhotoUrls(urls) {
@@ -143,8 +151,10 @@ const slimListings = publicListings.map((listing) => ({
   tags: listing.tags,
   metrics: listing.metrics,
   imageUrl: deployablePhotoUrl(listing.imageUrl),
-  allPhotoUrls: deployablePhotoUrls(listing.allPhotoUrls),
-  drivePhotoUrls: listing.drivePhotoUrls,
+  // Newest 12 per listing — matches the published snapshot shape and keeps the
+  // airdnd-media Pages project far below its 20,000-file limit.
+  allPhotoUrls: deployablePhotoUrls(listing.allPhotoUrls).slice(0, PHOTOS_PER_LISTING),
+  drivePhotoUrls: (listing.drivePhotoUrls || []).map(rewriteMediaUrl),
   rating: listing.rating,
   reviews: listing.reviews,
   updatedAt: listing.updatedAt,

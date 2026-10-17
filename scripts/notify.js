@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createClient } from '@supabase/supabase-js';
+import { createDataClient } from './lib/local_db.js';
 import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,10 +10,8 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-const supabase =
-  supabaseUrl && supabaseServiceRoleKey
-    ? createClient(supabaseUrl, supabaseServiceRoleKey)
-    : null;
+void supabaseUrl; void supabaseServiceRoleKey;
+const supabase = createDataClient(); // local Postgres on the M3
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const NOTIFY_CHAT_ID = process.env.TELEGRAM_NOTIFY_CHAT_ID;

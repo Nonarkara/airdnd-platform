@@ -22,7 +22,8 @@
 import { writeFileSync, readFileSync, mkdirSync, existsSync, readdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createClient } from '@supabase/supabase-js';
+import { createDataClient, closeDataClient } from './lib/local_db.js';
+import { rewriteMediaUrl } from '../src/lib/media.js';
 import dotenv from 'dotenv';
 import { channelSlug } from '../src/lib/channel.js';
 
@@ -78,15 +79,8 @@ function listingsForChannel(label, channelId) {
 }
 
 function establishSupabase() {
-  if (supabaseUrl && supabaseKey) {
-    return createClient(supabaseUrl, supabaseKey, {
-      global: {
-        fetch: (url, opts = {}) =>
-          fetch(url, { ...opts, signal: AbortSignal.timeout(15_000) }),
-      },
-    });
-  }
-  return null;
+  // Local Postgres on the M3 (DATABASE_URL); Supabase is retired.
+  return createDataClient();
 }
 
 async function pullAllPhotos(supabase) {
@@ -156,7 +150,7 @@ async function main() {
     const channelId = (row.channel_id || '').trim();
     const slug = slugifyChannel(label || channelId);
     if (!slug) continue;
-    const url = row.supabase_url || row.local_path;
+    const url = rewriteMediaUrl(row.supabase_url || row.local_path);
     if (!url) continue;
     usable += 1;
     if (!byChannel.has(slug)) {
