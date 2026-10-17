@@ -25,6 +25,12 @@ export const STAR_FOUR_FIVE = '4-5';
 
 export const ALL_PROVINCES = 'all';
 
+export const SORT_CONTACT = 'contact';  // default: contactability-first
+export const SORT_STARS = 'stars';       // 5★ first, then 4★, then ungraded
+export const SORT_NAME = 'name';         // A–Z by producer name
+
+export const DEFAULT_SORT = SORT_CONTACT;
+
 function norm(s) {
   return (s == null ? '' : String(s)).trim().toLowerCase();
 }
@@ -77,10 +83,11 @@ function matchesContactable(r, onlyContactable) {
 }
 
 /**
- * The filter pipeline. Pure. Returns a new array sorted by scoreRecord desc.
- * Stable for ties (slice-then-sort is stable in V8 since the spec change).
+ * The filter pipeline. Pure. Returns a new array sorted by the chosen
+ * strategy. Default is contactability-first (5★+phone, 4★+phone,
+ * phone-only, name-only — the order a buyer would actually call).
  */
-export function filterRecords(records, { query, provinceCode, stars, onlyContactable } = {}) {
+export function filterRecords(records, { query, provinceCode, stars, onlyContactable, sort = DEFAULT_SORT } = {}) {
   if (!records) return [];
   const q = norm(query);
   const out = [];
@@ -91,7 +98,14 @@ export function filterRecords(records, { query, provinceCode, stars, onlyContact
     if (!matchesContactable(r, onlyContactable)) continue;
     out.push(r);
   }
-  out.sort((a, b) => scoreRecord(b) - scoreRecord(a));
+  if (sort === SORT_NAME) {
+    out.sort((a, b) => norm(a.producerName).localeCompare(norm(b.producerName)));
+  } else if (sort === SORT_STARS) {
+    out.sort((a, b) => (b.stars || 0) - (a.stars || 0) || norm(a.producerName).localeCompare(norm(b.producerName)));
+  } else {
+    // Default and SORT_CONTACT: contactability-first
+    out.sort((a, b) => scoreRecord(b) - scoreRecord(a));
+  }
   return out;
 }
 
@@ -100,24 +114,28 @@ export function filterRecords(records, { query, provinceCode, stars, onlyContact
  * default landing so the URL stays clean; deep links to filtered views
  * include the params that diverge from defaults.
  */
-export function findToUrl({ query, provinceCode, stars, onlyContactable } = {}) {
+export function findToUrl({ query, provinceCode, stars, onlyContactable, sort } = {}) {
   const p = new URLSearchParams();
   let has = false;
   if (query && query.trim()) { p.set('q', query.trim()); has = true; }
   if (provinceCode && provinceCode !== ALL_PROVINCES) { p.set('p', String(provinceCode)); has = true; }
   if (stars && stars !== STAR_ANY) { p.set('s', stars); has = true; }
   if (onlyContactable) { p.set('c', '1'); has = true; }
+  if (sort && sort !== DEFAULT_SORT) { p.set('sort', sort); has = true; }
   if (has) p.set('view', 'find');
   return `${window.location.pathname}${p.toString() ? '?' + p.toString() : ''}`;
 }
 
 export function findFromUrl(search) {
   const p = new URLSearchParams(search || window.location.search);
+  const sortParam = p.get('sort');
+  const sort = [SORT_CONTACT, SORT_STARS, SORT_NAME].includes(sortParam) ? sortParam : DEFAULT_SORT;
   return {
     query: p.get('q') ?? '',
     provinceCode: p.get('p') ?? ALL_PROVINCES,
     stars: p.get('s') ?? STAR_ANY,
     onlyContactable: p.get('c') === '1',
+    sort,
   };
 }
 

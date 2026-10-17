@@ -33,6 +33,10 @@ import {
   recentSearches,
   scoreRecord,
   ALL_PROVINCES,
+  DEFAULT_SORT,
+  SORT_CONTACT,
+  SORT_NAME,
+  SORT_STARS,
   STAR_ANY,
   STAR_FIVE,
   STAR_FOUR_FIVE,
@@ -90,6 +94,7 @@ export default function Find({ onOpenProvince }) {
   const [provinceCode, setProvinceCode] = useState(initial.provinceCode);
   const [stars, setStars] = useState(initial.stars);
   const [onlyContactable, setOnlyContactable] = useState(initial.onlyContactable);
+  const [sort, setSort] = useState(initial.sort || DEFAULT_SORT);
   const [limit, setLimit] = useState(PAGE);
   const [recents, setRecents] = useState(() => recentSearches());
   const [shareState, setShareState] = useState('idle'); // 'idle' | 'copied' | 'failed'
@@ -115,6 +120,7 @@ export default function Find({ onOpenProvince }) {
     setProvinceCode(ALL_PROVINCES);
     setStars(STAR_ANY);
     setOnlyContactable(false);
+    setSort(DEFAULT_SORT);
     setLimit(PAGE);
   }
 
@@ -122,7 +128,8 @@ export default function Find({ onOpenProvince }) {
     (query && query.trim()) ||
     (provinceCode && provinceCode !== ALL_PROVINCES) ||
     (stars && stars !== STAR_ANY) ||
-    onlyContactable;
+    onlyContactable ||
+    (sort && sort !== DEFAULT_SORT);
 
   // Copy the current search URL to the clipboard. The URL is the share
   // surface — a colleague can open the same search on their machine.
@@ -212,16 +219,16 @@ export default function Find({ onOpenProvince }) {
   // a search is a search; each keystroke is not a separate history entry.
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const next = findToUrl({ query, provinceCode, stars, onlyContactable });
+    const next = findToUrl({ query, provinceCode, stars, onlyContactable, sort });
     const current = `${window.location.pathname}${window.location.search}`;
     if (next !== current) {
       try { window.history.replaceState(null, '', next); } catch {}
     }
-  }, [query, provinceCode, stars, onlyContactable]);
+  }, [query, provinceCode, stars, onlyContactable, sort]);
 
   const results = useMemo(
-    () => filterRecords(records, { query, provinceCode, stars, onlyContactable }),
-    [records, query, provinceCode, stars, onlyContactable]
+    () => filterRecords(records, { query, provinceCode, stars, onlyContactable, sort }),
+    [records, query, provinceCode, stars, onlyContactable, sort]
   );
 
   const shown = results.slice(0, limit);
@@ -379,6 +386,21 @@ export default function Find({ onOpenProvince }) {
           <span>
             <Bi en="Phone only" th="เฉพาะที่มีเบอร์" />
           </span>
+        </label>
+
+        <label className="find-sort">
+          <span className="find-lbl">
+            <Bi en="Sort" th="เรียง" />
+          </span>
+          <select
+            value={sort}
+            onChange={(e) => { setSort(e.target.value); setLimit(PAGE); }}
+            disabled={loading}
+          >
+            <option value={SORT_CONTACT}><Bi en="Callable first" th="โทรหาได้ก่อน" /></option>
+            <option value={SORT_STARS}><Bi en="5★ first" th="5 ดาวก่อน" /></option>
+            <option value={SORT_NAME}>A–Z</option>
+          </select>
         </label>
       </div>
 

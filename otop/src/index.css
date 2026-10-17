@@ -1582,3 +1582,11 @@ html, body { overflow-x: hidden; }
   font-weight: 400;
   opacity: 0.75;
 }
+
+/* ─── Find: sort selector ───
+ * The fourth control on the filter row, alongside province / stars / phone.
+ * Callable-first (default), 5★ first, or A–Z. The choice persists in the
+ * URL as ?sort= and in the recent-searches chip.
+ */
+.find-sort { display: flex; flex-direction: column; gap: 0.2rem; }
+.find-sort select { min-width: 0; }

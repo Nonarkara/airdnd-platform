@@ -223,3 +223,71 @@ test('pushRecentSearch: caps at 5 entries, oldest gets pushed off', () => {
   assert.equal(r[0].query, 'q7', 'newest first');
   assert.equal(r[4].query, 'q3', 'oldest still in cap is q3, q0/q1/q2 fell off');
 });
+
+import {
+  SORT_CONTACT,
+  SORT_STARS,
+  SORT_NAME,
+  DEFAULT_SORT,
+} from '../otop/core/find.js';
+
+test('filterRecords: sort=name is alphabetical by producerName', () => {
+  const records = [
+    r({ producerName: 'Zebra' }),
+    r({ producerName: 'Alpha' }),
+    r({ producerName: 'Mango' }),
+  ];
+  const out = filterRecords(records, { sort: SORT_NAME });
+  assert.equal(out[0].producerName, 'Alpha');
+  assert.equal(out[1].producerName, 'Mango');
+  assert.equal(out[2].producerName, 'Zebra');
+});
+
+test('filterRecords: sort=stars puts 5★ before 4★ before ungraded, with name as tiebreaker', () => {
+  const records = [
+    r({ producerName: 'Zfive', stars: 5 }),
+    r({ producerName: 'Afive', stars: 5 }),
+    r({ producerName: 'four', stars: 4 }),
+    r({ producerName: 'none' }),
+  ];
+  const out = filterRecords(records, { sort: SORT_STARS });
+  assert.equal(out[0].producerName, 'Afive');
+  assert.equal(out[1].producerName, 'Zfive');
+  assert.equal(out[2].producerName, 'four');
+  assert.equal(out[3].producerName, 'none');
+});
+
+test('filterRecords: default sort is the contactability-first sort', () => {
+  const records = [
+    r({ producerName: 'phone only', phone: '0811111111' }),
+    r({ producerName: '5★ + phone', stars: 5, phone: '0833333333' }),
+    r({ producerName: 'name only' }),
+  ];
+  const out = filterRecords(records, {});
+  assert.equal(out[0].producerName, '5★ + phone');
+  assert.equal(out[1].producerName, 'phone only');
+  assert.equal(out[2].producerName, 'name only');
+  // The default sort and SORT_CONTACT produce the same result.
+  const outContact = filterRecords(records, { sort: SORT_CONTACT });
+  assert.deepEqual(
+    out.map((x) => x.producerName),
+    outContact.map((x) => x.producerName)
+  );
+});
+
+test('findToUrl: sort param is omitted when it is the default, included when it is not', () => {
+  const urlDefault = findToUrl({ query: 'silk', provinceCode: 'all', stars: 'any', onlyContactable: false, sort: DEFAULT_SORT });
+  assert.match(urlDefault, /[?&]q=silk/);
+  assert.match(urlDefault, /[?&]view=find/);
+  assert.doesNotMatch(urlDefault, /sort=/);
+
+  const urlStars = findToUrl({ query: '', provinceCode: 'all', stars: 'any', onlyContactable: false, sort: SORT_STARS });
+  assert.match(urlStars, /sort=stars/);
+});
+
+test('findFromUrl: invalid sort values fall back to the default', () => {
+  const back = findFromUrl('?view=find&sort=banana');
+  assert.equal(back.sort, DEFAULT_SORT);
+  const backName = findFromUrl('?view=find&sort=name');
+  assert.equal(backName.sort, SORT_NAME);
+});
