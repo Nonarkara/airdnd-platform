@@ -1534,3 +1534,51 @@ html, body { overflow-x: hidden; }
   border-color: var(--crimson, #8a1c1c);
   color: var(--crimson, #8a1c1c);
 }
+
+/* ─── Find: try-these starter chips ───
+ * A row of pre-baked search chips for the first 5 seconds. Each
+ * encodes one of the four real buyer briefs the data can answer.
+ * Disappears once the user types.
+ */
+.find-tries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
+  align-items: baseline;
+  margin: 0 0 1rem;
+}
+.find-tries-lbl {
+  font-size: 0.78rem;
+  color: var(--ink-3, currentColor);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.find-tries-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.4rem;
+}
+.find-tries-list a {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--line, currentColor);
+  background: var(--bg, #fdf3df);
+  color: var(--ink, currentColor);
+  text-decoration: none;
+  line-height: 1.3;
+}
+.find-tries-list a:hover {
+  border-color: var(--accent-2, #a8780c);
+  color: var(--accent-2, #a8780c);
+}
+.find-tries-list .tries-th {
+  display: block;
+  font-family: var(--font-thai, inherit);
+  font-size: 0.78em;
+  font-weight: 400;
+  opacity: 0.75;
+}

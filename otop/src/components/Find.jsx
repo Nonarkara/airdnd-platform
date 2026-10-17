@@ -382,6 +382,47 @@ export default function Find({ onOpenProvince }) {
         </label>
       </div>
 
+      {!loading && (
+        <div className="find-tries">
+          <span className="find-tries-lbl">
+            <Bi en="Try:" th="ลองค้น:" />
+          </span>
+          {(() => {
+            // A small, hand-picked starter set. Not personalised — just a
+            // nudge for the first 5 seconds. Each chip encodes one of
+            // the four real buyer briefs the data can answer.
+            const tries = [
+              { en: '5★ silk in Chiang Mai', th: 'ผ้าไหม 5 ดาว เชียงใหม่', q: 'silk', p: 50, s: '5' },
+              { en: 'phone only',            th: 'เฉพาะที่มีเบอร์',            c: '1' },
+              { en: '4–5★ nationwide',       th: '4–5 ดาว ทั้งประเทศ',         s: '4-5' },
+              { en: 'น้ำผึ้ง',                th: 'น้ำผึ้ง',                       q: 'น้ำผึ้ง' },
+              { en: 'food & beverage',        th: 'อาหารและเครื่องดื่ม',           q: 'food' },
+            ];
+            return (
+              <ul className="find-tries-list">
+                {tries.map((t, i) => {
+                  const p = new URLSearchParams();
+                  if (t.q) p.set('q', t.q);
+                  if (t.p) p.set('p', String(t.p));
+                  if (t.s) p.set('s', t.s);
+                  if (t.c) p.set('c', t.c);
+                  p.set('view', 'find');
+                  const href = `${window.location.pathname}?${p.toString()}`;
+                  return (
+                    <li key={i}>
+                      <a href={href} onClick={() => setLimit(PAGE)}>
+                        <span className="tries-en">{t.en}</span>
+                        <span className="tries-th" lang="th">{t.th}</span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            );
+          })()}
+        </div>
+      )}
+
       <div className="find-meta" aria-live="polite">
         {!loading && (
           <>
