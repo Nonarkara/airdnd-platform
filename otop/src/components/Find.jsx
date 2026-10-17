@@ -1,5 +1,5 @@
 /**
- * Find — the search-first landing.
+ * Find — the search-first, phone-first landing.
  *
  * The most useful single thing on this site is: type a thing, pick a place,
  * get a list of names and phone numbers you can call today. Every other view
@@ -12,6 +12,10 @@
  * then phone-only, then the rest. Records with no contact channel are shown
  * last and flagged in-row.
  *
+ * State and URL: every filter is in the URL via findToUrl/findFromUrl, so
+ * a search is shareable as a link. The component uses replaceState so the
+ * user's back button does not collect a stack of intermediate search edits.
+ *
  * Performance note: the index (totals + province list) arrives in a single
  * 29KB fetch. The 77 province shards (263MB raw, ~50MB gzipped) load on
  * first interaction and are kept in memory. Search across 154,050 records
@@ -21,58 +25,35 @@
 import { useEffect, useMemo, useState } from 'react';
 import { loadIndex, loadShards } from '../lib/shards.js';
 import { Bi } from './Bi.jsx';
+import {
+  filterRecords,
+  findFromUrl,
+  findToUrl,
+  scoreRecord,
+  ALL_PROVINCES,
+  STAR_ANY,
+  STAR_FIVE,
+  STAR_FOUR_FIVE,
+} from '../../core/find.js';
 
 const PAGE = 30;
-const PREF_KEY = 'otop_find_v1';
-const ALL_PROVINCES_OPTION = 'all';
-
-function norm(s) {
-  return (s == null ? '' : String(s)).trim().toLowerCase();
-}
-
-/**
- * A simple, transparent ranking. We do not infer what the registry does not
- * attest (no capacity, no MOQ, no lead time, no safety permit). We rank on
- * the things it does attest: stars (state quality grade), phone (you can
- * reach them), and field completeness (a sub-district address is more useful
- * than a province-only one).
- */
-function scoreRecord(r) {
-  let s = 0;
-  if (r.stars === 5) s += 100;
-  else if (r.stars === 4) s += 50;
-  else if (r.stars && r.stars >= 1) s += 20;
-  if (r.phone) s += 30;
-  if (r.productName) s += 10;
-  if (r.description) s += 5;
-  if (r.subdistrict) s += 3;
-  if (r.district) s += 1;
-  return s;
-}
 
 function phoneHref(phone) {
   if (!phone) return null;
-  // Thai numbers: 0xx-xxx-xxxx, +66xx-xxx-xxxx. Strip everything but digits and leading +.
   const digits = String(phone).replace(/[^0-9+]/g, '');
   return `tel:${digits}`;
 }
 
-export default function Find({ onOpenProvince, onOpenRecord }) {
+export default function Find({ onOpenProvince }) {
+  // State initialised from the URL so a deep link reproduces a search.
+  const initial = useMemo(() => findFromUrl(), []);
   const [index, setIndex] = useState(null);
   const [records, setRecords] = useState(null); // null = still loading
   const [loadProgress, setLoadProgress] = useState({ done: 0, total: 0 });
-  const [query, setQuery] = useState(() => {
-    try { return sessionStorage.getItem(`${PREF_KEY}_q`) || ''; } catch { return ''; }
-  });
-  const [provinceCode, setProvinceCode] = useState(() => {
-    try { return sessionStorage.getItem(`${PREF_KEY}_p`) || ALL_PROVINCES_OPTION; } catch { return ALL_PROVINCES_OPTION; }
-  });
-  const [stars, setStars] = useState(() => {
-    try { return sessionStorage.getItem(`${PREF_KEY}_s`) || 'any'; } catch { return 'any'; }
-  });
-  const [onlyContactable, setOnlyContactable] = useState(() => {
-    try { return sessionStorage.getItem(`${PREF_KEY}_c`) === '1'; } catch { return false; }
-  });
+  const [query, setQuery] = useState(initial.query);
+  const [provinceCode, setProvinceCode] = useState(initial.provinceCode);
+  const [stars, setStars] = useState(initial.stars);
+  const [onlyContactable, setOnlyContactable] = useState(initial.onlyContactable);
   const [limit, setLimit] = useState(PAGE);
 
   // Load index.
@@ -121,38 +102,21 @@ export default function Find({ onOpenProvince, onOpenRecord }) {
     return () => { cancelled = true; };
   }, [index, records]);
 
-  // Persist preferences across page reloads (session, not local, so the URL
-  // is still the only state for deep links).
-  useEffect(() => { try { sessionStorage.setItem(`${PREF_KEY}_q`, query); } catch {} }, [query]);
-  useEffect(() => { try { sessionStorage.setItem(`${PREF_KEY}_p`, provinceCode); } catch {} }, [provinceCode]);
-  useEffect(() => { try { sessionStorage.setItem(`${PREF_KEY}_s`, stars); } catch {} }, [stars]);
-  useEffect(() => { try { sessionStorage.setItem(`${PREF_KEY}_c`, onlyContactable ? '1' : '0'); } catch {} }, [onlyContactable]);
+  // Sync the URL with the live filter state. replaceState, not pushState —
+  // a search is a search; each keystroke is not a separate history entry.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const next = findToUrl({ query, provinceCode, stars, onlyContactable });
+    const current = `${window.location.pathname}${window.location.search}`;
+    if (next !== current) {
+      try { window.history.replaceState(null, '', next); } catch {}
+    }
+  }, [query, provinceCode, stars, onlyContactable]);
 
-  const results = useMemo(() => {
-    if (!records) return [];
-    const q = norm(query);
-    let out = records;
-    if (q) {
-      out = out.filter((r) =>
-        norm(r.producerName).includes(q) ||
-        norm(r.productName).includes(q) ||
-        norm(r.description).includes(q) ||
-        norm(r.district).includes(q) ||
-        norm(r.subdistrict).includes(q) ||
-        norm(r.category).includes(q)
-      );
-    }
-    if (provinceCode !== ALL_PROVINCES_OPTION) {
-      const pc = Number(provinceCode);
-      out = out.filter((r) => r.provinceCode === pc);
-    }
-    if (stars === '5') out = out.filter((r) => r.stars === 5);
-    else if (stars === '4-5') out = out.filter((r) => r.stars === 4 || r.stars === 5);
-    if (onlyContactable) out = out.filter((r) => r.phone);
-    // Sort: best-of-the-best first. Stable for ties.
-    out = out.slice().sort((a, b) => scoreRecord(b) - scoreRecord(a));
-    return out;
-  }, [records, query, provinceCode, stars, onlyContactable]);
+  const results = useMemo(
+    () => filterRecords(records, { query, provinceCode, stars, onlyContactable }),
+    [records, query, provinceCode, stars, onlyContactable]
+  );
 
   const shown = results.slice(0, limit);
   const hasMore = results.length > limit;
@@ -226,7 +190,7 @@ export default function Find({ onOpenProvince, onOpenRecord }) {
             onChange={(e) => { setProvinceCode(e.target.value); setLimit(PAGE); }}
             disabled={!index}
           >
-            <option value={ALL_PROVINCES_OPTION}>
+            <option value={ALL_PROVINCES}>
               <Bi en="All Thailand" th="ทั้งประเทศ" />
             </option>
             {(index?.provinces ?? []).map((p) => (
@@ -246,9 +210,9 @@ export default function Find({ onOpenProvince, onOpenRecord }) {
             onChange={(e) => { setStars(e.target.value); setLimit(PAGE); }}
             disabled={loading}
           >
-            <option value="any"><Bi en="Any" th="ใด ๆ" /></option>
-            <option value="4-5">4–5★</option>
-            <option value="5">5★ only · เฉพาะ 5 ดาว</option>
+            <option value={STAR_ANY}><Bi en="Any" th="ใด ๆ" /></option>
+            <option value={STAR_FOUR_FIVE}>4–5★</option>
+            <option value={STAR_FIVE}>5★ only · เฉพาะ 5 ดาว</option>
           </select>
         </label>
 
@@ -271,10 +235,10 @@ export default function Find({ onOpenProvince, onOpenRecord }) {
             <strong>{results.length.toLocaleString()}</strong>{' '}
             <Bi en={results.length === 1 ? 'match' : 'matches'} th={results.length === 1 ? 'รายการ' : 'รายการ'} />
             {query ? <span> <span className="muted">·</span> <span className="find-qecho">“{query}”</span></span> : null}
-            {provinceCode !== ALL_PROVINCES_OPTION && index ? (
+            {provinceCode !== ALL_PROVINCES && index ? (
               <span> <span className="muted">·</span> {index.provinces.find((p) => p.code === Number(provinceCode))?.nameEn}</span>
             ) : null}
-            {stars !== 'any' ? <span> <span className="muted">·</span> {stars === '5' ? '5★' : '4–5★'}</span> : null}
+            {stars !== STAR_ANY ? <span> <span className="muted">·</span> {stars === STAR_FIVE ? '5★' : '4–5★'}</span> : null}
             {onlyContactable ? <span> <span className="muted">·</span> <Bi en="phone" th="มีเบอร์" /></span> : null}
           </>
         )}

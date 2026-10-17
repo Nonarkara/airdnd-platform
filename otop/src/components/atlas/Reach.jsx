@@ -13,6 +13,18 @@ export default function Reach({ national, reachGap, corroborationQuadrant, hidde
             <strong>{n(reachGap.reduce((s, p) => s + p.reachable, 0))}</strong> can be reached.
             Fix the second number and you lift the first. Bars are the gap — producers no one can telephone.
           </p>
+          {/*
+            Reach is the analytical read of contactability. Find is the action
+            surface — the search box, the province picker, the tap-to-call phone.
+            The two serve different questions; the CTA below bridges them so a
+            reader of this chapter can go do the call in one click.
+          */}
+          <p className="t-cta">
+            <a className="cta-btn" href="/?view=find&c=1">
+              <span className="cta-en">Find a producer to call now →</span>
+              <span className="cta-th" lang="th">ค้นหาผู้ผลิตที่โทรหาได้ทันที →</span>
+            </a>
+          </p>
           <Bars label="Unreachable producers by province, top 20" onSelect={go} format={n}
             rows={top.map((p) => ({ code: p.code, label: p.th, sub: `${p.reachable > 0 ? n(p.reachable) : 'none'} reachable`, value: p.unreachable }))} />
           <details className="t-more">

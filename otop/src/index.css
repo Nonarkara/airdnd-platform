@@ -1321,3 +1321,30 @@ html, body { overflow-x: hidden; }
   .phone-num { font-size: 1.05rem; }
   .phone-action { display: none; }
 }
+
+/* ─── Inline CTA in Atlas chapters ───
+ * The Reach chapter describes the contactability gap. Find is the
+ * action surface for closing it. This CTA bridges the two.
+ */
+.t-cta { margin: 1rem 0 1.5rem; }
+.cta-btn {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  background: var(--accent, #c99518);
+  color: var(--bg, #fdf3df);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--accent, #c99518);
+  font-size: 0.95rem;
+  transition: background 0.12s, color 0.12s;
+}
+.cta-btn:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
+.cta-btn .cta-th {
+  display: block;
+  font-family: var(--font-thai, inherit);
+  font-size: 0.78em;
+  font-weight: 400;
+  opacity: 0.92;
+  margin-top: 0.1rem;
+}
