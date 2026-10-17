@@ -7,7 +7,7 @@
  * site must stay static: listings from public/data.json + feed.json, photos
  * from https://airdnd-media.pages.dev. This guard fails when:
  *   - any file under src/ imports @supabase/* or contains a *.supabase.co URL
- *   - public/data.json / feed.json / feed_meta.json reference *.supabase.co
+ *   - public/data.json / feed.json / feed_meta.json / public/data/**.json reference *.supabase.co
  *   - with --dist: any built file under dist/ contains a *.supabase.co URL or
  *     the supabase-js client
  *
@@ -42,6 +42,12 @@ for (const name of ['data.json', 'feed.json', 'feed_meta.json']) {
   const file = path.join(ROOT, 'public', name);
   if (fs.existsSync(file) && HOST.test(fs.readFileSync(file, 'utf8'))) {
     problems.push(`public/${name} references *.supabase.co (photos must point at airdnd-media)`);
+  }
+}
+// Place galleries and other data shards ship verbatim into dist/.
+for (const file of walk(path.join(ROOT, 'public', 'data'), ['.json'])) {
+  if (HOST.test(fs.readFileSync(file, 'utf8'))) {
+    problems.push(`${path.relative(ROOT, file)} references *.supabase.co (photos must point at airdnd-media)`);
   }
 }
 if (CHECK_DIST) {

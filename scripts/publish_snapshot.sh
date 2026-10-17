@@ -33,7 +33,8 @@ last=$(cat "$STATE_DIR/last_deploy_epoch" 2>/dev/null || echo 0)
 if [ $((now - last)) -lt "$MIN_DEPLOY_INTERVAL" ]; then exit 0; fi
 
 cd "$REPO" || { log "deploy dir missing: $REPO"; exit 1; }
-git checkout -q -- public/data.json public/feed.json public/feed_meta.json public/funnel.json 2>/dev/null
+git checkout -q -- public/data.json public/feed.json public/feed_meta.json public/funnel.json public/data/place_photos public/data/place_photos_index.json 2>/dev/null
+git clean -fdq -- public/data/place_photos 2>/dev/null
 before=$(git rev-parse HEAD)
 git fetch -q origin main && git merge -q --ff-only origin/main || log "warn: could not fast-forward to origin/main"
 after=$(git rev-parse HEAD)
@@ -44,8 +45,14 @@ fi
 
 node scripts/refresh_public_snapshot.js > "$LOG_DIR/publish-refresh.log" 2>&1 || { log "snapshot refresh failed (see publish-refresh.log)"; exit 1; }
 node scripts/refresh_feed_snapshot.js >> "$LOG_DIR/publish-refresh.log" 2>&1 || log "warn: feed refresh failed — keeping previous feed.json"
+if ! node scripts/build_place_photos.js >> "$LOG_DIR/publish-refresh.log" 2>&1 \
+  || node -e "process.exit(require('./public/data/place_photos_index.json').meta?.degraded ? 0 : 1)"; then
+  log "warn: place galleries failed — keeping committed shards"
+  git clean -fdq -- public/data/place_photos 2>/dev/null
+  git checkout -q -- public/data/place_photos public/data/place_photos_index.json
+fi
 
-content_hash=$( (cat public/data.json; node -e "const f=require('./public/feed.json');process.stdout.write(JSON.stringify(f))" ) | shasum -a 256 | cut -d' ' -f1)
+content_hash=$( (cat public/data.json; node -e "const f=require('./public/feed.json');const g=require('./public/data/place_photos_index.json');delete g.meta.generatedAt;process.stdout.write(JSON.stringify([f,g]))" ) | shasum -a 256 | cut -d' ' -f1)
 if [ "$content_hash" = "$(cat "$STATE_DIR/last_content_hash" 2>/dev/null)" ] && [ "$before" = "$after" ]; then
   exit 0
 fi

@@ -39,7 +39,7 @@ const FORCE = process.argv.includes('--force');
 function walkJson(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const full = path.join(dir, e.name);
-    if (e.isDirectory()) return ['images', 'mockups', 'og', 'data', 'heroes'].includes(e.name) ? [] : walkJson(full);
+    if (e.isDirectory()) return ['images', 'mockups', 'og', 'heroes'].includes(e.name) ? [] : walkJson(full);
     return e.name.endsWith('.json') ? [full] : [];
   });
 }
@@ -110,7 +110,23 @@ if (PRUNE && unavailable.size && !DRY) {
     const pretty = name === 'data.json' ? 2 : 0;
     fs.writeFileSync(file, JSON.stringify(prune(JSON.parse(fs.readFileSync(file, 'utf8'))), null, pretty));
   }
-  console.log(`media: pruned ${unavailable.size} unavailable photo URL(s) from data.json/feed.json`);
+  // Place galleries: drop unservable photos from each shard and the index samples.
+  const galleryDir = path.join(ROOT, 'public', 'data', 'place_photos');
+  const galleryFiles = fs.existsSync(galleryDir) ? fs.readdirSync(galleryDir).filter((f) => f.endsWith('.json')).map((f) => path.join(galleryDir, f)) : [];
+  for (const file of galleryFiles) {
+    const shard = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (!Array.isArray(shard.photos)) continue;
+    shard.photos = shard.photos.filter((p) => !unavailable.has(p.url));
+    shard.photoCount = shard.photos.length;
+    fs.writeFileSync(file, JSON.stringify(shard));
+  }
+  const indexFile = path.join(ROOT, 'public', 'data', 'place_photos_index.json');
+  if (fs.existsSync(indexFile)) {
+    const index = JSON.parse(fs.readFileSync(indexFile, 'utf8'));
+    for (const v of index.venues || []) if (Array.isArray(v.sample)) v.sample = v.sample.filter((u) => !unavailable.has(u));
+    fs.writeFileSync(indexFile, JSON.stringify(index));
+  }
+  console.log(`media: pruned ${unavailable.size} unavailable photo URL(s) from data.json/feed.json/place galleries`);
 }
 if (missing.length) console.log(`  missing (first 5): ${missing.slice(0, 5).join(', ')}`);
 if (manifest === previous && !FORCE) {
