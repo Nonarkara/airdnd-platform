@@ -55,7 +55,7 @@ export default function DistrictComparisonDrawer({ listings, isOpen, onClose, on
           count: stat.count,
           avgPrice,
           photoPct,
-          topChannel: topChannel.replace(/^@/, ''),
+          topChannel: (topChannel || '').replace(/^@/, ''),
         };
       })
       .sort((a, b) => b.count - a.count);

@@ -1,0 +1,32 @@
+.pw-page { max-width: 1320px; }
+.pw-page .an-header-meta { width: 100%; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.pw-page .page-banner--compact { min-height: 180px; }
+.pw-page .page-banner__frame { padding: 20px; }
+.pw-page .page-banner__panel { max-width: 760px; padding: 16px; }
+.pw-page h1 { font-size: 2rem; }
+.pw-page h2 { font-size: 1.25rem; margin: 0 0 12px; border-bottom: 2px solid var(--color-cream); padding-bottom: 12px; }
+.pw-page p, .pw-page table, .pw-page label, .pw-page button, .pw-page input, .pw-page select, .pw-page summary, .pw-page small, .pw-page caption { font-size: 1rem; }
+.pw-page p { line-height: 1.6; margin: 8px 0; }
+.pw-summary { padding: 20px 0; border-bottom: 1px solid var(--color-line-soft); }
+.pw-summary strong { font-family: var(--font-mono); }
+.pw-section { margin: 30px 0; }
+.pw-scroll { overflow-x: auto; margin-top: 16px; }
+.pw-page table { border-collapse: collapse; width: 100%; text-align: left; line-height: 1.5; }
+.pw-page th, .pw-page td { padding: 12px 14px 12px 0; border-bottom: 1px solid var(--color-line-soft); vertical-align: top; min-width: 110px; white-space: normal; overflow-wrap: anywhere; }
+.pw-page th:first-child { min-width: 180px; }
+.pw-page caption { text-align: left; padding: 0 0 12px; color: var(--color-cream-muted); }
+.pw-page small { display: block; font-weight: 400; color: var(--color-cream-muted); }
+.pw-page a { text-decoration: underline; text-underline-offset: 3px; }
+.pw-page button { cursor: pointer; background: transparent; color: inherit; border: 1px solid var(--color-line-soft); padding: 10px; min-height: 44px; text-align: left; }
+.pw-page button[aria-pressed="true"] { border-color: var(--color-accent); color: var(--color-accent); }
+.pw-page :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+.pw-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 16px; margin-top: 20px; }
+.pw-controls label { display: grid; gap: 6px; flex: 1 1 220px; }
+.pw-controls input, .pw-controls select { min-height: 44px; padding: 8px; width: 100%; color: inherit; background: var(--color-bg); border: 1px solid var(--color-line-soft); border-radius: 0; }
+.pw-controls .pw-check { display: flex; align-items: center; min-height: 44px; }
+.pw-check input { width: 20px; accent-color: var(--color-accent); }
+.pw-reference { border-top: 1px solid var(--color-line-soft); padding: 20px 0; }
+.pw-reference summary { cursor: pointer; min-height: 44px; }
+.pw-reference .an-table-row, .pw-reference .an-table-head { grid-template-columns: 2fr 3fr 1fr; }
+.pw-reference .an-table-row span { white-space: normal; overflow: visible; text-overflow: clip; }
+@media (max-width: 600px) { .pw-page .page-banner__frame { padding: 12px; } .pw-controls { display: grid; } .pw-scroll table { min-width: 650px; } }

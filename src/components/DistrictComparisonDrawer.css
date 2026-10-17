@@ -20,7 +20,7 @@
   border-radius: 0;
   background: #0a0a0c;
   padding: 1.5rem 1.75rem;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+  box-shadow: var(--sh-lg);
 }
 
 .district-drawer-header {

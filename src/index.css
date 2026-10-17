@@ -231,7 +231,7 @@ button { border: 0; cursor: pointer; background: none; color: inherit; }
 
 select, input {
   width: 100%; min-height: 2.75rem; padding: 0.6rem 0.85rem;
-  border: 1px solid var(--line-2); border-radius: var(--r-pill);
+  border: 1px solid var(--line-2); border-radius: 0;
   background: var(--surface); color: var(--ink);
   font-family: var(--font-text); font-size: var(--fs-sm);
   transition: border-color var(--transition-fast), background-color var(--transition-fast);
@@ -301,7 +301,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   backdrop-filter: none; border-bottom: 1px solid var(--line);
 }
 .site-header__in { max-width: var(--maxw); margin: 0 auto; min-height: var(--header-h); padding-inline: var(--gutter); display: flex; align-items: center; gap: var(--s6); }
-.site-header__in--nav-first { gap: var(--s4); }
+/* Navigation owns a full row; utilities never squeeze destination labels. */
+.site-header__in--nav-first { flex-wrap: wrap; gap: 0; padding-block: 0; }
+.site-header__in--nav-first .nav { flex: 0 0 100%; min-width: 0; order: 1; padding-top: 0; border-top: 0; }
+.site-header__in--nav-first .spacer { display: none; }
+.site-header__in--nav-first .header-actions { order: 2; width: 100%; margin: 0; padding-block: 6px; flex-wrap: nowrap; overflow-x: auto; border-top: 1px solid var(--line); }
+.site-header__in--nav-first .header-actions > * { flex-shrink: 0; }
+.site-header__in--nav-first .nav > * { min-height: 44px; display: inline-flex; align-items: center; padding: 10px 14px; font-size: 14px; letter-spacing: .01em; text-transform: none; white-space: nowrap; }
+.site-header__in--nav-first .nav > :first-child { padding-left: 0; }
+.site-header__in--nav-first .nav { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+.site-header__in--nav-first .nav::-webkit-scrollbar { display: block; height: 3px; }
 /* Brand mark reserved for hero only — do not reintroduce beside a page wordmark. */
 .brand { display: none; }
 .brand__mark {
@@ -313,8 +322,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .brand__name { font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter-spacing: 0.14em; line-height: 1; text-transform: lowercase; color: var(--navy, var(--ink)); }
 .brand__name em { font-style: normal; color: var(--mango); }
-.nav { display: flex; align-items: center; gap: 2px; }
-.nav a, .nav-link-btn { font-family: var(--font-text); font-weight: 500; font-size: var(--fs-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); padding: 10px 12px; border-radius: 0; transition: color .15s var(--ease), border-color .15s var(--ease); border-bottom: 1px solid transparent; }
+.nav { display: flex; align-items: center; gap: 2px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav a, .nav-link-btn { font-family: var(--font-text); font-weight: 500; font-size: var(--fs-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); padding: 10px 12px; border-radius: 0; white-space: nowrap; flex-shrink: 0; transition: color .15s var(--ease), border-color .15s var(--ease); border-bottom: 1px solid transparent; }
 .nav a:hover, .nav-link-btn:hover { color: var(--ink); background: transparent; border-bottom-color: var(--line-2); }
 .nav a.is-active, .nav-link-btn.is-active { color: var(--ink); background: transparent; border-bottom-color: var(--mango); }
 .spacer { flex: 1; }
@@ -326,11 +336,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* ============================================================================
    BUTTONS
    ============================================================================ */
-.btn { font-family: var(--font-text); font-weight: 600; font-size: var(--fs-sm); display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); padding: 12px 20px; border-radius: var(--r-pill); border: 1.5px solid transparent; cursor: pointer; white-space: nowrap; line-height: 1; transition: transform .14s var(--ease-out), background .16s var(--ease), box-shadow .16s var(--ease), border-color .16s; }
+.btn { font-family: var(--font-text); font-weight: 600; font-size: var(--fs-sm); display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); padding: 12px 20px; border-radius: 0; border: 1.5px solid transparent; cursor: pointer; white-space: nowrap; line-height: 1; transition: transform .14s var(--ease-out), background .16s var(--ease), border-color .16s; }
 .btn:active { transform: translateY(1px); }
-.btn-primary { background: var(--navy, var(--ink)); color: var(--bg); box-shadow: none; }
+.btn-primary { background: var(--navy, var(--ink)); color: var(--bg); }
 .btn-primary:hover { background: var(--ink); }
-.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mango); box-shadow: none; animation: none; display: inline-block; flex: none; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mango); display: inline-block; flex: none; }
 .site-footer { background: var(--bg-2); border-top: 1px solid var(--line); padding-block: var(--s10) var(--s7); }
 .grain-overlay { display: none; }
 .btn-outline { background: transparent; color: var(--ink); border-color: var(--line-2); }
@@ -343,41 +353,39 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* ============================================================================
    CHIPS / TAGS / BADGES / STATUS
    ============================================================================ */
-.chip { font-family: var(--font-text); font-size: var(--fs-sm); font-weight: 600; display: inline-flex; align-items: center; gap: var(--s2); padding: 8px 14px; border-radius: var(--r-pill); background: var(--surface); border: 1px solid var(--line-2); color: var(--ink-2); cursor: pointer; transition: all .15s var(--ease); }
+.chip { font-family: var(--font-text); font-size: var(--fs-sm); font-weight: 600; display: inline-flex; align-items: center; gap: var(--s2); padding: 8px 14px; border-radius: 0; background: var(--surface); border: 1px solid var(--line-2); color: var(--ink-2); cursor: pointer; transition: all .15s var(--ease); }
 .chip:hover { color: var(--ink); border-color: var(--ink-3); }
 .chip.is-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.tag { font-family: var(--font-text); font-size: var(--fs-xs); font-weight: 600; display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: var(--r-xs); background: var(--surface-2); color: var(--ink-2); }
+.tag { font-family: var(--font-text); font-size: var(--fs-xs); font-weight: 600; display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 0; background: var(--surface-2); color: var(--ink-2); }
 .tag-jade { background: var(--jade-dim); color: var(--jade); }
 .tag-mango { background: var(--mango-dim); color: var(--mango-2); }
 .tag-gold { background: var(--gold-dim); color: var(--gold); }
-.badge-verified { font-family: var(--font-text); font-weight: 700; font-size: var(--fs-xs); display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 7px; border-radius: var(--r-pill); background: var(--jade-dim); color: var(--jade); }
+.badge-verified { font-family: var(--font-text); font-weight: 700; font-size: var(--fs-xs); display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 7px; border-radius: 0; background: var(--jade-dim); color: var(--jade); }
 
-.status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: var(--r-pill); border: 1px solid var(--line-2); font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
-
-.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mango); box-shadow: none; animation: none; display: inline-block; flex: none; }
+.status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: 0; border: 1px solid var(--line-2); font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
 
 /* legacy utility kickers/pills used across existing components */
 .section-kicker { font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--mango); }
 .section-kicker::before { content: '// '; opacity: .6; }
-.pill-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: var(--r-pill); background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-2); font-family: var(--font-text); font-size: var(--fs-xs); font-weight: 600; }
+.pill-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 0; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-2); font-family: var(--font-text); font-size: var(--fs-xs); font-weight: 600; }
 
 /* ============================================================================
    PANELS / CARDS / KPI
    ============================================================================ */
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 0; }
 .panel-pad { padding: var(--s6); }
 .panel__head { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); padding: var(--s5) var(--s6); border-bottom: 1px solid var(--line); }
 .panel__title { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-h4); }
 .panel__sub { font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
 
-.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--s5); position: relative; overflow: hidden; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 0; padding: var(--s5); position: relative; overflow: hidden; }
 .kpi__k { font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); display: flex; align-items: center; gap: 7px; }
 .kpi__v { font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem,3.4vw,2.9rem); line-height: 1; margin-top: 12px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 .kpi__v small { font-size: .42em; font-weight: 600; color: var(--ink-3); letter-spacing: 0; }
 .kpi__delta { font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 600; margin-top: 10px; display: inline-flex; align-items: center; gap: 5px; }
 .kpi__delta.up { color: var(--jade); } .kpi__delta.down { color: var(--down); } .kpi__delta.flat { color: var(--ink-3); }
 
-.cyber-panel { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); }
+.cyber-panel { border: 1px solid var(--line); border-radius: 0; background: var(--surface); }
 
 /* ============================================================================
    DATA VIZ PRIMITIVES
@@ -385,8 +393,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .barlist { display: flex; flex-direction: column; gap: var(--s4); }
 .barrow { display: grid; grid-template-columns: 132px 1fr auto; align-items: center; gap: var(--s4); }
 .barrow__label { font-size: var(--fs-sm); color: var(--ink-2); display: flex; align-items: center; gap: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.barrow__track { height: 12px; background: var(--surface-2); border-radius: var(--r-pill); overflow: hidden; }
-.barrow__fill { height: 100%; border-radius: var(--r-pill); background: var(--mango); transition: width .6s var(--ease-out); }
+.barrow__track { height: 12px; background: var(--surface-2); border-radius: 0; overflow: hidden; }
+.barrow__fill { height: 100%; border-radius: 0; background: var(--mango); transition: width .6s var(--ease-out); }
 .barrow__val { font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
 .swatch { width: 9px; height: 9px; border-radius: 0; flex: none; }
 .axis-label { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-3); letter-spacing: .05em; }
@@ -485,7 +493,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .skip-link:focus { top: 0; }
 
 @keyframes skeleton-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-.skeleton { background: var(--surface-2); border-radius: var(--r-sm); animation: skeleton-pulse 1.5s ease-in-out infinite; }
+.skeleton { background: var(--surface-2); border-radius: 0; animation: skeleton-pulse 1.5s ease-in-out infinite; }
 
 /* ============================================================================
    RESPONSIVE
@@ -520,6 +528,49 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   iPad + foldable ergonomics
+   ----------------------------------------------------------------------------
+   The existing `index.css` is primarily the design-system + typography file.
+   It uses a *16px* base font size which is correct (iOS Safari zooms the
+   viewport on focus if any input is below 16px). Two global concerns for
+   tablet/foldable use that the component-level rules don't cover:
+
+   1. **No accidental double-tap zoom** — `touch-action: manipulation`
+      removes the 300ms tap delay on legacy browsers and prevents the
+      double-tap-to-zoom gesture from interfering with custom taps.
+   2. **Comfortable reading width on iPad** — the body max-width is
+      defined in JS-driven inline styles per page, but the default prose
+      width on the research / methodology / paper pages can blow out to
+      90+ characters per line at iPad landscape. The `prose` and `paper`
+      classes get a hard ceiling.
+   ---------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  html {
+    /* Honor the iOS notch / home-indicator safe areas. The header
+       already uses position: sticky so this just keeps the body
+       content from sitting under the home indicator in landscape. */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right)
+             env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
+  /* Disable the 300ms tap delay + the double-tap-to-zoom gesture
+     everywhere; the design relies on tap-to-open / tap-to-toggle
+     for cards and chips. */
+  a, button, [role="button"], .nav-links a, .filter-field, .map-source-chip,
+  .map-quickjump-chip, .place-venue-card, .lcard__action, .lcard__save {
+    touch-action: manipulation;
+  }
+
+  /* Hard reading-width ceiling for long-form pages on iPad landscape.
+     Without this, a 1024px viewport with 90ch of body text reads at
+     ~75 characters per line which is below the readability optimum. */
+  .prose, .paper, .methodology, .analytics, .health, .sociology, .faq,
+  .trends, .insights, .paper, .public-works, .field-note {
+    max-width: min(60ch, 100%);
   }
 }
 

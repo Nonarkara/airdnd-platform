@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createClient } from '@supabase/supabase-js';
+import { createDataClient } from './lib/local_db.js';
 import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -16,15 +16,11 @@ const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
 // Fail-fast fetch — see telegram_scraper.js: a stalled Supabase must never
 // block photo processing (uploads simply skip while it is down).
-const configuredSupabase =
-  supabaseUrl && supabaseServiceRoleKey
-    ? createClient(supabaseUrl, supabaseServiceRoleKey, {
-        global: {
-          fetch: (url, opts = {}) =>
-            fetch(url, { ...opts, signal: AbortSignal.timeout(8_000) }),
-        },
-      })
-    : null;
+// Local data station: photo_archive rows go to the M3's Postgres and photo
+// files to PHOTO_ROOT (/Volumes/Data/AirDnD/photos/listing-photos/...), which
+// scripts/sync_media.js publishes to https://airdnd-media.pages.dev.
+void supabaseUrl; void supabaseServiceRoleKey;
+const configuredSupabase = createDataClient();
 let supabase = configuredSupabase;
 
 let bucketReady = false;

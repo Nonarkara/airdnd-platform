@@ -1,10 +1,8 @@
 name: Air-DnD Telegram Scraper Pipeline
 
 on:
-  schedule:
-    # Run every 30 minutes
-    - cron: '*/30 * * * *'
-  workflow_dispatch: # Allow manual trigger from the GitHub UI
+  workflow_dispatch: # Manual trigger only — schedule disabled to avoid
+                     # AUTH_KEY_DUPLICATED conflicts with the local daemon.
 
 jobs:
   scrape-and-sync:
@@ -48,15 +46,22 @@ jobs:
         run: |
           npm run snapshot:refresh
           npm run feed:refresh
+          npm run photos:stage
+          npm run verify:snapshot
 
       - name: Commit Updated Scraper State
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          
-          # Only commit if the state file or snapshot actually changed
-          if git status --porcelain | grep -qE ".sabai-scraper-state.json|public/data.json|public/feed.json"; then
-            git add .sabai-scraper-state.json public/data.json public/feed.json
+
+          # The state file is gitignored, so a plain `git add` exits 1 and this
+          # step failed on every run that got this far. Force-add it alongside
+          # the snapshots; photos:stage has already force-added any photos.
+          # `git status --porcelain` hides ignored files, so check the state
+          # file explicitly.
+          if git status --porcelain --ignored | grep -qE ".sabai-scraper-state.json|public/data.json|public/feed.json|public/funnel.json|public/images/"; then
+            git add -f .sabai-scraper-state.json
+            git add public/data.json public/feed.json public/feed_meta.json public/funnel.json
             git commit -m "chore(scraper): auto-update telegram message bounds and data snapshot"
             git push
           else

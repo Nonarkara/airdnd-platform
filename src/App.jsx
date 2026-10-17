@@ -9,13 +9,12 @@ import ListingGrid from './components/ListingGrid';
 import ListingModal from './components/ListingModal';
 import DistrictComparisonDrawer from './components/DistrictComparisonDrawer';
 import LiveIntakeStrip from './components/LiveIntakeStrip';
+import ProximityFinder from './components/ProximityFinder';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import { listings as backupListings } from './data/mockData';
-import { auth, db } from './lib/firebase';
-import { supabase } from './lib/supabase';
+import { auth } from './lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, getDocs } from 'firebase/firestore';
 import { initSession } from './lib/tracker';
 import {
   SOURCE_LABELS,
@@ -32,9 +31,6 @@ const REFRESH_INTERVAL_MS = 30_000;
 // Full inventory — never truncate. Phone-canonical set is ~100 cards, but the
 // raw Firestore archive is thousands of persona-posts that must all be merged
 // before we know we have every operator. A 1200-doc cap silently dropped venues.
-const LIVE_QUERY_LIMIT = 10000;
-const LIVE_FETCH_TIMEOUT_MS = 6_500;
-const REALTIME_REFRESH_DEBOUNCE_MS = 1_200;
 const ALL_LOCATIONS_VALUE = 'all-locations';
 const ALL_TAGS_VALUE = 'all-tags';
 const normalizedBackupListings = normalizeListings(backupListings, {
@@ -52,6 +48,9 @@ const MatchingPaper = lazy(() => import('./components/MatchingPaper'));
 const Trends = lazy(() => import('./components/Trends'));
 const Health = lazy(() => import('./components/Health'));
 const Insights = lazy(() => import('./components/Insights'));
+const PublicWorks = lazy(() => import('./components/PublicWorks'));
+const IndustryIntel = lazy(() => import('./components/IndustryIntel'));
+const PlaceGallery = lazy(() => import('./components/PlaceGallery'));
 const SORT_OPTIONS = [
   'Most Active Broadcasters',
   'Most Promotions',
@@ -84,13 +83,13 @@ const DATA_SOURCE_NOTES = {
   automatic: {
     supabase: 'Directory is up to date with the latest listings.',
     firestore: 'Directory is up to date with the latest listings (via Firestore).',
-    snapshot: 'Showing a recent snapshot while the live connection catches up.',
+    snapshot: 'Showing the latest published snapshot of the directory.',
     backup: 'Showing cached listings. Live updates will resume shortly.',
   },
   manual: {
     supabase: 'Directory refreshed with the latest listings.',
     firestore: 'Directory refreshed with the latest listings (via Firestore).',
-    snapshot: 'Refreshed with the most recent snapshot.',
+    snapshot: 'Refreshed with the latest published snapshot.',
     backup: 'Refreshed with cached listings.',
   },
 };
@@ -186,59 +185,6 @@ function sortListings(listings, sortBy) {
 }
 
 
-async function fetchLiveListings() {
-  const { data, error } = await supabase
-    .from('companions')
-    .select('*')
-    .order('updated_at', { ascending: false, nullsFirst: false })
-    .order('created_at', { ascending: false, nullsFirst: false })
-    .limit(LIVE_QUERY_LIMIT);
-
-  if (error) {
-    throw new Error(sanitizeLoadError(error));
-  }
-
-  if (!Array.isArray(data) || data.length === 0) {
-    throw new Error('No live data available.');
-  }
-
-  const validatedData = validateListingsPayload(data);
-  if (validatedData.length === 0) {
-    throw new Error('Live data failed validation.');
-  }
-
-  return normalizeListings(
-    validatedData,
-    { source: 'supabase', isFallback: false },
-  );
-}
-async function fetchLiveListingsFromFirestore() {
-  // Full collection — persona-posts must be merged before the phone inventory
-  // is complete. Truncation silently drops operators.
-  const querySnapshot = await getDocs(collection(db, 'companions'));
-  const data = [];
-  querySnapshot.forEach((doc) => {
-    const docData = doc.data();
-    data.push({
-      ...docData,
-      id: docData.id || doc.id,
-    });
-  });
-
-  if (data.length === 0) {
-    throw new Error('No live Firestore data available.');
-  }
-
-  const validatedData = validateListingsPayload(data);
-  if (validatedData.length === 0) {
-    throw new Error('Live Firestore data failed validation.');
-  }
-
-  return normalizeListings(
-    validatedData,
-    { source: 'firestore', isFallback: false, allowUnverified: true },
-  );
-}
 async function fetchSnapshotListings() {
   const response = await fetch(`/data.json?ts=${Date.now()}`, {
     cache: 'no-store',
@@ -261,82 +207,27 @@ async function fetchSnapshotListings() {
   return normalizeListings(validatedSnapshot, { source: 'snapshot', isFallback: true });
 }
 
+// Static-only since 2026-10-17: the site reads the published snapshot
+// (public/data.json) and never queries Supabase or Firestore for listings.
+// Supabase restricted the project's org on 2026-10-18; photos now come from
+// the airdnd-media Pages project (see src/lib/media.js).
 async function loadListingsWithFallback(mode = 'automatic') {
   const notes = DATA_SOURCE_NOTES[mode] || DATA_SOURCE_NOTES.automatic;
-  let liveResult = null;
-  let liveError = null;
-
-  // Firestore first — it is the scraper's direct sync target and stays fresh
-  // even when the free-tier Supabase instance pauses or its REST API stalls.
-  try {
-    const firestoreListings = await withTimeout(
-      fetchLiveListingsFromFirestore(),
-      LIVE_FETCH_TIMEOUT_MS,
-      'Live Firestore request timed out.',
-    );
-    liveResult = {
-      listings: firestoreListings,
-      source: 'firestore',
-      note: notes.firestore,
-      warning: null,
-    };
-  } catch (error) {
-    liveError = new Error(sanitizeLoadError(error, 'Live Firestore request timed out.'));
-    try {
-      console.log('Firestore failed, attempting Supabase fetch...');
-      const liveListings = await withTimeout(
-        fetchLiveListings(),
-        LIVE_FETCH_TIMEOUT_MS,
-        'Live Supabase request timed out.',
-      );
-      liveResult = {
-        listings: liveListings,
-        source: 'supabase',
-        note: notes.supabase,
-        warning: null,
-      };
-      liveError = null;
-    } catch (sbError) {
-      liveError = new Error(
-        `Firestore failed (${liveError.message}) and Supabase failed (${sanitizeLoadError(sbError, 'Live Supabase request timed out.')})`
-      );
-    }
-  }
 
   try {
     const snapshotListings = await fetchSnapshotListings();
-    const snapshotResult = {
+    return {
       listings: snapshotListings,
       source: 'snapshot',
       note: notes.snapshot,
-      warning: liveError?.message || null,
+      warning: null,
     };
-
-    if (!liveResult) {
-      return snapshotResult;
-    }
-
-    const liveLatest = getLatestListingTimestamp(liveResult.listings);
-    const snapshotLatest = getLatestListingTimestamp(snapshotResult.listings);
-
-    if (snapshotLatest > liveLatest) {
-      return {
-        ...snapshotResult,
-        note: 'Showing a recent snapshot while the live directory catches up.',
-      };
-    }
-
-    return liveResult;
   } catch (snapshotError) {
-    if (liveResult) {
-      return liveResult;
-    }
-
     return {
       listings: normalizedBackupListings,
       source: 'backup',
       note: notes.backup,
-      warning: sanitizeLoadError(snapshotError, liveError?.message),
+      warning: sanitizeLoadError(snapshotError, 'Snapshot unavailable.'),
     };
   }
 }
@@ -387,7 +278,6 @@ function App() {
   const isActiveRef = useRef(true);
   const loadInFlightRef = useRef(false);
   const pendingAutoRefreshRef = useRef(false);
-  const realtimeRefreshTimerRef = useRef(null);
   const manualLoadRef = useRef(async () => {});
 
   const t = tCtx;
@@ -593,16 +483,6 @@ function App() {
         void loadListings();
       }
     };
-    const scheduleRealtimeRefresh = () => {
-      if (document.visibilityState !== 'visible' || realtimeRefreshTimerRef.current !== null) {
-        return;
-      }
-
-      realtimeRefreshTimerRef.current = window.setTimeout(() => {
-        realtimeRefreshTimerRef.current = null;
-        void loadListings();
-      }, REALTIME_REFRESH_DEBOUNCE_MS);
-    };
 
     void loadListings();
     const intervalId = window.setInterval(refreshIfVisible, REFRESH_INTERVAL_MS);
@@ -610,33 +490,14 @@ function App() {
     window.addEventListener('focus', refreshIfVisible);
     window.addEventListener('online', refreshIfVisible);
 
-    const liveChannel = supabase
-      .channel('companions-live')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'companions' },
-        scheduleRealtimeRefresh,
-      )
-      .subscribe((status, error) => {
-        if (error) {
-          console.warn('Live listing subscription unavailable:', error.message);
-        } else if (status === 'CHANNEL_ERROR') {
-          console.warn(`Live listing subscription unavailable: ${status}`);
-        }
-      });
-
     return () => {
       isActiveRef.current = false;
       manualLoadRef.current = async () => {};
       pendingAutoRefreshRef.current = false;
       window.clearInterval(intervalId);
-      if (realtimeRefreshTimerRef.current !== null) {
-        window.clearTimeout(realtimeRefreshTimerRef.current);
-      }
       document.removeEventListener('visibilitychange', refreshIfVisible);
       window.removeEventListener('focus', refreshIfVisible);
       window.removeEventListener('online', refreshIfVisible);
-      supabase.removeChannel(liveChannel);
     };
   }, []);
 
@@ -772,6 +633,96 @@ function App() {
           <Suspense fallback={<div className="page-shell-loading">Loading trends…</div>}>
             <Trends />
           </Suspense>
+        )}
+      />
+      <Route
+        path="/public-works"
+        element={(
+          <Suspense fallback={<div className="page-shell-loading">Loading public works…</div>}>
+            <PublicWorks listings={allListings} dataState={dataState} />
+          </Suspense>
+        )}
+      />
+      <Route
+        path="/intel"
+        element={(
+          <div className="app-shell">
+            <Header
+              language={language}
+              setLanguage={setLanguage}
+              t={t}
+              theme={theme}
+              setTheme={setTheme}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
+              sourceLabel={displayDataState.sourceLabel}
+              activeView="directory"
+              setActiveView={setActiveView}
+              metrics={metrics}
+            />
+            <main className="app-main">
+              <Suspense fallback={<div className="page-shell-loading">Loading industry intelligence…</div>}>
+                <IndustryIntel />
+              </Suspense>
+            </main>
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+          </div>
+        )}
+      />
+      <Route
+        path="/places"
+        element={(
+          <div className="app-shell">
+            <Header
+              language={language}
+              setLanguage={setLanguage}
+              t={t}
+              theme={theme}
+              setTheme={setTheme}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
+              sourceLabel={displayDataState.sourceLabel}
+              activeView="places"
+              setActiveView={setActiveView}
+              metrics={metrics}
+            />
+            <main className="app-main" style={{ padding: 'var(--gutter)' }}>
+              <div style={{ maxWidth: 'var(--maxw)', margin: '0 auto' }}>
+                <Suspense fallback={<div className="page-shell-loading">Loading photo archive…</div>}>
+                  <PlaceGallery t={t} />
+                </Suspense>
+              </div>
+            </main>
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+          </div>
+        )}
+      />
+      <Route
+        path="/places/:slug"
+        element={(
+          <div className="app-shell">
+            <Header
+              language={language}
+              setLanguage={setLanguage}
+              t={t}
+              theme={theme}
+              setTheme={setTheme}
+              onRefresh={handleRefresh}
+              isRefreshing={dataState.isRefreshing}
+              sourceLabel={displayDataState.sourceLabel}
+              activeView="places"
+              setActiveView={setActiveView}
+              metrics={metrics}
+            />
+            <main className="app-main" style={{ padding: 'var(--gutter)' }}>
+              <div style={{ maxWidth: 'var(--maxw)', margin: '0 auto' }}>
+                <Suspense fallback={<div className="page-shell-loading">Loading photo archive…</div>}>
+                  <PlaceGallery t={t} />
+                </Suspense>
+              </div>
+            </main>
+            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+          </div>
         )}
       />
       <Route
@@ -1020,6 +971,11 @@ function App() {
                   lastLoadedAt={dataState.lastLoadedAt}
                 />
 
+                <ProximityFinder
+                  listings={allListings}
+                  onSelect={setSelectedListing}
+                />
+
                 <section id="live-listings" className="listing-section">
                   <div className="section-header">
                     <div>
@@ -1108,15 +1064,16 @@ function App() {
                   padding: '4px',
                 }}>
                   {[
-                    { id: 'directory', label: `Directory (${filteredListings.length})` },
-                    { id: 'feed', label: `Live activity (${filteredFeedListings.length || 0})` },
-                    { id: 'epidemic', label: 'HIV / STI context' },
-                    { id: 'heatmap', label: 'Spatial heatmap' },
-                    { id: 'provinces', label: 'Province breakdown' },
+                    { id: 'directory', label: `Directory (${filteredListings.length})`, hint: 'Pinned listings, by province' },
+                    { id: 'feed', label: `Live activity (${filteredFeedListings.length || 0})`, hint: 'Most recent Telegram posts' },
+                    { id: 'epidemic', label: 'HIV / STI context', hint: 'Provincial case data overlaid on inventory' },
+                    { id: 'heatmap', label: 'Spatial heatmap', hint: 'Density by venue cluster' },
+                    { id: 'provinces', label: 'Province breakdown', hint: 'Click to fly, sorted by supply' },
                   ].map((mode) => (
                     <button
                       key={mode.id}
                       onClick={() => setMapSource(mode.id)}
+                      title={mode.hint}
                       style={{
                         padding: '10px 16px',
                         background: mapSource === mode.id ? 'var(--mango-dim)' : 'transparent',

@@ -17,17 +17,15 @@ import { useEffect, useRef, useState } from 'react';
 export function useCardPhoto(urls) {
   const list = Array.isArray(urls) ? urls.filter(Boolean) : [];
   const firstUrl = list[0] || null;
+  const [prevFirst, setPrevFirst] = useState(firstUrl);
   const [attempt, setAttempt] = useState(0);
   const [loaded, setLoaded] = useState(false);
-  const prevFirst = useRef(firstUrl);
 
-  useEffect(() => {
-    if (prevFirst.current !== firstUrl) {
-      prevFirst.current = firstUrl;
-      setAttempt(0);
-      setLoaded(false);
-    }
-  }, [firstUrl]);
+  if (prevFirst !== firstUrl) {
+    setPrevFirst(firstUrl);
+    setAttempt(0);
+    setLoaded(false);
+  }
 
   const exhausted = list.length === 0 || attempt >= list.length;
   const src = exhausted ? null : list[attempt];

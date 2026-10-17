@@ -17,7 +17,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createClient } from '@supabase/supabase-js';
+import { createDataClient, closeDataClient } from './lib/local_db.js';
+import { rewriteMediaUrl } from '../src/lib/media.js';
 import dotenv from 'dotenv';
 import { formatTelLink, formatLineUrl, formatTelegramUrl, formatMapsUrl, inferCityFromLocation } from '../src/lib/normalization.js';
 
@@ -39,11 +40,8 @@ try {
 const FEED_LIMIT = 800;        // pull recent N listing-classified messages
 const PAGE = 1000;
 
-const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
-  { auth: { persistSession: false } },
-);
+// Local Postgres on the M3 (DATABASE_URL); Supabase is retired.
+const supabase = createDataClient();
 
 async function pullRecentListingMessages() {
   // Two-pass pull to stay within Supabase's PostgREST limit.
@@ -325,7 +323,7 @@ async function main() {
   const photosByGid = new Map();
   const photosByTmId = new Map();
   for (const p of photos) {
-    const url = p.supabase_url || p.drive_url;
+    const url = rewriteMediaUrl(p.supabase_url || p.drive_url);
     if (!url) continue;
     if (p.grouped_id) {
       const arr = photosByGid.get(p.grouped_id) || [];

@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "lastUpdated": "2026-09-12T16:59:21.669Z",
+    "source": "Simulated transit corridors and zoning data",
+    "description": "Public works and infrastructure context for analyzing urban density."
+  },
+  "transitCorridors": [
+    {
+      "line": "BTS Sukhumvit",
+      "color": "#00b259",
+      "stations": [
+        {
+          "name": "Asok",
+          "lat": 13.7367,
+          "lng": 100.5604
+        },
+        {
+          "name": "Phrom Phong",
+          "lat": 13.7303,
+          "lng": 100.5698
+        },
+        {
+          "name": "Thong Lo",
+          "lat": 13.7242,
+          "lng": 100.5779
+        },
+        {
+          "name": "Ekkamai",
+          "lat": 13.7196,
+          "lng": 100.5852
+        },
+        {
+          "name": "Phra Khanong",
+          "lat": 13.7153,
+          "lng": 100.5915
+        },
+        {
+          "name": "On Nut",
+          "lat": 13.7058,
+          "lng": 100.601
+        }
+      ]
+    },
+    {
+      "line": "MRT Blue Line",
+      "color": "#1c3c95",
+      "stations": [
+        {
+          "name": "Rama 9",
+          "lat": 13.757,
+          "lng": 100.565
+        },
+        {
+          "name": "Huai Khwang",
+          "lat": 13.777,
+          "lng": 100.573
+        },
+        {
+          "name": "Sutthisan",
+          "lat": 13.789,
+          "lng": 100.574
+        },
+        {
+          "name": "Ratchadaphisek",
+          "lat": 13.799,
+          "lng": 100.574
+        },
+        {
+          "name": "Lat Phrao",
+          "lat": 13.805,
+          "lng": 100.573
+        }
+      ]
+    }
+  ],
+  "zoningDistricts": [
+    {
+      "name": "Ratchada Corridor",
+      "type": "Commercial High-Density",
+      "code": "C-4"
+    },
+    {
+      "name": "Sukhumvit Core",
+      "type": "Commercial High-Density",
+      "code": "C-5"
+    },
+    {
+      "name": "Lat Phrao",
+      "type": "Medium-Density Residential",
+      "code": "Y-4"
+    }
+  ]
+}

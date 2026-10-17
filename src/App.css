@@ -21,11 +21,10 @@
   padding: 0.65rem 1rem;
   margin-top: 0.5rem;
   border: 1px solid var(--color-line);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   background: var(--color-surface);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-panel);
 }
 
 .brand-block {
@@ -456,5 +455,153 @@
   .analytics-callout a {
     font-size: var(--text-small);
     line-height: 1.5;
+  }
+}
+
+/* ==========================================================================
+   iPad + foldable phone layer
+   --------------------------------------------------------------------------
+   Closes the gap between the existing desktop (≥1120px) and small-phone
+   (≤640px) breakpoints. Targets the dead zone where iPad portrait
+   (768–834px), iPad mini (744–1133px), Galaxy Z Fold inner display
+   (~840px), Galaxy Z Flip cover display (~260–280px), and large phones in
+   landscape (~640–840px) all fall. The goals:
+
+   1. Every interactive surface is at least 44pt tall (Apple HIG / WCAG 2.5.5).
+   2. No hover-only state — touch devices get `:active` and `:focus-visible`
+      feedback instead of transforms that don't fire on tap-hold.
+   3. The hero stats grid drops to 3-col on iPad (the 2-col layout that
+      works on phones feels too cramped at 7-inch widths).
+   4. The filter bar drops one earlier on foldable open (≤840px) so the
+      two rows that fit on a 6.7" phone still fit on a 7.6" foldable open
+      without horizontal scroll.
+   ========================================================================== */
+
+/* iPad portrait + large foldable landscape (≤1024px) */
+@media (max-width: 1024px) {
+  .app-shell {
+    /* iPad safe-area — leave a comfortable margin on the sides so
+       horizontally-scrollable nav doesn't sit flush against the bezel. */
+    padding-inline: clamp(0.5rem, 1.6vw, 0.85rem);
+  }
+
+  .header {
+    /* Single row at iPad landscape too — the 3-col layout wastes vertical
+       space; the brand-block + nav + actions on one row is denser and
+       leaves the body content with more breathing room. */
+    grid-template-columns: minmax(8rem, auto) 1fr auto;
+    min-height: 3.25rem;
+    padding: 0.5rem 0.85rem;
+  }
+
+  /* Make every primary nav link a comfortable touch target without
+     depending on hover. min-height alone is not enough — vertical centering
+     of the label is what gives the tap area its real feel. */
+  .nav-links a {
+    min-height: 44px;
+    padding-inline: 0.4rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .btn-refresh,
+  .btn-ghost,
+  .language-picker select,
+  .theme-picker select {
+    min-height: 44px;
+  }
+}
+
+/* Foldable open + iPad mini portrait + large-phone landscape (≤840px) */
+@media (max-width: 840px) {
+  .header {
+    /* Stack the action row under the brand so the nav still has room
+       to scroll horizontally without competing for width. */
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 0.5rem;
+  }
+
+  .brand-block {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .header-actions {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    /* Slightly larger scroll-padding so the scroll-snap is comfortable
+       under the thumb. */
+    padding-block: 0.25rem;
+  }
+
+  .nav-links a {
+    font-size: var(--text-small);
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Hide the language label, keep just the dropdown at tablet width. */
+  .language-picker span {
+    display: none;
+  }
+}
+
+/* Foldable closed + narrowest cover display (≤360px) */
+@media (max-width: 360px) {
+  .app-shell {
+    padding-inline: 0.4rem;
+  }
+
+  .header {
+    padding: 0.4rem 0.5rem;
+  }
+
+  /* On a Z Flip cover display the brand tagline is noise. Keep the
+     wordmark + a single status dot. */
+  .brand-copy small {
+    display: none;
+  }
+
+  .source-chip {
+    display: none;
+  }
+
+  .nav-links {
+    gap: 0.4rem;
+  }
+
+  .nav-links a {
+    /* Allow labels to truncate rather than overflow on a 260px-wide cover. */
+    max-width: 6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* Touch-only devices: drop hover transforms that don't fire on tap-hold,
+   keep `:focus-visible` and `:active` for keyboard / long-press feedback. */
+@media (hover: none) {
+  .nav-links a:hover,
+  .btn-refresh:hover,
+  .btn-ghost:hover {
+    color: inherit;
+    border-color: var(--color-line);
+    background: transparent;
+  }
+
+  .nav-links a:active,
+  .btn-refresh:active,
+  .btn-ghost:active {
+    color: var(--mango, #f59e0b);
+    border-color: var(--mango, #f59e0b);
   }
 }

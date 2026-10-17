@@ -1,26 +1,64 @@
-.finder { padding-block: var(--s7) 0; }
+.finder {
+  padding-block: var(--s6) var(--s4);
+}
 
-.finder__panel { padding: var(--s7); }
+.finder__panel {
+  padding: var(--s6);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+}
 
-.finder__title { margin: 10px 0 8px; }
-.finder__title .serif { color: var(--mango); }
+.finder__title {
+  margin: 8px 0 8px;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+}
 
 .finder__sub {
   margin: 0;
-  max-width: 60ch;
+  max-width: 72ch;
   color: var(--ink-2);
   font-size: var(--fs-sm);
   line-height: 1.5;
+}
+
+.finder__vibe-row {
+  margin-top: var(--s5);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line-2);
+}
+
+.finder__vibe-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.chip--vibe {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  border-radius: 0;
+}
+
+.chip__icon {
+  font-size: 1rem;
 }
 
 .finder__controls {
   display: flex;
   gap: var(--s3);
   flex-wrap: wrap;
-  margin-top: var(--s6);
+  margin-top: var(--s5);
 }
 
-.finder__locate { flex: none; }
+.finder__locate {
+  flex: none;
+  border-radius: 0;
+}
 
 .finder__search {
   display: flex;
@@ -28,11 +66,12 @@
   gap: var(--s2);
   flex: 1;
   min-width: 240px;
-  padding: 4px 4px 4px 16px;
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-pill);
-  background: var(--surface-2);
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  border-radius: 0;
 }
+
 .finder__search input {
   flex: 1;
   min-height: 40px;
@@ -40,26 +79,29 @@
   background: transparent;
   padding: 0;
   font-size: var(--fs-sm);
+  color: var(--ink);
 }
-.finder__search input:focus { background: transparent; }
+
+.finder__search input:focus {
+  outline: none;
+}
 
 .finder__chips {
   display: flex;
-  gap: var(--s2);
+  gap: 6px;
   flex-wrap: wrap;
-  margin-top: var(--s5);
+  margin-top: var(--s4);
 }
 
 .finder__budget {
   display: flex;
-  gap: var(--s2);
+  gap: 8px;
   align-items: center;
   flex-wrap: wrap;
   margin-top: var(--s5);
-  padding-top: var(--s5);
-  border-top: 1px solid var(--line);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line-2);
 }
-.finder__budget .eyebrow { margin-right: 4px; }
 
 .finder__error {
   margin-top: var(--s4);
@@ -67,70 +109,217 @@
   font-size: var(--fs-sm);
 }
 
-.finder__results { margin-top: var(--s6); }
+.finder__results {
+  margin-top: var(--s6);
+}
 
 .finder__results-head {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: var(--s4);
-  margin-bottom: var(--s3);
+  margin-bottom: var(--s4);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
 }
 
-.finder__empty {
-  padding: var(--s6) 0;
+.finder__card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.finder__card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.finder__card:hover {
+  border-color: var(--mango);
+}
+
+.finder__card-top {
+  padding: 16px;
+  cursor: pointer;
+}
+
+.finder__card-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
   color: var(--ink-3);
-  font-size: var(--fs-sm);
 }
 
-.finder__list { border-top-color: var(--line-2); }
+.finder__card-dist {
+  color: var(--mango);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
 
-/* the row is a <button> — reset and align to the index-row grid */
-.finder__row {
-  width: 100%;
-  text-align: left;
-  background: none;
-  border-left: 0;
+.finder__card-title {
+  font-size: 1.15rem;
+  margin: 0 0 6px;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.finder__card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  margin-bottom: 12px;
+}
+
+.finder__transit-pill {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--data);
+}
+
+.finder__card-rate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line-2);
+}
+
+.finder__card-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.finder__card-hours {
+  font-size: 0.75rem;
+  color: var(--ink-3);
+}
+
+.finder__card-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  border-top: 1px solid var(--line);
+  background: var(--bg-2);
+}
+
+.finder__action-btn {
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-2);
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.finder__action-btn:last-child {
   border-right: 0;
-  border-top: 0;
-  grid-template-columns: 34px 1fr auto auto;
-  font: inherit;
-  color: inherit;
 }
 
-.finder__name {
+.finder__action-btn:hover {
+  background: var(--mango-dim);
+  color: var(--mango);
+}
+
+.finder__action-line {
+  color: #06c755;
+}
+.finder__action-line:hover {
+  background: rgba(6, 199, 85, 0.12);
+  color: #06c755;
+}
+
+.finder__action-view {
+  color: var(--mango);
+}
+
+.finder__assistant {
+  margin-top: var(--s6);
+  padding: 16px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+
+.finder__assistant-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.finder__copied-badge {
+  font-size: 0.8rem;
+  color: #34d399;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.finder__assistant-boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.finder__script-btn {
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 3px;
-  font-size: 1.05rem;
+  gap: 6px;
+  padding: 12px 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.15s ease;
 }
 
-.finder__dist {
+.finder__script-btn:hover {
+  border-color: var(--mango);
+  background: var(--mango-dim);
+}
+
+.finder__script-lang {
+  font-size: 0.75rem;
   font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: var(--fs-sm);
   color: var(--mango);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  font-weight: 700;
 }
 
-.finder__ask {
-  font-family: var(--font-text);
-  font-size: var(--fs-xs);
+.finder__script-text {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
+.finder__script-action {
+  font-size: 0.75rem;
   color: var(--ink-3);
-  font-weight: 600;
+  margin-top: 4px;
+  font-family: var(--font-mono);
 }
 
 @media (max-width: 640px) {
-  .finder__panel { padding: var(--s5); }
-  .finder__row { grid-template-columns: 28px 1fr auto; gap: var(--s3); }
-  .finder__row .index-row__price { display: none; }
-  .finder__name { font-size: 0.95rem; }
-}
-
-.finder__approx-badge {
-  font-size: var(--fs-xs);
-  color: var(--ink-3);
-  font-style: italic;
-  font-weight: normal;
-  opacity: 0.85;
+  .finder__panel { padding: var(--s4); }
+  .finder__card-grid { grid-template-columns: 1fr; }
+  .finder__assistant-boxes { grid-template-columns: 1fr; }
 }

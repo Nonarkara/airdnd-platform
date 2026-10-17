@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "og:cards": "node scripts/generate_og_cards.js",
-    "build": "vite build",
-    "build:full": "npm run snapshot:refresh && npm run og:cards && npm run build",
+    "build": "npm run guard:no-supabase && npm run verify:snapshot -- --quiet && vite build",
+    "build:full": "npm run snapshot:refresh && npm run feed:refresh && npm run photos:stage && npm run verify:snapshot && npm run places:build && npm run og:cards && npm run media:sync && npm run build",
+    "photos:stage": "node scripts/stage_snapshot_photos.js",
+    "places:build": "node scripts/build_place_photos.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "scrape": "node scripts/scraper.js",
@@ -41,12 +43,16 @@
     "otop:dev": "vite --config vite.otop.config.js",
     "otop:site": "vite build --config vite.otop.config.js",
     "otop:all": "npm run otop:build && npm run otop:site",
-    "otop:ship": "npm run otop:site && npx wrangler pages deploy dist-otop --project-name otop --branch main && npm run otop:verify",
+    "otop:ship": "npm run otop:site && (cd dist-otop && npx wrangler pages deploy . --project-name otop --branch main) && npm run otop:verify",
     "otop:verify": "bash scripts/otop/verify-live.sh",
     "test:otop": "node --test test/otop_*.test.js",
     "otop:faces": "node scripts/otop/province-faces.js",
     "otop:media": "node scripts/otop/fetch-province-media.mjs",
-    "otop:media:cache": "node scripts/otop/fetch-province-media.mjs --cache --categories"
+    "otop:media:cache": "node scripts/otop/fetch-province-media.mjs --cache --categories",
+    "guard:no-supabase": "node scripts/guard_no_supabase.js",
+    "deploy": "npm run build && npm run guard:no-supabase -- --dist && npx wrangler pages deploy dist --project-name sabaisabai-airdnd --branch main",
+    "media:sync": "node scripts/sync_media.js --prune-snapshots",
+    "publish": "bash scripts/publish_snapshot.sh"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",
@@ -77,6 +83,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@hono/node-server": "^2.1.1",
     "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
@@ -85,6 +92,8 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "hono": "^4.13.7",
+    "pg": "^8.23.0",
     "satori": "^0.26.0",
     "vite": "^7.3.1",
     "wrangler": "^4.130.0"

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import TelegramBot from 'node-telegram-bot-api';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
-import { createClient } from '@supabase/supabase-js';
+import { createDataClient } from './lib/local_db.js';
 import { uploadPhoto, appendToSheet } from './google_service.js';
 import {
   dedupeListings,
@@ -43,10 +43,9 @@ if (!botToken || !geminiApiKey) {
     .readdirSync(mockupsDir)
     .filter((file) => file.endsWith('.jpg') || file.endsWith('.png'));
   const pendingPhotos = [];
-  const supabase =
-    supabaseUrl && supabaseServiceRoleKey
-      ? createClient(supabaseUrl, supabaseServiceRoleKey)
-      : null;
+  // Listings go to the M3's local Postgres (DATABASE_URL); Supabase is retired.
+  void supabaseUrl; void supabaseServiceRoleKey;
+  const supabase = createDataClient();
 
   function buildPrompt(rawText) {
     return `

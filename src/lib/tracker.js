@@ -12,10 +12,23 @@ let extendedTrackingDisabled = sessionStorage.getItem(EXTENDED_TRACKING_KEY) ===
 
 function getSessionId() {
   if (sessionId) return sessionId;
-  sessionId = sessionStorage.getItem(SESSION_KEY);
-  if (!sessionId) {
-    sessionId = crypto.randomUUID();
-    sessionStorage.setItem(SESSION_KEY, sessionId);
+  try {
+    sessionId = sessionStorage.getItem(SESSION_KEY);
+    if (!sessionId) {
+      // crypto.randomUUID() is available in all modern browsers but
+      // throws in a few contexts: Safari ITP private mode, certain
+      // embedded WebViews, and any page where `window.crypto` has been
+      // disabled by a privacy extension. Fall back to a timestamp+random
+      // string so the rest of the app keeps working.
+      sessionId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+      sessionStorage.setItem(SESSION_KEY, sessionId);
+    }
+  } catch (storageError) {
+    // sessionStorage throws in Safari private mode and when storage
+    // quotas are exceeded. We can still keep a per-tab id in memory.
+    sessionId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
   }
   return sessionId;
 }
@@ -23,8 +36,15 @@ function getSessionId() {
 async function fetchGeo() {
   const cached = sessionStorage.getItem(GEO_KEY);
   if (cached) {
-    geo = JSON.parse(cached);
-    return;
+    try {
+      geo = JSON.parse(cached);
+      return;
+    } catch {
+      // Corrupted cache (e.g. a previous version of the app stored a
+      // different shape). Drop it and re-fetch rather than crashing
+      // the whole app.
+      try { sessionStorage.removeItem(GEO_KEY); } catch { /* ignore */ }
+    }
   }
   try {
     const controller = new AbortController();
@@ -45,7 +65,7 @@ async function fetchGeo() {
       timezone: data.timezone || data.utc_offset || null,
       org: data.org || data.asn || null,
     };
-    sessionStorage.setItem(GEO_KEY, JSON.stringify(geo));
+    try { sessionStorage.setItem(GEO_KEY, JSON.stringify(geo)); } catch { /* ignore quota errors */ }
   } catch {
     geo = {};
   }
