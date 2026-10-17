@@ -204,7 +204,7 @@ async function main() {
       JSON.stringify(
         {
           slug: venue.slug,
-          channel: venue.channelLabel,
+          channel: venue.channel,
           displayName: venue.name,
           total: shard.photos.length,
           earliest: venue.earliest,
