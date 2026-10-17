@@ -9,6 +9,7 @@ import ListingGrid from './components/ListingGrid';
 import ListingModal from './components/ListingModal';
 import DistrictComparisonDrawer from './components/DistrictComparisonDrawer';
 import LiveIntakeStrip from './components/LiveIntakeStrip';
+import PostingCadence from './components/PostingCadence';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import { listings as backupListings } from './data/mockData';
@@ -1019,6 +1020,7 @@ function App() {
                   intakeSummary={intakeSummary}
                   lastLoadedAt={dataState.lastLoadedAt}
                 />
+                <PostingCadence t={t} />
 
                 <section id="live-listings" className="listing-section">
                   <div className="section-header">

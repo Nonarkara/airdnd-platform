@@ -46,7 +46,8 @@
     "test:otop": "node --test test/otop_*.test.js",
     "otop:faces": "node scripts/otop/province-faces.js",
     "otop:media": "node scripts/otop/fetch-province-media.mjs",
-    "otop:media:cache": "node scripts/otop/fetch-province-media.mjs --cache --categories"
+    "otop:media:cache": "node scripts/otop/fetch-province-media.mjs --cache --categories",
+    "stats:posting": "node scripts/build_posting_stats.js"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",

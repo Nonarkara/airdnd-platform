@@ -1,0 +1,1192 @@
+{
+  "generatedAt": "2026-10-16T12:13:53.198Z",
+  "timezone": "Asia/Bangkok",
+  "windowDays": 60,
+  "today": "2026-10-16",
+  "todayNew": 2,
+  "dailyNewListings": [
+    {
+      "date": "2026-10-16",
+      "channel": "@relaxsociety2020",
+      "count": 2
+    },
+    {
+      "date": "2026-10-08",
+      "channel": "@relaxsociety2020",
+      "count": 1
+    },
+    {
+      "date": "2026-10-07",
+      "channel": "@relaxsocietymassage",
+      "count": 1
+    },
+    {
+      "date": "2026-10-03",
+      "channel": "@relaxsociety2020",
+      "count": 1
+    },
+    {
+      "date": "2026-10-03",
+      "channel": "@relaxsocietymassage",
+      "count": 1
+    },
+    {
+      "date": "2026-10-02",
+      "channel": "@relaxsociety2020",
+      "count": 1
+    },
+    {
+      "date": "2026-09-30",
+      "channel": "@relaxsociety2020",
+      "count": 2
+    },
+    {
+      "date": "2026-09-28",
+      "channel": "@relaxsociety2020",
+      "count": 1
+    },
+    {
+      "date": "2026-09-23",
+      "channel": "@relaxsociety2020",
+      "count": 1
+    },
+    {
+      "date": "2026-09-22",
+      "channel": "@relaxsociety2020",
+      "count": 2
+    },
+    {
+      "date": "2026-09-21",
+      "channel": "@relaxsociety2020",
+      "count": 1
+    },
+    {
+      "date": "2026-09-20",
+      "channel": "@relaxsociety2020",
+      "count": 1
+    },
+    {
+      "date": "2026-09-18",
+      "channel": "@relaxsociety2020",
+      "count": 2
+    },
+    {
+      "date": "2026-09-14",
+      "channel": "@relaxsociety2020",
+      "count": 3
+    },
+    {
+      "date": "2026-09-12",
+      "channel": "@relaxsociety2020",
+      "count": 3
+    },
+    {
+      "date": "2026-09-09",
+      "channel": "@relaxsociety2020",
+      "count": 2
+    },
+    {
+      "date": "2026-09-08",
+      "channel": "@relaxsociety2020",
+      "count": 7
+    },
+    {
+      "date": "2026-09-06",
+      "channel": "@relaxsociety2020",
+      "count": 1
+    }
+  ],
+  "parlours": [
+    {
+      "id": 602,
+      "name": "www.massagehotelbangkok.com",
+      "channel": "@relaxsocietymassage",
+      "posts": 1092,
+      "activeDays": 56,
+      "firstSeen": "2026-04-06T07:53:10+00:00",
+      "lastSeen": "2026-10-13T16:59:39+00:00",
+      "postsPerWeek": 40.15
+    },
+    {
+      "id": 439,
+      "name": "คำหอม นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 414,
+      "activeDays": 41,
+      "firstSeen": "2026-03-30T12:34:44+00:00",
+      "lastSeen": "2026-05-31T07:29:05+00:00",
+      "postsPerWeek": 46.9
+    },
+    {
+      "id": 704,
+      "name": "Relax Society Massage",
+      "channel": "@relaxsocietymassage",
+      "posts": 411,
+      "activeDays": 16,
+      "firstSeen": "2026-04-17T12:00:15+00:00",
+      "lastSeen": "2026-05-23T04:40:23+00:00",
+      "postsPerWeek": 80.6
+    },
+    {
+      "id": 606,
+      "name": "กุหลาบ นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 356,
+      "activeDays": 64,
+      "firstSeen": "2026-04-04T09:19:04+00:00",
+      "lastSeen": "2026-10-16T10:44:49+00:00",
+      "postsPerWeek": 12.78
+    },
+    {
+      "id": 725,
+      "name": "เปิดใหม",
+      "channel": "@relaxsociety2020",
+      "posts": 299,
+      "activeDays": 41,
+      "firstSeen": "2026-09-05T15:08:06+00:00",
+      "lastSeen": "2026-10-16T11:11:16+00:00",
+      "postsPerWeek": 51.25
+    },
+    {
+      "id": 565,
+      "name": "Tanyaluck Spa",
+      "channel": "@relaxsocietymassage",
+      "posts": 296,
+      "activeDays": 35,
+      "firstSeen": "2026-04-04T08:36:55+00:00",
+      "lastSeen": "2026-10-14T02:43:07+00:00",
+      "postsPerWeek": 10.75
+    },
+    {
+      "id": 611,
+      "name": "ซุปเปอร์ไทย นวดเพื่อสุขภาพ 96",
+      "channel": "@relaxsociety2020",
+      "posts": 287,
+      "activeDays": 48,
+      "firstSeen": "2026-04-07T02:38:23+00:00",
+      "lastSeen": "2026-10-16T00:08:15+00:00",
+      "postsPerWeek": 10.47
+    },
+    {
+      "id": 670,
+      "name": "คำหอม นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 281,
+      "activeDays": 52,
+      "firstSeen": "2026-04-05T09:11:51+00:00",
+      "lastSeen": "2026-10-16T10:10:14+00:00",
+      "postsPerWeek": 10.14
+    },
+    {
+      "id": 720,
+      "name": "Malee Aromaoil Healthmassage",
+      "channel": "@relaxsocietymassage",
+      "posts": 278,
+      "activeDays": 46,
+      "firstSeen": "2026-05-24T14:45:58+00:00",
+      "lastSeen": "2026-10-16T08:25:09+00:00",
+      "postsPerWeek": 13.45
+    },
+    {
+      "id": 594,
+      "name": "นวดใกล้ฉัน",
+      "channel": "@relaxsociety2020",
+      "posts": 257,
+      "activeDays": 55,
+      "firstSeen": "2026-04-06T05:48:32+00:00",
+      "lastSeen": "2026-10-16T07:38:49+00:00",
+      "postsPerWeek": 9.32
+    },
+    {
+      "id": 679,
+      "name": "Relax Society Massage",
+      "channel": "@keawjaojormmassage",
+      "posts": 236,
+      "activeDays": 53,
+      "firstSeen": "2026-04-07T04:37:53+00:00",
+      "lastSeen": "2026-10-16T11:55:06+00:00",
+      "postsPerWeek": 8.59
+    },
+    {
+      "id": 354,
+      "name": "Pls Massage & Spa",
+      "channel": "@relaxsociety2020",
+      "posts": 231,
+      "activeDays": 37,
+      "firstSeen": "2026-03-30T09:52:18+00:00",
+      "lastSeen": "2026-05-31T13:16:15+00:00",
+      "postsPerWeek": 26.02
+    },
+    {
+      "id": 625,
+      "name": "ร้าน นันตา นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 207,
+      "activeDays": 64,
+      "firstSeen": "2026-03-30T10:06:25+00:00",
+      "lastSeen": "2026-10-16T09:36:13+00:00",
+      "postsPerWeek": 7.25
+    },
+    {
+      "id": 677,
+      "name": "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
+      "channel": "@relaxsociety2020",
+      "posts": 198,
+      "activeDays": 62,
+      "firstSeen": "2026-04-06T19:01:53+00:00",
+      "lastSeen": "2026-10-16T08:14:30+00:00",
+      "postsPerWeek": 7.2
+    },
+    {
+      "id": 589,
+      "name": "เอมมิกานวดเพื่อสุขภาพ รามอินทรา14",
+      "channel": "@relaxsociety2020",
+      "posts": 183,
+      "activeDays": 69,
+      "firstSeen": "2026-04-06T03:20:19+00:00",
+      "lastSeen": "2026-10-16T11:12:39+00:00",
+      "postsPerWeek": 6.63
+    },
+    {
+      "id": 566,
+      "name": "วิถีไท สปา",
+      "channel": "@relaxsocietymassage",
+      "posts": 182,
+      "activeDays": 72,
+      "firstSeen": "2026-04-04T08:37:25+00:00",
+      "lastSeen": "2026-10-16T08:59:54+00:00",
+      "postsPerWeek": 6.53
+    },
+    {
+      "id": 660,
+      "name": "SBM (sabaispa by michel)",
+      "channel": "@relaxsocietymassage",
+      "posts": 179,
+      "activeDays": 52,
+      "firstSeen": "2026-04-04T09:15:21+00:00",
+      "lastSeen": "2026-10-16T11:29:10+00:00",
+      "postsPerWeek": 6.42
+    },
+    {
+      "id": 630,
+      "name": "CHANEL MASSAGE",
+      "channel": "@relaxsocietymassage",
+      "posts": 164,
+      "activeDays": 32,
+      "firstSeen": "2026-04-05T07:45:31+00:00",
+      "lastSeen": "2026-10-16T07:39:09+00:00",
+      "postsPerWeek": 5.92
+    },
+    {
+      "id": 460,
+      "name": "ชโนทัยนวดเพื่อสุขภาพ",
+      "channel": "unknown",
+      "posts": 155,
+      "activeDays": 1,
+      "firstSeen": "2026-10-16T10:53:48+00:00",
+      "lastSeen": "2026-10-16T10:53:48+00:00",
+      "postsPerWeek": 1085
+    },
+    {
+      "id": 413,
+      "name": "หมอนวดดี มีประสบการณ",
+      "channel": "@relaxsociety2020",
+      "posts": 147,
+      "activeDays": 41,
+      "firstSeen": "2026-03-30T07:58:47+00:00",
+      "lastSeen": "2026-05-31T10:21:49+00:00",
+      "postsPerWeek": 16.57
+    },
+    {
+      "id": 643,
+      "name": "ร้านวินวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 144,
+      "activeDays": 53,
+      "firstSeen": "2026-03-31T03:26:23+00:00",
+      "lastSeen": "2026-10-15T09:21:05+00:00",
+      "postsPerWeek": 5.08
+    },
+    {
+      "id": 616,
+      "name": "Relax Society Massage",
+      "channel": "@relaxsociety2020",
+      "posts": 132,
+      "activeDays": 18,
+      "firstSeen": "2026-04-07T03:42:08+00:00",
+      "lastSeen": "2026-10-16T12:10:07+00:00",
+      "postsPerWeek": 4.8
+    },
+    {
+      "id": 623,
+      "name": "มูนเรสต์ นวด&สปา",
+      "channel": "@relaxsociety2020",
+      "posts": 122,
+      "activeDays": 38,
+      "firstSeen": "2026-04-02T06:57:13+00:00",
+      "lastSeen": "2026-10-16T09:22:37+00:00",
+      "postsPerWeek": 4.33
+    },
+    {
+      "id": 568,
+      "name": "Kirista Massage",
+      "channel": "@relaxsociety2020",
+      "posts": 121,
+      "activeDays": 49,
+      "firstSeen": "2026-04-04T09:16:12+00:00",
+      "lastSeen": "2026-10-16T10:11:28+00:00",
+      "postsPerWeek": 4.34
+    },
+    {
+      "id": 438,
+      "name": "ละมัย นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 120,
+      "activeDays": 61,
+      "firstSeen": "2026-03-31T03:05:15+00:00",
+      "lastSeen": "2026-10-11T02:23:20+00:00",
+      "postsPerWeek": 4.33
+    },
+    {
+      "id": 727,
+      "name": "ชโนทัยนวดเพื่อสุขภาพ บางใหญ",
+      "channel": "@relaxsociety2020",
+      "posts": 117,
+      "activeDays": 39,
+      "firstSeen": "2026-09-06T13:48:51+00:00",
+      "lastSeen": "2026-10-16T10:53:54+00:00",
+      "postsPerWeek": 20.54
+    },
+    {
+      "id": 719,
+      "name": "The nicha spa",
+      "channel": "The​ nicha​ spa",
+      "posts": 112,
+      "activeDays": 1,
+      "firstSeen": "2026-10-15T10:13:53+00:00",
+      "lastSeen": "2026-10-15T10:13:53+00:00",
+      "postsPerWeek": 784
+    },
+    {
+      "id": 729,
+      "name": "กระปุกหอม",
+      "channel": "@relaxsociety2020",
+      "posts": 104,
+      "activeDays": 26,
+      "firstSeen": "2026-09-07T09:06:50+00:00",
+      "lastSeen": "2026-10-15T12:55:38+00:00",
+      "postsPerWeek": 19.08
+    },
+    {
+      "id": 708,
+      "name": "PP Spa พระราม 2",
+      "channel": "@relaxsociety2020",
+      "posts": 104,
+      "activeDays": 39,
+      "firstSeen": "2026-04-30T08:05:32+00:00",
+      "lastSeen": "2026-10-16T11:19:24+00:00",
+      "postsPerWeek": 4.3
+    },
+    {
+      "id": 622,
+      "name": "ตั้งอยู่ซอยโกยี ตรงข้ามซ้ง เป็ดพะโล",
+      "channel": "@relaxsociety2020",
+      "posts": 90,
+      "activeDays": 25,
+      "firstSeen": "2026-04-07T04:57:14+00:00",
+      "lastSeen": "2026-05-31T12:17:02+00:00",
+      "postsPerWeek": 11.6
+    },
+    {
+      "id": 718,
+      "name": "#หมอนวดแนะนำ",
+      "channel": "@relaxsociety2020",
+      "posts": 77,
+      "activeDays": 40,
+      "firstSeen": "2026-05-24T01:46:49+00:00",
+      "lastSeen": "2026-10-16T02:40:54+00:00",
+      "postsPerWeek": 3.72
+    },
+    {
+      "id": 494,
+      "name": "เดอะเซนส์ มาสสาจ 26",
+      "channel": "@relaxsociety2020",
+      "posts": 75,
+      "activeDays": 12,
+      "firstSeen": "2026-04-01T11:48:59+00:00",
+      "lastSeen": "2026-05-27T08:55:31+00:00",
+      "postsPerWeek": 9.4
+    },
+    {
+      "id": 614,
+      "name": "@monta spa",
+      "channel": "@relaxsociety2020",
+      "posts": 69,
+      "activeDays": 37,
+      "firstSeen": "2026-04-07T03:14:06+00:00",
+      "lastSeen": "2026-10-07T03:00:39+00:00",
+      "postsPerWeek": 2.64
+    },
+    {
+      "id": 436,
+      "name": "นวดเกล้ากมล. Pro ลดแรง",
+      "channel": "@relaxsociety2020",
+      "posts": 66,
+      "activeDays": 32,
+      "firstSeen": "2026-03-31T02:59:51+00:00",
+      "lastSeen": "2026-05-31T02:14:26+00:00",
+      "postsPerWeek": 7.58
+    },
+    {
+      "id": 591,
+      "name": "White house RCA",
+      "channel": "@relaxsociety2020",
+      "posts": 66,
+      "activeDays": 31,
+      "firstSeen": "2026-04-06T04:41:31+00:00",
+      "lastSeen": "2026-10-06T10:54:14+00:00",
+      "postsPerWeek": 2.52
+    },
+    {
+      "id": 698,
+      "name": "ฟ้ารุ่งเรือง นวดเพื่อสุขภาพ เชียงราย",
+      "channel": "@relaxsociety2020",
+      "posts": 65,
+      "activeDays": 20,
+      "firstSeen": "2026-04-23T11:45:22+00:00",
+      "lastSeen": "2026-10-11T05:21:13+00:00",
+      "postsPerWeek": 2.66
+    },
+    {
+      "id": 613,
+      "name": "Bella Spa",
+      "channel": "@relaxsociety2020",
+      "posts": 63,
+      "activeDays": 18,
+      "firstSeen": "2026-03-31T07:05:57+00:00",
+      "lastSeen": "2026-05-30T06:20:24+00:00",
+      "postsPerWeek": 7.35
+    },
+    {
+      "id": 734,
+      "name": "เทพี นวดเพื่อสุขภาพ พิกัด ศาลายา นครปฐม",
+      "channel": "@relaxsociety2020",
+      "posts": 60,
+      "activeDays": 25,
+      "firstSeen": "2026-09-09T02:01:35+00:00",
+      "lastSeen": "2026-10-15T04:21:04+00:00",
+      "postsPerWeek": 11.64
+    },
+    {
+      "id": 424,
+      "name": "Yesika Spa @ ลาดพร้าว 71",
+      "channel": "@relaxsociety2020",
+      "posts": 60,
+      "activeDays": 24,
+      "firstSeen": "2026-03-30T12:26:33+00:00",
+      "lastSeen": "2026-10-03T05:28:54+00:00",
+      "postsPerWeek": 2.25
+    },
+    {
+      "id": 728,
+      "name": "#หมอนวดแนะนำ",
+      "channel": "@relaxsociety2020",
+      "posts": 54,
+      "activeDays": 28,
+      "firstSeen": "2026-09-07T01:59:56+00:00",
+      "lastSeen": "2026-10-16T02:33:17+00:00",
+      "postsPerWeek": 9.69
+    },
+    {
+      "id": 445,
+      "name": "ฟ้าลองร่า มาสสาจ",
+      "channel": "@relaxsociety2020",
+      "posts": 53,
+      "activeDays": 19,
+      "firstSeen": "2026-03-31T04:03:17+00:00",
+      "lastSeen": "2026-05-29T08:08:31+00:00",
+      "postsPerWeek": 6.27
+    },
+    {
+      "id": 709,
+      "name": "RELAXO SPA",
+      "channel": "@relaxsociety2020",
+      "posts": 53,
+      "activeDays": 16,
+      "firstSeen": "2026-05-05T06:51:10+00:00",
+      "lastSeen": "2026-09-09T03:41:12+00:00",
+      "postsPerWeek": 2.92
+    },
+    {
+      "id": 598,
+      "name": "ณภัสสา นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 52,
+      "activeDays": 20,
+      "firstSeen": "2026-04-06T07:40:10+00:00",
+      "lastSeen": "2026-05-31T07:35:58+00:00",
+      "postsPerWeek": 6.62
+    },
+    {
+      "id": 713,
+      "name": "คุณได้รับคำเชิญให้เข้าร่วม \"นวดตามบ้าน\" โปรดแตะล",
+      "channel": "@relaxsociety2020",
+      "posts": 51,
+      "activeDays": 5,
+      "firstSeen": "2026-05-14T16:31:45+00:00",
+      "lastSeen": "2026-05-17T23:26:23+00:00",
+      "postsPerWeek": 108.58
+    },
+    {
+      "id": 555,
+      "name": "นิว นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 51,
+      "activeDays": 25,
+      "firstSeen": "2026-04-04T03:17:46+00:00",
+      "lastSeen": "2026-10-08T02:14:27+00:00",
+      "postsPerWeek": 1.91
+    },
+    {
+      "id": 706,
+      "name": "win win massage udomsuk soi 5 วินวิน นวดเพื่อสุขภาพ อุดมสุขซอย5",
+      "channel": "@relaxsociety2020",
+      "posts": 47,
+      "activeDays": 28,
+      "firstSeen": "2026-05-03T02:45:59+00:00",
+      "lastSeen": "2026-10-15T03:54:04+00:00",
+      "postsPerWeek": 1.99
+    },
+    {
+      "id": 647,
+      "name": "A5 Massage",
+      "channel": "@relaxsociety2020",
+      "posts": 46,
+      "activeDays": 23,
+      "firstSeen": "2026-04-10T04:41:56+00:00",
+      "lastSeen": "2026-05-27T00:45:11+00:00",
+      "postsPerWeek": 6.88
+    },
+    {
+      "id": 674,
+      "name": "location",
+      "channel": "@relaxsociety2020",
+      "posts": 44,
+      "activeDays": 17,
+      "firstSeen": "2026-04-17T13:39:49+00:00",
+      "lastSeen": "2026-05-31T09:51:52+00:00",
+      "postsPerWeek": 7.03
+    },
+    {
+      "id": 325,
+      "name": "Baannine Massage Spa",
+      "channel": "Baannine Massage Spa",
+      "posts": 38,
+      "activeDays": 1,
+      "firstSeen": "2026-10-07T08:54:41+00:00",
+      "lastSeen": "2026-10-07T08:54:41+00:00",
+      "postsPerWeek": 266
+    },
+    {
+      "id": 730,
+      "name": "นวดไทย • นวดไทยผสมออยล์ • นวดน้ำมันผ่อนคลาย • นว",
+      "channel": "@relaxsociety2020",
+      "posts": 36,
+      "activeDays": 18,
+      "firstSeen": "2026-09-07T03:29:06+00:00",
+      "lastSeen": "2026-10-15T03:30:20+00:00",
+      "postsPerWeek": 6.63
+    },
+    {
+      "id": 694,
+      "name": "นวดแก้ว มาซซาส 📍สาขาลาดปลาดุก",
+      "channel": "@relaxsociety2020",
+      "posts": 35,
+      "activeDays": 17,
+      "firstSeen": "2026-04-22T11:35:37+00:00",
+      "lastSeen": "2026-05-31T02:34:59+00:00",
+      "postsPerWeek": 6.34
+    },
+    {
+      "id": 723,
+      "name": "ห้องนวดส่วนตัว ทักจองคิว",
+      "channel": "@relaxsociety2020",
+      "posts": 35,
+      "activeDays": 15,
+      "firstSeen": "2026-05-28T02:30:40+00:00",
+      "lastSeen": "2026-10-14T09:53:05+00:00",
+      "postsPerWeek": 1.76
+    },
+    {
+      "id": 731,
+      "name": "นวดบ้านเรือนงาม คลองหลวง ตลาดไท รังสิต ปทุมธาน",
+      "channel": "@relaxsociety2020",
+      "posts": 34,
+      "activeDays": 20,
+      "firstSeen": "2026-09-07T03:29:03+00:00",
+      "lastSeen": "2026-10-15T03:30:18+00:00",
+      "postsPerWeek": 6.26
+    },
+    {
+      "id": 678,
+      "name": "ณัฐธนิสชา สปา",
+      "channel": "@relaxsociety2020",
+      "posts": 33,
+      "activeDays": 15,
+      "firstSeen": "2026-03-31T03:35:16+00:00",
+      "lastSeen": "2026-05-05T03:35:16+00:00",
+      "postsPerWeek": 6.6
+    },
+    {
+      "id": 741,
+      "name": "GRAND OPENING PROMOTION",
+      "channel": "@relaxsociety2020",
+      "posts": 32,
+      "activeDays": 11,
+      "firstSeen": "2026-09-17T10:02:34+00:00",
+      "lastSeen": "2026-09-29T04:59:04+00:00",
+      "postsPerWeek": 19
+    },
+    {
+      "id": 747,
+      "name": "เปิดใหม่28/09/69",
+      "channel": "@relaxsociety2020",
+      "posts": 31,
+      "activeDays": 9,
+      "firstSeen": "2026-09-23T02:50:06+00:00",
+      "lastSeen": "2026-10-05T02:44:20+00:00",
+      "postsPerWeek": 18.09
+    },
+    {
+      "id": 736,
+      "name": "เพ็ญศรี นวดเพื่อสุขภาพ สมุทรสาคร",
+      "channel": "@relaxsociety2020",
+      "posts": 30,
+      "activeDays": 8,
+      "firstSeen": "2026-09-12T03:12:37+00:00",
+      "lastSeen": "2026-09-21T03:07:30+00:00",
+      "postsPerWeek": 23.34
+    },
+    {
+      "id": 556,
+      "name": "Facebook page",
+      "channel": "@relaxsociety2020",
+      "posts": 30,
+      "activeDays": 15,
+      "firstSeen": "2026-04-04T03:17:46+00:00",
+      "lastSeen": "2026-05-29T03:46:47+00:00",
+      "postsPerWeek": 3.82
+    },
+    {
+      "id": 746,
+      "name": "ห้อง คาราโอเกะ + สปา",
+      "channel": "@relaxsociety2020",
+      "posts": 27,
+      "activeDays": 17,
+      "firstSeen": "2026-09-22T12:55:26+00:00",
+      "lastSeen": "2026-10-15T19:02:04+00:00",
+      "postsPerWeek": 8.13
+    },
+    {
+      "id": 721,
+      "name": "เปิด 11.00-24.00",
+      "channel": "@relaxsociety2020",
+      "posts": 27,
+      "activeDays": 7,
+      "firstSeen": "2026-05-25T16:48:10+00:00",
+      "lastSeen": "2026-10-15T13:09:17+00:00",
+      "postsPerWeek": 1.32
+    },
+    {
+      "id": 636,
+      "name": "THE SWAN SPA",
+      "channel": "@relaxsociety2020",
+      "posts": 27,
+      "activeDays": 9,
+      "firstSeen": "2026-04-08T05:45:32+00:00",
+      "lastSeen": "2026-09-30T11:13:50+00:00",
+      "postsPerWeek": 1.08
+    },
+    {
+      "id": 739,
+      "name": "Monta Massage",
+      "channel": "@relaxsociety2020",
+      "posts": 26,
+      "activeDays": 7,
+      "firstSeen": "2026-09-14T02:53:38+00:00",
+      "lastSeen": "2026-10-12T05:15:42+00:00",
+      "postsPerWeek": 6.48
+    },
+    {
+      "id": 543,
+      "name": "นวด กรุงเทพมหานคร",
+      "channel": "@relaxsociety2020",
+      "posts": 22,
+      "activeDays": 5,
+      "firstSeen": "2026-04-03T13:36:41+00:00",
+      "lastSeen": "2026-04-23T16:19:06+00:00",
+      "postsPerWeek": 7.66
+    },
+    {
+      "id": 468,
+      "name": "Clubhouse Exclusive Club",
+      "channel": "@relaxsocietymassage",
+      "posts": 20,
+      "activeDays": 10,
+      "firstSeen": "2026-03-31T08:52:12+00:00",
+      "lastSeen": "2026-05-22T03:52:49+00:00",
+      "postsPerWeek": 2.7
+    },
+    {
+      "id": 726,
+      "name": "เทเรแกรม",
+      "channel": "@relaxsociety2020",
+      "posts": 19,
+      "activeDays": 8,
+      "firstSeen": "2026-09-08T03:18:29+00:00",
+      "lastSeen": "2026-10-12T09:53:41+00:00",
+      "postsPerWeek": 3.88
+    },
+    {
+      "id": 743,
+      "name": "𝐎𝐏𝐄𝐍 𝐍𝐎𝐖 Elysia Spa",
+      "channel": "@relaxsociety2020",
+      "posts": 18,
+      "activeDays": 9,
+      "firstSeen": "2026-09-20T11:15:09+00:00",
+      "lastSeen": "2026-10-16T10:14:38+00:00",
+      "postsPerWeek": 4.85
+    },
+    {
+      "id": 642,
+      "name": "Issaya Massage",
+      "channel": "@relaxsociety2020",
+      "posts": 18,
+      "activeDays": 12,
+      "firstSeen": "2026-04-06T07:30:22+00:00",
+      "lastSeen": "2026-05-31T07:17:06+00:00",
+      "postsPerWeek": 2.29
+    },
+    {
+      "id": 753,
+      "name": "นวดแม่สาย",
+      "channel": "@relaxsociety2020",
+      "posts": 17,
+      "activeDays": 11,
+      "firstSeen": "2026-10-03T11:21:07+00:00",
+      "lastSeen": "2026-10-16T05:51:53+00:00",
+      "postsPerWeek": 9.32
+    },
+    {
+      "id": 529,
+      "name": "น้ำเหนือ มาจสาจแอนด์สปา",
+      "channel": "@relaxsociety2020",
+      "posts": 17,
+      "activeDays": 6,
+      "firstSeen": "2026-04-03T04:31:40+00:00",
+      "lastSeen": "2026-09-26T02:17:46+00:00",
+      "postsPerWeek": 0.68
+    },
+    {
+      "id": 732,
+      "name": "สปาเปิดใหม่ มนตา สปา บางนา",
+      "channel": "@relaxsociety2020",
+      "posts": 16,
+      "activeDays": 11,
+      "firstSeen": "2026-09-07T03:29:00+00:00",
+      "lastSeen": "2026-09-29T01:52:34+00:00",
+      "postsPerWeek": 5.11
+    },
+    {
+      "id": 715,
+      "name": "หอมจันทร์นวดเพื่อสุขภาพ",
+      "channel": "@relaxsocietymassage",
+      "posts": 15,
+      "activeDays": 3,
+      "firstSeen": "2026-05-16T10:50:00+00:00",
+      "lastSeen": "2026-05-27T13:45:22+00:00",
+      "postsPerWeek": 9.44
+    },
+    {
+      "id": 588,
+      "name": "หญิง มาสสาจ",
+      "channel": "@relaxsociety2020",
+      "posts": 14,
+      "activeDays": 6,
+      "firstSeen": "2026-04-06T03:19:29+00:00",
+      "lastSeen": "2026-04-13T05:24:15+00:00",
+      "postsPerWeek": 13.83
+    },
+    {
+      "id": 707,
+      "name": "ดีเอ็นนวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 14,
+      "activeDays": 4,
+      "firstSeen": "2026-04-30T08:15:28+00:00",
+      "lastSeen": "2026-05-29T03:46:48+00:00",
+      "postsPerWeek": 3.4
+    },
+    {
+      "id": 733,
+      "name": "แผนที่ รมณีย์ นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 13,
+      "activeDays": 4,
+      "firstSeen": "2026-09-09T01:47:19+00:00",
+      "lastSeen": "2026-10-13T04:36:12+00:00",
+      "postsPerWeek": 2.67
+    },
+    {
+      "id": 584,
+      "name": "我们竭诚为所有顾客提供24小时服务🙏 ☎️0933074220",
+      "channel": "@relaxsociety2020",
+      "posts": 13,
+      "activeDays": 7,
+      "firstSeen": "2026-04-05T10:26:08+00:00",
+      "lastSeen": "2026-10-15T08:37:06+00:00",
+      "postsPerWeek": 0.47
+    },
+    {
+      "id": 745,
+      "name": "OpenChat",
+      "channel": "@relaxsociety2020",
+      "posts": 12,
+      "activeDays": 4,
+      "firstSeen": "2026-09-22T11:52:04+00:00",
+      "lastSeen": "2026-10-16T11:56:26+00:00",
+      "postsPerWeek": 3.5
+    },
+    {
+      "id": 754,
+      "name": "พราวฟ้า นวดเพื่อสุขภาพ พิกัด สระบุร",
+      "channel": "@relaxsocietymassage",
+      "posts": 10,
+      "activeDays": 6,
+      "firstSeen": "2026-10-07T04:35:53+00:00",
+      "lastSeen": "2026-10-15T11:08:01+00:00",
+      "postsPerWeek": 8.46
+    },
+    {
+      "id": 681,
+      "name": "โนอาห์ สปา - NOAH SPA",
+      "channel": "@relaxsociety2020",
+      "posts": 10,
+      "activeDays": 4,
+      "firstSeen": "2026-04-18T04:27:18+00:00",
+      "lastSeen": "2026-09-18T03:27:56+00:00",
+      "postsPerWeek": 0.46
+    },
+    {
+      "id": 710,
+      "name": "The Bank Massage Club",
+      "channel": "@relaxsociety2020",
+      "posts": 8,
+      "activeDays": 3,
+      "firstSeen": "2026-05-05T05:55:19+00:00",
+      "lastSeen": "2026-05-28T07:32:22+00:00",
+      "postsPerWeek": 2.43
+    },
+    {
+      "id": 486,
+      "name": "Honey69massage",
+      "channel": "@relaxsociety2020",
+      "posts": 7,
+      "activeDays": 3,
+      "firstSeen": "2026-04-01T05:28:30+00:00",
+      "lastSeen": "2026-04-12T05:36:03+00:00",
+      "postsPerWeek": 4.45
+    },
+    {
+      "id": 688,
+      "name": "นวดผ่อนคลาย",
+      "channel": "@relaxsociety2020",
+      "posts": 7,
+      "activeDays": 4,
+      "firstSeen": "2026-04-05T04:11:57+00:00",
+      "lastSeen": "2026-04-21T12:25:00+00:00",
+      "postsPerWeek": 3
+    },
+    {
+      "id": 749,
+      "name": "วิไลยา นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 6,
+      "activeDays": 1,
+      "firstSeen": "2026-09-30T01:40:13+00:00",
+      "lastSeen": "2026-09-30T11:51:08+00:00",
+      "postsPerWeek": 42
+    },
+    {
+      "id": 740,
+      "name": "นวดแฮนด์โกลด์ พระราม 2",
+      "channel": "@relaxsociety2020",
+      "posts": 6,
+      "activeDays": 1,
+      "firstSeen": "2026-09-14T03:21:12+00:00",
+      "lastSeen": "2026-09-14T03:21:13+00:00",
+      "postsPerWeek": 42
+    },
+    {
+      "id": 751,
+      "name": "ก็น่าชิมแล้ว",
+      "channel": "@relaxsociety2020",
+      "posts": 6,
+      "activeDays": 3,
+      "firstSeen": "2026-10-02T06:32:32+00:00",
+      "lastSeen": "2026-10-05T09:43:53+00:00",
+      "postsPerWeek": 13.41
+    },
+    {
+      "id": 744,
+      "name": "นางฟ้ามาใหม",
+      "channel": "@relaxsociety2020",
+      "posts": 5,
+      "activeDays": 2,
+      "firstSeen": "2026-09-21T08:09:08+00:00",
+      "lastSeen": "2026-09-23T05:53:05+00:00",
+      "postsPerWeek": 18.37
+    },
+    {
+      "id": 757,
+      "name": "เส้นทางการเดินทาง ร้านซินเนียสปา",
+      "channel": "@relaxsociety2020",
+      "posts": 5,
+      "activeDays": 3,
+      "firstSeen": "2026-10-13T19:18:46+00:00",
+      "lastSeen": "2026-10-15T20:05:13+00:00",
+      "postsPerWeek": 17.22
+    },
+    {
+      "id": 752,
+      "name": "The Cosmos Spa",
+      "channel": "@relaxsocietymassage",
+      "posts": 4,
+      "activeDays": 1,
+      "firstSeen": "2026-10-03T08:48:59+00:00",
+      "lastSeen": "2026-10-03T08:48:59+00:00",
+      "postsPerWeek": 28
+    },
+    {
+      "id": 750,
+      "name": "เลมอน นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 4,
+      "activeDays": 1,
+      "firstSeen": "2026-09-30T02:19:16+00:00",
+      "lastSeen": "2026-09-30T05:29:04+00:00",
+      "postsPerWeek": 28
+    },
+    {
+      "id": 558,
+      "name": "ชโนทัย นวดเพื่อสุขภาพ พระราม2",
+      "channel": "ชโนทัย นวดเพื่อสุขภาพ พระราม2",
+      "posts": 4,
+      "activeDays": 1,
+      "firstSeen": "2026-04-04T05:29:16+00:00",
+      "lastSeen": "2026-04-04T05:29:16+00:00",
+      "postsPerWeek": 28
+    },
+    {
+      "id": 722,
+      "name": "RELAX Laundry Detergent",
+      "channel": "@relaxsociety2020",
+      "posts": 4,
+      "activeDays": 2,
+      "firstSeen": "2026-05-27T10:15:27+00:00",
+      "lastSeen": "2026-05-28T10:18:46+00:00",
+      "postsPerWeek": 27.94
+    },
+    {
+      "id": 717,
+      "name": "นวดเฟรนด์เฮาช",
+      "channel": "@relaxsociety2020",
+      "posts": 4,
+      "activeDays": 2,
+      "firstSeen": "2026-05-17T11:13:34+00:00",
+      "lastSeen": "2026-05-19T07:34:08+00:00",
+      "postsPerWeek": 15.15
+    },
+    {
+      "id": 737,
+      "name": "นวด ซีซั่น ริช นวดเพื่อสุขภาพ พิกัด ตัวเมืองนครป",
+      "channel": "@relaxsociety2020",
+      "posts": 4,
+      "activeDays": 2,
+      "firstSeen": "2026-09-12T04:15:24+00:00",
+      "lastSeen": "2026-09-14T06:57:05+00:00",
+      "postsPerWeek": 13.26
+    },
+    {
+      "id": 738,
+      "name": "นวดน้ำมันชาย นวดหินร้อน",
+      "channel": "@relaxsociety2020",
+      "posts": 4,
+      "activeDays": 2,
+      "firstSeen": "2026-09-14T02:28:34+00:00",
+      "lastSeen": "2026-09-21T09:38:34+00:00",
+      "postsPerWeek": 3.84
+    },
+    {
+      "id": 574,
+      "name": "Arom Exclusive",
+      "channel": "@relaxsociety2020",
+      "posts": 4,
+      "activeDays": 2,
+      "firstSeen": "2026-04-05T01:24:38+00:00",
+      "lastSeen": "2026-05-15T06:03:14+00:00",
+      "postsPerWeek": 0.7
+    },
+    {
+      "id": 748,
+      "name": "นวดดอนหัวฬ่อ",
+      "channel": "@relaxsociety2020",
+      "posts": 3,
+      "activeDays": 2,
+      "firstSeen": "2026-09-28T05:23:38+00:00",
+      "lastSeen": "2026-09-29T09:30:00+00:00",
+      "postsPerWeek": 17.93
+    },
+    {
+      "id": 755,
+      "name": "LOUISSPA สาขา สำเพ็ง2 กัลปพฤกษ",
+      "channel": "@relaxsociety2020",
+      "posts": 2,
+      "activeDays": 1,
+      "firstSeen": "2026-10-08T02:21:23+00:00",
+      "lastSeen": "2026-10-08T02:21:24+00:00",
+      "postsPerWeek": 14
+    },
+    {
+      "id": 735,
+      "name": "ธนาภรณ์ นวดเพื่อสุขภาพ",
+      "channel": "@relaxsociety2020",
+      "posts": 2,
+      "activeDays": 1,
+      "firstSeen": "2026-09-11T04:16:25+00:00",
+      "lastSeen": "2026-09-11T04:16:27+00:00",
+      "postsPerWeek": 14
+    },
+    {
+      "id": 724,
+      "name": "#นวดระยอง",
+      "channel": "@relaxsociety2020",
+      "posts": 2,
+      "activeDays": 1,
+      "firstSeen": "2026-05-31T03:03:43+00:00",
+      "lastSeen": "2026-05-31T03:03:46+00:00",
+      "postsPerWeek": 14
+    },
+    {
+      "id": 705,
+      "name": "นวดฝั่งธนฯ ย่านพระราม2",
+      "channel": "@relaxsociety2020",
+      "posts": 2,
+      "activeDays": 1,
+      "firstSeen": "2026-05-03T05:00:48+00:00",
+      "lastSeen": "2026-05-03T05:00:57+00:00",
+      "postsPerWeek": 14
+    },
+    {
+      "id": 628,
+      "name": "area51 spa",
+      "channel": "@relaxsocietymassage",
+      "posts": 2,
+      "activeDays": 1,
+      "firstSeen": "2026-04-07T07:30:05+00:00",
+      "lastSeen": "2026-04-07T07:30:05+00:00",
+      "postsPerWeek": 14
+    },
+    {
+      "id": 554,
+      "name": "g.co/kgs/My1PN9m",
+      "channel": "@relaxsociety2020",
+      "posts": 2,
+      "activeDays": 1,
+      "firstSeen": "2026-04-04T03:17:47+00:00",
+      "lastSeen": "2026-04-04T03:17:47+00:00",
+      "postsPerWeek": 14
+    },
+    {
+      "id": 553,
+      "name": "พราวฟ้านวดเพื่อสุขภาพ สระบุร",
+      "channel": "@relaxsociety2020",
+      "posts": 2,
+      "activeDays": 1,
+      "firstSeen": "2026-04-04T03:15:53+00:00",
+      "lastSeen": "2026-04-04T03:15:53+00:00",
+      "postsPerWeek": 14
+    },
+    {
+      "id": 716,
+      "name": "Relax Society Massage",
+      "channel": "@relaxsocietymassage",
+      "posts": 2,
+      "activeDays": 2,
+      "firstSeen": "2026-05-17T03:15:46+00:00",
+      "lastSeen": "2026-05-19T04:44:00+00:00",
+      "postsPerWeek": 6.79
+    },
+    {
+      "id": 650,
+      "name": "A5 Massage",
+      "channel": "@relaxsociety2020",
+      "posts": 2,
+      "activeDays": 2,
+      "firstSeen": "2026-04-11T00:45:09+00:00",
+      "lastSeen": "2026-04-14T00:45:10+00:00",
+      "postsPerWeek": 4.67
+    },
+    {
+      "id": 742,
+      "name": "Princess spa กิ่งแก้ว 14/1",
+      "channel": "@relaxsociety2020",
+      "posts": 2,
+      "activeDays": 2,
+      "firstSeen": "2026-09-17T11:47:18+00:00",
+      "lastSeen": "2026-10-08T04:40:17+00:00",
+      "postsPerWeek": 0.68
+    },
+    {
+      "id": 756,
+      "name": "OPEN NOW 🌟 LAVERO SPA",
+      "channel": "@relaxsociety2020",
+      "posts": 1,
+      "activeDays": 1,
+      "firstSeen": "2026-10-16T08:07:22+00:00",
+      "lastSeen": "2026-10-16T08:07:22+00:00",
+      "postsPerWeek": 7
+    },
+    {
+      "id": 651,
+      "name": "A5 Massage",
+      "channel": "@relaxsocietymassage",
+      "posts": 1,
+      "activeDays": 1,
+      "firstSeen": "2026-04-11T00:45:06+00:00",
+      "lastSeen": "2026-04-11T00:45:06+00:00",
+      "postsPerWeek": 7
+    },
+    {
+      "id": 600,
+      "name": "ร้านธาร Thai Massage",
+      "channel": "@relaxsociety2020",
+      "posts": 1,
+      "activeDays": 1,
+      "firstSeen": "2026-04-06T07:40:28+00:00",
+      "lastSeen": "2026-04-06T07:40:28+00:00",
+      "postsPerWeek": 7
+    },
+    {
+      "id": 459,
+      "name": "น้อง พอลล่า",
+      "channel": "unknown",
+      "posts": 1,
+      "activeDays": 1,
+      "firstSeen": "2026-03-31T07:53:53.158684+00:00",
+      "lastSeen": "2026-05-25T17:33:07.297+00:00",
+      "postsPerWeek": 0.13
+    }
+  ],
+  "note": "Aggregates only. No message text, phone numbers or sender identifiers."
+}
