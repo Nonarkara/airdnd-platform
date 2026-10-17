@@ -1396,3 +1396,43 @@ html, body { overflow-x: hidden; }
 @media (max-width: 640px) {
   .callout-body { font-size: 0.92rem; }
 }
+
+/* ─── Atlas Findings → Find action links ───
+ * Each actionable finding can carry a one-click link into Find. The
+ * link sits beneath the prose so it does not crowd the headline.
+ */
+.atlas-finding {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line, currentColor);
+}
+.atlas-finding-th {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-2, #a8780c);
+  font-weight: 700;
+}
+.atlas-finding-text { font-size: 0.95rem; line-height: 1.4; }
+.atlas-finding-link {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.3rem 0.7rem;
+  background: var(--accent, #c99518);
+  color: var(--bg, #fdf3df);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--accent, #c99518);
+}
+.atlas-finding-link:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
+.atlas-finding-link-th {
+  display: block;
+  font-family: var(--font-thai, inherit);
+  font-size: 0.78em;
+  font-weight: 400;
+  opacity: 0.92;
+  margin-top: 0.05rem;
+}
