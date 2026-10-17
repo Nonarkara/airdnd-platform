@@ -199,8 +199,8 @@ function VenueDetail({ index, t }) {
               <strong>{summary.peak.n}</strong> photos on {summary.peak.date}
             </span>
           )}
-          <a className="place-venue-source" href={`https://t.me/${venueData.channel.replace(/^@/, '')}`} target="_blank" rel="noreferrer">
-            {venueData.channel} on Telegram ↗
+          <a className="place-venue-source" href={`https://t.me/${String(venueData.channel || venueData.slug || '').replace(/^@/, '')}`} target="_blank" rel="noreferrer">
+            {venueData.channel || venueData.slug} on Telegram ↗
           </a>
         </div>
         {venueData.matchedListingIds?.length > 0 && (

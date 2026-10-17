@@ -38,7 +38,8 @@ git clean -fdq -- public/data/place_photos 2>/dev/null
 before=$(git rev-parse HEAD)
 git fetch -q origin main && git merge -q --ff-only origin/main || log "warn: could not fast-forward to origin/main"
 after=$(git rev-parse HEAD)
-if [ "$before" != "$after" ] || [ ! -d node_modules ]; then
+# Reinstall only when dependencies changed (npm ci is slow on this link).
+if [ ! -d node_modules ] || ! git diff --quiet "$before" "$after" -- package-lock.json; then
   log "code changed ($before -> $after) — npm ci"
   npm ci --no-audit --no-fund --ignore-scripts >/dev/null 2>&1 || { log "npm ci failed"; exit 1; }
 fi
