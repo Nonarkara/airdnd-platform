@@ -1,4 +1,5 @@
 import { CITY_PATTERNS, cleanDisplayText, normalizeText, normalizePhone, inferCityFromLocation } from './normalization.js';
+import { rewriteMediaUrl, rewriteMediaUrls } from './media.js';
 
 export const DEFAULT_PUBLIC_LOCATION = 'Bangkok, Thailand';
 export const DEFAULT_PUBLIC_IMAGE = '/mockups/109748.jpg';
@@ -487,7 +488,7 @@ export function normalizePublicListing(rawListing, options = {}) {
   const sourceMeta = normalizeSourceMeta(rawListing);
   const location = cleanLocationLabel(rawListing.location);
   const mapsUrl = normalizeUrl(rawListing.mapsUrl || rawListing.maps_url);
-  const imageUrl = normalizeText(rawListing.imageUrl || rawListing.image_url, null);
+  const imageUrl = rewriteMediaUrl(normalizeText(rawListing.imageUrl || rawListing.image_url, null));
   const isSafeImage = rawListing.is_safe_image !== false && rawListing.isSafeImage !== false;
   const safeImageUrl =
     isSafeImage && (source === 'backup' || !imageUrl?.startsWith('/mockups/'))
@@ -529,8 +530,8 @@ export function normalizePublicListing(rawListing, options = {}) {
     longitude: isValidCoordinates(latitude, longitude) ? longitude : null,
     rawText: normalizeText(rawListing.rawText || rawListing.raw_text, null),
     sourceMessageIds: normalizeArray(rawListing.sourceMessageIds || rawListing.source_message_ids),
-    allPhotoUrls: normalizeArray(rawListing.allPhotoUrls || rawListing.photo_urls),
-    drivePhotoUrls: normalizeArray(rawListing.drivePhotoUrls || rawListing.drive_photo_urls),
+    allPhotoUrls: rewriteMediaUrls(normalizeArray(rawListing.allPhotoUrls || rawListing.photo_urls)),
+    drivePhotoUrls: rewriteMediaUrls(normalizeArray(rawListing.drivePhotoUrls || rawListing.drive_photo_urls)),
     userRating: userRating && userRating > 0 && userRating <= 5 ? userRating : null,
     serviceTags: normalizeArray(rawListing.serviceTags || rawListing.service_quality || rawListing.service_tags),
     userFeedbackSummary: normalizeText(rawListing.userFeedbackSummary || rawListing.user_feedback_summary || rawListing.discussion_notes, null),
