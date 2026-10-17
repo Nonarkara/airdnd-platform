@@ -41,6 +41,9 @@ const supabaseKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 // width — a wider PHOTO_PAGE silently returns only 1000 rows and the
 // `data.length < PHOTO_PAGE` end-detection would wrongly stop after one page.
 const PHOTO_PAGE = 1000;
+// The galleries are served from the free airdnd-media Pages project (20k-file
+// cap), so each venue shard keeps only its newest N photos.
+const PER_VENUE = Number(process.env.PLACE_PHOTOS_PER_VENUE || 200);
 
 function slugifyChannel(channelId) {
   const cleaned = channelSlug(channelId);
@@ -171,6 +174,8 @@ async function main() {
   const venues = [...byChannel.values()]
     .map((v) => {
       v.photos.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+      v.archiveCount = v.photos.length;
+      if (PER_VENUE > 0) v.photos = v.photos.slice(0, PER_VENUE);
       const dates = v.photos.map((p) => p.date).filter(Boolean);
       const earliest = dates.length ? dates[dates.length - 1] : null;
       const latest = dates.length ? dates[0] : null;
@@ -181,6 +186,7 @@ async function main() {
         name: v.channelLabel,
         channel: v.channelLabel,
         photoCount: v.photos.length,
+        archiveCount: v.archiveCount,
         earliest,
         latest,
         matchedListingCount: matched.length,
@@ -217,10 +223,12 @@ async function main() {
     JSON.stringify(
       {
         meta: {
-          source: 'supabase photo_archive',
+          source: 'local photo_archive',
           generatedAt: new Date().toISOString(),
           totalVenues: venues.length,
-          totalPhotos: usable,
+          totalPhotos: venues.reduce((n, v) => n + v.photoCount, 0),
+          archivePhotos: usable,
+          perVenueCap: PER_VENUE,
         },
         venues,
       },
@@ -229,7 +237,7 @@ async function main() {
     ),
   );
 
-  console.log(`[place-photos] wrote ${venues.length} venues, ${usable} total photos from Supabase photo_archive`);
+  console.log(`[place-photos] wrote ${venues.length} venues, ${usable} archived photos from local photo_archive (newest ${PER_VENUE}/venue published)`);
 }
 
 main().catch((err) => {
