@@ -376,6 +376,26 @@ export default function App() {
               </p>
             )}
 
+            {/*
+              When the user has explicitly shown all records (every attest-
+              ation filter is off), the procurement-engine sort by
+              match-requirement is the wrong ranking for a casual buyer —
+              it ranks by assurance and corroboration. Find is the right
+              tool: contactability-first, phone-callable. The banner is
+              a one-click bridge, not a nag.
+             */}
+            {!requirement.requireSignal && !requirement.requireContact && !requirement.requireCorroborated && result.matches.length > 0 && (
+              <p className="find-banner">
+                <Bi
+                  en="All filters off — you are seeing the full province list, ranked by match score. For a contactability-first sort (callable producers at the top), Find is the right surface."
+                  th="ตัวกรองทั้งหมดปิดอยู่ — กำลังดูรายการทั้งหมดในจังหวัด เรียงตามคะแนนการจับคู่ หากต้องการเรียงตามการติดต่อได้ก่อน (ผู้ที่โทรหาได้ขึ้นก่อน) Find คือเครื่องมือที่ใช่"
+                />{' '}
+                <a className="find-banner-cta" href={`/?view=find${requirement.provinceCodes.length === 1 ? `&p=${requirement.provinceCodes[0]}` : ''}${requirement.categories.length ? `&q=${encodeURIComponent(requirement.categories[0])}` : ''}`}>
+                  <Bi en="Open in Find →" th="เปิดใน Find →" />
+                </a>
+              </p>
+            )}
+
             <MatchRows matches={result.matches} limit={limit} onSelectProvince={openProvince} />
 
             {result.matches.length > limit && (

@@ -29,6 +29,8 @@ import {
   filterRecords,
   findFromUrl,
   findToUrl,
+  pushRecentSearch,
+  recentSearches,
   scoreRecord,
   ALL_PROVINCES,
   STAR_ANY,
@@ -89,6 +91,20 @@ export default function Find({ onOpenProvince }) {
   const [stars, setStars] = useState(initial.stars);
   const [onlyContactable, setOnlyContactable] = useState(initial.onlyContactable);
   const [limit, setLimit] = useState(PAGE);
+  const [recents, setRecents] = useState(() => recentSearches());
+
+  // Push the current filter state to recents whenever the user pauses
+  // meaningfully. The 800ms debounce keeps us from writing on every
+  // keystroke while still catching the "this is what I was looking for"
+  // moment shortly after a query settles.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const t = setTimeout(() => {
+      pushRecentSearch({ query, provinceCode, stars, onlyContactable });
+      setRecents(recentSearches());
+    }, 800);
+    return () => clearTimeout(t);
+  }, [query, provinceCode, stars, onlyContactable]);
 
   // Load index.
   useEffect(() => {
@@ -328,6 +344,36 @@ export default function Find({ onOpenProvince }) {
           </>
         )}
       </div>
+
+      {recents.length > 0 && (
+        <div className="find-recents">
+          <span className="find-recents-lbl">
+            <Bi en="Recent searches" th="ค้นหาล่าสุด" />
+          </span>
+          <ul className="find-recents-list">
+            {recents.map((r, i) => {
+              const params = new URLSearchParams();
+              if (r.query) params.set('q', r.query);
+              if (r.provinceCode && r.provinceCode !== ALL_PROVINCES) params.set('p', String(r.provinceCode));
+              if (r.stars && r.stars !== STAR_ANY) params.set('s', r.stars);
+              if (r.onlyContactable) params.set('c', '1');
+              if (params.toString()) params.set('view', 'find');
+              const href = `${window.location.pathname}?${params.toString()}`;
+              const label = [
+                r.query && `“${r.query}”`,
+                r.provinceCode && r.provinceCode !== ALL_PROVINCES && index?.provinces.find((p) => p.code === Number(r.provinceCode))?.nameEn,
+                r.stars && r.stars !== STAR_ANY && (r.stars === STAR_FIVE ? '5★' : '4–5★'),
+                r.onlyContactable && '☎',
+              ].filter(Boolean).join(' · ') || <Bi en="(all records)" th="(ทั้งหมด)" />;
+              return (
+                <li key={`${r.query}-${r.provinceCode}-${r.stars}-${r.onlyContactable}-${r.at}`}>
+                  <a href={href} onClick={() => setLimit(PAGE)}>{label}</a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
 
       <ul className="find-list">
         {shown.map((r, i) => {

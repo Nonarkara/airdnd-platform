@@ -1436,3 +1436,78 @@ html, body { overflow-x: hidden; }
   opacity: 0.92;
   margin-top: 0.05rem;
 }
+
+/* ─── Find: recent searches chip strip ───
+ * A row of clickable chips for the user's last few searches. Returning
+ * visitors land where they left off. The list is session-scoped, capped
+ * at 5, and never sent anywhere.
+ */
+.find-recents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
+  align-items: baseline;
+  margin: 0 0 1rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--surface, rgba(255, 250, 239, 0.5));
+  border: 1px solid var(--line, currentColor);
+}
+.find-recents-lbl {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3, currentColor);
+  font-weight: 700;
+}
+.find-recents-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.4rem;
+}
+.find-recents-list a {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--line, currentColor);
+  background: var(--bg, #fdf3df);
+  color: var(--ink, currentColor);
+  text-decoration: none;
+  white-space: nowrap;
+  max-width: 28ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.find-recents-list a:hover {
+  border-color: var(--accent-2, #a8780c);
+  color: var(--accent-2, #a8780c);
+}
+
+/* ─── Match → Find bridge ───
+ * When the user has all attestation filters off in the Match view, the
+ * sort is by match-requirement score. For a buyer that is the wrong
+ * ranking; Find is. The banner offers a one-click switch.
+ */
+.find-banner {
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--surface, rgba(255, 250, 239, 0.5));
+  border: 1px solid var(--line, currentColor);
+  border-left: 3px solid var(--accent, #c99518);
+  font-size: 0.88rem;
+  color: var(--ink-2, currentColor);
+}
+.find-banner-cta {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.2rem 0.55rem;
+  background: var(--accent, #c99518);
+  color: var(--bg, #fdf3df);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.78rem;
+  border: 1px solid var(--accent, #c99518);
+}
+.find-banner-cta:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }

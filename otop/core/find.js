@@ -120,3 +120,51 @@ export function findFromUrl(search) {
     onlyContactable: p.get('c') === '1',
   };
 }
+
+/**
+ * Recent searches — small, session-scoped, capped at 5.
+ * Returning visitors land where they left off. Nothing is sent anywhere.
+ * Cleared when the tab closes; not visible across browsers.
+ */
+const RECENT_KEY = 'otop_find_recent_v1';
+const RECENT_MAX = 5;
+
+export function recentSearches() {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = sessionStorage.getItem(RECENT_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) return [];
+    return arr;
+  } catch {
+    return [];
+  }
+}
+
+export function pushRecentSearch(state) {
+  if (typeof window === 'undefined') return;
+  const { query, provinceCode, stars, onlyContactable } = state;
+  // A search has to have at least one signal to be worth remembering; an
+  // empty search is the default landing, not a "where I was".
+  const meaningful = (query && query.trim()) ||
+                     (provinceCode && provinceCode !== ALL_PROVINCES) ||
+                     (stars && stars !== STAR_ANY) ||
+                     onlyContactable;
+  if (!meaningful) return;
+  const entry = {
+    query: (query || '').trim(),
+    provinceCode: provinceCode || ALL_PROVINCES,
+    stars: stars || STAR_ANY,
+    onlyContactable: !!onlyContactable,
+    at: Date.now(),
+  };
+  const prev = recentSearches().filter((e) =>
+    !(e.query === entry.query &&
+      e.provinceCode === entry.provinceCode &&
+      e.stars === entry.stars &&
+      e.onlyContactable === entry.onlyContactable)
+  );
+  const next = [entry, ...prev].slice(0, RECENT_MAX);
+  try { sessionStorage.setItem(RECENT_KEY, JSON.stringify(next)); } catch {}
+}

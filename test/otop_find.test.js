@@ -174,3 +174,52 @@ test('findFromUrl: missing params fall back to defaults, not undefined', () => {
   assert.equal(back.stars, STAR_ANY);
   assert.equal(back.onlyContactable, false);
 });
+
+import { recentSearches, pushRecentSearch } from '../otop/core/find.js';
+
+test('recentSearches: empty session returns empty array', () => {
+  sessionStorage.clear();
+  const recents = recentSearches();
+  assert.deepEqual(recents, []);
+});
+
+test('pushRecentSearch: records a meaningful search and ignores empty ones', () => {
+  sessionStorage.clear();
+  pushRecentSearch({ query: '', provinceCode: 'all', stars: 'any', onlyContactable: false });
+  assert.equal(recentSearches().length, 0, 'empty search must not be recorded');
+
+  pushRecentSearch({ query: 'silk', provinceCode: 'all', stars: 'any', onlyContactable: false });
+  assert.equal(recentSearches().length, 1, 'search with query must be recorded');
+  assert.equal(recentSearches()[0].query, 'silk');
+
+  pushRecentSearch({ query: '', provinceCode: '10', stars: 'any', onlyContactable: false });
+  assert.equal(recentSearches().length, 2, 'search with province must be recorded');
+
+  pushRecentSearch({ query: '', provinceCode: 'all', stars: '5', onlyContactable: false });
+  assert.equal(recentSearches().length, 3, 'search with stars must be recorded');
+
+  pushRecentSearch({ query: '', provinceCode: 'all', stars: 'any', onlyContactable: true });
+  assert.equal(recentSearches().length, 4, 'search with onlyContactable must be recorded');
+});
+
+test('pushRecentSearch: deduplicates identical entries and moves the new one to the top', () => {
+  sessionStorage.clear();
+  pushRecentSearch({ query: 'silk', provinceCode: 'all', stars: 'any', onlyContactable: false });
+  pushRecentSearch({ query: 'tea', provinceCode: 'all', stars: 'any', onlyContactable: false });
+  pushRecentSearch({ query: 'silk', provinceCode: 'all', stars: 'any', onlyContactable: false });
+  const r = recentSearches();
+  assert.equal(r.length, 2, 'duplicate must be deduped');
+  assert.equal(r[0].query, 'silk', 'most recent goes to top');
+  assert.equal(r[1].query, 'tea');
+});
+
+test('pushRecentSearch: caps at 5 entries, oldest gets pushed off', () => {
+  sessionStorage.clear();
+  for (let i = 0; i < 8; i += 1) {
+    pushRecentSearch({ query: `q${i}`, provinceCode: 'all', stars: 'any', onlyContactable: false });
+  }
+  const r = recentSearches();
+  assert.equal(r.length, 5);
+  assert.equal(r[0].query, 'q7', 'newest first');
+  assert.equal(r[4].query, 'q3', 'oldest still in cap is q3, q0/q1/q2 fell off');
+});
