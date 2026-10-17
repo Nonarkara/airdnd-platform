@@ -1348,3 +1348,51 @@ html, body { overflow-x: hidden; }
   opacity: 0.92;
   margin-top: 0.1rem;
 }
+
+/* ─── Find: freshness line + today's number callout ───
+ * Honest about the data's age. "Built 28 days ago" tells the user the
+ * site is alive but the data is not real-time. The callout carries
+ * the one number every visitor should walk away knowing.
+ */
+.find-fresh {
+  font-size: 0.75rem;
+  color: var(--ink-3, currentColor);
+  margin: 0 0 1.2rem;
+  letter-spacing: 0.02em;
+}
+.find-callout {
+  background: var(--surface, rgba(255, 250, 239, 0.7));
+  border: 1px solid var(--line, currentColor);
+  border-left: 3px solid var(--accent, #c99518);
+  padding: 0.85rem 1rem;
+  margin: 0 0 1.5rem;
+}
+.callout-key {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-2, #a8780c);
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.callout-body {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--ink, currentColor);
+}
+.callout-link {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: var(--accent-2, #a8780c);
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+.callout-link:hover { color: var(--silk, #a02050); }
+
+@media (max-width: 640px) {
+  .callout-body { font-size: 0.92rem; }
+}

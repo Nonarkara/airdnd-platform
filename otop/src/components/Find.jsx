@@ -38,6 +38,39 @@ import {
 
 const PAGE = 30;
 
+function pct(n, d) {
+  if (!d) return 0;
+  return Math.round((n / d) * 1000) / 10;
+}
+
+/**
+ * "Built 5 days ago" / "Built Sep 20". A relative date for under a month,
+ * an absolute date for older builds. Honest about the data's age; the
+ * data is what it is, and the user should know how fresh it is.
+ */
+function formatBuiltAgo(iso) {
+  if (!iso) return 'recently';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return 'recently';
+  const days = Math.floor((Date.now() - d.getTime()) / 86_400_000);
+  if (days < 1) return 'today';
+  if (days === 1) return 'yesterday';
+  if (days < 30) return `${days} days ago`;
+  if (days < 365) return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function formatBuiltAgoTh(iso) {
+  if (!iso) return 'เร็ว ๆ นี้';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return 'เร็ว ๆ นี้';
+  const days = Math.floor((Date.now() - d.getTime()) / 86_400_000);
+  if (days < 1) return 'วันนี้';
+  if (days === 1) return 'เมื่อวาน';
+  if (days < 30) return `${days} วันก่อน`;
+  return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
 function phoneHref(phone) {
   if (!phone) return null;
   const digits = String(phone).replace(/[^0-9+]/g, '');
@@ -48,6 +81,7 @@ export default function Find({ onOpenProvince }) {
   // State initialised from the URL so a deep link reproduces a search.
   const initial = useMemo(() => findFromUrl(), []);
   const [index, setIndex] = useState(null);
+  const [meta, setMeta] = useState(null);
   const [records, setRecords] = useState(null); // null = still loading
   const [loadProgress, setLoadProgress] = useState({ done: 0, total: 0 });
   const [query, setQuery] = useState(initial.query);
@@ -60,7 +94,11 @@ export default function Find({ onOpenProvince }) {
   useEffect(() => {
     let cancelled = false;
     loadIndex()
-      .then(({ index }) => { if (!cancelled) setIndex(index); })
+      .then(({ index, meta }) => {
+        if (cancelled) return;
+        setIndex(index);
+        setMeta(meta);
+      })
       .catch((error) => { if (!cancelled) console.error('[find] index load failed', error); });
     return () => { cancelled = true; };
   }, []);
@@ -161,6 +199,53 @@ export default function Find({ onOpenProvince }) {
             </>
           )}
         </p>
+        {meta && !loading && (
+          <p className="find-fresh">
+            <Bi
+              en={`Built ${formatBuiltAgo(meta.builtAt)} · Source: data.go.th`}
+              th={`สร้างเมื่อ ${formatBuiltAgoTh(meta.builtAt)} · แหล่งข้อมูล: data.go.th`}
+            />
+            {meta?.counts?.tambonPlaced ? (
+              <>
+                <span className="muted"> · </span>
+                <Bi
+                  en={`${meta.counts.tambonPlaced.toLocaleString()} placed at tambon precision`}
+                  th={`${meta.counts.tambonPlaced.toLocaleString()} รายการระบุตำบลได้`}
+                />
+              </>
+            ) : null}
+            {meta?.counts?.certValid != null && meta?.counts?.certExpired != null ? (
+              <>
+                <span className="muted"> · </span>
+                <Bi
+                  en={`${meta.counts.certValid.toLocaleString()} certs valid, ${meta.counts.certExpired.toLocaleString()} expired`}
+                  th={`ใบรับรองยังใช้ได้ ${meta.counts.certValid.toLocaleString()} ใบ หมดอายุ ${meta.counts.certExpired.toLocaleString()} ใบ`}
+                />
+              </>
+            ) : null}
+          </p>
+        )}
+
+        {/* The featured finding: the one number every visitor should walk
+            away knowing. The contactability gap is the reason this site
+            exists. The number is the same on every page load until a new
+            build lands; that is by design. */}
+        {!loading && records && (
+          <aside className="find-callout" aria-label="Today's finding">
+            <span className="callout-key">
+              <Bi en="Today's number" th="ตัวเลขวันนี้" />
+            </span>
+            <p className="callout-body">
+              <Bi
+                en={`${pct(totalWithPhone, totalLoaded)}% of registered producers carry a phone number. ${(totalLoaded - totalWithPhone).toLocaleString()} of them — the ones without — are unreachable from this page. Fix the number and you fix the registry.`}
+                th={`${pct(totalWithPhone, totalLoaded)}% ของผู้ผลิตที่จดทะเบียนมีเบอร์โทร ${(totalLoaded - totalWithPhone).toLocaleString()} รายที่ไม่มี ติดต่อจากหน้านี้ไม่ได้ แก้ตัวเลขนี้ได้ ทะเบียนก็ดีขึ้น`}
+              />
+            </p>
+            <a className="callout-link" href="/?view=atlas&tab=reach">
+              <Bi en="See the reach gap by province →" th="ดูช่องว่างการเข้าถึงรายจังหวัด →" />
+            </a>
+          </aside>
+        )}
       </header>
 
       <div className="find-controls">
