@@ -1900,28 +1900,26 @@
   }
 }
 
-/* Map-first (anti-slop "surgical table" rule): the map follows the title and gets most
-   of the first screen; tools, filters and the location prompt sit under it, not above. */
-.listing-map-section {
-  display: flex;
-  flex-direction: column;
-  padding-top: var(--s4, 16px);
-}
-.listing-map-section > * { order: 2; }
-.listing-map-section > .listing-map-header { order: 0; }
+/* Map-first: the map node sits under the title in the DOM, and the tools sit
+   under the map. Order is real (not flex `order`), so keyboard focus follows
+   the same sequence as the screen. */
 .listing-map-subtitle--below {
   margin: 0 0 var(--s3, 12px);
   padding: 0 clamp(1.25rem, 3vw, 2.5rem);
 }
-.listing-map-section > .listing-map-container {
-  order: 1;
-  flex: none;
-  height: max(480px, calc(100vh - 300px));
-  margin-bottom: var(--s4, 16px);
+@media (min-width: 721px) {
+  .listing-map-section {
+    padding-top: var(--s4, 16px);
+  }
+  .listing-map-container {
+    height: max(480px, calc(100vh - 300px));
+    margin-bottom: var(--s4, 16px);
+  }
 }
-@media (max-width: 600px) {
-  .listing-map-section > .listing-map-container {
-    height: 70vh;
-    min-height: 480px;
+/* The phone layout hides the title and subtitle. The subtitle no longer lives
+   inside .listing-map-header, so the older header selector does not catch it. */
+@media (max-width: 720px) {
+  .listing-map-subtitle--below {
+    display: none;
   }
 }
