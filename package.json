@@ -15,6 +15,7 @@
     "scrape": "node scripts/scraper.js",
     "scrape:live": "node scripts/telegram_scraper.js",
     "scrape:watch": "node scripts/telegram_scraper.js --watch",
+    "backfill:local": "node --max-old-space-size=384 scripts/backfill_local.js",
     "repair:photos": "node scripts/repair_photo_urls.js",
     "verify:snapshot": "node scripts/verify_snapshot.js",
     "snapshot:refresh": "node scripts/refresh_public_snapshot.js",
