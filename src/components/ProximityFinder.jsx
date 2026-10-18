@@ -8,16 +8,17 @@ const BUDGETS = [
   { label: '฿500', value: 500 },
   { label: '฿1,000', value: 1000 },
   { label: '฿2,000', value: 2000 },
-  { label: 'Any Budget', value: null },
+  { label: null, value: null }, // label from t.proximity.anyBudget
 ];
 
+// Words, not emoji: the anti-slop rules allow 0 emoji used as icons.
 const VIBES = [
-  { id: 'any', label: 'All Services', icon: '✨' },
-  { id: 'oil', label: 'Sensual Oil & Aroma', icon: '💆' },
-  { id: 'now', label: 'Available Right Now', icon: '⚡' },
-  { id: 'thai', label: 'Thai & Acupressure', icon: '🌿' },
-  { id: 'vip', label: 'VIP Private Suite', icon: '👑' },
-  { id: 'latenight', label: 'Late Night (24h)', icon: '🌙' },
+  { id: 'any', label: 'All services' },
+  { id: 'oil', label: 'Sensual oil & aroma' },
+  { id: 'now', label: 'Available right now' },
+  { id: 'thai', label: 'Thai & acupressure' },
+  { id: 'vip', label: 'VIP private suite' },
+  { id: 'latenight', label: 'Late night (24h)' },
 ];
 
 const THAI_INQUIRY_SCRIPT = 'สวัสดีครับ สอบถามคิวว่างช่วงเวลานี้ครับ มีน้องคนไหนพร้อมให้บริการบ้างครับ? (จาก Sabai Sabai)';
@@ -121,7 +122,7 @@ function ProximityFinder({ listings, onSelect }) {
 
           {/* Vibe / Mood Selector */}
           <div className="finder__vibe-row">
-            <span className="eyebrow">Desired Vibe & Service</span>
+            <span className="eyebrow">{tp.vibeLabel || 'Desired vibe & service'}</span>
             <div className="finder__vibe-chips">
               {VIBES.map((v) => (
                 <button
@@ -130,7 +131,7 @@ function ProximityFinder({ listings, onSelect }) {
                   className={`chip chip--vibe${vibe === v.id ? ' is-active' : ''}`}
                   onClick={() => setVibe(v.id)}
                 >
-                  <span className="chip__icon">{v.icon}</span> {v.label}
+                  {tp.vibes?.[v.id] || v.label}
                 </button>
               ))}
             </div>
@@ -186,12 +187,12 @@ function ProximityFinder({ listings, onSelect }) {
             <span className="eyebrow">{tp.maxBudget || 'Max Rate / Session'}</span>
             {BUDGETS.map((b) => (
               <button
-                key={b.label}
+                key={b.value ?? 'any'}
                 type="button"
                 className={`chip${maxBudget === b.value ? ' is-active' : ''}`}
                 onClick={() => setMaxBudget(b.value)}
               >
-                {b.label}
+                {b.label || tp.anyBudget || 'Any budget'}
               </button>
             ))}
           </div>
@@ -203,18 +204,18 @@ function ProximityFinder({ listings, onSelect }) {
             <div className="finder__results">
               <div className="finder__results-head">
                 <span className="panel__sub">
-                  Matches near <b style={{ color: 'var(--ink)' }}>{origin.label}</b>
-                  {maxBudget ? ` · under ฿${maxBudget.toLocaleString()}` : ''}
-                  {vibe !== 'any' ? ` · ${VIBES.find((v) => v.id === vibe)?.label}` : ''}
+                  {tp.matchesNear || 'Matches near'} <b style={{ color: 'var(--ink)' }}>{origin.label}</b>
+                  {maxBudget ? ` · ${tp.under || 'under'} ฿${maxBudget.toLocaleString()}` : ''}
+                  {vibe !== 'any' ? ` · ${tp.vibes?.[vibe] || VIBES.find((v) => v.id === vibe)?.label}` : ''}
                 </span>
                 <span className="panel__sub mono" style={{ color: 'var(--mango)' }}>
-                  {results.length} {results.length === 1 ? 'place matched' : 'places matched'}
+                  {results.length} {results.length === 1 ? (tp.placeMatched || 'place matched') : (tp.placesMatched || 'places matched')}
                 </span>
               </div>
 
               {results.length === 0 ? (
                 <div className="finder__empty">
-                  <p>No listings matched this exact filter combination in {origin.label}.</p>
+                  <p>{(tp.noMatchIn || 'No listings matched this exact filter combination in {area}.').replace('{area}', origin.label)}</p>
                   <button
                     type="button"
                     className="btn btn-outline btn-sm"
@@ -224,7 +225,7 @@ function ProximityFinder({ listings, onSelect }) {
                       setMaxBudget(null);
                     }}
                   >
-                    Widen Filters (Any Budget & Service)
+                    {tp.widenFilters || 'Widen filters (any budget and service)'}
                   </button>
                 </div>
               ) : (
@@ -247,7 +248,7 @@ function ProximityFinder({ listings, onSelect }) {
                           <div className="finder__card-meta">
                             <span>{listing.location || listing.city || 'Bangkok'}</span>
                             {transit && (
-                              <span className="finder__transit-pill" title="Nearest transit access">
+                              <span className="finder__transit-pill" title={tp.transitTitle || 'Nearest transit access'}>
                                 {transit.tag}
                               </span>
                             )}
@@ -255,12 +256,12 @@ function ProximityFinder({ listings, onSelect }) {
 
                           <div className="finder__card-rate">
                             {askRate ? (
-                              <span className="finder__ask">Rate on request</span>
+                              <span className="finder__ask">{tp.rateOnRequest || 'Rate on request'}</span>
                             ) : (
                               <span className="mono finder__card-price">฿{price?.toLocaleString()}</span>
                             )}
                             {listing.hours && (
-                              <span className="finder__card-hours">🕒 {listing.hours}</span>
+                              <span className="finder__card-hours">{listing.hours}</span>
                             )}
                           </div>
                         </div>
@@ -275,7 +276,7 @@ function ProximityFinder({ listings, onSelect }) {
                               className="finder__action-btn finder__action-line"
                               title="Chat directly on LINE"
                             >
-                              LINE Chat
+                              {tp.lineChat || 'LINE chat'}
                             </a>
                           )}
                           {telHref && (
@@ -284,7 +285,7 @@ function ProximityFinder({ listings, onSelect }) {
                               className="finder__action-btn finder__action-tel"
                               title={`Call ${listing.phone}`}
                             >
-                              Call
+                              {tp.call || 'Call'}
                             </a>
                           )}
                           {mapsHref && (
@@ -295,7 +296,7 @@ function ProximityFinder({ listings, onSelect }) {
                               className="finder__action-btn finder__action-map"
                               title="Directions on Google Maps"
                             >
-                              Map
+                              {tp.map || 'Map'}
                             </a>
                           )}
                           <button
@@ -303,7 +304,7 @@ function ProximityFinder({ listings, onSelect }) {
                             className="finder__action-btn finder__action-view"
                             onClick={() => onSelect?.(listing)}
                           >
-                            Details →
+                            {tp.details || 'Details'} →
                           </button>
                         </div>
                       </div>
@@ -317,8 +318,8 @@ function ProximityFinder({ listings, onSelect }) {
           {/* Quick Pre-filled Booking Assistant */}
           <div className="finder__assistant">
             <div className="finder__assistant-head">
-              <span className="eyebrow">💬 1-TAP INQUIRY ASSISTANT (COPY & PASTE TO LINE)</span>
-              {copiedScript && <span className="finder__copied-badge">✓ Copied to clipboard!</span>}
+              <span className="eyebrow">{tp.assistantTitle || '1-tap inquiry assistant (copy & paste to LINE)'}</span>
+              {copiedScript && <span className="finder__copied-badge">{tp.copied || 'Copied to clipboard'}</span>}
             </div>
             <div className="finder__assistant-boxes">
               <button
@@ -326,18 +327,18 @@ function ProximityFinder({ listings, onSelect }) {
                 className="finder__script-btn"
                 onClick={() => copyScript(THAI_INQUIRY_SCRIPT)}
               >
-                <span className="finder__script-lang">🇹🇭 Thai Inquiry:</span>
+                <span className="finder__script-lang">{tp.thaiInquiry || 'Thai inquiry'}</span>
                 <span className="finder__script-text">"{THAI_INQUIRY_SCRIPT}"</span>
-                <span className="finder__script-action">Copy Script 📋</span>
+                <span className="finder__script-action">{tp.copyScript || 'Copy script'}</span>
               </button>
               <button
                 type="button"
                 className="finder__script-btn"
                 onClick={() => copyScript(ENG_INQUIRY_SCRIPT)}
               >
-                <span className="finder__script-lang">🇬🇧 English Inquiry:</span>
+                <span className="finder__script-lang">{tp.englishInquiry || 'English inquiry'}</span>
                 <span className="finder__script-text">"{ENG_INQUIRY_SCRIPT}"</span>
-                <span className="finder__script-action">Copy Script 📋</span>
+                <span className="finder__script-action">{tp.copyScript || 'Copy script'}</span>
               </button>
             </div>
           </div>

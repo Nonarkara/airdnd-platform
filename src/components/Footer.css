@@ -36,6 +36,11 @@
   line-height: 1.6;
 }
 
+/* Readable measure for the disclaimer prose (anti-slop: ≤65ch). */
+.footer-disclaimer p {
+  max-width: 65ch;
+}
+
 .footer-disclaimer h4,
 .footer-ops span,
 .footer-links a {

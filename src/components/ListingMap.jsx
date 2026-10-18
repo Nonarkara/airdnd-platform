@@ -1261,10 +1261,10 @@ export default function ListingMap({
           {pinSummary}
           {pendingListings.length > 0 && ` · ${pendingListings.length} pending locations`}
         </p>
-        <p className="listing-map-subtitle">
-          {t.map?.subtitle || 'Click a pin for details.'}
-        </p>
       </div>
+      <p className="listing-map-subtitle listing-map-subtitle--below">
+        {t.map?.subtitle || 'Click a pin for details.'}
+      </p>
       <div className="listing-map-toolbar" aria-label="Map tools">
         <div className="map-toolbar-left">
           <button type="button" onClick={fitMapToPins} disabled={pins.length === 0}>
