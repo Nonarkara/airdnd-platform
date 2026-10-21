@@ -7,10 +7,16 @@
  * is the one that ends with a phone call.
  *
  * The contactability problem is the entire reason this site exists. 5.7% of
- * registry records carry a phone number. We surface those 8,839 first, in
- * the order a buyer would actually call them: 5★ + phone, then 4★ + phone,
- * then phone-only, then the rest. Records with no contact channel are shown
- * last and flagged in-row.
+ * registry records carry a phone number. We surface those first, in the order
+ * a buyer would actually call them: 5★ + phone, then 4★ + phone, then
+ * phone-only, then the rest. Records with no contact channel are shown last
+ * and flagged in-row.
+ *
+ * Geometry: the page is a departure board, not a card grid. Every row is one
+ * line of data with a fixed grade column, the name beside it, and the phone
+ * in its own column — so the phone digits line up down the page and a buyer
+ * can scan for them. Nothing is boxed; the rules between rows do the
+ * separating.
  *
  * State and URL: every filter is in the URL via findToUrl/findFromUrl, so
  * a search is shareable as a link. The component uses replaceState so the
@@ -23,7 +29,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
-import { loadIndex, loadShards } from '../lib/shards.js';
+import { loadIndex } from '../lib/shards.js';
 import { Bi } from './Bi.jsx';
 import {
   filterRecords,
@@ -31,8 +37,10 @@ import {
   findToUrl,
   pushRecentSearch,
   recentSearches,
-  scoreRecord,
+  toCsv,
   ALL_PROVINCES,
+  CERT_ANY,
+  CERT_VALID,
   DEFAULT_SORT,
   SORT_CONTACT,
   SORT_NAME,
@@ -83,6 +91,18 @@ function phoneHref(phone) {
   return `tel:${digits}`;
 }
 
+/**
+ * The starter set for the first five seconds. Not personalised — a nudge.
+ * Each chip encodes one of the buyer briefs the data can actually answer.
+ */
+const TRIES = [
+  { en: '5★ silk in Chiang Mai', th: 'ผ้าไหม 5 ดาว เชียงใหม่', q: 'silk', p: 50, s: '5' },
+  { en: 'phone only',            th: 'เฉพาะที่มีเบอร์',            c: '1' },
+  { en: '4–5★ nationwide',       th: '4–5 ดาว ทั้งประเทศ',         s: '4-5' },
+  { en: 'น้ำผึ้ง',                th: 'น้ำผึ้ง',                       q: 'น้ำผึ้ง' },
+  { en: 'food & beverage',        th: 'อาหารและเครื่องดื่ม',           q: 'food' },
+];
+
 export default function Find({ onOpenProvince }) {
   // State initialised from the URL so a deep link reproduces a search.
   const initial = useMemo(() => findFromUrl(), []);
@@ -94,6 +114,7 @@ export default function Find({ onOpenProvince }) {
   const [provinceCode, setProvinceCode] = useState(initial.provinceCode);
   const [stars, setStars] = useState(initial.stars);
   const [onlyContactable, setOnlyContactable] = useState(initial.onlyContactable);
+  const [cert, setCert] = useState(initial.cert || CERT_ANY);
   const [sort, setSort] = useState(initial.sort || DEFAULT_SORT);
   const [limit, setLimit] = useState(PAGE);
   const [recents, setRecents] = useState(() => recentSearches());
@@ -106,11 +127,11 @@ export default function Find({ onOpenProvince }) {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const t = setTimeout(() => {
-      pushRecentSearch({ query, provinceCode, stars, onlyContactable });
+      pushRecentSearch({ query, provinceCode, stars, onlyContactable, cert });
       setRecents(recentSearches());
     }, 800);
     return () => clearTimeout(t);
-  }, [query, provinceCode, stars, onlyContactable]);
+  }, [query, provinceCode, stars, onlyContactable, cert]);
 
   // Reset all filters back to the default. A buyer who has narrowed to
   // "5★ silk in Chiang Mai with a phone" sometimes wants to widen from
@@ -120,6 +141,7 @@ export default function Find({ onOpenProvince }) {
     setProvinceCode(ALL_PROVINCES);
     setStars(STAR_ANY);
     setOnlyContactable(false);
+    setCert(CERT_ANY);
     setSort(DEFAULT_SORT);
     setLimit(PAGE);
   }
@@ -129,6 +151,7 @@ export default function Find({ onOpenProvince }) {
     (provinceCode && provinceCode !== ALL_PROVINCES) ||
     (stars && stars !== STAR_ANY) ||
     onlyContactable ||
+    (cert && cert !== CERT_ANY) ||
     (sort && sort !== DEFAULT_SORT);
 
   // Copy the current search URL to the clipboard. The URL is the share
@@ -163,6 +186,21 @@ export default function Find({ onOpenProvince }) {
       setShareState('failed');
       setTimeout(() => setShareState('idle'), 1800);
     }
+  }
+
+  // The result set as a spreadsheet. A buyer who found 200 producers wants
+  // the list in a file they can work on, not a screenshot of a web page.
+  function exportCsv() {
+    if (typeof window === 'undefined') return;
+    const csv = toCsv(results);
+    if (!csv) return;
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `otop-find-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   }
 
   // Load index.
@@ -219,16 +257,16 @@ export default function Find({ onOpenProvince }) {
   // a search is a search; each keystroke is not a separate history entry.
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const next = findToUrl({ query, provinceCode, stars, onlyContactable, sort });
+    const next = findToUrl({ query, provinceCode, stars, onlyContactable, cert, sort });
     const current = `${window.location.pathname}${window.location.search}`;
     if (next !== current) {
       try { window.history.replaceState(null, '', next); } catch {}
     }
-  }, [query, provinceCode, stars, onlyContactable, sort]);
+  }, [query, provinceCode, stars, onlyContactable, cert, sort]);
 
   const results = useMemo(
-    () => filterRecords(records, { query, provinceCode, stars, onlyContactable, sort }),
-    [records, query, provinceCode, stars, onlyContactable, sort]
+    () => filterRecords(records, { query, provinceCode, stars, onlyContactable, cert, sort }),
+    [records, query, provinceCode, stars, onlyContactable, cert, sort]
   );
 
   const shown = results.slice(0, limit);
@@ -239,90 +277,47 @@ export default function Find({ onOpenProvince }) {
   const totalLoaded = records ? records.length : 0;
   const totalWithPhone = records ? records.filter((r) => r.phone).length : 0;
   const totalFiveStar = records ? records.filter((r) => r.stars === 5).length : 0;
+  const totalCertValid = records ? records.filter((r) => r.certStatus === 'valid').length : 0;
+  // The province in words, not in a code — the reader needs to know the
+  // scope of the number they are looking at.
+  const provinceName =
+    provinceCode !== ALL_PROVINCES
+      ? index?.provinces.find((p) => p.code === Number(provinceCode))?.en
+      : null;
 
   return (
     <section className="find" aria-label="Find a producer">
       <header className="find-head">
-        <span className="eyebrow">
-          <Bi en="Find" th="ค้นหา" />
-        </span>
-        <h2 className="find-h">
-          <Bi en="Who can you call today?" th="วันนี้คุณโทรหาใครได้บ้าง" />
-        </h2>
-        <p className="find-summary">
-          <Bi
-            en="Type a thing. Pick a place. Get a list of names and phone numbers you can call right now."
-            th="พิมพ์สิ่งที่ต้องการ เลือกจังหวัด รับรายชื่อและเบอร์โทรที่โทรหาได้วันนี้"
-          />
-        </p>
-        <p className="find-stats">
-          {loading ? (
-            <>
-              <Bi
-                en={`Loading ${loadProgress.done} of ${loadProgress.total} provinces…`}
-                th={`กำลังโหลด ${loadProgress.done} จาก ${loadProgress.total} จังหวัด…`}
-              />
-              <progress className="find-bar" value={loadProgress.done} max={loadProgress.total || 1} />
-            </>
-          ) : (
-            <>
-              <strong>{totalLoaded.toLocaleString()}</strong> <Bi en="records loaded" th="รายการ" />
-              <span className="find-stats-sep">·</span>
-              <strong>{totalWithPhone.toLocaleString()}</strong> <Bi en="with a phone" th="ที่มีเบอร์โทร" />
-              <span className="find-stats-sep">·</span>
-              <strong>{totalFiveStar.toLocaleString()}</strong> <Bi en="rated 5★" th="ระดับ 5 ดาว" />
-            </>
-          )}
-        </p>
-        {meta && !loading && (
-          <p className="find-fresh">
-            <Bi
-              en={`Built ${formatBuiltAgo(meta.builtAt)} · Source: data.go.th`}
-              th={`สร้างเมื่อ ${formatBuiltAgoTh(meta.builtAt)} · แหล่งข้อมูล: data.go.th`}
-            />
-            {meta?.counts?.tambonPlaced ? (
-              <>
-                <span className="muted"> · </span>
-                <Bi
-                  en={`${meta.counts.tambonPlaced.toLocaleString()} placed at tambon precision`}
-                  th={`${meta.counts.tambonPlaced.toLocaleString()} รายการระบุตำบลได้`}
-                />
-              </>
-            ) : null}
-            {meta?.counts?.certValid != null && meta?.counts?.certExpired != null ? (
-              <>
-                <span className="muted"> · </span>
-                <Bi
-                  en={`${meta.counts.certValid.toLocaleString()} certs valid, ${meta.counts.certExpired.toLocaleString()} expired`}
-                  th={`ใบรับรองยังใช้ได้ ${meta.counts.certValid.toLocaleString()} ใบ หมดอายุ ${meta.counts.certExpired.toLocaleString()} ใบ`}
-                />
-              </>
-            ) : null}
+        <div className="find-head-main">
+          <p className="eyebrow">
+            <Bi en="Find" th="ค้นหา" />
           </p>
-        )}
-
-        {/* The featured finding: the one number every visitor should walk
-            away knowing. The contactability gap is the reason this site
-            exists. The number is the same on every page load until a new
-            build lands; that is by design. */}
-        {!loading && records && (
-          <aside className="find-callout" aria-label="Today's finding">
-            <span className="callout-key">
-              <Bi en="Today's number" th="ตัวเลขวันนี้" />
-            </span>
-            <p className="callout-body">
-              <Bi
-                en={`${pct(totalWithPhone, totalLoaded)}% of registered producers carry a phone number. ${(totalLoaded - totalWithPhone).toLocaleString()} of them — the ones without — are unreachable from this page. Fix the number and you fix the registry.`}
-                th={`${pct(totalWithPhone, totalLoaded)}% ของผู้ผลิตที่จดทะเบียนมีเบอร์โทร ${(totalLoaded - totalWithPhone).toLocaleString()} รายที่ไม่มี ติดต่อจากหน้านี้ไม่ได้ แก้ตัวเลขนี้ได้ ทะเบียนก็ดีขึ้น`}
-              />
-            </p>
-            <a className="callout-link" href="/?view=atlas&tab=reach">
-              <Bi en="See the reach gap by province →" th="ดูช่องว่างการเข้าถึงรายจังหวัด →" />
-            </a>
-          </aside>
+          <h1 className="find-h">
+            <Bi en="Who can you call today?" th="วันนี้คุณโทรหาใครได้บ้าง" />
+          </h1>
+          <p className="find-summary">
+            <Bi
+              en="Type a thing. Pick a place. Get a list of names and phone numbers you can call right now."
+              th="พิมพ์สิ่งที่ต้องการ เลือกจังหวัด รับรายชื่อและเบอร์โทรที่โทรหาได้วันนี้"
+            />
+          </p>
+        </div>
+        {/* The build stamp sits in the top-right corner of the masthead, the
+            way a publication dates itself. It anchors the right edge and
+            answers "how old is this" before the reader has to ask. */}
+        {meta?.builtAt && (
+          <p className="find-stamp">
+            <Bi
+              en={`Built ${formatBuiltAgo(meta.builtAt)}`}
+              th={`สร้างเมื่อ ${formatBuiltAgoTh(meta.builtAt)}`}
+            />
+            <span className="find-stamp-src">data.go.th</span>
+          </p>
         )}
       </header>
 
+      {/* The control row. One row at desktop, a deliberate 2-column stack
+          below it — never a lone control stranded on a second line. */}
       <div className="find-controls">
         <label className="find-q">
           <span className="find-lbl">
@@ -350,12 +345,10 @@ export default function Find({ onOpenProvince }) {
             onChange={(e) => { setProvinceCode(e.target.value); setLimit(PAGE); }}
             disabled={!index}
           >
-            <option value={ALL_PROVINCES}>
-              <Bi en="All Thailand" th="ทั้งประเทศ" />
-            </option>
+            <option value={ALL_PROVINCES}>All Thailand · ทั้งประเทศ</option>
             {(index?.provinces ?? []).map((p) => (
               <option key={p.code} value={p.code}>
-                {p.nameEn} · {p.name}
+                {p.en} · {p.th}
               </option>
             ))}
           </select>
@@ -370,22 +363,10 @@ export default function Find({ onOpenProvince }) {
             onChange={(e) => { setStars(e.target.value); setLimit(PAGE); }}
             disabled={loading}
           >
-            <option value={STAR_ANY}><Bi en="Any" th="ใด ๆ" /></option>
+            <option value={STAR_ANY}>Any · ใด ๆ</option>
             <option value={STAR_FOUR_FIVE}>4–5★</option>
             <option value={STAR_FIVE}>5★ only · เฉพาะ 5 ดาว</option>
           </select>
-        </label>
-
-        <label className="find-phone-toggle">
-          <input
-            type="checkbox"
-            checked={onlyContactable}
-            onChange={(e) => { setOnlyContactable(e.target.checked); setLimit(PAGE); }}
-            disabled={loading}
-          />
-          <span>
-            <Bi en="Phone only" th="เฉพาะที่มีเบอร์" />
-          </span>
         </label>
 
         <label className="find-sort">
@@ -397,93 +378,105 @@ export default function Find({ onOpenProvince }) {
             onChange={(e) => { setSort(e.target.value); setLimit(PAGE); }}
             disabled={loading}
           >
-            <option value={SORT_CONTACT}><Bi en="Callable first" th="โทรหาได้ก่อน" /></option>
-            <option value={SORT_STARS}><Bi en="5★ first" th="5 ดาวก่อน" /></option>
+            <option value={SORT_CONTACT}>Callable first · โทรหาได้ก่อน</option>
+            <option value={SORT_STARS}>5★ first · 5 ดาวก่อน</option>
             <option value={SORT_NAME}>A–Z</option>
           </select>
         </label>
+
+        {/* Two requirements, stacked in one column so the control row stays
+            one line. Both are real registry fields. */}
+        <div className="find-toggles">
+          <label className="find-toggle">
+            <input
+              type="checkbox"
+              checked={onlyContactable}
+              onChange={(e) => { setOnlyContactable(e.target.checked); setLimit(PAGE); }}
+              disabled={loading}
+            />
+            <span><Bi en="Phone only" th="เฉพาะที่มีเบอร์" /></span>
+          </label>
+          <label className="find-toggle">
+            <input
+              type="checkbox"
+              checked={cert === CERT_VALID}
+              onChange={(e) => { setCert(e.target.checked ? CERT_VALID : CERT_ANY); setLimit(PAGE); }}
+              disabled={loading}
+            />
+            <span><Bi en="Valid cert" th="ใบรับรองใช้ได้" /></span>
+          </label>
+        </div>
       </div>
+
+      {/* What is in the registry, and how old it is. One line — the numbers
+          are the context for the list, not a set of competing cards. */}
+      {!loading && (
+        <p className="find-stats">
+          <strong>{totalLoaded.toLocaleString()}</strong> <Bi en="producers" th="ผู้ผลิต" />
+          <span className="find-stats-sep">·</span>
+          <strong>{totalWithPhone.toLocaleString()}</strong> <Bi en="with a phone" th="ที่มีเบอร์โทร" />
+          <span className="find-stats-sep">·</span>
+          <strong>{totalFiveStar.toLocaleString()}</strong> <Bi en="rated 5★" th="ระดับ 5 ดาว" />
+          <span className="find-stats-sep">·</span>
+          <strong>{totalCertValid.toLocaleString()}</strong> <Bi en="valid cert" th="ใบรับรองใช้ได้" />
+        </p>
+      )}
+
+      {loading && (
+        <p className="find-stats">
+          <Bi
+            en={`Loading ${loadProgress.done} of ${loadProgress.total} provinces…`}
+            th={`กำลังโหลด ${loadProgress.done} จาก ${loadProgress.total} จังหวัด…`}
+          />
+          <progress className="find-bar" value={loadProgress.done} max={loadProgress.total || 1} />
+        </p>
+      )}
+
+      {/* The featured finding: the one number every visitor should walk away
+          knowing. The contactability gap is the reason this site exists. */}
+      {!loading && records && (
+        <p className="find-callout">
+          <span className="callout-key">
+            <Bi en="Today's number" th="ตัวเลขวันนี้" />
+          </span>
+          <span className="callout-body">
+            <Bi
+              en={`${pct(totalWithPhone, totalLoaded)}% of registered producers carry a phone number. ${(totalLoaded - totalWithPhone).toLocaleString()} cannot be reached from this page.`}
+              th={`มีเพียง ${pct(totalWithPhone, totalLoaded)}% ของผู้ผลิตที่จดทะเบียนที่มีเบอร์โทร ${(totalLoaded - totalWithPhone).toLocaleString()} รายติดต่อจากหน้านี้ไม่ได้`}
+            />
+          </span>
+          <a className="callout-link" href="/?view=atlas&tab=reach">
+            <Bi en="See the reach gap by province →" th="ดูช่องว่างการเข้าถึงรายจังหวัด →" />
+          </a>
+        </p>
+      )}
 
       {!loading && (
         <div className="find-tries">
           <span className="find-tries-lbl">
             <Bi en="Try:" th="ลองค้น:" />
           </span>
-          {(() => {
-            // A small, hand-picked starter set. Not personalised — just a
-            // nudge for the first 5 seconds. Each chip encodes one of
-            // the four real buyer briefs the data can answer.
-            const tries = [
-              { en: '5★ silk in Chiang Mai', th: 'ผ้าไหม 5 ดาว เชียงใหม่', q: 'silk', p: 50, s: '5' },
-              { en: 'phone only',            th: 'เฉพาะที่มีเบอร์',            c: '1' },
-              { en: '4–5★ nationwide',       th: '4–5 ดาว ทั้งประเทศ',         s: '4-5' },
-              { en: 'น้ำผึ้ง',                th: 'น้ำผึ้ง',                       q: 'น้ำผึ้ง' },
-              { en: 'food & beverage',        th: 'อาหารและเครื่องดื่ม',           q: 'food' },
-            ];
-            return (
-              <ul className="find-tries-list">
-                {tries.map((t, i) => {
-                  const p = new URLSearchParams();
-                  if (t.q) p.set('q', t.q);
-                  if (t.p) p.set('p', String(t.p));
-                  if (t.s) p.set('s', t.s);
-                  if (t.c) p.set('c', t.c);
-                  p.set('view', 'find');
-                  const href = `${window.location.pathname}?${p.toString()}`;
-                  return (
-                    <li key={i}>
-                      <a href={href} onClick={() => setLimit(PAGE)}>
-                        <span className="tries-en">{t.en}</span>
-                        <span className="tries-th" lang="th">{t.th}</span>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            );
-          })()}
+          <ul className="find-tries-list">
+            {TRIES.map((t, i) => {
+              const p = new URLSearchParams();
+              if (t.q) p.set('q', t.q);
+              if (t.p) p.set('p', String(t.p));
+              if (t.s) p.set('s', t.s);
+              if (t.c) p.set('c', t.c);
+              p.set('view', 'find');
+              const href = `${window.location.pathname}?${p.toString()}`;
+              return (
+                <li key={i}>
+                  <a href={href} onClick={() => setLimit(PAGE)}>
+                    <span className="tries-en">{t.en}</span>
+                    <span className="tries-th" lang="th">{t.th}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       )}
-
-      <div className="find-meta" aria-live="polite">
-        {!loading && (
-          <>
-            <strong>{results.length.toLocaleString()}</strong>{' '}
-            <Bi en={results.length === 1 ? 'match' : 'matches'} th={results.length === 1 ? 'รายการ' : 'รายการ'} />
-            {query ? <span> <span className="muted">·</span> <span className="find-qecho">“{query}”</span></span> : null}
-            {provinceCode !== ALL_PROVINCES && index ? (
-              <span> <span className="muted">·</span> {index.provinces.find((p) => p.code === Number(provinceCode))?.nameEn}</span>
-            ) : null}
-            {stars !== STAR_ANY ? <span> <span className="muted">·</span> {stars === STAR_FIVE ? '5★' : '4–5★'}</span> : null}
-            {onlyContactable ? <span> <span className="muted">·</span> <Bi en="phone" th="มีเบอร์" /></span> : null}
-          </>
-        )}
-      </div>
-
-      <div className="find-actions">
-        {isFiltered && (
-          <button type="button" className="btn-line" onClick={resetFilters}>
-            <Bi en="Reset filters" th="ล้างตัวกรอง" />
-          </button>
-        )}
-        <button
-          type="button"
-          className={`btn-line btn-share${shareState !== 'idle' ? ` is-${shareState}` : ''}`}
-          onClick={copyShareLink}
-          disabled={shareState === 'copied'}
-        >
-          {shareState === 'copied' ? (
-            <Bi en="Link copied" th="คัดลอกลิงก์แล้ว" />
-          ) : shareState === 'failed' ? (
-            <Bi en="Copy failed — share the URL" th="คัดลอกไม่สำเร็จ — ส่ง URL นี้" />
-          ) : (
-            <>
-              <Bi en="Copy share link" th="คัดลอกลิงก์" />
-              <span className="muted"> · <Bi en="URL" th="URL" /></span>
-            </>
-          )}
-        </button>
-      </div>
 
       {recents.length > 0 && (
         <div className="find-recents">
@@ -497,16 +490,18 @@ export default function Find({ onOpenProvince }) {
               if (r.provinceCode && r.provinceCode !== ALL_PROVINCES) params.set('p', String(r.provinceCode));
               if (r.stars && r.stars !== STAR_ANY) params.set('s', r.stars);
               if (r.onlyContactable) params.set('c', '1');
+              if (r.cert && r.cert !== CERT_ANY) params.set('cert', r.cert);
               if (params.toString()) params.set('view', 'find');
               const href = `${window.location.pathname}?${params.toString()}`;
               const label = [
                 r.query && `“${r.query}”`,
-                r.provinceCode && r.provinceCode !== ALL_PROVINCES && index?.provinces.find((p) => p.code === Number(r.provinceCode))?.nameEn,
+                r.provinceCode && r.provinceCode !== ALL_PROVINCES && index?.provinces.find((p) => p.code === Number(r.provinceCode))?.en,
                 r.stars && r.stars !== STAR_ANY && (r.stars === STAR_FIVE ? '5★' : '4–5★'),
                 r.onlyContactable && '☎',
+                r.cert && r.cert !== CERT_ANY && '✓cert',
               ].filter(Boolean).join(' · ') || <Bi en="(all records)" th="(ทั้งหมด)" />;
               return (
-                <li key={`${r.query}-${r.provinceCode}-${r.stars}-${r.onlyContactable}-${r.at}`}>
+                <li key={`${r.query}-${r.provinceCode}-${r.stars}-${r.onlyContactable}-${r.cert}-${r.at}`}>
                   <a href={href} onClick={() => setLimit(PAGE)}>{label}</a>
                 </li>
               );
@@ -514,6 +509,49 @@ export default function Find({ onOpenProvince }) {
           </ul>
         </div>
       )}
+
+      {/* The answer, then the actions that apply to it. One left-aligned
+          cluster — the actions belong to the list, not to the page edge. */}
+      <div className="find-results-h">
+        <span className="find-count">
+          <strong>{results.length.toLocaleString()}</strong>
+          <Bi en={results.length === 1 ? 'match' : 'matches'} th="รายการ" />
+          {provinceName ? <span className="find-count-scope">in {provinceName}</span> : null}
+          {query.trim() ? <span className="find-count-scope">for “{query.trim()}”</span> : null}
+          <span className="find-count-hint">
+            <Bi en="tap a number to call it" th="แตะเบอร์เพื่อโทร" />
+          </span>
+        </span>
+        <div className="find-actions">
+          {isFiltered && (
+            <button type="button" className="btn-line" onClick={resetFilters}>
+              <Bi en="Reset" th="ล้าง" />
+            </button>
+          )}
+          <button
+            type="button"
+            className={`btn-line btn-share${shareState !== 'idle' ? ` is-${shareState}` : ''}`}
+            onClick={copyShareLink}
+            disabled={shareState === 'copied'}
+          >
+            {shareState === 'copied' ? (
+              <Bi en="Link copied" th="คัดลอกลิงก์แล้ว" />
+            ) : shareState === 'failed' ? (
+              <Bi en="Copy failed" th="คัดลอกไม่สำเร็จ" />
+            ) : (
+              <Bi en="Copy link" th="คัดลอกลิงก์" />
+            )}
+          </button>
+          <button
+            type="button"
+            className="btn-line"
+            onClick={exportCsv}
+            disabled={!results.length}
+          >
+            <Bi en="Export CSV" th="ส่งออก CSV" />
+          </button>
+        </div>
+      </div>
 
       <ul className="find-list">
         {shown.map((r, i) => {
@@ -523,34 +561,37 @@ export default function Find({ onOpenProvince }) {
           return (
             <li
               key={r.sourceRowId || `${r.provinceCode}-${i}`}
-              className={`find-row${r.stars ? ` s${r.stars}` : ' s0'}${r.phone ? ' has-phone' : ' no-phone'}`}
+              className={`find-row${r.phone ? ' has-phone' : ' no-phone'}`}
+              data-stars={r.stars || 0}
             >
-              <div className="find-row-top">
-                <a
-                  className="find-row-name"
-                  href={`/?view=province&code=${r.provinceCode}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onOpenProvince?.(r.provinceCode);
-                  }}
-                >
-                  {r.producerName || <em className="muted"><Bi en="(unnamed)" th="(ไม่มีชื่อ)" /></em>}
-                </a>
-                {starLabel && <span className="find-row-stars" aria-label={`${r.stars} star`}>{starLabel}</span>}
+              <div className="find-row-grade">
+                {starLabel ? (
+                  <span className="find-row-stars" aria-label={`${r.stars} star`}>{starLabel}</span>
+                ) : (
+                  <span className="find-row-stars none" aria-label="ungraded">—</span>
+                )}
               </div>
+
+              <a
+                className="find-row-name"
+                href={`/?view=province&code=${r.provinceCode}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onOpenProvince?.(r.provinceCode);
+                }}
+              >
+                {r.producerName || <em className="muted"><Bi en="(unnamed)" th="(ไม่มีชื่อ)" /></em>}
+              </a>
 
               <div className="find-row-phone">
                 {r.phone ? (
                   <a className="phone-link" href={phoneHref(r.phone)}>
                     <span className="phone-icon" aria-hidden="true">☎</span>
                     <span className="phone-num">{r.phone}</span>
-                    <span className="phone-action">
-                      <Bi en="tap to call" th="แตะเพื่อโทร" />
-                    </span>
                   </a>
                 ) : (
                   <span className="phone-muted">
-                    <Bi en="no contact channel in the registry" th="ไม่มีช่องทางติดต่อในทะเบียน" />
+                    <Bi en="no contact channel" th="ไม่มีช่องทางติดต่อ" />
                   </span>
                 )}
               </div>
@@ -566,6 +607,11 @@ export default function Find({ onOpenProvince }) {
                 {r.productName && <span className="find-row-product">{r.productName}</span>}
                 {r.category && r.category !== 'none' && (
                   <span className="find-row-cat">{r.category}</span>
+                )}
+                {r.certStatus === 'valid' && (
+                  <span className="find-row-cert" title={`OPC certificate valid as of ${r.certAsOf || 'the build date'}`}>
+                    ✓ cert valid
+                  </span>
                 )}
                 {r.registrationId && (
                   <span className="find-row-regid">#{r.registrationId}</span>

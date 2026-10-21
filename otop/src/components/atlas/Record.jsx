@@ -28,7 +28,7 @@ export default function Record({ insights, go }) {
   const undated = byProvince.filter((p) => p.vintage?.median == null).length;
 
   return (
-    <Chapter id="record" q="What is the registry's condition?" title="Record" th="สภาพทะเบียน">
+    <Chapter id="record" title="Record" th="สภาพทะเบียน">
       {/* ── the blank zones ────────────────────────────────────────────── */}
       <div className="t-zones">
         {ZONES.map((z) => {

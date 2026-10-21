@@ -105,7 +105,6 @@ export default function NationalStory() {
           <span>one³ · national story</span>
           <span>2026-09-10</span>
         </div>
-        <h1 className="ns-h">The map, the money, and the seven thousand names the registry can route to no one.</h1>
         <p className="ns-sub">A reading of Thailand's OTOP registry, by the numbers, in five chapters.</p>
         <p className="ns-byline">Architect: Dr Non Arkaraprasertkul · Engineering: Mavis · Data: <code>data.go.th</code> · Built {insights.builtAt?.slice(0, 10)}</p>
       </header>
@@ -127,7 +126,7 @@ export default function NationalStory() {
           <Source href="/?view=atlas&tab=domain">See the Domain chapter in the Atlas</Source>.
         </P>
         <div className="ns-stats">
-          <Stat label="Producers" th="ผู้ผลิต" value={n(national.records)} sub="154,078 registered" />
+          <Stat label="Producers" th="ผู้ผลิต" value={n(national.records)} sub={`${n(national.records)} registered`} />
           <Stat label="Provinces covered" th="จังหวัดที่มีข้อมูล" value={`${national.provincesCovered}/77`} sub="Every province filed at least one row" />
           <Stat label="Corroborated" th="รับรองข้ามหน่วยงาน" value={`${pct(national.corroboratedShare)}%`} sub="Two or more agencies agreed" />
           <Stat label="Duplicates collapsed" th="รวมซ้ำ" value={n(national.duplicatesCollapsed)} sub="Same producer, different filings" />
@@ -136,7 +135,7 @@ export default function NationalStory() {
 
       <section className="ns-ch">
         <Title en="Chapter 2 · The quiet crisis" th="บทที่ 2 · วิกฤติเงียบ" />
-        <Pull>Of 154,078 producers, {pct(national.completeness.withContact)}% have a contact channel on file. {pct(national.completeness.withStars)}% carry an OPC star grade. {pct(national.completeness.categoryDeclared)}% have a category they declared themselves.</Pull>
+        <Pull>Of {n(national.records)} producers, {pct(national.completeness.withContact)}% have a contact channel on file. {pct(national.completeness.withStars)}% carry an OPC star grade. {pct(national.completeness.categoryDeclared)}% have a category they declared themselves.</Pull>
         <P>
           A registry that cannot reach its own producers is a phone book no one is allowed to use.
           The completeness matrix in the Atlas prints six zones of the tag, the same six fields a buyer
@@ -232,7 +231,7 @@ export default function NationalStory() {
         <P>
           Until then, this atlas is the most that can be done with what is on file. Every number
           here is a row in the source; every chart is a rollup; every list is a join. The
-          registry has 154,078 names and 5.8% phone numbers. The data cannot fix that. The form
+          registry has {n(national.records)} names and {pct(national.completeness.withContact)}% phone numbers. The data cannot fix that. The form
           can.
         </P>
         <div className="ns-stats">
@@ -271,7 +270,7 @@ export default function NationalStory() {
           back is not.{' '}
           <Source href="https://otopthailand.com/about-me">otopthailand.com</Source>.
           And the trust anchor buyers already recognise is the grade: the official five-star
-          showcase lists 569 products, a tiny curated shelf above a 154,078-row registry.{' '}
+          showcase lists 569 products, a tiny curated shelf above a {n(national.records)}-row registry.{' '}
           <Source href="https://otop5star.com/">otop5star.com</Source>.
         </P>
         <div className="ns-stats">

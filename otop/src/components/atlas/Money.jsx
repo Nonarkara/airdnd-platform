@@ -18,7 +18,7 @@ export default function Money({ revenue, catalogue, go }) {
   const segOrder = cat ? [...cat.categories].sort((a, b) => (cat.national[cat.years[0]].categories[b.id]?.total ?? 0) - (cat.national[cat.years[0]].categories[a.id]?.total ?? 0)) : [];
 
   return (
-    <Chapter id="money" q="Where does the money move?" title="Money" th="รายได้จากการจำหน่าย">
+    <Chapter id="money" title="Money" th="รายได้จากการจำหน่าย">
       <p className="t-note">
         Provincial sales aggregates from the Department of Community Development's monthly
         series (BE {Math.min(...years) + 543}–{Math.max(...years) + 543}).

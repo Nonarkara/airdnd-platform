@@ -57,6 +57,9 @@ export default function Matchmaker({ onSelectProvince }) {
   const [revenue, setRevenue] = useState(null);
   const [error, setError] = useState(null);
   const [req, setReq] = useState(readUrl);
+  // The registry's own row count, read from the index rather than typed into
+  // the sentence — the copy used to say 154,078 while the build held 154,050.
+  const records = index?.totals?.records ?? 0;
 
   useEffect(() => {
     let cancelled = false;
@@ -232,7 +235,7 @@ export default function Matchmaker({ onSelectProvince }) {
       )}
 
       <p className="t-note mm-foot">
-        Source: <code>otop_index.json</code> (registry, 77 provinces × 154,078 rows) joined with <code>otop_revenue.json</code>
+        Source: <code>otop_index.json</code> (registry, 77 provinces × {records.toLocaleString()} rows) joined with <code>otop_revenue.json</code>
         (annual filing, 5 categories × 3 years). The triangle is a deliberately coarse ranking; the
         sub-page for each province carries the full dossier, the money chart, the category mix, and the
         district breakdown.

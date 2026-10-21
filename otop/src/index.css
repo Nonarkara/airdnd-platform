@@ -112,7 +112,13 @@ a { color: inherit; }
 .shell { min-height: 100dvh; display: flex; flex-direction: column; background: var(--bg); }
 .wrap { width: 100%; max-width: var(--measure); margin: 0 auto; padding-inline: var(--gutter); }
 
-/* ── header: nav + status only. No wordmark — the hero carries it. ────────── */
+/* ── header: wordmark + nav + status ──────────────────────────────────────
+   The wordmark lives here, once per viewport. The old design put a second
+   one in a 470px photo banner above the nav; two stacked logos read as an
+   unfinished template and pushed the first actionable control 570px down
+   the page. The masthead is now the brand, and the page starts with the
+   thing the reader came for.
+   ------------------------------------------------------------------------ */
 .hdr {
   position: sticky; top: 0; z-index: 20;
   background: var(--ink);
@@ -120,90 +126,116 @@ a { color: inherit; }
   border-bottom: 1px solid var(--accent);
 }
 .hdr-in {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 1rem; height: 48px;
+  display: flex; align-items: stretch;
+  gap: 1.25rem; min-height: 50px;
 }
-.hdr-nav { display: flex; gap: 1.25rem; }
+.brand {
+  display: inline-flex; align-items: center;
+  text-decoration: none; color: var(--bg);
+  padding-right: 1.25rem;
+  border-right: 1px solid rgba(253, 243, 223, 0.22);
+}
+.brand-mark {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 1.35rem; line-height: 1; letter-spacing: -.02em;
+}
+.brand-mark .mid { color: var(--accent); }
+.hdr-nav {
+  display: flex; align-items: stretch;
+  min-width: 0; overflow-x: auto; scrollbar-width: none;
+}
+.hdr-nav::-webkit-scrollbar { display: none; }
 .hdr-nav button {
-  background: none; border: 0; padding: 0;
+  background: none; border: 0; border-bottom: 3px solid transparent;
+  padding: 0 0.9rem;
   font: inherit; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
   color: var(--bg-2); cursor: pointer;
-  border-bottom: 2px solid transparent; line-height: 2;
+  display: inline-flex; align-items: center; gap: .45rem;
+  white-space: nowrap;
 }
 .hdr-nav button[aria-current='true'] { color: var(--bg); border-bottom-color: var(--accent); }
+.hdr-nav .nav-en { font-weight: 600; }
+.hdr-nav .nav-th {
+  font-family: var(--font-thai); font-size: .85em; letter-spacing: 0;
+  text-transform: none; opacity: .55; font-weight: 400;
+}
+.hdr-nav button[aria-current='true'] .nav-th { opacity: .8; }
 .hdr-status {
   font-family: var(--font-mono); font-size: 11px; color: var(--bg-2);
   display: flex; align-items: center; gap: .5rem;
+  margin-left: auto; padding-left: 1rem;
+  border-left: 1px solid rgba(253, 243, 223, 0.22);
+}
+/* On a phone the nav needs the whole bar. The source is stated on the page
+   itself — the build stamp in the masthead and the build note at the foot. */
+@media (max-width: 639px) {
+  .hdr-status { display: none; }
+  .hdr-in { gap: .75rem; }
+  .brand { padding-right: .75rem; }
+  .hdr-nav button { padding: 0 .6rem; }
 }
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .dot.warn { background: var(--accent-2); }
 
-/* ── hero with festival-market art ─────────────────────────────────────────── */
-.hero {
-  position: relative;
-  border-bottom: 1px solid var(--line);
-  padding-block: clamp(3.5rem, 8vw, 6rem) clamp(2.5rem, 6vw, 4rem);
-  background:
-    linear-gradient(180deg, rgba(31, 14, 10, 0.55) 0%, rgba(31, 14, 10, 0.20) 40%, rgba(253, 243, 223, 0.85) 100%),
-    url('/heroes/festival-market-real.jpg') center 30% / cover no-repeat;
-  color: #fffaef;
-  isolation: isolate;
+/* ── the eyebrow: one label idiom across every view ─────────────────────── */
+.eyebrow {
+  display: flex; align-items: baseline; gap: .5rem;
+  margin: 0 0 .45rem;
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent-2); font-weight: 700;
 }
-.hero::after {
-  content: '';
-  position: absolute; inset: 0; z-index: -1;
-  background: var(--bg);
-  opacity: 0;
-}
-.hero-mark {
-  font-family: var(--font-display); font-weight: 600;
-  font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1;
-  letter-spacing: -.02em; margin: 0;
-  color: #fffaef;
-  text-shadow: 0 2px 24px rgba(31, 14, 10, 0.6);
-}
-.hero-mark .mid { color: var(--accent); }
-.hero-mark-sub {
-  margin: .35rem 0 0; font-family: var(--font-text);
-  font-size: clamp(11px, 1.4vw, 13px); letter-spacing: .14em; text-transform: uppercase;
-  color: #fffaef; text-shadow: 0 1px 12px rgba(31, 14, 10, 0.7);
-  font-weight: 500;
-}
-.hero-sub {
-  margin: 1rem 0 0; max-width: 56ch;
-  font-size: clamp(15px, 1.6vw, 17px); color: #fffaef;
-  text-shadow: 0 1px 12px rgba(31, 14, 10, 0.7);
-  background: rgba(31, 14, 10, 0.35);
-  padding: 0.75rem 1rem;
-  border-left: 3px solid var(--accent);
-  backdrop-filter: blur(2px);
-}
-.hero-th {
-  font-family: var(--font-thai); font-weight: 500;
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  color: var(--accent);
-  margin: .25rem 0 0;
-  text-shadow: 0 2px 18px rgba(31, 14, 10, 0.7);
-  letter-spacing: 0.05em;
+.eyebrow .bi-th {
+  font-family: var(--font-thai); font-size: .84em; letter-spacing: .02em;
+  text-transform: none; color: var(--ink-3); font-weight: 500;
 }
 
-/* instrument panel — numerals do the talking */
-.gauges {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  border-top: 1px solid var(--line); margin-top: clamp(2rem, 5vw, 3rem);
+/* ── view masthead: the page's h1 and nothing above it ────────────────────
+   Every view except Find opens with this. The headline is the largest type
+   on the page and the only h1; the stake is the sentence that says what to
+   do with it. The measure is deliberately short — a masthead that runs the
+   full 1440px reads as a banner, not as a title.
+   ------------------------------------------------------------------------ */
+.vhero {
+  border-top: 3px solid var(--ink);
+  padding-top: 1rem;
+  margin-bottom: 1.75rem;
 }
-.gauge { padding: 1.25rem 1rem 1.5rem 0; border-right: 1px solid var(--line); }
-.gauge:last-child { border-right: 0; }
-.gauge-n {
-  font-family: var(--font-mono); font-weight: 500;
-  font-size: clamp(1.5rem, 3.5vw, 2.125rem); line-height: 1;
-  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+.vhero-h {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+  line-height: 1.06; letter-spacing: -.02em;
+  margin: 0; max-width: 28ch;
+  text-wrap: balance;
 }
-.gauge-l {
-  margin-top: .5rem; font-size: 11px; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--ink-3);
+.vhero-stake {
+  margin: .75rem 0 0; max-width: 66ch;
+  font-size: 1rem; line-height: 1.45; color: var(--ink-2);
 }
-.gauge-th { font-size: 12px; color: var(--ink-4); }
+.vhero-stake .bi-th { display: block; margin-top: .2rem; color: var(--ink-3); }
+
+/* ── the lens switch: a mode of the Match view, not two header entries ──── */
+.lens-switch {
+  display: flex; gap: 0; flex-wrap: wrap;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  margin-bottom: 1.25rem;
+}
+.lens-switch button {
+  background: none; border: 0; border-bottom: 3px solid transparent;
+  padding: .6rem 1rem .5rem;
+  font: inherit; cursor: pointer; color: var(--ink-2);
+  display: inline-flex; flex-direction: column; align-items: flex-start; gap: 1px;
+  font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+}
+.lens-switch button .nav-th {
+  font-family: var(--font-thai); font-size: .84em; letter-spacing: 0;
+  text-transform: none; opacity: .6;
+}
+.lens-switch button[aria-current='true'] {
+  color: var(--ink); border-bottom-color: var(--accent); font-weight: 700;
+}
+.lens-switch button[aria-current='true'] .nav-th { opacity: .8; }
+
 
 /* ── provenance banner ────────────────────────────────────────────────────── */
 .prov {
@@ -224,15 +256,40 @@ a { color: inherit; }
   background: var(--bg-2); padding: .0625rem .25rem;
 }
 
-/* ── section furniture ────────────────────────────────────────────────────── */
+/* ── section furniture ──────────────────────────────────────────────────────
+   The caption sits UNDER the title, not at the far right of the row. A
+   caption stranded 900px from the heading it describes is an orphan: it
+   reads as a fragment of something else. An action, when there is one,
+   takes the right-hand column and says what it applies to.
+   ------------------------------------------------------------------------ */
 .sec { padding-block: clamp(2.5rem, 6vw, 4rem); border-bottom: 1px solid var(--line); }
 .sec-h {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: 1rem; flex-wrap: wrap;
-  border-top: 2px solid var(--accent); padding-top: .75rem; margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 1.5rem; row-gap: .3rem;
+  align-items: baseline;
+  border-top: 2px solid var(--accent); padding-top: .75rem; margin-bottom: 1.25rem;
 }
-.sec-t { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin: 0; }
-.sec-n { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); }
+.sec-t {
+  grid-column: 1; grid-row: 1;
+  font-family: var(--font-display); font-size: 1.375rem; font-weight: 700;
+  margin: 0; letter-spacing: -.01em;
+}
+.sec-n {
+  grid-column: 1; grid-row: 2;
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-3);
+  max-width: 72ch; line-height: 1.45;
+}
+.sec-act { grid-column: 2; grid-row: 1 / span 2; align-self: start; justify-self: end; }
+
+/* A paragraph that explains a filter or a caveat. Used to be an unstyled
+   class name — the text rendered with default margins and no measure. */
+.filter-explain {
+  margin: 0 0 1.25rem; max-width: 72ch;
+  font-size: .9rem; line-height: 1.5; color: var(--ink-2);
+}
+.filter-note { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); font-weight: 400; }
+
 
 /* ── completeness meters ──────────────────────────────────────────────────── */
 .meters { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem 2rem; }
@@ -364,9 +421,11 @@ html, body { overflow-x: hidden; }
 .cov-err { color: var(--alert); }
 
 /* ── sourcing basins ──────────────────────────────────────────────────────── */
+/* h3 sits below the section title (h2) and above body copy. The old 14px
+   was the same size as the surrounding text, so the ladder read flat. */
 .sub-h {
-  font-family: var(--font-display); font-size: 14px; font-weight: 600;
-  margin: 0 0 .875rem; letter-spacing: .01em;
+  font-family: var(--font-display); font-size: 1.0625rem; font-weight: 700;
+  margin: 1.75rem 0 .875rem; letter-spacing: -.005em;
 }
 .basins {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
@@ -494,15 +553,16 @@ html, body { overflow-x: hidden; }
 }
 .atlas-tab-banner .atlas-tab-h {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-size: clamp(1.375rem, 2.8vw, 1.875rem);
   font-weight: 600;
   margin: 0;
   color: #fffaef;
   text-shadow: 0 2px 16px rgba(31, 14, 10, 0.7);
+  max-width: 30ch;
 }
 .atlas-tab-banner .atlas-tab-th {
   font-family: var(--font-thai);
-  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-size: clamp(.95rem, 1.8vw, 1.15rem);
   font-weight: 500;
   color: #fffaef;
   margin: 0.25rem 0 0;
@@ -537,14 +597,12 @@ html, body { overflow-x: hidden; }
   font-weight: 500;
 }
 .muted { color: var(--ink-3); }
-.hdr-nav button { display: inline-flex; align-items: center; padding-block: .4rem; }
-.gauge-l { line-height: 1.15; }
 
 /* Section sub-headers (the small sentence under the heading) sometimes
    need to hold a longer Bi line; let it wrap. */
-.sec-n { line-height: 1.3; max-width: 64ch; }
+.sec-n { line-height: 1.45; max-width: 72ch; }
 .sec-n .bi { gap: 2px; }
-.sec-n .bi-th { color: var(--ink-3); font-weight: 500; }
+.sec-n .bi-th { color: var(--ink-3); font-weight: 500; font-size: .88em; }
 
 /* ── one³ — new views: Matchmaker, Tides, Champions, Story, footer ────── */
 
@@ -723,8 +781,8 @@ html, body { overflow-x: hidden; }
 .dossier-craft-meta { margin: 0; font-size: 0.75rem; opacity: 0.65; font-family: var(--font-mono, monospace); }
 
 /* National Story */
-.ns { max-width: 50rem; margin-inline: auto; }
-.ns-hero { padding-block: 2.5rem 1.5rem; border-bottom: 1px solid var(--rule-2, currentColor); margin-bottom: 2rem; }
+.ns { max-width: 72rem; margin-inline: auto; }
+.ns-hero { padding-block: 0 1.25rem; border-bottom: 1px solid var(--rule-2, currentColor); margin-bottom: 2rem; }
 .ns-hero-meta { display: flex; justify-content: space-between; font-family: var(--font-mono, monospace); font-size: 0.78em; opacity: 0.7; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
 .ns-h { font: 700 clamp(1.7rem, 4vw, 2.6rem)/1.1 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.5rem; letter-spacing: -0.01em; }
 .ns-sub { font-size: 1.05rem; opacity: 0.85; margin: 0 0 1rem; }
@@ -794,9 +852,13 @@ html, body { overflow-x: hidden; }
 .mm-row-go { align-self: center; }
 .mm-foot { font-size: 0.85em; opacity: 0.85; }
 
-/* Footer — architect / engineering / data */
+/* Footer — architect / data / mantra, then the deep views, then the law.
+   The old footer gave the AI assistant a four-line paragraph of credit that
+   outranked the architect's one line. The claim was also simply untrue of
+   the work: the architect set the direction, the assistant wrote the code.
+   One honest line replaces the paragraph. */
 .cr { margin-top: 3rem; border-top: 4px solid var(--ink, currentColor); background: var(--ground, #fdf3df); padding-block: 2rem 3rem; }
-.cr-in { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.5rem 2rem; }
+.cr-in { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.5rem 2rem; }
 .cr-block { display: flex; flex-direction: column; gap: 0.15rem; }
 .cr-key { font: 600 0.7rem/1 var(--font-mono, monospace); text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.55; margin-bottom: 0.2rem; }
 .cr-name { font: 700 1.15rem/1.1 var(--font-display, inherit); letter-spacing: -0.01em; }
@@ -816,6 +878,36 @@ html, body { overflow-x: hidden; }
 .cr-mantra-1 span:first-child { position: relative; padding-right: 0.3rem; }
 .cr-mantra-1 sup { font-size: 0.5em; vertical-align: super; margin-left: -0.4em; margin-right: 0.2em; }
 .cr-mantra-1 span:last-child { font-size: 0.7em; opacity: 0.7; margin-left: 0.3rem; }
+
+/* The seven deep reads. A list, not a nav bar — they live below the fold
+   because they are what a reader goes looking for, not what they arrive
+   expecting. */
+.cr-views {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 1.25rem;
+  margin-top: 1.75rem; padding-top: 1.25rem;
+  border-top: 1px solid var(--line, rgba(0,0,0,0.1));
+}
+.cr-views .cr-key { margin-bottom: 0; align-self: center; }
+.cr-views-list {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: .3rem .25rem;
+}
+.cr-views-list a {
+  display: inline-flex; align-items: baseline; gap: .4rem;
+  padding: .2rem .5rem;
+  font-size: .82rem; color: inherit; text-decoration: none;
+  border: 1px solid var(--line, rgba(0,0,0,0.12));
+}
+.cr-views-list a:hover { border-color: var(--ink, currentColor); }
+.cr-views-th {
+  font-family: var(--font-thai, inherit); font-size: .88em; opacity: 0.6;
+}
+
+.cr-built {
+  margin-top: 1.25rem;
+  font-size: .78rem; color: var(--ink-3, currentColor); opacity: .8;
+}
+.cr-built .bi { display: inline-flex; }
 
 .cr-legal {
   display: flex;
@@ -852,8 +944,8 @@ html, body { overflow-x: hidden; }
 }
 
 /* History — 25-year timeline */
-.hs { max-width: 50rem; margin-inline: auto; }
-.hs-hero { padding-block: 2.5rem 1.5rem; border-bottom: 1px solid var(--rule-2, currentColor); margin-bottom: 2rem; }
+.hs { max-width: 72rem; margin-inline: auto; }
+.hs-hero { padding-block: 0 1.25rem; border-bottom: 1px solid var(--rule-2, currentColor); margin-bottom: 2rem; }
 .hs-hero-meta { display: flex; justify-content: space-between; font-family: var(--font-mono, monospace); font-size: 0.78em; opacity: 0.7; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
 .hs-h { font: 700 clamp(1.7rem, 4vw, 2.6rem)/1.1 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.5rem; letter-spacing: -0.01em; }
 .hs-sub { font-size: 1.05rem; opacity: 0.85; margin: 0 0 1rem; }
@@ -1050,76 +1142,78 @@ html, body { overflow-x: hidden; }
 .bank-row-t { font-weight: 600; }
 .bank-row-meta { font-size: 0.85em; opacity: 0.8; }
 
-/* ─── Find view — search-first, phone-first landing ───
+/* ─── Find — the search-first, phone-first landing ─────────────────────────
  * The most useful single thing on the site: a search box that ends with a
  * phone call. The phone is the prominent affordance; everything else is
  * metadata underneath.
+ *
+ * Geometry rules this section obeys:
+ *  · the control row never strands one control on a second line;
+ *  · a producer's grade sits immediately beside their name, never 1000px
+ *    away at the far edge of the row;
+ *  · the phone occupies its own column, so the digits line up down the
+ *    page and a buyer scans for them;
+ *  · the match count is the largest number in the results band.
  */
 
-.sec-find { padding-top: 0.5rem; }
+.sec-find { padding-top: 0; padding-bottom: 3.5rem; }
 
-.find { padding: 0.5rem 0 3rem; }
+.find { padding: 1.25rem 0 0; }
 
-.find-head { margin-bottom: 1.5rem; }
+.find-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 2rem; row-gap: .75rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+}
+.find-head-main { min-width: 0; }
+.find-stamp {
+  margin: 0; text-align: right;
+  font-family: var(--font-mono, monospace);
+  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3, currentColor);
+  border-top: 2px solid var(--line, currentColor);
+  padding-top: .4rem;
+  white-space: nowrap;
+}
+.find-stamp { display: flex; flex-direction: column; align-items: flex-end; gap: .1rem; }
+.find-stamp .bi { display: inline-flex; align-items: baseline; gap: .45rem; justify-content: flex-end; }
+.find-stamp-src { opacity: .6; text-transform: none; letter-spacing: .04em; }
+@media (max-width: 900px) {
+  .find-head { grid-template-columns: 1fr; }
+  .find-stamp { text-align: left; justify-self: start; }
+  .find-stamp .bi { justify-content: flex-start; }
+}
 .find-h {
   font-family: var(--font-display, inherit);
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-size: clamp(1.9rem, 4.6vw, 3rem);
   font-weight: 700;
-  margin: 0 0 0.4rem;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  margin: 0 0 .5rem;
+  line-height: 1.04;
+  letter-spacing: -.022em;
+  max-width: 24ch;
+  text-wrap: balance;
 }
 .find-summary {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--ink-2, currentColor);
-  opacity: 0.85;
-  margin: 0 0 0.6rem;
+  margin: 0;
   max-width: 60ch;
 }
-.find-stats {
-  font-size: 0.85rem;
-  color: var(--ink-3, currentColor);
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 0.6rem;
-}
-.find-stats strong {
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 1.05rem;
-  color: var(--ink, currentColor);
-  font-weight: 700;
-}
-.find-stats-sep { opacity: 0.35; }
-.find-bar {
-  flex: 0 0 160px;
-  height: 4px;
-  margin-left: 0.5rem;
-  appearance: none;
-  -webkit-appearance: none;
-  border: none;
-  background: currentColor;
-  opacity: 0.18;
-}
-.find-bar::-webkit-progress-bar { background: currentColor; opacity: 0.18; }
-.find-bar::-webkit-progress-value { background: var(--accent, #c99518); opacity: 1; }
-.find-bar::-moz-progress-bar { background: var(--accent, #c99518); }
 
+/* ── the control row ───────────────────────────────────────────────────────
+   Five columns at desktop. Between 640 and 1100 it is a deliberate 2×2
+   under a full-width search box — balanced, never an orphan. Below 640 it
+   is one column. */
 .find-controls {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
+  gap: .6rem;
+  padding: .85rem;
+  margin-bottom: .9rem;
   background: var(--surface, rgba(255, 250, 239, 0.6));
   border: 1px solid var(--line, currentColor);
-}
-@media (min-width: 720px) {
-  .find-controls {
-    grid-template-columns: 1.4fr 1fr 0.7fr auto;
-    align-items: end;
-  }
 }
 .find-controls label {
   display: flex;
@@ -1148,398 +1242,118 @@ html, body { overflow-x: hidden; }
   outline: 2px solid var(--accent, #c99518);
   outline-offset: -1px;
 }
-.find-phone-toggle {
+.find-controls input[type='search']:disabled,
+.find-controls select:disabled { opacity: .55; }
+
+@media (min-width: 1100px) {
+  .find-controls {
+    grid-template-columns:
+      minmax(0, 2.1fr)   /* search   */
+      minmax(9rem, 1fr)  /* province */
+      minmax(6.5rem, .55fr) /* stars */
+      minmax(8.5rem, .85fr) /* sort   */
+      auto;              /* the two requirement toggles */
+    align-items: end;
+  }
+  .find-q    { grid-column: 1; grid-row: 1; }
+  .find-prov { grid-column: 2; grid-row: 1; }
+  .find-stars{ grid-column: 3; grid-row: 1; }
+  .find-sort { grid-column: 4; grid-row: 1; }
+  .find-toggles { grid-column: 5; grid-row: 1; }
+}
+@media (min-width: 640px) and (max-width: 1099px) {
+  .find-controls { grid-template-columns: 1fr 1fr; }
+  .find-q    { grid-column: 1 / -1; grid-row: 1; }
+  .find-prov { grid-column: 1; grid-row: 2; }
+  .find-stars{ grid-column: 2; grid-row: 2; }
+  .find-sort { grid-column: 1; grid-row: 3; }
+  .find-toggles { grid-column: 2; grid-row: 3; flex-direction: row; gap: .75rem; align-items: center; }
+}
+
+/* Two requirements, one column. They are the same kind of thing, so they
+   are one group with one label, not two floating checkboxes. */
+.find-toggles {
+  display: flex; flex-direction: column; gap: .3rem;
+  align-self: end;
+  padding-bottom: .35rem;
+}
+.find-toggle {
   flex-direction: row !important;
   align-items: center;
-  gap: 0.4rem !important;
-  padding-bottom: 0.55rem;
-  font-size: 0.85rem !important;
+  gap: .4rem !important;
+  font-size: .82rem !important;
   text-transform: none !important;
   letter-spacing: 0 !important;
   white-space: nowrap;
+  cursor: pointer;
 }
-.find-phone-toggle input { width: 1.1rem; height: 1.1rem; }
+.find-toggle input { width: 1.05rem; height: 1.05rem; flex: 0 0 auto; margin: 0; }
+.find-toggle .bi-th { font-size: .85em; }
 
-.find-meta {
-  font-size: 0.88rem;
-  color: var(--ink-2, currentColor);
-  margin: 0.5rem 0 0.5rem;
-  min-height: 1.4em;
-}
-.find-qecho { color: var(--ink, currentColor); font-weight: 700; }
-
-.find-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--line, currentColor);
-}
-.find-row {
-  padding: 0.85rem 0;
-  border-bottom: 1px solid var(--line, currentColor);
-  display: grid;
-  gap: 0.25rem;
-  position: relative;
-}
-.find-row.s5 { border-left: 3px solid var(--accent, #c99518); padding-left: 0.7rem; }
-.find-row.s4 { border-left: 3px solid var(--accent-2, #a8780c); padding-left: 0.7rem; }
-.find-row.no-phone { opacity: 0.7; }
-
-.find-row-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-.find-row-name {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--ink, currentColor);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-}
-.find-row-name:hover { border-bottom-color: currentColor; }
-.find-row-stars {
-  font-family: var(--font-mono, monospace);
-  color: var(--accent-2, #a8780c);
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-}
-
-.find-row-phone {
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-.phone-link {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  color: var(--accent-2, #a8780c);
-  text-decoration: none;
-  border-bottom: 2px solid currentColor;
-  padding-bottom: 1px;
-}
-.phone-link:hover { color: var(--silk, #a02050); }
-.phone-icon { font-size: 1.1rem; }
-.phone-num { font-size: 1.15rem; }
-.phone-action {
-  font-family: var(--font-text, inherit);
-  font-size: 0.7rem;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  opacity: 0.65;
-  margin-left: 0.2rem;
-}
-.phone-muted {
+/* ── the registry, in one line ───────────────────────────────────────────── */
+.find-stats {
+  font-size: 0.85rem;
   color: var(--ink-3, currentColor);
-  font-style: italic;
-  font-size: 0.95rem;
-  font-family: var(--font-text, inherit);
-  font-weight: 400;
-}
-
-.find-row-meta {
+  margin: 0 0 1rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem 0.6rem;
-  font-size: 0.82rem;
-  color: var(--ink-2, currentColor);
   align-items: baseline;
+  gap: .3rem .5rem;
 }
-.find-row-prov {
-  background: none;
-  border: 1px solid var(--line, currentColor);
-  color: var(--ink-2, currentColor);
-  font-family: var(--font-text, inherit);
-  font-size: 0.78rem;
-  padding: 0.1rem 0.45rem;
-  cursor: pointer;
-  text-align: left;
-}
-.find-row-prov:hover { color: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
-.find-row-product { font-style: italic; }
-.find-row-cat {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  opacity: 0.7;
-}
-.find-row-regid {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
-  opacity: 0.55;
-  margin-left: auto;
-}
-
-.find-empty {
-  padding: 2rem 0;
-  text-align: center;
-  color: var(--ink-3, currentColor);
-  font-style: italic;
-}
-.find-more {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-top: 1.2rem;
-  justify-content: center;
-}
-.btn-line {
-  background: none;
-  border: 1px solid var(--accent, #c99518);
-  color: var(--accent-2, #a8780c);
-  padding: 0.45rem 0.9rem;
-  font-family: var(--font-text, inherit);
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-}
-.btn-line:hover { background: var(--accent, #c99518); color: var(--bg, #fdf3df); }
-
-.find-caveat {
-  margin-top: 1.5rem;
-  font-size: 0.78rem;
-  color: var(--ink-3, currentColor);
-  font-style: italic;
-  border-top: 1px solid var(--line, currentColor);
-  padding-top: 0.75rem;
-}
-
-/* Mobile: stack find controls */
-@media (max-width: 720px) {
-  .find-controls {
-    grid-template-columns: 1fr 1fr;
-  }
-  .find-q { grid-column: 1 / -1; }
-  .find-phone-toggle { grid-column: 1 / -1; padding: 0.4rem 0; }
-  .find-row-meta { font-size: 0.78rem; }
-  .find-row-name { font-size: 1rem; }
-  .phone-num { font-size: 1.05rem; }
-  .phone-action { display: none; }
-}
-
-/* ─── Inline CTA in Atlas chapters ───
- * The Reach chapter describes the contactability gap. Find is the
- * action surface for closing it. This CTA bridges the two.
- */
-.t-cta { margin: 1rem 0 1.5rem; }
-.cta-btn {
-  display: inline-block;
-  padding: 0.55rem 1rem;
-  background: var(--accent, #c99518);
-  color: var(--bg, #fdf3df);
-  text-decoration: none;
+.find-stats strong {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 1.05rem;
+  color: var(--ink, currentColor);
   font-weight: 700;
-  letter-spacing: 0.02em;
-  border: 1px solid var(--accent, #c99518);
-  font-size: 0.95rem;
-  transition: background 0.12s, color 0.12s;
+  font-variant-numeric: tabular-nums;
 }
-.cta-btn:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
-.cta-btn .cta-th {
-  display: block;
-  font-family: var(--font-thai, inherit);
-  font-size: 0.78em;
-  font-weight: 400;
-  opacity: 0.92;
-  margin-top: 0.1rem;
+.find-stats .bi { display: inline-flex; }
+.find-stats-sep { opacity: .35; }
+.find-bar {
+  flex: 0 0 160px;
+  height: 4px;
+  margin-left: 0.5rem;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: currentColor;
+  opacity: 0.18;
 }
+.find-bar::-webkit-progress-bar { background: currentColor; opacity: 0.18; }
+.find-bar::-webkit-progress-value { background: var(--accent, #c99518); opacity: 1; }
+.find-bar::-moz-progress-bar { background: var(--accent, #c99518); }
 
-/* ─── Find: freshness line + today's number callout ───
- * Honest about the data's age. "Built 28 days ago" tells the user the
- * site is alive but the data is not real-time. The callout carries
- * the one number every visitor should walk away knowing.
- */
-.find-fresh {
-  font-size: 0.75rem;
-  color: var(--ink-3, currentColor);
-  margin: 0 0 1.2rem;
-  letter-spacing: 0.02em;
-}
+/* ── today's number: one finding, one band, no box ───────────────────────── */
 .find-callout {
-  background: var(--surface, rgba(255, 250, 239, 0.7));
-  border: 1px solid var(--line, currentColor);
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: .3rem .75rem;
+  margin: 0 0 1.25rem;
+  padding: .15rem 0 .15rem .85rem;
   border-left: 3px solid var(--accent, #c99518);
-  padding: 0.85rem 1rem;
-  margin: 0 0 1.5rem;
 }
 .callout-key {
-  display: block;
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent-2, #a8780c);
-  font-weight: 700;
-  margin-bottom: 0.3rem;
+  font-family: var(--font-mono); font-size: .7rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--accent-2, #a8780c); font-weight: 700;
+  white-space: nowrap;
 }
 .callout-body {
-  margin: 0 0 0.5rem;
-  font-size: 1rem;
-  line-height: 1.4;
-  color: var(--ink, currentColor);
+  margin: 0; font-size: .95rem; line-height: 1.4; color: var(--ink, currentColor);
+  max-width: 62ch;
 }
+.callout-body .bi { display: inline-flex; }
+.callout-body .bi-th { font-size: .8em; }
 .callout-link {
-  display: inline-block;
-  font-size: 0.82rem;
+  font-size: .82rem;
   color: var(--accent-2, #a8780c);
   text-decoration: none;
   font-weight: 700;
   border-bottom: 1px solid currentColor;
   padding-bottom: 1px;
+  white-space: nowrap;
 }
 .callout-link:hover { color: var(--silk, #a02050); }
 
-@media (max-width: 640px) {
-  .callout-body { font-size: 0.92rem; }
-}
-
-/* ─── Atlas Findings → Find action links ───
- * Each actionable finding can carry a one-click link into Find. The
- * link sits beneath the prose so it does not crowd the headline.
- */
-.atlas-finding {
-  display: grid;
-  gap: 0.25rem;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid var(--line, currentColor);
-}
-.atlas-finding-th {
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent-2, #a8780c);
-  font-weight: 700;
-}
-.atlas-finding-text { font-size: 0.95rem; line-height: 1.4; }
-.atlas-finding-link {
-  display: inline-block;
-  margin-top: 0.25rem;
-  padding: 0.3rem 0.7rem;
-  background: var(--accent, #c99518);
-  color: var(--bg, #fdf3df);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
-  border: 1px solid var(--accent, #c99518);
-}
-.atlas-finding-link:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
-.atlas-finding-link-th {
-  display: block;
-  font-family: var(--font-thai, inherit);
-  font-size: 0.78em;
-  font-weight: 400;
-  opacity: 0.92;
-  margin-top: 0.05rem;
-}
-
-/* ─── Find: recent searches chip strip ───
- * A row of clickable chips for the user's last few searches. Returning
- * visitors land where they left off. The list is session-scoped, capped
- * at 5, and never sent anywhere.
- */
-.find-recents {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 0.6rem;
-  align-items: baseline;
-  margin: 0 0 1rem;
-  padding: 0.5rem 0.7rem;
-  background: var(--surface, rgba(255, 250, 239, 0.5));
-  border: 1px solid var(--line, currentColor);
-}
-.find-recents-lbl {
-  font-size: 0.7rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-3, currentColor);
-  font-weight: 700;
-}
-.find-recents-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem 0.4rem;
-}
-.find-recents-list a {
-  display: inline-block;
-  padding: 0.2rem 0.55rem;
-  font-size: 0.78rem;
-  border: 1px solid var(--line, currentColor);
-  background: var(--bg, #fdf3df);
-  color: var(--ink, currentColor);
-  text-decoration: none;
-  white-space: nowrap;
-  max-width: 28ch;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.find-recents-list a:hover {
-  border-color: var(--accent-2, #a8780c);
-  color: var(--accent-2, #a8780c);
-}
-
-/* ─── Match → Find bridge ───
- * When the user has all attestation filters off in the Match view, the
- * sort is by match-requirement score. For a buyer that is the wrong
- * ranking; Find is. The banner offers a one-click switch.
- */
-.find-banner {
-  margin: 0 0 1rem;
-  padding: 0.65rem 0.9rem;
-  background: var(--surface, rgba(255, 250, 239, 0.5));
-  border: 1px solid var(--line, currentColor);
-  border-left: 3px solid var(--accent, #c99518);
-  font-size: 0.88rem;
-  color: var(--ink-2, currentColor);
-}
-.find-banner-cta {
-  display: inline-block;
-  margin-left: 0.4rem;
-  padding: 0.2rem 0.55rem;
-  background: var(--accent, #c99518);
-  color: var(--bg, #fdf3df);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.78rem;
-  border: 1px solid var(--accent, #c99518);
-}
-.find-banner-cta:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
-
-/* ─── Find action row: reset + share ───
- * The buyer workflow's two housekeeping actions. Reset clears the
- * filters; Copy share link puts the current URL on the clipboard so
- * a colleague can open the same search.
- */
-.find-actions {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  margin: 0 0 0.75rem;
-  flex-wrap: wrap;
-}
-.find-actions .btn-line { font-size: 0.78rem; padding: 0.35rem 0.7rem; }
-.find-actions .btn-share.is-copied {
-  background: var(--accent, #c99518);
-  color: var(--bg, #fdf3df);
-  border-color: var(--accent, #c99518);
-}
-.find-actions .btn-share.is-failed {
-  border-color: var(--crimson, #8a1c1c);
-  color: var(--crimson, #8a1c1c);
-}
-
-/* ─── Find: try-these starter chips ───
- * A row of pre-baked search chips for the first 5 seconds. Each
- * encodes one of the four real buyer briefs the data can answer.
- * Disappears once the user types.
- */
+/* ── starter chips ───────────────────────────────────────────────────────── */
 .find-tries {
   display: flex;
   flex-wrap: wrap;
@@ -1583,10 +1397,441 @@ html, body { overflow-x: hidden; }
   opacity: 0.75;
 }
 
-/* ─── Find: sort selector ───
- * The fourth control on the filter row, alongside province / stars / phone.
- * Callable-first (default), 5★ first, or A–Z. The choice persists in the
- * URL as ?sort= and in the recent-searches chip.
+/* ── recent searches ─────────────────────────────────────────────────────── */
+.find-recents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
+  align-items: baseline;
+  margin: 0 0 1.25rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--surface, rgba(255, 250, 239, 0.5));
+  border: 1px solid var(--line, currentColor);
+}
+.find-recents-lbl {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3, currentColor);
+  font-weight: 700;
+}
+.find-recents-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.4rem;
+}
+.find-recents-list a {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--line, currentColor);
+  background: var(--bg, #fdf3df);
+  color: var(--ink, currentColor);
+  text-decoration: none;
+  white-space: nowrap;
+  max-width: 28ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.find-recents-list a:hover {
+  border-color: var(--accent-2, #a8780c);
+  color: var(--accent-2, #a8780c);
+}
+
+/* ── the results band: the answer, then the actions that apply to it ───────
+   One left-aligned cluster. The actions belong to the list directly below,
+   so they sit next to it rather than at the far edge of a 1440px screen. */
+.find-results-h {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+  border-top: 2px solid var(--ink, currentColor);
+  padding-top: .75rem;
+  margin: 1.25rem 0 .35rem;
+}
+.find-count {
+  display: inline-flex; align-items: baseline; gap: .4rem;
+  font-size: .95rem; color: var(--ink-2, currentColor);
+}
+.find-count-scope {
+  font-size: .9rem; color: var(--ink-2, currentColor);
+}
+.find-count-hint {
+  font-size: .7rem; color: var(--ink-4, currentColor);
+  margin-left: .5rem; padding-left: .5rem;
+  border-left: 1px solid var(--line, currentColor);
+}
+.find-count-hint .bi { display: inline-flex; }
+.find-count strong {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 1.75rem; font-weight: 700; line-height: 1;
+  color: var(--ink, currentColor);
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+.find-actions {
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.btn-line {
+  background: none;
+  border: 1px solid var(--line-2, currentColor);
+  color: var(--ink, currentColor);
+  padding: 0.35rem 0.7rem;
+  font-family: var(--font-text, inherit);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.btn-line:hover:not(:disabled) { background: var(--ink, currentColor); color: var(--bg, #fdf3df); border-color: var(--ink, currentColor); }
+.btn-line:disabled { opacity: .45; cursor: default; }
+.btn-share.is-copied {
+  background: var(--accent, #c99518);
+  color: var(--bg, #fdf3df);
+  border-color: var(--accent, #c99518);
+}
+.btn-share.is-failed {
+  border-color: var(--accent-2, #8a1c1c);
+  color: var(--accent-2, #8a1c1c);
+}
+
+/* ── the row: grade | name | phone, then the metadata under the name ───────
+   A departure board, not a card. The grade is a fixed column so it lines
+   up down the page; the phone is a fixed column so the digits line up and
+   a buyer can scan for them. Nothing floats to the far edge. */
+.find-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line, currentColor);
+}
+.find-row {
+  display: grid;
+  grid-template-columns: 4.25rem minmax(0, 1fr) minmax(8.5rem, auto);
+  grid-template-areas:
+    "grade name  phone"
+    ".     meta  meta";
+  column-gap: .9rem;
+  row-gap: .3rem;
+  padding: .8rem 0;
+  border-bottom: 1px solid var(--line, currentColor);
+  align-items: baseline;
+}
+.find-row.no-phone { color: var(--ink-2, currentColor); }
+.find-row-grade { grid-area: grade; }
+.find-row-name {
+  grid-area: name;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink, currentColor);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  justify-self: start;
+}
+.find-row-name:hover { border-bottom-color: currentColor; }
+.find-row-stars {
+  font-family: var(--font-mono, monospace);
+  color: var(--accent-2, #a8780c);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.find-row-stars.none { color: var(--ink-4, currentColor); }
+.find-row[data-stars='0'] .find-row-stars { color: var(--ink-4, currentColor); }
+
+.find-row-phone {
+  grid-area: phone;
+  justify-self: end;
+  text-align: right;
+}
+.phone-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  color: var(--accent-2, #a8780c);
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 1px;
+}
+.phone-link:hover { color: var(--silk, #a02050); }
+.phone-icon { font-size: 1.1rem; }
+.phone-num {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.phone-muted {
+  color: var(--ink-4, currentColor);
+  font-style: italic;
+  font-size: 0.85rem;
+  font-family: var(--font-text, inherit);
+  font-weight: 400;
+}
+
+.find-row-meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.6rem;
+  font-size: 0.82rem;
+  color: var(--ink-2, currentColor);
+  align-items: baseline;
+}
+.find-row-prov {
+  background: none;
+  border: 1px solid var(--line, currentColor);
+  color: var(--ink-2, currentColor);
+  font-family: var(--font-text, inherit);
+  font-size: 0.78rem;
+  padding: 0.1rem 0.45rem;
+  cursor: pointer;
+  text-align: left;
+}
+.find-row-prov:hover { color: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
+.find-row-product { font-style: italic; }
+.find-row-cat {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+.find-row-cert {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--leaf, #2d6a3e);
+  border-left: 2px solid var(--leaf, #2d6a3e);
+  padding-left: .35rem;
+}
+.find-row-regid {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  opacity: 0.55;
+}
+
+.find-empty {
+  padding: 2rem 0;
+  text-align: center;
+  color: var(--ink-3, currentColor);
+  font-style: italic;
+}
+.find-more {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+  justify-content: center;
+}
+.find-caveat {
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--ink-3, currentColor);
+  font-style: italic;
+  border-top: 1px solid var(--line, currentColor);
+  padding-top: 0.75rem;
+  max-width: 72ch;
+}
+
+/* Mobile: the phone drops under the name so the digits are not pushed off
+   the edge, and the grade stays beside the name. */
+@media (max-width: 639px) {
+  .find-controls { grid-template-columns: 1fr 1fr; }
+  .find-q { grid-column: 1 / -1; grid-row: 1; }
+  .find-prov, .find-stars, .find-sort { grid-column: 1 / -1; }
+  .find-toggles {
+    grid-column: 1 / -1;
+    flex-direction: row; gap: 1rem; align-items: center;
+    padding-bottom: 0;
+  }
+}
+@media (max-width: 640px) {
+  .find-row {
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+    grid-template-areas:
+      "grade name"
+      "phone phone"
+      "meta  meta";
+  }
+  .find-row-phone { justify-self: start; text-align: left; }
+  .find-row-phone .bi { justify-content: flex-start; }
+  .find-row-meta { font-size: 0.78rem; }
+  .find-row-name { font-size: 1rem; }
+  .phone-num { font-size: 1.05rem; }
+  .phone-action { display: none; }
+  .find-count-scope {
+  font-size: .9rem; color: var(--ink-2, currentColor);
+}
+.find-count-hint {
+  font-size: .7rem; color: var(--ink-4, currentColor);
+  margin-left: .5rem; padding-left: .5rem;
+  border-left: 1px solid var(--line, currentColor);
+}
+.find-count-hint .bi { display: inline-flex; }
+.find-count strong { font-size: 1.5rem; }
+}
+
+/* ─── Inline CTA in Atlas chapters ──────────────────────────────────────────
+ * The Reach chapter describes the contactability gap. Find is the
+ * action surface for closing it. This CTA bridges the two.
  */
-.find-sort { display: flex; flex-direction: column; gap: 0.2rem; }
-.find-sort select { min-width: 0; }
+.t-cta { margin: 1rem 0 1.5rem; }
+.cta-btn {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  background: var(--accent, #c99518);
+  color: var(--bg, #fdf3df);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--accent, #c99518);
+  font-size: 0.95rem;
+  transition: background 0.12s, color 0.12s;
+}
+.cta-btn:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
+.cta-btn .cta-th {
+  display: block;
+  font-family: var(--font-thai, inherit);
+  font-size: 0.78em;
+  font-weight: 400;
+  opacity: 0.92;
+  margin-top: 0.1rem;
+}
+
+/* ─── Atlas Findings → Find action links ────────────────────────────────────
+ * Each actionable finding can carry a one-click link into Find. The
+ * link sits beneath the prose so it does not crowd the headline.
+ */
+.atlas-finding {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line, currentColor);
+}
+.atlas-finding-th {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-2, #a8780c);
+  font-weight: 700;
+}
+.atlas-finding-text { font-size: 0.95rem; line-height: 1.4; }
+.atlas-finding-link {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.3rem 0.7rem;
+  background: var(--accent, #c99518);
+  color: var(--bg, #fdf3df);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--accent, #c99518);
+}
+.atlas-finding-link:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
+.atlas-finding-link-th {
+  display: block;
+  font-family: var(--font-thai, inherit);
+  font-size: 0.78em;
+  font-weight: 400;
+  opacity: 0.92;
+  margin-top: 0.05rem;
+}
+
+/* ─── Match → Find bridge ───────────────────────────────────────────────────
+ * When the user has all attestation filters off in the Match view, the
+ * sort is by match-requirement score. For a buyer that is the wrong
+ * ranking; Find is. The banner offers a one-click switch.
+ */
+.find-banner {
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--surface, rgba(255, 250, 239, 0.5));
+  border: 1px solid var(--line, currentColor);
+  border-left: 3px solid var(--accent, #c99518);
+  font-size: 0.88rem;
+  color: var(--ink-2, currentColor);
+}
+.find-banner-cta {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.2rem 0.55rem;
+  background: var(--accent, #c99518);
+  color: var(--bg, #fdf3df);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.78rem;
+  border: 1px solid var(--accent, #c99518);
+}
+.find-banner-cta:hover { background: var(--accent-2, #a8780c); border-color: var(--accent-2, #a8780c); }
+
+/* ─── Method: the argument on the left, the build facts on the right ────────
+ * The prose used to sit in a 45%-width column with 55% of a 1440px screen
+ * empty beside it, at the bottom of every page. It is a page now, and the
+ * right column carries the numbers it is talking about.
+ */
+.method {
+  display: grid;
+  grid-template-columns: minmax(0, 34rem) minmax(16rem, 1fr);
+  gap: 2.5rem 3rem;
+  align-items: start;
+  max-width: 62rem;
+  margin-inline: auto;
+}
+@media (max-width: 900px) { .method { grid-template-columns: 1fr; gap: 2rem; } }
+.method-prose p {
+  margin: 0 0 1rem;
+  max-width: 66ch;
+  line-height: 1.6;
+}
+.method-prose .prov { margin: 0 0 1.5rem; }
+.method-prose .prov-b { max-width: none; }
+.method-prose strong { font-weight: 700; }
+.method-prose code { font-family: var(--font-mono, monospace); font-size: .9em; }
+.method-legal { font-size: .9rem; color: var(--ink-2, currentColor); }
+.method-legal a { color: var(--accent-2, #a8780c); }
+.method-facts {
+  border-top: 2px solid var(--accent, #c99518);
+  padding-top: .75rem;
+}
+.fact-h {
+  font-family: var(--font-display); font-size: 1.0625rem; font-weight: 700;
+  margin: 1.5rem 0 .5rem;
+}
+.fact-h:first-child { margin-top: 0; }
+.facts { margin: 0; }
+.fact {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding: .3rem 0;
+  border-bottom: 1px solid var(--line, currentColor);
+}
+.fact-k { font-size: .8rem; color: var(--ink-2, currentColor); margin: 0; }
+.fact-th { font-family: var(--font-thai, inherit); opacity: .6; font-size: .95em; }
+.fact-v {
+  margin: 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: .85rem; font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ─── One line of provenance under every view ─────────────────────────────── */
+.build-note {
+  margin: 0;
+  padding: 1rem var(--gutter) 0;
+  max-width: var(--measure);
+  margin-inline: auto;
+  font-size: .78rem;
+  color: var(--ink-3, currentColor);
+}
+.build-note .bi { display: inline-flex; }
+.build-note a {
+  color: var(--accent-2, #a8780c); text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  margin-left: .5rem; padding-left: .5rem;
+  border-left: 1px solid var(--line, currentColor);
+}

@@ -118,7 +118,7 @@ export default function Universe({ graph, go }) {
   const labelOf = (d) => d.th ?? d.en;
 
   return (
-    <Chapter id="universe" q="How does everything connect?" title="Universe" th="จักรวาลความเชื่อมโยง">
+    <Chapter id="universe" title="Universe" th="จักรวาลความเชื่อมโยง">
       <p className="t-note">
         {n(graph.counts.nodes)} nodes · {n(graph.counts.edges)} edges · built {String(graph.builtAt).slice(0, 10)}.
         Business is what is made where, strategy is when the program moved, provenance is

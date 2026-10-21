@@ -5,7 +5,7 @@ import Bars from '../charts/Bars.jsx';
 export default function Reach({ national, reachGap, corroborationQuadrant, hiddenChampions, go }) {
   const top = reachGap.filter((p) => p.records > 0).slice(0, 20);
   return (
-    <Chapter id="reach" q="Who can be contacted?" title="Reach" th="ช่องว่างการเข้าถึง">
+    <Chapter id="reach" title="Reach" th="ช่องว่างการเข้าถึง">
       {reachGap.length > 0 && (
         <>
           <p className="t-note">

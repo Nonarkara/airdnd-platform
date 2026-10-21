@@ -12,6 +12,7 @@ import History from './components/History.jsx';
 import CrossReferences from './components/CrossReferences.jsx';
 import DataBank from './components/DataBank.jsx';
 import ViewHero from './components/ViewHero.jsx';
+import Method from './components/Method.jsx';
 import Find from './components/Find.jsx';
 
 // Leaflet is ~150KB and only the B2B lens draws a map. Split it so the B2C
@@ -25,12 +26,30 @@ const ProvinceDossier = lazy(() => import('./components/ProvinceDossier.jsx'));
 const Briefs = lazy(() => import('./components/Briefs.jsx'));
 import { loadIndex, loadShards, planShards } from './lib/shards.js';
 import { loadInsights, loadGraph } from './lib/insights.js';
-import { requirementFromUrl, requirementToUrl } from './lib/requirement.js';
+import { DEFAULTS, requirementFromUrl, requirementToUrl } from './lib/requirement.js';
 import { completenessOf } from './lib/completeness.js';
-import { Bi, Gauge } from './components/Bi.jsx';
+import { Bi } from './components/Bi.jsx';
 import { matchRequirement, sourcingBasins, toCsv, PROFILES } from '../core/matching.js';
 
 const PAGE = 60;
+const PAGE_NARROW = 20;
+
+/**
+ * The deep reads. They are real pages with real content, but they are not
+ * destinations a stranger can be expected to want on the way in — so they
+ * live in the footer, where the reader goes looking for "what else is
+ * here", rather than in the header, where they would dilute the five
+ * places a visitor actually comes for.
+ */
+const MORE_VIEWS = [
+  { view: 'matchmaker', en: 'Matchmaker', th: 'จับคู่จังหวัด' },
+  { view: 'tides', en: 'Demand Tides', th: 'กระแสความต้องการ' },
+  { view: 'champions', en: 'Champions', th: 'แชมป์ที่ติดต่อได้' },
+  { view: 'briefs', en: 'Briefs', th: 'สรุป' },
+  { view: 'story', en: 'Story', th: 'เรื่องเล่า' },
+  { view: 'history', en: '25 Years', th: '25 ปี' },
+  { view: 'crossrefs', en: 'Cross-references', th: 'เชื่อมโยงข้อมูล' },
+];
 
 export default function App() {
   const initial = useRef(requirementFromUrl());
@@ -38,13 +57,12 @@ export default function App() {
   const [lens, setLens] = useState(initial.current.lens);
   // Find is the home view: a search-first, phone-first landing. The most
   // useful single thing this site can do is end a session with a phone call
-  // to a producer you can actually reach. Atlas, Match, Matchmaker, Briefs,
-  // Tides, Champions, Story, History, Cross-refs remain reachable from the
-  // nav and from deep links; the difference is that a fresh visitor lands on
-  // the thing they can use, not the thing they can read about.
+  // to a producer you can actually reach. The other views are deeper reads
+  // of the same data; the difference is that a fresh visitor lands on the
+  // thing they can use, not the thing they can read about.
   const [view, setView] = useState(() => {
     const urlView = new URLSearchParams(window.location.search).get('view');
-    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs', 'bank', 'find'].includes(urlView)) return urlView;
+    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs', 'bank', 'find', 'method'].includes(urlView)) return urlView;
     return 'find';
   });
   const [provinceCode, setProvinceCode] = useState(() => {
@@ -57,8 +75,6 @@ export default function App() {
     else { setView('province'); setProvinceCode(code); }
     window.scrollTo({ top: 0 });
   }, []);
-  // Find lives next to the dossier, not under Atlas. It is a one-question
-  // search box with the phone as the prominent affordance.
   const [insights, setInsights] = useState(null);
   const [insightsError, setInsightsError] = useState(null);
   const [requirement, setRequirement] = useState(initial.current.requirement);
@@ -74,6 +90,19 @@ export default function App() {
   const [shardError, setShardError] = useState(null);
   const [forceAll, setForceAll] = useState(false);
   const [limit, setLimit] = useState(PAGE);
+  // A phone screen pays for every pixel of scroll. A narrow viewport gets a
+  // shorter first page; the reader asks for more, once, at the bottom.
+  const [narrow, setNarrow] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches
+  );
+  const pageSize = narrow ? PAGE_NARROW : PAGE;
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 700px)');
+    const onChange = (e) => setNarrow(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -121,7 +150,7 @@ export default function App() {
   }, [wanted, wantedKey]);
 
   useEffect(() => {
-    if ((view !== 'atlas' && view !== 'province') || insights || insightsError) return;
+    if (!['atlas', 'province', 'champions'].includes(view) || insights || insightsError) return;
     let cancelled = false;
     Promise.all([loadInsights(), loadGraph().catch(() => null)])
       .then(([data, graph]) => { if (!cancelled) setInsights(graph ? { ...data, graph } : data); })
@@ -133,7 +162,7 @@ export default function App() {
     window.history.replaceState(null, '', requirementToUrl(view, lens, requirement, provinceCode));
   }, [view, lens, requirement, provinceCode]);
 
-  useEffect(() => { setLimit(PAGE); }, [lens, requirement]);
+  useEffect(() => { setLimit(pageSize); }, [lens, requirement, pageSize]);
 
   const result = useMemo(
     () => matchRequirement(records, { ...requirement, profile: lens }),
@@ -162,6 +191,21 @@ export default function App() {
     URL.revokeObjectURL(url);
   }, [result.matches, lens]);
 
+  // Switching the lens re-applies that lens's default strictness. A buyer
+  // who lands on Discover and then asks for the due-diligence ranking gets
+  // the due-diligence filters, not the old ones wearing a new label.
+  const changeLens = useCallback((next) => {
+    setLens(next);
+    const d = DEFAULTS[next];
+    setRequirement((r) => ({
+      ...r,
+      requireContact: d.requireContact,
+      requireCorroborated: d.requireCorroborated,
+      requireSignal: d.requireSignal,
+    }));
+    setLimit(pageSize);
+  }, [pageSize]);
+
   if (state.status === 'loading') return <div className="state"><h1>Loading the registry index…</h1></div>;
 
   if (state.status === 'error') {
@@ -176,33 +220,38 @@ export default function App() {
 
   const { meta } = state;
   const totals = index.totals;
+  const recordCount = meta.counts.recordsAfterMerge ?? totals.records;
 
   return (
     <div className="shell">
+      {/* Nav and status only. The wordmark lives here — once per viewport —
+          because the hero no longer carries a second one. */}
       <header className="hdr">
-        {/* Nav and status only. The wordmark lives in the hero and appears once
-            per viewport — two stacked wordmarks read as an unfinished template. */}
         <div className="wrap hdr-in">
-          <nav className="hdr-nav">
+          <a className="brand" href="/?view=find" aria-label="one³ — home">
+            <span className="brand-mark">one<span className="mid">³</span></span>
+          </a>
+          <nav className="hdr-nav" aria-label="Sections">
             <button type="button" aria-current={view === 'find'} onClick={() => setView('find')}>
-              <Bi en="Find" th="ค้นหา" />
+              <span className="nav-en">Find</span>
+              <span className="nav-th" lang="th">ค้นหา</span>
             </button>
-            <button type="button" aria-current={view === 'match' && lens === 'b2b'} onClick={() => { setView('match'); setLens('b2b'); }}>
-              <Bi en="Source" th="แหล่ง" /> · <Bi en="B2B" th="ธุรกิจสู่ธุรกิจ" />
-            </button>
-            <button type="button" aria-current={view === 'match' && lens === 'b2c'} onClick={() => { setView('match'); setLens('b2c'); }}>
-              <Bi en="Discover" th="ค้นพบ" /> · <Bi en="B2C" th="ธุรกิจสู่ผู้บริโภค" />
+            <button type="button" aria-current={view === 'match'} onClick={() => setView('match')}>
+              <span className="nav-en">Match</span>
+              <span className="nav-th" lang="th">จับคู่</span>
             </button>
             <button type="button" aria-current={view === 'atlas'} onClick={() => openProvince(null)}>
-              <Bi en="Atlas" th="แผนที่ข้อมูล" />
+              <span className="nav-en">Atlas</span>
+              <span className="nav-th" lang="th">แผนที่ข้อมูล</span>
             </button>
             <button type="button" aria-current={view === 'bank'} onClick={() => setView('bank')}>
-              <Bi en="Data Bank" th="คลังข้อมูล" />
+              <span className="nav-en">Data Bank</span>
+              <span className="nav-th" lang="th">คลังข้อมูล</span>
             </button>
-            {view === 'province' && <button type="button" aria-current>
-              <Bi en="Province" th="จังหวัด" />
-            </button>}
-            <a href="#method"><button type="button"><Bi en="Method" th="วิธีการ" /></button></a>
+            <button type="button" aria-current={view === 'method'} onClick={() => setView('method')}>
+              <span className="nav-en">Method</span>
+              <span className="nav-th" lang="th">วิธีการ</span>
+            </button>
           </nav>
           <div className="hdr-status">
             <span className={`dot${meta.degraded ? ' warn' : ''}`} />
@@ -211,58 +260,11 @@ export default function App() {
         </div>
       </header>
 
-      <main>
-        <section className="hero">
-          <div className="wrap">
-            <h1 className="hero-mark">one<span className="mid">³</span></h1>
-            <p className="hero-mark-sub">One Tambon · One Product · One Platform</p>
-            <p className="hero-th">หนึ่งตำบล หนึ่งผลิตภัณฑ์ หนึ่งแพลตฟอร์ม</p>
-            <p className="hero-sub">
-              {view === 'find' && (
-                <Bi
-                  en="Type a thing. Pick a place. Get a list of names and phone numbers you can call right now."
-                  th="พิมพ์สิ่งที่ต้องการ เลือกจังหวัด รับรายชื่อและเบอร์โทรที่โทรหาได้วันนี้"
-                />
-              )}
-              {view === 'atlas' && (
-                <Bi
-                  en="Read the registry as data — five chapters, one question each. The whole national rollup, in one place."
-                  th="อ่านข้อมูลทะเบียนเป็นข้อมูล — ห้าบท หนึ่งคำถามต่อบท ภาพรวมทั้งประเทศในที่เดียว"
-                />
-              )}
-              {view === 'bank' && (
-                <Bi
-                  en="Where the data came from, what we added, and how to cite it. The provenance of every number on this site."
-                  th="ข้อมูลมาจากไหน เราเพิ่มอะไร อ้างอิงอย่างไร แหล่งที่มาของตัวเลขทุกตัวบนเว็บนี้"
-                />
-              )}
-              {view === 'match' && (
-                <Bi
-                  en="State a requirement; get a ranked shortlist, the reason for the ranking, and an explicit account of what the registry cannot tell you."
-                  th="ระบุความต้องการ รับรายชื่อจัดอันดับ เหตุผลในการจัดอันดับ และสิ่งที่ทะเบียนบอกไม่ได้"
-                />
-              )}
-              {view !== 'find' && view !== 'atlas' && view !== 'bank' && view !== 'match' && (
-                <Bi
-                  en="Thailand's OTOP registry as a working directory for matching demand to supply."
-                  th="ทะเบียน OTOP ของไทยในฐานะไดเรกทอรีที่ทำงานได้ เพื่อจับคู่อุปสงค์กับอุปทาน"
-                />
-              )}
-            </p>
-
-            {/* The gauges are the wrong thing on Find — the search box is the
-                right thing. Hide them when the user has come to use the site. */}
-            {view !== 'province' && view !== 'find' && <div className="gauges">
-              <Gauge n={totals.records.toLocaleString()} label="Records" th="รายการ" />
-              <Gauge n={totals.producers.toLocaleString()} label="Producers" th="ผู้ผลิต" />
-              <Gauge n={`${totals.provincesWithRecords}/77`} label="Provinces" th="จังหวัด" />
-              <Gauge n={meta.counts.duplicatesCollapsed.toLocaleString()} label="Duplicates collapsed" th="รวมซ้ำ" />
-              <Gauge n={meta.shardCount} label="Shards" th="ชุดข้อมูล" />
-            </div>}
-          </div>
-        </section>
-
-        {view !== 'province' && view !== 'find' && <div className="wrap"><ProvenanceBanner meta={meta} /></div>}
+      <main id="main">
+        {/* Provenance travels with the data, not with the page: it is a box
+            on the Method view, and a warning banner on every view when the
+            build is a fixture rather than the national registry. */}
+        {meta.degraded && <div className="wrap"><ProvenanceBanner meta={meta} /></div>}
 
         {view === 'find' && (
           <section className="sec sec-find" id="find">
@@ -275,21 +277,33 @@ export default function App() {
         {view === 'match' && (<>
         <section className="sec" id="match">
           <div className="wrap">
-            <div className="sec-h">
-              <h2 className="sec-t">{PROFILES[lens].label}</h2>
-              <span className="sec-n">
-                {lens === 'b2b' ? (
-                  <Bi
-                    en="ranked for due diligence: grading, corroboration and filing age carry more weight"
-                    th="จัดอันดับตามการตรวจสอบ: คะแนน OPC, การรับรองข้ามหน่วยงาน และอายุการยื่นทะเบียน"
-                  />
-                ) : (
-                  <Bi
-                    en="ranked for reach: a producer you can contact and locate carries more weight"
-                    th="จัดอันดับตามการเข้าถึง: ผู้ผลิตที่ติดต่อได้และระบุตำแหน่งได้"
-                  />
-                )}
-              </span>
+            <ViewHero
+              eyebrow={<Bi en="Match" th="จับคู่" />}
+              headline={PROFILES[lens].label}
+              stake={lens === 'b2b' ? (
+                <Bi
+                  en="Ranked for due diligence: grading, corroboration and filing age carry more weight. State a requirement and get a ranked shortlist with the reason for the ranking."
+                  th="จัดอันดับตามการตรวจสอบ: คะแนน OPC การรับรองข้ามหน่วยงาน และอายุการยื่นทะเบียน ระบุความต้องการและรับรายชื่อจัดอันดับพร้อมเหตุผล"
+                />
+              ) : (
+                <Bi
+                  en="Ranked for reach: a producer you can contact and locate carries more weight. State a requirement and get a ranked shortlist with the reason for the ranking."
+                  th="จัดอันดับตามการเข้าถึง: ผู้ผลิตที่ติดต่อได้และระบุตำแหน่งได้ ระบุความต้องการและรับรายชื่อจัดอันดับพร้อมเหตุผล"
+                />
+              )}
+            />
+
+            {/* The lens is a mode of the same view, so it lives inside the
+                view — not as two entries in the header. */}
+            <div className="lens-switch" role="group" aria-label="Sourcing lens">
+              <button type="button" aria-current={lens === 'b2b'} onClick={() => changeLens('b2b')}>
+                <span className="nav-en">Source · B2B</span>
+                <span className="nav-th" lang="th">แหล่ง · ธุรกิจสู่ธุรกิจ</span>
+              </button>
+              <button type="button" aria-current={lens === 'b2c'} onClick={() => changeLens('b2c')}>
+                <span className="nav-en">Discover · B2C</span>
+                <span className="nav-th" lang="th">ค้นพบ · ธุรกิจสู่ผู้บริโภค</span>
+              </button>
             </div>
 
             <RequirementPanel
@@ -388,7 +402,7 @@ export default function App() {
               <p className="find-banner">
                 <Bi
                   en="All filters off — you are seeing the full province list, ranked by match score. For a contactability-first sort (callable producers at the top), Find is the right surface."
-                  th="ตัวกรองทั้งหมดปิดอยู่ — กำลังดูรายการทั้งหมดในจังหวัด เรียงตามคะแนนการจับคู่ หากต้องการเรียงตามการติดต่อได้ก่อน (ผู้ที่โทรหาได้ขึ้นก่อน) Find คือเครื่องมือที่ใช่"
+                  th="ตัวกรองทั้งหมดปิดอยู่ — กำลังดูรายการทั้งหมดในจังหวัด เรียงตามคะแนนการจับคู้ หากต้องการเรียงตามการติดต่อได้ก่อน (ผู้ที่โทรหาได้ขึ้นก่อน) Find คือเครื่องมือที่ใช่"
                 />{' '}
                 <a className="find-banner-cta" href={`/?view=find${requirement.provinceCodes.length === 1 ? `&p=${requirement.provinceCodes[0]}` : ''}${requirement.categories.length ? `&q=${encodeURIComponent(requirement.categories[0])}` : ''}`}>
                   <Bi en="Open in Find →" th="เปิดใน Find →" />
@@ -400,8 +414,8 @@ export default function App() {
 
             {result.matches.length > limit && (
               <div className="more">
-                <button type="button" onClick={() => setLimit((n) => n + PAGE)}>
-                  <Bi en={`Show ${Math.min(PAGE, result.matches.length - limit)} more`} th={`แสดงอีก ${Math.min(PAGE, result.matches.length - limit)} รายการ`} />
+                <button type="button" onClick={() => setLimit((n) => n + pageSize)}>
+                  <Bi en={`Show ${Math.min(pageSize, result.matches.length - limit)} more`} th={`แสดงอีก ${Math.min(pageSize, result.matches.length - limit)} รายการ`} />
                 </button>
               </div>
             )}
@@ -460,17 +474,14 @@ export default function App() {
         {view === 'province' && (
           <section className="sec" id="province">
             <div className="wrap">
-              <div className="sec-h">
-                <h2 className="sec-t">
-                  <Bi en="Province" th="จังหวัด" />
-                </h2>
-                <span className="sec-n">
-                  <Bi
-                    en="one province, every layer — a link you can hand across a table"
-                    th="หนึ่งจังหวัด ทุกชั้นข้อมูล — ลิงก์ที่ส่งต่อกันข้ามโต๊ะได้"
-                  />
-                </span>
-              </div>
+              <ViewHero
+                eyebrow={<Bi en="Province" th="จังหวัด" />}
+                headline={index.provinces.find((p) => p.code === provinceCode)?.en || 'Province'}
+                stake={<Bi
+                  en="One province, every layer — a link you can hand across a table."
+                  th="หนึ่งจังหวัด ทุกชั้นข้อมูล — ลิงก์ที่ส่งต่อกันข้ามโต๊ะได้"
+                />}
+              />
               {insightsError && <p className="empty">The national rollup could not be loaded — {insightsError}.</p>}
               {!insights && !insightsError && <p className="empty">Loading the national rollup…</p>}
               {insights && provinceCode != null && (
@@ -544,11 +555,11 @@ export default function App() {
                 eyebrow={<Bi en="Reachable Champions" th="แชมป์ที่ติดต่อได้" />}
                 headline="The buyer's starting list."
                 stake={<Bi
-                  en="4–5★ producers the registry says CAN be reached — out of 154,078 records, only the few carrying both a grade and a contact."
-                  th="ผู้ผลิต 4–5 ดาวที่ติดต่อได้ — จาก 154,078 รายการ เหลือเพียงไม่กี่รายที่มีทั้งคะแนนและช่องทางติดต่อ"
+                  en={`4–5★ producers the registry says CAN be reached — out of ${recordCount.toLocaleString()} records, only the few carrying both a grade and a contact.`}
+                  th={`ผู้ผลิต 4–5 ดาวที่ติดต่อได้ — จาก ${recordCount.toLocaleString()} รายการ เหลือเพียงไม่กี่รายที่มีทั้งคะแนนและช่องทางติดต่อ`}
                 />}
               />
-              <Champions onSelectProvince={openProvince} />
+              <Champions onSelectProvince={openProvince} national={insights?.national ?? null} records={recordCount} />
             </div>
           </section>
         )}
@@ -580,7 +591,7 @@ export default function App() {
                   th="ที่มาของ OTOP — และความหมายจริงของคะแนน 5 ดาว"
                 />}
               />
-              <History />
+              <History meta={meta} />
             </div>
           </section>
         )}
@@ -617,89 +628,87 @@ export default function App() {
           </section>
         )}
 
-        <section className="sec" id="method">
-          <div className="wrap">
-            <div className="sec-h">
-              <h2 className="sec-t">
-                <Bi en="Method" th="วิธีการ" />
-              </h2>
-              <span className="sec-n">
-                <Bi
-                  en="what these numbers are, and are not"
-                  th="ตัวเลขเหล่านี้คืออะไร และไม่ใช่อะไร"
-                />
-              </span>
+        {view === 'method' && (
+          <section className="sec" id="method">
+            <div className="wrap">
+              <ViewHero
+                eyebrow={<Bi en="Method" th="วิธีการ" />}
+                headline="What these numbers are, and are not."
+                stake={<Bi
+                  en="How 154,050 filing records became one registry — and the limits that travel with the count."
+                  th="154,050 รายการจากการยื่นทะเบียน กลายเป็นทะเบียนเดียวอย่างไร และข้อจำกัดที่ติดมากับตัวเลข"
+                />}
+              />
+              <Method meta={meta} totals={totals} />
             </div>
-            <div className="ftr">
-              <p>
-                Records come from CKAN datasets published on data.go.th, mapped onto one schema by
-                discovering each resource's columns rather than assuming them, and resolved into
-                entities by unioning shared identity signals — tax ID, telephone, source-scoped
-                registration number, and name-within-an-administrative-area. A telephone appearing
-                in more than one province is treated as a switchboard and withdrawn as identity.
-              </p>
-              <p>
-                <strong>The fit score ranks only what the registry attests</strong> — contactability,
-                OPC grading, filing recency, cross-agency corroboration and how precisely the
-                producer is located. It does not model capacity, price or reliability, because the
-                registry holds none of those. Hover any score to see its components.
-              </p>
-              <p>
-                <strong>These counts measure the registry, not the economy.</strong> A province with an
-                active provincial office files more rows than a province with more producers and
-                less paperwork.
-              </p>
-              <p>Built {meta.builtAt?.slice(0, 10)} · source <code>{meta.source}</code> · {meta.shardCount} province shards</p>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
-        <footer className="cr">
-          <div className="wrap cr-in">
-            <div className="cr-block">
-              <span className="cr-key">Architect</span>
-              <span className="cr-name">Dr Non Arkaraprasertkul</span>
-              <span className="cr-th">ดร. นนท์ อัครประสิทธิ์กุล</span>
-              <span className="cr-line">PhD Anthropologist · Harvard · Architect · MIT</span>
-              <span className="cr-line">Senior Expert, Thailand's depa</span>
-            </div>
-            <div className="cr-block">
-              <span className="cr-key">Engineering</span>
-              <span className="cr-name">Mavis</span>
-              <span className="cr-th">เมวิส</span>
-              <span className="cr-line">the AI assistant that built the data pipeline,</span>
-              <span className="cr-line">the Atlas, the dossier, the Matchmaker, the Tides,</span>
-              <span className="cr-line">the Champions, and the National Story on this site</span>
-            </div>
-            <div className="cr-block">
-              <span className="cr-key">Data</span>
-              <span className="cr-name">data.go.th</span>
-              <span className="cr-line">กรมพัฒนาชุมชน · Department of Community Development</span>
-              <span className="cr-line">{meta.shardCount} province shards · 154,078 producer rows</span>
-              <span className="cr-line">33 months of revenue · 3 years by category</span>
-            </div>
-            <div className="cr-block cr-mantra">
-              <p className="cr-mantra-th">หนึ่งตำบล หนึ่งผลิตภัณฑ์ หนึ่งแพลตฟอร์ม</p>
-              <p className="cr-mantra-en">One Tambon · One Product · One Platform</p>
-              <p className="cr-mantra-1"><span>1</span><sup>3</sup> <span>= 1</span></p>
-            </div>
-          </div>
-          <div className="cr-legal">
-            <a href="/legal/terms/">Terms of use</a>
-            <span className="cr-legal-sep">·</span>
-            <a href="/legal/privacy/">Privacy policy</a>
-            <span className="cr-legal-sep">·</span>
-            <a href="/legal/provenance/">Data provenance</a>
-            <span className="cr-legal-sep">·</span>
-            <a href="/legal/disclaimer/">Disclaimer</a>
-            <span className="cr-legal-sep">·</span>
-            <a href="/legal/takedown/">Correction &amp; takedown</a>
-            <span className="cr-legal-th" lang="th">ข้อกำหนด · นโยบาย · แหล่งข้อมูล · คำปฏิเสธ · การแก้ไข</span>
-          </div>
-        </footer>
+        {/* One line of provenance under every view, and a way into the long
+            version. The four paragraphs of methodology that used to ride
+            along on every page now live on their own page. */}
+        <p className="build-note">
+          <Bi
+            en={`Built ${meta.builtAt?.slice(0, 10)} from data.go.th · ${recordCount.toLocaleString()} producer records · ${meta.shardCount} province shards`}
+            th={`สร้างเมื่อ ${meta.builtAt?.slice(0, 10)} จาก data.go.th · ${recordCount.toLocaleString()} รายการ · ${meta.shardCount} ไฟล์แยกรายจังหวัด`}
+          />{' '}
+          <a href="/?view=method"><Bi en="What these numbers are →" th="ตัวเลขเหล่านี้คืออะไร →" /></a>
+        </p>
       </main>
+
+      <footer className="cr">
+        <div className="wrap cr-in">
+          <div className="cr-block">
+            <span className="cr-key">Architect</span>
+            <span className="cr-name">Dr Non Arkaraprasertkul</span>
+            <span className="cr-th">ดร. นนท์ อัครประสิทธิ์กุล</span>
+            <span className="cr-line">PhD Anthropologist · Harvard · Architect · MIT</span>
+            <span className="cr-line">Senior Expert, Thailand's depa</span>
+          </div>
+          <div className="cr-block">
+            <span className="cr-key">Data</span>
+            <span className="cr-name">data.go.th</span>
+            <span className="cr-line">กรมพัฒนาชุมชน · Department of Community Development</span>
+            <span className="cr-line">Thailand's Open Government Data portal</span>
+          </div>
+          <div className="cr-block cr-mantra">
+            <p className="cr-mantra-th">หนึ่งตำบล หนึ่งผลิตภัณฑ์ หนึ่งแพลตฟอร์ม</p>
+            <p className="cr-mantra-en">One Tambon · One Product · One Platform</p>
+            <p className="cr-mantra-1"><span>1</span><sup>3</sup> <span>= 1</span></p>
+          </div>
+        </div>
+
+        <div className="wrap cr-views">
+          <span className="cr-key">More views</span>
+          <ul className="cr-views-list">
+            {MORE_VIEWS.map((v) => (
+              <li key={v.view}>
+                <a href={`/?view=${v.view}`}>
+                  <span>{v.en}</span>
+                  <span className="cr-views-th" lang="th">{v.th}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="wrap cr-built">
+          <Bi en="Built with Mavis, an AI assistant." th="สร้างด้วยเมวิส ผู้ช่วย AI" />
+        </div>
+
+        <div className="wrap cr-legal">
+          <a href="/legal/terms/">Terms of use</a>
+          <span className="cr-legal-sep">·</span>
+          <a href="/legal/privacy/">Privacy policy</a>
+          <span className="cr-legal-sep">·</span>
+          <a href="/legal/provenance/">Data provenance</a>
+          <span className="cr-legal-sep">·</span>
+          <a href="/legal/disclaimer/">Disclaimer</a>
+          <span className="cr-legal-sep">·</span>
+          <a href="/legal/takedown/">Correction &amp; takedown</a>
+          <span className="cr-legal-th" lang="th">ข้อกำหนด · นโยบาย · แหล่งข้อมูล · คำปฏิเสธ · การแก้ไข</span>
+        </div>
+      </footer>
     </div>
   );
 }
-
-

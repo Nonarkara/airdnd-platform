@@ -1,19 +1,9 @@
 /**
- * Shared presentational leaves: the bilingual chip and the hero gauge.
+ * Shared presentational leaves: the bilingual chip.
  *
  * Moved out of App.jsx so the shell holds state and routing only. No logic
  * changed — cut verbatim.
  */
-
-export function Gauge({ n, label, th }) {
-  return (
-    <div className="gauge">
-      <div className="gauge-n">{n}</div>
-      <div className="gauge-l">{label}</div>
-      <div className="gauge-th" lang="th">{th}</div>
-    </div>
-  );
-}
 
 /**
  * Bilingual chip. English is the primary, Thai sits underneath in the

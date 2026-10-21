@@ -12,7 +12,10 @@ import {
   filterRecords,
   findToUrl,
   findFromUrl,
+  toCsv,
   ALL_PROVINCES,
+  CERT_ANY,
+  CERT_VALID,
   STAR_ANY,
   STAR_FIVE,
   STAR_FOUR_FIVE,
@@ -290,4 +293,67 @@ test('findFromUrl: invalid sort values fall back to the default', () => {
   assert.equal(back.sort, DEFAULT_SORT);
   const backName = findFromUrl('?view=find&sort=name');
   assert.equal(backName.sort, SORT_NAME);
+});
+
+/* ── the certified filter ─────────────────────────────────────────────────
+ * The registry carries an OPC certificate date for 11.2% of records. A
+ * buyer who has to file a certificate needs the valid ones, not the ones
+ * that merely have a certificate on file. */
+
+test('filterRecords: the cert filter keeps only records whose certificate is valid', () => {
+  const records = [
+    r({ producerName: 'valid', certStatus: 'valid' }),
+    r({ producerName: 'expired', certStatus: 'expired' }),
+    r({ producerName: 'none', certStatus: null }),
+  ];
+  const out = filterRecords(records, { cert: CERT_VALID });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].producerName, 'valid');
+});
+
+test('filterRecords: the cert filter does not touch an unfiltered search', () => {
+  const records = [
+    r({ producerName: 'valid', certStatus: 'valid' }),
+    r({ producerName: 'expired', certStatus: 'expired' }),
+    r({ producerName: 'none', certStatus: null }),
+  ];
+  assert.equal(filterRecords(records, {}).length, 3);
+  assert.equal(filterRecords(records, { cert: CERT_ANY }).length, 3);
+});
+
+test('findToUrl / findFromUrl: the cert filter round-trips through the link', () => {
+  const url = findToUrl({ query: '', provinceCode: ALL_PROVINCES, stars: STAR_ANY, onlyContactable: false, cert: CERT_VALID, sort: DEFAULT_SORT });
+  assert.match(url, /cert=valid/);
+  const back = findFromUrl(url.split('?')[1]);
+  assert.equal(back.cert, CERT_VALID);
+});
+
+test('findFromUrl: an unknown cert value falls back to any rather than filtering silently', () => {
+  const back = findFromUrl('cert=bogus');
+  assert.equal(back.cert, CERT_ANY);
+});
+
+/* ── the CSV export ─────────────────────────────────────────────────────── */
+
+test('toCsv: the header names the registry fields and the body carries one row per record', () => {
+  const rows = [
+    r({ producerName: 'กลุ่มเครื่องประดับ', phone: '0812345678', stars: 5, provinceEn: 'Chiang Mai', certStatus: 'valid' }),
+    r({ producerName: 'Second', phone: '0899999999' }),
+  ];
+  const csv = toCsv(rows);
+  const [head, ...body] = csv.trim().split('\n');
+  assert.match(head, /^producer_name,product,category,stars,phone,province/);
+  assert.equal(body.length, 2);
+  assert.match(body[0], /0812345678/);
+  assert.match(body[1], /Second/);
+});
+
+test('toCsv: a producer name with a comma survives the spreadsheet', () => {
+  const csv = toCsv([r({ producerName: 'A, B Ltd', phone: '0812345678' })]);
+  assert.match(csv, /"A, B Ltd"/);
+});
+
+test('toCsv: an empty result set produces an empty string, not a header-only file', () => {
+  assert.equal(toCsv([]), '');
+  assert.equal(toCsv(null), '');
 });

@@ -67,7 +67,7 @@ function exportList(rows, filename) {
   URL.revokeObjectURL(url);
 }
 
-export default function Champions({ onSelectProvince }) {
+export default function Champions({ onSelectProvince, national, records }) {
   const [data, setData] = useState(null);
   const [standards, setStandards] = useState([]);
   const [error, setError] = useState(null);
@@ -124,7 +124,9 @@ export default function Champions({ onSelectProvince }) {
   return (
     <div className="champions">
       <p className="ch-lede">
-        Across 154,078 records, 13,939 have star ratings and 8,869 have contact information.
+        Across {(records ?? data.counts.rowsScanned ?? 0).toLocaleString()} records,{' '}
+        {(national?.stars?.graded ?? 0).toLocaleString()} carry star ratings and{' '}
+        {national?.completeness?.withContact ?? '—'}% carry contact information.
         Only <strong>{totalChampions}</strong> carry both 4-5 stars and contact details — making this
         the direct starting point for verified procurement.
       </p>

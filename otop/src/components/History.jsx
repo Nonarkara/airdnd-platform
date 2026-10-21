@@ -140,7 +140,7 @@ const TIMELINE = [
     year: 2025,
     title: 'one³ reads the registry as one closed information package',
     th: 'one³ อ่านทะเบียนเป็นชุดข้อมูลเดียว',
-    body: 'The atlas you are reading now joins 1,294 cached resources from data.go.th, attests 154,078 producer records, joins them across 77 province shards, cross-corroborates against multiple agencies (68.7% of records are attested by more than one), and publishes the gaps as loudly as the finds. The National Story chapter is the latest in the series; the operational fix — adding phone, price, coordinates to the registration form — is the next.',
+    body: 'The atlas you are reading now joins 1,294 cached resources from data.go.th, attests {records} producer records, joins them across 77 province shards, cross-corroborates against multiple agencies (68.7% of records are attested by more than one), and publishes the gaps as loudly as the finds. The National Story chapter is the latest in the series; the operational fix — adding phone, price, coordinates to the registration form — is the next.',
     cite: 'one³ · otop-registry build pipeline',
   },
 ];
@@ -233,9 +233,11 @@ function ScorePart({ label, value, en, th }) {
   );
 }
 
-export default function History() {
+export default function History({ meta }) {
   const [photoIdx, setPhotoIdx] = useState(0);
   const photo = PHOTOS[photoIdx];
+  // The build's own record count, so the sentence cannot drift from the data.
+  const records = (meta?.counts?.recordsAfterMerge ?? 0).toLocaleString();
   const totalYears = useMemo(() => {
     const ys = TIMELINE.map((t) => t.year);
     return Math.max(...ys) - Math.min(...ys) + 1;
@@ -248,7 +250,6 @@ export default function History() {
           <span>one³ · history</span>
           <span>2001–{Math.max(...TIMELINE.map((t) => t.year))} · {TIMELINE.length} chapters</span>
         </div>
-        <h1 className="hs-h">OTOP: {totalYears} years · the seed, the boom, the silence, the platform.</h1>
         <p className="hs-sub">หนึ่งตำบล หนึ่งผลิตภัณฑ์ · from Oita, Japan to every tambon in Thailand</p>
         <p className="hs-byline">Architect: Dr Non Arkaraprasertkul · Engineering: Mavis · Sources cited inline</p>
       </header>
@@ -311,7 +312,7 @@ export default function History() {
                   <span className="hs-tl-en">{t.title}</span>
                   <span className="hs-tl-th" lang="th">{t.th}</span>
                 </h3>
-                <P>{t.body}</P>
+                <P>{t.body.replace('{records}', records)}</P>
                 <Cite>{t.cite}</Cite>
               </div>
             </li>

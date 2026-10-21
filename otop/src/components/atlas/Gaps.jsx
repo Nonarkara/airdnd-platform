@@ -14,7 +14,7 @@ export default function Gaps({ gaps, go }) {
   const { funnel, darkness, desert, energy, silentTambons, temporal, standardsGap, revenueGap } = gaps;
 
   return (
-    <Chapter id="gaps" q="What is missing — and what to do?" title="Gaps" th="ช่องว่างที่ต้องอุด">
+    <Chapter id="gaps" title="Gaps" th="ช่องว่างที่ต้องอุด">
       {/* ── 1 · the funnel ─────────────────────────────────────────── */}
       <p className="t-note">
         <strong>{n(funnel.distinctTitles)}</strong> dataset titles were cached from data.go.th.

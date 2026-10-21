@@ -19,14 +19,15 @@ import Universe from './atlas/Universe.jsx';
  * rank above it is blank.
  */
 const CHAPTERS = [
-  { id: 'findings', label: 'Findings',  th: 'สิ่งที่ข้อมูลบอก',  q: 'What does the data say?',          credit: 'Photo: Tony Wu / Pexels' },
-  { id: 'domain',   label: 'Geography', th: 'ภูมิศาสตร์',         q: 'What is made where?',              credit: 'Photo: Pexels' },
-  { id: 'reach',    label: 'Reach',     th: 'การเข้าถึง',           q: 'Who can be contacted?',            credit: 'Photo: Pexels' },
-  { id: 'money',    label: 'Money',     th: 'เงิน',                 q: 'Where does the money move?',       credit: 'Photo: María Merlin / Pexels' },
-  { id: 'record',   label: 'Record',    th: 'สภาพทะเบียน',          q: 'What is the registry\'s condition?', credit: 'Photo: María Merlin / Pexels' },
-  { id: 'gaps',     label: 'Gaps',      th: 'ช่องว่าง',               q: 'What is missing — and what to do?', credit: 'Photo: María Merlin / Pexels' },
-  { id: 'universe', label: 'Universe',  th: 'จักรวาล',                q: 'How does everything connect?', credit: 'Photo: Tony Wu / Pexels' },
+  { id: 'findings', label: 'Findings',  th: 'สิ่งที่ข้อมูลบอก',  q: 'What does the data say?',           qth: 'ข้อมูลบอกอะไร',                credit: 'Photo: Tony Wu / Pexels' },
+  { id: 'domain',   label: 'Geography', th: 'ภูมิศาสตร์',         q: 'What is made where?',               qth: 'ผลิตอะไร ที่ไหน',               credit: 'Photo: Pexels' },
+  { id: 'reach',    label: 'Reach',     th: 'การเข้าถึง',           q: 'Who can be contacted?',             qth: 'ติดต่อใครได้',                credit: 'Photo: Pexels' },
+  { id: 'money',    label: 'Money',     th: 'เงิน',                 q: 'Where does the money move?',        qth: 'เงินไหลไปทางไหน',             credit: 'Photo: María Merlin / Pexels' },
+  { id: 'record',   label: 'Record',    th: 'สภาพทะเบียน',          q: "What is the registry's condition?", qth: 'สภาพของทะเบียนเป็นอย่างไร', credit: 'Photo: María Merlin / Pexels' },
+  { id: 'gaps',     label: 'Gaps',      th: 'ช่องว่าง',               q: 'What is missing — and what to do?', qth: 'อะไรหายไป และจะทำอย่างไร', credit: 'Photo: María Merlin / Pexels' },
+  { id: 'universe', label: 'Universe',  th: 'จักรวาล',                q: 'How does everything connect?',      qth: 'ทุกอย่างเชื่อมกันอย่างไร',  credit: 'Photo: Tony Wu / Pexels' },
 ];
+
 
 /** Read the active tab from the URL on first paint, defaulting to findings. */
 function tabFromUrl() {
@@ -73,14 +74,17 @@ export default function Atlas({ insights, onSelectProvince }) {
         ))}
       </nav>
 
-      {/* Per-tab festival banner with the question that tab answers. */}
+      {/* Per-tab banner. It asks the chapter's question; the chapter below
+          it carries the name. Nothing on the page says either thing twice. */}
       {(() => {
-        const current = CHAPTERS.find((c) => c.id === tab) ?? CHAPTERS[0];
+        const index = Math.max(0, CHAPTERS.findIndex((c) => c.id === tab));
+        const current = CHAPTERS[index] ?? CHAPTERS[0];
+        const n = index + 1;
         return (
           <div className="atlas-tab-banner" data-tab={current.id}>
-            <p className="atlas-tab-q">{current.q}</p>
-            <h2 className="atlas-tab-h">{current.label}</h2>
-            <p className="atlas-tab-th">{current.th}</p>
+            <p className="atlas-tab-q">Chapter {n} · บทที่ {n}</p>
+            <h2 className="atlas-tab-h">{current.q}</h2>
+            <p className="atlas-tab-th">{current.qth}</p>
             <span className="atlas-tab-credit">{current.credit}</span>
           </div>
         );

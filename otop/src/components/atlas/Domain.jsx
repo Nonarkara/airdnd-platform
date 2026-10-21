@@ -31,7 +31,7 @@ export default function Domain({ national, byRegion, byProvince = [], regionIden
   const exploreLabel = catOptions.find((c) => c.id === exploreCat);
 
   return (
-    <Chapter id="domain" q="What is made where?" title="Domain" th="ผลิตภัณฑ์">
+    <Chapter id="domain" title="Domain" th="ผลิตภัณฑ์">
       {/* ── Category × geography explorer (all 77) ──────────────────────── */}
       {byProvince.length > 0 && catOptions.length > 0 && (
         <>

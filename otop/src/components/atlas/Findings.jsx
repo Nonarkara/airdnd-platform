@@ -38,7 +38,7 @@ const FIND_LINKS = {
 export default function Findings({ findings }) {
   if (!findings.length) return null;
   return (
-    <Chapter id="findings" q="What does the data say?" title="Findings" th="สิ่งที่ข้อมูลบอก">
+    <Chapter id="findings" title="Findings" th="สิ่งที่ข้อมูลบอก">
       <section className="atlas-findings" aria-label="Headline findings">
         <ol className="atlas-findings-list">
           {findings.map((f) => {
