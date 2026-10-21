@@ -36,7 +36,7 @@ export default function RequirementPanel({ requirement, onChange, lens, province
         </div>
       </div>
 
-      <div className="filters">
+      <div className="filters" data-lens={lens}>
         <div className="field">
           <label htmlFor="q">Search · ค้นหา</label>
           <input
@@ -99,29 +99,32 @@ export default function RequirementPanel({ requirement, onChange, lens, province
         )}
 
         <div className="field checks">
-          <label>
-            <input
-              type="checkbox" checked={requirement.requireSignal}
-              onChange={(event) => set({ requireSignal: event.target.checked })}
-            />
-            {' '}Hide name-only registrations
-          </label>
-          <label>
-            <input
-              type="checkbox" checked={requirement.requireContact}
-              onChange={(event) => set({ requireContact: event.target.checked })}
-            />
-            {' '}Contactable only
-          </label>
-          {lens === 'b2b' && (
+          <span className="field-label">Narrow the result · จำกัดผลลัพธ์</span>
+          <div className="check-row">
             <label>
               <input
-                type="checkbox" checked={requirement.requireCorroborated}
-                onChange={(event) => set({ requireCorroborated: event.target.checked })}
+                type="checkbox" checked={requirement.requireSignal}
+                onChange={(event) => set({ requireSignal: event.target.checked })}
               />
-              {' '}Corroborated by 2+ agencies
+              {' '}Hide name-only registrations
             </label>
-          )}
+            <label>
+              <input
+                type="checkbox" checked={requirement.requireContact}
+                onChange={(event) => set({ requireContact: event.target.checked })}
+              />
+              {' '}Contactable only
+            </label>
+            {lens === 'b2b' && (
+              <label>
+                <input
+                  type="checkbox" checked={requirement.requireCorroborated}
+                  onChange={(event) => set({ requireCorroborated: event.target.checked })}
+                />
+                {' '}Corroborated by 2+ agencies
+              </label>
+            )}
+          </div>
         </div>
       </div>
     </div>

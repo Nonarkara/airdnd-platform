@@ -75,3 +75,6 @@ otop/public/media/provinces/img/
 .worktrees/
 otop-app/
 data/
+
+# The spatial-law gate renders these; they are inputs, not artefacts.
+design/spatial-snapshots/

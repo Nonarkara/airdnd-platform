@@ -39,7 +39,6 @@ export default function MatchRows({ matches, limit, onSelectProvince }) {
   return (
     <div className="rows">
       <div className="row match-row row-hd" aria-hidden="true">
-        <span className="t-rail" />
         <span>Fit</span>
         <span>Product · ผลิตภัณฑ์</span>
         <span>Producer · ผู้ผลิต</span>
@@ -52,14 +51,15 @@ export default function MatchRows({ matches, limit, onSelectProvince }) {
 
       {matches.slice(0, limit).map(({ record, score, components }) => (
         <article className="row match-row" key={record.identityKey} data-rail={railOf(record)}>
-          <span className="t-rail" />
           <span className="c-score" title={why(components)}>
             <span className="score-n">{score.toFixed(0)}</span>
             <span className="score-track"><span className="score-fill" style={{ width: `${score}%` }} /></span>
           </span>
 
-          <span className="c-name">{record.productName ?? record.producerName ?? '—'}</span>
-          <span className="c-producer">{record.producerName ?? '—'}</span>
+          <span className="c-name" title={record.productName ?? record.producerName ?? ''}>
+            {record.productName ?? record.producerName ?? '—'}
+          </span>
+          <span className="c-producer" title={record.producerName ?? ''}>{record.producerName ?? '—'}</span>
 
           <span className="c-cat">
             {record.category ? (

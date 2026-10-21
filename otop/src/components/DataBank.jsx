@@ -59,22 +59,24 @@ export default function DataBank() {
   return (
     <div className="bank-wrap">
       <div className="bank-shelves">
+        <div className="bank-shelf-strip">
+          {groups.map((g) => (
+            <button
+              key={g.id} type="button" className="reset bank-shelf"
+              data-active={searched ? '0' : ((active?.id === g.id) ? '1' : '0')}
+              onClick={() => { setShelf(g.id); setQuery(''); }}
+            >
+              <span className="bank-shelf-n">{g.count}</span>
+              <span className="bank-shelf-t">{g.en}</span>
+              <span className="bank-shelf-th" lang="th">{g.th}</span>
+            </button>
+          ))}
+        </div>
         <input
           type="search" className="bank-search" placeholder="Search 726 datasets…"
           value={query} onChange={(e) => setQuery(e.target.value)}
           aria-label="Search datasets"
         />
-        {groups.map((g) => (
-          <button
-            key={g.id} type="button" className="reset bank-shelf"
-            data-active={searched ? '0' : ((active?.id === g.id) ? '1' : '0')}
-            onClick={() => { setShelf(g.id); setQuery(''); }}
-          >
-            <span className="bank-shelf-n">{g.count}</span>
-            <span className="bank-shelf-t">{g.en}</span>
-            <span className="bank-shelf-th" lang="th">{g.th}</span>
-          </button>
-        ))}
         <p className="t-note">
           {bank.totals.discovered} discovered · {bank.totals.pulled} pulled ·{' '}
           {bank.totals.rowsIn.toLocaleString()} rows read.

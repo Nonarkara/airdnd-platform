@@ -302,7 +302,25 @@ a { color: inherit; }
 .meter-note { margin-top: .375rem; font-size: 11px; color: var(--ink-4); }
 
 /* ── filters ──────────────────────────────────────────────────────────────── */
-.filters { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-end; margin-bottom: 1.25rem; }
+/* A filter row that wraps leaves an orphan on the last line — at 1024px the
+   narrowing switches were stranded alone under the four fields. The fields
+   are therefore a grid with one column per field, so the row cannot break,
+   and the switches sit on their own full-width line below it. The search
+   field takes two shares, because a search box at one share of five is a
+   search box you cannot read. */
+.filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+  align-items: end;
+  margin-bottom: 1.25rem;
+}
+.filters[data-lens='b2b'] { grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr)); }
+.filters .field select, .filters .field input:not([type='checkbox']) { min-width: 0; width: 100%; }
+.filters .field.checks { grid-column: 1 / -1; }
+@media (max-width: 900px) {
+  .filters, .filters[data-lens='b2b'] { grid-template-columns: minmax(0, 1fr); }
+}
 .field { display: flex; flex-direction: column; gap: .25rem; }
 .field label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
 .field select, .field input {
@@ -331,7 +349,20 @@ a { color: inherit; }
 }
 .c-code { font-family: var(--font-mono); font-size: 12px; color: var(--ink-4); font-variant-numeric: tabular-nums; }
 .c-name { font-weight: 500; overflow-wrap: anywhere; }
-.c-producer { color: var(--ink-2); font-size: 13px; overflow-wrap: anywhere; }
+
+/* A data row has a bounded height. A 28-character Thai producer name in a
+   narrow column ran to six lines and made the row 152px tall, which left
+   the other seven cells stranded at the top of it. Two lines and an
+   ellipsis: the whole name is in the cell's title, in the dossier, and in
+   the export. */
+.c-name, .c-producer {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.c-producer { color: var(--ink-2); font-size: 13px; }
 .c-cat { font-size: 12px; color: var(--ink-2); }
 .c-cat .inferred { color: var(--ink-4); font-style: italic; }
 .c-stars { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
@@ -376,8 +407,12 @@ a { color: inherit; }
 .state h1 { font-family: var(--font-display); font-size: 1.25rem; margin: 0 0 .5rem; }
 .state.err { border-left: 3px solid var(--alert); }
 
-/* Belt and braces: nothing may widen the document. */
-html, body { overflow-x: hidden; }
+/* Nothing here hides an overflow. A global `overflow-x: hidden` on the body
+   does not stop the document from getting too wide — it stops the READER
+   from seeing that it did, and it makes the spatial gate's sideways-scroll
+   rule impossible to trigger, so a real overflow would ship unnoticed.
+   Wide content scrolls inside its own container (`.pscroll`); the document
+   itself must simply never get wider than the window. */
 
 @media (max-width: 900px) {
   .row { grid-template-columns: 1fr 1fr; gap: .25rem 1rem; }
@@ -392,7 +427,13 @@ html, body { overflow-x: hidden; }
   display: block; font-size: 11px; letter-spacing: .08em;
   text-transform: uppercase; color: var(--ink-3); margin-bottom: .5rem;
 }
-.chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+.chips {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: .5rem; margin-bottom: 1.25rem;
+}
+@media (max-width: 900px) { .chips { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .chips { grid-template-columns: 1fr; } }
 .chip {
   font: inherit; font-size: 12px; color: var(--ink-2);
   background: var(--surface); border: 1px solid var(--line-2);
@@ -403,7 +444,11 @@ html, body { overflow-x: hidden; }
 .chip[aria-pressed='true'] {
   background: var(--ink); color: var(--bg); border-color: var(--ink);
 }
-.field.checks { flex-direction: column; gap: .375rem; justify-content: flex-end; }
+.field.checks { gap: .375rem; justify-content: flex-end; }
+.field.checks > .field-label { margin-bottom: 0; }
+/* The three switches are peers, so they are laid out as peers — a grid, not
+   a wrapping row, because a wrapping row leaves the last switch alone. */
+.check-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .25rem 1.5rem; }
 .field.checks label {
   font-size: 12px; color: var(--ink-2); text-transform: none; letter-spacing: 0;
   display: flex; align-items: center; gap: .375rem; cursor: pointer;
@@ -451,11 +496,24 @@ html, body { overflow-x: hidden; }
    score is the thing the reader must not miss (baggage-tag hierarchy, dashboard
    mapping: destination = first column, huge). */
 .row.match-row {
-  grid-template-columns: var(--tag-rail-width) 4.5rem minmax(0, 2.1fr) minmax(0, 1.3fr) 7.5rem 5rem minmax(0, 1fr) 8.5rem 3rem;
+  position: relative;
+  /* Eight columns, and the place needs room: at 901px the subdistrict line
+     was squeezed into 57px and wrapped to three lines, which made the row
+     123px tall and stranded the other six cells at the top of it. The
+     province and its subdistrict get a share of the flexible space. */
+  grid-template-columns: 3.75rem minmax(0, 1.9fr) minmax(0, 1.3fr) 7rem 4.5rem minmax(0, 1.6fr) 8rem 3rem;
+  padding-left: calc(var(--tag-rail-width) + .75rem);
 }
-/* Full-bleed rail: it must run the height of the row, past the row padding. */
-.row.match-row .t-rail { align-self: stretch; margin-block: -.875rem; }
-.row.match-row.row-hd .t-rail { margin-block: -.5rem; background: transparent; }
+/* Full-bleed rail: it must run the height of the row, past the row padding.
+   It is the row's ground, drawn by the row itself. As a child element it
+   spanned every line of the row, which made every other cell in the row
+   look like it was floating above a hole. */
+.row.match-row::before {
+  content: ''; position: absolute; inset-block: 0; left: 0;
+  width: var(--tag-rail-width);
+  background: var(--tag-rail, var(--tag-ink));
+}
+.row.match-row.row-hd::before { background: transparent; }
 .c-score { display: block; }
 .score-n {
   font-family: var(--font-mono); font-size: 1.5rem; line-height: 1;
@@ -476,13 +534,8 @@ html, body { overflow-x: hidden; }
   /* On a phone the rail leaves the grid entirely and is painted on the row's
      edge, so it stays full-bleed without taking a column away from the content. */
   .row.match-row {
-    position: relative;
     grid-template-columns: 1fr 1fr;
     padding-left: calc(var(--tag-rail-width) + .5rem);
-  }
-  .row.match-row .t-rail {
-    position: absolute; inset-block: 0; left: 0;
-    width: var(--tag-rail-width); margin: 0;
   }
   .row.match-row .c-name, .row.match-row .c-producer, .row.match-row .c-contact { grid-column: 1 / -1; }
   .basins { grid-template-columns: 1fr 1fr; }
@@ -771,11 +824,10 @@ html, body { overflow-x: hidden; }
 
 /* Dossier Craft Heritage */
 .dossier-craft { margin: 1rem 0; border: 1px solid var(--rule-2, currentColor); background: var(--ground-alt, rgba(0,0,0,0.25)); }
-.dossier-craft-banner { display: grid; grid-template-columns: minmax(180px, 300px) 1fr; gap: 0; }
-@media (max-width: 640px) { .dossier-craft-banner { grid-template-columns: 1fr; } }
-.dossier-craft-media { height: 160px; overflow: hidden; background: #000; }
+.dossier-craft-banner { display: block; }
+.dossier-craft-media { height: 240px; overflow: hidden; background: #000; }
 .dossier-craft-img { width: 100%; height: 100%; object-fit: cover; }
-.dossier-craft-body { padding: 0.85rem 1.1rem; display: flex; flex-direction: column; justify-content: center; gap: 0.3rem; }
+.dossier-craft-body { padding: 0.85rem 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; max-width: 78ch; }
 .dossier-craft-title { margin: 0; font: 600 1.05rem var(--font-thai, inherit); }
 .dossier-craft-note { margin: 0; font-size: 0.88rem; opacity: 0.85; line-height: 1.4; }
 .dossier-craft-meta { margin: 0; font-size: 0.75rem; opacity: 0.65; font-family: var(--font-mono, monospace); }
@@ -1130,12 +1182,33 @@ html, body { overflow-x: hidden; }
 .cat-explore-th { font-size: 0.78em; opacity: 0.8; }
 
 /* Data Bank — one-third shelves, two-thirds detail. Stacks on a phone. */
-.bank-wrap { display: grid; grid-template-columns: minmax(11rem, 1fr) 2fr; gap: 1.5rem; align-items: start; }
+/* The shelves used to sit in a narrow column beside an 8,000px list, and
+   that column left 8,108px of nothing under it. The shelves are a filter,
+   not a sidebar: they belong above the list they filter. Four columns
+   above the phone breakpoint, one below it — and never a last row with a
+   single shelf stranded in it. */
+.bank-wrap { display: block; }
+.bank-shelves { margin-bottom: 1.5rem; }
+.bank-shelf-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line-2);
+  margin-bottom: 0.75rem;
+}
+@media (max-width: 720px) { .bank-shelf-strip { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .bank-wrap { grid-template-columns: 1fr; } }
 .bank-search { width: 100%; margin-bottom: 0.75rem; padding: 0.4rem 0.6rem; font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; }
-.bank-shelf { display: grid; grid-template-columns: 3rem 1fr; gap: 0 0.6rem; width: 100%; text-align: left; padding: 0.45rem 0; border-bottom: 1px solid currentColor; }
+.bank-shelf {
+  display: grid; grid-template-columns: 2.75rem 1fr; gap: 0 0.6rem;
+  width: 100%; text-align: left;
+  padding: 0.55rem 0.75rem 0.5rem 0;
+  border-bottom: 1px solid currentColor; border-right: 1px solid var(--line-2);
+}
+.bank-shelf-strip .bank-shelf:nth-child(4n),
+.bank-shelf-strip .bank-shelf:last-child { border-right: 0; }
+@media (max-width: 720px) { .bank-shelf-strip .bank-shelf { border-right: 0; } }
 .bank-shelf[data-active="1"] { font-weight: 700; }
-.bank-shelf-n { grid-row: span 2; font-family: var(--font-display); font-size: 1.25rem; }
+.bank-shelf-n { grid-row: span 2; font-family: var(--font-display); font-size: 1.25rem; font-variant-numeric: tabular-nums; }
 .bank-shelf-t { font-weight: 600; }
 .bank-shelf-th { font-size: 0.8em; opacity: 0.75; }
 .bank-row { padding: 0.5rem 0; border-bottom: 1px solid currentColor; }
@@ -1168,22 +1241,11 @@ html, body { overflow-x: hidden; }
   margin-bottom: 1.5rem;
 }
 .find-head-main { min-width: 0; }
-.find-stamp {
-  margin: 0; text-align: right;
-  font-family: var(--font-mono, monospace);
-  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink-3, currentColor);
-  border-top: 2px solid var(--line, currentColor);
-  padding-top: .4rem;
-  white-space: nowrap;
-}
-.find-stamp { display: flex; flex-direction: column; align-items: flex-end; gap: .1rem; }
-.find-stamp .bi { display: inline-flex; align-items: baseline; gap: .45rem; justify-content: flex-end; }
-.find-stamp-src { opacity: .6; text-transform: none; letter-spacing: .04em; }
 @media (max-width: 900px) {
   .find-head { grid-template-columns: 1fr; }
-  .find-stamp { text-align: left; justify-self: start; }
+  .find-stamp { text-align: left; align-items: flex-start; }
   .find-stamp .bi { justify-content: flex-start; }
+  .find-panel { margin-top: .5rem; }
 }
 .find-h {
   font-family: var(--font-display, inherit);
@@ -1290,25 +1352,43 @@ html, body { overflow-x: hidden; }
 .find-toggle input { width: 1.05rem; height: 1.05rem; flex: 0 0 auto; margin: 0; }
 .find-toggle .bi-th { font-size: .85em; }
 
-/* ── the registry, in one line ───────────────────────────────────────────── */
-.find-stats {
-  font-size: 0.85rem;
+/* ── the registry panel: the right column of the masthead ───────────────────
+   The numbers a reader needs before they read the list: how big the
+   registry is, how much of it can be called, how good it is, how much of
+   it is certified. A stamp alone left 130px of nothing under it. */
+.find-panel {
+  border-top: 2px solid var(--line, currentColor);
+  padding-top: .5rem;
+  min-width: 0;
+}
+.find-stamp {
+  margin: 0 0 .5rem; text-align: right;
+  font-family: var(--font-mono, monospace);
+  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
   color: var(--ink-3, currentColor);
-  margin: 0 0 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: .3rem .5rem;
+  white-space: nowrap;
 }
-.find-stats strong {
+.find-stamp { display: flex; flex-direction: column; align-items: flex-end; gap: .1rem; }
+.find-stamp .bi { display: inline-flex; align-items: baseline; gap: .45rem; justify-content: flex-end; }
+.find-stamp-src { opacity: .6; text-transform: none; letter-spacing: .04em; }
+.find-panel-stats { margin: 0; display: grid; gap: .1rem; }
+.find-panel-stats > div {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem; border-bottom: 1px solid var(--line, currentColor);
+  padding: .2rem 0;
+}
+.find-panel-stats dt { font-size: .8rem; color: var(--ink-2, currentColor); }
+.find-panel-stats dt .bi { display: inline-flex; }
+.find-panel-stats dt .bi-th { font-size: .85em; color: var(--ink-3, currentColor); }
+.find-panel-stats dd {
+  margin: 0;
   font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 1.05rem;
-  color: var(--ink, currentColor);
-  font-weight: 700;
+  font-size: .95rem; font-weight: 700;
   font-variant-numeric: tabular-nums;
+  color: var(--ink, currentColor);
 }
-.find-stats .bi { display: inline-flex; }
-.find-stats-sep { opacity: .35; }
+.find-panel-load { margin: 0; font-size: .8rem; color: var(--ink-3, currentColor); }
+.find-panel-load .bi { display: inline-flex; }
 .find-bar {
   flex: 0 0 160px;
   height: 4px;
@@ -1339,6 +1419,7 @@ html, body { overflow-x: hidden; }
 .callout-body {
   margin: 0; font-size: .95rem; line-height: 1.4; color: var(--ink, currentColor);
   max-width: 62ch;
+  display: flex; flex-direction: column; align-items: flex-start; gap: .2rem;
 }
 .callout-body .bi { display: inline-flex; }
 .callout-body .bi-th { font-size: .8em; }
@@ -1354,12 +1435,19 @@ html, body { overflow-x: hidden; }
 .callout-link:hover { color: var(--silk, #a02050); }
 
 /* ── starter chips ───────────────────────────────────────────────────────── */
+/* The label used to be a flex sibling of the chip grid, so on a narrow
+   screen the two shared a line: the label sat on the baseline of the grid's
+   first row and left 138px of empty space beneath it. A grid puts the label
+   on its own line when the chips need one, and beside them when they don't. */
 .find-tries {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 0.6rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: baseline;
+  gap: 0.4rem 0.6rem;
   margin: 0 0 1rem;
+}
+@media (max-width: 900px) {
+  .find-tries { grid-template-columns: minmax(0, 1fr); }
 }
 .find-tries-lbl {
   font-size: 0.78rem;
@@ -1371,12 +1459,18 @@ html, body { overflow-x: hidden; }
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  /* Sized to their own text. Four equal columns would make the short
+     suggestions hollow boxes with a third of their width empty — a frame
+     that promises something the frame does not contain. */
+  grid-template-columns: repeat(4, minmax(0, max-content));
+  justify-content: start;
   gap: 0.3rem 0.4rem;
 }
+@media (max-width: 900px) { .find-tries-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .find-tries-list { grid-template-columns: 1fr; } }
 .find-tries-list a {
-  display: inline-block;
+  display: block;
   padding: 0.25rem 0.65rem;
   font-size: 0.78rem;
   border: 1px solid var(--line, currentColor);
@@ -1660,7 +1754,13 @@ html, body { overflow-x: hidden; }
   }
   .find-row-phone { justify-self: start; text-align: left; }
   .find-row-phone .bi { justify-content: flex-start; }
-  .find-row-meta { font-size: 0.78rem; }
+  .find-row-meta {
+    font-size: 0.78rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.3rem 0.6rem;
+  }
+  .find-row-regid { grid-column: 1 / -1; justify-self: end; }
   .find-row-name { font-size: 1rem; }
   .phone-num { font-size: 1.05rem; }
   .phone-action { display: none; }
@@ -1777,16 +1877,14 @@ html, body { overflow-x: hidden; }
  */
 .method {
   display: grid;
-  grid-template-columns: minmax(0, 34rem) minmax(16rem, 1fr);
+  grid-template-columns: minmax(0, 38rem) minmax(0, 1fr);
   gap: 2.5rem 3rem;
   align-items: start;
-  max-width: 62rem;
-  margin-inline: auto;
 }
 @media (max-width: 900px) { .method { grid-template-columns: 1fr; gap: 2rem; } }
 .method-prose p {
   margin: 0 0 1rem;
-  max-width: 66ch;
+  max-width: 70ch;
   line-height: 1.6;
 }
 .method-prose .prov { margin: 0 0 1.5rem; }

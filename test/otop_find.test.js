@@ -357,3 +357,35 @@ test('toCsv: an empty result set produces an empty string, not a header-only fil
   assert.equal(toCsv([]), '');
   assert.equal(toCsv(null), '');
 });
+
+/* ── the search box reaches the fields a buyer actually has ─────────────── */
+
+test('filterRecords: a search finds a record by its OTOP registration number', () => {
+  const records = [
+    r({ producerName: 'A', registrationId: '4066000072' }),
+    r({ producerName: 'B', registrationId: '4610000013' }),
+  ];
+  const out = filterRecords(records, { query: '4066000072' });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].producerName, 'A');
+});
+
+test('filterRecords: a search finds a province by its English name', () => {
+  const records = [
+    r({ producerName: 'A', provinceEn: 'Chiang Mai' }),
+    r({ producerName: 'B', provinceEn: 'Kalasin' }),
+  ];
+  const out = filterRecords(records, { query: 'chiang mai' });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].producerName, 'A');
+});
+
+test('filterRecords: a search finds a province by its Thai name', () => {
+  const records = [
+    r({ producerName: 'A', province: 'เชียงใหม่' }),
+    r({ producerName: 'B', province: 'กาฬสินธุ์' }),
+  ];
+  const out = filterRecords(records, { query: 'เชียงใหม่' });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].producerName, 'A');
+});

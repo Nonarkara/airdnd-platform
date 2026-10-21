@@ -1,0 +1,78 @@
+name: Spatial law gate
+
+# The gate measures the layout of the built site and compares it with a
+# recorded baseline. It runs the VENDORED instrument, byte for byte — the
+# point of a gate is that nobody can quietly soften it.
+#
+# The site is a single-page app, so the gate cannot load it and wait: an
+# iframe fires `load` before React has painted, and the instrument would
+# settle on an empty document and report zero findings. The snapshot step
+# renders each view in a real browser first and writes the result out as a
+# static page, which is what the gate then measures.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'otop/src/**'
+      - 'otop/index.html'
+      - 'otop/public/fonts/**'
+      - 'scripts/**'
+      - 'design/spatial-baseline.json'
+      - '.github/workflows/spatial.yml'
+  pull_request:
+    paths:
+      - 'otop/src/**'
+      - 'otop/index.html'
+      - 'otop/public/fonts/**'
+      - 'scripts/**'
+      - 'design/spatial-baseline.json'
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install the browser the snapshot step drives
+        run: npx playwright install --with-deps chromium
+
+      - name: Build the site
+        run: npx vite build --config vite.otop.config.js
+
+      - name: Serve the build
+        run: |
+          npx vite preview --config vite.otop.config.js --port 8080 --strictPort &
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8080/otop_index.json > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -sf http://localhost:8080/otop_index.json > /dev/null
+
+      - name: Render every view to a static page
+        # The snapshot also writes the built stylesheet where the instrument
+        # looks for it, so the sweep measures every width the CSS changes at
+        # — and not only the widths somebody remembered to list.
+        run: node scripts/otop-snapshot.mjs http://localhost:8080 design/spatial-snapshots
+
+      - name: Run the spatial gate
+        run: npm run spatial:gate
+
+      # A gate that has never failed proves nothing. The falsifier injects
+      # one real defect per mode into a copy of the site and checks the
+      # gate catches every one — then checks the clean copy still passes,
+      # so the gate is not simply always-failing.
+      - name: Falsify the gate
+        run: node scripts/spatial/spatial-falsify.mjs design/spatial-snapshots

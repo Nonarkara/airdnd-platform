@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 
 import { discoverFieldMap } from '../otop/core/field_map.js';
 import {
-  buildRecord, mergeRecords, buildCert, parseCertDate, certStatus,
+  buildRecord, mergeRecords, buildCert, parseCertDate, certStatus, dedupeCerts,
 } from '../otop/core/record.js';
 import CONFIG from '../otop.config.json' with { type: 'json' };
 
@@ -65,6 +65,42 @@ test('a certificate is provenance, never identity: shared cert alone merges noth
   const a = buildRecord(row({ producerName: 'กลุ่มหนึ่ง', province: 'บุรีรัมย์', certNumber: 'SAME' }), prov('ds1', 'r1'));
   const b = buildRecord(row({ producerName: 'กลุ่มสอง', province: 'เชียงใหม่', certNumber: 'SAME' }), prov('ds1', 'r2'));
   assert.equal(mergeRecords([a, b]).length, 2);
+});
+
+test('the same certificate filed twice is one certificate, and keeps the richer filing', () => {
+  // Two agencies file the same certificate: one carries the standard number,
+  // the other only the standard's name. Keyed on every field they are two
+  // certificates, and the dossier prints the same certificate twice.
+  const certs = dedupeCerts([
+    { number: '3188-159/417(ชม)', standardCode: null, standardTitle: 'CLOTH BAGS', issued: '2022-08-16', expires: '2025-08-15' },
+    { number: '3188-159/417(ชม)', standardCode: '417/2558', standardTitle: 'CLOTH BAGS', issued: '2022-08-16', expires: '2025-08-15' },
+  ]);
+  assert.equal(certs.length, 1);
+  assert.equal(certs[0].standardCode, '417/2558');
+  assert.equal(certs[0].standardTitle, 'CLOTH BAGS');
+});
+
+test('different certificates survive the dedup, and an unnumbered one is only itself when every field agrees', () => {
+  const certs = dedupeCerts([
+    { number: '454/623', standardCode: 'มผช.623/2547', standardTitle: 'งานประดับมุก', issued: '2024-06-21', expires: '2027-06-20' },
+    { number: '999/700', standardCode: 'มผช.700/2550', standardTitle: 'งานไม้', issued: '2024-01-01', expires: '2028-01-01' },
+    // Same number, later expiry: a different certificate, not a re-filing.
+    { number: '454/623', standardCode: 'มผช.623/2547', standardTitle: 'งานประดับมุก', issued: '2024-06-21', expires: '2028-01-01' },
+    { number: null, standardCode: null, standardTitle: 'งานถัก', issued: null, expires: null },
+    { number: null, standardCode: null, standardTitle: 'งานถัก', issued: null, expires: null },
+  ]);
+  assert.equal(certs.length, 4);
+  assert.deepEqual(certs.map((c) => c.number), ['454/623', '999/700', '454/623', null]);
+  // The unnumbered pair collapsed into one; the two 454/623 filings did not.
+  assert.equal(certs.filter((c) => c.standardTitle === 'งานถัก').length, 1);
+});
+
+test('the merge counts a twice-filed certificate once', () => {
+  const a = buildRecord(row({ producerName: 'กลุ่มผ้า', phone: '0812345678', certNumber: '3188-159/417(ชม)', certStandardTitle: 'CLOTH BAGS', certExpires: '2025-08-15' }), prov('ds1', 'r1'));
+  const b = buildRecord(row({ producerName: 'กลุ่มผ้า', phone: '0812345678', certNumber: '3188-159/417(ชม)', certStandardCode: '417/2558', certStandardTitle: 'CLOTH BAGS', certExpires: '2025-08-15' }), prov('ds2', 'r2'));
+  const [merged] = mergeRecords([a, b]);
+  assert.equal(merged.certs.length, 1);
+  assert.equal(merged.certs[0].standardCode, '417/2558');
 });
 
 test('field discovery maps the มผช. holder columns without touching the street number', () => {

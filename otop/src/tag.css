@@ -126,7 +126,16 @@
 .t-bar > .is-ink { background: var(--tag-reverse-ground); color: var(--tag-reverse-ink); }
 .t-bar > .is-hole { background: var(--tag-ground); color: var(--ink-3); }
 .t-bar > .is-mark { background: var(--accent); color: var(--tag-ink); }
-.t-legend { display: flex; flex-wrap: wrap; gap: var(--tag-space-2) var(--tag-space-4); margin-top: var(--tag-space-2); font-size: var(--tag-size-meta); letter-spacing: var(--tag-track-meta); text-transform: uppercase; color: var(--ink-2); }
+.t-legend {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--tag-space-2) var(--tag-space-4);
+  margin-top: var(--tag-space-2);
+  font-size: var(--tag-size-meta); letter-spacing: var(--tag-track-meta);
+  text-transform: uppercase; color: var(--ink-2);
+}
+@media (max-width: 900px) { .t-legend { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .t-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* ── the 77 province tags ────────────────────────────────────────────────── */
 .t-rows { border-top: 1px solid var(--tag-ink); }
@@ -230,6 +239,9 @@
 .atlas-lede-eyebrow { font-size: var(--tag-size-meta); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; color: var(--ink-3); margin-bottom: var(--tag-space-3); }
 .atlas-findings-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--tag-space-2); }
 .atlas-finding { display: grid; grid-template-columns: auto 1fr; gap: var(--tag-space-3); align-items: baseline; padding: var(--tag-space-2) 0; border-bottom: 1px solid var(--line-2); }
+@media (max-width: 720px) {
+  .atlas-finding { grid-template-columns: 1fr; gap: var(--tag-space-1); }
+}
 .atlas-finding-th { font-family: var(--font-text); font-size: var(--tag-size-context); color: var(--ink-2); white-space: nowrap; }
 .atlas-finding-text { font-size: var(--tag-size-context); }
 
@@ -292,7 +304,25 @@
 /* ── generic grid rows (districts, products) ─────────────────────────────── */
 .t-grid { border-top: 1px solid var(--tag-ink); }
 .t-grid-row { display: grid; grid-template-columns: minmax(0, 1fr) 5rem 5rem 5rem; gap: 0 var(--tag-space-3); align-items: center; min-height: 44px; padding: var(--tag-space-1) 0; border-bottom: 1px solid var(--line-2); }
-.t-grid-2 .t-grid-row { grid-template-columns: minmax(0, 1fr) 4rem; }
+.t-grid-2 .t-grid-row { grid-template-columns: minmax(0, 1fr) 6rem; }
+/* The standards table's second column holds a document link, not a number.
+   In the 6rem numeric column it spilled out of the table and off the page —
+   and the page's own overflow was hidden, so nothing said so. */
+.t-grid-std .t-grid-row { grid-template-columns: minmax(0, 1fr) minmax(0, 11rem); }
+
+/* The certificate table is prose, not a numeric column. In the 4rem number
+   column a standing sentence wrapped into four lines beside a 21px product
+   name, and the name sat stranded at the top of a 341px row. The standing
+   gets a wide, left-aligned cell; the producer keeps a fixed column. */
+.t-grid-cert .t-grid-row { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); }
+.t-grid-cert .t-cert-hd { text-align: left; }
+.t-cert-cell { display: block; text-align: left; font-size: var(--tag-size-context); color: var(--ink-2); line-height: 1.45; }
+.t-cert-std { color: var(--ink); }
+.t-cert-num { font-family: var(--font-mono); font-size: var(--tag-size-context); }
+.t-cert-state { color: var(--ink-3); }
+@media (max-width: 720px) {
+  .t-grid-cert .t-grid-row { grid-template-columns: minmax(0, 1fr); }
+}
 .t-grid-hd { background: var(--bg-2); font-size: var(--tag-size-meta); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; color: var(--ink-3); min-height: 0; padding: var(--tag-space-2) 0; }
 .t-more { margin-top: var(--tag-space-2); }
 .t-more > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-size: var(--tag-size-context); letter-spacing: var(--tag-track-context); text-transform: uppercase; color: var(--ink-2); }
@@ -328,13 +358,17 @@
   z-index: 5;
 }
 .atlas-tab {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
-  padding: var(--tag-space-3) var(--tag-space-4);
+  /* 12px of side padding, not 16: at 721px the seven chapters were 687px
+     wide in a 663px strip, so the seventh wrapped and sat alone on its own
+     row. The strip is one band — a chapter list that breaks is a chapter
+     list the reader has to re-read. */
+  padding: var(--tag-space-3);
   border: 0;
-  border-bottom: 3px solid transparent;
   background: transparent;
   color: var(--ink-2);
   font: inherit;
@@ -346,14 +380,16 @@
 .atlas-tab:hover { color: var(--ink-1); background: var(--bg-2); }
 .atlas-tab[data-active='1'] {
   color: var(--ink-1);
-  border-bottom-color: var(--accent);
   background: var(--tag-ground-strict);
 }
+.atlas-tab::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: transparent; }
+.atlas-tab[data-active='1']::after { background: var(--accent); }
 .atlas-tab-label { font-family: var(--font-text); font-size: var(--tag-size-context); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; }
 .atlas-tab-th { font-size: var(--tag-size-meta); color: var(--ink-3); }
 .atlas-tab[data-active='1'] .atlas-tab-th { color: var(--ink-2); }
 @media (max-width: 720px) {
   .atlas-tabs { flex-direction: column; }
-  .atlas-tab { border-bottom: 1px solid var(--line-2); border-left: 3px solid transparent; padding: var(--tag-space-2) var(--tag-space-3); min-height: 0; }
-  .atlas-tab[data-active='1'] { border-bottom-color: var(--line-2); border-left-color: var(--accent); }
+  .atlas-tab { border-bottom: 1px solid var(--line-2); padding: var(--tag-space-2) var(--tag-space-3); min-height: 0; }
+  .atlas-tab::after { left: 0; right: auto; width: 3px; height: 100%; bottom: 0; }
+  .atlas-tab[data-active='1']::after { background: var(--accent); }
 }

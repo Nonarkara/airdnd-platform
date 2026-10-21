@@ -96,11 +96,10 @@ function phoneHref(phone) {
  * Each chip encodes one of the buyer briefs the data can actually answer.
  */
 const TRIES = [
-  { en: '5★ silk in Chiang Mai', th: 'ผ้าไหม 5 ดาว เชียงใหม่', q: 'silk', p: 50, s: '5' },
-  { en: 'phone only',            th: 'เฉพาะที่มีเบอร์',            c: '1' },
-  { en: '4–5★ nationwide',       th: '4–5 ดาว ทั้งประเทศ',         s: '4-5' },
-  { en: 'น้ำผึ้ง',                th: 'น้ำผึ้ง',                       q: 'น้ำผึ้ง' },
-  { en: 'food & beverage',        th: 'อาหารและเครื่องดื่ม',           q: 'food' },
+  { en: '5★ silk',          th: 'ผ้าไหม 5 ดาว',              q: 'silk', s: '5' },
+  { en: 'phone only',       th: 'เฉพาะที่มีเบอร์',            c: '1' },
+  { en: 'certified & callable', th: 'มีใบรับรองและติดต่อได้', c: '1', cert: 'valid' },
+  { en: 'น้ำผึ้ง',           th: 'น้ำผึ้ง',                   q: 'น้ำผึ้ง' },
 ];
 
 export default function Find({ onOpenProvince }) {
@@ -302,18 +301,37 @@ export default function Find({ onOpenProvince }) {
             />
           </p>
         </div>
-        {/* The build stamp sits in the top-right corner of the masthead, the
-            way a publication dates itself. It anchors the right edge and
-            answers "how old is this" before the reader has to ask. */}
-        {meta?.builtAt && (
-          <p className="find-stamp">
-            <Bi
-              en={`Built ${formatBuiltAgo(meta.builtAt)}`}
-              th={`สร้างเมื่อ ${formatBuiltAgoTh(meta.builtAt)}`}
-            />
-            <span className="find-stamp-src">data.go.th</span>
-          </p>
-        )}
+        {/* The right column carries what the reader needs to judge the
+            list before they read it: how big the registry is, how much of
+            it can be called, and how old the build is. A stamp alone left
+            130px of nothing under it — a hole with one line in it. */}
+        <div className="find-panel">
+          {meta?.builtAt && (
+            <p className="find-stamp">
+              <Bi
+                en={`Built ${formatBuiltAgo(meta.builtAt)}`}
+                th={`สร้างเมื่อ ${formatBuiltAgoTh(meta.builtAt)}`}
+              />
+              <span className="find-stamp-src">data.go.th</span>
+            </p>
+          )}
+          {loading ? (
+            <p className="find-panel-load">
+              <Bi
+                en={`Loading ${loadProgress.done} of ${loadProgress.total} provinces…`}
+                th={`กำลังโหลด ${loadProgress.done} จาก ${loadProgress.total} จังหวัด…`}
+              />
+              <progress className="find-bar" value={loadProgress.done} max={loadProgress.total || 1} />
+            </p>
+          ) : (
+            <dl className="find-panel-stats">
+              <div><dt><Bi en="producers" th="ผู้ผลิต" /></dt><dd>{totalLoaded.toLocaleString()}</dd></div>
+              <div><dt><Bi en="with a phone" th="ที่มีเบอร์" /></dt><dd>{totalWithPhone.toLocaleString()}</dd></div>
+              <div><dt><Bi en="rated 5★" th="ระดับ 5 ดาว" /></dt><dd>{totalFiveStar.toLocaleString()}</dd></div>
+              <div><dt><Bi en="valid cert" th="ใบรับรองใช้ได้" /></dt><dd>{totalCertValid.toLocaleString()}</dd></div>
+            </dl>
+          )}
+        </div>
       </header>
 
       {/* The control row. One row at desktop, a deliberate 2-column stack
@@ -408,30 +426,6 @@ export default function Find({ onOpenProvince }) {
         </div>
       </div>
 
-      {/* What is in the registry, and how old it is. One line — the numbers
-          are the context for the list, not a set of competing cards. */}
-      {!loading && (
-        <p className="find-stats">
-          <strong>{totalLoaded.toLocaleString()}</strong> <Bi en="producers" th="ผู้ผลิต" />
-          <span className="find-stats-sep">·</span>
-          <strong>{totalWithPhone.toLocaleString()}</strong> <Bi en="with a phone" th="ที่มีเบอร์โทร" />
-          <span className="find-stats-sep">·</span>
-          <strong>{totalFiveStar.toLocaleString()}</strong> <Bi en="rated 5★" th="ระดับ 5 ดาว" />
-          <span className="find-stats-sep">·</span>
-          <strong>{totalCertValid.toLocaleString()}</strong> <Bi en="valid cert" th="ใบรับรองใช้ได้" />
-        </p>
-      )}
-
-      {loading && (
-        <p className="find-stats">
-          <Bi
-            en={`Loading ${loadProgress.done} of ${loadProgress.total} provinces…`}
-            th={`กำลังโหลด ${loadProgress.done} จาก ${loadProgress.total} จังหวัด…`}
-          />
-          <progress className="find-bar" value={loadProgress.done} max={loadProgress.total || 1} />
-        </p>
-      )}
-
       {/* The featured finding: the one number every visitor should walk away
           knowing. The contactability gap is the reason this site exists. */}
       {!loading && records && (
@@ -444,10 +438,10 @@ export default function Find({ onOpenProvince }) {
               en={`${pct(totalWithPhone, totalLoaded)}% of registered producers carry a phone number. ${(totalLoaded - totalWithPhone).toLocaleString()} cannot be reached from this page.`}
               th={`มีเพียง ${pct(totalWithPhone, totalLoaded)}% ของผู้ผลิตที่จดทะเบียนที่มีเบอร์โทร ${(totalLoaded - totalWithPhone).toLocaleString()} รายติดต่อจากหน้านี้ไม่ได้`}
             />
+            <a className="callout-link" href="/?view=atlas&tab=reach">
+              <Bi en="See the reach gap by province →" th="ดูช่องว่างการเข้าถึงรายจังหวัด →" />
+            </a>
           </span>
-          <a className="callout-link" href="/?view=atlas&tab=reach">
-            <Bi en="See the reach gap by province →" th="ดูช่องว่างการเข้าถึงรายจังหวัด →" />
-          </a>
         </p>
       )}
 
@@ -463,6 +457,7 @@ export default function Find({ onOpenProvince }) {
               if (t.p) p.set('p', String(t.p));
               if (t.s) p.set('s', t.s);
               if (t.c) p.set('c', t.c);
+              if (t.cert) p.set('cert', t.cert);
               p.set('view', 'find');
               const href = `${window.location.pathname}?${p.toString()}`;
               return (

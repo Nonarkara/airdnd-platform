@@ -7,6 +7,7 @@ import { toCsv } from '../../core/matching.js';
 import { REGION_LABEL } from '../lib/labels.js';
 import { loadPhotosForProvince, attributionLine } from '../../core/photos.js';
 import { matchStandardForProduct } from '../../core/standards.js';
+import { dedupeCerts } from '../../core/certs.js';
 import { loadProvinceFaces } from '../lib/insights.js';
 
 /**
@@ -29,6 +30,42 @@ function Stub({ label, value, rank, note }) {
       <span className="t-stub-n">{value}</span>
       <span className="t-ctx">{rank != null ? `rank ${rank} of 77` : note ?? ''}</span>
     </div>
+  );
+}
+
+/**
+ * The standing of one certificate, judged on its own expiry against the date
+ * the build stamped on the record — never against today, and never against
+ * the record's verdict, which can be "valid" while one of its certificates
+ * has lapsed.
+ */
+function certStanding(cert, asOf) {
+  if (!cert.expires) return { state: 'undated', text: 'undated' };
+  if (!asOf) return { state: 'unknown', text: `expires ${cert.expires}` };
+  return cert.expires >= asOf
+    ? { state: 'valid', text: `valid to ${cert.expires}` }
+    : { state: 'expired', text: `lapsed ${cert.expires}` };
+}
+
+/**
+ * One certificate, on one line.
+ *
+ * The shards were built before certificate identity was understood: the same
+ * certificate filed by two agencies — one carrying the standard number, one
+ * carrying only the standard's name — was carried twice, and the dossier
+ * printed the same certificate twice, once with the code and once without.
+ * dedupeCerts() is the identity rule the build now uses, applied here so the
+ * published shards read correctly without a rebuild.
+ */
+function CertCell({ cert, asOf }) {
+  const std = [cert.standardCode, cert.standardTitle].filter(Boolean).join(' · ') || 'มผช.';
+  const standing = certStanding(cert, asOf);
+  return (
+    <span className="t-cert-cell">
+      <span className="t-cert-std">{std}</span>
+      {cert.number ? <> · <span className="t-cert-num">cert {cert.number}</span></> : null}
+      <> · <span className="t-cert-state">{standing.text}</span></>
+    </span>
   );
 }
 
@@ -169,6 +206,30 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
     if (!records) return [];
     return records.filter((r) => (r.certs ?? []).length > 0);
   }, [records]);
+
+  // One row per certificate, not one row per holder.
+  //
+  // A holder can carry several certificates, and a cell holding a list of
+  // them grows to four lines beside a one-line producer name — the name
+  // stranded at the top of a 124px row. Flattening the list puts one
+  // certificate on one line, and the standing is judged per certificate
+  // against the build's own date, not against the record's verdict.
+  const certRows = useMemo(() => {
+    const rows = [];
+    for (const r of certifiedRecords) {
+      const name = `${r.producerName ?? r.productName ?? ''}${r.productName && r.producerName ? ` · ${r.productName}` : ''}`;
+      for (const c of dedupeCerts(r.certs)) {
+        rows.push({
+          key: `${r.sourceRowId ?? name}·${c.number ?? ''}·${c.expires ?? ''}`,
+          name,
+          cert: c,
+          asOf: r.certAsOf,
+          standing: certStanding(c, r.certAsOf),
+        });
+      }
+    }
+    return rows;
+  }, [certifiedRecords]);
 
   if (!p) return <p className="empty">No province with code {code}.</p>;
 
@@ -497,7 +558,7 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
                 Official Ministry of Industry (TISI / สมอ.) standards identified for products registered in this province.
                 Each document sets regulatory thresholds for moisture, microbes, food safety, and craft durability.
               </p>
-              <div className="t-grid t-grid-2" role="table">
+              <div className="t-grid t-grid-2 t-grid-std" role="table">
                 <div className="t-grid-row t-grid-hd" role="row">
                   <span>Standard Title · ชื่อมาตรฐาน</span><span className="t-row-num">Specification</span>
                 </div>
@@ -526,48 +587,32 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
           {certifiedRecords.length > 0 && (
             <>
               <h3 className="sub-h">
-                State-certified holders · {n(certifiedRecords.filter((r) => r.certStatus === 'valid').length)} valid of {n(certifiedRecords.length)} certificates held
+                State-certified holders · {n(certRows.filter((r) => r.standing.state === 'valid').length)} valid of {n(certRows.length)} certificates held
               </h3>
               <p className="t-note">
                 Held มผช. certificates from the TISI holder lists, joined to this province's records
                 {insights.certification?.asOf ? ` and judged as of ${insights.certification.asOf}` : ''}.
                 A lapsed certificate is printed as lapsed — it still proves the holder once met the standard.
               </p>
-              <div className="t-grid t-grid-2" role="table">
+              <div className="t-grid t-grid-cert" role="table">
                 <div className="t-grid-row t-grid-hd" role="row">
-                  <span>Producer / Product</span><span className="t-row-num">Certificate · standing</span>
+                  <span>Producer / Product</span><span className="t-cert-hd">Certificate · standing</span>
                 </div>
-                {certifiedRecords.slice(0, 10).map((r, i) => (
-                  <div className="t-grid-row" role="row" key={r.sourceRowId || i}>
-                    <span>{r.producerName ?? r.productName}{r.productName && r.producerName ? ` · ${r.productName}` : ''}</span>
-                    <span className="t-row-num">
-                      {(r.certs ?? []).map((c, j) => (
-                        <span key={j}>
-                          {j > 0 && '; '}{[c.standardCode, c.standardTitle].filter(Boolean).join(' · ') || 'มผช.'}
-                          {c.number ? ` · cert ${c.number}` : ''}
-                          {c.expires ? ` · ${r.certStatus === 'valid' ? 'valid to' : r.certStatus === 'expired' ? 'lapsed' : 'expires'} ${c.expires}` : ' · undated'}
-                        </span>
-                      ))}
-                    </span>
+                {certRows.slice(0, 12).map((row) => (
+                  <div className="t-grid-row" role="row" key={row.key}>
+                    <span>{row.name}</span>
+                    <CertCell cert={row.cert} asOf={row.asOf} />
                   </div>
                 ))}
               </div>
-              {certifiedRecords.length > 10 && (
+              {certRows.length > 12 && (
                 <details className="t-more">
-                  <summary>All {certifiedRecords.length} certified records in {p.th}</summary>
-                  <div className="t-grid t-grid-2" role="table">
-                    {certifiedRecords.slice(10).map((r, i) => (
-                      <div className="t-grid-row" role="row" key={r.sourceRowId || i}>
-                        <span>{r.producerName ?? r.productName}{r.productName && r.producerName ? ` · ${r.productName}` : ''}</span>
-                        <span className="t-row-num">
-                          {(r.certs ?? []).map((c, j) => (
-                            <span key={j}>
-                              {j > 0 && '; '}{[c.standardCode, c.standardTitle].filter(Boolean).join(' · ') || 'มผช.'}
-                              {c.number ? ` · cert ${c.number}` : ''}
-                              {c.expires ? ` · ${c.expires}` : ' · undated'}
-                            </span>
-                          ))}
-                        </span>
+                  <summary>All {certRows.length} certificates held in {p.th}</summary>
+                  <div className="t-grid t-grid-cert" role="table">
+                    {certRows.slice(12).map((row) => (
+                      <div className="t-grid-row" role="row" key={row.key}>
+                        <span>{row.name}</span>
+                        <CertCell cert={row.cert} asOf={row.asOf} />
                       </div>
                     ))}
                   </div>

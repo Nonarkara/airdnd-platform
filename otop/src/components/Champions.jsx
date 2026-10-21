@@ -16,6 +16,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { photoForRecord, loadPhotosForProvince, attributionLine } from '../../core/photos.js';
 import { matchStandardForProduct } from '../../core/standards.js';
+import { dedupeCerts } from '../../core/certs.js';
 
 async function loadChampions() {
   const r = await fetch('/otop_champions.json', { cache: 'no-cache' });
@@ -274,7 +275,7 @@ export default function Champions({ onSelectProvince, national, records }) {
                     <span className="t-key" style={{ marginRight: '0.5rem' }}>
                       ✓ Certified มผช.{c.certStatus === 'valid' ? '' : c.certStatus === 'expired' ? ' · lapsed' : ' · undated'}
                     </span>
-                    {(c.certs ?? []).map((cert, i) => (
+                    {dedupeCerts(c.certs).map((cert, i) => (
                       <span key={i}>
                         {i > 0 && '; '}
                         {[cert.standardCode, cert.standardTitle].filter(Boolean).join(': ') || 'มผช.'}

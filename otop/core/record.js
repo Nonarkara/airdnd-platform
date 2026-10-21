@@ -38,6 +38,7 @@
  */
 
 import { resolveProvince, resolveDistrictToProvince } from './provinces.js';
+import { dedupeCerts } from './certs.js';
 import { classifyCategory, classifyProducerType, parseStars } from './taxonomy.js';
 
 export const SIGNAL_STRENGTH = ['tax_id', 'phone', 'registration', 'name_area'];
@@ -356,6 +357,13 @@ export function buildCert({ number, standardCode, standardTitle, issued, expires
 }
 
 /**
+ * The identity of a certificate is its number and its dates — see core/certs.js,
+ * which the browser also uses so a built shard's repeated filing is printed
+ * once. Re-exported here because the build thinks in records.
+ */
+export { dedupeCerts } from './certs.js';
+
+/**
  * Certificate standing of a merged record as of a build date (YYYY-MM-DD).
  *   valid   — at least one certificate expires on or after asOf
  *   expired — certificates exist, every parseable expiry is before asOf
@@ -460,18 +468,10 @@ export function mergeRecords(records, { maxProvincesPerPhone = 1 } = {}) {
     // Certificates union across the group like any other provenance: one
     // holder certified for three products carries three certificates, and a
     // cert row merged with a non-cert row must not lose the certificate.
-    // Distinct by number + standard + expiry so repeated filings of the same
-    // certificate (the มผช. list is snapshotted many times) count once.
-    const certs = [];
-    for (const record of group) {
-      for (const cert of record.certs ?? []) {
-        const key = [cert.number, cert.standardCode, cert.standardTitle, cert.issued, cert.expires].join('|');
-        if (!certs.some((c) => [c.number, c.standardCode, c.standardTitle, c.issued, c.expires].join('|') === key)) {
-          certs.push(cert);
-        }
-      }
-    }
-    out.certs = certs;
+    // Distinct by certificate identity, so repeated filings of the same
+    // certificate (the มผช. list is snapshotted many times, and the agencies
+    // disagree about which columns they fill) count once.
+    out.certs = dedupeCerts(group.flatMap((record) => record.certs ?? []));
 
     // Which signal types actually held this group together. Only meaningful for
     // a group of more than one: a singleton was not merged by anything, and

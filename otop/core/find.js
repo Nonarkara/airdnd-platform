@@ -72,7 +72,15 @@ function matchesQuery(r, q) {
     norm(r.description).includes(q) ||
     norm(r.district).includes(q) ||
     norm(r.subdistrict).includes(q) ||
-    norm(r.category).includes(q)
+    norm(r.category).includes(q) ||
+    // The OTOP registration number: a buyer who already holds a number
+    // from a filing should be able to type it in and find that record.
+    norm(r.registrationId).includes(q) ||
+    // The place, in either script — a search box that cannot find a
+    // province by name is a search box that makes the reader reach for
+    // the dropdown instead.
+    norm(r.provinceEn).includes(q) ||
+    norm(r.province).includes(q)
   );
 }
 

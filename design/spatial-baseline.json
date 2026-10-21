@@ -1,0 +1,2421 @@
+{
+  "version": 2,
+  "tool": "spatial-law",
+  "widths": [
+    360,
+    480,
+    768,
+    1024,
+    1440,
+    1920
+  ],
+  "measuredWidths": [
+    360,
+    479,
+    480,
+    481,
+    559,
+    560,
+    561,
+    638,
+    639,
+    640,
+    641,
+    719,
+    720,
+    721,
+    768,
+    859,
+    860,
+    861,
+    899,
+    900,
+    901,
+    1024,
+    1098,
+    1099,
+    1100,
+    1101,
+    1440,
+    1920
+  ],
+  "limits": {
+    "deadGap": 72,
+    "orphanFill": 0.5,
+    "scatteredApart": 0.55,
+    "grownTolerance": 24,
+    "firstActionTolerance": 120,
+    "firstAction": null,
+    "titleRatio": null,
+    "peerShare": null,
+    "allowedSizes": null
+  },
+  "reasons": {},
+  "exempt": [],
+  "routes": {
+    "/": {
+      "360": {
+        "findings": [],
+        "firstAction": {
+          "y": 610,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "479": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "480": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "481": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "559": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "560": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "561": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "638": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "639": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "640": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "641": {
+        "findings": [],
+        "firstAction": {
+          "y": 543,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 30.4,
+          "largest": 30.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "719": {
+        "findings": [],
+        "firstAction": {
+          "y": 549,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 33.074,
+          "largest": 33.074,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "720": {
+        "findings": [],
+        "firstAction": {
+          "y": 549,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 33.12,
+          "largest": 33.12,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "721": {
+        "findings": [],
+        "firstAction": {
+          "y": 549,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 33.166,
+          "largest": 33.166,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "768": {
+        "findings": [],
+        "firstAction": {
+          "y": 553,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 35.328,
+          "largest": 35.328,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "859": {
+        "findings": [],
+        "firstAction": {
+          "y": 561,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 39.514,
+          "largest": 39.514,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "860": {
+        "findings": [],
+        "firstAction": {
+          "y": 561,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 39.56,
+          "largest": 39.56,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "861": {
+        "findings": [],
+        "firstAction": {
+          "y": 561,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 39.606,
+          "largest": 39.606,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "899": {
+        "findings": [],
+        "firstAction": {
+          "y": 565,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 41.354,
+          "largest": 41.354,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "900": {
+        "findings": [],
+        "firstAction": {
+          "y": 565,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 41.4,
+          "largest": 41.4,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "901": {
+        "findings": [],
+        "firstAction": {
+          "y": 369,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 41.446,
+          "largest": 41.446,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "1024": {
+        "findings": [],
+        "firstAction": {
+          "y": 369,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 47.104,
+          "largest": 47.104,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "1098": {
+        "findings": [],
+        "firstAction": {
+          "y": 369,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 48,
+          "largest": 48,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "1099": {
+        "findings": [],
+        "firstAction": {
+          "y": 369,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 48,
+          "largest": 48,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "1100": {
+        "findings": [],
+        "firstAction": {
+          "y": 348,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 48,
+          "largest": 48,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "1101": {
+        "findings": [],
+        "firstAction": {
+          "y": 348,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 48,
+          "largest": 48,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "1440": {
+        "findings": [],
+        "firstAction": {
+          "y": 348,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 48,
+          "largest": 48,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      },
+      "1920": {
+        "findings": [],
+        "firstAction": {
+          "y": 348,
+          "sel": "input"
+        },
+        "hierarchy": {
+          "h1": 48,
+          "largest": 48,
+          "ratio": 1,
+          "peers": 65,
+          "share": 0.28
+        }
+      }
+    },
+    "/atlas/": {
+      "360": {
+        "findings": [],
+        "firstAction": {
+          "y": 1149,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "479": {
+        "findings": [],
+        "firstAction": {
+          "y": 1100,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "480": {
+        "findings": [],
+        "firstAction": {
+          "y": 1100,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "481": {
+        "findings": [],
+        "firstAction": {
+          "y": 1100,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "559": {
+        "findings": [],
+        "firstAction": {
+          "y": 1052,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "560": {
+        "findings": [],
+        "firstAction": {
+          "y": 1052,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "561": {
+        "findings": [],
+        "firstAction": {
+          "y": 1052,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "638": {
+        "findings": [],
+        "firstAction": {
+          "y": 1053,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "639": {
+        "findings": [],
+        "firstAction": {
+          "y": 1053,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "640": {
+        "findings": [],
+        "firstAction": {
+          "y": 1053,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "641": {
+        "findings": [],
+        "firstAction": {
+          "y": 1053,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 28,
+          "ratio": 1,
+          "peers": 1,
+          "share": 0.01
+        }
+      },
+      "719": {
+        "findings": [],
+        "firstAction": {
+          "y": 1065,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 30.198,
+          "largest": 28,
+          "ratio": 1.08,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "720": {
+        "findings": [],
+        "firstAction": {
+          "y": 1065,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 30.24,
+          "largest": 28,
+          "ratio": 1.08,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "721": {
+        "findings": [],
+        "firstAction": {
+          "y": 741,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 30.282,
+          "largest": 28,
+          "ratio": 1.08,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "768": {
+        "findings": [],
+        "firstAction": {
+          "y": 750,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 32.256,
+          "largest": 28,
+          "ratio": 1.15,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "859": {
+        "findings": [],
+        "firstAction": {
+          "y": 769,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 36.078,
+          "largest": 28,
+          "ratio": 1.29,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "860": {
+        "findings": [],
+        "firstAction": {
+          "y": 769,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 36.12,
+          "largest": 28,
+          "ratio": 1.29,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "861": {
+        "findings": [],
+        "firstAction": {
+          "y": 769,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 36.162,
+          "largest": 28,
+          "ratio": 1.29,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "899": {
+        "findings": [],
+        "firstAction": {
+          "y": 777,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 37.758,
+          "largest": 28,
+          "ratio": 1.35,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "900": {
+        "findings": [],
+        "firstAction": {
+          "y": 777,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 37.8,
+          "largest": 28,
+          "ratio": 1.35,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "901": {
+        "findings": [],
+        "firstAction": {
+          "y": 777,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 37.842,
+          "largest": 28,
+          "ratio": 1.35,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "1024": {
+        "findings": [],
+        "firstAction": {
+          "y": 783,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 43.008,
+          "largest": 28.672,
+          "ratio": 1.5,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "1098": {
+        "findings": [],
+        "firstAction": {
+          "y": 790,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 30,
+          "ratio": 1.47,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "1099": {
+        "findings": [],
+        "firstAction": {
+          "y": 790,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 30,
+          "ratio": 1.47,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "1100": {
+        "findings": [],
+        "firstAction": {
+          "y": 790,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 30,
+          "ratio": 1.47,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "1101": {
+        "findings": [],
+        "firstAction": {
+          "y": 790,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 30,
+          "ratio": 1.47,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "1440": {
+        "findings": [],
+        "firstAction": {
+          "y": 790,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 30,
+          "ratio": 1.47,
+          "peers": 2,
+          "share": 0.01
+        }
+      },
+      "1920": {
+        "findings": [],
+        "firstAction": {
+          "y": 790,
+          "sel": "a.atlas-finding-link"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 30,
+          "ratio": 1.47,
+          "peers": 2,
+          "share": 0.01
+        }
+      }
+    },
+    "/bank/": {
+      "360": {
+        "findings": [],
+        "firstAction": {
+          "y": 721,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "479": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "480": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "481": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "559": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "560": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "561": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "638": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "639": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "640": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "641": {
+        "findings": [],
+        "firstAction": {
+          "y": 660,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 20,
+          "ratio": 1.4,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "719": {
+        "findings": [],
+        "firstAction": {
+          "y": 668,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 30.198,
+          "largest": 20,
+          "ratio": 1.51,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "720": {
+        "findings": [],
+        "firstAction": {
+          "y": 668,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 30.24,
+          "largest": 20,
+          "ratio": 1.51,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "721": {
+        "findings": [],
+        "firstAction": {
+          "y": 453,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 30.282,
+          "largest": 20,
+          "ratio": 1.51,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "768": {
+        "findings": [],
+        "firstAction": {
+          "y": 460,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 32.256,
+          "largest": 20,
+          "ratio": 1.61,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "859": {
+        "findings": [],
+        "firstAction": {
+          "y": 438,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 36.078,
+          "largest": 20,
+          "ratio": 1.8,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "860": {
+        "findings": [],
+        "firstAction": {
+          "y": 438,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 36.12,
+          "largest": 20,
+          "ratio": 1.81,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "861": {
+        "findings": [],
+        "firstAction": {
+          "y": 438,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 36.162,
+          "largest": 20,
+          "ratio": 1.81,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "899": {
+        "findings": [],
+        "firstAction": {
+          "y": 444,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 37.758,
+          "largest": 20,
+          "ratio": 1.89,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "900": {
+        "findings": [],
+        "firstAction": {
+          "y": 444,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 37.8,
+          "largest": 20,
+          "ratio": 1.89,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "901": {
+        "findings": [],
+        "firstAction": {
+          "y": 444,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 37.842,
+          "largest": 20,
+          "ratio": 1.89,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "1024": {
+        "findings": [],
+        "firstAction": {
+          "y": 463,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 43.008,
+          "largest": 20,
+          "ratio": 2.15,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "1098": {
+        "findings": [],
+        "firstAction": {
+          "y": 467,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 20,
+          "ratio": 2.2,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "1099": {
+        "findings": [],
+        "firstAction": {
+          "y": 467,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 20,
+          "ratio": 2.2,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "1100": {
+        "findings": [],
+        "firstAction": {
+          "y": 467,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 20,
+          "ratio": 2.2,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "1101": {
+        "findings": [],
+        "firstAction": {
+          "y": 467,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 20,
+          "ratio": 2.2,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "1440": {
+        "findings": [],
+        "firstAction": {
+          "y": 467,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 20,
+          "ratio": 2.2,
+          "peers": 1,
+          "share": 0
+        }
+      },
+      "1920": {
+        "findings": [],
+        "firstAction": {
+          "y": 467,
+          "sel": "input.bank-search"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 20,
+          "ratio": 2.2,
+          "peers": 1,
+          "share": 0
+        }
+      }
+    },
+    "/match/": {
+      "360": {
+        "findings": [],
+        "firstAction": {
+          "y": 316,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "479": {
+        "findings": [],
+        "firstAction": {
+          "y": 299,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "480": {
+        "findings": [],
+        "firstAction": {
+          "y": 299,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "481": {
+        "findings": [],
+        "firstAction": {
+          "y": 299,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "559": {
+        "findings": [],
+        "firstAction": {
+          "y": 299,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "560": {
+        "findings": [],
+        "firstAction": {
+          "y": 299,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "561": {
+        "findings": [],
+        "firstAction": {
+          "y": 299,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "638": {
+        "findings": [],
+        "firstAction": {
+          "y": 285,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "639": {
+        "findings": [],
+        "firstAction": {
+          "y": 285,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "640": {
+        "findings": [],
+        "firstAction": {
+          "y": 285,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "641": {
+        "findings": [],
+        "firstAction": {
+          "y": 285,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 24,
+          "ratio": 1.17,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "719": {
+        "findings": [],
+        "firstAction": {
+          "y": 273,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 30.198,
+          "largest": 24,
+          "ratio": 1.26,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "720": {
+        "findings": [],
+        "firstAction": {
+          "y": 273,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 30.24,
+          "largest": 24,
+          "ratio": 1.26,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "721": {
+        "findings": [],
+        "firstAction": {
+          "y": 273,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 30.282,
+          "largest": 24,
+          "ratio": 1.26,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "768": {
+        "findings": [],
+        "firstAction": {
+          "y": 278,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 32.256,
+          "largest": 24,
+          "ratio": 1.34,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "859": {
+        "findings": [],
+        "firstAction": {
+          "y": 287,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 36.078,
+          "largest": 24,
+          "ratio": 1.5,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "860": {
+        "findings": [],
+        "firstAction": {
+          "y": 287,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 36.12,
+          "largest": 24,
+          "ratio": 1.51,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "861": {
+        "findings": [],
+        "firstAction": {
+          "y": 288,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 36.162,
+          "largest": 24,
+          "ratio": 1.51,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "899": {
+        "findings": [],
+        "firstAction": {
+          "y": 292,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 37.758,
+          "largest": 24,
+          "ratio": 1.57,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "900": {
+        "findings": [],
+        "firstAction": {
+          "y": 292,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 37.8,
+          "largest": 24,
+          "ratio": 1.58,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "901": {
+        "findings": [],
+        "firstAction": {
+          "y": 292,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 37.842,
+          "largest": 24,
+          "ratio": 1.58,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1024": {
+        "findings": [],
+        "firstAction": {
+          "y": 305,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 43.008,
+          "largest": 24,
+          "ratio": 1.79,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1098": {
+        "findings": [],
+        "firstAction": {
+          "y": 308,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 24,
+          "ratio": 1.83,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1099": {
+        "findings": [],
+        "firstAction": {
+          "y": 308,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 24,
+          "ratio": 1.83,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1100": {
+        "findings": [],
+        "firstAction": {
+          "y": 308,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 24,
+          "ratio": 1.83,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1101": {
+        "findings": [],
+        "firstAction": {
+          "y": 308,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 24,
+          "ratio": 1.83,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1440": {
+        "findings": [],
+        "firstAction": {
+          "y": 308,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 24,
+          "ratio": 1.83,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1920": {
+        "findings": [],
+        "firstAction": {
+          "y": 308,
+          "sel": "button"
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 24,
+          "ratio": 1.83,
+          "peers": 0,
+          "share": 0
+        }
+      }
+    },
+    "/method/": {
+      "360": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "479": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "480": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "481": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "559": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "560": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "561": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "638": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "639": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "640": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "641": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 17,
+          "ratio": 1.65,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "719": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 30.198,
+          "largest": 17,
+          "ratio": 1.78,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "720": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 30.24,
+          "largest": 17,
+          "ratio": 1.78,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "721": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 30.282,
+          "largest": 17,
+          "ratio": 1.78,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "768": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 32.256,
+          "largest": 17,
+          "ratio": 1.9,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "859": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 36.078,
+          "largest": 17,
+          "ratio": 2.12,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "860": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 36.12,
+          "largest": 17,
+          "ratio": 2.12,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "861": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 36.162,
+          "largest": 17,
+          "ratio": 2.13,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "899": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 37.758,
+          "largest": 17,
+          "ratio": 2.22,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "900": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 37.8,
+          "largest": 17,
+          "ratio": 2.22,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "901": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 37.842,
+          "largest": 17,
+          "ratio": 2.23,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1024": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 43.008,
+          "largest": 17,
+          "ratio": 2.53,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1098": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 17,
+          "ratio": 2.59,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1099": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 17,
+          "ratio": 2.59,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1100": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 17,
+          "ratio": 2.59,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1101": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 17,
+          "ratio": 2.59,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1440": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 17,
+          "ratio": 2.59,
+          "peers": 0,
+          "share": 0
+        }
+      },
+      "1920": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 17,
+          "ratio": 2.59,
+          "peers": 0,
+          "share": 0
+        }
+      }
+    },
+    "/province/": {
+      "360": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 48,
+          "ratio": 0.58,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "479": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 57.48,
+          "ratio": 0.49,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "480": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 57.6,
+          "ratio": 0.49,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "481": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 57.72,
+          "ratio": 0.49,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "559": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 67.08,
+          "ratio": 0.42,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "560": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 67.2,
+          "ratio": 0.42,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "561": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 67.32,
+          "ratio": 0.42,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "638": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 76.56,
+          "ratio": 0.37,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "639": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 76.68,
+          "ratio": 0.37,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "640": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 76.8,
+          "ratio": 0.36,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "641": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 28,
+          "largest": 76.92,
+          "ratio": 0.36,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "719": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 30.198,
+          "largest": 86.28,
+          "ratio": 0.35,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "720": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 30.24,
+          "largest": 86.4,
+          "ratio": 0.35,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "721": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 30.282,
+          "largest": 86.52,
+          "ratio": 0.35,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "768": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 32.256,
+          "largest": 88,
+          "ratio": 0.37,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "859": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 36.078,
+          "largest": 88,
+          "ratio": 0.41,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "860": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 36.12,
+          "largest": 88,
+          "ratio": 0.41,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "861": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 36.162,
+          "largest": 88,
+          "ratio": 0.41,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "899": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 37.758,
+          "largest": 88,
+          "ratio": 0.43,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "900": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 37.8,
+          "largest": 88,
+          "ratio": 0.43,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "901": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 37.842,
+          "largest": 88,
+          "ratio": 0.43,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "1024": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 43.008,
+          "largest": 88,
+          "ratio": 0.49,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "1098": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 88,
+          "ratio": 0.5,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "1099": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 88,
+          "ratio": 0.5,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "1100": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 88,
+          "ratio": 0.5,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "1101": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 88,
+          "ratio": 0.5,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "1440": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 88,
+          "ratio": 0.5,
+          "peers": 12,
+          "share": 0.1
+        }
+      },
+      "1920": {
+        "findings": [],
+        "firstAction": {
+          "y": null,
+          "sel": null
+        },
+        "hierarchy": {
+          "h1": 44,
+          "largest": 88,
+          "ratio": 0.5,
+          "peers": 12,
+          "share": 0.1
+        }
+      }
+    }
+  }
+}
