@@ -142,4 +142,4 @@ province @1440 chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on
 
 5. **Independent review** — this pass is the agent's own reading of the law against its own work. The law's section 6 requires an independent review for visual work; the screenshots and the measurements in `design/msh-evidence/` are the receipt, but a second pair of eyes has not yet checked them.
 
-6. **CI has not been observed running.** The workflow is committed and mirrors the local steps, but no GitHub Actions run has been watched end to end.
+6. **CI has not been observed running.** The workflow is committed and mirrors the local steps — and every one of its steps was run locally and passed — but GitHub refused to start the job: *"The job was not started because an Actions budget is preventing further use."* That is an account-level Actions limit, not a broken workflow; it will clear when the budget does. Until then, the gate runs on the machine that ships, and the sweep has to be run by hand after a deploy.
