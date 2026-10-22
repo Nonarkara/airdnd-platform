@@ -1,7 +1,6 @@
-import { chromium } from 'playwright';
-import { assertOtop } from './otop-identity.mjs';
+import { assertOtop, launchBrowser } from './otop-identity.mjs';
 const route = process.argv[2] || '/?view=champions';
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await launchBrowser();
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 const page = await ctx.newPage();
 const logs = [];

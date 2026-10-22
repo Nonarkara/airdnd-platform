@@ -13,8 +13,8 @@
  *
  * node scripts/otop-empty-tracks.mjs [base]
  */
-import { chromium } from 'playwright';
-import { assertOtop } from './otop-identity.mjs';
+
+import { assertOtop, launchBrowser } from './otop-identity.mjs';
 
 const BASE = (process.argv[2] || 'https://otop.pages.dev').replace(/\/+$/, '');
 const ROUTES = [
@@ -46,7 +46,7 @@ async function settle(page) {
   }
 }
 
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await launchBrowser();
 let found = 0;
 let gridsSeen = 0;
 

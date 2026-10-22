@@ -114,9 +114,19 @@ province @1440 chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on
 | `npm run test:otop` | **152 / 152** pass |
 | `npm test` | 246 / 248 pass — the two failures are `scraper_ai_governor` and `scraper_highwater`, which need `TELEGRAM_API_ID` / `TELEGRAM_API_HASH` in `.env` and are unrelated to this work |
 
-**Screenshots** — `design/msh-evidence/after/` (every view at 390, 1024 and 1440, plus a scrolled capture of each), `design/msh-evidence/els/` (element-level captures of every block that was rebuilt).
+**Screenshots** — `design/msh-evidence/after/` (every view at 390, 1024 and 1440, plus a scrolled capture of each), `design/msh-evidence/live/` (the same sweep against the deployed site), `design/msh-evidence/els/` (element-level captures of every block that was rebuilt).
 
-**Gate** — `npm run spatial:gate` and the falsifier run in CI on every push.
+**Live** — the deployed site, not the local build. `https://otop.nonarkara.org` → `otop.pages.dev`, bundle `assets/index-Ct3eaU8w.js`:
+
+| Check | Result |
+|---|---|
+| `otop:verify` (the canonical live smoke test) | **all checks passed** — bundle matches the local dist, the three lazy chunks 200, all 13 published artefacts have the expected shape, the SPA fallback 200 |
+| 28 routes and artefacts | 200 / 200 |
+| `otop-route-sweep.mjs` against the live host | **13 / 13 views render** — Champions and Matchmaker included, both of which were blank before this pass |
+| `otop-empty-tracks.mjs` against the live host | 4,105 grid containers → **3 findings**, the same three written down below |
+| `otop-msh-audit.mjs` against the live host | 18 measurements → **0 flagged**, chrome 51px (6%) at every width |
+
+**Gate** — `npm run spatial:gate`, the falsifier and the route sweep run in CI on every push.
 
 ---
 

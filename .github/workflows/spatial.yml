@@ -70,9 +70,18 @@ jobs:
       - name: Run the spatial gate
         run: npm run spatial:gate
 
+      # A view can build, deploy, return 200 and render nothing. Two did:
+      # Champions tore its own tree down with a hook after a guard return,
+      # and Matchmaker mapped a property of an envelope that was never
+      # unwrapped. Neither showed up in a build, a status code or a unit
+      # test — only in a browser. This loads every view and asserts the
+      # tree actually painted.
+      - name: Sweep every view in a real browser
+        run: node scripts/otop-route-sweep.mjs http://localhost:8080
+
       # A gate that has never failed proves nothing. The falsifier injects
       # one real defect per mode into a copy of the site and checks the
       # gate catches every one — then checks the clean copy still passes,
       # so the gate is not simply always-failing.
       - name: Falsify the gate
-        run: node scripts/spatial/spatial-falsify.mjs design/spatial-snapshots
+        run: npm run spatial:check

@@ -13,8 +13,7 @@
  *
  * node scripts/otop-route-sweep.mjs [base]
  */
-import { chromium } from 'playwright';
-import { assertOtop } from './otop-identity.mjs';
+import { assertOtop, launchBrowser } from './otop-identity.mjs';
 
 const BASE = (process.argv[2] || 'http://localhost:8124').replace(/\/+$/, '');
 
@@ -34,7 +33,7 @@ const ROUTES = [
   ['method', '/?view=method'],
 ];
 
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await launchBrowser();
 let bad = 0;
 
 for (const [name, route] of ROUTES) {

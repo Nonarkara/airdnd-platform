@@ -55,7 +55,9 @@
     "publish": "bash scripts/publish_snapshot.sh",
     "spatial:snapshot": "node scripts/otop-snapshot.mjs",
     "spatial:gate": "node scripts/spatial/spatial-check.mjs --dir design/spatial-snapshots --baseline design/spatial-baseline.json",
-    "spatial:check": "node scripts/spatial/spatial-falsify.mjs"
+    "spatial:check": "node scripts/spatial/spatial-falsify.mjs design/spatial-snapshots",
+    "otop:sweep": "node scripts/otop-route-sweep.mjs",
+    "otop:holes": "node scripts/otop-empty-tracks.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",

@@ -6,13 +6,12 @@
  * Captures one element of a live view so a hole can be judged by eye
  * rather than by a number. Writes to /tmp/shot-<name>.png.
  */
-import { chromium } from 'playwright';
-import { assertOtop } from './otop-identity.mjs';
+import { assertOtop, launchBrowser } from './otop-identity.mjs';
 
 const [route, w, name, sel] = process.argv.slice(2);
 const BASE = process.env.OTOP_BASE || 'http://localhost:8124';
 
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await launchBrowser();
 const ctx = await browser.newContext({ viewport: { width: Number(w), height: 900 } });
 const page = await ctx.newPage();
 await page.goto(BASE + route, { waitUntil: 'domcontentloaded' });

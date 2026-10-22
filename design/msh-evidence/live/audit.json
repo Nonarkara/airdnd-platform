@@ -1,0 +1,620 @@
+[
+  {
+    "view": "find",
+    "task": "search a producer and call them",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Who can you call today?วันนี้คุณโทรหาใครได้บ้า",
+      "fs": 30.4
+    },
+    "largest": {
+      "fs": 30.4,
+      "text": "Who can you call today?"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 7043
+  },
+  {
+    "view": "find",
+    "task": "search a producer and call them",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Who can you call today?วันนี้คุณโทรหาใครได้บ้า",
+      "fs": 47.104
+    },
+    "largest": {
+      "fs": 47.104,
+      "text": "Who can you call today?"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 4161
+  },
+  {
+    "view": "find",
+    "task": "search a producer and call them",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Who can you call today?วันนี้คุณโทรหาใครได้บ้า",
+      "fs": 48
+    },
+    "largest": {
+      "fs": 48,
+      "text": "Who can you call today?"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 3897
+  },
+  {
+    "view": "method",
+    "task": "understand what the numbers mean",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "What these numbers are, and are not.",
+      "fs": 28
+    },
+    "largest": {
+      "fs": 28,
+      "text": "What these numbers are, and ar"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 3063
+  },
+  {
+    "view": "method",
+    "task": "understand what the numbers mean",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "What these numbers are, and are not.",
+      "fs": 43.008
+    },
+    "largest": {
+      "fs": 43.008,
+      "text": "What these numbers are, and ar"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 1729
+  },
+  {
+    "view": "method",
+    "task": "understand what the numbers mean",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "What these numbers are, and are not.",
+      "fs": 44
+    },
+    "largest": {
+      "fs": 44,
+      "text": "What these numbers are, and ar"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 1629
+  },
+  {
+    "view": "atlas",
+    "task": "read what the data says",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 55px @327 z5"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 55px @51 z5"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The whole registry as one package.",
+      "fs": 28
+    },
+    "largest": {
+      "fs": 28,
+      "text": "The whole registry as one pack"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 2952
+  },
+  {
+    "view": "atlas",
+    "task": "read what the data says",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 65px @304 z5"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 65px @51 z5"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The whole registry as one package.",
+      "fs": 43.008
+    },
+    "largest": {
+      "fs": 43.008,
+      "text": "The whole registry as one pack"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 2257
+  },
+  {
+    "view": "atlas",
+    "task": "read what the data says",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 65px @307 z5"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 65px @51 z5"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The whole registry as one package.",
+      "fs": 44
+    },
+    "largest": {
+      "fs": 44,
+      "text": "The whole registry as one pack"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 2053
+  },
+  {
+    "view": "bank",
+    "task": "look up a dataset",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "726 datasets from data.go.th — the whole bank ",
+      "fs": 28
+    },
+    "largest": {
+      "fs": 28,
+      "text": "726 datasets from data.go.th —"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 13332
+  },
+  {
+    "view": "bank",
+    "task": "look up a dataset",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "726 datasets from data.go.th — the whole bank ",
+      "fs": 43.008
+    },
+    "largest": {
+      "fs": 43.008,
+      "text": "726 datasets from data.go.th —"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 9685
+  },
+  {
+    "view": "bank",
+    "task": "look up a dataset",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "726 datasets from data.go.th — the whole bank ",
+      "fs": 44
+    },
+    "largest": {
+      "fs": 44,
+      "text": "726 datasets from data.go.th —"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 9563
+  },
+  {
+    "view": "match",
+    "task": "filter a shortlist of producers",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Discover · B2C",
+      "fs": 28
+    },
+    "largest": {
+      "fs": 28,
+      "text": "Discover · B2C"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 7945
+  },
+  {
+    "view": "match",
+    "task": "filter a shortlist of producers",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Discover · B2C",
+      "fs": 43.008
+    },
+    "largest": {
+      "fs": 43.008,
+      "text": "Discover · B2C"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 6939
+  },
+  {
+    "view": "match",
+    "task": "filter a shortlist of producers",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Discover · B2C",
+      "fs": 44
+    },
+    "largest": {
+      "fs": 44,
+      "text": "Discover · B2C"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 6538
+  },
+  {
+    "view": "province",
+    "task": "read one province whole",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Chiang Mai",
+      "fs": 28
+    },
+    "largest": {
+      "fs": 48,
+      "text": "TH-50"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 16048
+  },
+  {
+    "view": "province",
+    "task": "read one province whole",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Chiang Mai",
+      "fs": 43.008
+    },
+    "largest": {
+      "fs": 88,
+      "text": "TH-50"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 11448
+  },
+  {
+    "view": "province",
+    "task": "read one province whole",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Chiang Mai",
+      "fs": 44
+    },
+    "largest": {
+      "fs": 88,
+      "text": "TH-50"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 11160
+  }
+]

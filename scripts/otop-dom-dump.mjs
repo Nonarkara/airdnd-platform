@@ -6,14 +6,15 @@
  *
  * node scripts/otop-dom-dump.mjs <route> <width> <selector> [n]
  */
-import { chromium } from 'playwright';
+
+import { launchBrowser } from './otop-identity.mjs';
 
 const BASE = (process.argv[2] || 'http://localhost:8080').replace(/\/+$/, '');
 const W = Number(process.argv[3] || 1440);
 const SEL = process.argv[4] || 'body';
 const N = Number(process.argv[5] || 1);
 
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await launchBrowser();
 const ctx = await browser.newContext({ viewport: { width: W, height: 900 } });
 const page = await ctx.newPage();
 await page.goto(BASE, { waitUntil: 'domcontentloaded' });

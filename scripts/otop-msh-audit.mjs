@@ -21,8 +21,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { chromium } from 'playwright';
-import { assertOtop } from './otop-identity.mjs';
+import { assertOtop, launchBrowser } from './otop-identity.mjs';
 
 const BASE = (process.argv[2] || 'https://otop.pages.dev').replace(/\/+$/, '');
 const OUT = process.argv[3] || 'design/msh-evidence/after';
@@ -46,7 +45,7 @@ const VIEWPORTS = [
 
 fs.mkdirSync(OUT, { recursive: true });
 
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await launchBrowser();
 const report = [];
 
 /** Runs in the page. Returns everything the law asks to be recorded. */

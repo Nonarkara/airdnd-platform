@@ -9,7 +9,22 @@
  * Every instrument asserts the page identifies itself before it measures.
  */
 
+import { chromium } from 'playwright';
+
 export const OTOP_TITLE = 'OTOP registry intelligence';
+
+/**
+ * Google Chrome if it is installed, Playwright's bundled Chromium otherwise.
+ * CI installs only the bundled one, and a gate that cannot start a browser
+ * is a gate that never runs.
+ */
+export async function launchBrowser() {
+  try {
+    return await chromium.launch({ channel: 'chrome' });
+  } catch {
+    return await chromium.launch();
+  }
+}
 
 export async function assertOtop(page, label = '') {
   const title = await page.title();
