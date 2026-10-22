@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Findings from './atlas/Findings.jsx';
 import Money from './atlas/Money.jsx';
 import Reach from './atlas/Reach.jsx';
@@ -55,9 +55,24 @@ export default function Atlas({ insights, onSelectProvince }) {
     }
   }, [tab]);
 
+  // Seven chapters do not fit across a phone. The band scrolls sideways,
+  // so the chapter the reader is IN must be brought into view — otherwise
+  // the strip shows four other chapters and no sign of where they are.
+  const tabsRef = useRef(null);
+  useEffect(() => {
+    const cont = tabsRef.current;
+    if (!cont) return;
+    const el = cont.querySelector('.atlas-tab[data-active="1"]');
+    if (!el) return;
+    const c = cont.getBoundingClientRect();
+    const e = el.getBoundingClientRect();
+    const delta = (e.left + e.width / 2) - (c.left + c.width / 2);
+    if (Math.abs(delta) > 2) cont.scrollBy({ left: delta, behavior: 'smooth' });
+  }, [tab]);
+
   return (
     <>
-      <nav className="atlas-tabs" role="tablist" aria-label="Atlas chapters">
+      <nav className="atlas-tabs" role="tablist" aria-label="Atlas chapters" ref={tabsRef}>
         {CHAPTERS.map((c) => (
           <button
             key={c.id}

@@ -64,7 +64,10 @@ export default function Matchmaker({ onSelectProvince }) {
   useEffect(() => {
     let cancelled = false;
     Promise.all([loadIndex(), loadRevenue().catch(() => null)])
-      .then(([idx, rev]) => { if (!cancelled) { setIndex(idx); setRevenue(rev); } })
+      // loadIndex resolves to { index, meta }; the ranker needs the index
+      // itself. Storing the wrapper made index.provinces undefined and took
+      // the whole view down on its first render.
+      .then(([{ index: idx }, rev]) => { if (!cancelled) { setIndex(idx); setRevenue(rev); } })
       .catch((e) => { if (!cancelled) setError(e.message); });
     return () => { cancelled = true; };
   }, []);

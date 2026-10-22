@@ -52,6 +52,7 @@ export default function Method({ meta, totals }) {
   ];
 
   return (
+    <>
     <div className="method">
       <div className="method-prose">
         <ProvenanceBanner meta={meta} />
@@ -79,13 +80,6 @@ export default function Method({ meta, totals }) {
           from, the organisation that published it, the licence it carries and the date it was
           retrieved — so any figure on this site can be traced back to a filing.
         </p>
-        <p className="method-legal">
-          <Bi
-            en="Terms of use, the privacy basis, and the takedown route are published as static pages."
-            th="เงื่อนไขการใช้งาน เกณฑ์ความเป็นส่วนตัว และช่องทางขอแก้ไข เผยแพร่เป็นหน้าเว็บถาวร"
-          />{' '}
-          <a href="/legal/provenance/">Data provenance →</a>
-        </p>
       </div>
 
       <aside className="method-facts">
@@ -108,5 +102,20 @@ export default function Method({ meta, totals }) {
         </dl>
       </aside>
     </div>
+
+    {/* The legal line is a statement about the page, not the last beat of
+        the argument, and not a third column either. It sits below the two
+        columns as a note, the way every other page-level note does here.
+        Held inside the prose it left the columns ending 78px apart with
+        the facts column trailing into nothing; held inside the grid as a
+        full-width row it became a track with 784px of empty field. */}
+    <p className="method-legal">
+      <Bi
+        en="Terms of use, the privacy basis, and the takedown route are published as static pages."
+        th="เงื่อนไขการใช้งาน เกณฑ์ความเป็นส่วนตัว และช่องทางขอแก้ไข เผยแพร่เป็นหน้าเว็บถาวร"
+      />{' '}
+      <a href="/legal/provenance/">Data provenance →</a>
+    </p>
+    </>
   );
 }

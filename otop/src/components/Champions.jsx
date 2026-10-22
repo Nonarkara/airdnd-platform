@@ -104,10 +104,11 @@ export default function Champions({ onSelectProvince, national, records }) {
     });
   }, [data, filterStar, filterCat, filterReach, filterProv, query]);
 
-  if (error) return <p className="empty">Could not load champions — {error}.</p>;
-  if (!data) return <p className="empty">Loading reachable champions…</p>;
-
   // Warm Commons manifests for provinces on the current shortlist so photoForRecord can resolve sync.
+  // This effect has to sit ABOVE the early returns below: a hook that only
+  // runs once the data has arrived is a hook that appears and disappears
+  // between renders, and React tears the whole view down when it does
+  // (error #310 — the page went blank the moment the first shard landed).
   useEffect(() => {
     if (!showPhotos || filtered.length === 0) return;
     const codes = [...new Set(filtered.map((c) => c.provinceCode).filter((c) => c != null))];
@@ -118,9 +119,12 @@ export default function Champions({ onSelectProvince, national, records }) {
     return () => { cancelled = true; };
   }, [showPhotos, filtered]);
 
-  const cats = ['all', ...new Set(data.champions.map((c) => c.category).filter(Boolean))];
+  const cats = data ? ['all', ...new Set(data.champions.map((c) => c.category).filter(Boolean))] : ['all'];
   const reaches = ['all', 'phone', 'email', 'web'];
-  const totalChampions = data.champions.length;
+  const totalChampions = data ? data.champions.length : 0;
+
+  if (error) return <p className="empty">Could not load champions — {error}.</p>;
+  if (!data) return <p className="empty">Loading reachable champions…</p>;
 
   return (
     <div className="champions">

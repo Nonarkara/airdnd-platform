@@ -74,6 +74,12 @@
 
   --gutter: clamp(1rem, 4vw, 3rem);
   --measure: 1440px;
+
+  /* The masthead's own height, so that a second sticky band can park UNDER
+     it instead of under it. The strip used to sit at top:0 behind a
+     51px masthead: it was invisible while it still charged the reader
+     65px of screen. One token, one truth, both bands agree. */
+  --hdr-h: 51px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -127,7 +133,7 @@ a { color: inherit; }
 }
 .hdr-in {
   display: flex; align-items: stretch;
-  gap: 1.25rem; min-height: 50px;
+  gap: 1.25rem; min-height: calc(var(--hdr-h) - 1px);
 }
 .brand {
   display: inline-flex; align-items: center;
@@ -292,7 +298,23 @@ a { color: inherit; }
 
 
 /* ── completeness meters ──────────────────────────────────────────────────── */
-.meters { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem 2rem; }
+/* Seven signals, seven cells. The block used to auto-fit its columns, so
+   the count decided the tracks and the last row was left with an empty one
+   — 654px of nothing at 1024, and 866px at 1440. Worse, a bar of a
+   different length lies: a 7% bar drawn across a full row reads as half
+   of a 87.5% bar drawn across a column. Every bar here is the width of
+   one cell, so the bars can be compared. Below 1200 the row cannot hold
+   seven cells, so the block becomes a register instead — one signal per
+   line, the value in its own column, the bar under it. */
+.meters { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1.25rem 1.5rem; }
+.meter-lead .meter-l { font-weight: 700; color: var(--ink); }
+.meter-lead .meter-v { font-size: 1.5rem; line-height: 1; }
+/* The bars can only be compared if they share a baseline, so the label
+   area is reserved at two lines for every cell — the cost of comparison,
+   which is the one thing that earns a fixed height here. */
+@media (min-width: 1200px) {
+  .meter-l { min-height: 3em; }
+}
 .meter-top { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
 .meter-l { font-size: 12px; color: var(--ink-2); }
 .meter-v { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
@@ -300,6 +322,20 @@ a { color: inherit; }
 .meter-fill { height: 100%; background: var(--river); }
 .meter-fill.low { background: var(--accent); }
 .meter-note { margin-top: .375rem; font-size: 11px; color: var(--ink-4); }
+/* Below 1200 the seven cells become a register: one signal per line, the
+   value beside its own label, the explanation in the far column, the bar
+   under both. */
+@media (max-width: 1199px) {
+  .meters { grid-template-columns: 1fr; gap: 1rem; }
+  .meter { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "top note" "track track"; align-items: baseline; }
+  .meter-top { grid-area: top; justify-content: flex-start; gap: 1rem; }
+  .meter-track { grid-area: track; margin-top: .5rem; }
+  .meter-note { grid-area: note; margin: 0; text-align: right; }
+}
+@media (max-width: 559px) {
+  .meter { grid-template-columns: 1fr; grid-template-areas: "top" "note" "track"; }
+  .meter-note { text-align: left; }
+}
 
 /* ── filters ──────────────────────────────────────────────────────────────── */
 /* A filter row that wraps leaves an orphan on the last line — at 1024px the
@@ -532,12 +568,22 @@ a { color: inherit; }
 
 @media (max-width: 900px) {
   /* On a phone the rail leaves the grid entirely and is painted on the row's
-     edge, so it stays full-bleed without taking a column away from the content. */
+     edge, so it stays full-bleed without taking a column away from the content.
+     The row is then a stack: score, name, producer, category beside the
+     stars, place, contact. Each of those takes the full width, so no cell is
+     left alone in a half-empty row — the score in a corner beside nothing, and
+     the place beside nothing, were both there before. */
   .row.match-row {
     grid-template-columns: 1fr 1fr;
     padding-left: calc(var(--tag-rail-width) + .5rem);
   }
-  .row.match-row .c-name, .row.match-row .c-producer, .row.match-row .c-contact { grid-column: 1 / -1; }
+  .row.match-row .c-score,
+  .row.match-row .c-name,
+  .row.match-row .c-producer,
+  .row.match-row .c-place,
+  .row.match-row .c-contact { grid-column: 1 / -1; }
+  .row.match-row .c-cat { grid-column: 1; }
+  .row.match-row .c-stars { grid-column: 2; justify-self: end; }
   .basins { grid-template-columns: 1fr 1fr; }
 }
 
@@ -1191,11 +1237,14 @@ a { color: inherit; }
 .bank-shelves { margin-bottom: 1.5rem; }
 .bank-shelf-strip {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* Seven shelves, seven columns. Four columns left the last row with one
+     shelf and three empty cells — a hole in a strip that is supposed to
+     be a table of the bank's sections. */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   border-top: 1px solid var(--line-2);
   margin-bottom: 0.75rem;
 }
-@media (max-width: 720px) { .bank-shelf-strip { grid-template-columns: 1fr; } }
+@media (max-width: 899px) { .bank-shelf-strip { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .bank-wrap { grid-template-columns: 1fr; } }
 .bank-search { width: 100%; margin-bottom: 0.75rem; padding: 0.4rem 0.6rem; font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; }
 .bank-shelf {
@@ -1204,9 +1253,9 @@ a { color: inherit; }
   padding: 0.55rem 0.75rem 0.5rem 0;
   border-bottom: 1px solid currentColor; border-right: 1px solid var(--line-2);
 }
-.bank-shelf-strip .bank-shelf:nth-child(4n),
+.bank-shelf-strip .bank-shelf:nth-child(7n),
 .bank-shelf-strip .bank-shelf:last-child { border-right: 0; }
-@media (max-width: 720px) { .bank-shelf-strip .bank-shelf { border-right: 0; } }
+@media (max-width: 899px) { .bank-shelf-strip .bank-shelf { border-right: 0; } }
 .bank-shelf[data-active="1"] { font-weight: 700; }
 .bank-shelf-n { grid-row: span 2; font-family: var(--font-display); font-size: 1.25rem; font-variant-numeric: tabular-nums; }
 .bank-shelf-t { font-weight: 600; }
@@ -1378,7 +1427,10 @@ a { color: inherit; }
   padding: .2rem 0;
 }
 .find-panel-stats dt { font-size: .8rem; color: var(--ink-2, currentColor); }
-.find-panel-stats dt .bi { display: inline-flex; }
+/* One line per measure, English then Thai, the way every other register on
+   this site reads. Stacked, the four rows were 42px each and the ribbon
+   overran the headline block by 36px — a band of nothing under the lead. */
+.find-panel-stats dt .bi { display: inline-flex; flex-direction: row; align-items: baseline; gap: .3rem; }
 .find-panel-stats dt .bi-th { font-size: .85em; color: var(--ink-3, currentColor); }
 .find-panel-stats dd {
   margin: 0;
@@ -1881,6 +1933,7 @@ a { color: inherit; }
   gap: 2.5rem 3rem;
   align-items: start;
 }
+.method-prose { min-width: 0; }
 @media (max-width: 900px) { .method { grid-template-columns: 1fr; gap: 2rem; } }
 .method-prose p {
   margin: 0 0 1rem;
@@ -1891,7 +1944,12 @@ a { color: inherit; }
 .method-prose .prov-b { max-width: none; }
 .method-prose strong { font-weight: 700; }
 .method-prose code { font-family: var(--font-mono, monospace); font-size: .9em; }
-.method-legal { font-size: .9rem; color: var(--ink-2, currentColor); }
+.method-legal {
+  margin: 1.5rem 0 0;
+  max-width: 70ch;
+  font-size: .9rem;
+  color: var(--ink-2, currentColor);
+}
 .method-legal a { color: var(--accent-2, #a8780c); }
 .method-facts {
   border-top: 2px solid var(--accent, #c99518);

@@ -79,30 +79,65 @@
 .t-face { border-right: 2px solid var(--tag-ink); }
 .t-face .t-dest { font-size: clamp(3rem, 12vw, 5.5rem); }
 .t-face-body { padding: var(--tag-space-3); display: grid; gap: var(--tag-space-3); }
-/* Six stubs, three columns, two rows — no orphan cell. Every edge resolves to
-   another edge (Planar Alignment Law). */
-.t-stubs { display: grid; grid-template-columns: repeat(3, 1fr); height: 100%; }
+/* ── the province's measures: a register, not a grid of cells ─────────────
+   Seven ranked measures in a three-column grid leave two empty tracks in
+   the last row — a 660×102px void with a rule dangling into it, and the
+   instrument cannot measure a hole that holds no element, so the hole was
+   invisible to the gate and obvious to the eye. A register cannot leave an
+   empty track: one measure per line, the value in its own column, the
+   rank in the last. */
+.t-stubs { display: grid; grid-template-columns: 1fr; }
 .t-stub {
+  display: grid;
+  grid-template-columns: minmax(8rem, 14rem) auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0 var(--tag-space-3);
+  padding: var(--tag-space-2) 0;
   border-bottom: 1px solid var(--tag-ink);
-  border-right: 1px solid var(--tag-ink);
-  padding: var(--tag-space-3);
-  display: grid; align-content: start; gap: var(--tag-space-1);
 }
-.t-stub:nth-child(3n) { border-right: 0; }
-.t-stub:nth-last-child(-n+3) { border-bottom: 0; }
-.t-stub-n { font-family: var(--font-mono); font-size: var(--t-rank2-md); font-variant-numeric: var(--tag-tabular); }
+.t-stub:last-child { border-bottom: 0; }
+.t-stub-n { grid-column: 2; font-family: var(--font-mono); font-size: var(--t-rank2-md); font-variant-numeric: var(--tag-tabular); }
+.t-stub .t-ctx { grid-column: 3; text-align: right; }
+/* The face's own categories: five of them, so five columns at every width
+   that can hold them, and one column on a phone. Five divides by five and
+   by one, so this grid never has an unused track. */
+.t-stubs.dossier-face-cats {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--tag-ink);
+  border: 1px solid var(--tag-ink);
+}
+.dossier-face-cats .t-stub {
+  grid-template-columns: 1fr;
+  grid-template-areas: "key" "value" "ctx";
+  align-content: start;
+  gap: var(--tag-space-1);
+  padding: var(--tag-space-3);
+  border: 0;
+  background: var(--bg);
+}
+.dossier-face-cats .t-key { grid-area: key; min-height: 3em; }
+.dossier-face-cats .t-stub-n { grid-area: value; }
+.dossier-face-cats .t-ctx { grid-area: ctx; text-align: left; }
 @media (max-width: 720px) {
   .t-national { grid-template-columns: 1fr; }
-  .t-stubs { grid-template-columns: repeat(2, 1fr); }
-  .t-stub:nth-child(3n) { border-right: 1px solid var(--tag-ink); }
-  .t-stub:nth-child(2n) { border-right: 0; }
-  .t-stub:nth-last-child(-n+3) { border-bottom: 1px solid var(--tag-ink); }
-  .t-stub:nth-last-child(-n+2) { border-bottom: 0; }
+  /* On a phone the register breaks into two lines: the measure beside its
+     label, the rank under them. */
+  .t-stub {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "key value" "ctx ctx";
+    row-gap: 0;
+  }
+  .t-stub .t-key { grid-area: key; }
+  .t-stub-n { grid-area: value; }
+  .t-stub .t-ctx { grid-area: ctx; text-align: left; }
+  .t-stubs.dossier-face-cats { grid-template-columns: 1fr; }
+  .dossier-face-cats .t-stub { grid-template-areas: "key" "value" "ctx"; }
   .t-face { border-right: 0; border-bottom: 2px solid var(--tag-ink); }
 }
 
 /* ── printed-vs-blank: the zones this registry did not fill ──────────────── */
-.t-zones { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 1px; background: var(--tag-ink); border: 1px solid var(--tag-ink); }
+.t-zones { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: var(--tag-ink); border: 1px solid var(--tag-ink); }
 .t-zone { background: var(--tag-ground-strict); padding: var(--tag-space-3); display: grid; gap: var(--tag-space-2); align-content: start; }
 .t-zone-n { font-family: var(--font-mono); font-size: var(--t-rank2-lg); font-variant-numeric: var(--tag-tabular); line-height: 1; }
 /* A zone under 5% filled is printed as blank: the ink is the ABSENCE, so the
@@ -111,6 +146,33 @@
 .t-zone[data-fill='blank'] .t-key { color: rgba(255,254,250,.68); }
 .t-zone-bar { height: 6px; background: var(--tag-ground); border: 1px solid currentColor; }
 .t-zone-bar > i { display: block; height: 100%; background: currentColor; }
+/* Below 1100px a card can no longer hold a zone without cramping its
+   number, and a grid of seven cards cannot divide seven without leaving
+   empty tracks — here a black void, because the block's rule colour is
+   the ink. The block becomes a register instead: one zone per line, the
+   number beside its name, and the bar in the middle of the row. The bar
+   sits in a shared grid track, so every bar is the same length and the
+   zones can still be compared with one another. */
+@media (max-width: 1099px) {
+  .t-zones { grid-template-columns: 1fr; }
+  .t-zone {
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "key num bar ctx";
+    column-gap: var(--tag-space-2);
+    align-items: baseline;
+  }
+  .t-zone .t-key { grid-area: key; }
+  .t-zone-n { grid-area: num; }
+  .t-zone-bar { grid-area: bar; align-self: center; }
+  .t-zone .t-ctx { grid-area: ctx; }
+}
+@media (max-width: 700px) {
+  .t-zone {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-areas: "key num ctx" "bar bar bar";
+  }
+  .t-zone .t-ctx { grid-area: ctx; }
+}
 
 /* ── stacked composition bar (categories, concentration) ─────────────────── */
 .t-bar { display: flex; height: 2.25rem; border: 1px solid var(--tag-ink); background: var(--tag-ground-strict); overflow: hidden; }
@@ -238,12 +300,38 @@
 .atlas-findings { margin-block: clamp(1.5rem, 4vw, 2.5rem); }
 .atlas-lede-eyebrow { font-size: var(--tag-size-meta); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; color: var(--ink-3); margin-bottom: var(--tag-space-3); }
 .atlas-findings-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--tag-space-2); }
-.atlas-finding { display: grid; grid-template-columns: auto 1fr; gap: var(--tag-space-3); align-items: baseline; padding: var(--tag-space-2) 0; border-bottom: 1px solid var(--line-2); }
-@media (max-width: 720px) {
-  .atlas-finding { grid-template-columns: 1fr; gap: var(--tag-space-1); }
+/* The finding is a hanging marginal note. The Thai name sits in the left
+   margin and the prose wraps UNDER it, the way a sidenote behaves. As a
+   grid cell the label left an empty 113px column under it for the height
+   of the row — a hole beside the text that the reader had to explain. */
+.atlas-finding {
+  display: block;
+  padding: var(--tag-space-2) 0;
+  border-bottom: 1px solid var(--line-2);
 }
-.atlas-finding-th { font-family: var(--font-text); font-size: var(--tag-size-context); color: var(--ink-2); white-space: nowrap; }
+.atlas-finding-th {
+  float: left;
+  width: 14rem;
+  margin: .3rem var(--tag-space-3) 0 0;
+  font-family: var(--font-text);
+  font-size: var(--tag-size-context);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
 .atlas-finding-text { font-size: var(--tag-size-context); }
+.atlas-finding-link {
+  display: block;
+  clear: both;
+  margin-left: calc(14rem + var(--tag-space-3));
+}
+@media (max-width: 720px) {
+  .atlas-finding-th {
+    float: none;
+    width: auto;
+    margin: 0 0 var(--tag-space-1);
+  }
+  .atlas-finding-link { margin-left: 0; }
+}
 
 /* ── specialization grid ────────────────────────────────────────────────── */
 .t-spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1px; background: var(--tag-ink); border: 1px solid var(--tag-ink); }
@@ -346,17 +434,40 @@
 .chapter-h h2 { font-family: var(--font-display); font-size: var(--t-rank2-lg); font-weight: 600; margin: 0; }
 
 /* ── Atlas tabs (top-level navigation within the Atlas view) ──────────── */
+/* The chapter strip is ONE band and it parks UNDER the masthead.
+   Two faults lived here and both were the same mistake — the strip was
+   told to stick to the top of the viewport, which is where the masthead
+   already lives. So it slid underneath it: at 1440 the reader scrolled
+   through a chapter with the chapter names hidden behind the header
+   while the strip still charged 65px of screen. And on a phone the
+   strip had been given a column layout, so it became a 376px sticky
+   wall — 45% of an 844px viewport, and the content behind it unreadable.
+
+   The band is now: one horizontal row at every width, parked at the
+   masthead's own height, scrolling sideways when seven chapters cannot
+   fit, with the active chapter scrolled into view so the reader always
+   knows which chapter they are in. */
 .atlas-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0;
   border-bottom: 1px solid var(--tag-ink);
   margin-bottom: var(--tag-space-4);
   background: var(--tag-ground);
   position: sticky;
-  top: 0;
+  top: var(--hdr-h);
   z-index: 5;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-2) transparent;
+  -webkit-overflow-scrolling: touch;
 }
+/* A strip that scrolls says so on the edge, not only in the swipe. The
+   scrollbar is painted, not overlay, so it is there before it is used. */
+.atlas-tabs::-webkit-scrollbar { height: 3px; background: var(--bg-2); }
+.atlas-tabs::-webkit-scrollbar-thumb { background: var(--line-2); }
+.atlas-tabs::-webkit-scrollbar-track { background: var(--bg-2); }
 .atlas-tab {
   position: relative;
   display: flex;
@@ -374,6 +485,7 @@
   font: inherit;
   cursor: pointer;
   min-height: 64px;
+  flex: 0 0 auto;
   text-align: left;
   transition: border-color 0.12s, color 0.12s, background 0.12s;
 }
@@ -387,9 +499,10 @@
 .atlas-tab-label { font-family: var(--font-text); font-size: var(--tag-size-context); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; }
 .atlas-tab-th { font-size: var(--tag-size-meta); color: var(--ink-3); }
 .atlas-tab[data-active='1'] .atlas-tab-th { color: var(--ink-2); }
+/* On a phone the seven chapters cannot stand side by side, so the band
+   scrolls instead of stacking. The strip stays one band: a chapter list
+   that breaks into a column is a wall, and a wall is not navigation. */
 @media (max-width: 720px) {
-  .atlas-tabs { flex-direction: column; }
-  .atlas-tab { border-bottom: 1px solid var(--line-2); padding: var(--tag-space-2) var(--tag-space-3); min-height: 0; }
-  .atlas-tab::after { left: 0; right: auto; width: 3px; height: 100%; bottom: 0; }
-  .atlas-tab[data-active='1']::after { background: var(--accent); }
+  .atlas-tab { padding: var(--tag-space-2) var(--tag-space-3); min-height: 54px; }
+  .atlas-tab-th { font-size: 0.78em; }
 }

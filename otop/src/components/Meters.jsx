@@ -20,16 +20,20 @@ const METERS = [
 export default function Meters({ completeness }) {
   if (!completeness) return null;
 
+  // Reachable leads the row: it is the measure the registry is judged by —
+  // a record you cannot call is a record you cannot use — so its numeral is
+  // the largest in the block. The seven cells are one grid, so every bar is
+  // the same length and the signals can be compared with each other.
   return (
     <div className="meters">
-      {METERS.map((meter) => {
-        const value = completeness[meter.key];
+      {METERS.map((m, i) => {
+        const value = completeness[m.key];
         const shown = value == null ? 0 : value;
         return (
-          <div key={meter.key}>
+          <div key={m.key} className={i === 0 ? 'meter meter-lead' : 'meter'}>
             <div className="meter-top">
               <span className="meter-l">
-                {meter.label} <span className="gauge-th">· {meter.th}</span>
+                {m.label} <span className="gauge-th">· {m.th}</span>
               </span>
               <span className="meter-v">{value == null ? '—' : `${value}%`}</span>
             </div>
@@ -38,7 +42,7 @@ export default function Meters({ completeness }) {
                   as a bar rather than as text, which keeps contrast legal. */}
               <div className={`meter-fill${shown < 50 ? ' low' : ''}`} style={{ width: `${shown}%` }} />
             </div>
-            <p className="meter-note">{meter.note}</p>
+            <p className="meter-note">{m.note}</p>
           </div>
         );
       })}
