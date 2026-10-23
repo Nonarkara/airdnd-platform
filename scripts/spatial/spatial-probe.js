@@ -24,6 +24,12 @@
  *   6. spatially expensive  — how far down the page the first thing you can
  *                              actually DO is
  *
+ * and the cost of the furniture itself:
+ *
+ *   7. chrome cost         — how tall the header, navigation and sticky bands
+ *                              are, and how much of the viewport they take
+ *   8. overlapping chrome   — a fixed or sticky band sitting ON the work
+ *
  * The probe is injected into the page under test, so it must not assume
  * anything about the host: no global `window` (the document and its window
  * are passed in), no theme assumption (loudness is measured as contrast
@@ -49,7 +55,10 @@
     if (!el) return "?";
     var tag = el.tagName ? el.tagName.toLowerCase() : "?";
     if (el.id) return tag + "#" + el.id;
-    var cls = String(el.className || "")
+    // getAttribute, not el.className: for an SVG element className is an
+    // SVGAnimatedString, and String() of it is "[object SVGAnimatedString]" —
+    // a selector no reviewer can use to find the element in the page.
+    var cls = String(el.getAttribute("class") || "")
       .trim()
       .split(/\s+/)
       .filter(Boolean)
@@ -241,13 +250,40 @@
       }
 
       // The hole UNDER a short cell in a row of taller cells.
+      //
+      // The hole is measured in the cell's OWN COLUMN. A band is a group of
+      // children that overlap vertically, so in a two-column layout a short
+      // cell in the first column shares a band with the tall column beside
+      // it, and the band says the short cell leaves all that space empty.
+      // It does not: the space under it is filled by the next row of its own
+      // column. Measuring against the band made every two-column page look
+      // like it had a void, and a gate that cries wolf on every layout is a
+      // gate nobody reads.
+      //
+      // So: the space under a cell is empty only if no other child of the
+      // container occupies the same column below it. When one does, the hole
+      // ends where that child begins.
       for (var bi = 0; bi < bands.length; bi++) {
         var band1 = bands[bi];
         var bandH = band1.bottom - band1.top;
         if (bandH < DEAD) continue;
         for (var ii = 0; ii < band1.items.length; ii++) {
           var it = band1.items[ii];
-          var hole = band1.bottom - it.r.bottom;
+          // The next child below it in the same column — the one that ends
+          // the space under it, if there is one.
+          var next = null;
+          for (var q = 0; q < items.length; q++) {
+            var o = items[q];
+            if (o === it) continue;
+            // Same column: their horizontal ranges overlap.
+            var overlap = Math.min(o.r.right, it.r.right) - Math.max(o.r.left, it.r.left);
+            if (overlap <= 0) continue;
+            // Below it.
+            if (o.r.top < it.r.bottom - 4) continue;
+            if (!next || o.r.top < next.r.top) next = o;
+          }
+          var floor = next ? next.r.top : cont.getBoundingClientRect().bottom;
+          var hole = floor - it.r.bottom;
           if (hole < DEAD) continue;
           if (it.r.height >= bandH * SHORT) continue;
           var kind = hasMedia(it.el) ? "orphan" : "dead";
@@ -451,6 +487,202 @@
       ramp: ramp,
     };
     rec.chars = totalChars;
+
+    // ---- the query containers ---------------------------------------------
+    // A CONTAINER query changes the layout when the CONTAINER changes size,
+    // not when the window does. A sweep that only knows viewport widths can
+    // walk straight past a container cliff and never see the layout on
+    // either side of it. So every element that establishes a query
+    // container is reported with its width: the gate can then see whether
+    // the sweep ever landed on the cliff.
+    var containers = [];
+    var cands = main.querySelectorAll("*");
+    for (var qi = 0; qi < cands.length; qi++) {
+      var qc = cands[qi];
+      var qcs = win.getComputedStyle(qc);
+      if (!qcs.containerType || qcs.containerType === "normal") continue;
+      var qcr = qc.getBoundingClientRect();
+      if (!qcr.width) continue;
+      containers.push({
+        sel: sel(qc),
+        w: Math.round(qcr.width * 100) / 100,
+        name: qcs.containerName || "",
+      });
+    }
+    rec.containers = containers;
+
+    // ---- chrome cost, and chrome that covers the work -----------------------
+    // "Chrome earns its pixels." The law asks three questions about the
+    // furniture of a page: how TALL it is, how much of the VIEWPORT it
+    // takes, and whether it COVERS the work.
+    //
+    // Chrome is what is not the work: the header, the navigation, a sticky
+    // band, a fixed toolbar. It is NOT the page's own content, and it is NOT
+    // furniture standing in a column — a rail down the side of the reading
+    // column takes no height away from the work, so it is not chrome cost.
+    var vh = win.innerHeight || d.documentElement.clientHeight || 0;
+    var vw = win.innerWidth || d.documentElement.clientWidth || 0;
+    var topBands = [];
+    var bottomBands = [];
+    // A REGION THAT COVERS THE WORK. The edge bands are the chrome of the
+    // page; this is every fixed or pinned region that sits ON the work,
+    // wherever it stands. A band in the middle of the screen is not chrome
+    // cost, but it is still a thing lying on top of the reading.
+    var coverers = [];
+    var chromeNodes = d.body ? d.body.querySelectorAll("*") : [];
+    for (var chi = 0; chi < chromeNodes.length; chi++) {
+      var ce = chromeNodes[chi];
+      if (ce === d.body || ce === d.documentElement) continue;
+      var ccs = win.getComputedStyle(ce);
+      if (ccs.display === "none" || ccs.visibility === "hidden") continue;
+      var cpos = ccs.position;
+      var cr = ce.getBoundingClientRect();
+      if (!cr.width || !cr.height) continue;
+      var isFixed = cpos === "fixed";
+      var isSticky = cpos === "sticky";
+      var inMain = ce === main || main.contains(ce);
+      // A header outside main is the page's own bar; a header inside main is
+      // a heading of the work, and a heading is not furniture.
+      var isBar = !inMain && (ce.tagName === "HEADER" || ce.getAttribute("role") === "banner");
+      if (!isFixed && !isSticky && !isBar) continue;
+      // A full-screen overlay is a MODAL, not chrome: it is not furniture
+      // standing at the edge of a page, it is a thing on top of the page.
+      if (isFixed && cr.width >= vw * 0.9 && cr.height >= vh * 0.9) continue;
+      if (isFixed) {
+        if (cr.top <= 1) {
+          topBands.push({ sel: sel(ce), el: ce, a: cr.top, b: cr.bottom });
+        }
+        if (cr.bottom >= vh - 1) {
+          bottomBands.push({ sel: sel(ce), el: ce, a: cr.top, b: cr.bottom });
+        }
+        // A dialog is meant to be on top of the work: the reader opened it.
+        var inDialog = ce.closest && ce.closest('[role="dialog"],[aria-modal="true"],dialog');
+        if (!inDialog) coverers.push({ sel: sel(ce), el: ce, a: cr.top, b: cr.bottom });
+        continue;
+      }
+      if (isSticky) {
+        // A sticky element pins to the top when it reaches its own threshold.
+        // It is chrome only while it is actually pinned there — a sticky
+        // element still down the page is content, and it costs nothing.
+        var stop = parseFloat(ccs.top);
+        var sbot = parseFloat(ccs.bottom);
+        var atTop = !isNaN(stop) && stop <= 2 && cr.top <= stop + 3;
+        var atBottom = !isNaN(sbot) && cr.bottom >= vh - sbot - 3;
+        if (atTop) {
+          topBands.push({ sel: sel(ce), el: ce, a: cr.top, b: cr.bottom });
+        }
+        if (atBottom) {
+          bottomBands.push({ sel: sel(ce), el: ce, a: cr.top, b: cr.bottom });
+        }
+        if (atTop || atBottom) coverers.push({ sel: sel(ce), el: ce, a: cr.top, b: cr.bottom });
+        continue;
+      }
+      // An in-flow header at the top of the document is the page's own bar.
+      if (cr.top <= 2) topBands.push({ sel: sel(ce), el: ce, a: cr.top, b: cr.bottom });
+    }
+
+    // The COMBINED footprint of the chrome: the height from the edge of the
+    // viewport down to the lowest edge of any band standing there. Stacked
+    // bands count together, because a reader loses the height of all of them.
+    var topH = 0;
+    var topSel = null;
+    for (var tb = 0; tb < topBands.length; tb++) {
+      if (topBands[tb].b > topH) {
+        topH = topBands[tb].b;
+        topSel = topBands[tb].sel;
+      }
+    }
+    var botH = 0;
+    var botSel = null;
+    for (var bb = 0; bb < bottomBands.length; bb++) {
+      var bandH = vh - bottomBands[bb].a;
+      if (bandH > botH) {
+        botH = bandH;
+        botSel = bottomBands[bb].sel;
+      }
+    }
+
+    // A fixed region that sits ON the work obscures it. The measurement is
+    // the depth of the deepest work it covers, at the first screen, where a
+    // reader arrives.
+    function ownContent(e) {
+      for (var n = 0; n < e.childNodes.length; n++) {
+        if (e.childNodes[n].nodeType === 3 && e.childNodes[n].nodeValue.trim()) return true;
+      }
+      return /^(IMG|VIDEO|CANVAS|PICTURE)$/.test(e.tagName);
+    }
+    var worst = 0;
+    var worstBand = null;
+    var worstContent = null;
+    for (var pi = 0; pi < coverers.length; pi++) {
+      // Named pinBand, not band: `var band` is function-scoped to measure(),
+      // so it hoisted over the outer band(items) helper and made every
+      // `band(items)` call below throw. Fixed 2026-10-22.
+      var pinBand = coverers[pi];
+      for (var cj = 0; cj < all.length; cj++) {
+        var cont = all[cj];
+        if (pinBand.el.contains(cont) || cont.contains(pinBand.el)) continue;
+        if (!ownContent(cont)) continue;
+        var rr = cont.getBoundingClientRect();
+        if (rr.bottom <= pinBand.a || rr.top >= pinBand.b) continue;
+        var oTop = Math.max(pinBand.a, rr.top);
+        var oBottom = Math.min(pinBand.b, rr.bottom);
+        if (oBottom <= oTop) continue;
+        // A region only OBSCURES the work if it is painted on top of it.
+        // The browser knows which is on top and the browser is asked.
+        //
+        // WHERE it is asked matters. One sample at the content's left edge
+        // plus 20px misses every band that does not reach that point: a bar
+        // pinned to the RIGHT of the column covered the reading and the
+        // gate called it clean. So the question is asked across the width
+        // where the two actually meet, and the band is caught wherever it
+        // is on top.
+        var bandRect = pinBand.el.getBoundingClientRect();
+        var ix0 = Math.max(rr.left, bandRect.left);
+        var ix1 = Math.min(rr.right, bandRect.right);
+        if (ix1 <= ix0) continue;
+        var py = Math.round((oTop + oBottom) / 2);
+        var span = ix1 - ix0;
+        var samples = span > 120 ? 5 : 3;
+        var onTopAnywhere = false;
+        for (var si = 0; si < samples; si++) {
+          var px = Math.round(ix0 + (span * (si + 0.5)) / samples);
+          var onTop = null;
+          try {
+            onTop = d.elementFromPoint(px, py);
+          } catch (e) {
+            onTop = null;
+          }
+          if (!onTop) continue;
+          if (onTop === pinBand.el || pinBand.el.contains(onTop)) {
+            onTopAnywhere = true;
+            break;
+          }
+        }
+        if (!onTopAnywhere) continue;
+        var oh = oBottom - oTop;
+        if (oh > worst) {
+          worst = oh;
+          worstBand = pinBand;
+          worstContent = cont;
+        }
+      }
+    }
+    if (worst > 0 && worstBand) {
+      push(F, "overlap", worstBand.sel, worst,
+        worstBand.sel + " covers " + Math.round(worst) + "px of " + sel(worstContent));
+    }
+
+    rec.chrome = {
+      vh: vh,
+      top: Math.round(topH),
+      topPct: vh ? Math.round((topH / vh) * 1000) / 10 : null,
+      bottom: Math.round(botH),
+      bottomPct: vh ? Math.round((botH / vh) * 1000) / 10 : null,
+      stacked: topBands.length,
+      topSel: topSel,
+      bottomSel: botSel,
+    };
 
     // ---- 6. spatially expensive information --------------------------------
     // How far down the page the first thing you can DO is. A reader who must
