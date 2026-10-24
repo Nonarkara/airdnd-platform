@@ -85,7 +85,10 @@ function CardShell({ id, q, title, th, big, sub, lines, source, builtAt, cardPar
           </div>
         ))}
       </dl>
-      <p className="bf-src">Source <code>{source}</code> · built {stamp} · counts measure the registry, not the economy.</p>
+      <p className="bf-src">
+        <span>Source <code>{source}</code> · built {stamp}</span>
+        <span>Counts measure the registry, not the economy.</span>
+      </p>
       <div className="bf-actions">
         <button type="button" className="reset" onClick={async () => { const ok = await copyLink(share); setCopied(ok); onCopy?.(id); }}>Copy link{copied ? ' ✓' : ''}</button>
         <button type="button" className="reset" onClick={() => downloadSvg(`otop-brief-${id}-${stamp}.svg`, svg)}>SVG</button>

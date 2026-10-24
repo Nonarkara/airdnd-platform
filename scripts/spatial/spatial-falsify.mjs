@@ -165,6 +165,26 @@ const FIXTURES = [
 const ROUTES = "/";
 const WIDTHS = "390,768,1440";
 
+/**
+ * The precondition for the rules about a hole that CHANGED.
+ *
+ * A rule about a hole that grew can only be tested against a recorded
+ * hole. A clean page records none — so those three rules were tested
+ * against nothing, found no finding to regress, reported themselves dead,
+ * and proved nothing at all. They now create their own hole: the fixture
+ * is mounted, the gate measures it, the measurement is written into the
+ * receipt, and only then is the receipt doctored.
+ */
+const DEAD_FIXTURE = {
+  name: "a hole, so the receipt has one to compare against",
+  mode: "unjustified gaps",
+  at: "bottom",
+  html: `<div class="sl-dead" style="display:flex;flex-direction:column">
+<div class="sl-dead-a" style="height:24px;background:#d8d8d8"></div>
+<div class="sl-dead-b" style="height:24px;background:#d8d8d8;margin-top:260px"></div>
+</div>`,
+};
+
 // ---------------------------------------------------------------- the copy
 const WORK = path.join(tmpdir(), `spatial-falsify-${process.pid}-${Date.now()}`);
 const COPY = path.join(WORK, "site");
@@ -388,12 +408,6 @@ if (failures) {
 // failed is a rule nobody should rely on.
 const BASELINE_SAVED = readFileSync(BASELINE, "utf8");
 
-function withBaseline(mutate) {
-  const b = JSON.parse(BASELINE_SAVED);
-  mutate(b);
-  writeFileSync(BASELINE, JSON.stringify(b, null, 2) + "\n");
-}
-
 const BASELINE_RULES = [
   {
     name: "a reason for a decision that no longer exists",
@@ -507,7 +521,7 @@ const BASELINE_RULES = [
   {
     name: "a decision the receipt has no numbers for",
     expect: "the baseline records no numbers for this route and width",
-    full: true,
+    fixture: DEAD_FIXTURE,
     mutate: (b) => {
       // Keep the reason, lose the numbers. The decision is still justified,
       // so the gate cannot complain that it is unjustified — it must
@@ -525,7 +539,7 @@ const BASELINE_RULES = [
   {
     name: "a hole that grew since the receipt was written",
     expect: "GREW",
-    full: true,
+    fixture: DEAD_FIXTURE,
     mutate: (b) => {
       for (const byw of Object.values(b.routes || {})) {
         for (const entry of Object.values(byw)) {
@@ -542,7 +556,7 @@ const BASELINE_RULES = [
   {
     name: "a hole that shrank since the receipt was written",
     expect: "SHRANK",
-    full: true,
+    fixture: DEAD_FIXTURE,
     mutate: (b) => {
       for (const byw of Object.values(b.routes || {})) {
         for (const entry of Object.values(byw)) {
@@ -612,10 +626,40 @@ document.querySelector(".sl-b").style.marginTop = (w >= 700 && w < 800) ? "260px
 for (const rule of BASELINE_RULES) {
   writeFileSync(BASELINE, BASELINE_SAVED);
   if (rule.site) rule.site();
-  withBaseline(rule.mutate || (() => {}));
+
+  // A rule about the RECEIPT needs a precondition in the receipt. A clean
+  // page records no holes, so a rule about a hole that grew has nothing to
+  // compare against: it found no finding to regress, reported itself dead,
+  // and proved nothing. So the rule MAKES the hole, has the gate measure it,
+  // writes the measurement into the receipt, gives it the reason it needs —
+  // so the failure under test is the GROWTH, not the missing reason — and
+  // only then doctors the receipt.
+  let base = BASELINE_SAVED;
+  if (rule.fixture) {
+    writeFileSync(PAGE, inject(rule.fixture.html, rule.fixture.at));
+    runGate(["--update"], "/");
+    const b = JSON.parse(readFileSync(BASELINE, "utf8"));
+    b.reasons = b.reasons || {};
+    for (const byw of Object.values(b.routes || {})) {
+      for (const entry of Object.values(byw)) {
+        for (const f of entry.findings || []) {
+          const k = `${f.kind}|${f.sel}`;
+          if (!b.reasons[k]) b.reasons[k] = "synthetic baseline for falsification";
+        }
+      }
+    }
+    writeFileSync(BASELINE, JSON.stringify(b, null, 2) + "\n");
+    base = readFileSync(BASELINE, "utf8");
+  }
+
+  const mutated = JSON.parse(base);
+  if (rule.mutate) rule.mutate(mutated);
+  writeFileSync(BASELINE, JSON.stringify(mutated, null, 2) + "\n");
+
   const res = rule.full ? runFullGate([]) : runGate([], rule.routes);
   if (rule.cleanupSite) rule.cleanupSite();
   writeFileSync(BASELINE, BASELINE_SAVED);
+  writeFileSync(PAGE, ORIGINAL);
   if (rule.expect === null) {
     // This one must PASS: the page has no <main>, and the gate must measure
     // it rather than time out on it.

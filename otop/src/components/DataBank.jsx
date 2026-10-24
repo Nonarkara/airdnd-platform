@@ -104,14 +104,19 @@ function DatasetRow({ d, showShelf }) {
   const p = d.pulled;
   return (
     <div className="bank-row">
-      <div className="bank-row-t" lang="th">{d.title}</div>
-      <div className="bank-row-meta">
-        {showShelf && <span>{d.shelf} · </span>}
-        <span>{d.org ?? 'unknown office'}</span>
+      <div className="bank-row-t" lang="th">
+        {showShelf && <span className="bank-row-shelf">{d.shelf}</span>}
+        {d.title}
+      </div>
+      <div className="bank-row-org">{d.org ?? 'unknown office'}</div>
+      <div className="bank-row-measure">
         {p ? (
-          <span> · {p.rowsIn.toLocaleString()} rows · {p.usable ? 'read by the build' : `skipped — ${p.skipReason ?? p.kind}`}</span>
+          <>
+            {p.rowsIn.toLocaleString()} rows ·{' '}
+            {p.usable ? 'read by the build' : `skipped — ${p.skipReason ?? p.kind}`}
+          </>
         ) : (
-          <span> · discovered, not pulled</span>
+          'discovered, not pulled'
         )}
       </div>
     </div>

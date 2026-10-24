@@ -38,7 +38,7 @@
     "otop:standards": "node scripts/otop/standards.js",
     "otop:briefs": "node scripts/otop/briefs.js",
     "otop:intake": "node scripts/otop/intake_pipeline.js",
-    "otop:build": "node scripts/otop/build.js && node scripts/otop/standards.js && node scripts/otop/revenue.js && node scripts/otop/insights.js && node scripts/otop/champions.js && node scripts/otop/anchors.js && node scripts/otop/graph.js && node scripts/otop/briefs.js && node scripts/otop/province-faces.js && node scripts/otop/datasets.js",
+    "otop:build": "node scripts/otop/build.js && node scripts/otop/standards.js && node scripts/otop/revenue.js && node scripts/otop/insights.js && node scripts/otop/champions.js && node scripts/otop/anchors.js && node scripts/otop/graph.js && node scripts/otop/briefs.js && node scripts/otop/province_faces.js && node scripts/otop/datasets.js && node scripts/otop/softpower.js",
     "otop:datasets": "node scripts/otop/datasets.js",
     "otop:dev": "vite --config vite.otop.config.js",
     "otop:site": "vite build --config vite.otop.config.js",
@@ -57,7 +57,10 @@
     "spatial:gate": "node scripts/spatial/spatial-check.mjs --dir design/spatial-snapshots --baseline design/spatial-baseline.json",
     "spatial:check": "node scripts/spatial/spatial-falsify.mjs design/spatial-snapshots",
     "otop:sweep": "node scripts/otop-route-sweep.mjs",
-    "otop:holes": "node scripts/otop-empty-tracks.mjs"
+    "otop:holes": "node scripts/otop-empty-tracks.mjs",
+    "otop:softpower": "node scripts/otop/softpower.js",
+    "otop:softpower:fetch": "node scripts/otop/softpower.js --fetch",
+    "otop:measure": "node scripts/otop-measure.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",

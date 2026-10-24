@@ -277,11 +277,24 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
           <Stub label="Graded" value={n(p.stars.graded)} rank={gradedRank} />
           <Stub label="Corroborated" value={`${Math.round((p.corroborated / Math.max(p.records, 1)) * 100)}%`} rank={corrRank} />
           {cert && (
-            <Stub
-              label="State-certified"
-              value={`${n(cert.valid)} valid / ${n(cert.certified)} held`}
-              rank={rankOf(insights.certification.byProvince, code, 'certified')}
-            />
+            /* One measure per row. The certificate count was one cell holding
+               "287 valid / 648 held" — two numbers and two words in a slot
+               built for one numeral, so at 390px it wrapped to three lines
+               beside a one-line label and left a 114x36 void under the
+               label. Split by measure, each cell holds what it is for, and
+               each row is ranked by its own number. */
+            <>
+              <Stub
+                label="Valid certificates"
+                value={n(cert.valid)}
+                rank={rankOf(insights.certification.byProvince, code, 'valid')}
+              />
+              <Stub
+                label="Certificates held"
+                value={n(cert.certified)}
+                rank={rankOf(insights.certification.byProvince, code, 'certified')}
+              />
+            </>
           )}
           <Stub label={`Sales ${revLatest ? revLatest + 543 : ''} BE`} value={revTotal != null && rev?.years?.[revLatest]?.monthsReported === 12 ? baht(revTotal) : '—'}
             rank={revTotal != null ? rankOf(revRanked, code, 'total') : null} note="not reported" />
@@ -365,11 +378,11 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
         <div key={photo.filePage || photo.url} className="dossier-craft">
           <div className="dossier-craft-banner">
             <div className="dossier-craft-media">
-              <img src={photo.url} alt={photo.description || photo.title} className="dossier-craft-img" loading="lazy" />
+              <img src={photo.url} alt={photo.caption} className="dossier-craft-img" loading="lazy" />
             </div>
             <div className="dossier-craft-body">
               <span className="t-key">Open-license face · ภาพประกอบเปิดสิทธิ์</span>
-              <h4 className="dossier-craft-title">{photo.description || photo.title}</h4>
+              <h4 className="dossier-craft-title">{photo.caption}</h4>
               <p className="dossier-craft-note">{photo.representationNote}</p>
               <p className="dossier-craft-meta">
                 {attributionLine(photo)}

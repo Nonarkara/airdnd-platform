@@ -1,0 +1,599 @@
+{
+ "builtAt": "2026-10-23T18:42:37.507Z",
+ "portal": "https://data.go.th",
+ "frame": {
+  "en": "Soft power is measured abroad by polling. Its supply side is measured here: by the registers that record who makes what, where it goes, and what the state has certified. These are the instruments. One of them is OTOP.",
+  "th": "พลังอ่อนถูกวัดจากต่างประเทศด้วยการสำรวจความคิดเห็น แต่ฝั่งของการผลิตถูกวัดที่นี่ ด้วยทะเบียนที่บันทึกว่าใครผลิตอะไร ส่งไปไหน และรัฐรับรองอะไร เหล่านี้คือเครื่องมือ และหนึ่งในนั้นคือ OTOP"
+ },
+ "layers": [
+  {
+   "id": "supply",
+   "en": "Supply",
+   "th": "การผลิต",
+   "noteEn": "The capacity to make it: producers, workshops, kitchens.",
+   "noteTh": "ศักยภาพในการผลิต ทั้งผู้ผลิต โรงงาน และครัว"
+  },
+  {
+   "id": "conveyance",
+   "en": "Conveyance",
+   "th": "การส่งต่อ",
+   "noteEn": "The machinery that carries it: exports, trade, people abroad.",
+   "noteTh": "เครื่องจักรที่พาออกไป ทั้งการส่งออก การค้า และคนที่อยู่ต่างประเทศ"
+  },
+  {
+   "id": "recognition",
+   "en": "Recognition",
+   "th": "การรับรอง",
+   "noteEn": "What the state and the market have already said so.",
+   "noteTh": "สิ่งที่รัฐและตลาดได้รับรองไปแล้ว"
+  }
+ ],
+ "tools": [
+  {
+   "id": "otop",
+   "layer": "supply",
+   "en": "One Tambon One Product",
+   "th": "หนึ่งตำบลหนึ่งผลิตภัณฑ์",
+   "local": true,
+   "measuresEn": "The registered producers behind Thailand's craft economy, one tambon at a time.",
+   "measuresTh": "ผู้ผลิตที่ลงทะเบียนในเศรษฐกิจหัตถกรรมของไทย ทีละตำบล",
+   "notEn": "A registry of filings, not a measure of demand, price or quality.",
+   "notTh": "ทะเบียนของการยื่นเอกสาร ไม่ใช่การวัดอุปสงค์ ราคา หรือคุณภาพ",
+   "status": "measured",
+   "indicators": [
+    {
+     "id": "records",
+     "en": "Producers on the register",
+     "th": "ผู้ผลิตในทะเบียน",
+     "value": 154050,
+     "unitEn": "records",
+     "unitTh": "รายการ",
+     "scopeEn": "One row per producer after entity resolution",
+     "scopeTh": "หนึ่งแถวต่อหนึ่งผู้ผลิต หลังรวมตัวตน"
+    },
+    {
+     "id": "provinces",
+     "en": "Provinces covered",
+     "th": "จังหวัดที่ครอบคลุม",
+     "value": 77,
+     "unitEn": "of 77",
+     "unitTh": "จาก 77",
+     "scopeEn": "Every province shard was read",
+     "scopeTh": "อ่านครบทุกไฟล์จังหวัด"
+    },
+    {
+     "id": "placed",
+     "en": "Placed at tambon",
+     "th": "ระบุตำบลได้",
+     "value": 135100,
+     "unitEn": "records",
+     "unitTh": "รายการ",
+     "scopeEn": "A location, not a market",
+     "scopeTh": "คือที่ตั้ง ไม่ใช่ตลาด"
+    },
+    {
+     "id": "cert",
+     "en": "Certificates valid",
+     "th": "ใบรับรองที่ใช้ได้",
+     "value": 9588,
+     "unitEn": "certificates",
+     "unitTh": "ใบรับรอง",
+     "scopeEn": "As of 2026-09-20",
+     "scopeTh": "ณ 2026-09-20"
+    },
+    {
+     "id": "contact",
+     "en": "With a contact channel",
+     "th": "ที่มีช่องทางติดต่อ",
+     "value": 5.7,
+     "unitEn": "% of records",
+     "unitTh": "% ของรายการ",
+     "scopeEn": "A phone, an email or a website on the filing",
+     "scopeTh": "เบอร์โทร อีเมล หรือเว็บไซต์ที่ระบุในการยื่น"
+    }
+   ],
+   "series": [],
+   "source": {
+    "dataset": "OTOP — ผลิตภัณฑ์ชุมชน (this site)",
+    "org": "Department of Community Development and partners, via data.go.th",
+    "url": "https://otop.nonarkara.org/?view=method",
+    "retrieved": "2026-09-20T17:12:01.983Z",
+    "rows": 154050
+   },
+   "route": "/?view=find"
+  },
+  {
+   "id": "handicraft",
+   "layer": "supply",
+   "q": "ภาพรวมรายงานผลิตภัณฑ์ศิลปหัตถกรรมไทย",
+   "title": "ภาพรวมรายงานผลิตภัณฑ์ศิลปหัตถกรรมไทย",
+   "en": "Thai handicraft products",
+   "th": "ผลิตภัณฑ์ศิลปหัตถกรรมไทย",
+   "measuresEn": "The national report on Thai handicraft products — what is made, by how many makers, for which province.",
+   "measuresTh": "รายงานผลิตภัณฑ์ศิลปหัตถกรรมไทย — ผลิตอะไร โดยใคร และของจังหวัดใด",
+   "notEn": "A production report. It does not say what was sold, or where.",
+   "notTh": "รายงานการผลิต ไม่ได้บอกว่าขายได้เท่าไร และขายที่ไหน",
+   "status": "measured",
+   "indicators": [
+    {
+     "id": "lines",
+     "en": "Product lines reported",
+     "th": "รายการสินค้าที่รายงาน",
+     "value": 28,
+     "unitEn": "products",
+     "unitTh": "สินค้า",
+     "scopeEn": "As published",
+     "scopeTh": "ตามที่เผยแพร่"
+    },
+    {
+     "id": "months",
+     "en": "Months in the report",
+     "th": "เดือนในรายงาน",
+     "value": 12,
+     "unitEn": "months",
+     "unitTh": "เดือน",
+     "scopeEn": "B.E. 2562 (2019)",
+     "scopeTh": "พ.ศ. 2562 (2019)"
+    }
+   ],
+   "series": [
+    {
+     "label": "เครื่องประดับแท้ทำด้วยทอง",
+     "value": 58701.18
+    },
+    {
+     "label": "เครื่องประดับแท้ทำด้วยเงิน",
+     "value": 48024.02
+    },
+    {
+     "label": "เฟอร์นิเจอร์และชิ้นส่วน",
+     "value": 39430.39
+    },
+    {
+     "label": "โลหะมีค่าและของที่หุ้มด้วยโลหะมีค่าอื่น ๆ",
+     "value": 28762.22
+    },
+    {
+     "label": "เสื้อผ้าสำเร็จรูปทำจากฝ้าย",
+     "value": 19215.35
+    }
+   ],
+   "seriesLabelEn": "Top product lines by their twelve-month total",
+   "seriesLabelTh": "สินค้าที่มีมูลค่ารวมสูงสุดในสิบสองเดือน",
+   "note": "The dataset does not state the unit of these figures.",
+   "source": {
+    "dataset": "ภาพรวมรายงานผลิตภัณฑ์ศิลปหัตถกรรมไทย",
+    "org": "สถาบันส่งเสริมศิลปหัตถกรรมไทย (องค์การมหาชน)",
+    "url": "https://data.go.th/dataset/c3f38839-e672-4045-a69b-47acc3b84413",
+    "retrieved": "2026-10-23T18:29:56.180Z",
+    "rows": 28,
+    "resource": "ภาพรวมรายงานผลิตภัณฑ์ศิลปหัตถกรรมไทย (พ.ศ.2562)"
+   }
+  },
+  {
+   "id": "local-food",
+   "layer": "recognition",
+   "q": "อาหารไทยพื้นถิ่น",
+   "title": "อาหารไทยพื้นถิ่น",
+   "en": "Local Thai food",
+   "th": "อาหารไทยพื้นถิ่น",
+   "measuresEn": "The Ministry of Culture's register of local Thai dishes, with their ingredients, checked so they can be taught and remade.",
+   "measuresTh": "ทะเบียนอาหารไทยพื้นถิ่นของกรมส่งเสริมวัฒนธรรม พร้อมส่วนประกอบ ที่ตรวจสอบแล้วเพื่อเผยแพร่และนำไปใช้ต่อยอด",
+   "notEn": "A domestic register of dishes. It is not a count of Thai restaurants abroad.",
+   "notTh": "เป็นทะเบียนอาหารในประเทศ ไม่ใช่จำนวนร้านอาหารไทยในต่างประเทศ",
+   "status": "measured",
+   "indicators": [
+    {
+     "id": "dishes",
+     "en": "Dishes recorded",
+     "th": "รายการอาหารที่บันทึก",
+     "value": 52,
+     "unitEn": "dishes",
+     "unitTh": "รายการอาหาร",
+     "scopeEn": "Checked for dissemination and training",
+     "scopeTh": "ผ่านการตรวจสอบเพื่อเผยแพร่และใช้ฝึกอาชีพ"
+    },
+    {
+     "id": "provinces",
+     "en": "Provinces covered",
+     "th": "จังหวัดที่ครอบคลุม",
+     "value": 21,
+     "unitEn": "provinces",
+     "unitTh": "จังหวัด",
+     "scopeEn": "Within this register",
+     "scopeTh": "ภายในทะเบียนนี้"
+    },
+    {
+     "id": "regions",
+     "en": "Regions covered",
+     "th": "ภูมิภาคที่ครอบคลุม",
+     "value": 4,
+     "unitEn": "regions",
+     "unitTh": "ภูมิภาค",
+     "scopeEn": "Within this register",
+     "scopeTh": "ภายในทะเบียนนี้"
+    }
+   ],
+   "series": [
+    {
+     "label": "ภาคตะวันออกเฉียงเหนือ",
+     "value": 18
+    },
+    {
+     "label": "ภาคเหนือ",
+     "value": 13
+    },
+    {
+     "label": "ภาคกลางและตะวันออก",
+     "value": 11
+    },
+    {
+     "label": "ภาคใต้",
+     "value": 10
+    }
+   ],
+   "seriesLabelEn": "Dishes by region",
+   "seriesLabelTh": "รายการอาหารแยกตามภูมิภาค",
+   "note": "",
+   "source": {
+    "dataset": "อาหารไทยพื้นถิ่น",
+    "org": "กรมส่งเสริมวัฒนธรรม",
+    "url": "https://data.go.th/dataset/f6802bb4-a26e-48a6-9cd9-381e09d3cb35",
+    "retrieved": "2026-10-23T18:29:56.972Z",
+    "rows": 52,
+    "resource": "อาหารไทยพื้นถิ่น"
+   }
+  },
+  {
+   "id": "film-heritage",
+   "layer": "recognition",
+   "q": "ภาพยนตร์ที่ได้รับการขึ้นทะเบียนเป็นมรดกภาพยนตร์ของชาติ",
+   "title": "ข้อมูลภาพยนตร์ที่ได้รับการขึ้นทะเบียนเป็นมรดกภาพยนตร์ของชาติ",
+   "en": "National film heritage",
+   "th": "มรดกภาพยนตร์ของชาติ",
+   "measuresEn": "The Thai Film Archive's register of films recognised as national film heritage.",
+   "measuresTh": "ทะเบียนภาพยนตร์ที่ขึ้นทะเบียนเป็นมรดกภาพยนตร์ของชาติ จากหอภาพยนตร์",
+   "notEn": "A heritage register. It is the state's memory, not the audience's reach.",
+   "notTh": "ทะเบียนมรดก เป็นความทรงจำของรัฐ ไม่ใช่การเข้าถึงของผู้ชม",
+   "status": "measured",
+   "indicators": [
+    {
+     "id": "films",
+     "en": "Films registered",
+     "th": "ภาพยนตร์ที่ขึ้นทะเบียน",
+     "value": 999,
+     "unitEn": "films",
+     "unitTh": "เรื่อง",
+     "scopeEn": "The Film Archive register as published",
+     "scopeTh": "ทะเบียนของหอภาพยนตร์ตามที่เผยแพร่"
+    },
+    {
+     "id": "rounds",
+     "en": "Heritage rounds",
+     "th": "ครั้งการขึ้นทะเบียน",
+     "value": 13,
+     "unitEn": "rounds",
+     "unitTh": "ครั้ง",
+     "scopeEn": "Each round is a named selection",
+     "scopeTh": "แต่ละครั้งคือการคัดเลือกหนึ่งชุด"
+    },
+    {
+     "id": "earliest",
+     "en": "Earliest production year",
+     "th": "ปีผลิตเรื่องแรก",
+     "value": 1897,
+     "unitEn": "CE",
+     "unitTh": "ค.ศ.",
+     "scopeEn": "Converted from the Thai Buddhist year in the dataset",
+     "scopeTh": "แปลงจากปี พ.ศ. ในชุดข้อมูล"
+    },
+    {
+     "id": "genres",
+     "en": "Genres",
+     "th": "ประเภทภาพยนตร์",
+     "value": 20,
+     "unitEn": "genres",
+     "unitTh": "ประเภท",
+     "scopeEn": "As the dataset labels them",
+     "scopeTh": "ตามที่ชุดข้อมูลกำหนด"
+    }
+   ],
+   "series": [
+    {
+     "label": "ภาพยนตร์",
+     "value": 132
+    },
+    {
+     "label": "บันทึกเหตุการณ์",
+     "value": 46
+    },
+    {
+     "label": "สารคดี",
+     "value": 17
+    },
+    {
+     "label": "ภาพยนตร์ข่าว",
+     "value": 10
+    },
+    {
+     "label": "ภาพยนตร์โฆษณา",
+     "value": 6
+    },
+    {
+     "label": "แอนิเมชัน",
+     "value": 5
+    }
+   ],
+   "seriesLabelEn": "Registered films by genre",
+   "seriesLabelTh": "ภาพยนตร์ที่ขึ้นทะเบียนแยกตามประเภท",
+   "note": "Production years run from 1897 to 2018.",
+   "source": {
+    "dataset": "ข้อมูลภาพยนตร์ที่ได้รับการขึ้นทะเบียนเป็นมรดกภาพยนตร์ของชาติ",
+    "org": "หอภาพยนตร์ (องค์การมหาชน)",
+    "url": "https://data.go.th/dataset/4eae7a72-381a-4026-a689-b867a26fbdd8",
+    "retrieved": "2026-10-23T18:29:58.208Z",
+    "rows": 999,
+    "resource": "ข้อมูลภาพยนตร์ที่ได้รับการขึ้นทะเบียนเป็นมรดกภาพยนตร์ของชาติ"
+   }
+  },
+  {
+   "id": "exports",
+   "layer": "conveyance",
+   "q": "มูลค่าการส่งออกของสินค้า",
+   "title": "มูลค่าการส่งออกของสินค้า",
+   "en": "Export value by commodity",
+   "th": "มูลค่าการส่งออกตามกลุ่มสินค้า",
+   "measuresEn": "The Department of International Trade's export values by commodity — the taste of Thailand, priced.",
+   "measuresTh": "มูลค่าการส่งออกตามกลุ่มสินค้า ของกรมการค้าต่างประเทศ — รสชาติของไทยในราคา",
+   "notEn": "Export value, not soft power. Value moves for reasons the culture does not explain.",
+   "notTh": "เป็นมูลค่าการส่งออก ไม่ใช่พลังอ่อน มูลค่าขยับด้วยเหตุผลที่วัฒนธรรมไม่ได้อธิบาย",
+   "status": "measured",
+   "indicators": [
+    {
+     "id": "lines",
+     "en": "Export lines in the extract",
+     "th": "รายการส่งออกในชุดข้อมูล",
+     "value": 923,
+     "unitEn": "lines",
+     "unitTh": "รายการ",
+     "scopeEn": "As published on certificates of origin",
+     "scopeTh": "ตามที่ระบุในหนังสือรับรองถิ่นกำเนิดสินค้า"
+    },
+    {
+     "id": "value",
+     "en": "Declared export value",
+     "th": "มูลค่าส่งออกที่ประกาศ",
+     "value": 36917649,
+     "unitEn": "USD",
+     "unitTh": "ดอลลาร์สหรัฐ",
+     "scopeEn": "Certificates of origin only — not the whole customs total",
+     "scopeTh": "เฉพาะหนังสือรับรองถิ่นกำเนิด ไม่ใช่ยอดรวมศุลกากรทั้งหมด"
+    },
+    {
+     "id": "commodities",
+     "en": "Distinct commodities",
+     "th": "กลุ่มสินค้าที่แตกต่างกัน",
+     "value": 164,
+     "unitEn": "HS codes",
+     "unitTh": "รหัส HS",
+     "scopeEn": "Within this extract",
+     "scopeTh": "ภายในชุดข้อมูลนี้"
+    },
+    {
+     "id": "markets",
+     "en": "Destination markets",
+     "th": "ตลาดปลายทาง",
+     "value": 9,
+     "unitEn": "countries",
+     "unitTh": "ประเทศ",
+     "scopeEn": "Within this extract",
+     "scopeTh": "ภายในชุดข้อมูลนี้"
+    }
+   ],
+   "series": [
+    {
+     "label": "JAPAN",
+     "value": 18432874
+    },
+    {
+     "label": "VIET NAM",
+     "value": 8496412
+    },
+    {
+     "label": "PEOPLE'S REPUBLIC OF CHINA",
+     "value": 3940945
+    },
+    {
+     "label": "REPUBLIC OF KOREA",
+     "value": 3485216
+    },
+    {
+     "label": "INDONESIA",
+     "value": 1518050
+    }
+   ],
+   "seriesLabelEn": "Top markets by declared value (USD)",
+   "seriesLabelTh": "ตลาดหลักตามมูลค่าที่ประกาศ (ดอลลาร์สหรัฐ)",
+   "note": "Years covered: 2023.",
+   "source": {
+    "dataset": "มูลค่าการส่งออกของสินค้า",
+    "org": "กรมการค้าต่างประเทศ",
+    "url": "https://data.go.th/dataset/2849f42a-cd08-4769-a29d-3e1fd180407d",
+    "retrieved": "2026-10-23T18:29:59.522Z",
+    "rows": 923,
+    "resource": "มูลค่าการส่งออกของสินค้า (ธ.ค. 2566)"
+   }
+  },
+  {
+   "id": "fisheries",
+   "layer": "conveyance",
+   "q": "ปริมาณและมูลค่าการนำเข้าส่งออกสินค้าประมงของไทย",
+   "maxRows": 60000,
+   "title": "ปริมาณและมูลค่าการนำเข้าส่งออกสินค้าประมงของไทย",
+   "en": "Fishery exports",
+   "th": "การส่งออกสินค้าประมง",
+   "measuresEn": "The Department of Fisheries' volume and value of Thai fishery exports.",
+   "measuresTh": "ปริมาณและมูลค่าการส่งออกสินค้าประมงของไทย จากกรมประมง",
+   "notEn": "A trade series. It counts what crossed the border, not who ate it.",
+   "notTh": "เป็นสถิติการค้า นับสินค้าที่ข้ามพรมแดน ไม่ใช่คนที่กิน",
+   "status": "measured",
+   "indicators": [
+    {
+     "id": "lines",
+     "en": "Trade lines",
+     "th": "รายการการค้า",
+     "value": 51845,
+     "unitEn": "lines",
+     "unitTh": "รายการ",
+     "scopeEn": "The full published series",
+     "scopeTh": "ชุดข้อมูลฉบับเต็มตามที่เผยแพร่"
+    },
+    {
+     "id": "export-lines",
+     "en": "Export lines",
+     "th": "รายการส่งออก",
+     "value": 35405,
+     "unitEn": "lines",
+     "unitTh": "รายการ",
+     "scopeEn": "tradeflow = 2",
+     "scopeTh": "tradeflow = 2"
+    },
+    {
+     "id": "import-lines",
+     "en": "Import lines",
+     "th": "รายการนำเข้า",
+     "value": 16440,
+     "unitEn": "lines",
+     "unitTh": "รายการ",
+     "scopeEn": "tradeflow = 1",
+     "scopeTh": "tradeflow = 1"
+    },
+    {
+     "id": "products",
+     "en": "Product lines",
+     "th": "กลุ่มสินค้า",
+     "value": 435,
+     "unitEn": "products",
+     "unitTh": "สินค้า",
+     "scopeEn": "Within the series",
+     "scopeTh": "ภายในชุดข้อมูล"
+    },
+    {
+     "id": "markets",
+     "en": "Trading partners",
+     "th": "คู่ค้า",
+     "value": 197,
+     "unitEn": "countries",
+     "unitTh": "ประเทศ",
+     "scopeEn": "Within the series",
+     "scopeTh": "ภายในชุดข้อมูล"
+    }
+   ],
+   "series": [
+    {
+     "label": "ปลาทูน่า สคิปแจกและแอตแลนติกโบนิโตอื่นๆ ที่บรรจุภาชนะที่อากาศผ่านเข้าออกไม่ได้",
+     "value": 2657
+    },
+    {
+     "label": "อาหารสุนัขหรือแมวที่มีปลาบรรจุภาชนะที่อากาศเข้าออกไม่ได้",
+     "value": 1761
+    },
+    {
+     "label": "ของผสมที่ใช้ปรุงรส และของผสมที่ใช้ชูรสอื่น ๆ",
+     "value": 1534
+    },
+    {
+     "label": "น้ำปลา",
+     "value": 1205
+    },
+    {
+     "label": "ลูกปลาอื่น ๆ มีชีวิต",
+     "value": 1131
+    }
+   ],
+   "seriesLabelEn": "Most-traded export products, by number of trade lines",
+   "seriesLabelTh": "สินค้าส่งออกที่ซื้อขายมากที่สุด นับจำนวนรายการ",
+   "note": "Years covered (B.E.): 2568, 2569.",
+   "source": {
+    "dataset": "ปริมาณและมูลค่าการนำเข้าส่งออกสินค้าประมงของไทย",
+    "org": "กรมประมง",
+    "url": "https://data.go.th/dataset/b4f2b62c-9265-453d-a321-e0e6c5a7a3fa",
+    "retrieved": "2026-10-23T18:34:08.446Z",
+    "rows": 51845,
+    "resource": "ปริมาณและมูลค่าการนำเข้าส่งออกสินค้าประมง"
+   }
+  },
+  {
+   "id": "labour",
+   "layer": "conveyance",
+   "q": "สถิติแรงงานไทยเดินทางไปทำงานต่างประเทศ",
+   "title": "สถิติแรงงานไทยเดินทางไปทำงานต่างประเทศ",
+   "en": "Thai workers abroad",
+   "th": "แรงงานไทยที่ไปทำงานต่างประเทศ",
+   "measuresEn": "The registered outbound Thai workforce — the human carrier of Thai culture.",
+   "measuresTh": "แรงงานไทยที่ลงทะเบียนเดินทางไปทำงานต่างประเทศ — ผู้นำวัฒนธรรมไทยไปพร้อมกับคน",
+   "notEn": "Registered intent to travel. Not the number abroad, and not what they carry with them.",
+   "notTh": "เป็นความตั้งใจที่ลงทะเบียน ไม่ใช่จำนวนคนที่อยู่ต่างประเทศ และไม่ใช่สิ่งที่พวกเขานำไป",
+   "status": "measured",
+   "indicators": [
+    {
+     "id": "outbound",
+     "en": "Outbound workers registered",
+     "th": "แรงงานที่ลงทะเบียนเดินทางไปทำงานต่างประเทศ",
+     "value": 869,
+     "unitEn": "people",
+     "unitTh": "คน",
+     "scopeEn": "Chonburi province, B.E. 2567 — a provincial register, not a national one",
+     "scopeTh": "จังหวัดชลบุรี พ.ศ. 2567 — เป็นทะเบียนระดับจังหวัด ไม่ใช่ระดับประเทศ"
+    },
+    {
+     "id": "years",
+     "en": "Years in the register",
+     "th": "ปีที่มีในทะเบียน",
+     "value": 8,
+     "unitEn": "years",
+     "unitTh": "ปี",
+     "scopeEn": "As published",
+     "scopeTh": "ตามที่เผยแพร่"
+    }
+   ],
+   "series": [
+    {
+     "label": "RE-ENTRY(male)",
+     "value": 218
+    },
+    {
+     "label": "Employment agent (female)",
+     "value": 149
+    },
+    {
+     "label": "Traveling on your own (male)",
+     "value": 85
+    },
+    {
+     "label": "RE-ENTRY(female)",
+     "value": 78
+    },
+    {
+     "label": "Employer sends employee to intern (female)",
+     "value": 68
+    },
+    {
+     "label": "Employment agent (male)",
+     "value": 62
+    }
+   ],
+   "seriesLabelEn": "Outbound workers by channel",
+   "seriesLabelTh": "แรงงานไปทำงานต่างประเทศ แยกตามช่องทาง",
+   "note": "A provincial register. It is an instrument, and it is scoped to the province that publishes it.",
+   "source": {
+    "dataset": "สถิติแรงงานไทยเดินทางไปทำงานต่างประเทศ",
+    "org": "สำนักงานจังหวัดชลบุรี",
+    "url": "https://data.go.th/dataset/08c70060-9df7-4de3-ba25-3057242968f9",
+    "retrieved": "2026-10-23T18:30:02.190Z",
+    "rows": 8,
+    "resource": "จำนวนแรงงานไทยที่ได้รับอนุญาตให้เดินทางไปทำงานต่างประเทศ"
+   }
+  }
+ ]
+}

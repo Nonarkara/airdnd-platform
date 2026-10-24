@@ -265,13 +265,30 @@ export default function CrossReferences() {
         </article>
       </section>
 
-      <p className="xr-foot">
-        Source: <code>otop_anchors.json</code> (3 metrics, 77 provinces, public-record anchors)
-        joined with <code>otop_index.json</code> + <code>otop_insights.json</code> +
-        <code>otop_revenue.json</code>. Every cell is a real cross-reference question;
-        zero-fill means the registry file the cell was reading was empty, not that the
-        number is unknown.
-      </p>
+      <footer className="xr-foot">
+        <dl className="xr-srcs">
+          <div>
+            <dt><code>otop_anchors.json</code></dt>
+            <dd>3 metrics, 77 provinces, public-record anchors</dd>
+          </div>
+          <div>
+            <dt><code>otop_index.json</code></dt>
+            <dd>the registry</dd>
+          </div>
+          <div>
+            <dt><code>otop_insights.json</code></dt>
+            <dd>the rollups</dd>
+          </div>
+          <div>
+            <dt><code>otop_revenue.json</code></dt>
+            <dd>the revenue series</dd>
+          </div>
+        </dl>
+        <p className="xr-foot-note">
+          Every cell is a real cross-reference question; zero-fill means the registry file
+          the cell was reading was empty, not that the number is unknown.
+        </p>
+      </footer>
     </div>
   );
 }

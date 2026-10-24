@@ -1,145 +1,134 @@
 # MSH — Massacre Spatial Hallucination
 
-**Site** — one³ OTOP registry (`otop.nonarkara.org`)
+**Site** — one³ (`otop.nonarkara.org` / `otop.pages.dev`) — Thailand's soft-power monitor, of which the OTOP registry is one instrument.
 **Law** — the owner's design law, applied verbatim. `docs/MSH-LAW.md` is the canonical copy; this file is the evidence for this pass, not a second law.
-**Date** — 2026-10-22, continued 2026-10-23
-**Viewports** — 390 × 844, 1024 × 900, 1440 × 900
-**Instruments** — `scripts/otop-msh-audit.mjs` (chrome cost, task visibility, hierarchy, overlap), `scripts/otop-empty-tracks.mjs` (uncovered rectangles inside grid containers), `scripts/otop-route-sweep.mjs` (every view renders), `scripts/spatial/spatial-check.mjs` (the vendored gate), `scripts/spatial/spatial-falsify.mjs` (the gate's self-test)
+**Pass** — three: the long-line massacre, the thirteen holes my own recompositions opened, and the three failures found on the last sweep.
+**Date** — 2026-10-22, continued 2026-10-23, closed 2026-10-24.
+**Viewports** — 390 × 844, 1024 × 900, 1440 × 900.
+**Instruments** — `scripts/otop-measure.mjs` (the line ruler, with `--selftest`), `scripts/otop-empty-tracks.mjs` (uncovered rectangles inside grid containers), `scripts/otop-route-sweep.mjs` (every route renders), `scripts/spatial/spatial-check.mjs` (the vendored gate), `scripts/spatial/spatial-falsify.mjs` (the gate's self-test), `scripts/otop-msh-audit.mjs` (chrome cost, task visibility, hierarchy).
 
 ---
 
 ## Found
 
-### Pass one — nine spatial failures
+### Pass one — the long-line massacre
+
+The house rule is 45–75 characters a line. The site was carrying **264 blocks over the ceiling**, and the worst was a 210-character line — the crossrefs footnote, set across a 1440px canvas. The measure was in the wrong unit: the stylesheet sized every reading column in `ch`, and `ch` is the width of a digit zero — a unit with no relationship to the width of a Thai glyph or of an average Latin letter. A line measured in `ch` is a number about a font's zero, not about the reader's line.
+
+**The change of instrument.** The ruler now measures the *rendered line boxes* — the word rectangles the browser produced — and reports two numbers: `lre`, the line's physical width expressed in the font's own Latin character width, and `ch`, the character count of the longest line. `lre` governs every script; the 75-character ceiling applies to the character count only where the line is majority-Latin, because a Thai glyph is a narrow mark, not a letter, and a rule that lies about half the site is not a rule.
+
+**The house token.** `--read: 32em` — one scale-invariant reading measure, in `em` so it moves with the type, used by every reading column on the site. The `ch`-based widths it replaced: 92, 88, 78, 76, 72, 64, 62, 60.
+
+**The recompositions.** Twelve views, each rebuilt around the measure rather than trimmed to fit it:
+
+| View | What the line length forced |
+|---|---|
+| `atlas` | The findings list became a two-column list with a hanging note; the label hugs its content |
+| `bank` | The shelf rows became a three-cell register — title · office · measure |
+| `province` | The certificate table became two columns |
+| `story` | The essay moved to a 68rem canvas, two prose columns, a three-column colophon |
+| `crossrefs` | The anchors became marginal notes, with the source register in the footer |
+| the hero band | Two columns — the eyebrow moved into column 1, above the headline it names |
+| `method` | The banner came out of the essay column into a full-width band; the register sits beside the prose |
+| `matchmaker` · `history` · `briefs` · `champions` · `match` | Banded layouts, each measured, none trimmed |
+
+**Progression:** 264 → 79 → 18 → **0** offenders.
+
+### Pass two — the thirteen holes my own recompositions opened
+
+Every one of these was mine. They are listed because a pass that only finds other people's failures is not a pass.
 
 | # | Element | Viewport | Measured hole | Task cost |
 |---|---|---|---|---|
-| 1 | `nav.atlas-tabs` | 390 | 376px sticky column, **45% of an 844px viewport** | The reader lost half the phone to a chapter list before the first word of the chapter |
-| 2 | `nav.atlas-tabs` | 1024, 1440 | 51 of 65px hidden behind `.hdr` | The chapter names were invisible while still charging 65px of screen; only a 3px amber sliver showed |
-| 3 | `.t-stubs` (province measures) | 1440 | 660 × 102px = **67,000px²** | Two empty tracks beside the seventh measure, with a rule dangling into the void |
-| 4 | `.t-stubs.dossier-face-cats` | 1440 | 444 × 102px = 45,000px² | Same failure, second instance |
-| 5 | `.t-zones` | 1024 | 570 × 138px = **79,000px²**, black | The block's rule colour is the ink, so the empty tracks rendered as a black void in the middle of the page |
-| 6 | `.meters` | 1024 / 1440 | 654 × 90px = 59,000px² / 866 × 86px | Seven signals in a grid that auto-fit its columns: the count chose the tracks and the last row was left empty |
-| 7 | `.bank-shelf-strip` | 1024, 1440 | 330 × 48px = 16,000px² | Seven shelves in four columns; the last row held one shelf and three empty cells |
-| 8 | `li.atlas-finding` | 1024, 1440 | 1,224 × 60px = **73,000px²** | The action link auto-placed into the narrow header column, stranding the width of the row beside it |
-| 9 | `article.row.match-row` | 390 | 174 × 48px, twice | On a phone the score sat alone in a half-empty row, and the place cell sat alone in another |
+| 1 | `.vhero` | all | A 75px band between the eyebrow and the headline it labels | The reader crossed 876px of nothing to get from "ATLAS" to the chapter |
+| 2 | `.method` | 390 | A 306 × 4,218px void | The facts column became an implicit grid column and the phone showed a mile of cream |
+| 3 | `.filter-explain` | 1440 | A gap opened by `space-between` | The explanation and its button drifted to opposite edges |
+| 4 | `.champions` | all | The foot ribbon overran the card grid | The note under the cards sat inside the reading measure and the cards above it did not |
+| 5 | `.ch-cards` | 1440 | 324 × 438px = 142,000px² | The last row held 2 of 4 cards; the other two cells were void |
+| 6 | `.find-head` | 1024, 1440 | 416 × 50px under the register | See pass three — the register was shorter than the question it answered |
+| 7 | `.dossier-walk` | 1440 | Buttons pushed to opposite edges | Two related actions, two ends of the row |
+| 8–13 | Six further voids in the atlas, bank, briefs, matchmaker and story recompositions | mixed | 3,000–60,000px² each | Each was measured, not eyeballed |
 
-### Pass two — five more, after the first nine were fixed
+### Pass three — the three failures found on the last sweep
 
-| # | Element | Viewport | Measured hole | Task cost |
-|---|---|---|---|---|
-| 10 | `li.find-row.has-phone` | 390 | 174 × 60px, six rows | The phone dropped below the name and left the right half of the row empty, so the digits no longer formed a column |
-| 11 | `header.find-head` | 1024, 1440 | 768 × 36px / 1,170 × 36px | The stats ribbon overran the headline block by 36px, leaving a band of nothing under the lead paragraph |
-| 12 | `div.method` | 1024, 1440 | 288 × 60px / 684 × 78px | The facts column ended 78px above the prose column, so the page's bottom-right corner was empty |
-| 13 | `li.atlas-finding` | 1024, 1440 | 108 × 78px | The Thai name was a grid cell: the column under it was empty for the height of the row |
-| 14 | `div.ch-cards` | 1440 | 324 × 438px = **142,000px²** | The champions grid's last row held 2 of 4 cards; the other two cells were void |
+**15. The province dossier's photo title was a Wikipedia article.**
+`h4.dossier-craft-title` was rendering `photo.description` — and a Wikimedia Commons *description* is the file page's **article body**. For the Chiang Saen lion statue that is 4,819 characters of Thai Wikipedia text: **124 lines, a 321 × 2,976px heading, inside a 240px photo panel.** Twenty of the 128 Commons photographs carry more than 200 characters of it; seven carry more than a thousand. Every line of it was *under* the ceiling — which is exactly why the ruler did not see it, and why the ruler gained a rule (below).
+
+**16. The masthead's register was shorter than the question.**
+`header.find-head` is the question on the left and the registry's scale on the right. The headline was capped at `24ch` **and** squeezed into a `--read` column, so it broke into two lines at 1024 — and a two-line question is 239px tall against a 192px register. The hole under the register: **416 × 47px**, at both 1024 and 1440.
+
+**17. One register cell held two measures.**
+The province's certificate row was one cell reading `287 valid / 648 held` — two numbers and two words in a slot built for one numeral. At 390px it wrapped to three lines beside a one-line label, leaving a **114 × 36px void** under the label.
 
 ### Instrument defects found along the way
 
-An instrument that cannot see is an instrument that says "clean":
+An instrument that cannot see is an instrument that says "clean". Eight of these were mine.
 
-- `firstAction` reported the skip link (parked at `left: -9999px`) on every page. Off-canvas is not an action.
-- Chrome was only measured at rest. A sticky band that is harmless at scroll 0 ate 45% of the phone at scroll 600.
-- The empty-track probe waited 1,000 ms and measured pages whose shards had not landed. The biggest hole on the site (`.meters` at 1440, 866 × 86px) was invisible to it for that reason.
-- The probe read a container's padding and a grid's declared gap as empty space. Padding is a declared inset; a gap is declared spacing. Neither is a hole. **The row gap was being excluded but the column gap was not** — two ragged line ends, one above the other, were being counted as one 60px void.
-- **The probe was measuring the wrong website.** Port 8080 was held by `open-webui`; the probe found zero grid containers in that stranger's splash page and printed *"no empty tracks found"*. A clean bill for a page that was never loaded. Both instruments now assert the page identifies itself as the one³ OTOP app before they measure, and the probe prints how many grid containers it actually saw. It also caught a stale preview server serving an empty document later in the same pass.
+1. **The ruler merged multi-column blocks into one fake line.** The method page's provenance band and the story's prose measured a 1,301px "line" that does not exist. A word now joins the line whose own horizontal extent contains it, and a word that starts past every line's end opens a new one.
+2. **The hole probe mis-derived column gaps.** `auto-fit` collapses its empty tracks and takes their gaps with them; `space-between` spreads free space far wider than the declared gap. Both produced false holes. The gap band is now measured *between adjacent items' boxes*, on the horizontal axis only — a short cell beside a tall one leaves its void below it, in its own column, and that must stay visible.
+3. **The ribbon detector was blind.** At 390px the champion cards rendered 81px wide and 1,961px tall — fifty cards of vertical letter-ribbons — because a `useEffect` never re-ran after the data load. The ruler gained a ribbon detector.
+4. **The ribbon detector then cried wolf.** It tested the *narrowest* line, and a paragraph's last line is always short. It now tests the widest line: a ribbon is narrow on *every* line.
+5. **The ruler had no rule for a heading that is a wall.** This is failure 15 above: every line under the ceiling, and a 2,976px heading. A heading is a label; more than five lines of it is a body wearing a heading's clothes.
+6. **The ruler's rules had never been seen to fail.** So `--selftest` was added: each rule is tested against the defect it exists to catch, injected into the real page and measured by the same code that measures the site. A rule that does not bite fails the run.
+7. **Three of the spatial gate's falsifier rules could not bite.** They tested the baseline by breaking a *recorded hole* — and the baseline records no holes, because the page has none. They found nothing to regress, reported themselves dead, and proved nothing. They now create their own hole: mount the fixture, have the gate measure it, write the measurement into the receipt, and only then doctor the receipt.
+8. **The hole probe warned that healthy pages had not rendered.** It used the grid count as a proxy for "the page arrived"; the atlas page has two grids, and that is what the atlas *is*. It now checks the page's element count, and reports the grid count as what there was to measure.
 
-### Shipability failures found by the route sweep
+### The pivot: Thailand's soft-power monitor
 
-Two views shipped **blank** to the live site. Both built. Both returned 200. Neither rendered a pixel.
+The platform's claim widened, and the site now carries it. Six national registers on data.go.th, read through the same pipeline that reads OTOP, published as one monitor at `/?view=softpower`:
 
-| View | Cause | Symptom |
-|---|---|---|
-| Champions | A `useEffect` sat **below** an early `return` — the hook appeared and disappeared between renders | React error #310; `<div id="root">` empty once the first shard landed |
-| Matchmaker | `loadIndex()` resolves to `{ index, meta }`; the view stored the envelope and mapped `index.provinces` | `Cannot read properties of undefined (reading 'map')`; blank from the first paint |
+| Instrument | Register | Rows read | What it measures |
+|---|---|---|---|
+| OTOP registry | Department of Community Development | 154,050 | The deepest instrument: producers, places, completeness, age |
+| Handicraft | SAIC — ภาพรวมรายงานผลิตภัณฑ์ศิลปหัตถกรรมไทย | 28 | Twelve months of the craft report, B.E. 2562 |
+| Local food | กรมส่งเสริมวัฒนธรรม — อาหารไทยพื้นถิ่น | 52 | 21 provinces, 4 regions |
+| Film heritage | หอภาพยนตร์ — national film heritage | 999 | 13 rounds, earliest 1897, 20 genres |
+| Exports | กรมการค้าต่างประเทศ — มูลค่าการส่งออกของสินค้า | 923 | 164 HS codes, 9 markets |
+| Fisheries | กรมประมง trade series | **51,845** | 435 products, 197 partners, B.E. 2568–2569 |
+| Labour | สำนักงานจังหวัดชลบุรี outbound register | 8 years | 869 outbound workers |
+
+Every instrument states **what it does not measure**. The exports figure is the value declared on certificates of origin — not the customs total, and the view says so. The fisheries pull is the whole table: 51,845 rows read = 51,845 in the DataStore.
 
 ---
 
 ## Changed
 
-| # | Repair | Spatial demand removed |
-|---|---|---|
-| 1 | The chapter strip is one horizontal band at every width, 54px tall on a phone, scrolling sideways when seven chapters cannot fit, with the active chapter scrolled into view | 376px → 54px of sticky column; **45% → 12%** of the phone's screen |
-| 2 | The strip parks at `top: var(--hdr-h)` — the masthead's own height, one token, both bands agree | 51px of invisible chrome → 0 |
-| 3 | The province's seven measures became a **register**: one measure per line, the value in its own column, the rank in the last | 67,000px² of empty tracks → 0 |
-| 4 | The face's five categories became five columns — five divides by five and by one, so this grid can never hold an unused track | 45,000px² → 0 |
-| 5 | Below 1100px the zones became a register: the number beside its name, the bar in a shared track so every bar is the same length | 79,000px² of black void → 0 |
-| 6 | Seven signals became seven cells, so the count sets the tracks. Below 1200 the block becomes a register | 59,000px² → 0 |
-| 7 | The bank's seven shelves became seven columns | 16,000px² → 0 |
-| 8 | The finding's link sits under the prose, and the Thai header spans both rows | 73,000px² → 0 |
-| 9 | On a phone the score, name, producer, place and contact each take the full width; the category and the stars share a row | 2 stranded cells → 0 |
-| 10 | The phone keeps its own column at every width, and the row's declared row gap is excluded from the raster as declared spacing | 174 × 60px ragged ends → 0; the digits still line up down the page |
-| 11 | The masthead's four measures read **one line each** — English then Thai, the way every other register on this site reads | 1,170 × 36px band → 0 |
-| 12 | The legal note left the two-column grid and became a note below it, the way every other page-level note sits on this site | 684 × 78px tail → 7px |
-| 13 | The Thai name became a **hanging marginal note**: it sits in the left margin and the prose wraps *under* it | 108 × 78px column → 0 |
-| 14 | The Champions view: the photo-warming effect moved above the guard returns; the Matchmaker view unwraps `{ index, meta }` | 2 blank pages → 2 working views |
-| 15 | The probe now excludes declared row gaps on both axes and asserts which app it measured | 2 false voids → 0; a clean bill for the wrong website → impossible |
-
-**A bar of one length beside a bar of another lies.** The meters and the zones were rebuilt so that every bar shares one track length, and the meters' labels reserve two lines so the bars share a baseline. A 7% bar drawn across a full row reads as half of an 87.5% bar drawn across a column; that was fixed, not decorated.
-
-**A label in a margin is not a grid cell.** The atlas finding was a two-column register, and the Thai name's column was empty for the height of the row. It is now a hanging note: the name sits in the margin and the prose wraps under it, so the space under the name is filled with the sentence it labels.
+- **`--read: 32em`** — one reading measure, in `em`, replacing nine `ch`-based widths that were wrong in both scripts.
+- **The ruler** — physical width (`lre`) as the governing measure, character count only for majority-Latin lines; a ribbon detector; a heading rule; `--selftest`; the multi-column line fix.
+- **Twelve view recompositions** — atlas, bank, province, story, crossrefs, hero, method, matchmaker, history, briefs, champions, match. Each rebuilt around the measure, not trimmed to it.
+- **The hole probe** — the gap model measured between items; the render check moved from grid count to element count.
+- **The spatial falsifier** — three baseline rules that could not bite now create their own precondition.
+- **The photo model** (`otop/core/photos.js`) — a caption is now a caption. A description is used when it reads like one (12–200 characters); otherwise the file's own name is, cleaned of `File:` and the extension. The article stays at the Commons page, which the panel already links. Unit-tested.
+- **The province certificate register** — one measure per row: *Valid certificates* and *Certificates held*, each ranked by its own number.
+- **The masthead** — the question sets on one line at every width where the masthead is two columns (`clamp(1.75rem, 3vw, 3rem)`); the register's provenance moved under the data it dates and names the build date only, because the site chrome already names the source.
+- **The soft-power monitor** — `/?view=softpower`, bilingual, wired into the nav and the footer; `scripts/otop/softpower.js` pulls and builds the registry; `softpower.json` carries scope and "does not measure" for every number.
+- **The document head** — the title and description now name the platform the pivot made it.
 
 ---
 
 ## Verified
 
-**Measurements** — `scripts/otop-msh-audit.mjs`, 18 measurements across 6 views × 3 widths, on the shipped build:
-
-```
-find     @390  chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on-screen  h1 30.4px  largest 30.4px x1  sideways=false
-find     @1024 chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on-screen  h1 47.1px  largest 47.1px x1  sideways=false
-find     @1440 chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on-screen  h1 48px    largest 48px   x1  sideways=false
-method   @1440 chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on-screen  h1 44px    largest 44px   x1  sideways=false
-atlas    @1440 chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on-screen  h1 44px    largest 44px   x1  sideways=false
-bank     @1440 chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on-screen  h1 44px    largest 44px   x1  sideways=false
-match    @1440 chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on-screen  h1 44px    largest 44px   x1  sideways=false
-province @1440 chrome 51px (6%)  scrolled 51px (6%)  firstAction 0px a.brand  on-screen  h1 44px    largest 88px   x1  sideways=false
-```
-
-- **Chrome cost** — 51px (6%) of the viewport at every width, on every view, before and after scrolling. Before this pass the atlas carried 376px (45%) on a phone and 65px (7%) of invisible chrome on a desktop.
-- **Task visibility** — the masthead and its search or control is on the first screen at every width on every view. The province dossier's h1 ("Chiang Mai", 44px) and its object number ("TH-50", 88px) are both above the fold at 1024 and 1440; on a phone the number falls to 48px and the name to 28px, and the number remains the largest element on the page.
-- **Geometry failures** — no sideways scroll on any view at any width. No sticky band overlaps another. **3 empty grid tracks remain**, all at the end of a list, and all written down below.
-- **Hierarchy** — one dominant element per view: the h1 or the object number; the largest text is unique on every view (`largest … x1`) except where the province's specimen number is deliberately larger than the name.
-- **Preservation** — every feature still works: the registry still streams 154,050 records, the Find search, the Match filters, the province shards, the certificate table, the atlas chapters and the data bank were all exercised in the browser; the chapter strip's tabs switch chapters and keep the active one in view; the meter bars still encode the same percentages.
-
-**Instruments, on the shipped build**
-
-| Instrument | Result |
+| Gate | Result |
 |---|---|
-| `otop-empty-tracks.mjs` | 4,105 grid containers inspected across 7 views × 3 widths → **3 findings**, all listed under Remaining |
-| `otop-msh-audit.mjs` | 18 measurements → **0 flagged** |
-| `otop-route-sweep.mjs` | 13 views → **13 render**, no React error, no empty root |
-| `spatial:gate` | 168 measurements across 6 routes and 28 widths → **0 findings**; the baseline is byte-identical after the pass |
-| `spatial:check` (falsifier) | 6 injected page defects and 6 broken-baseline cases → **all 12 caught**; the clean build passes |
-| `npm run test:otop` | **152 / 152** pass |
-| `npm test` | 246 / 248 pass — the two failures are `scraper_ai_governor` and `scraper_highwater`, which need `TELEGRAM_API_ID` / `TELEGRAM_API_HASH` in `.env` and are unrelated to this work |
+| Line measure, 1440 / 1024 / 390 | **Nothing over the ceiling** at all three widths — 1,671 text blocks at 1440 including 81 in the soft-power view |
+| Ruler self-test, all three widths | **3/3 rules bite** — a heading wall (80 lines), a 39px ribbon, a 160-lre line. A rule that does not bite fails the run |
+| Hole probe, 7 routes × 3 widths | **No empty tracks across 4,584 grid containers** |
+| Route sweep | **All 14 routes rendered**, each with its h1 |
+| Spatial gate | 168 measurements across 6 routes and 28 widths — every hole, orphan, scattered pair and wrap either fixed or written down |
+| Spatial falsifier | **23/23 caught** — 10 injected page defects, 12 broken-baseline cases, 1 case about the instrument itself; 8 of 8 failure modes |
+| `npm run test:otop` | **154/154 pass** (152 before, plus 2 new caption tests) |
+| `npm test` | **248/250** — the two failures are `scraper_ai_governor` and `scraper_highwater`, which need `TELEGRAM_API_ID`/`TELEGRAM_API_HASH` in `.env`; they are unrelated to this pass and were failing before it |
+| Screenshots | The find masthead at 1440 and 1024; the soft-power view at 1440 (4,747px tall); the method and atlas views at 1440 |
 
-**Screenshots** — `design/msh-evidence/after/` (every view at 390, 1024 and 1440, plus a scrolled capture of each), `design/msh-evidence/live/` (the same sweep against the deployed site), `design/msh-evidence/els/` (element-level captures of every block that was rebuilt).
-
-**Live** — the deployed site, not the local build. `https://otop.nonarkara.org` → `otop.pages.dev`, bundle `assets/index-Ct3eaU8w.js`:
-
-| Check | Result |
-|---|---|
-| `otop:verify` (the canonical live smoke test) | **all checks passed** — bundle matches the local dist, the three lazy chunks 200, all 13 published artefacts have the expected shape, the SPA fallback 200 |
-| 28 routes and artefacts | 200 / 200 |
-| `otop-route-sweep.mjs` against the live host | **13 / 13 views render** — Champions and Matchmaker included, both of which were blank before this pass |
-| `otop-empty-tracks.mjs` against the live host | 4,105 grid containers → **3 findings**, the same three written down below |
-| `otop-msh-audit.mjs` against the live host | 18 measurements → **0 flagged**, chrome 51px (6%) at every width |
-
-**Gate** — `npm run spatial:gate`, the falsifier and the route sweep run in CI on every push.
+Every measurement was taken against a **preview server on the working tree**, never against the live site — the live site carried the previous bundle throughout, so no live figure in this report is a claim about production until the deploy below is verified.
 
 ---
 
 ## Remaining
 
-1. **`nav.dossier-walk` — 528 × 48px at 1440, 324 × 48px at 1024.** The neighbouring-provinces nav sets the previous province to the left edge, the next to the right edge, and the one way out (Atlas) in the middle. The space between them is the distance between neighbours, and the arrows carry the direction; collapsing the three into a group would remove the metaphor and leave the same space at the right margin instead. **Written down, not repaired** — a stranger can check it: the left item points left, the right item points right, and the exit sits between them.
-
-2. **`div.ch-cards` — 324 × 438px at 1440.** The champions grid holds 50 cards in four columns and the last row holds 2. The count is not fixed: every filter changes it, so no track count can divide it, and a masonry layout would break the ranking order the cards are read in. The void is at the *end* of the list, where the data ends — not inside it. **Written down, not repaired** — a stranger can check it: change any filter and the end-rag moves; no row in the middle is ever empty.
-
-3. **The province specimen tag's lower margin** — the tag is 349px tall and its content ends at 250px. The tag shares a grid row with a seven-line register; the air is the label's bottom margin. It is whitespace inside a label, not an empty track, and the probe no longer reports it.
-
-4. **The atlas findings run at roughly 125 characters a line.** The house measure is 45–75ch. These are register entries in a full-width table, not paragraphs, and narrowing them would put a 540px void in the right of every row — the trade the site already made for the Match and Find rows. **Written down, not repaired.**
-
-5. **Independent review** — this pass is the agent's own reading of the law against its own work. The law's section 6 requires an independent review for visual work; the screenshots and the measurements in `design/msh-evidence/` are the receipt, but a second pair of eyes has not yet checked them.
-
-6. **CI has not been observed running.** The workflow is committed and mirrors the local steps — and every one of its steps was run locally and passed — but GitHub refused to start the job: *"The job was not started because an Actions budget is preventing further use."* That is an account-level Actions limit, not a broken workflow; it will clear when the budget does. Until then, the gate runs on the machine that ships, and the sweep has to be run by hand after a deploy.
+1. **Independent review has not happened.** MSH law §6 requires it for visual work. Every figure above is my own measurement of my own work, with the instruments I wrote or repaired. A second pair of eyes on the screenshots is still owed.
+2. **CI cannot run.** GitHub refuses to start the job — *"The job was not started because an Actions budget is preventing further use."* Every gate in the table above was therefore run locally against the preview server. The CI workflow itself is unverified and will stay unverified until the budget allows it.
+3. **The Commons article is no longer in the panel.** Failure 15 was fixed by moving 4,819 characters of article body to where it belongs — the source page. A reader who wanted the article body in the dossier will not find it there. That is a deliberate trade, and it is the only place on this site where content was removed rather than recomposed.
+4. **The exports figure is not the customs total.** It is the value declared on certificates of origin, which is what the register publishes. The view states this; anyone quoting the number must quote it as declared, not as exports.
+5. **The soft-power monitor measures the supply side only.** Six registers of what the state and the market have already certified. It does not measure soft power as received — reception, perception and influence are not in any of these datasets, and the frame says so.
+6. **The wordmark was left alone.** `one³` still means One Tambon · One Product · One Platform. The monitor is what the platform now does; putting the platform's description into the mark would make the mark a slogan. The expansion lives once, in the footer, and the monitor's frame names the relationship. *If the owner wants the mark to widen, that is a naming decision, not a layout one — it should be made deliberately, in one place.*

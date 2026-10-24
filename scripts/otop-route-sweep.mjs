@@ -31,6 +31,7 @@ const ROUTES = [
   ['crossrefs', '/?view=crossrefs'],
   ['bank', '/?view=bank'],
   ['method', '/?view=method'],
+  ['softpower', '/?view=softpower'],
 ];
 
 const browser = await launchBrowser();

@@ -30,6 +30,40 @@ export function __setTestMedia({ provinces = null, categories = null } = {}) {
   categoryCache.clear();
 }
 
+/**
+ * A Commons "description" is the file page's ARTICLE BODY. For the Chiang
+ * Saen lion statue it is 4,819 characters of Thai Wikipedia text, and the
+ * province dossier was setting it as a HEADING — a 2,976px wall of text
+ * inside a 240px photo panel. Twenty of the 128 Commons photographs carry
+ * more than 200 characters of it; seven carry more than a thousand.
+ *
+ * A caption is a line or two that names what the picture shows. So the
+ * description is used when it reads like a caption, and the file's own name
+ * is used when it does not. The full article stays where it belongs: at the
+ * Commons page, which the panel already links.
+ */
+const CAPTION_MIN = 12;
+const CAPTION_MAX = 200;
+
+/** "File:ด้านหลัง พระเชียงแสน สิงห์๑ กรุเชียงแสน.jpg" → "ด้านหลัง พระเชียงแสน สิงห์๑ กรุเชียงแสน" */
+export function cleanFileTitle(title) {
+  return String(title || '')
+    .replace(/^File:/i, '')
+    .replace(/\.(jpe?g|png|gif|webp|tiff?|svg)$/i, '')
+    .replace(/\s*[-–—]\s*panoramio$/i, '')
+    .trim();
+}
+
+/** The caption of a photograph: what the reader is looking at. Never a page. */
+export function photoCaption(photo) {
+  if (!photo) return '';
+  const desc = (photo.description || '').trim();
+  if (desc.length >= CAPTION_MIN && desc.length <= CAPTION_MAX) return desc;
+  const named = cleanFileTitle(photo.title);
+  if (named && named.length <= CAPTION_MAX) return named;
+  return 'Open-license craft photograph';
+}
+
 function normalizePhoto(raw, extras = {}) {
   if (!raw) return null;
   const url = raw.url || raw.thumbUrl || raw.localPath;
@@ -37,8 +71,9 @@ function normalizePhoto(raw, extras = {}) {
   return {
     url: raw.localPath ? `/${raw.localPath.replace(/^\//, '')}` : url,
     thumbUrl: raw.thumbUrl || url,
-    title: raw.title || raw.description || 'Open-license craft photograph',
+    title: raw.title || 'Open-license craft photograph',
     titleTh: raw.titleTh || null,
+    caption: photoCaption(raw),
     description: raw.description || null,
     author: raw.author || 'Unknown',
     source: raw.source || 'Wikimedia Commons',
@@ -86,7 +121,7 @@ export function photoForRecord(record) {
   if (prov[0]) {
     return {
       ...prov[0],
-      caption: prov[0].description || prov[0].title,
+      caption: prov[0].caption,
       titleEn: prov[0].title,
       craft: prov[0].craft || record.category || null,
     };
@@ -96,7 +131,7 @@ export function photoForRecord(record) {
   if (cat[0]) {
     return {
       ...cat[0],
-      caption: cat[0].description || cat[0].title,
+      caption: cat[0].caption,
       titleEn: cat[0].title,
       craft: record.category || null,
     };

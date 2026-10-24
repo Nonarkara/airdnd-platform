@@ -13,7 +13,8 @@
  * per row (and a button for the full list).
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Bi } from './Bi.jsx';
 import { photoForRecord, loadPhotosForProvince, attributionLine } from '../../core/photos.js';
 import { matchStandardForProduct } from '../../core/standards.js';
 import { dedupeCerts } from '../../core/certs.js';
@@ -80,6 +81,36 @@ export default function Champions({ onSelectProvince, national, records }) {
 
   const [showPhotos, setShowPhotos] = useState(true);
   const [mediaTick, setMediaTick] = useState(0);
+
+  /* The number of card columns is counted from the width the cards actually
+     have, and it is published to CSS as --ch-cols. The count of champions
+     changes with every filter, so a column count cannot be chosen to divide
+     it; instead the last card spans the rest of its row, and the row is
+     never left with an empty cell beside it.
+
+     This runs in a layout effect, and it runs again when the data lands:
+     the grid does not exist until the champions are loaded, and an effect
+     that only ran on mount would leave --ch-cols at its default — four
+     columns inside a 358px phone, which set every card's body in a 27px
+     ribbon. */
+  const cardsRef = useRef(null);
+  const [cols, setCols] = useState(1);
+  useLayoutEffect(() => {
+    const el = cardsRef.current;
+    if (!el) return undefined;
+    const rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const minCard = 20 * rootPx;
+    const gap = 0.75 * rootPx;
+    const compute = () => {
+      const c = Math.max(1, Math.min(6, Math.floor((el.clientWidth + gap) / (minCard + gap))));
+      el.style.setProperty('--ch-cols', String(c));
+      setCols((prev) => (prev === c ? prev : c));
+    };
+    compute();
+    const ro = new ResizeObserver(compute);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [data]);
 
   useEffect(() => {
     let cancelled = false;
@@ -196,31 +227,51 @@ export default function Champions({ onSelectProvince, national, records }) {
         </div>
       </div>
 
+      {/* The state of the list and its two actions are a register: a label on
+          the left, the value on the right. It sits beside the lede, and the
+          two are the same height, so the band has no ragged column. */}
       <div className="ch-actions">
-        <span className="t-key">{filtered.length} of {totalChampions} shown</span>
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          <button
-            type="button"
-            className="reset"
-            onClick={() => setShowPhotos((v) => !v)}
-            style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '0.85rem' }}
-          >
-            {showPhotos ? 'Hide craft photos' : 'Show craft photos'}
-          </button>
-          {filtered.length > 0 && (
-            <button type="button" className="reset" onClick={() => exportList(filtered, `otop-champions-${new Date().toISOString().slice(0, 10)}.csv`)}>
-              Export this list (CSV)
-            </button>
-          )}
+        <div className="ch-act">
+          <span className="t-key">Shown</span>
+          <span className="ch-act-v">
+            <Bi en={`${filtered.length} of ${totalChampions}`} th={`${filtered.length} จาก ${totalChampions}`} />
+          </span>
         </div>
+        <div className="ch-act">
+          <span className="t-key">Photos</span>
+          <span className="ch-act-v">
+            <button type="button" className="reset" onClick={() => setShowPhotos((v) => !v)}>
+              <Bi en={showPhotos ? 'Hide craft photos' : 'Show craft photos'} th={showPhotos ? 'ซ่อนรูปสินค้า' : 'แสดงรูปสินค้า'} />
+            </button>
+          </span>
+        </div>
+        {filtered.length > 0 && (
+          <div className="ch-act">
+            <span className="t-key">Export</span>
+            <span className="ch-act-v">
+              <button type="button" className="reset" onClick={() => exportList(filtered, `otop-champions-${new Date().toISOString().slice(0, 10)}.csv`)}>
+                <Bi en="Export this list (CSV)" th="ส่งออกรายชื่อ (CSV)" />
+              </button>
+            </span>
+          </div>
+        )}
       </div>
 
-      <div className="ch-cards">
-        {filtered.map((c) => {
+      <div className="ch-cards" ref={cardsRef}>
+        {filtered.map((c, i) => {
           const photo = showPhotos ? photoForRecord(c) : null; void mediaTick;
           const std = matchStandardForProduct(c.productName || c.producerName, standards, c.category);
+          // The last card takes the rest of its row, so the final row is
+          // never left with an empty cell beside it.
+          const rem = filtered.length % cols;
+          const span = i === filtered.length - 1 && rem > 0 ? cols - rem + 1 : 1;
           return (
-            <article key={c.sourceRowId ?? `${c.producerName}-${c.provinceCode}-${c.productName}`} className="ch-card" data-stars={c.stars}>
+            <article
+              key={c.sourceRowId ?? `${c.producerName}-${c.provinceCode}-${c.productName}`}
+              className="ch-card"
+              data-stars={c.stars}
+              style={span > 1 ? { gridColumn: `span ${span}` } : undefined}
+            >
               <div className="ch-card-rail" />
               <div className="ch-card-body">
                 {photo && (
@@ -232,7 +283,7 @@ export default function Champions({ onSelectProvince, national, records }) {
                       className="ch-card-img"
                     />
                     <div className="ch-card-img-cap">
-                      <span>{photo.caption || photo.description || photo.title}</span>
+                      <span>{photo.caption || photo.title}</span>
                       <span className="ch-card-img-attr">{attributionLine(photo)}{photo.isExactProducer ? '' : ' · illustrative'}</span>
                     </div>
                   </div>

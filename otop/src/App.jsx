@@ -13,6 +13,7 @@ import CrossReferences from './components/CrossReferences.jsx';
 import DataBank from './components/DataBank.jsx';
 import ViewHero from './components/ViewHero.jsx';
 import Method from './components/Method.jsx';
+import SoftPower from './components/SoftPower.jsx';
 import Find from './components/Find.jsx';
 
 // Leaflet is ~150KB and only the B2B lens draws a map. Split it so the B2C
@@ -62,7 +63,7 @@ export default function App() {
   // thing they can use, not the thing they can read about.
   const [view, setView] = useState(() => {
     const urlView = new URLSearchParams(window.location.search).get('view');
-    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs', 'bank', 'find', 'method'].includes(urlView)) return urlView;
+    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs', 'bank', 'find', 'method', 'softpower'].includes(urlView)) return urlView;
     return 'find';
   });
   const [provinceCode, setProvinceCode] = useState(() => {
@@ -248,6 +249,10 @@ export default function App() {
               <span className="nav-en">Data Bank</span>
               <span className="nav-th" lang="th">คลังข้อมูล</span>
             </button>
+            <button type="button" aria-current={view === 'softpower'} onClick={() => setView('softpower')}>
+              <span className="nav-en">Soft Power</span>
+              <span className="nav-th" lang="th">พลังอ่อน</span>
+            </button>
             <button type="button" aria-current={view === 'method'} onClick={() => setView('method')}>
               <span className="nav-en">Method</span>
               <span className="nav-th" lang="th">วิธีการ</span>
@@ -367,27 +372,37 @@ export default function App() {
                   </span>
                 )}
               </h3>
-              {result.matches.length > 0 && (
-                <button type="button" className="reset" onClick={exportCsv}>
-                  <Bi en="Export shortlist" th="ส่งออกรายชื่อ" /> <span className="muted">(CSV)</span>
-                </button>
-              )}
+              {/* Both actions on this view live in one place: the escape
+                  hatch from the filter, and the export of what is left. */}
+              <div className="results-actions">
+                {requirement.requireSignal && result.matches.length < result.total && (
+                  <button type="button" className="reset" onClick={() => setRequirement((r) => ({ ...r, requireSignal: false, requireContact: false, requireCorroborated: false }))}>
+                    <Bi en={`Show all ${result.total.toLocaleString()} registrations`} th={`แสดงทั้งหมด ${result.total.toLocaleString()} รายการ`} />
+                  </button>
+                )}
+                {result.matches.length > 0 && (
+                  <button type="button" className="reset" onClick={exportCsv}>
+                    <Bi en="Export shortlist" th="ส่งออกรายชื่อ" /> <span className="muted">(CSV)</span>
+                  </button>
+                )}
+              </div>
             </div>
 
             {requirement.requireSignal && result.matches.length < result.total && (
-              <p className="filter-explain">
-                <Bi
-                  en="Showing records with at least one real attestation — a category, a contact channel, a star grade, or a product name distinct from the producer. The"
-                  th="แสดงเฉพาะรายการที่มีการรับรองจริง — ประเภท, ช่องทางติดต่อ, คะแนน OPC, หรือชื่อผลิตภัณฑ์ต่างจากชื่อผู้ผลิต อีก"
-                />{' '}{result.total.toLocaleString() - result.matches.length}{' '}
-                <Bi
-                  en="unattested registrations in the loaded provinces are name-only OTOP numbers and are hidden by default."
-                  th="รายการที่ไม่มีการรับรองในจังหวัดที่โหลดถูกซ่อนไว้เป็นค่าเริ่มต้น (มีเพียงเลขทะเบียน OTOP เท่านั้น)"
-                />{' '}
-                <button type="button" className="reset" onClick={() => setRequirement((r) => ({ ...r, requireSignal: false, requireContact: false, requireCorroborated: false }))}>
-                  <Bi en={`Show all ${result.total.toLocaleString()} registrations`} th={`แสดงทั้งหมด ${result.total.toLocaleString()} รายการ`} />
-                </button>
-              </p>
+              <div className="filter-explain">
+                <p>
+                  Showing records with at least one real attestation — a category, a contact
+                  channel, a star grade, or a product name distinct from the producer. The{' '}
+                  {(result.total - result.matches.length).toLocaleString()} unattested
+                  registrations in the loaded provinces are name-only OTOP numbers and are
+                  hidden by default.
+                </p>
+                <p lang="th">
+                  แสดงเฉพาะรายการที่มีการรับรองจริง — ประเภท, ช่องทางติดต่อ, คะแนน OPC, หรือชื่อผลิตภัณฑ์ต่างจากชื่อผู้ผลิต อีก{' '}
+                  {(result.total - result.matches.length).toLocaleString()} รายการที่ไม่มีการรับรองในจังหวัดที่โหลดถูกซ่อนไว้เป็นค่าเริ่มต้น
+                  (มีเพียงเลขทะเบียน OTOP เท่านั้น)
+                </p>
+              </div>
             )}
 
             {/*
@@ -617,13 +632,29 @@ export default function App() {
             <div className="wrap">
               <ViewHero
                 eyebrow={<Bi en="Data Bank" th="คลังข้อมูล" />}
-                headline="726 datasets from data.go.th — the whole bank behind this site."
+                headline="Every dataset the portal returned."
                 stake={<Bi
                   en="Every list the portal returned, shelved by kind. Pick a shelf: the pulled rows show what the build actually read."
                   th="ทุกรายการที่พอร์ทัลส่งมา จัดเป็นหมวดหมู่ — แถวที่ดึงมาแสดงสิ่งที่ระบบอ่านจริง"
                 />}
               />
               <DataBank />
+            </div>
+          </section>
+        )}
+
+        {view === 'softpower' && (
+          <section className="sec" id="softpower">
+            <div className="wrap">
+              <ViewHero
+                eyebrow={<Bi en="Soft Power" th="พลังอ่อน" />}
+                headline="Thailand's soft power, measured on the supply side."
+                stake={<Bi
+                  en="Seven instruments, six registers, one portal. OTOP is the deepest of them; the rest measure the craft, the food, the film, the trade and the people who carry it."
+                  th="เครื่องมือเจ็ด ทะเบียนหก พอร์ทัลเดียว OTOP คือเครื่องมือที่ละเอียดที่สุด ที่เหลือวัดหัตถกรรม อาหาร ภาพยนตร์ การค้า และคนที่พามันไป"
+                />}
+              />
+              <SoftPower />
             </div>
           </section>
         )}
@@ -670,10 +701,13 @@ export default function App() {
             <span className="cr-name">data.go.th</span>
             <span className="cr-line">กรมพัฒนาชุมชน · Department of Community Development</span>
             <span className="cr-line">Thailand's Open Government Data portal</span>
+            <span className="cr-line">Seven registers read for the soft-power monitor</span>
           </div>
           <div className="cr-block cr-mantra">
             <p className="cr-mantra-th">หนึ่งตำบล หนึ่งผลิตภัณฑ์ หนึ่งแพลตฟอร์ม</p>
             <p className="cr-mantra-en">One Tambon · One Product · One Platform</p>
+            <p className="cr-mantra-sub">หนึ่งตำบล คือเครื่องมือหนึ่งในการวัดพลังอ่อนของไทย</p>
+            <p className="cr-mantra-sub-en">One instrument in Thailand's soft-power monitor</p>
             <p className="cr-mantra-1"><span>1</span><sup>3</sup> <span>= 1</span></p>
           </div>
         </div>

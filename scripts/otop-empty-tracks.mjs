@@ -111,25 +111,37 @@ for (const route of ROUTES) {
 
         // A declared gap is the container's own spacing, like padding — not an
         // empty track. Mark the gap bands so they are not read as holes.
-        // Both axes: a row gap separates two rows the same way a column gap
-        // separates two columns, and an empty cell above an empty cell
-        // across a declared gap is two ragged line ends, not one void.
-        const trackStr = cs2.gridTemplateColumns;
-        if (trackStr && trackStr !== 'none') {
-          const tracks = trackStr.split(' ').map((v) => parseFloat(v)).filter((v) => !Number.isNaN(v));
-          if (tracks.length > 1) {
-            const gap = (boxW - tracks.reduce((a, b) => a + b, 0)) / (tracks.length - 1);
-            if (gap > 0.5) {
-              let x = 0;
-              for (let i = 0; i < tracks.length - 1; i++) {
-                x += tracks[i];
-                const g0 = Math.max(0, Math.floor(x / STEP));
-                const g1 = Math.min(cols - 1, Math.floor((x + gap) / STEP));
-                for (let rr = 0; rr < rows; rr++) for (let cc = g0; cc <= g1; cc++) covered[rr * cols + cc] = 1;
-                x += gap;
-              }
-            }
-          }
+        //
+        // The band is measured BETWEEN THE ITEMS, not derived from the track
+        // list. Three reasons: justify-content: space-between spreads the
+        // free space far wider than the declared gap; auto-fit collapses its
+        // empty tracks to zero width and takes their gaps with them; and a
+        // grid whose items are shorter than their tracks leaves real space
+        // that is spacing, not a hole. Two items that sit side by side with
+        // nothing between them are separated by spacing.
+        //
+        // Only the horizontal axis is treated this way. A short item beside
+        // a tall one leaves its void BELOW it, in its own column — that is
+        // the failure this instrument exists to find, and it must stay
+        // visible.
+        const placed = kids
+          .map((k) => k.getBoundingClientRect())
+          .filter((r) => r.width > 0 && r.height > 0)
+          .sort((a, b) => a.left - b.left);
+        for (let i = 0; i < placed.length - 1; i++) {
+          const a = placed[i];
+          const b = placed[i + 1];
+          const left = a.right;
+          const right = b.left;
+          if (right - left < 1) continue;
+          const top = Math.max(a.top, b.top, boxT);
+          const bottom = Math.min(a.bottom, b.bottom, boxT + boxH);
+          if (bottom - top < 1) continue;
+          const g0 = Math.max(0, Math.floor((left - boxL) / STEP));
+          const g1 = Math.min(cols - 1, Math.floor((right - boxL) / STEP));
+          const r0 = Math.max(0, Math.floor((top - boxT) / STEP));
+          const r1 = Math.min(rows - 1, Math.floor((bottom - boxT) / STEP));
+          for (let rr = r0; rr <= r1; rr++) for (let cc = g0; cc <= g1; cc++) covered[rr * cols + cc] = 1;
         }
         const rowStr = cs2.gridTemplateRows;
         if (rowStr && rowStr !== 'none') {
@@ -139,10 +151,12 @@ for (const route of ROUTES) {
             let y = 0;
             for (let i = 0; i < rowTracks.length - 1; i++) {
               y += rowTracks[i];
-              const g0 = Math.max(0, Math.floor(y / STEP));
-              const g1 = Math.min(rows - 1, Math.floor((y + rowGap) / STEP));
-              for (let rr = g0; rr <= g1; rr++) for (let cc = 0; cc < cols; cc++) covered[rr * cols + cc] = 1;
-              y += rowGap;
+              if (rowTracks[i] > 0.5 && rowTracks[i + 1] > 0.5) {
+                const g0 = Math.max(0, Math.floor(y / STEP));
+                const g1 = Math.min(rows - 1, Math.floor((y + rowGap) / STEP));
+                for (let rr = g0; rr <= g1; rr++) for (let cc = 0; cc < cols; cc++) covered[rr * cols + cc] = 1;
+                y += rowGap;
+              }
             }
           }
         }
@@ -176,12 +190,19 @@ for (const route of ROUTES) {
           });
         }
       }
-      return { gridsSeen, holes: out.sort((a, b) => b.area - a.area).slice(0, 6) };
+      return { gridsSeen, elements: document.querySelectorAll('body *').length, holes: out.sort((a, b) => b.area - a.area).slice(0, 6) };
     });
 
     gridsSeen += holes.gridsSeen;
-    if (holes.gridsSeen < 5) {
-      console.log(`  !! ${route} @${w}px — only ${holes.gridsSeen} grid container(s) seen; the page may not have rendered`);
+    // A page that did not render has no holes, so a clean probe on an empty
+    // page is a clean probe on nothing. The question is not "are there many
+    // grids" — the atlas page has two, and that is what the atlas IS — but
+    // "did the page arrive". So the warning is about the page, and the grid
+    // count is reported as what there was to measure.
+    if (holes.elements < 50) {
+      console.log(`  !! ${route} @${w}px — only ${holes.elements} element(s) in the page; the page may not have rendered`);
+    } else if (holes.gridsSeen < 5) {
+      console.log(`  · ${route} @${w}px — ${holes.gridsSeen} grid container(s) to measure; the page rendered (${holes.elements} elements)`);
     }
     for (const h of holes.holes) {
       found++;

@@ -303,18 +303,15 @@ export default function Find({ onOpenProvince }) {
         </div>
         {/* The right column carries what the reader needs to judge the
             list before they read it: how big the registry is, how much of
-            it can be called, and how old the build is. A stamp alone left
-            130px of nothing under it — a hole with one line in it. */}
+            it can be called, and how old the build is.
+
+            The provenance sits UNDER the data it describes, as one line, and
+            it names the build date only — the source (data.go.th) is already
+            named in the site's own chrome, so the stamp was saying it twice.
+            As a three-line block above the register it also made the column
+            192px tall against a 239px question, and the void under it was
+            the largest hole on the page. */}
         <div className="find-panel">
-          {meta?.builtAt && (
-            <p className="find-stamp">
-              <Bi
-                en={`Built ${formatBuiltAgo(meta.builtAt)}`}
-                th={`สร้างเมื่อ ${formatBuiltAgoTh(meta.builtAt)}`}
-              />
-              <span className="find-stamp-src">data.go.th</span>
-            </p>
-          )}
           {loading ? (
             <p className="find-panel-load">
               <Bi
@@ -330,6 +327,14 @@ export default function Find({ onOpenProvince }) {
               <div><dt><Bi en="rated 5★" th="ระดับ 5 ดาว" /></dt><dd>{totalFiveStar.toLocaleString()}</dd></div>
               <div><dt><Bi en="valid cert" th="ใบรับรองใช้ได้" /></dt><dd>{totalCertValid.toLocaleString()}</dd></div>
             </dl>
+          )}
+          {meta?.builtAt && (
+            <p className="find-stamp">
+              <Bi
+                en={`Built ${formatBuiltAgo(meta.builtAt)}`}
+                th={`สร้างเมื่อ ${formatBuiltAgoTh(meta.builtAt)}`}
+              />
+            </p>
           )}
         </div>
       </header>

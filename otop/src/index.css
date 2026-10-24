@@ -80,6 +80,21 @@
      51px masthead: it was invisible while it still charged the reader
      65px of screen. One token, one truth, both bands agree. */
   --hdr-h: 51px;
+
+  /* THE READING COLUMN. 34em is 68 Latin-characters a line — inside the
+     house band of 45–75, and the same number for every type size and
+     for Thai as for English, because em scales with the face.
+
+     The old ruler was `ch`, and `ch` lies. `ch` is the width of the digit
+     ZERO: it over-reports Latin (zero is wider than the average letter,
+     so 64ch of prose held 70 characters, not 64) and it under-reports
+     Thai (a Thai glyph is a full em wide, so 64ch held ~50 characters,
+     not 64). Worse, it said nothing at all about the physical length of
+     the line, which is what the reader actually suffers: a line whose
+     second row is two A4 sheets away cannot be read, whatever its
+     character count says. 32em is a ruler that holds for both scripts
+     and for both problems. */
+  --read: 32em;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -202,25 +217,157 @@ a { color: inherit; }
    do with it. The measure is deliberately short — a masthead that runs the
    full 1440px reads as a banner, not as a title.
    ------------------------------------------------------------------------ */
+/* The view masthead is a two-column band: the question on the left, the
+   stake on the right. The stake used to be a single 66ch column in a
+   1440px canvas — the English ran 610px and the Thai beneath it ran
+   610px of Thai, which is 92 Latin-characters a line. The band gives
+   the stake its own column and the page its full width.
+
+   The eyebrow used to sit in a row of its own, above both columns, and
+   the headline was bottom-aligned to the taller stake — so a 75px band
+   of nothing opened between "ATLAS" and the headline it labels, across
+   the full 876px of the left column. The eyebrow now belongs to the
+   headline it names: it is the first line of the left column, and the
+   headline sits directly under it. */
 .vhero {
   border-top: 3px solid var(--ink);
   padding-top: 1rem;
   margin-bottom: 1.75rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+  gap: .5rem 3rem;
+  align-items: end;
 }
+.vhero .eyebrow { grid-column: 1; grid-row: 1; margin: 0; }
 .vhero-h {
+  grid-column: 1; grid-row: 2;
   font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+  font-size: clamp(1.75rem, 3.6vw, 2.6rem);
   line-height: 1.06; letter-spacing: -.02em;
-  margin: 0; max-width: 28ch;
+  margin: 0; max-width: none;
   text-wrap: balance;
 }
 .vhero-stake {
-  margin: .75rem 0 0; max-width: 66ch;
+  grid-column: 2; grid-row: 1 / span 2;
+  align-self: end;
+  margin: 0; max-width: none;
   font-size: 1rem; line-height: 1.45; color: var(--ink-2);
 }
-.vhero-stake .bi-th { display: block; margin-top: .2rem; color: var(--ink-3); }
+.vhero-stake .bi { display: block; }
+.vhero-stake .bi-th { display: block; margin-top: .2rem; color: var(--ink-3); max-width: var(--read); }
+.vhero-stake .bi-en { display: block; max-width: var(--read); }
+@media (max-width: 900px) {
+  .vhero { grid-template-columns: minmax(0, 1fr); }
+  .vhero .eyebrow, .vhero-h, .vhero-stake { grid-column: 1; grid-row: auto; }
+}
 
-/* ── the lens switch: a mode of the Match view, not two header entries ──── */
+/* ── the soft power monitor ──────────────────────────────────────────────
+   A platform view, not another page of the OTOP directory: the instruments
+   that measure how Thai culture reaches the world, read from the same
+   portal that carries the OTOP register. The composition is the house
+   move — horizontal data rows, a banded header, one focal point — and
+   every number carries its scope.
+   ------------------------------------------------------------------------ */
+.sp-frame {
+  display: grid;
+  grid-template-columns: minmax(0, var(--read)) minmax(0, var(--read));
+  justify-content: space-between;
+  gap: 1rem 3rem;
+  align-items: start;
+  margin-bottom: 2.5rem;
+}
+.sp-frame-p { margin: 0; font-size: 1.02rem; line-height: 1.55; }
+.sp-frame-how { color: var(--ink-2); }
+
+.sp-layer { margin-bottom: 2.5rem; }
+.sp-layer-h {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--read));
+  gap: .5rem 3rem;
+  align-items: start;
+  border-top: 2px solid var(--accent, #c99518);
+  padding-top: .6rem;
+  margin-bottom: 1.25rem;
+}
+.sp-layer-name { font-family: var(--font-display); font-size: 1.375rem; font-weight: 700; margin: 0; }
+.sp-layer-name span { display: block; font-family: var(--font-thai); font-size: .76em; opacity: .7; font-weight: 400; }
+.sp-layer-note { margin: 0; font-size: .9rem; line-height: 1.5; color: var(--ink-2); }
+
+.sp-tool { border-top: 1px solid var(--line, currentColor); padding-block: 1.1rem 1.35rem; }
+.sp-tool-h {
+  display: grid;
+  grid-template-columns: minmax(0, 22rem) minmax(0, var(--read));
+  justify-content: space-between;
+  gap: .5rem 3rem;
+  align-items: start;
+}
+.sp-tag {
+  font-family: var(--font-mono, monospace); font-size: 11px;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--accent-2, #a8780c);
+}
+.sp-tool-name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin: .2rem 0 0; }
+.sp-tool-th { display: block; font-family: var(--font-thai); font-size: .78em; font-weight: 400; opacity: .7; margin-top: .1rem; }
+.sp-measures { margin: 0 0 .5rem; font-size: .95rem; line-height: 1.5; }
+.sp-not { margin: 0; font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+.sp-not-k {
+  display: block; font-family: var(--font-mono, monospace); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: .1rem;
+}
+.sp-not-th { display: block; font-family: var(--font-thai); opacity: .65; margin-top: .15rem; }
+
+/* The numbers are a register: measure | value | scope. One row per
+   indicator, so the number of indicators never chooses a column count. */
+.sp-nums { margin-top: 1.1rem; }
+.sp-num {
+  display: grid;
+  grid-template-columns: minmax(0, var(--read)) minmax(0, 11rem) minmax(0, var(--read));
+  justify-content: space-between;
+  gap: .35rem 2rem;
+  align-items: baseline;
+  border-top: 1px solid var(--line, currentColor);
+  padding: .5rem 0;
+}
+.sp-num-k { font-size: .9rem; line-height: 1.35; min-width: 0; }
+.sp-num-th { display: block; font-family: var(--font-thai); font-size: .78em; opacity: .6; margin-top: .1rem; }
+.sp-num-v {
+  font-family: var(--font-mono, monospace); font-weight: 700; font-size: 1.25rem;
+  font-variant-numeric: tabular-nums; text-align: right; line-height: 1.15;
+}
+.sp-num-v small { display: block; font-size: .42em; font-weight: 400; opacity: .55; letter-spacing: .06em; text-transform: uppercase; }
+.sp-num-s { font-size: .78rem; line-height: 1.35; color: var(--ink-3); min-width: 0; }
+.sp-num-sth { display: block; font-family: var(--font-thai); font-size: .85em; opacity: .55; margin-top: .1rem; }
+
+.sp-series { margin-top: 1.1rem; }
+.sp-series-h {
+  font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 400;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 .35rem;
+}
+.sp-series-list { margin: 0; }
+.sp-series-list > div {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem;
+  padding: .22rem 0; border-bottom: 1px solid var(--line, currentColor);
+}
+.sp-series-list dt { font-size: .82rem; line-height: 1.35; min-width: 0; }
+.sp-series-list dd { margin: 0; font-family: var(--font-mono, monospace); font-size: .82rem; flex: 0 0 auto; }
+
+.sp-src {
+  display: flex; flex-wrap: wrap; gap: .25rem .9rem; align-items: baseline;
+  margin: .9rem 0 0; font-size: .76rem; color: var(--ink-3);
+}
+.sp-src-k { font-family: var(--font-mono, monospace); text-transform: uppercase; letter-spacing: .12em; }
+.sp-src-o { opacity: .8; }
+.sp-src-n { flex-basis: 100%; opacity: .75; max-width: var(--read); }
+.sp-src a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+@media (max-width: 900px) {
+  .sp-frame { grid-template-columns: minmax(0, 1fr); }
+  .sp-layer-h { grid-template-columns: minmax(0, 1fr); }
+  .sp-tool-h { grid-template-columns: minmax(0, 1fr); }
+  .sp-num { grid-template-columns: minmax(0, 1fr) minmax(0, 9rem); }
+  .sp-num-s { grid-column: 1 / -1; }
+}
+
+
 .lens-switch {
   display: flex; gap: 0; flex-wrap: wrap;
   border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
@@ -256,7 +403,7 @@ a { color: inherit; }
   color: var(--ink-3); margin: 0 0 .375rem;
 }
 .prov.degraded .prov-h { color: var(--alert); }
-.prov-b { margin: 0; color: var(--ink-2); max-width: 92ch; }
+.prov-b { margin: 0; color: var(--ink-2); max-width: var(--read); }
 .prov-b code {
   font-family: var(--font-mono); font-size: 12px;
   background: var(--bg-2); padding: .0625rem .25rem;
@@ -284,15 +431,29 @@ a { color: inherit; }
 .sec-n {
   grid-column: 1; grid-row: 2;
   font-family: var(--font-mono); font-size: 12px; color: var(--ink-3);
-  max-width: 72ch; line-height: 1.45;
+  max-width: var(--read); line-height: 1.45;
 }
 .sec-act { grid-column: 2; grid-row: 1 / span 2; align-self: start; justify-self: end; }
 
-/* A paragraph that explains a filter or a caveat. Used to be an unstyled
-   class name — the text rendered with default margins and no measure. */
+/* A paragraph that explains a filter or a caveat. It is now a two-column
+   band: the English note and the Thai note, at the reading measure, with
+   the free space between them. Stacked and bounded it left 900px of
+   nothing beside it; three columns with the action in the third left a
+   174x90 void under the button, because the button is one line and the
+   notes are four. The action moved to the results header, where every
+   other action on this view already lives. */
 .filter-explain {
-  margin: 0 0 1.25rem; max-width: 72ch;
+  display: grid;
+  grid-template-columns: minmax(0, var(--read)) minmax(0, var(--read));
+  gap: 1rem 3rem;
+  align-items: start;
+  justify-content: space-between;
+  margin: 0 0 1.25rem;
   font-size: .9rem; line-height: 1.5; color: var(--ink-2);
+}
+.filter-explain p { margin: 0; max-width: none; }
+@media (max-width: 900px) {
+  .filter-explain { grid-template-columns: minmax(0, 1fr); }
 }
 .filter-note { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); font-weight: 400; }
 
@@ -436,7 +597,7 @@ a { color: inherit; }
 
 /* ── footer ───────────────────────────────────────────────────────────────── */
 .ftr { margin-top: auto; padding-block: 2rem 3rem; color: var(--ink-3); font-size: 12px; }
-.ftr p { margin: 0 0 .5rem; max-width: 88ch; }
+.ftr p { margin: 0 0 .5rem; max-width: var(--read); }
 .ftr code { font-family: var(--font-mono); }
 
 .state { padding: 4rem var(--gutter); color: var(--ink-2); }
@@ -498,6 +659,10 @@ a { color: inherit; }
   border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
   padding: .625rem 0; margin-bottom: 1.5rem;
 }
+/* The status note is a sentence and gets the house measure: it ran 577px
+   across — 91 characters a line — because nothing bounded it. The action
+   stays at the far end of the band, which is where a band's action goes. */
+.coverage > span { max-width: var(--read); }
 .coverage strong { font-family: var(--font-mono); font-weight: 500; }
 .cov-err { color: var(--alert); }
 
@@ -528,6 +693,7 @@ a { color: inherit; }
 
 /* ── scored match rows ────────────────────────────────────────────────────── */
 .results-h { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.results-actions { display: flex; align-items: baseline; gap: 1.25rem; flex-wrap: wrap; }
 /* Rail first, then the fit score as the destination rank — in a ranked list the
    score is the thing the reader must not miss (baggage-tag hierarchy, dashboard
    mapping: destination = first column, huge). */
@@ -564,7 +730,7 @@ a { color: inherit; }
 /* ── caveats ──────────────────────────────────────────────────────────────── */
 .caveats { margin-top: 2.5rem; border-left: 3px solid var(--ink-4); padding: 1rem 1.25rem; background: var(--surface); }
 .caveats ul { margin: 0; padding-left: 1.125rem; color: var(--ink-2); }
-.caveats li { margin-bottom: .3125rem; max-width: 92ch; }
+.caveats li { margin-bottom: .3125rem; max-width: var(--read); }
 
 @media (max-width: 900px) {
   /* On a phone the rail leaves the grid entirely and is painted on the row's
@@ -601,7 +767,7 @@ a { color: inherit; }
   display: flex; align-items: center; justify-content: center;
   color: var(--ink-3); font-size: 12px; margin-bottom: 1.75rem;
 }
-.map-cap { margin-top: .625rem; font-size: 12px; color: var(--ink-3); max-width: 92ch; }
+.map-cap { margin-top: .625rem; font-size: 12px; color: var(--ink-3); max-width: var(--read); }
 .map-cap strong { color: var(--ink-2); font-weight: 500; }
 
 /* Flatten Leaflet's chrome to the house rules: no radius, no shadow. */
@@ -699,7 +865,7 @@ a { color: inherit; }
 
 /* Section sub-headers (the small sentence under the heading) sometimes
    need to hold a longer Bi line; let it wrap. */
-.sec-n { line-height: 1.45; max-width: 72ch; }
+.sec-n { line-height: 1.45; max-width: var(--read); }
 .sec-n .bi { gap: 2px; }
 .sec-n .bi-th { color: var(--ink-3); font-weight: 500; font-size: .88em; }
 
@@ -707,7 +873,7 @@ a { color: inherit; }
 
 /* Demand Tides — 5x77 grid of sparklines */
 .dt-wrap { display: flex; flex-direction: column; gap: 1rem; }
-.dt-lede { max-width: 72ch; }
+.dt-lede { max-width: var(--read); }
 .dt-controls {
   display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem;
   padding-block: 0.6rem; border-block: 1px solid var(--rule-2, currentColor);
@@ -757,8 +923,47 @@ a { color: inherit; }
 .dt-foot { margin-top: 0.5rem; font-size: 0.85em; opacity: 0.85; }
 
 /* Reachable Champions — producer cards */
+/* The lede and the state of the list are one band: what this list is, on
+   the left, and what it currently shows on the right. The lede alone left
+   760px of canvas with nothing in it, and ran 583px — 77 characters a line.
+   The filter bar was in the second column of that band, and it is 150px
+   tall at 1440 and 276px at 1024 because the buttons wrap: the lede
+   ended 66px above it at 1440 and 192px above it at 1024. The filter bar
+   is now its own full-width row under the band, where its height is its
+   own, and the band pairs the lede with the state and the two actions. */
 .ch-wrap { display: flex; flex-direction: column; gap: 1rem; }
-.ch-lede { max-width: 72ch; }
+.champions {
+  display: grid;
+  grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+  gap: 1rem 3rem;
+  align-items: start;
+}
+.ch-lede { grid-column: 1; grid-row: 1; max-width: var(--read); margin: 0; }
+.ch-actions { grid-column: 2; grid-row: 1; }
+.ch-controls { grid-column: 1 / -1; grid-row: 2; }
+.ch-cards { grid-column: 1 / -1; grid-row: 3; }
+/* The note is a band, not a paragraph: it runs in three columns across the
+   full width so the measure holds and the row is never left with an empty
+   track beside it. The .t-note class caps a note at the reading measure —
+   this one is wider than that on purpose, so it outranks it. */
+.t-note.ch-foot { grid-column: 1 / -1; grid-row: 4; max-width: none; columns: 3; column-gap: 2rem; }
+@media (max-width: 900px) {
+  .champions { grid-template-columns: minmax(0, 1fr); }
+  .ch-lede, .ch-actions, .ch-controls, .ch-cards, .ch-foot { grid-column: 1; grid-row: auto; }
+}
+.ch-actions {
+  display: grid; align-content: start;
+}
+.ch-act {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding: .35rem 0; border-bottom: 1px solid var(--line, currentColor);
+}
+.ch-act .t-key { flex: 0 0 auto; }
+.ch-act .ch-act-v { text-align: right; }
+.ch-act .bi { display: inline-flex; gap: .5rem; align-items: baseline; }
+.ch-act .bi-th { font-size: .78em; opacity: .6; }
+.ch-act .reset { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+.ch-act .reset .bi-en { text-decoration: underline; text-underline-offset: 2px; }
 .ch-controls {
   display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem;
   padding-block: 0.6rem; border-block: 1px solid var(--rule-2, currentColor);
@@ -782,7 +987,7 @@ a { color: inherit; }
   width: 100%;
 }
 .ch-actions { display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; }
-.ch-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr)); gap: 0.75rem; }
+.ch-cards { display: grid; grid-template-columns: repeat(var(--ch-cols, 4), minmax(0, 1fr)); gap: 0.75rem; }
 .ch-card {
   position: relative;
   border: 1px solid var(--rule-2, currentColor);
@@ -873,43 +1078,92 @@ a { color: inherit; }
 .dossier-craft-banner { display: block; }
 .dossier-craft-media { height: 240px; overflow: hidden; background: #000; }
 .dossier-craft-img { width: 100%; height: 100%; object-fit: cover; }
-.dossier-craft-body { padding: 0.85rem 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; max-width: 78ch; }
+.dossier-craft-body { padding: 0.85rem 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; max-width: var(--read); }
 .dossier-craft-title { margin: 0; font: 600 1.05rem var(--font-thai, inherit); }
 .dossier-craft-note { margin: 0; font-size: 0.88rem; opacity: 0.85; line-height: 1.4; }
 .dossier-craft-meta { margin: 0; font-size: 0.75rem; opacity: 0.65; font-family: var(--font-mono, monospace); }
 
 /* National Story */
-.ns { max-width: 72rem; margin-inline: auto; }
-.ns-hero { padding-block: 0 1.25rem; border-bottom: 1px solid var(--rule-2, currentColor); margin-bottom: 2rem; }
-.ns-hero-meta { display: flex; justify-content: space-between; font-family: var(--font-mono, monospace); font-size: 0.78em; opacity: 0.7; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
-.ns-h { font: 700 clamp(1.7rem, 4vw, 2.6rem)/1.1 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.5rem; letter-spacing: -0.01em; }
-.ns-sub { font-size: 1.05rem; opacity: 0.85; margin: 0 0 1rem; }
-.ns-byline { font-size: 0.85em; opacity: 0.7; }
+/* The story is a magazine spread, not a dashboard row. It was a 1,152px
+   canvas holding one column of prose: the pull quotes ran 1,152px at 20px
+   (105 characters a line) and the closing notes ran 1,152px at 12.6px
+   (167 characters a line). A reading page cannot be a 1440px landscape.
+   The canvas is now 68rem and the prose runs in TWO columns of 520px —
+   61 characters — the way a spread works. The chapter title and the stat
+   register span both columns, because they are bands, not prose. */
+.ns { max-width: 68rem; margin-inline: auto; }
+.ns-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+  gap: .4rem 3rem;
+  align-items: end;
+  padding-block: 0 1.25rem;
+  border-bottom: 1px solid var(--rule-2, currentColor);
+  margin-bottom: 2rem;
+}
+.ns-hero-meta { grid-column: 1 / -1; display: flex; justify-content: space-between; font-family: var(--font-mono, monospace); font-size: 0.78em; opacity: 0.7; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
+.ns-h { grid-column: 1; font: 700 clamp(1.7rem, 4vw, 2.6rem)/1.1 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+.ns-sub { grid-column: 1; font-size: 1.05rem; opacity: 0.85; margin: 0 0 1rem; max-width: var(--read); }
+.ns-byline { grid-column: 2; grid-row: 2 / span 2; align-self: end; font-size: 0.85em; opacity: 0.7; margin: 0; }
 .ns-byline code { font-family: var(--font-mono, monospace); }
-.ns-ch { padding-block: 1.5rem; border-bottom: 1px solid var(--rule-2, currentColor); }
+.ns-ch {
+  columns: 2; column-gap: 3rem;
+  padding-block: 1.5rem; border-bottom: 1px solid var(--rule-2, currentColor);
+}
 .ns-ch:last-of-type { border-bottom: none; }
-.ns-title { display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: 1rem; padding-block: 0.5rem; border-bottom: 2px solid var(--ink, currentColor); }
+/* The chapter title and the stat register are bands: they cross both
+   columns. The prose and the pull quote are reading: they take a column
+   and the column IS the measure. */
+.ns-title { column-span: all; display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: 1rem; padding-block: 0.5rem; border-bottom: 2px solid var(--ink, currentColor); }
 .ns-title-en { font: 600 1.4rem var(--font-display, inherit); letter-spacing: -0.01em; }
 .ns-title-th { font-family: var(--font-thai, inherit); font-size: 0.95rem; opacity: 0.7; }
-.ns-pull { font: 400 1.25rem/1.4 var(--font-thai, var(--font-display, inherit)); margin: 0 0 1rem; padding-left: 1rem; border-left: 4px solid var(--accent, #f59e0b); }
-.ns-p { font: 400 1rem/1.6 var(--font-thai, inherit); margin: 0 0 1rem; max-width: 64ch; }
+.ns-pull { column-span: none; font: 400 1.25rem/1.4 var(--font-thai, var(--font-display, inherit)); margin: 0 0 1rem; padding-left: 1rem; border-left: 4px solid var(--accent, #f59e0b); }
+.ns-p { font: 400 1rem/1.6 var(--font-thai, inherit); margin: 0 0 1rem; max-width: none; }
 .ns-source { font-size: 0.85em; margin-left: 0.3rem; opacity: 0.85; text-decoration: underline; text-underline-offset: 2px; }
-.ns-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0.5rem; margin: 1.25rem 0; padding: 0.75rem; border: 1px solid var(--ink, currentColor); }
+.ns-stats { column-span: all; display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0.5rem; margin: 1.25rem 0; padding: 0.75rem; border: 1px solid var(--ink, currentColor); }
 .ns-stat { display: flex; flex-direction: column; gap: 0.15rem; }
 .ns-stat-n { font: 700 1.4rem/1 var(--font-mono, monospace); font-variant-numeric: tabular-nums; }
 .ns-stat-l { font-size: 0.78em; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.7; }
 .ns-stat-th { font-family: var(--font-thai, inherit); font-size: 0.78em; opacity: 0.7; }
 .ns-stat-sub { font-size: 0.7em; opacity: 0.6; }
-.ns-foot { padding-block: 2rem; border-top: 1px solid var(--ink, currentColor); margin-top: 2rem; font-size: 0.9em; opacity: 0.85; }
-.ns-foot p { margin: 0 0 0.6rem; }
+/* The colophon is three columns of notes, not one 1,152px line. */
+.ns-foot {
+  columns: 3; column-gap: 2rem;
+  padding-block: 2rem; border-top: 1px solid var(--rule-2, currentColor); margin-top: 2rem; font-size: 0.9em; opacity: 0.85;
+}
+.ns-foot p { margin: 0 0 0.6rem; break-inside: avoid; }
+@media (max-width: 900px) {
+  .ns-hero { grid-template-columns: minmax(0, 1fr); }
+  .ns-h, .ns-sub, .ns-byline { grid-column: 1; grid-row: auto; }
+  .ns-ch { columns: 1; }
+  .ns-foot { columns: 1; }
+}
 .t-warn { color: #b91c1c; font-weight: 600; }
 
 /* Matchmaker */
-.mm-wrap { display: flex; flex-direction: column; gap: 1rem; }
-.mm-h { padding-bottom: 1rem; border-bottom: 1px solid var(--ink, currentColor); }
-.mm-h-t { font: 700 1.5rem/1.15 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.4rem; letter-spacing: -0.01em; }
-.mm-h-sub { font-size: 0.95rem; opacity: 0.85; max-width: 64ch; margin: 0; }
+.mm-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+  gap: 1rem 3rem;
+  align-items: start;
+}
+/* The question is asked on the left, the explanation on the right, and the
+   summary of what the filters returned sits BESIDE the filters that
+   returned it — the reader meets the result where they made it. The
+   summary used to be a full-width box holding one 495px sentence, which
+   is 78 characters a line, with 850px of nothing beside it. */
+.mm-h {
+  grid-column: 1 / -1; grid-row: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+  gap: .5rem 3rem;
+  align-items: end;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--ink, currentColor);
+}
+.mm-h-t { grid-column: 1; font: 700 1.5rem/1.15 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+.mm-h-sub { grid-column: 2; font-size: 0.95rem; opacity: 0.85; max-width: none; margin: 0; }
 .mm-controls {
+  grid-column: 1; grid-row: 2;
   display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;
   padding-block: 0.7rem; border-block: 1px solid var(--rule-2, currentColor);
   align-items: flex-start;
@@ -925,10 +1179,16 @@ a { color: inherit; }
 }
 .mm-btn[data-active="true"] { background: var(--ink, currentColor); color: var(--ground, currentColor); }
 .mm-btn-th { font-size: 0.7em; opacity: 0.75; }
-.mm-summary { padding: 0.85rem; border: 1px solid var(--ink, currentColor); background: rgba(245,158,11,0.08); }
+.mm-summary { grid-column: 2; grid-row: 2; padding: 0.85rem; border: 1px solid var(--ink, currentColor); background: rgba(245,158,11,0.08); }
 .mm-summary-n { font: 700 1.4rem var(--font-mono, monospace); font-variant-numeric: tabular-nums; }
-.mm-summary-sub { font-size: 0.85em; opacity: 0.85; max-width: 72ch; margin-top: 0.3rem; }
-.mm-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.mm-summary-sub { font-size: 0.85em; opacity: 0.85; max-width: var(--read); margin-top: 0.3rem; }
+.mm-list { grid-column: 1 / -1; grid-row: 3; list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.mm-foot { grid-column: 1 / -1; grid-row: 4; }
+@media (max-width: 900px) {
+  .mm-wrap { grid-template-columns: minmax(0, 1fr); }
+  .mm-h { grid-template-columns: minmax(0, 1fr); }
+  .mm-h-t, .mm-h-sub, .mm-controls, .mm-summary, .mm-list, .mm-foot { grid-column: 1; grid-row: auto; }
+}
 .mm-row {
   display: grid; grid-template-columns: 2.5rem 1fr auto; gap: 0.75rem;
   border: 1px solid var(--rule-2, currentColor);
@@ -1047,14 +1307,14 @@ a { color: inherit; }
 .hs-hero-meta { display: flex; justify-content: space-between; font-family: var(--font-mono, monospace); font-size: 0.78em; opacity: 0.7; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
 .hs-h { font: 700 clamp(1.7rem, 4vw, 2.6rem)/1.1 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.5rem; letter-spacing: -0.01em; }
 .hs-sub { font-size: 1.05rem; opacity: 0.85; margin: 0 0 1rem; }
-.hs-byline { font-size: 0.85em; opacity: 0.7; }
+.hs-byline { font-size: 0.85em; opacity: 0.7; max-width: var(--read); }
 .hs-ch { padding-block: 1.5rem; border-bottom: 1px solid var(--rule-2, currentColor); }
 .hs-ch:last-of-type { border-bottom: none; }
 .hs-title { display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: 1rem; padding-block: 0.5rem; border-bottom: 2px solid var(--ink, currentColor); }
 .hs-title-en { font: 600 1.4rem var(--font-display, inherit); letter-spacing: -0.01em; }
 .hs-title-th { font-family: var(--font-thai, inherit); font-size: 0.95rem; opacity: 0.7; }
-.hs-p { font: 400 1rem/1.6 var(--font-thai, inherit); margin: 0 0 1rem; max-width: 64ch; }
-.hs-cite { font-size: 0.82em; opacity: 0.7; font-style: italic; margin: 0 0 1rem; }
+.hs-p { font: 400 1rem/1.6 var(--font-thai, inherit); margin: 0 0 1rem; max-width: var(--read); }
+.hs-cite { font-size: 0.82em; opacity: 0.7; font-style: italic; margin: 0 0 1rem; max-width: var(--read); }
 
 /* 5★ scoring */
 .hs-scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr)); gap: 0.4rem; margin: 1rem 0; padding: 0.75rem; border: 1px solid var(--ink, currentColor); }
@@ -1098,25 +1358,53 @@ a { color: inherit; }
 .hs-photo-btn[data-active="true"] { background: var(--ink, currentColor); color: var(--ground, currentColor); }
 
 /* History footer */
-.hs-foot { padding-block: 2rem; border-top: 1px solid var(--ink, currentColor); margin-top: 2rem; font-size: 0.88em; opacity: 0.9; }
-.hs-foot h4 { font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.7; margin: 0 0 0.5rem; }
-.hs-foot ul { padding-left: 1.2rem; margin: 0 0 1rem; }
-.hs-foot li { margin: 0.2rem 0; }
+/* The colophon: the cited sources are a list, the Thai source note is a
+   note. They were one 1,152px line each — 87 and 82 characters. The
+   source list runs in two columns of 352px and the Thai note takes the
+   third, so the whole footer is three measures wide instead of one. */
+.hs-foot {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem 2rem;
+  padding-block: 2rem; border-top: 1px solid var(--ink, currentColor); margin-top: 2rem; font-size: 0.88em; opacity: 0.9;
+}
+.hs-foot h4 { grid-column: 1 / -1; font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.7; margin: 0 0 0.5rem; }
+.hs-foot ul { grid-column: 1 / span 2; columns: 2; column-gap: 2rem; padding-left: 1.2rem; margin: 0 0 1rem; }
+.hs-foot li { margin: 0.2rem 0; break-inside: avoid; }
 .hs-foot em { opacity: 0.85; }
-.hs-foot-th { font-family: var(--font-thai, inherit); opacity: 0.85; margin: 0; }
+.hs-foot-th { grid-column: 3; font-family: var(--font-thai, inherit); opacity: 0.85; margin: 0; }
+@media (max-width: 900px) {
+  .hs-foot { grid-template-columns: minmax(0, 1fr); }
+  .hs-foot ul { grid-column: 1; columns: 1; }
+  .hs-foot-th { grid-column: 1; }
+}
 
 /* Cross-references */
 .xr-wrap { display: flex; flex-direction: column; gap: 1.5rem; }
-.xr-h { padding-bottom: 1rem; border-bottom: 1px solid var(--ink, currentColor); }
-.xr-h-t { font: 700 1.5rem/1.15 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.4rem; letter-spacing: -0.01em; }
-.xr-h-sub { font-size: 0.95rem; opacity: 0.85; max-width: 64ch; margin: 0 0 0.4rem; }
-.xr-h-anchors { font-size: 0.82em; opacity: 0.7; margin: 0; font-family: var(--font-mono, monospace); }
+/* The header is a two-column band: the argument on the left, the anchors
+   as a marginal note on the right. The anchors used to be one line across
+   the whole 1,344px canvas — 117 characters a line — and the argument
+   beside them had 780px of nothing to say. */
+.xr-h {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+  gap: .4rem 3rem;
+  align-items: end;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--ink, currentColor);
+}
+.xr-h-t { grid-column: 1; font: 700 1.5rem/1.15 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+.xr-h-sub { grid-column: 1; font-size: 0.95rem; opacity: 0.85; max-width: var(--read); margin: 0 0 0.4rem; }
+.xr-h-anchors { grid-column: 2; grid-row: 1 / span 2; align-self: end; font-size: 0.82em; opacity: 0.7; margin: 0; font-family: var(--font-mono, monospace); }
+@media (max-width: 900px) {
+  .xr-h { grid-template-columns: minmax(0, 1fr); }
+  .xr-h-t, .xr-h-sub, .xr-h-anchors { grid-column: 1; grid-row: auto; }
+}
 .xr-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 .xr-cell { border: 1px solid var(--ink, currentColor); padding: 1rem 1.1rem; background: var(--ground, #fdf3df); }
 .xr-cell-wide { grid-column: 1 / -1; }
 .xr-cell-t { font: 600 1.05rem/1.25 var(--font-thai, var(--font-display, inherit)); margin: 0 0 0.3rem; }
 .xr-cell-th { display: block; font-family: var(--font-thai, inherit); font-size: 0.85rem; font-weight: 400; opacity: 0.7; margin-top: 0.1rem; }
-.xr-p { font: 400 0.95rem/1.55 var(--font-thai, inherit); margin: 0 0 0.6rem; max-width: 60ch; }
+.xr-p { font: 400 0.95rem/1.55 var(--font-thai, inherit); margin: 0 0 0.6rem; max-width: var(--read); }
 .xr-source { font-size: 0.82em; opacity: 0.7; font-style: italic; margin: 0 0 0.6rem; }
 .xr-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.3rem; }
 .xr-list-wide { gap: 0.5rem; }
@@ -1129,13 +1417,33 @@ a { color: inherit; }
 .xr-row-sub { grid-column: 1 / -1; font-size: 0.78em; opacity: 0.7; padding-left: 0; }
 .xr-bar { grid-column: 1 / -1; height: 4px; background: rgba(0,0,0,0.05); }
 .xr-bar i { display: block; height: 100%; background: var(--accent, #f59e0b); }
-.xr-foot { font-size: 0.85em; opacity: 0.85; border-top: 1px solid var(--ink, currentColor); padding-top: 1rem; }
+/* The source note used to be one 1,344px paragraph — 210 characters a
+   line, the longest on the site. It is a register of the four files and a
+   marginal note about zero-fill: the sources are a list, and the note is
+   a note. */
+.xr-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+  gap: 1.5rem 3rem;
+  align-items: start;
+  font-size: 0.85em; opacity: 0.85;
+  border-top: 1px solid var(--ink, currentColor); padding-top: 1rem;
+}
+.xr-srcs { margin: 0; display: grid; gap: 0.3rem; }
+.xr-srcs > div { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: 0 1rem; align-items: baseline; }
+.xr-srcs dt { margin: 0; font-family: var(--font-mono, monospace); }
+.xr-srcs dd { margin: 0; }
+.xr-foot-note { margin: 0; }
+@media (max-width: 900px) {
+  .xr-foot { grid-template-columns: minmax(0, 1fr); }
+  .xr-srcs > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
 @media (max-width: 900px) { .xr-grid { grid-template-columns: 1fr; } }
 
 /* ── Briefs — shareable infographic cards ───────────────────────────────
    Sharp edges, one accent, type does the work. Phone-first: one column
    at 390px, two at desktop. Print: one card per page, ink on white. */
-.bf-lede { max-width: 76ch; }
+.bf-lede { max-width: var(--read); }
 .bf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 @media (max-width: 900px) { .bf-grid { grid-template-columns: 1fr; } }
 .bf-card {
@@ -1157,7 +1465,7 @@ a { color: inherit; }
   font-size: clamp(1.3rem, 3vw, 1.8rem); line-height: 1.15;
   margin: 0.7rem 0 0.2rem; font-variant-numeric: tabular-nums;
 }
-.bf-sub { margin: 0 0 0.8rem; color: var(--ink-2); font-size: 13px; }
+.bf-sub { margin: 0 0 0.8rem; color: var(--ink-2); font-size: 13px; max-width: var(--read); }
 .bf-chart { border-top: 1px solid var(--line); padding-top: 0.8rem; margin-bottom: 0.8rem; }
 .bf-gauges { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.6rem; }
 .bf-gauge { display: flex; flex-direction: column; gap: 1px; border-left: 2px solid var(--accent); padding-left: 0.6rem; }
@@ -1167,9 +1475,20 @@ a { color: inherit; }
 .bf-why { margin: 0 0 0.6rem; display: flex; flex-direction: column; gap: 0.35rem; }
 .bf-why-row { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.6rem; align-items: baseline; }
 .bf-why-row dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 0; }
-.bf-why-row dd { margin: 0; font-size: 13px; color: var(--ink); }
-.bf-src { font-size: 11px; color: var(--ink-3); margin: 0 0 0.6rem; }
+.bf-why-row dd { margin: 0; font-size: 13px; color: var(--ink); max-width: var(--read); }
+/* Two notes, not one sentence: the file it came from, and the caveat
+   that travels with every number on the site. One run-on line was 622px
+   — 78 characters — inside a 664px card. */
+.bf-src {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0 1.25rem;
+  font-size: 11px; color: var(--ink-3); margin: 0 0 0.6rem;
+}
 .bf-src code { font-family: var(--font-mono); }
+@media (max-width: 560px) {
+  .bf-src { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
 .bf-actions { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; border-top: 1px solid var(--line); padding-top: 0.6rem; }
 .bf-prov-picker { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.8rem; }
 .bf-prov-picker select {
@@ -1260,9 +1579,33 @@ a { color: inherit; }
 .bank-shelf-n { grid-row: span 2; font-family: var(--font-display); font-size: 1.25rem; font-variant-numeric: tabular-nums; }
 .bank-shelf-t { font-weight: 600; }
 .bank-shelf-th { font-size: 0.8em; opacity: 0.75; }
-.bank-row { padding: 0.5rem 0; border-bottom: 1px solid currentColor; }
+/* A dataset row is a register, not a paragraph. The title, the publishing
+   office and what the build actually pulled were one run-on sentence
+   stretched across the full 1,344px canvas — 105 Latin-characters a line,
+   and 133 of them on this page. They are three cells now: the name, the
+   office, the measure. Each cell has a measure of its own. */
+.bank-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 0 1.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid currentColor;
+}
 .bank-row-t { font-weight: 600; }
-.bank-row-meta { font-size: 0.85em; opacity: 0.8; }
+.bank-row-shelf {
+  display: block;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3, currentColor);
+  margin-bottom: 0.15rem;
+}
+.bank-row-org { font-size: 0.85em; opacity: 0.8; }
+.bank-row-measure { font-size: 0.85em; opacity: 0.8; }
+@media (max-width: 900px) {
+  .bank-row { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
+}
 
 /* ─── Find — the search-first, phone-first landing ─────────────────────────
  * The most useful single thing on the site: a search box that ends with a
@@ -1282,23 +1625,40 @@ a { color: inherit; }
 
 .find { padding: 1.25rem 0 0; }
 
+/* The masthead's two columns: the question, and the registry's scale.
+   The left column takes the slack (1fr) and the register keeps 26rem, so
+   the register sits at the right edge on a DECLARED 3rem gap — the same
+   idiom as .vhero — and not on 480px of space-between.
+
+   The question is a display element, not a reading column: capped at 24ch
+   and set in a 1fr column it sets on ONE line. Forced into --read it broke
+   into two, which made the left column 50px taller than the register and
+   opened a 416x50 void under the register — a hole the empty-track probe
+   measured and the eye could see. The instruction beneath it is reading
+   text and keeps the reading measure. */
 .find-head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: 2rem; row-gap: .75rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+  column-gap: 3rem; row-gap: .75rem;
   align-items: start;
   margin-bottom: 1.5rem;
 }
 .find-head-main { min-width: 0; }
 @media (max-width: 900px) {
-  .find-head { grid-template-columns: 1fr; }
-  .find-stamp { text-align: left; align-items: flex-start; }
+  .find-head { grid-template-columns: minmax(0, 1fr); }
+  .find-stamp { justify-content: flex-start; }
   .find-stamp .bi { justify-content: flex-start; }
   .find-panel { margin-top: .5rem; }
 }
 .find-h {
   font-family: var(--font-display, inherit);
-  font-size: clamp(1.9rem, 4.6vw, 3rem);
+  /* The question is a DISPLAY element, and it sets on one line at every
+     width where the masthead is two columns. At 4.6vw it needed 712px and
+     the column gave it 478px, so it broke into two lines — and the broken
+     headline made the question's column 47px taller than the register,
+     which is the void the empty-track probe measured. 3vw fits the column
+     at 1024 and still reaches the 3rem ceiling on a wide screen. */
+  font-size: clamp(1.75rem, 3vw, 3rem);
   font-weight: 700;
   margin: 0 0 .5rem;
   line-height: 1.04;
@@ -1310,7 +1670,7 @@ a { color: inherit; }
   font-size: 1.05rem;
   color: var(--ink-2, currentColor);
   margin: 0;
-  max-width: 60ch;
+  max-width: var(--read);
 }
 
 /* ── the control row ───────────────────────────────────────────────────────
@@ -1411,15 +1771,24 @@ a { color: inherit; }
   min-width: 0;
 }
 .find-stamp {
-  margin: 0 0 .5rem; text-align: right;
+  /* One line, under the data it dates. It was three lines above the
+     register, which made the column 192px tall against a 239px question
+     and opened the largest hole on the page; and it named the source,
+     which the site's own chrome already names in the top-right corner. */
+  margin: .45rem 0 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: .45rem;
   font-family: var(--font-mono, monospace);
-  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
   color: var(--ink-3, currentColor);
   white-space: nowrap;
 }
-.find-stamp { display: flex; flex-direction: column; align-items: flex-end; gap: .1rem; }
 .find-stamp .bi { display: inline-flex; align-items: baseline; gap: .45rem; justify-content: flex-end; }
-.find-stamp-src { opacity: .6; text-transform: none; letter-spacing: .04em; }
+.find-stamp .bi-th { font-size: .85em; color: var(--ink-3, currentColor); }
 .find-panel-stats { margin: 0; display: grid; gap: .1rem; }
 .find-panel-stats > div {
   display: flex; align-items: baseline; justify-content: space-between;
@@ -1470,7 +1839,7 @@ a { color: inherit; }
 }
 .callout-body {
   margin: 0; font-size: .95rem; line-height: 1.4; color: var(--ink, currentColor);
-  max-width: 62ch;
+  max-width: var(--read);
   display: flex; flex-direction: column; align-items: flex-start; gap: .2rem;
 }
 .callout-body .bi { display: inline-flex; }
@@ -1781,7 +2150,7 @@ a { color: inherit; }
   font-style: italic;
   border-top: 1px solid var(--line, currentColor);
   padding-top: 0.75rem;
-  max-width: 72ch;
+  max-width: var(--read);
 }
 
 /* Mobile: the phone drops under the name so the digits are not pushed off
@@ -1927,17 +2296,41 @@ a { color: inherit; }
  * empty beside it, at the bottom of every page. It is a page now, and the
  * right column carries the numbers it is talking about.
  */
-.method {
+/* The prose column IS the reading column — 32em, 68 characters. It used
+   to be 38rem wide with a 70ch cap inside it, which at 14px left the
+   paragraphs running 566px: 76 characters a line. The build facts take
+   the rest of the canvas, and the legal note sits under the prose in the
+   prose column, so the facts column never ends in nothing.
+
+   The provenance banner used to sit INSIDE the prose column, which made
+   that column 236px taller than the register beside it: the register
+   ended 286px above the bottom of the grid and the page stopped
+   two-thirds down. The banner is now a band across the top of the
+   method page — its text runs in three columns so the measure holds —
+   and the two columns below it start level and end level. */
+.method { display: block; }
+.method-banner { margin-bottom: 2rem; }
+.method-banner .prov { max-width: none; }
+.method-banner .prov-b { max-width: none; columns: 3; column-gap: 2.5rem; }
+.method-grid {
   display: grid;
-  grid-template-columns: minmax(0, 38rem) minmax(0, 1fr);
+  grid-template-columns: minmax(0, var(--read)) minmax(0, 1fr);
   gap: 2.5rem 3rem;
   align-items: start;
 }
-.method-prose { min-width: 0; }
-@media (max-width: 900px) { .method { grid-template-columns: 1fr; gap: 2rem; } }
+.method-prose { min-width: 0; grid-column: 1; grid-row: 1; }
+.method-facts { grid-column: 2; grid-row: 1; }
+@media (max-width: 900px) {
+  .method-grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .method-prose, .method-facts { grid-column: 1; grid-row: auto; }
+  .method-banner .prov-b { columns: 2; }
+}
+@media (max-width: 560px) {
+  .method-banner .prov-b { columns: 1; }
+}
 .method-prose p {
   margin: 0 0 1rem;
-  max-width: 70ch;
+  max-width: none;
   line-height: 1.6;
 }
 .method-prose .prov { margin: 0 0 1.5rem; }
@@ -1946,7 +2339,7 @@ a { color: inherit; }
 .method-prose code { font-family: var(--font-mono, monospace); font-size: .9em; }
 .method-legal {
   margin: 1.5rem 0 0;
-  max-width: 70ch;
+  max-width: none;
   font-size: .9rem;
   color: var(--ink-2, currentColor);
 }
@@ -1957,13 +2350,13 @@ a { color: inherit; }
 }
 .fact-h {
   font-family: var(--font-display); font-size: 1.0625rem; font-weight: 700;
-  margin: 1.5rem 0 .5rem;
+  margin: 1.15rem 0 .4rem;
 }
 .fact-h:first-child { margin-top: 0; }
 .facts { margin: 0; }
 .fact {
   display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
-  padding: .3rem 0;
+  padding: .22rem 0;
   border-bottom: 1px solid var(--line, currentColor);
 }
 .fact-k { font-size: .8rem; color: var(--ink-2, currentColor); margin: 0; }
@@ -1984,7 +2377,11 @@ a { color: inherit; }
   font-size: .78rem;
   color: var(--ink-3, currentColor);
 }
+/* The build note is two lines, English then Thai, and both are a
+   sentence. They were 477px — 80 characters a line — because nothing
+   bounded them. */
 .build-note .bi { display: inline-flex; }
+.build-note .bi-en, .build-note .bi-th { max-width: var(--read); }
 .build-note a {
   color: var(--accent-2, #a8780c); text-decoration: none;
   border-bottom: 1px solid currentColor;

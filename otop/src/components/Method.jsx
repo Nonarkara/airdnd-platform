@@ -52,70 +52,76 @@ export default function Method({ meta, totals }) {
   ];
 
   return (
-    <>
     <div className="method">
-      <div className="method-prose">
+      {/* The provenance statement is about the page, not about the argument.
+          It sits above the two columns as a band — its text runs in three
+          columns so the line length holds — because inside the prose column
+          it made that column 236px taller than the register and the page
+          stopped two-thirds down. */}
+      <div className="method-banner">
         <ProvenanceBanner meta={meta} />
-        <p>
-          Records come from CKAN datasets published on <code>data.go.th</code>, mapped onto one schema by
-          discovering each resource's columns rather than assuming them, and resolved into
-          entities by unioning shared identity signals — tax ID, telephone, source-scoped
-          registration number, and name-within-an-administrative-area. A telephone appearing
-          in more than one province is treated as a switchboard and withdrawn as identity.
-        </p>
-        <p>
-          <strong>The fit score ranks only what the registry attests</strong> — contactability,
-          OPC grading, filing recency, cross-agency corroboration and how precisely the
-          producer is located. It does not model capacity, price or reliability, because the
-          registry holds none of those. Hover any score to see its components.
-        </p>
-        <p>
-          <strong>These counts measure the registry, not the economy.</strong> A province with an
-          active provincial office files more rows than a province with more producers and
-          less paperwork. The same is true of every number here: they count what was
-          filed, filed correctly, and filed recently enough to still be reachable.
-        </p>
-        <p>
-          <strong>Every record carries its origin.</strong> Each row names the dataset it came
-          from, the organisation that published it, the licence it carries and the date it was
-          retrieved — so any figure on this site can be traced back to a filing.
-        </p>
       </div>
 
-      <aside className="method-facts">
-        <h2 className="fact-h">
-          <Bi en="Registry at a glance" th="ภาพรวมทะเบียน" />
-        </h2>
-        <dl className="facts">
-          {registry.map(([k, th, v]) => (
-            <Fact key={k} k={<><span>{k}</span> <span className="fact-th" lang="th">{th}</span></>} v={v} />
-          ))}
-        </dl>
+      <div className="method-grid">
+        <div className="method-prose">
+          <p>
+            Records come from CKAN datasets published on <code>data.go.th</code>, mapped onto one schema by
+            discovering each resource's columns rather than assuming them, and resolved into
+            entities by unioning shared identity signals — tax ID, telephone, source-scoped
+            registration number, and name-within-an-administrative-area. A telephone appearing
+            in more than one province is treated as a switchboard and withdrawn as identity.
+          </p>
+          <p>
+            <strong>The fit score ranks only what the registry attests</strong> — contactability,
+            OPC grading, filing recency, cross-agency corroboration and how precisely the
+            producer is located. It does not model capacity, price or reliability, because the
+            registry holds none of those. Hover any score to see its components.
+          </p>
+          <p>
+            <strong>These counts measure the registry, not the economy.</strong> A province with an
+            active provincial office files more rows than a province with more producers and
+            less paperwork. The same is true of every number here: they count what was
+            filed, filed correctly, and filed recently enough to still be reachable.
+          </p>
+          <p>
+            <strong>Every record carries its origin.</strong> Each row names the dataset it came
+            from, the organisation that published it, the licence it carries and the date it was
+            retrieved — so any figure on this site can be traced back to a filing.
+          </p>
 
-        <h2 className="fact-h">
-          <Bi en="The build" th="การสร้างข้อมูล" />
-        </h2>
-        <dl className="facts">
-          {build.map(([k, th, v]) => (
-            <Fact key={k} k={<><span>{k}</span> <span className="fact-th" lang="th">{th}</span></>} v={v} />
-          ))}
-        </dl>
-      </aside>
+          {/* The legal line is a statement about the page, not the last beat of
+              the argument, and not a third column either. It sits in the prose
+              column, under the prose, the way every other page-level note does
+              here. */}
+          <p className="method-legal">
+            <Bi
+              en="Terms of use, the privacy basis, and the takedown route are published as static pages."
+              th="เงื่อนไขการใช้งาน เกณฑ์ความเป็นส่วนตัว และช่องทางขอแก้ไข เผยแพร่เป็นหน้าเว็บถาวร"
+            />{' '}
+            <a href="/legal/provenance/">Data provenance →</a>
+          </p>
+        </div>
+
+        <aside className="method-facts">
+          <h2 className="fact-h">
+            <Bi en="Registry at a glance" th="ภาพรวมทะเบียน" />
+          </h2>
+          <dl className="facts">
+            {registry.map(([k, th, v]) => (
+              <Fact key={k} k={<><span>{k}</span> <span className="fact-th" lang="th">{th}</span></>} v={v} />
+            ))}
+          </dl>
+
+          <h2 className="fact-h">
+            <Bi en="The build" th="การสร้างข้อมูล" />
+          </h2>
+          <dl className="facts">
+            {build.map(([k, th, v]) => (
+              <Fact key={k} k={<><span>{k}</span> <span className="fact-th" lang="th">{th}</span></>} v={v} />
+            ))}
+          </dl>
+        </aside>
+      </div>
     </div>
-
-    {/* The legal line is a statement about the page, not the last beat of
-        the argument, and not a third column either. It sits below the two
-        columns as a note, the way every other page-level note does here.
-        Held inside the prose it left the columns ending 78px apart with
-        the facts column trailing into nothing; held inside the grid as a
-        full-width row it became a track with 784px of empty field. */}
-    <p className="method-legal">
-      <Bi
-        en="Terms of use, the privacy basis, and the takedown route are published as static pages."
-        th="เงื่อนไขการใช้งาน เกณฑ์ความเป็นส่วนตัว และช่องทางขอแก้ไข เผยแพร่เป็นหน้าเว็บถาวร"
-      />{' '}
-      <a href="/legal/provenance/">Data provenance →</a>
-    </p>
-    </>
   );
 }
