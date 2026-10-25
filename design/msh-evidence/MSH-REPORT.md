@@ -2,8 +2,9 @@
 
 **Site** — one³ (`otop.nonarkara.org` / `otop.pages.dev`) — Thailand's soft-power monitor, of which the OTOP registry is one instrument.
 **Law** — the owner's design law, applied verbatim. `docs/MSH-LAW.md` is the canonical copy; this file is the evidence for this pass, not a second law.
-**Pass** — three: the long-line massacre, the thirteen holes my own recompositions opened, and the three failures found on the last sweep.
+**Pass** — three: the long-line massacre, the thirteen holes my own recompositions opened, and the three failures found on the last sweep. Deployed and verified against production on 2026-10-24 (`0b2c6ed`, plus the identity fix `095b27c`).
 **Date** — 2026-10-22, continued 2026-10-23, closed 2026-10-24.
+**Live site** — `https://otop.nonarkara.org` — serving `assets/index-BEF3pjr9.js`, the export of commit `0b2c6ed`.
 **Viewports** — 390 × 844, 1024 × 900, 1440 × 900.
 **Instruments** — `scripts/otop-measure.mjs` (the line ruler, with `--selftest`), `scripts/otop-empty-tracks.mjs` (uncovered rectangles inside grid containers), `scripts/otop-route-sweep.mjs` (every route renders), `scripts/spatial/spatial-check.mjs` (the vendored gate), `scripts/spatial/spatial-falsify.mjs` (the gate's self-test), `scripts/otop-msh-audit.mjs` (chrome cost, task visibility, hierarchy).
 
@@ -118,9 +119,26 @@ Every instrument states **what it does not measure**. The exports figure is the 
 | Spatial falsifier | **23/23 caught** — 10 injected page defects, 12 broken-baseline cases, 1 case about the instrument itself; 8 of 8 failure modes |
 | `npm run test:otop` | **154/154 pass** (152 before, plus 2 new caption tests) |
 | `npm test` | **248/250** — the two failures are `scraper_ai_governor` and `scraper_highwater`, which need `TELEGRAM_API_ID`/`TELEGRAM_API_HASH` in `.env`; they are unrelated to this pass and were failing before it |
-| Screenshots | The find masthead at 1440 and 1024; the soft-power view at 1440 (4,747px tall); the method and atlas views at 1440 |
 
-Every measurement was taken against a **preview server on the working tree**, never against the live site — the live site carried the previous bundle throughout, so no live figure in this report is a claim about production until the deploy below is verified.
+### The same gates, run against the live site
+
+The preview server is where the work was done, but a receipt about a live site has to be a receipt about the live site. After the deploy, every instrument was pointed at `https://otop.nonarkara.org`:
+
+| Gate, against production | Result |
+|---|---|
+| `otop:verify` | **All checks passed** — and the live bundle hash (`assets/index-BEF3pjr9.js`) **matches the export byte for byte**, so the site is serving the commit, not yesterday's |
+| Line measure, 1440 | **Nothing over the ceiling**, measured on the live site |
+| Line measure, 390 | **Nothing over the ceiling**, measured on the live site |
+| Hole probe, 7 routes × 390 / 1024 / 1440 | **No empty tracks across 4,584 grid containers**, measured on the live site |
+| Route sweep | **All 14 routes rendered** — including `softpower`, whose h1 is *"Thailand's soft power, measured on the supply side."* |
+| `soft_power.json` | 26,302 bytes served; **7 tools, all measured** — otop · handicraft · local-food · film-heritage · exports · fisheries · labour |
+| Document title | `one³ — Thailand's soft-power monitor` |
+
+The 1024 line measure was run against the preview, on the **same bytes** production serves — the live bundle hash matches the export exactly — but it did not complete against production itself: two attempts failed on navigation timeouts against the live host. It is recorded here as the preview measurement it was, not as a live one.
+
+Live screenshots are in `design/msh-evidence/live/` — `find-1440`, `find-390`, `softpower-1440`, `softpower-390`, `province-1440`, `method-1440`.
+
+**One instrument defect this exposed.** The live sweep failed all 14 routes with *"REFUSING TO MEASURE"* — against a site serving exactly the right bundle. The identity assertion keyed on `OTOP_TITLE = "OTOP registry intelligence"`, a marketing phrase that changed when the platform became the soft-power monitor. A gate that breaks whenever the copy changes is a gate that gets "fixed" by weakening it, so the assertion now checks the thing that does not change: the wordmark. The title must **begin with `one³`**, which still rejects another process holding the port. (`095b27c`.)
 
 ---
 

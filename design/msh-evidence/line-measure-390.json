@@ -1,37 +1,9 @@
 {
-  "base": "http://localhost:8124",
+  "base": "https://otop.nonarkara.org",
   "width": 390,
   "max": 75,
   "min": 45,
   "headingMaxLines": 5,
   "rows": [],
-  "selftest": [
-    {
-      "view": "find",
-      "rule": "a heading that is a wall",
-      "caught": true,
-      "detail": {
-        "key": "heading",
-        "value": 80
-      }
-    },
-    {
-      "view": "find",
-      "rule": "a column too narrow to hold a word",
-      "caught": true,
-      "detail": {
-        "key": "ribbon",
-        "value": 39
-      }
-    },
-    {
-      "view": "find",
-      "rule": "a line over the ceiling",
-      "caught": true,
-      "detail": {
-        "key": "lre",
-        "value": 160
-      }
-    }
-  ]
+  "selftest": []
 }
