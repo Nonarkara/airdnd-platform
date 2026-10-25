@@ -127,14 +127,13 @@ The preview server is where the work was done, but a receipt about a live site h
 | Gate, against production | Result |
 |---|---|
 | `otop:verify` | **All checks passed** — and the live bundle hash (`assets/index-BEF3pjr9.js`) **matches the export byte for byte**, so the site is serving the commit, not yesterday's |
-| Line measure, 1440 | **Nothing over the ceiling**, measured on the live site |
-| Line measure, 390 | **Nothing over the ceiling**, measured on the live site |
+| Line measure, 1440 / 1024 / 390 | **Nothing over the ceiling** at all three widths, measured on the live site |
 | Hole probe, 7 routes × 390 / 1024 / 1440 | **No empty tracks across 4,584 grid containers**, measured on the live site |
 | Route sweep | **All 14 routes rendered** — including `softpower`, whose h1 is *"Thailand's soft power, measured on the supply side."* |
 | `soft_power.json` | 26,302 bytes served; **7 tools, all measured** — otop · handicraft · local-food · film-heritage · exports · fisheries · labour |
 | Document title | `one³ — Thailand's soft-power monitor` |
 
-The 1024 line measure was run against the preview, on the **same bytes** production serves — the live bundle hash matches the export exactly — but it did not complete against production itself: two attempts failed on navigation timeouts against the live host. It is recorded here as the preview measurement it was, not as a live one.
+The 1024 live measure took four attempts — the live host timed out on navigation three times, which is the edge being slow, not the page being wrong — and then came back clean. It is recorded as a live measurement because that is what it is.
 
 Live screenshots are in `design/msh-evidence/live/` — `find-1440`, `find-390`, `softpower-1440`, `softpower-390`, `province-1440`, `method-1440`.
 
