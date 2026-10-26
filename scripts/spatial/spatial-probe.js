@@ -423,13 +423,48 @@
     }
 
     // ---- 4. false hierarchy ------------------------------------------------
-    var h1 = main.querySelector("h1");
+    //
+    // THE TITLE IS A SUBTREE, NOT A SET OF COMPETITORS.
+    //
+    // A bilingual title is one h1 holding two spans: the English line at the
+    // title's own size, the Thai line beneath it at 0.78em. Those spans are
+    // not "the next largest text on the page" — they ARE the title, drawn in
+    // two voices. Counting them as the page's loud body made the ratio a
+    // structural constant: 1.00 on every view, at every width, because the
+    // title was always competing with itself. The peer-share had the same
+    // fault: the title's own Thai line was read as the page shouting over
+    // the title. A number that cannot move is not a measurement.
+    //
+    // So the title is measured as a whole: its size is the largest size it
+    // is drawn at, and its characters are excluded from the body's loud
+    // share. What is left is the body talking over the title — which is the
+    // defect the rule exists to catch.
+    var titles = main.querySelectorAll("h1");
+    var h1 = titles.length ? titles[0] : null;
     var h1size = h1 ? parseFloat(win.getComputedStyle(h1).fontSize) : 0;
+    var titleSize = 0;
+    for (var ti = 0; ti < titles.length; ti++) {
+      var tsize = parseFloat(win.getComputedStyle(titles[ti]).fontSize);
+      if (tsize > titleSize) titleSize = tsize;
+      var tin = titles[ti].querySelectorAll("*");
+      for (var tj = 0; tj < tin.length; tj++) {
+        var tis = parseFloat(win.getComputedStyle(tin[tj]).fontSize);
+        if (tis > titleSize) titleSize = tis;
+      }
+    }
+    function inTitle(el) {
+      for (var tk = 0; tk < titles.length; tk++) {
+        if (el === titles[tk] || titles[tk].contains(el)) return true;
+      }
+      return false;
+    }
     var largest = 0;
     var largestInfo = null;
     var ramp = {};
     var peerChars = 0;
     var totalChars = 0;
+    var bodyChars = 0;
+    var titleChars = 0;
     var peers = 0;
     for (var mi = 0; mi < all.length; mi++) {
       var el = all[mi];
@@ -447,24 +482,33 @@
       var size = parseFloat(cs2.fontSize);
       var key = String(Math.round(size * 10) / 10);
       ramp[key] = (ramp[key] || 0) + own.length;
-      if (el.tagName !== "H1" && size > largest) {
+      if (inTitle(el)) {
+        // The title is measured as one thing. Its characters are the title's,
+        // not the body's, so they leave both the numerator and the
+        // denominator of the body's loud share.
+        titleChars += own.length;
+        continue;
+      }
+      bodyChars += own.length;
+      if (size > largest) {
         largest = size;
         largestInfo = {
           tag: el.tagName.toLowerCase(),
-          cls: String(el.className || "").slice(0, 40),
+          cls: String(el.getAttribute("class") || "").slice(0, 40),
           size: size,
           text: own.slice(0, 40),
         };
       }
       var weight = Number(cs2.fontWeight) || 400;
-      if (weight >= 600 && size >= 15 && size < h1size && el.tagName !== "OPTION") {
+      if (weight >= 600 && size >= 15 && size < titleSize && el.tagName !== "OPTION") {
         var loudAncestor = false;
         for (var anc = el.parentElement; anc && anc !== main; anc = anc.parentElement) {
+          if (inTitle(anc)) continue;
           var acs = win.getComputedStyle(anc);
           if (
             (Number(acs.fontWeight) || 400) >= 600 &&
             parseFloat(acs.fontSize) >= 15 &&
-            parseFloat(acs.fontSize) < h1size
+            parseFloat(acs.fontSize) < titleSize
           ) {
             loudAncestor = true;
             break;
@@ -478,12 +522,15 @@
     }
     rec.hierarchy = {
       h1: h1size,
-      h1Count: main.querySelectorAll("h1").length,
+      h1Count: titles.length,
+      title: titleSize,
       largest: largest,
       largestInfo: largestInfo,
-      ratio: h1size && largest ? Math.round((h1size / largest) * 100) / 100 : null,
+      ratio: titleSize && largest ? Math.round((titleSize / largest) * 100) / 100 : null,
       peers: peers,
-      share: totalChars ? Math.round((peerChars / totalChars) * 100) / 100 : 0,
+      share: bodyChars ? Math.round((peerChars / bodyChars) * 100) / 100 : 0,
+      titleChars: titleChars,
+      bodyChars: bodyChars,
       ramp: ramp,
     };
     rec.chars = totalChars;
