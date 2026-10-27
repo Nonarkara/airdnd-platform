@@ -63,7 +63,7 @@ export default function Record({ insights, go }) {
               <span className="t-key">Source · แหล่งข้อมูล</span>
               <span className="t-ctx">{insights.source} · built {insights.builtAt.slice(0, 10)}</span>
             </div>
-            <p className="t-ctx" style={{ margin: 0 }}>
+            <p className="t-ctx t-face-note" style={{ margin: 0 }}>
               A name, and an administrative area. That is what all of these rows carry.
             </p>
           </div>

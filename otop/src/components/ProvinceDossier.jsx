@@ -257,14 +257,20 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
         <div className="t-face">
           <p className="t-dest t-band">{p.iso}</p>
           <div className="t-face-body">
+            {/* The tag carries what the masthead above it does NOT already
+                say. It used to carry the label "Province · จังหวัด" (the
+                eyebrow's own words), the province's name in Thai and again
+                in Latin, and the record count — all of which are already on
+                the page, ninety pixels above: the title names the province
+                in both scripts, and the register's first row is the record
+                count. Four statements of one fact, three of them shouting
+                louder than the title, is the page's hierarchy failing and
+                its space being spent on repetition.
+                What is left is what only the tag knows: the code, the
+                region, and where the shard came from. */}
             <div>
-              <span className="t-key">Province · จังหวัด</span>
-              <span className="t-row-th dossier-name">{p.th}</span>
-              <span className="t-row-en">{p.en} · {REGION_LABEL[p.region]}</span>
-            </div>
-            <div>
-              <span className="t-key">Registry · ทะเบียน</span>
-              <span className="t-id">{n(p.records)}</span>
+              <span className="t-key">Region · ภูมิภาค</span>
+              <span className="t-row-en">{REGION_LABEL[p.region]}</span>
             </div>
             <p className="t-ctx" style={{ margin: 0 }}>
               {insights.source} · built {insights.builtAt.slice(0, 10)} · shard <code>p/{code}.json</code>

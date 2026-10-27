@@ -69,16 +69,58 @@
 .t-band .t-key { color: rgba(255,254,250,.68); }
 
 /* ── the national tag: the country as one closed package ─────────────────── */
+/* THE TAG IS THE REGISTER'S HEADER ROW, NOT A CARD BESIDE IT.
+   It used to be a 22rem column with the register to its right, and the
+   column stretched to the register's height — so the tag's own content ended
+   200-300px above the bottom of the box and left a plain empty panel under
+   it. A column whose height is set by its neighbour and not by its own
+   content is a hole, and the law does not care that the hole is a nice
+   cream colour.
+
+   So the tag is the header of the register: the code in the black band at
+   the left, the facts beside it, and the measures below. One closed
+   package, no column, no void, and the composition is the house's own move
+   — a banded header over horizontal data rows. */
 .t-national {
   border: 2px solid var(--tag-ink);
   background: var(--tag-ground-strict);
-  display: grid;
-  grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
   margin-block: clamp(1.5rem, 4vw, 2.5rem);
 }
-.t-face { border-right: 2px solid var(--tag-ink); }
-.t-face .t-dest { font-size: clamp(3rem, 12vw, 5.5rem); }
-.t-face-body { padding: var(--tag-space-3); display: grid; gap: var(--tag-space-3); }
+.t-face {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: stretch;
+  border-bottom: 2px solid var(--tag-ink);
+}
+.t-face .t-dest {
+  font-size: clamp(1.375rem, 3.5vw, 2rem);
+  display: flex;
+  align-items: center;
+  border-right: 2px solid var(--tag-ink);
+}
+/* The code was clamp(3rem, 12vw, 5.5rem) — 48px on a phone, 88px on a
+   desk — which made a postal code the biggest thing on the province page
+   and on the atlas's Record chapter. A code is a label: the house's
+   strongest label, in the house's strongest ground, but still a label. The
+   masthead names the province, and the title has to win it: the code now
+   sits one step below the h1 at every width, and the black band carries
+   the weight instead of the type. */
+.t-face-body {
+  padding: var(--tag-space-3);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--tag-space-3) var(--tag-space-4);
+  align-content: center;
+}
+/* A note that closes the header row runs the full width of it. It is not a
+   third cell in a two-cell row, and leaving the cell beside it empty would
+   be a hole in the header band. */
+.t-face-note { grid-column: 1 / -1; }
+@media (max-width: 700px) {
+  .t-face { grid-template-columns: minmax(0, 1fr); }
+  .t-face .t-dest { border-right: 0; border-bottom: 2px solid var(--tag-ink); }
+  .t-face-body { grid-template-columns: minmax(0, 1fr); }
+}
 /* ── the province's measures: a register, not a grid of cells ─────────────
    Seven ranked measures in a three-column grid leave two empty tracks in
    the last row — a 660×102px void with a rule dangling into it, and the
@@ -120,7 +162,6 @@
 .dossier-face-cats .t-stub-n { grid-area: value; }
 .dossier-face-cats .t-ctx { grid-area: ctx; text-align: left; }
 @media (max-width: 720px) {
-  .t-national { grid-template-columns: 1fr; }
   /* On a phone the register breaks into two lines: the measure beside its
      label, the rank under them. */
   .t-stub {
@@ -481,7 +522,14 @@
 .chapter { scroll-margin-top: 3.5rem; }
 .chapter-h { margin-top: clamp(2.5rem, 6vw, 4rem); border-top: 2px solid var(--tag-ink); padding-top: var(--tag-space-3); }
 .chapter-h .t-key { display: block; }
-.chapter-h h2 { font-family: var(--font-display); font-size: var(--t-rank2-lg); font-weight: 600; margin: 0; }
+.chapter-h h2 { font-family: var(--font-display); font-size: clamp(1.375rem, 2.8vw, 1.75rem); font-weight: 600; margin: 0; }
+/* The chapter heading was --t-rank2-lg: 1.75rem — the SAME size as the
+   masthead's floor, clamp(1.75rem, 3.6vw, 2.6rem). So on a phone the
+   chapter heading and the page's h1 were both 28px, and the title won
+   nothing: the reader's eye went to whichever chapter they were in, and
+   the page had no head. A chapter heading is one step below the title, so
+   it is one step below the title in size too — 22px on a phone, 28px on a
+   desk, always under the masthead it belongs to. */
 
 /* ── Atlas tabs (top-level navigation within the Atlas view) ──────────── */
 /* The chapter strip is ONE band and it parks UNDER the masthead.

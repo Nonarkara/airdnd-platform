@@ -222,6 +222,9 @@ export default function App() {
   const { meta } = state;
   const totals = index.totals;
   const recordCount = meta.counts.recordsAfterMerge ?? totals.records;
+  // The province the dossier is about. The title carries its name in BOTH
+  // scripts, so the tag face below it does not have to say it again.
+  const province = index.provinces.find((p) => p.code === provinceCode) || null;
 
   return (
     <div className="shell">
@@ -491,7 +494,7 @@ export default function App() {
             <div className="wrap">
               <ViewHero
                 eyebrow={<Bi en="Province" th="จังหวัด" />}
-                headline={index.provinces.find((p) => p.code === provinceCode)?.en || 'Province'}
+                headline={province ? <Bi en={province.en} th={province.th} /> : 'Province'}
                 stake={<Bi
                   en="One province, every layer — a link you can hand across a table."
                   th="หนึ่งจังหวัด ทุกชั้นข้อมูล — ลิงก์ที่ส่งต่อกันข้ามโต๊ะได้"
