@@ -119,7 +119,7 @@ function IndustryIntel() {
         <section className="intel-card intel-wire-section">
           <div className="intel-card-header">
             <div>
-              <span className="section-kicker">📡 REAL-TIME FIELD REPORTS</span>
+              <span className="section-kicker">Field reports</span>
               <h2>Tactical Wire & Intelligence Stream</h2>
               <p className="intel-card-sub">
                 Live chronological updates across lineups, rate fluctuations, regulatory checks, and community whisper alerts.
@@ -153,7 +153,7 @@ function IndustryIntel() {
                   <div className="intel-wire-meta">
                     <span className="intel-wire-tag mono">{type}</span>
                     <span className="intel-wire-time mono">{formatTimestampAgo(item.timestamp)}</span>
-                    <span className="intel-wire-geo">📍 {item.area || '—'}, {item.city || '—'}</span>
+                    <span className="intel-wire-geo">{item.area || '—'}, {item.city || '—'}</span>
                     <span className="intel-wire-source">via {item.source || 'unknown'}</span>
                   </div>
                   <h3 className="intel-wire-title">{item.title || 'Untitled dispatch'}</h3>
@@ -168,7 +168,7 @@ function IndustryIntel() {
         <section className="intel-card">
           <div className="intel-card-header">
             <div>
-              <span className="section-kicker">🌐 INGESTION MAPPING</span>
+              <span className="section-kicker">Ingestion mapping</span>
               <h2>Cross-Platform Source Registry</h2>
               <p className="intel-card-sub">
                 The primary directories, review forums, and search indices systematically monitored by our pipeline.
@@ -219,7 +219,7 @@ function IndustryIntel() {
           <section className="intel-card">
             <div className="intel-card-header">
               <div>
-                <span className="section-kicker">🔥 THAI SOCIAL REVIEW PULSE</span>
+                <span className="section-kicker">Thai social review pulse</span>
                 <h2>Consumer Review Channels: ติดหม้อ & 4bathreview</h2>
                 <p className="intel-card-sub">
                   Curated intelligence dispatches from Thailand's most influential massage review communities on Facebook.
@@ -261,7 +261,7 @@ function IndustryIntel() {
         <section className="intel-card">
           <div className="intel-card-header">
             <div>
-              <span className="section-kicker">📍 URBAN GEOGRAPHY</span>
+              <span className="section-kicker">Urban geography</span>
               <h2>Soi-Level Micro-Cluster Breakdown</h2>
               <p className="intel-card-sub">
                 Granular intelligence on high-density nightlife and massage corridors across Bangkok, Pattaya, and resort destinations.
@@ -281,7 +281,7 @@ function IndustryIntel() {
                   </span>
                 </div>
                 <h3 className="intel-cluster-name">{cluster.name || 'Unnamed cluster'}</h3>
-                <div className="intel-cluster-transit mono">🚇 {cluster.transit || '—'}</div>
+                <div className="intel-cluster-transit mono">{cluster.transit || '—'}</div>
                 <p className="intel-cluster-desc">{cluster.description}</p>
                 
                 <div className="intel-cluster-metrics">
@@ -300,7 +300,7 @@ function IndustryIntel() {
                 </div>
 
                 <div className="intel-cluster-safety">
-                  <strong>💡 Ground Tip:</strong> {cluster.safetyTips || 'Exercise usual caution.'}
+                  <strong>Ground tip:</strong> {cluster.safetyTips || 'Exercise usual caution.'}
                 </div>
               </div>
               );
@@ -312,7 +312,7 @@ function IndustryIntel() {
         <section className="intel-card">
           <div className="intel-card-header">
             <div>
-              <span className="section-kicker">💵 PRICING MATRIX</span>
+              <span className="section-kicker">Pricing matrix</span>
               <h2>Cross-Service Pricing Benchmark Matrix</h2>
               <p className="intel-card-sub">
                 Market rates compiled across web listings, customer forum reports, and direct broadcaster menus.
@@ -355,7 +355,7 @@ function IndustryIntel() {
           <section className="intel-card">
             <div className="intel-card-header">
               <div>
-                <span className="section-kicker">🔍 SEARCH VELOCITY</span>
+                <span className="section-kicker">Search velocity</span>
                 <h2>Keyword Velocity Index</h2>
                 <p className="intel-card-sub">Google Search & Web Query Heat (0–100 index)</p>
               </div>
@@ -390,7 +390,7 @@ function IndustryIntel() {
           <section className="intel-card">
             <div className="intel-card-header">
               <div>
-                <span className="section-kicker">🛡️ WHISPER RADAR</span>
+                <span className="section-kicker">Whisper radar</span>
                 <h2>Safety & Scam Countermeasures</h2>
                 <p className="intel-card-sub">Common pitfalls reported in community forums</p>
               </div>
@@ -409,7 +409,7 @@ function IndustryIntel() {
                     </div>
                     <p className="intel-whisper-desc">{w.description || ''}</p>
                     <div className="intel-whisper-counter">
-                      <strong>🛡️ Verification Protocol:</strong> {w.countermeasure || 'Verify before engaging.'}
+                      <strong>Verification:</strong> {w.countermeasure || 'Verify before engaging.'}
                     </div>
                   </div>
                 );

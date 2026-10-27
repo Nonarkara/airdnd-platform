@@ -1463,7 +1463,7 @@
         bottom sheets that slide up from the bottom edge of the map.
      6. All in-map floating legends collapse behind a single "i" button at
         the top-right of the map.
-     7. The MapMarketBar (currency widget) and SpatialAnalyticsPanel (full
+     7. The SpatialAnalyticsPanel (full
         density matrix + top-3 listing panel) are desktop-only — the same
         data lives at /insights and /analytics respectively. Hiding them
         on mobile removes ~700px of post-map scroll and keeps the page
@@ -1846,8 +1846,8 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* MapMarketBar (currency / gold / GDP strip) and SpatialAnalyticsPanel
-     (full density matrix + top-3 listings) are desktop-only. The same
+  /* SpatialAnalyticsPanel (full density matrix + top-3 listings) is
+     desktop-only. The same
      data is reachable from the /insights and /analytics deep-links
      immediately below the map. Hiding them removes ~700px of post-
      map scroll on a phone and keeps the page focused on the map. */
@@ -1898,4 +1898,102 @@
     border-color: var(--color-status);
     color: var(--color-status);
   }
+}
+
+/* Map-first: the map node sits under the title in the DOM, and the tools sit
+   under the map. Order is real (not flex `order`), so keyboard focus follows
+   the same sequence as the screen. */
+.listing-map-subtitle--below {
+  margin: 0 0 var(--s3, 12px);
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
+}
+@media (min-width: 721px) {
+  .listing-map-section {
+    padding-top: var(--s4, 16px);
+  }
+  .listing-map-container {
+    height: max(480px, calc(100vh - 300px));
+    margin-bottom: var(--s4, 16px);
+  }
+}
+/* The phone layout hides the title and subtitle. The subtitle no longer lives
+   inside .listing-map-header, so the older header selector does not catch it. */
+@media (max-width: 720px) {
+  .listing-map-subtitle--below {
+    display: none;
+  }
+}
+
+/* ── Map frame: the map and Leaflet's controls only (2026-10 audit) ────────
+   isolation keeps Leaflet's internal z-indexes (400–1000) inside the frame,
+   so panes and controls can no longer slide over the sticky header (z 50). */
+.listing-map-container {
+  isolation: isolate;
+  z-index: 0;
+}
+
+/* The legend reads the map; it does not sit on it. */
+.map-legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2, 8px) var(--s5, 24px);
+  margin: 0 0 var(--s4, 16px);
+  padding: var(--s2, 8px) 0;
+  border-bottom: 1px solid var(--color-line);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--color-cream-muted);
+}
+.map-legend-group { display: inline-flex; flex-wrap: wrap; gap: var(--s2, 8px) var(--s4, 16px); }
+.map-legend-group > span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.map-legend-row .availability-key,
+.map-legend-row .ring-key { position: static; }
+.precision-key {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--color-cream);
+}
+.precision-key--exact { background: var(--color-cream); }
+.precision-key--approx { background: transparent; border-style: dashed; }
+.map-legend-attrib {
+  margin-left: auto;
+  color: var(--color-cream-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* The 24-hour rhythm, then the live intake, full width under the map. Side
+   by side they left a hole beside the short strip. */
+.map-below {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s3, 12px);
+  margin: 0 0 var(--s5, 24px);
+}
+.map-below .map-time-strip { order: -1; }
+@media (min-width: 900px) {
+  .map-below .map-activity-rail__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.map-below > * { min-width: 0; }
+.map-below .map-activity-rail,
+.map-below .map-time-strip {
+  position: static;
+  width: auto;
+  inset: auto;
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .map-legend-attrib { margin-left: 0; }
+}
+
+/* Phone-only links: never rendered as bare text on wider screens. */
+@media (min-width: 721px) {
+  .map-mobile-analytics-link { display: none; }
 }

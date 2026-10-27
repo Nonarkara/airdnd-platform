@@ -82,3 +82,15 @@
   pointer-events: none;
   animation: listing-pin-fresh-pulse 2.4s cubic-bezier(0.4, 0.05, 0.15, 1) infinite;
 }
+
+/* Approximate placement (subdistrict / district centre): a hollow, dashed
+   ring in the availability colour, never a filled dot. */
+.listing-pin.is-approx {
+  background: transparent !important;
+  border: 2px dashed currentColor;
+}
+.listing-pin.is-approx.availability-available { color: var(--color-status); }
+.listing-pin.is-approx.availability-open { color: var(--color-data); }
+.listing-pin.is-approx.availability-closed,
+.listing-pin.is-approx.availability-unavailable { color: var(--color-danger); }
+.listing-pin.is-approx.availability-unknown { color: var(--color-cream-muted); }

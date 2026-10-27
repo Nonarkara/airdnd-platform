@@ -1,114 +1,52 @@
 import { useMemo } from 'react';
 import './InsightNarrative.css';
 
+const pct = (x) => `${Math.round(x * 100)}%`;
+const baht = (n) => `฿${Math.round(n).toLocaleString()}`;
+
 /**
- * InsightNarrative Engine
- * Synthesizes mathematical analytics into human-readable executive intelligence.
- * Focuses on psychological narratives: Urban Commoditization, Alpha Gravity, and High-Value Discretion.
+ * A plain read of the numbers on screen. It states what was measured and
+ * stops there: no motives, no market psychology, nothing the data cannot
+ * show. (It used to say things like "operators here focus on high-value
+ * discretion" — sentences the counts behind them could never support.)
  */
 export default function InsightNarrative({ analytics, mode = 'spatial' }) {
   const narrative = useMemo(() => {
-    if (!analytics) return 'Awaiting spatial data stream...';
-
+    if (!analytics) return '';
     const sentences = [];
 
     if (mode === 'spatial') {
-      const { avgPrice, avgMentions, peakHour, topPerformers, bestValue, visibleCount, priceMedian } = analytics;
+      const { avgPrice, avgMentions, peakHour, topPerformers, visibleCount, priceMedian } = analytics;
+      if (!visibleCount) return 'No listings in this view. Zoom out or pick a city above.';
 
-      if (visibleCount === 0) {
-        return "The current viewport contains no known listings. The intelligence grid is offline for this sector.";
+      sentences.push(`${visibleCount} listing${visibleCount === 1 ? '' : 's'} in view.`);
+
+      const top = Array.isArray(topPerformers) ? topPerformers[0] : null;
+      const totalMentions = (avgMentions || 0) * visibleCount;
+      if (top && top.computedMentions > 0 && totalMentions > 0) {
+        sentences.push(`The most-posted venue here, ${top.name || 'unnamed'}, accounts for ${pct(Math.min(1, top.computedMentions / totalMentions))} of all mentions in view (${top.computedMentions}).`);
       }
 
-      // Compute HHI (Herfindahl-Hirschman Index) based on mention share in the current viewport
-      let hhi = 0;
-      let totalMentions = 0;
-      if (visibleCount > 0 && Array.isArray(topPerformers)) {
-        topPerformers.forEach((p) => {
-          totalMentions += p.computedMentions || 0;
-        });
-        if (totalMentions > 0) {
-          let sumSquares = 0;
-          topPerformers.forEach((p) => {
-            const share = (p.computedMentions || 0) / totalMentions;
-            sumSquares += (share * 100) ** 2;
-          });
-          hhi = Math.round(sumSquares);
-        }
-      }
-
-      // 1. Density & HHI Concentration
-      if (hhi > 2500) {
-        sentences.push(`This district exhibits a highly concentrated supply structure (HHI: ${hhi}). A few dominant channels monopolize attention, leaving the remaining ${visibleCount} locations to compete on residual local traffic.`);
-      } else if (hhi > 1500) {
-        sentences.push(`This sector maintains a moderately concentrated market (HHI: ${hhi}). Competition is balanced across ${visibleCount} active locations without extreme attention capture.`);
-      } else {
-        sentences.push(`A highly fragmented micro-market (HHI: ${hhi}). Social capital is widely distributed among the ${visibleCount} active providers, suggesting low entry barriers and high local differentiation.`);
-      }
-
-      // 2. The Alpha Gravity (Attention Capture)
-      if (topPerformers && topPerformers.length > 0) {
-        const top = topPerformers[0];
-        if (top.computedMentions > (avgMentions || 0) * 2) {
-          sentences.push(`"${top.name || 'a dominant player'}" pulls ${top.computedMentions} mentions, ${Math.round((top.computedMentions || 0) / (avgMentions || 1))}x the market average. Strong local indexing advantage.`);
-        } else {
-          sentences.push(`No single operator dominates the local feeds; discovery stays fluid across venues.`);
-        }
-      }
-
-      // 3. Price Level Assessment
       if (avgPrice) {
-        const medianBaseline = priceMedian || 1800;
-        const priceDev = Math.round(((avgPrice - medianBaseline) / medianBaseline) * 100);
-        const devSign = priceDev >= 0 ? '+' : '';
-
-        if (priceDev > 35) {
-           sentences.push(`Pricing indicators point to a premium level (${devSign}${priceDev}% above benchmark, average: ฿${avgPrice.toLocaleString()}). Operators here focus on high-value discretion and premium placement.`);
-        } else if (priceDev < -15) {
-           sentences.push(`Pricing indicators show a value-focused level (${priceDev}% below benchmark, average: ฿${avgPrice.toLocaleString()}), typical of high-velocity transit zones optimizing for rapid turnover.`);
-        } else {
-           sentences.push(`Pricing aligns with benchmark levels (${devSign}${priceDev}% deviation, average: ฿${avgPrice.toLocaleString()}), reflecting stable market positioning.`);
-        }
+        sentences.push(`Average posted rate ${baht(avgPrice)}${priceMedian ? `; across the whole directory the median is ${baht(priceMedian)}` : ''}. Listings without a rate are left out of both.`);
       } else {
-        sentences.push(`The lack of numeric price labels indicates a highly psychological, inquiry-based booking model designed to filter demand prior to contact.`);
+        sentences.push('No listing in view posts a rate; prices are given on request.');
       }
 
-      // 4. Temporal Rhythms
       if (peakHour !== null && peakHour !== undefined) {
-        if (peakHour >= 22 || peakHour <= 3) {
-          sentences.push(`Temporal patterns indicate a late-night service rhythm, with message density peaking at ${peakHour}:00.`);
-        } else if (peakHour >= 12 && peakHour <= 17) {
-          sentences.push(`Contrarian temporal behavior is observed: message density peaks during daylight hours (${peakHour}:00), signaling mid-day operator shifts.`);
-        } else {
-          sentences.push(`The temporal rhythm aligns with standard after-hours decompression, peaking predictably at ${peakHour}:00.`);
-        }
+        sentences.push(`Posting peaks at ${String(peakHour).padStart(2, '0')}:00 Bangkok time.`);
       }
     } else if (mode === 'global') {
-      const { total, velocity, dataFreshnessHours, channelEntropy, mentionPower } = analytics;
-
-      sentences.push(`The macro-intelligence grid is currently rendering ${total} active nodes.`);
-
-      if (channelEntropy && channelEntropy.evenness) {
-        if (channelEntropy.evenness > 0.7) {
-          sentences.push(`The structural integrity of discovery is highly resilient (Entropy Evenness: ${Math.round(channelEntropy.evenness * 100)}%). Consumers are utilizing diverse, fragmented channels to navigate the market.`);
-        } else {
-          sentences.push(`Discovery is centralized into one echo chamber. A single platform's algorithm shift could destabilize the whole market.`);
-        }
+      const { total, dataFreshnessHours, channelEntropy, mentionPower } = analytics;
+      sentences.push(`${total} listings in the directory.`);
+      if (channelEntropy?.evenness) {
+        sentences.push(`Spread of discovery across source channels: ${pct(channelEntropy.evenness)} evenness (100% would mean every channel carries the same share).`);
       }
-
-      if (mentionPower && mentionPower.alpha) {
-        if (mentionPower.alpha > 1.2) {
-          sentences.push(`Winner-takes-all dynamics (Power-Law α=${mentionPower.alpha}). Top providers take most of the attention and social capital.`);
-        } else {
-          sentences.push(`The attention economy is surprisingly egalitarian (α=${mentionPower.alpha}), allowing mid-tier operators to carve out sustainable, loyal micro-communities.`);
-        }
+      if (mentionPower?.alpha) {
+        sentences.push(`Mentions per venue follow a power law with α = ${mentionPower.alpha}; the higher α, the more posts concentrate in a few venues.`);
       }
-
       if (dataFreshnessHours !== undefined) {
-        if (dataFreshnessHours < 2) {
-          sentences.push(`Data is hyper-fresh; this read reflects the current market.`);
-        } else {
-          sentences.push(`The structural narrative remains stable, anchored by data collected ${dataFreshnessHours} hours ago.`);
-        }
+        sentences.push(`Newest data: ${dataFreshnessHours < 1 ? 'under an hour' : `${dataFreshnessHours} hour${dataFreshnessHours === 1 ? '' : 's'}`} old.`);
       }
     }
 
@@ -118,10 +56,9 @@ export default function InsightNarrative({ analytics, mode = 'spatial' }) {
   if (!analytics) return null;
 
   return (
-    <div className="insight-narrative-container professional-terminal">
+    <div className="insight-narrative-container">
       <div className="insight-narrative-header">
-        <span className="live-dot pulse" />
-        <span className="kicker">MARKET READ // {mode === 'global' ? 'FULL CORPUS' : 'THIS VIEWPORT'}</span>
+        <span className="kicker">{mode === 'global' ? 'Whole directory' : 'In this view'}</span>
       </div>
       <p className="insight-narrative-text">
         {narrative}

@@ -1,3 +1,4 @@
+import { isPlaceholderName } from '../lib/listing_contract';
 import { useEffect, useState } from 'react';
 
 /**
@@ -35,7 +36,8 @@ function freshnessLabel(messageDate) {
 }
 
 function compactName(name) {
-  if (!name) return '—';
+  // A post headed "โปรโมชั่น" or "ร้านเปิดใหม่" names no business.
+  if (!name || isPlaceholderName(name)) return 'Unnamed post';
   const trimmed = String(name).trim();
   if (trimmed.length <= 36) return trimmed;
   return `${trimmed.slice(0, 33).trim()}…`;

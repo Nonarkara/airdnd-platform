@@ -193,8 +193,11 @@ test('maps resolver follows shortlink redirects before reading final HTML', asyn
 
   assert.equal(calls.length, 2);
   assert.equal(result.address, 'Lat Phrao 71, Bangkok');
-  assert.equal(result.latitude, 13.7527296);
-  assert.equal(result.longitude, 100.5453312);
+  // `center=` in the page body is the viewport Google happens to open on, not
+  // the place: pairing it with a shop pinned 14 different shops on one point.
+  // Only a place marker in the redirect chain is a coordinate.
+  assert.equal(result.latitude, null);
+  assert.equal(result.longitude, null);
 });
 
 test('maps resolver blocks non-Google URLs before fetching', async () => {
@@ -241,4 +244,59 @@ test('maps URL allowlist accepts known Google Maps share shapes', () => {
   assert.equal(isGoogleMapsUrl('https://example.com/maps/place/example'), false);
   assert.equal(isGoogleMapsUrl('https://maps.google.evil.com/maps/place/example'), false);
   assert.equal(isGoogleMapsUrl('file:///etc/passwd'), false);
+});
+
+test('maps resolver reads the place marker from the redirect URL, not the viewport', async () => {
+  const responses = [
+    {
+      status: 302,
+      headers: {
+        get: (name) => (name.toLowerCase() === 'location'
+          ? 'https://www.google.com/maps/place/Shop/@13.80,100.60,17z/data=!3m1!4b1!4m6!3m5!8m2!3d13.7952!4d100.6061'
+          : null),
+      },
+      text: async () => '',
+    },
+    { status: 200, headers: { get: () => null }, text: async () => '<html>13.95218835, 100.564992</html>' },
+  ];
+  const result = await resolveGoogleMapsData('https://maps.app.goo.gl/example', { fetchImpl: async () => responses.shift() });
+  assert.equal(result.latitude, 13.7952);
+  assert.equal(result.longitude, 100.6061);
+  assert.equal(result.coordinateSource, 'maps-url');
+});
+
+test('the Google page-chrome default is never accepted as a coordinate', () => {
+  assert.equal(extractCoordinatesFromText('https://google.com/maps/@13.95218835,100.564992,15z'), null);
+  assert.equal(extractCoordinatesFromText('<div>13.8805 100.6040 lorem 13.95 100.56</div>'), null);
+});
+
+test('display cleaning keeps a Thai name\'s final vowel or tone mark', async () => {
+  const { cleanDisplayText } = await import('../src/lib/normalization.js');
+  assert.equal(cleanDisplayText('ร้านเปิดใหม่ '), 'ร้านเปิดใหม่');
+  assert.equal(cleanDisplayText('  เซ็นเตอร์!!'), 'เซ็นเตอร์');
+  assert.equal(cleanDisplayText('นวดเพื่อสุขภาพ…'), 'นวดเพื่อสุขภาพ');
+});
+
+test('a heading is never shown as a business name; the listing stays', async () => {
+  const { canonicalizePublicListings, isPlaceholderName, UNNAMED_VENUE } = await import('../src/lib/listing_contract.js');
+  for (const heading of ['GRAND OPENING PROMOTION', 'Facebook page', 'เปิดใหม่28/09/69', 'เปิดใหม', '#หมอนวดแนะนำ', 'www.massagehotelbangkok.com',
+    'นวดไทย • นวดไทยผสมออยล์ • นวดน้ำมันผ่อนคลาย • นวดเท้า', 'นวด กรุงเทพมหานคร', 'ร้านเปิดใหม่']) {
+    assert.equal(isPlaceholderName(heading), true, heading);
+  }
+  for (const name of ['A5 Massage', 'กุหลาบ นวดเพื่อสุขภาพ', 'มูนเรสต์ นวด&สปา', 'SBM (sabaispa by michel)', 'Relax Society Massage']) {
+    assert.equal(isPlaceholderName(name), false, name);
+  }
+  const base = { phone: '0811111111', location: 'แขวงบางชัน เขตคลองสามวา กรุงเทพมหานคร', description: 'Thai massage and oil massage, open daily' };
+  // A real alias wins over the heading.
+  const [withAlias] = canonicalizePublicListings([
+    { ...base, id: 1, name: 'GRAND OPENING PROMOTION', postedAt: '2026-10-20T00:00:00Z' },
+    { ...base, id: 2, name: 'Garden Spa' },
+  ], { source: 'snapshot', allowUnverified: true });
+  assert.equal(withAlias.name, 'Garden Spa');
+  // No alias: the shop is kept, labelled plainly, heading still searchable.
+  const [alone] = canonicalizePublicListings([{ ...base, id: 3, name: 'Facebook page' }], { source: 'snapshot', allowUnverified: true });
+  assert.equal(alone.name, UNNAMED_VENUE);
+  assert.equal(alone.postedTitle, 'Facebook page');
+  assert.ok(alone.aliasNames.includes('Facebook page'));
+  assert.equal(alone.phone, '0811111111');
 });

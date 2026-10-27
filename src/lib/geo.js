@@ -62,9 +62,23 @@ export function classifyArea(listing) {
 export function listingCoords(listing) {
   const lat = Number.parseFloat(listing?.latitude);
   const lng = Number.parseFloat(listing?.longitude);
-  if (Number.isFinite(lat) && Number.isFinite(lng) && lat !== 0 && lng !== 0) {
+  const hasPoint = Number.isFinite(lat) && Number.isFinite(lng) && lat !== 0 && lng !== 0;
+  // The placement verdict (src/lib/place_resolver.js) decides what a stored
+  // coordinate means. Without this, "nearest to you" ranked by points that were
+  // fabricated — the same fourteen shops always "closest" to north Bangkok.
+  const precision = listing?.geoPrecision;
+  if (hasPoint && (precision === undefined || precision === 'exact')) {
     return { coords: [lat, lng], precision: 'exact', areaLabel: null };
   }
+  if (hasPoint && (precision === 'tambon' || precision === 'district')) {
+    const unit = listing.geoUnit || {};
+    const areaLabel = [unit.tambon?.th, unit.district?.th].filter(Boolean).join(' · ') || null;
+    return { coords: [lat, lng], precision: 'approximate', areaLabel };
+  }
+  // A placed listing that reached here names only a province (or nothing):
+  // there is no point to rank it by. Only legacy rows without a verdict fall
+  // back to a named area.
+  if (precision !== undefined) return null;
   const areaName = classifyArea(listing);
   if (areaName) {
     const areaObj = AREAS.find((a) => a.label === areaName);
@@ -159,7 +173,9 @@ export function nearestListings(listings, origin, { maxBudget = null, vibe = 'an
       if (vibe === 'now' && !/ว่าง|พร้อม|available|walk[ -]?in|คิวว่าง/i.test(textBlob)) continue;
     }
 
-    const transit = getNearestTransit(coordInfo.coords);
+    // "541 m to BTS Phrom Phong" is a claim about a door; from a subdistrict
+    // centre it would be false precision.
+    const transit = coordInfo.precision === 'exact' ? getNearestTransit(coordInfo.coords) : null;
 
     scored.push({
       listing,
@@ -172,7 +188,21 @@ export function nearestListings(listings, origin, { maxBudget = null, vibe = 'an
     });
   }
 
-  // Rank by proximity
+  // Rank by proximity, one result per business: the snapshot can carry the
+  // same shop under several posts (A5 Massage appeared three times, #01–#03).
   scored.sort((a, b) => a.distanceKm - b.distanceKm);
-  return scored.slice(0, limit);
+  const seen = new Set();
+  const unique = [];
+  for (const row of scored) {
+    const l = row.listing;
+    const phone = String(l.phone || '').replace(/\D/g, '');
+    const name = String(l.name || '').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+    const named = name && name !== 'unnamedvenue';
+    const keys = [l.canonicalKey, phone.length >= 9 ? `tel:${phone}` : null, named ? `name:${name}` : null].filter(Boolean);
+    if (keys.some((k) => seen.has(k))) continue;
+    keys.forEach((k) => seen.add(k));
+    unique.push(row);
+    if (unique.length >= limit) break;
+  }
+  return unique;
 }

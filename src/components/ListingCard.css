@@ -18,7 +18,7 @@
   border: 1px solid rgba(245, 158, 11, 0.4);
   border-radius: 0;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.04em;
@@ -83,7 +83,7 @@
 }
 
 .lcard__ads.is-hot { color: var(--mango); }
-.lcard__ads .mono { font-size: 1.1rem; font-weight: 700; }
+.lcard__ads .mono { font-size: 18px; font-weight: 700; }
 .lcard__ads-unit {
   font-size: var(--fs-xs);
   letter-spacing: 0.08em;

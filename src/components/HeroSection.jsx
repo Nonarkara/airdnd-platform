@@ -59,8 +59,8 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
     : null;
   const archiveLine = funnel?.archive?.businesses
     ? fill(
-      heroText.provenanceArchive
-          || 'Archive behind them: {messages} messages, {photos} photos, {personaPosts} persona posts → {businesses} businesses by phone number.',
+      heroText.provenanceMerge
+          || '{personaPosts} persona posts merged into {businesses} businesses by phone number.',
       {
         messages: Number(funnel.archive.messages || 0).toLocaleString(),
         photos: Number(funnel.archive.photos || 0).toLocaleString(),
@@ -98,15 +98,9 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
             {heroText.subtitle
               || 'Complete inventory of massage parlours that reach our channels. Rank by who broadcasts. Read health context on the map — public epidemic, parlour corridor, worker access.'}
           </p>
-          {heroText.summaryLine && (
-            <p className="masthead__pulse">
-              {heroText.summaryLine
-                .replace('{venues}', total.toLocaleString())
-                .replace('{provinces}', provinces.toLocaleString())
-                .replace('{faces}', faces.toLocaleString())
-                .replace('{photos}', Number(photosArchived).toLocaleString())}
-            </p>
-          )}
+          {/* The counts live once, in the panel beside this copy. A summary
+              line repeating them, and an archive line repeating them again,
+              read three times in one viewport. */}
           {provenanceLine && (
             <p className="masthead__provenance mono" role="status">
               {provenanceLine}
@@ -118,6 +112,12 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
               )}
             </p>
           )}
+          <div className="masthead__cta-row">
+            <Link to="/places" className="masthead__cta">
+              <span>{heroText.photosCta || 'Browse the full photo archive'}</span>
+              <span className="masthead__cta-arrow">→</span>
+            </Link>
+          </div>
         </div>
         <dl className="masthead__stats" aria-label={heroText.panelLabel || 'Inventory snapshot'}>
           {stats.map((row) => (
@@ -144,12 +144,6 @@ function HeroSection({ t, metrics, dataState, intakeSummary }) {
             <dd className="mono masthead__sync">{lastSync}</dd>
           </div>
         </dl>
-        <div className="masthead__cta-row">
-          <Link to="/places" className="masthead__cta">
-            <span>{heroText.photosCta || 'Browse the full photo archive'}</span>
-            <span className="masthead__cta-arrow">→</span>
-          </Link>
-        </div>
       </div>
     </PageBanner>
   );

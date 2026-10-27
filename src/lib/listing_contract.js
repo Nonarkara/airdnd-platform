@@ -1,7 +1,17 @@
 import { CITY_PATTERNS, cleanDisplayText, normalizeText, normalizePhone, inferCityFromLocation } from './normalization.js';
 import { rewriteMediaUrl, rewriteMediaUrls } from './media.js';
+import { placeListings } from './place_resolver.js';
 
 export const DEFAULT_PUBLIC_LOCATION = 'Bangkok, Thailand';
+
+/**
+ * Is a stored safety flag set to "not safe"? Data sources disagree on how to
+ * say no: Postgres returns false, SQLite 0, CSV and Sheets exports "0" or
+ * "false". Missing means safe — the column defaults to true.
+ */
+export function isFlaggedUnsafe(value) {
+  return value === false || value === 0 || (typeof value === 'string' && /^(0|false|f|no)$/i.test(value.trim()));
+}
 export const DEFAULT_PUBLIC_IMAGE = '/mockups/109748.jpg';
 
 // Re-export from normalization utility for backward compatibility
@@ -269,6 +279,39 @@ export function normalizeLocationForIdentity(location) {
     .trim();
 }
 
+export const UNNAMED_VENUE = 'Unnamed venue';
+const PLACEHOLDER_NAME_RES = [
+  // announcement headings, not names (tone mark optional: names exported
+  // before the display-trim fix lost it — "เปิดใหม")
+  /^(?:grand\s*opening|(?:new\s+)?promotion|promo\b|facebook(?:\s*page)?$|ร้านเปิดใหม่?|เปิดร้านใหม่?|เปิดใหม่?|โปรโมชั่น|โปรโมชัน)/i,
+  // a date ("เปิดใหม่28/09/69")
+  /\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}/,
+  // a hashtag or a web address
+  /^#/,
+  /^(?:https?:\/\/|www\.)|\.(?:com|net|org|co\.th|in\.th)\b/i,
+  // "DM to book" copy
+  /ทัก(?:จอง|แชท|ไลน์)|\bdm\s*(?:to|for)\s*book/i,
+  // a service word plus only a place ("นวด กรุงเทพมหานคร")
+  /^(?:ร้าน)?(?:นวด|สปา|massage|spa)\s*(?:กรุงเทพ(?:มหานคร|ฯ)?|bangkok|นนทบุรี|ปทุมธานี|thailand|ไทย)$/i,
+];
+const SERVICE_WORD_RE = /นวด|สปา|ออยล์|massage|spa|oil|foot|เท้า/gi;
+
+/**
+ * A heading the poster used instead of a business name: a promotion, a date,
+ * a hashtag, a website, a list of services. Unlike isBadPublicName this does
+ * not drop the listing — the shop is real and has a phone — it only stops the
+ * heading being shown as its name.
+ */
+export function isPlaceholderName(name) {
+  const value = cleanDisplayText(name);
+  if (!value) return true;
+  if (value === UNNAMED_VENUE) return false;
+  if (PLACEHOLDER_NAME_RES.some((re) => re.test(value))) return true;
+  const separators = (value.match(/[•·|]/g) || []).length;
+  const services = (value.match(SERVICE_WORD_RE) || []).length;
+  return separators >= 2 && services >= 3;
+}
+
 export function isBadPublicName(name) {
   const normalized = cleanDisplayText(name);
   const comparable = normalized.toLowerCase();
@@ -489,7 +532,7 @@ export function normalizePublicListing(rawListing, options = {}) {
   const location = cleanLocationLabel(rawListing.location);
   const mapsUrl = normalizeUrl(rawListing.mapsUrl || rawListing.maps_url);
   const imageUrl = rewriteMediaUrl(normalizeText(rawListing.imageUrl || rawListing.image_url, null));
-  const isSafeImage = rawListing.is_safe_image !== false && rawListing.isSafeImage !== false;
+  const isSafeImage = !isFlaggedUnsafe(rawListing.is_safe_image) && !isFlaggedUnsafe(rawListing.isSafeImage);
   const safeImageUrl =
     isSafeImage && (source === 'backup' || !imageUrl?.startsWith('/mockups/'))
       ? imageUrl
@@ -528,6 +571,7 @@ export function normalizePublicListing(rawListing, options = {}) {
     mapsUrl: mapsUrl || null,
     latitude: isValidCoordinates(latitude, longitude) ? latitude : null,
     longitude: isValidCoordinates(latitude, longitude) ? longitude : null,
+    ...pickGeoFields(rawListing),
     rawText: normalizeText(rawListing.rawText || rawListing.raw_text, null),
     sourceMessageIds: normalizeArray(rawListing.sourceMessageIds || rawListing.source_message_ids),
     allPhotoUrls: rewriteMediaUrls(normalizeArray(rawListing.allPhotoUrls || rawListing.photo_urls)),
@@ -664,6 +708,7 @@ export function mergeCanonicalGroup(listings) {
     ...survivor,
     name: chooseBestValue(normalized, 'name', (value) => {
       if (isBadPublicName(value)) return -100;
+      if (isPlaceholderName(value)) return -60;
       return (SERVICE_NAME_RE.test(value) ? 40 : 10) + Math.min(20, String(value).length);
     }) || survivor.name,
     location: chooseBestValue(normalized, 'location', (value, listing) => {
@@ -710,6 +755,15 @@ export function mergeCanonicalGroup(listings) {
   ];
   merged.aliasCount = merged.aliasNames.length + (primaryName ? 1 : 0);
 
+  // Every post of this business used a heading, not a name: say so plainly
+  // rather than list "GRAND OPENING PROMOTION" as a shop. The heading stays
+  // searchable as an alias.
+  if (isPlaceholderName(merged.name)) {
+    merged.postedTitle = merged.name;
+    merged.name = UNNAMED_VENUE;
+    if (primaryName && !merged.aliasNames.includes(primaryName)) merged.aliasNames.push(primaryName);
+  }
+
   const coordSource = normalized.find((listing) => hasStoredCoordinates(listing));
   if (coordSource) {
     merged.latitude = coordSource.latitude;
@@ -719,6 +773,32 @@ export function mergeCanonicalGroup(listings) {
   merged.city = inferCityFromText(merged.city) || inferCityFromText(merged.location) || survivor.city;
   merged.canonicalKey = buildCanonicalKey(merged);
   return merged;
+}
+
+// How precisely a listing is placed, and why. Written by placeListings() in
+// src/lib/place_resolver.js; carried unchanged through every copy of the data.
+export const GEO_FIELDS = ['geoPrecision', 'geoRadiusKm', 'geoSource', 'geoUnit', 'geoNote'];
+
+function pickGeoFields(raw) {
+  const out = {};
+  for (const field of GEO_FIELDS) {
+    const snake = field.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
+    const value = raw?.[field] ?? raw?.[snake];
+    if (value !== undefined && value !== null) out[field] = value;
+  }
+  return out;
+}
+
+/**
+ * Re-place every listing against its own address. Stored coordinates are a
+ * claim, not a fact: this is where a claim contradicted by the listing's own
+ * words, or belonging to a cluster the data proves fabricated, is replaced by
+ * the administrative unit the address actually names.
+ */
+export function applyPlacement(listings, geoIndex) {
+  if (!geoIndex || !Array.isArray(listings) || listings.length === 0) return listings;
+  const placed = placeListings(listings, geoIndex);
+  return listings.map((listing) => ({ ...listing, ...(placed.get(listing.id) || {}) }));
 }
 
 export function canonicalizePublicListings(listings, options = {}) {
@@ -740,10 +820,11 @@ export function canonicalizePublicListings(listings, options = {}) {
     groups.get(key).push(listing);
   });
 
-  return [...groups.values()]
+  const merged = [...groups.values()]
     .map((group) => mergeCanonicalGroup(group))
     .filter((listing) => listing && (options.allowUnverified || validatePublicListing(listing).ok))
     .sort((left, right) => getFreshnessValue(right) - getFreshnessValue(left));
+  return options.geoIndex ? applyPlacement(merged, options.geoIndex) : merged;
 }
 
 function parseCoordinatePair(latitude, longitude) {
@@ -766,35 +847,6 @@ function isChromeFixture(lat, lng) {
     || GOOGLE_CHROME_FIXTURES.has(`${lat.toFixed(4)},${lng.toFixed(4)}`);
 }
 
-// Final fallback for Google's JS-rendered place pages, where the static HTML
-// no longer contains @lat,lng or !3d!4d markers. Without a real geocoding API,
-// bare-text bbox scanning is unreliable (Google's HTML chrome contains the
-// same default coordinates on every page) — so this fallback is intentionally
-// conservative: it only returns a hit when the float pair sits in Thailand's
-// bbox AND is not the known chrome fixture.
-function extractThailandBboxCoords(text) {
-  const re = /(-?\d{1,3}\.\d{4,10})/g;
-  const found = [];
-  let m;
-  while ((m = re.exec(text)) !== null) {
-    const val = Number.parseFloat(m[1]);
-    if (Number.isFinite(val)) {
-      found.push({ val, pos: m.index });
-    }
-  }
-  for (let i = 0; i < found.length; i += 1) {
-    const a = found[i];
-    if (a.val < 5 || a.val > 21) continue;
-    for (let j = i + 1; j < found.length && found[j].pos - a.pos < 800; j += 1) {
-      const b = found[j];
-      if (b.val < 97 || b.val > 106) continue;
-      if (isChromeFixture(a.val, b.val)) continue;
-      return parseCoordinatePair(a.val, b.val);
-    }
-  }
-  return null;
-}
-
 export function extractCoordinatesFromText(value) {
   const text = normalizeText(value, '');
   if (!text) {
@@ -807,19 +859,22 @@ export function extractCoordinatesFromText(value) {
   try {
     decoded = decodeURIComponent(decoded);
   } catch {
-    // keep raw text — the bare-bbox fallback below handles the JS-rendered case.
+    // keep raw text
   }
+  // Order matters: !3d…!4d… is the place marker; @lat,lng is only where the
+  // map viewport happens to be centred. Place first, viewport last.
   const patterns = [
-    /@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/,
     /!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/,
     /\/dir\/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)(?:[/?#]|$)/,
+    /[?&](?:q|query|destination)=(-?\d+\.\d{3,})(?:%2C|,)\s*(-?\d+\.\d{3,})/,
+    /@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/,
     /(?:center|ll)=(-?\d+(?:\.\d+)?)(?:%2C|,)(-?\d+(?:\.\d+)?)/,
   ];
 
   for (const pattern of patterns) {
     const match = decoded.match(pattern);
     const coords = match ? parseCoordinatePair(match[1], match[2]) : null;
-    if (coords) {
+    if (coords && !isChromeFixture(coords[0], coords[1])) {
       return coords;
     }
   }
@@ -827,11 +882,15 @@ export function extractCoordinatesFromText(value) {
   const lngLatMatch = decoded.match(/!2d(-?\d+(?:\.\d+)?)!3d(-?\d+(?:\.\d+)?)/);
   if (lngLatMatch) {
     const swapped = parseCoordinatePair(lngLatMatch[2], lngLatMatch[1]);
-    if (swapped) return swapped;
+    if (swapped && !isChromeFixture(swapped[0], swapped[1])) return swapped;
   }
 
-  // Google JS-rendered place pages: pair bare floats inside Thailand's bbox.
-  return extractThailandBboxCoords(decoded);
+  // No explicit marker: no coordinate. The previous fallback paired any two
+  // floats inside Thailand's bounding box, and on Google's JS-rendered pages
+  // those floats are page chrome — it pinned fourteen different businesses to
+  // one point in north Bangkok. An unplaced listing is placed later from its
+  // own address (src/lib/place_resolver.js); a fabricated point is a lie.
+  return null;
 }
 
 async function followMapsRedirects(fetchImpl, initialUrl, options) {
@@ -901,14 +960,17 @@ export async function resolveGoogleMapsData(mapsUrl, options = {}) {
     const redirectResult = await followMapsRedirects(fetchImpl, mapsUrl, requestOptions);
     const finalUrl = redirectResult.finalUrl || redirectResult.response?.url || mapsUrl;
     const urlCandidates = redirectResult.urls.join(' ');
-    let coords = extractCoordinatesFromText(urlCandidates);
+    // Coordinates come from the redirect chain's URLs only — that is where
+    // Google writes the place (…/place/NAME/@…/data=…!3dLAT!4dLNG). A page
+    // body carries viewport defaults and chrome that look like coordinates and
+    // are not; it is read for address text, never for a position.
+    const coords = extractCoordinatesFromText(urlCandidates);
     let address = redirectResult.urls.map((url) => extractMapsAddress(url)).find(Boolean) || '';
 
-    if ((!coords || !address) && !redirectResult.error && typeof redirectResult.response?.text === 'function') {
+    if (!address && !redirectResult.error && typeof redirectResult.response?.text === 'function') {
       try {
         const body = await redirectResult.response.text();
-        coords = coords || extractCoordinatesFromText(body);
-        address = address || extractMapsAddress(body) || extractMapsAddress(finalUrl);
+        address = extractMapsAddress(body) || extractMapsAddress(finalUrl);
       } catch {
         address = address || extractMapsAddress(finalUrl);
       }
@@ -918,6 +980,7 @@ export async function resolveGoogleMapsData(mapsUrl, options = {}) {
       finalUrl,
       latitude: coords?.[0] ?? null,
       longitude: coords?.[1] ?? null,
+      coordinateSource: coords ? 'maps-url' : null,
       address,
       canonicalMapsKey: buildMapsKey(mapsUrl),
     };

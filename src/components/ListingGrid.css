@@ -11,7 +11,7 @@
 
 .ledger-head {
   display: grid;
-  grid-template-columns: 56px minmax(0, 1.6fr) minmax(5rem, 0.7fr) minmax(4rem, 0.45fr) minmax(4.5rem, 0.55fr) minmax(3.5rem, 0.4fr) auto;
+  grid-template-columns: var(--ledger-cols);
   gap: var(--s4);
   padding: 0 12px 8px;
   border-bottom: 1px solid var(--mango);

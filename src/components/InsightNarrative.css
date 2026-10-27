@@ -1,73 +1,31 @@
+/* A plain paragraph on the page surface — not a black "terminal" box with a
+   blinking dot. Selectors are scoped: the old file defined global .kicker
+   and .live-dot rules that restyled the header's status dot as well. */
 .insight-narrative-container {
-  background: var(--bg-2);
-  border: 1px solid var(--line);
-  padding: var(--s4);
-  border-radius: 0;
   margin-bottom: var(--s5);
-  font-family: var(--font-mono);
-  position: relative;
-  overflow: hidden;
-}
-
-.professional-terminal {
-  background: #0a0a0c;
-  border-color: #333;
+  padding: var(--s3) 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .insight-narrative-header {
-  display: flex;
-  align-items: center;
-  gap: var(--s2);
-  margin-bottom: var(--s3);
+  margin-bottom: var(--s2);
+  font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.1em;
-  color: var(--ink-3);
   text-transform: uppercase;
+  color: var(--ink-3);
 }
 
-.live-dot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--mango);
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.live-dot.pulse {
-  animation: pulse-dot 2s infinite ease-in-out;
-}
-
-.kicker {
-  color: var(--mango);
+.insight-narrative-header .kicker {
+  color: inherit;
   font-weight: 600;
 }
 
 .insight-narrative-text {
   margin: 0;
-  font-size: var(--fs-sm);
+  max-width: 72ch;
+  font-size: var(--fs-base, 1rem);
   line-height: 1.6;
-  color: #e0e0e0;
-}
-
-.cursor {
-  display: inline-block;
-  width: 8px;
-  height: 1.2em;
-  background-color: var(--mango);
-  vertical-align: middle;
-  margin-left: 4px;
-}
-
-.cursor.blink {
-  animation: blink-cursor 1s step-end infinite;
-}
-
-@keyframes blink-cursor {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+  color: var(--ink);
 }
