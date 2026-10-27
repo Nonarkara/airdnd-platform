@@ -1261,10 +1261,124 @@ export default function ListingMap({
           {pinSummary}
           {pendingListings.length > 0 && ` · ${pendingListings.length} pending locations`}
         </p>
-        <p className="listing-map-subtitle">
-          {t.map?.subtitle || 'Click a pin for details.'}
-        </p>
       </div>
+      <div
+        ref={mapRef}
+        className={`listing-map-container${mapInfoOpen ? ' map-info-open' : ''}`}
+        role="application"
+        aria-label="Interactive listing map"
+      >
+        <button
+          type="button"
+          className={`map-info-toggle${mapInfoOpen ? ' is-active' : ''}`}
+          onClick={() => setMapInfoOpen((v) => !v)}
+          aria-expanded={mapInfoOpen}
+          aria-controls="map-legend-sheet"
+          title={mapInfoOpen ? 'Hide map info' : 'Show map info (sources, basemap, architecture)'}
+          aria-label={mapInfoOpen ? 'Hide map info' : 'Show map info'}
+        >
+          {mapInfoOpen ? '×' : 'i'}
+        </button>
+        <div className="map-fab-row" aria-label="Map actions">
+          <button
+            type="button"
+            className="map-fab"
+            onClick={fitMapToPins}
+            disabled={pins.length === 0}
+            title="Fit all pins to the viewport"
+            aria-label="Fit all"
+          >
+            Fit
+          </button>
+          <button
+            type="button"
+            className={`map-fab${userLocation ? ' is-active' : ''}`}
+            onClick={handleLocate}
+            disabled={locating}
+            aria-pressed={Boolean(userLocation)}
+            title={userLocation ? 'Update my location' : 'Use my location'}
+            aria-label={userLocation ? 'Update my location' : 'Use my location'}
+          >
+            {locating ? '…' : '◉'}
+          </button>
+        </div>
+        {userLocation && (
+          <div className="reach-ring-legend" aria-label="Distance ring legend">
+            <span><i className="ring-key ring-key--one" />1 km</span>
+            <span><i className="ring-key ring-key--ten" />10 km</span>
+          </div>
+        )}
+        <div className="availability-legend" aria-label="Availability legend">
+          <span><i className="availability-key availability-key--available" />Available now</span>
+          <span><i className="availability-key availability-key--open" />Open · check slot</span>
+          <span><i className="availability-key availability-key--unknown" />Check availability</span>
+          <span><i className="availability-key availability-key--closed" />Closed / unavailable</span>
+          <span><i className="availability-key availability-key--fresh" />Fresh (≤30 min)</span>
+        </div>
+        <MapActivityRail />
+        <MapTimeStrip />
+        <div className="data-source-legend" aria-label="Data source legend">
+          <span><i className="map-source-swatch map-source-swatch--telegram" />Telegram broadcasts ({pins.length})</span>
+          {/* CC BY-SA 4.0 wants a link back to the source, not just text. Pulled
+              from the dataset's own meta.attribution when available, else fall
+              back to the canonical Longdo Map URL. */}
+          <span>
+            <i className="map-source-swatch map-source-swatch--longdo" />
+            <a
+              href="https://map.longdo.com"
+              target="_blank"
+              rel="noreferrer"
+              title={longdoMeta?.attribution || 'POI data from Longdo Map'}
+            >
+              Longdo POI · CC BY-SA 4.0
+            </a> ({longdoPois.length})
+          </span>
+        </div>
+        <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
+          <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#00e400' }} />0–50  Good</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#ffff00' }} />51–100  Moderate</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#ff7e00' }} />101–150  Unhealthy (sensitive)</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#ff0000' }} />151–200  Unhealthy</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#8f3f97' }} />201+  Very unhealthy</span>
+        </div>
+        <div className={`rain-legend${rainActive ? ' is-visible' : ''}`} aria-hidden={!rainActive}>
+          <span className="rain-legend-title">Precipitation · NASA GPM/IMERG</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#c8f0ff' }} />Light</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#4da6ff' }} />Moderate</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#0033cc' }} />Heavy</span>
+          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#6600cc' }} />Extreme</span>
+        </div>
+        <div className="map-architecture-strip" aria-label="Map architecture">
+          <span className="map-architecture-pill">
+            <i className={`map-architecture-dot map-architecture-dot--${basemapStatus.mode}`} />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap' : basemapStatus.mode === 'satellite' ? 'Satellite' : 'Esri Canvas'}
+          </span>
+          <span className="map-architecture-pill" aria-live="polite">
+            <i className={`map-architecture-dot${aqiActive ? ' is-on' : ''}`} />AQI {aqiActive ? 'on' : 'off'}
+          </span>
+          <span className="map-architecture-pill" aria-live="polite">
+            <i className={`map-architecture-dot${rainActive ? ' is-on' : ''}`} />Rain {rainActive ? 'on' : 'off'}
+          </span>
+          <span className="map-architecture-pill map-architecture-reassure">
+            <i className="map-architecture-dot map-architecture-dot--ok" />No API key required for any layer
+          </span>
+          {longdoPois.length > 0 && (
+            <a
+              className="map-architecture-pill map-architecture-attrib"
+              href="https://map.longdo.com"
+              target="_blank"
+              rel="noreferrer"
+              title="POI data from Longdo Map under CC BY-SA 4.0"
+            >
+              <i className="map-source-swatch map-source-swatch--longdo" />POI data: Longdo Map · CC BY-SA 4.0
+            </a>
+          )}
+        </div>
+      </div>
+
+      <p className="listing-map-subtitle listing-map-subtitle--below">
+        {t.map?.subtitle || 'Click a pin for details.'}
+      </p>
       <div className="listing-map-toolbar" aria-label="Map tools">
         <div className="map-toolbar-left">
           <button type="button" onClick={fitMapToPins} disabled={pins.length === 0}>
@@ -1422,118 +1536,6 @@ export default function ListingMap({
           </span>
         </button>
       )}
-      <div
-        ref={mapRef}
-        className={`listing-map-container${mapInfoOpen ? ' map-info-open' : ''}`}
-        role="application"
-        aria-label="Interactive listing map"
-      >
-        <button
-          type="button"
-          className={`map-info-toggle${mapInfoOpen ? ' is-active' : ''}`}
-          onClick={() => setMapInfoOpen((v) => !v)}
-          aria-expanded={mapInfoOpen}
-          aria-controls="map-legend-sheet"
-          title={mapInfoOpen ? 'Hide map info' : 'Show map info (sources, basemap, architecture)'}
-        >
-          {mapInfoOpen ? '×' : 'i'}
-        </button>
-        <div className="map-fab-row" aria-label="Map actions">
-          <button
-            type="button"
-            className="map-fab"
-            onClick={fitMapToPins}
-            disabled={pins.length === 0}
-            title="Fit all pins to the viewport"
-            aria-label="Fit all"
-          >
-            Fit
-          </button>
-          <button
-            type="button"
-            className={`map-fab${userLocation ? ' is-active' : ''}`}
-            onClick={handleLocate}
-            disabled={locating}
-            aria-pressed={Boolean(userLocation)}
-            title={userLocation ? 'Update my location' : 'Use my location'}
-            aria-label={userLocation ? 'Update my location' : 'Use my location'}
-          >
-            {locating ? '…' : '◉'}
-          </button>
-        </div>
-        {userLocation && (
-          <div className="reach-ring-legend" aria-label="Distance ring legend">
-            <span><i className="ring-key ring-key--one" />1 km</span>
-            <span><i className="ring-key ring-key--ten" />10 km</span>
-          </div>
-        )}
-        <div className="availability-legend" aria-label="Availability legend">
-          <span><i className="availability-key availability-key--available" />Available now</span>
-          <span><i className="availability-key availability-key--open" />Open · check slot</span>
-          <span><i className="availability-key availability-key--unknown" />Check availability</span>
-          <span><i className="availability-key availability-key--closed" />Closed / unavailable</span>
-          <span><i className="availability-key availability-key--fresh" />Fresh (≤30 min)</span>
-        </div>
-        <MapActivityRail />
-        <MapTimeStrip />
-        <div className="data-source-legend" aria-label="Data source legend">
-          <span><i className="map-source-swatch map-source-swatch--telegram" />Telegram broadcasts ({pins.length})</span>
-          {/* CC BY-SA 4.0 wants a link back to the source, not just text. Pulled
-              from the dataset's own meta.attribution when available, else fall
-              back to the canonical Longdo Map URL. */}
-          <span>
-            <i className="map-source-swatch map-source-swatch--longdo" />
-            <a
-              href="https://map.longdo.com"
-              target="_blank"
-              rel="noreferrer"
-              title={longdoMeta?.attribution || 'POI data from Longdo Map'}
-            >
-              Longdo POI · CC BY-SA 4.0
-            </a> ({longdoPois.length})
-          </span>
-        </div>
-        <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
-          <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>
-          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#00e400' }} />0–50  Good</span>
-          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#ffff00' }} />51–100  Moderate</span>
-          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#ff7e00' }} />101–150  Unhealthy (sensitive)</span>
-          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#ff0000' }} />151–200  Unhealthy</span>
-          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#8f3f97' }} />201+  Very unhealthy</span>
-        </div>
-        <div className={`rain-legend${rainActive ? ' is-visible' : ''}`} aria-hidden={!rainActive}>
-          <span className="rain-legend-title">Precipitation · NASA GPM/IMERG</span>
-          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#c8f0ff' }} />Light</span>
-          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#4da6ff' }} />Moderate</span>
-          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#0033cc' }} />Heavy</span>
-          <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#6600cc' }} />Extreme</span>
-        </div>
-        <div className="map-architecture-strip" aria-label="Map architecture">
-          <span className="map-architecture-pill">
-            <i className={`map-architecture-dot map-architecture-dot--${basemapStatus.mode}`} />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap' : basemapStatus.mode === 'satellite' ? 'Satellite' : 'Esri Canvas'}
-          </span>
-          <span className="map-architecture-pill" aria-live="polite">
-            <i className={`map-architecture-dot${aqiActive ? ' is-on' : ''}`} />AQI {aqiActive ? 'on' : 'off'}
-          </span>
-          <span className="map-architecture-pill" aria-live="polite">
-            <i className={`map-architecture-dot${rainActive ? ' is-on' : ''}`} />Rain {rainActive ? 'on' : 'off'}
-          </span>
-          <span className="map-architecture-pill map-architecture-reassure">
-            <i className="map-architecture-dot map-architecture-dot--ok" />No API key required for any layer
-          </span>
-          {longdoPois.length > 0 && (
-            <a
-              className="map-architecture-pill map-architecture-attrib"
-              href="https://map.longdo.com"
-              target="_blank"
-              rel="noreferrer"
-              title="POI data from Longdo Map under CC BY-SA 4.0"
-            >
-              <i className="map-source-swatch map-source-swatch--longdo" />POI data: Longdo Map · CC BY-SA 4.0
-            </a>
-          )}
-        </div>
-      </div>
 
       {mapMode === 'epidemic' && (
         <div className="epidemic-panel">

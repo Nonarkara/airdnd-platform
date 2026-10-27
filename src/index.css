@@ -135,7 +135,7 @@
 
   --text-display: var(--fs-h1);
   --text-title: var(--fs-h3);
-  --text-body: 15px;
+  --text-body: 14px; /* one body size (anti-slop type scale): was 15px beside a 14px --fs-body */
   --text-small: var(--fs-xs);
   --text-micro: var(--fs-2xs);
 

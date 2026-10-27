@@ -73,7 +73,7 @@
 
 .masthead__stats dt {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-3);
@@ -82,7 +82,7 @@
 .masthead__stats dd {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+  font-size: 24px;
   font-weight: 600;
   color: var(--mango);
   line-height: 1.1;
@@ -128,7 +128,7 @@
   background: transparent;
   color: var(--mango);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   text-decoration: none;
@@ -143,7 +143,7 @@
 }
 
 .masthead__cta-arrow {
-  font-size: 1rem;
+  font-size: inherit;
   line-height: 1;
 }
 
@@ -217,7 +217,7 @@
 
   .masthead__cta {
     padding: 0.6rem 0.85rem;
-    font-size: 0.7rem;
+    font-size: 11px;
   }
 }
 
@@ -228,7 +228,7 @@
   margin: 0.6rem 0 0;
   padding-top: 0.5rem;
   border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
-  font-size: 0.72rem;
+  font-size: 11px;
   line-height: 1.5;
   letter-spacing: 0.01em;
   opacity: 0.78;
