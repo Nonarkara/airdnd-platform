@@ -12,14 +12,18 @@
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
   gap: var(--s6);
-  align-items: end;
+  /* start, not end: bottom-aligning the copy against the taller stats panel
+     opened an unexplained gap between the eyebrow and the wordmark. */
+  align-items: start;
 }
 
 .masthead__title {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(2.4rem, 6.5vw, 3.75rem);
-  letter-spacing: 0.1em;
+  /* Sized to its column: at 3.75rem the wordmark ran past the copy column
+     and into the gutter against the stats panel. */
+  font-size: clamp(2.2rem, 4.2vw, 3rem);
+  letter-spacing: 0.08em;
   text-transform: lowercase;
   line-height: 0.95;
   margin: 0;

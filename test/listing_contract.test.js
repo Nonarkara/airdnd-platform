@@ -279,7 +279,7 @@ test('display cleaning keeps a Thai name\'s final vowel or tone mark', async () 
 
 test('a heading is never shown as a business name; the listing stays', async () => {
   const { canonicalizePublicListings, isPlaceholderName, UNNAMED_VENUE } = await import('../src/lib/listing_contract.js');
-  for (const heading of ['GRAND OPENING PROMOTION', 'Facebook page', 'เปิดใหม่28/09/69', '#หมอนวดแนะนำ', 'www.massagehotelbangkok.com',
+  for (const heading of ['GRAND OPENING PROMOTION', 'Facebook page', 'เปิดใหม่28/09/69', 'เปิดใหม', '#หมอนวดแนะนำ', 'www.massagehotelbangkok.com',
     'นวดไทย • นวดไทยผสมออยล์ • นวดน้ำมันผ่อนคลาย • นวดเท้า', 'นวด กรุงเทพมหานคร', 'ร้านเปิดใหม่']) {
     assert.equal(isPlaceholderName(heading), true, heading);
   }

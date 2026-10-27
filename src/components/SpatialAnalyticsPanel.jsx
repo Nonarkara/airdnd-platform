@@ -106,8 +106,8 @@ export default function SpatialAnalyticsPanel({ visiblePins = [], totalListings 
   return (
     <div className="spatial-analytics-panel">
       <div className="spatial-header">
-        <span className="spatial-kicker">MATHEMATICAL INSIGHTS</span>
-        <h4>Viewport Analytics</h4>
+        <span className="spatial-kicker">This view</span>
+        <h4>What the map is showing</h4>
       </div>
       
       <InsightNarrative analytics={analytics} mode="spatial" />

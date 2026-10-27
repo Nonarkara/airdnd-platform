@@ -120,8 +120,8 @@ export default function FieldIntelligence({ listings }) {
         <h2 className="fi-title">Five months inside Bangkok's informal wellness market</h2>
         <p className="fi-lede">
           No peer-reviewed study of Telegram massage-listing channels exists. This archive —
-          {' '}{AUDIT.totalPersonaPosts.toLocaleString()} extracted posts, {AUDIT.photosArchived.toLocaleString()} photos,
-          collected every 30 seconds since March — is primary evidence. Here is what it says.
+          {' '}{AUDIT.totalPersonaPosts.toLocaleString()} extracted posts and {AUDIT.photosArchived.toLocaleString()} photos
+          when it was audited on 19 July 2026, collected every 30 seconds since March — is primary evidence. Here is what it says.
         </p>
       </header>
 

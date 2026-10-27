@@ -122,7 +122,7 @@ export default function VisualCharts({ analytics, eumems }) {
             const intensity = count > 0 ? 0.15 + (count / maxHourVal) * 0.85 : 0;
             const level = getEngagementLevel(count);
             return (
-              <div key={h} className="heatmap-hour-cell" title={`${h}:00 — ${count} posts`}>
+              <div key={h} className="heatmap-hour-cell" title={`${h}:00 — ${count} posts · ${level}`}>
                 <div
                   className="heatmap-hour-bar"
                   style={{ backgroundColor: `rgba(255, 116, 64, ${intensity})` }}

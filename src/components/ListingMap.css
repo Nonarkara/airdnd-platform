@@ -1966,14 +1966,22 @@
   text-underline-offset: 2px;
 }
 
-/* Live intake and the 24-hour rhythm, side by side under the map. */
+/* The 24-hour rhythm, then the live intake, full width under the map. Side
+   by side they left a hole beside the short strip. */
 .map-below {
   display: grid;
-  grid-template-columns: minmax(16rem, 1fr) 2fr;
-  gap: var(--s4, 16px);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s3, 12px);
   margin: 0 0 var(--s5, 24px);
 }
+.map-below .map-time-strip { order: -1; }
+@media (min-width: 900px) {
+  .map-below .map-activity-rail__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.map-below > * { min-width: 0; }
 .map-below .map-activity-rail,
 .map-below .map-time-strip {
   position: static;
@@ -1982,7 +1990,6 @@
   margin: 0;
 }
 @media (max-width: 720px) {
-  .map-below { grid-template-columns: 1fr; }
   .map-legend-attrib { margin-left: 0; }
 }
 

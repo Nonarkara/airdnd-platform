@@ -159,15 +159,21 @@ export default function Analytics() {
   const load = async () => {
     setIsRefreshing(true);
     try {
-      const [patternData, feedRows, snapshotRows] = await Promise.all([
+      const [patternData, feedRows, snapshotRows, funnel] = await Promise.all([
         fetch('/patterns.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
         fetch('/feed.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
         fetch('/data.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+        fetch('/funnel.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
       ]);
       if (patternData) setPatterns(patternData);
       if (Array.isArray(snapshotRows) && snapshotRows.length > 0) {
         setListings(snapshotRows.map(snapshotToAnalyticsListing));
-        setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
+        const stats = buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []);
+        // Archive totals from funnel.json — the same numbers the home page
+        // states — so the two pages never disagree about the archive's size.
+        if (funnel?.archive?.messages) stats.msgCount = Number(funnel.archive.messages);
+        if (funnel?.archive?.photos) stats.photoCount = Number(funnel.archive.photos);
+        setMsgStats(stats);
         setAnalysisNow(Date.now());
         setLastRefreshed(new Date());
         setIsSnapshot(true);

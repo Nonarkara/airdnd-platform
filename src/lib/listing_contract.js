@@ -281,8 +281,9 @@ export function normalizeLocationForIdentity(location) {
 
 export const UNNAMED_VENUE = 'Unnamed venue';
 const PLACEHOLDER_NAME_RES = [
-  // announcement headings, not names
-  /^(?:grand\s*opening|(?:new\s+)?promotion|promo\b|facebook(?:\s*page)?$|ร้านเปิดใหม่|เปิดร้านใหม่|เปิดใหม่|โปรโมชั่น|โปรโมชัน)/i,
+  // announcement headings, not names (tone mark optional: names exported
+  // before the display-trim fix lost it — "เปิดใหม")
+  /^(?:grand\s*opening|(?:new\s+)?promotion|promo\b|facebook(?:\s*page)?$|ร้านเปิดใหม่?|เปิดร้านใหม่?|เปิดใหม่?|โปรโมชั่น|โปรโมชัน)/i,
   // a date ("เปิดใหม่28/09/69")
   /\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}/,
   // a hashtag or a web address

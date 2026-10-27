@@ -1,3 +1,4 @@
+import { isPlaceholderName } from '../lib/listing_contract';
 import { useEffect, useMemo, useState } from 'react';
 import { coverVariant, venueInitial } from '../lib/listings';
 import { useCardPhoto } from '../lib/useCardPhoto';
@@ -68,6 +69,8 @@ function getDisplayName(card, t, requiresReview) {
   if (requiresReview || hasGenericOrPromoName(card)) {
     return t?.feed?.reviewName || 'Source post pending review';
   }
+  // Headed with a promotion, a date or "new shop" — no business name given.
+  if (isPlaceholderName(rawName)) return t?.feed?.unnamed || 'Unnamed post';
 
   return rawName;
 }
