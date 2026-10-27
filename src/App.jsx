@@ -1,5 +1,5 @@
 import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -46,11 +46,9 @@ const Sociology = lazy(() => import('./components/Sociology'));
 const Paper = lazy(() => import('./components/Paper'));
 const FAQ = lazy(() => import('./components/FAQ'));
 const MatchingPaper = lazy(() => import('./components/MatchingPaper'));
-const Trends = lazy(() => import('./components/Trends'));
 const Health = lazy(() => import('./components/Health'));
 const Insights = lazy(() => import('./components/Insights'));
 const PublicWorks = lazy(() => import('./components/PublicWorks'));
-const IndustryIntel = lazy(() => import('./components/IndustryIntel'));
 const PlaceGallery = lazy(() => import('./components/PlaceGallery'));
 const SORT_OPTIONS = [
   'Most Active Broadcasters',
@@ -583,11 +581,34 @@ function App() {
 
   const handleRefresh = async () => manualLoadRef.current('manual');
 
+  // Every page the nav links to carries the nav. Analytics, Method and Public
+  // Works rendered bare: clicking them in the nav made the nav disappear,
+  // with no way back but the browser's button.
+  const withShell = (content) => (
+    <div className="app-shell">
+      <Header
+        language={language}
+        setLanguage={setLanguage}
+        t={t}
+        theme={theme}
+        setTheme={setTheme}
+        onRefresh={handleRefresh}
+        isRefreshing={dataState.isRefreshing}
+        sourceLabel={displayDataState.sourceLabel}
+        activeView="directory"
+        setActiveView={setActiveView}
+        metrics={metrics}
+      />
+      <main className="app-main">{content}</main>
+      <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
+    </div>
+  );
+
   return (
     <Routes>
       <Route
         path="/analytics"
-        element={(
+        element={withShell(
           <Suspense fallback={<div className="page-shell-loading">Loading analytics…</div>}>
             <Analytics />
           </Suspense>
@@ -595,7 +616,7 @@ function App() {
       />
       <Route
         path="/methodology"
-        element={(
+        element={withShell(
           <Suspense fallback={<div className="page-shell-loading">Loading methodology…</div>}>
             <Methodology />
           </Suspense>
@@ -633,48 +654,19 @@ function App() {
           </Suspense>
         )}
       />
-      <Route
-        path="/trends"
-        element={(
-          <Suspense fallback={<div className="page-shell-loading">Loading trends…</div>}>
-            <Trends />
-          </Suspense>
-        )}
-      />
+      {/* Retired: /trends showed Gemini-written "signals" with post counts on
+          platforms this system never reads; /intel was hard-coded fiction
+          presented as live telemetry. Old links land on the real pages. */}
+      <Route path="/trends" element={<Navigate to="/insights" replace />} />
       <Route
         path="/public-works"
-        element={(
+        element={withShell(
           <Suspense fallback={<div className="page-shell-loading">Loading public works…</div>}>
             <PublicWorks listings={allListings} dataState={dataState} />
           </Suspense>
         )}
       />
-      <Route
-        path="/intel"
-        element={(
-          <div className="app-shell">
-            <Header
-              language={language}
-              setLanguage={setLanguage}
-              t={t}
-              theme={theme}
-              setTheme={setTheme}
-              onRefresh={handleRefresh}
-              isRefreshing={dataState.isRefreshing}
-              sourceLabel={displayDataState.sourceLabel}
-              activeView="directory"
-              setActiveView={setActiveView}
-              metrics={metrics}
-            />
-            <main className="app-main">
-              <Suspense fallback={<div className="page-shell-loading">Loading industry intelligence…</div>}>
-                <IndustryIntel />
-              </Suspense>
-            </main>
-            <Footer t={t} lastLoadedAt={dataState.lastLoadedAt} sourceLabel={displayDataState.sourceLabel} />
-          </div>
-        )}
-      />
+      <Route path="/intel" element={<Navigate to="/analytics" replace />} />
       <Route
         path="/places"
         element={(

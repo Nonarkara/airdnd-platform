@@ -22,11 +22,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { assertOtop, launchBrowser } from './otop-identity.mjs';
+import { activeSite } from './msh/sites.mjs';
 
 const BASE = (process.argv[2] || 'https://otop.pages.dev').replace(/\/+$/, '');
-const OUT = process.argv[3] || 'design/msh-evidence/after';
+const OUT = process.argv[3] || (activeSite().key === 'otop' ? 'design/msh-evidence/after' : `design/msh-evidence/${activeSite().key}/after`);
 
-const VIEWS = [
+const OTOP_VIEWS = [
   ['find', '/?view=find', 'search a producer and call them'],
   ['method', '/?view=method', 'understand what the numbers mean'],
   ['atlas', '/?view=atlas', 'read what the data says'],
@@ -34,6 +35,7 @@ const VIEWS = [
   ['match', '/?view=match&lens=b2c', 'filter a shortlist of producers'],
   ['province', '/?view=province&code=50', 'read one province whole'],
 ];
+const VIEWS = activeSite().tasks ?? OTOP_VIEWS;
 
 // The viewports the law names: 390x844 and 1440x900 for the first-screen
 // checks, and 1024 for the intermediate width.
@@ -65,6 +67,10 @@ function measure() {
     // A band parked outside the viewport horizontally is not chrome anyone
     // pays for.
     if (r.right <= 0 || r.left >= vw) continue;
+    // A layer painted BEHIND the page (negative z-index) is a background, not
+    // chrome: Sabai's fixed .app-backdrop (z -2) was counted as a 100% band
+    // and as hiding the header it sits under.
+    if ((parseInt(cs.zIndex, 10) || 0) < 0) continue;
     chrome.push({
       sel: el.tagName.toLowerCase() + '.' + String(el.className || '').split(/\s+/)[0],
       pos: cs.position,
@@ -81,7 +87,10 @@ function measure() {
   const occluded = [];
   for (let i = 0; i < chrome.length; i++) {
     for (let j = 0; j < i; j++) {
-      if (chrome[j].bottom > chrome[i].top + 1 && chrome[i].h > 4) {
+      // Only a band painted ABOVE hides one below it.
+      const zi = parseInt(chrome[i].z, 10) || 0;
+      const zj = parseInt(chrome[j].z, 10) || 0;
+      if (zj >= zi && chrome[j].bottom > chrome[i].top + 1 && chrome[i].h > 4) {
         const above = chrome[j];
         const hidden = Math.min(above.bottom, chrome[i].bottom) - chrome[i].top;
         if (hidden > 4) {

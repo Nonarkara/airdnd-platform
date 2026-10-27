@@ -113,7 +113,6 @@ export default function Analytics() {
   const [analysisNow, setAnalysisNow] = useState(() => Date.now());
   const [lastRefreshed, setLastRefreshed] = useState(null);
   const [healthSnap, setHealthSnap] = useState(null);
-  const [economyData, setEconomyData] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSnapshot, setIsSnapshot] = useState(false);
   const hasLoadedRef = useRef(false);
@@ -124,16 +123,6 @@ export default function Analytics() {
     fetch('/patterns.json')
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => { if (!cancelled) setPatterns(data); })
-      .catch(() => {});
-    return () => { cancelled = true; };
-  }, []);
-
-  // Pull macro-economy data
-  useEffect(() => {
-    let cancelled = false;
-    fetch('/data/economy.json')
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => { if (!cancelled) setEconomyData(data); })
       .catch(() => {});
     return () => { cancelled = true; };
   }, []);
@@ -723,7 +712,10 @@ export default function Analytics() {
           </div>
           <div className="an-corpus-notes">
             <p><strong>{data.corpusCounts.listingYield}%</strong> of all raw messages become listing candidates.</p>
-            <p><strong>{data.corpusCounts.mediaRate}%</strong> of raw messages carry media.</p>
+            {/* Was "{mediaRate}% of raw messages carry media" — 0.2%, because it
+                divided the feed snapshot's photo cards by the whole archive.
+                The archive records photos, not which messages carried them. */}
+            <p><strong>{data.corpusCounts.archivedPhotosPerBusiness} archived photos</strong> sit behind each current listing row on average.</p>
             <p><strong>{data.corpusCounts.messagesPerBusiness} raw messages</strong> sit behind each current listing row on average.</p>
           </div>
         </div>
@@ -852,40 +844,6 @@ export default function Analytics() {
             ))}
           </div>
         </section>
-
-        {/* Macro-Economy Lens */}
-        {economyData && (
-          <section className="an-card an-wide">
-            <h2>Macro-Economy Context</h2>
-            <p className="an-card-sub">
-              Contextualizing the grey economy against provincial GDP (GPP) and minimum wage.
-            </p>
-            <div className="an-table">
-              <div className="an-table-head">
-                <span>Province</span>
-                <span>GPP / Capita</span>
-                <span>Minimum Wage (Daily)</span>
-                <span>Avg Massage Price (Est.)</span>
-                <span>Wage-to-Service Gap</span>
-              </div>
-              {economyData.provinces.map((prov) => {
-                const estPrice = data.priceMean || 600; // Use overall mean or specific if mapped
-                const gap = prov.minimumWage > 0 ? (estPrice / prov.minimumWage).toFixed(1) : '—';
-                return (
-                  <div key={prov.code} className="an-table-row">
-                    <span>{prov.name}</span>
-                    <span>฿{prov.gppPerCapita.toLocaleString()}/yr</span>
-                    <span>฿{prov.minimumWage}/day</span>
-                    <span>฿{estPrice.toLocaleString()}</span>
-                    <strong style={{ color: gap > 1.5 ? 'var(--color-status)' : 'var(--color-data)' }}>
-                      {gap}x daily wage
-                    </strong>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
 
         <section className="an-card an-wide">
           <h2>Market Extremes · Outlier Board</h2>

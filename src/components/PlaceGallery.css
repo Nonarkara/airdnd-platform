@@ -20,6 +20,7 @@
   border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.12));
 }
 
+.place-section-header h1,
 .place-section-header h2 {
   font-family: var(--font-display, system-ui);
   font-size: 32px;
@@ -416,6 +417,7 @@
     aspect-ratio: 1 / 1;
   }
 
+  .place-section-header h1,
   .place-section-header h2 {
     font-size: 24px;
   }
@@ -423,4 +425,23 @@
   .place-venue-hero-meta {
     font-size: var(--text-small);
   }
+}
+
+/* MSH — venue cards: a wrapping row, not an auto-fit grid. With auto-fit the last
+   row kept the column count of the rows above and left the remainder empty
+   (324x378px at 1440). In a wrapping row the last cards share the whole width. */
+.place-venue-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.place-venue-grid > * {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+/* A widened last card keeps the collage's height, so it shows a wider crop
+   rather than a giant one. */
+.place-venue-collage {
+  aspect-ratio: auto;
+  height: 13.5rem;
 }

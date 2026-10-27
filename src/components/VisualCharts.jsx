@@ -50,7 +50,14 @@ export default function VisualCharts({ analytics, eumems }) {
 
   // Posting Hour Heatmap
   const maxHourVal = Math.max(...Object.values(postingHours || {}), 1);
-  const hourEntries = Object.entries(postingHours || {}).sort(([a], [b]) => +a - +b);
+  // All 24 hours, zero-filled. Hours with no posts used to be dropped, so the
+  // 24-column strip drew 16 cells and stopped: the quiet hours — the finding —
+  // vanished, and the strip ended in an empty band (MSH hole probe).
+  const hourEntries = Array.from({ length: 24 }, (_, hour) => {
+    const key = String(hour).padStart(2, '0');
+    const count = Number(postingHours?.[key] ?? postingHours?.[hour] ?? postingHours?.[String(hour)] ?? 0);
+    return [key, count];
+  });
 
   // Day-of-week activity
   const maxDayVal = Math.max(...postingDays, 1);

@@ -37,7 +37,6 @@ function Header({
     { id: 'map', label: t.nav?.map || 'Map', to: '/map' },
   ];
   const linkTabs = [
-    { id: 'intel', label: t.nav?.intel || 'Intel', href: '/intel' },
     { id: 'insights', label: t.nav?.insights || 'Insights', href: '/insights' },
     { id: 'health', label: t.nav?.health || 'STDs', href: '/health' },
     { id: 'publicworks', label: t.nav?.publicWorks || 'Public Works', href: '/public-works' },

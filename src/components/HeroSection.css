@@ -16,13 +16,18 @@
      opened an unexplained gap between the eyebrow and the wordmark. */
   align-items: start;
 }
+/* The stats panel stretches to the copy's height when it is the shorter
+   column (at 1024 its three-column grid is), instead of ending above a
+   294x72 void. Its rows share the extra height. */
+.masthead__row > .masthead__stats { align-self: stretch; }
 
 .masthead__title {
   font-family: var(--font-display);
   font-weight: 500;
   /* Sized to its column: at 3.75rem the wordmark ran past the copy column
      and into the gutter against the stats panel. */
-  font-size: clamp(2.2rem, 4.2vw, 3rem);
+  /* 4.4vw keeps it above the 44px section display size at 1024. */
+  font-size: clamp(2.2rem, 4.4vw, 3rem);
   letter-spacing: 0.08em;
   text-transform: lowercase;
   line-height: 0.95;

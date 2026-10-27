@@ -1,0 +1,618 @@
+[
+  {
+    "view": "inventory",
+    "task": "find a parlour near me and call it",
+    "w": 390,
+    "h": 844,
+    "chromeH": 130,
+    "chromePct": 15,
+    "chromeBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "scrolledChromeH": 130,
+    "scrolledChromePct": 15,
+    "scrolledBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 10,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "sabai·sabai",
+      "fs": 42.9
+    },
+    "largest": {
+      "fs": 42.9,
+      "text": "·"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 10933
+  },
+  {
+    "view": "inventory",
+    "task": "find a parlour near me and call it",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "sabai·sabai",
+      "fs": 45.056
+    },
+    "largest": {
+      "fs": 45.056,
+      "text": "·"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 6781
+  },
+  {
+    "view": "inventory",
+    "task": "find a parlour near me and call it",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50",
+      "section.filter-bar 119px @2160 z40"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50",
+      "section.filter-bar 119px @1560 z40"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "sabai·sabai",
+      "fs": 48
+    },
+    "largest": {
+      "fs": 48,
+      "text": "·"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 6401
+  },
+  {
+    "view": "map",
+    "task": "see where the parlours are, and how sure that is",
+    "w": 390,
+    "h": 844,
+    "chromeH": 130,
+    "chromePct": 15,
+    "chromeBands": [
+      "header.site-header 130px @0 z50",
+      "div.listing-map-datasources 61px @1477 z25"
+    ],
+    "scrolledChromeH": 130,
+    "scrolledChromePct": 15,
+    "scrolledBands": [
+      "header.site-header 130px @0 z50",
+      "div.listing-map-datasources 61px @877 z25"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 10,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Explore by area",
+      "fs": 32
+    },
+    "largest": {
+      "fs": 32,
+      "text": "Explore by area"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 2633
+  },
+  {
+    "view": "map",
+    "task": "see where the parlours are, and how sure that is",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Explore by area",
+      "fs": 44
+    },
+    "largest": {
+      "fs": 44,
+      "text": "Explore by area"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 4234
+  },
+  {
+    "view": "map",
+    "task": "see where the parlours are, and how sure that is",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Explore by area",
+      "fs": 44
+    },
+    "largest": {
+      "fs": 44,
+      "text": "Explore by area"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 4232
+  },
+  {
+    "view": "live",
+    "task": "see what was just posted",
+    "w": 390,
+    "h": 844,
+    "chromeH": 130,
+    "chromePct": 15,
+    "chromeBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "scrolledChromeH": 130,
+    "scrolledChromePct": 15,
+    "scrolledBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 10,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "sabai·sabai",
+      "fs": 42.9
+    },
+    "largest": {
+      "fs": 42.9,
+      "text": "·"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 13963
+  },
+  {
+    "view": "live",
+    "task": "see what was just posted",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "sabai·sabai",
+      "fs": 45.056
+    },
+    "largest": {
+      "fs": 45.056,
+      "text": "·"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 3666
+  },
+  {
+    "view": "live",
+    "task": "see what was just posted",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "sabai·sabai",
+      "fs": 48
+    },
+    "largest": {
+      "fs": 48,
+      "text": "·"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 2642
+  },
+  {
+    "view": "health",
+    "task": "plan an outreach visit",
+    "w": 390,
+    "h": 844,
+    "chromeH": 130,
+    "chromePct": 15,
+    "chromeBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "scrolledChromeH": 130,
+    "scrolledChromePct": 15,
+    "scrolledBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 10,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "HIV, STI & legitimacy beside the inventory",
+      "fs": 32
+    },
+    "largest": {
+      "fs": 32,
+      "text": "HIV, STI & legitimacy beside t"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 2716
+  },
+  {
+    "view": "health",
+    "task": "plan an outreach visit",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "HIV, STI & legitimacy beside the inventory",
+      "fs": 44
+    },
+    "largest": {
+      "fs": 44,
+      "text": "HIV, STI & legitimacy beside t"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 2080
+  },
+  {
+    "view": "health",
+    "task": "plan an outreach visit",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "HIV, STI & legitimacy beside the inventory",
+      "fs": 44
+    },
+    "largest": {
+      "fs": 44,
+      "text": "HIV, STI & legitimacy beside t"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 2091
+  },
+  {
+    "view": "analytics",
+    "task": "read the industry in numbers",
+    "w": 390,
+    "h": 844,
+    "chromeH": 130,
+    "chromePct": 15,
+    "chromeBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "scrolledChromeH": 130,
+    "scrolledChromePct": 15,
+    "scrolledBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 10,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Thailand Massage & Spa Industry",
+      "fs": 28
+    },
+    "largest": {
+      "fs": 28,
+      "text": "Thailand Massage & Spa Industr"
+    },
+    "peers": 5,
+    "sideways": false,
+    "docH": 32331
+  },
+  {
+    "view": "analytics",
+    "task": "read the industry in numbers",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Thailand Massage & Spa Industry",
+      "fs": 40
+    },
+    "largest": {
+      "fs": 40,
+      "text": "Thailand Massage & Spa Industr"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 19952
+  },
+  {
+    "view": "analytics",
+    "task": "read the industry in numbers",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Thailand Massage & Spa Industry",
+      "fs": 40
+    },
+    "largest": {
+      "fs": 40,
+      "text": "Thailand Massage & Spa Industr"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 18589
+  },
+  {
+    "view": "places",
+    "task": "look through one venue's photos",
+    "w": 390,
+    "h": 844,
+    "chromeH": 130,
+    "chromePct": 15,
+    "chromeBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "scrolledChromeH": 130,
+    "scrolledChromePct": 15,
+    "scrolledBands": [
+      "header.site-header 130px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 10,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Every place we have a photo of",
+      "fs": 32
+    },
+    "largest": {
+      "fs": 32,
+      "text": "Every place we have a photo of"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 4772
+  },
+  {
+    "view": "places",
+    "task": "look through one venue's photos",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Every place we have a photo of",
+      "fs": 32
+    },
+    "largest": {
+      "fs": 32,
+      "text": "Every place we have a photo of"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 2191
+  },
+  {
+    "view": "places",
+    "task": "look through one venue's photos",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 94,
+    "chromePct": 10,
+    "chromeBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "scrolledChromeH": 94,
+    "scrolledChromePct": 10,
+    "scrolledBands": [
+      "header.site-header 94px @0 z50"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "button.nav-link-btn",
+      "text": "Inventory"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Every place we have a photo of",
+      "fs": 32
+    },
+    "largest": {
+      "fs": 32,
+      "text": "Every place we have a photo of"
+    },
+    "peers": 1,
+    "sideways": false,
+    "docH": 1800
+  }
+]

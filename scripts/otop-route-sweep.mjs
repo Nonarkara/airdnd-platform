@@ -14,10 +14,11 @@
  * node scripts/otop-route-sweep.mjs [base]
  */
 import { assertOtop, launchBrowser } from './otop-identity.mjs';
+import { activeSite } from './msh/sites.mjs';
 
 const BASE = (process.argv[2] || 'http://localhost:8124').replace(/\/+$/, '');
 
-const ROUTES = [
+const OTOP_ROUTES = [
   ['find', '/?view=find'],
   ['match', '/?view=match&lens=b2c'],
   ['atlas', '/?view=atlas'],
@@ -33,6 +34,7 @@ const ROUTES = [
   ['method', '/?view=method'],
   ['softpower', '/?view=softpower'],
 ];
+const ROUTES = activeSite().routes ?? OTOP_ROUTES;
 
 const browser = await launchBrowser();
 let bad = 0;

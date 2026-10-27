@@ -410,3 +410,7 @@
   .ins-block p { max-width: 100%; }
   .ins-lenses button { flex: 1 1 46%; border-bottom: 1px solid var(--line); }
 }
+
+/* MSH: the third card spans the row instead of sitting beside a 594x318px
+   void. */
+.ins-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }

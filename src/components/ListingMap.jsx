@@ -631,20 +631,9 @@ export default function ListingMap({
         });
         layerControl.addOverlay(transitGroup, 'Transit Corridors');
 
-        // Zoning Districts
-        const zoningGroup = L.featureGroup();
-        data.zoningDistricts.forEach(zone => {
-          // Some zones carry summary metadata without a polygon outline; skip
-          // them rather than crash the whole map effect.
-          if (!Array.isArray(zone.polygon) || zone.polygon.length === 0) return;
-          L.polygon(zone.polygon.map(p => [p.lat, p.lng]), {
-            color: zone.type.startsWith('Commercial') ? '#f59e0b' : '#0e1e3c',
-            weight: 2,
-            opacity: 0.6,
-            fillOpacity: 0.1
-          }).bindPopup(`<b>${zone.name}</b><br/>${zone.type} (${zone.code})`).addTo(zoningGroup);
-        });
-        layerControl.addOverlay(zoningGroup, 'Municipal Zoning');
+        // No zoning layer: infrastructure.json's zoning districts are
+        // simulated, and drawing them as "Municipal Zoning" put invented
+        // boundaries on a map of real places. The transit stations are real.
       })
       .catch(console.error);
 
@@ -1156,7 +1145,8 @@ export default function ListingMap({
     <section className="listing-map-section" id="map">
       <div className="listing-map-header">
         <span className="section-kicker">{t.map?.kicker || 'LIVE MAP'}</span>
-        <h2>{t.map?.title || 'Massage & Spa Locations'}</h2>
+        {/* The page's own heading: the map is the main content wherever it is shown. */}
+        <h1>{t.map?.title || 'Massage & Spa Locations'}</h1>
         <p className="listing-map-count">
           {pinSummary}
         </p>
@@ -1423,12 +1413,12 @@ export default function ListingMap({
           explicit so the user can get the spatial density matrix and
           the top-3 listing panel on a route that loads them in mobile-
           first layouts, instead of as a 700px scroll after the map. */}
-      <a className="map-mobile-analytics-link" href="/insights" aria-label="Open the Spatial Density Matrix">
-        <span>Spatial Density Matrix</span>
+      <a className="map-mobile-analytics-link" href="/insights" aria-label="Open the insights">
+        <span>Insights</span>
         <span aria-hidden="true">→</span>
       </a>
-      <a className="map-mobile-analytics-link" href="/analytics" aria-label="Open the Industry Telemetry report">
-        <span>Industry Telemetry</span>
+      <a className="map-mobile-analytics-link" href="/analytics" aria-label="Open the industry analytics">
+        <span>Industry analytics</span>
         <span aria-hidden="true">→</span>
       </a>
 

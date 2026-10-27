@@ -395,7 +395,9 @@ export function useMarketAnalytics(listings, msgStats, patterns, analysisNow) {
       const d = new Date(m.message_date);
       if (isNaN(d.getTime())) return;
       const bkkHour = (d.getUTCHours() + 7) % 24;
-      const day = d.getDay();
+      // Bangkok's weekday, like the hour above — getDay() used the viewer's
+      // own timezone, so the same post fell on a different day per visitor.
+      const day = new Date(d.getTime() + 7 * 3_600_000).getUTCDay();
 
       postingHours[bkkHour] = (postingHours[bkkHour] || 0) + 1;
       postingDays[day]++;
@@ -728,7 +730,6 @@ export function useMarketAnalytics(listings, msgStats, patterns, analysisNow) {
       messagesPerBusiness: total ? +(rawMessageCount / total).toFixed(1) : 0,
       archivedPhotosPerBusiness: total ? +(archivedPhotoCount / total).toFixed(1) : 0,
       listingYield: rawMessageCount ? +((listingMessageCount / rawMessageCount) * 100).toFixed(1) : 0,
-      mediaRate: rawMessageCount ? +((mediaMessageCount / rawMessageCount) * 100).toFixed(1) : 0,
     };
 
     const funFacts = [
