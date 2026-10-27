@@ -392,7 +392,7 @@ function ListingModal({ listing, onClose, t }) {
             {/* 1-Tap Booking Inquiry Assistant */}
             <div className="modal-booking-assistant" style={{ margin: '16px 0', padding: '12px 14px', background: 'var(--bg-2)', border: '1px solid var(--line)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <span className="eyebrow" style={{ fontSize: '10px', color: 'var(--mango)', fontWeight: 700 }}>💬 1-TAP INQUIRY SCRIPT (FOR LINE / CHAT)</span>
+                <span className="eyebrow" style={{ fontSize: '10px', color: 'var(--mango)', fontWeight: 700 }}>Inquiry script · copy into LINE or chat</span>
                 {copiedScript && <span style={{ fontSize: '11px', color: '#34d399', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>✓ Copied!</span>}
               </div>
               <p style={{ margin: '0 0 8px', fontSize: '0.85rem', color: 'var(--ink-2)', lineHeight: 1.4 }}>"{thaiScript}"</p>
@@ -417,7 +417,7 @@ function ListingModal({ listing, onClose, t }) {
                   }
                 }}
               >
-                Copy Thai Inquiry Script 📋
+                Copy Thai inquiry script
               </button>
             </div>
 

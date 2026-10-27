@@ -13,7 +13,6 @@ import {
   formatFreshness,
   getAvailability,
 } from '../lib/mapAvailability';
-import MapMarketBar from './MapMarketBar';
 import SpatialAnalyticsPanel from './SpatialAnalyticsPanel';
 import { buildHealthMatrix, loadFormalization, loadProvinceHiv } from '../lib/health';
 import 'leaflet.markercluster';
@@ -318,13 +317,6 @@ export default function ListingMap({
   const [showTelegram, setShowTelegram] = useState(true);
   const [showLongdo, setShowLongdo] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  // Mobile info-sheet toggle: on phones, the in-map floating legends
-  // (availability, data source, architecture strip) are hidden behind
-  // a single "i" button at the top-right of the map. Tapping it reveals
-  // them as a stacked panel. Default closed to keep the map surface
-  // clean — the chips above the map already convey the most important
-  // info (which sources are visible + how many pins per city).
-  const [mapInfoOpen, setMapInfoOpen] = useState(false);
 
   const { pins, pendingListings } = useMemo(() => {
     if (!Array.isArray(listings)) return { pins: [], pendingListings: [] };
@@ -1169,78 +1161,15 @@ export default function ListingMap({
           {pinSummary}
         </p>
       </div>
+      {/* Inside the frame: the map and Leaflet's own zoom/layer controls only.
+          Everything that explains the map sits below it, in the page's flow,
+          so nothing covers a pin or slides over the sticky header. */}
       <div
         ref={mapRef}
-        className={`listing-map-container${mapInfoOpen ? ' map-info-open' : ''}`}
+        className="listing-map-container"
         role="application"
         aria-label="Interactive listing map"
       >
-        <button
-          type="button"
-          className={`map-info-toggle${mapInfoOpen ? ' is-active' : ''}`}
-          onClick={() => setMapInfoOpen((v) => !v)}
-          aria-expanded={mapInfoOpen}
-          aria-controls="map-legend-sheet"
-          title={mapInfoOpen ? 'Hide map info' : 'Show map info (sources, basemap, architecture)'}
-          aria-label={mapInfoOpen ? 'Hide map info' : 'Show map info'}
-        >
-          {mapInfoOpen ? '×' : 'i'}
-        </button>
-        <div className="map-fab-row" aria-label="Map actions">
-          <button
-            type="button"
-            className="map-fab"
-            onClick={fitMapToPins}
-            disabled={pins.length === 0}
-            title="Fit all pins to the viewport"
-            aria-label="Fit all"
-          >
-            Fit
-          </button>
-          <button
-            type="button"
-            className={`map-fab${userLocation ? ' is-active' : ''}`}
-            onClick={handleLocate}
-            disabled={locating}
-            aria-pressed={Boolean(userLocation)}
-            title={userLocation ? 'Update my location' : 'Use my location'}
-            aria-label={userLocation ? 'Update my location' : 'Use my location'}
-          >
-            {locating ? '…' : '◉'}
-          </button>
-        </div>
-        {userLocation && (
-          <div className="reach-ring-legend" aria-label="Distance ring legend">
-            <span><i className="ring-key ring-key--one" />1 km</span>
-            <span><i className="ring-key ring-key--ten" />10 km</span>
-          </div>
-        )}
-        <div className="availability-legend" aria-label="Availability legend">
-          <span><i className="availability-key availability-key--available" />Available now</span>
-          <span><i className="availability-key availability-key--open" />Open · check slot</span>
-          <span><i className="availability-key availability-key--unknown" />Check availability</span>
-          <span><i className="availability-key availability-key--closed" />Closed / unavailable</span>
-          <span><i className="availability-key availability-key--fresh" />Fresh (≤30 min)</span>
-        </div>
-        <MapActivityRail />
-        <MapTimeStrip />
-        <div className="data-source-legend" aria-label="Data source legend">
-          <span><i className="map-source-swatch map-source-swatch--telegram" />Telegram broadcasts ({pins.length})</span>
-          {/* CC BY-SA 4.0 wants a link back to the source, not just text. Pulled
-              from the dataset's own meta.attribution when available, else fall
-              back to the canonical Longdo Map URL. */}
-          <span>
-            <i className="map-source-swatch map-source-swatch--longdo" />
-            <a
-              href="https://map.longdo.com"
-              target="_blank"
-              rel="noreferrer"
-              title={longdoMeta?.attribution || 'POI data from Longdo Map'}
-            >
-              Longdo POI · CC BY-SA 4.0
-            </a> ({longdoPois.length})
-          </span>
-        </div>
         <div className={`aqi-legend${aqiActive ? ' is-visible' : ''}`} aria-hidden={!aqiActive}>
           <span className="aqi-legend-title">PM2.5 · US-EPA AQI</span>
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#00e400' }} />0–50  Good</span>
@@ -1256,33 +1185,34 @@ export default function ListingMap({
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#0033cc' }} />Heavy</span>
           <span className="aqi-legend-row"><i className="aqi-legend-swatch" style={{ background: '#6600cc' }} />Extreme</span>
         </div>
-        <div className="map-architecture-strip" aria-label="Map architecture">
-          <span className="map-architecture-pill">
-            <i className={`map-architecture-dot map-architecture-dot--${basemapStatus.mode}`} />Basemap · {basemapStatus.mode === 'osm' ? 'OpenStreetMap' : basemapStatus.mode === 'satellite' ? 'Satellite' : 'Esri Canvas'}
-          </span>
-          <span className="map-architecture-pill" aria-live="polite">
-            <i className={`map-architecture-dot${aqiActive ? ' is-on' : ''}`} />AQI {aqiActive ? 'on' : 'off'}
-          </span>
-          <span className="map-architecture-pill" aria-live="polite">
-            <i className={`map-architecture-dot${rainActive ? ' is-on' : ''}`} />Rain {rainActive ? 'on' : 'off'}
-          </span>
-          <span className="map-architecture-pill map-architecture-reassure">
-            <i className="map-architecture-dot map-architecture-dot--ok" />No API key required for any layer
-          </span>
-          {longdoPois.length > 0 && (
-            <a
-              className="map-architecture-pill map-architecture-attrib"
-              href="https://map.longdo.com"
-              target="_blank"
-              rel="noreferrer"
-              title="POI data from Longdo Map under CC BY-SA 4.0"
-            >
-              <i className="map-source-swatch map-source-swatch--longdo" />POI data: Longdo Map · CC BY-SA 4.0
-            </a>
-          )}
-        </div>
       </div>
-
+      <div className="map-legend-row" aria-label="Map legend">
+        <span className="map-legend-group">
+          <span><i className="precision-key precision-key--exact" />Exact address</span>
+          <span><i className="precision-key precision-key--approx" />Approximate · subdistrict or district</span>
+        </span>
+        <span className="map-legend-group">
+          <span><i className="availability-key availability-key--available" />Available now</span>
+          <span><i className="availability-key availability-key--open" />Open · check slot</span>
+          <span><i className="availability-key availability-key--unknown" />Hours unknown</span>
+          <span><i className="availability-key availability-key--closed" />Closed</span>
+        </span>
+        {userLocation && (
+          <span className="map-legend-group">
+            <span><i className="ring-key ring-key--one" />1 km</span>
+            <span><i className="ring-key ring-key--ten" />10 km</span>
+          </span>
+        )}
+        {longdoPois.length > 0 && (
+          <a className="map-legend-attrib" href="https://map.longdo.com" target="_blank" rel="noreferrer">
+            POI · Longdo Map, CC BY-SA 4.0
+          </a>
+        )}
+      </div>
+      <div className="map-below">
+        <MapActivityRail />
+        <MapTimeStrip />
+      </div>
       <p className="listing-map-subtitle listing-map-subtitle--below">
         {t.map?.subtitle || 'Click a pin for details.'}
       </p>
@@ -1481,20 +1411,14 @@ export default function ListingMap({
         </div>
       )}
 
-      {/* MapMarketBar and SpatialAnalyticsPanel are wrapped with
-          `.map-desktop-only` so the mobile reaudit CSS can hide them
-          entirely on phones — the same data is reachable via the
-          `/insights` and `/analytics` deep-links below. Desktop and
-          tablet users keep the full in-page panels. */}
-      <div className="map-desktop-only">
-        <MapMarketBar />
-      </div>
+      {/* SpatialAnalyticsPanel is desktop-only; phones reach the same data
+          through the /insights and /analytics links below. */}
       <div className="map-desktop-only">
         <SpatialAnalyticsPanel visiblePins={pins} totalListings={listings.length} />
       </div>
 
-      {/* Mobile deep-links to the analytics views that the MapMarketBar
-          and SpatialAnalyticsPanel render above. The same data is at
+      {/* Mobile deep-links to the analytics views that the
+          SpatialAnalyticsPanel renders above. The same data is at
           /insights and /analytics — the links below the map make that
           explicit so the user can get the spatial density matrix and
           the top-3 listing panel on a route that loads them in mobile-

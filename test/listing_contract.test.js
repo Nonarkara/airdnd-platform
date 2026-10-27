@@ -269,3 +269,34 @@ test('the Google page-chrome default is never accepted as a coordinate', () => {
   assert.equal(extractCoordinatesFromText('https://google.com/maps/@13.95218835,100.564992,15z'), null);
   assert.equal(extractCoordinatesFromText('<div>13.8805 100.6040 lorem 13.95 100.56</div>'), null);
 });
+
+test('display cleaning keeps a Thai name\'s final vowel or tone mark', async () => {
+  const { cleanDisplayText } = await import('../src/lib/normalization.js');
+  assert.equal(cleanDisplayText('ร้านเปิดใหม่ '), 'ร้านเปิดใหม่');
+  assert.equal(cleanDisplayText('  เซ็นเตอร์!!'), 'เซ็นเตอร์');
+  assert.equal(cleanDisplayText('นวดเพื่อสุขภาพ…'), 'นวดเพื่อสุขภาพ');
+});
+
+test('a heading is never shown as a business name; the listing stays', async () => {
+  const { canonicalizePublicListings, isPlaceholderName, UNNAMED_VENUE } = await import('../src/lib/listing_contract.js');
+  for (const heading of ['GRAND OPENING PROMOTION', 'Facebook page', 'เปิดใหม่28/09/69', '#หมอนวดแนะนำ', 'www.massagehotelbangkok.com',
+    'นวดไทย • นวดไทยผสมออยล์ • นวดน้ำมันผ่อนคลาย • นวดเท้า', 'นวด กรุงเทพมหานคร', 'ร้านเปิดใหม่']) {
+    assert.equal(isPlaceholderName(heading), true, heading);
+  }
+  for (const name of ['A5 Massage', 'กุหลาบ นวดเพื่อสุขภาพ', 'มูนเรสต์ นวด&สปา', 'SBM (sabaispa by michel)', 'Relax Society Massage']) {
+    assert.equal(isPlaceholderName(name), false, name);
+  }
+  const base = { phone: '0811111111', location: 'แขวงบางชัน เขตคลองสามวา กรุงเทพมหานคร', description: 'Thai massage and oil massage, open daily' };
+  // A real alias wins over the heading.
+  const [withAlias] = canonicalizePublicListings([
+    { ...base, id: 1, name: 'GRAND OPENING PROMOTION', postedAt: '2026-10-20T00:00:00Z' },
+    { ...base, id: 2, name: 'Garden Spa' },
+  ], { source: 'snapshot', allowUnverified: true });
+  assert.equal(withAlias.name, 'Garden Spa');
+  // No alias: the shop is kept, labelled plainly, heading still searchable.
+  const [alone] = canonicalizePublicListings([{ ...base, id: 3, name: 'Facebook page' }], { source: 'snapshot', allowUnverified: true });
+  assert.equal(alone.name, UNNAMED_VENUE);
+  assert.equal(alone.postedTitle, 'Facebook page');
+  assert.ok(alone.aliasNames.includes('Facebook page'));
+  assert.equal(alone.phone, '0811111111');
+});

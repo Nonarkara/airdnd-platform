@@ -229,7 +229,7 @@ const en = {
     alwaysOpen: { title: 'Always Open', text: 'There are {count} spots operating 24/7 in the directory right now.' },
   },
   proximity: {
-    kicker: '// decide for me',
+    kicker: 'Decide for me',
     title: 'Where can I get a massage right now?',
     subtitle: 'Tell us where you are and your budget. We rank the nearest places by distance — so demand and supply meet at speed.',
     locating: 'Locating…',
@@ -536,7 +536,7 @@ const th = {
   },
   proximity: {
     ...en.proximity,
-    kicker: '// ช่วยตัดสินใจหน่อย',
+    kicker: 'ช่วยตัดสินใจหน่อย',
     title: 'ผมจะได้นวดที่ไหนตอนนี้?',
     subtitle: 'บอกตำแหน่งและงบประมาณของคุณ ระบบจะจัดอันดับสถานที่ที่ใกล้ที่สุดตามระยะทาง',
     locating: 'กำลังระบุตำแหน่ง…',
@@ -817,7 +817,7 @@ const zh = {
   },
   proximity: {
     ...en.proximity,
-    kicker: '// 帮我决定',
+    kicker: '帮我决定',
     title: '我现在去哪里按摩？',
     subtitle: '告诉我们您的位置和预算，系统按距离排序最近的场所。',
     locating: '定位中…',
@@ -1065,7 +1065,7 @@ const ko = {
   },
   proximity: {
     ...en.proximity,
-    kicker: '// 결정해 주세요',
+    kicker: '결정해 주세요',
     title: '지금 어디서 마사지를 받을 수 있나요?',
     subtitle: '위치와 예산을 알려주세요. 거리 순으로 가장 가까운 장소를 안내합니다.',
     locating: '위치 확인 중…',

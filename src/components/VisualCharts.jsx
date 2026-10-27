@@ -121,7 +121,6 @@ export default function VisualCharts({ analytics, eumems }) {
           {hourEntries.map(([h, count]) => {
             const intensity = count > 0 ? 0.15 + (count / maxHourVal) * 0.85 : 0;
             const level = getEngagementLevel(count);
-            const emoji = getPartyEmoji(h);
             return (
               <div key={h} className="heatmap-hour-cell" title={`${h}:00 — ${count} posts`}>
                 <div
@@ -130,7 +129,6 @@ export default function VisualCharts({ analytics, eumems }) {
                 >
                   {count > 0 && <span className="heatmap-hour-val">{count}</span>}
                   <span className="heatmap-hour-level">{level}</span>
-                  <span className="heatmap-hour-emoji">{emoji}</span>
                 </div>
                 <span className="heatmap-hour-label">{h}</span>
               </div>
@@ -153,7 +151,7 @@ export default function VisualCharts({ analytics, eumems }) {
               >
                 {count > 0 && <span className="day-bar-val">{count}</span>}
               </div>
-              <span className="day-bar-label">{getDayEmoji(i)} {dayLabels[i]}</span>
+              <span className="day-bar-label">{dayLabels[i]}</span>
             </div>
           ))}
         </div>
@@ -250,7 +248,7 @@ export default function VisualCharts({ analytics, eumems }) {
           <div className="heatmap-week-grid">
             {activityHeatmap.map((dayData, dIdx) => (
               <div key={dIdx} className="heatmap-week-row">
-                <span className="heatmap-day-label">{getDayEmoji(dIdx)} {dayLabels[dIdx]}</span>
+                <span className="heatmap-day-label">{dayLabels[dIdx]}</span>
                 <div className="heatmap-week-cells">
                   {dayData.map((val, hIdx) => {
                     const intensity = val > 0 ? 0.15 + (val / maxHeatmapValue) * 0.85 : 0;
@@ -275,23 +273,10 @@ export default function VisualCharts({ analytics, eumems }) {
 
 // Helper functions (kept private to component)
 function getEngagementLevel(count) {
-  if (count >= 500) return '🔥 Extreme';
-  if (count >= 300) return '🔥 Hot';
-  if (count >= 150) return '⚡ Active';
-  if (count >= 50) return '👍 Good';
-  if (count >= 10) return '👀 Watching';
-  return '😴 Quiet';
-}
-
-function getPartyEmoji(hour) {
-  const hourInt = parseInt(hour, 10);
-  if (hourInt >= 22 || hourInt <= 5) return '🌃';
-  if (hourInt >= 18 && hourInt <= 21) return '🍷';
-  if (hourInt >= 12 && hourInt <= 17) return '☀️';
-  return '💼';
-}
-
-function getDayEmoji(dayIndex) {
-  const emojis = ['☀️', '💼', '💪', '🎯', '🍾', '🏠', '🌴'];
-  return emojis[dayIndex] || '📅';
+  if (count >= 500) return 'Extreme';
+  if (count >= 300) return 'Hot';
+  if (count >= 150) return 'Active';
+  if (count >= 50) return 'Steady';
+  if (count >= 10) return 'Light';
+  return 'Quiet';
 }

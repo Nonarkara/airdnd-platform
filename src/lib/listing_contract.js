@@ -279,6 +279,38 @@ export function normalizeLocationForIdentity(location) {
     .trim();
 }
 
+export const UNNAMED_VENUE = 'Unnamed venue';
+const PLACEHOLDER_NAME_RES = [
+  // announcement headings, not names
+  /^(?:grand\s*opening|(?:new\s+)?promotion|promo\b|facebook(?:\s*page)?$|ร้านเปิดใหม่|เปิดร้านใหม่|เปิดใหม่|โปรโมชั่น|โปรโมชัน)/i,
+  // a date ("เปิดใหม่28/09/69")
+  /\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}/,
+  // a hashtag or a web address
+  /^#/,
+  /^(?:https?:\/\/|www\.)|\.(?:com|net|org|co\.th|in\.th)\b/i,
+  // "DM to book" copy
+  /ทัก(?:จอง|แชท|ไลน์)|\bdm\s*(?:to|for)\s*book/i,
+  // a service word plus only a place ("นวด กรุงเทพมหานคร")
+  /^(?:ร้าน)?(?:นวด|สปา|massage|spa)\s*(?:กรุงเทพ(?:มหานคร|ฯ)?|bangkok|นนทบุรี|ปทุมธานี|thailand|ไทย)$/i,
+];
+const SERVICE_WORD_RE = /นวด|สปา|ออยล์|massage|spa|oil|foot|เท้า/gi;
+
+/**
+ * A heading the poster used instead of a business name: a promotion, a date,
+ * a hashtag, a website, a list of services. Unlike isBadPublicName this does
+ * not drop the listing — the shop is real and has a phone — it only stops the
+ * heading being shown as its name.
+ */
+export function isPlaceholderName(name) {
+  const value = cleanDisplayText(name);
+  if (!value) return true;
+  if (value === UNNAMED_VENUE) return false;
+  if (PLACEHOLDER_NAME_RES.some((re) => re.test(value))) return true;
+  const separators = (value.match(/[•·|]/g) || []).length;
+  const services = (value.match(SERVICE_WORD_RE) || []).length;
+  return separators >= 2 && services >= 3;
+}
+
 export function isBadPublicName(name) {
   const normalized = cleanDisplayText(name);
   const comparable = normalized.toLowerCase();
@@ -675,6 +707,7 @@ export function mergeCanonicalGroup(listings) {
     ...survivor,
     name: chooseBestValue(normalized, 'name', (value) => {
       if (isBadPublicName(value)) return -100;
+      if (isPlaceholderName(value)) return -60;
       return (SERVICE_NAME_RE.test(value) ? 40 : 10) + Math.min(20, String(value).length);
     }) || survivor.name,
     location: chooseBestValue(normalized, 'location', (value, listing) => {
@@ -720,6 +753,15 @@ export function mergeCanonicalGroup(listings) {
     ),
   ];
   merged.aliasCount = merged.aliasNames.length + (primaryName ? 1 : 0);
+
+  // Every post of this business used a heading, not a name: say so plainly
+  // rather than list "GRAND OPENING PROMOTION" as a shop. The heading stays
+  // searchable as an alias.
+  if (isPlaceholderName(merged.name)) {
+    merged.postedTitle = merged.name;
+    merged.name = UNNAMED_VENUE;
+    if (primaryName && !merged.aliasNames.includes(primaryName)) merged.aliasNames.push(primaryName);
+  }
 
   const coordSource = normalized.find((listing) => hasStoredCoordinates(listing));
   if (coordSource) {

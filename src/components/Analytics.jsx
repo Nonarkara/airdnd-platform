@@ -8,8 +8,6 @@ import InsightNarrative from './InsightNarrative';
 import FieldIntelligence from './FieldIntelligence';
 import VisualCharts from './VisualCharts';
 import PageBanner from './PageBanner';
-import { db } from '../lib/firebase';
-import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { loadFormalization, loadStiScreeningRoiet } from '../lib/health';
 import './Analytics.css';
 
@@ -104,18 +102,7 @@ function listingHref(id) {
   return `/?listing=${encodeURIComponent(id)}`;
 }
 
-const ANALYTICS_TIMEOUT_MS = 6_000;
 const ANALYTICS_REFRESH_INTERVAL_MS = 60_000;
-
-function withTimeout(promise, ms, label) {
-  let timeoutId = null;
-  const timeoutPromise = new Promise((_, reject) => {
-    timeoutId = setTimeout(() => reject(new Error(`${label} timed out.`)), ms);
-  });
-  return Promise.race([promise, timeoutPromise]).finally(() => {
-    if (timeoutId) clearTimeout(timeoutId);
-  });
-}
 
 export default function Analytics() {
   const { t } = useLanguage();
@@ -164,25 +151,20 @@ export default function Analytics() {
     return () => { cancelled = true; };
   }, []);
 
+  // One source for every page: the published snapshot (public/data.json,
+  // rebuilt by the M3 publisher). Analytics used to query Firestore's raw
+  // companions collection instead — thousands of un-merged persona posts, so
+  // its totals disagreed with the directory, and when Firestore was
+  // unreachable it answered "no documents" and the page went blank.
   const load = async () => {
     setIsRefreshing(true);
     try {
-    // All three snapshot files start in parallel — data.json no longer waits
-    // behind patterns/feed before first paint.
-    const [patternData, feedRows, snapshotRows] = await Promise.all([
-      fetch('/patterns.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
-      fetch('/feed.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
-      hasLoadedRef.current
-        ? Promise.resolve(null)
-        : fetch('/data.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
-    ]);
-    if (patternData) setPatterns(patternData);
-
-    if (!hasLoadedRef.current) {
-      // First paint renders the cached snapshot immediately instead of
-      // holding the page behind "Loading industry data..." while the live
-      // query answers. The query below (bounded by ANALYTICS_TIMEOUT_MS)
-      // upgrades the page when it resolves; the badge names the tier.
+      const [patternData, feedRows, snapshotRows] = await Promise.all([
+        fetch('/patterns.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+        fetch('/feed.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
+        fetch('/data.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      ]);
+      if (patternData) setPatterns(patternData);
       if (Array.isArray(snapshotRows) && snapshotRows.length > 0) {
         setListings(snapshotRows.map(snapshotToAnalyticsListing));
         setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
@@ -190,44 +172,8 @@ export default function Analytics() {
         setLastRefreshed(new Date());
         setIsSnapshot(true);
       }
-      hasLoadedRef.current = true;
-      setLoading(false);
-    }
-
-      console.log('Fetching live listings from Firestore for analytics...');
-      const q = query(collection(db, 'companions'), orderBy('updatedAt', 'desc'), limit(1200));
-      const querySnapshot = await withTimeout(getDocs(q), ANALYTICS_TIMEOUT_MS, 'Live listings query');
-      const liveListings = [];
-      querySnapshot.forEach((doc) => {
-        const docData = doc.data();
-        liveListings.push({
-          ...docData,
-          id: docData.id || doc.id,
-        });
-      });
-
-      setListings(liveListings.map(snapshotToAnalyticsListing));
-      setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
-      setAnalysisNow(Date.now());
-      setLastRefreshed(new Date());
-      setIsSnapshot(false);
-    } catch (error) {
-      console.warn('Live analytics failed, falling back to snapshots:', error);
-      const [snapshotResponse, patternResponse, feedResponse] = await Promise.all([
-        fetch('/data.json', { cache: 'no-store' }),
-        fetch('/patterns.json', { cache: 'no-store' }),
-        fetch('/feed.json', { cache: 'no-store' }),
-      ]);
-      const snapshotRows = snapshotResponse.ok ? await snapshotResponse.json() : [];
-      const patternData = patternResponse.ok ? await patternResponse.json() : null;
-      const feedRows = feedResponse.ok ? await feedResponse.json() : [];
-      if (patternData) setPatterns(patternData);
-      setListings((Array.isArray(snapshotRows) ? snapshotRows : []).map(snapshotToAnalyticsListing));
-      setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
-      setAnalysisNow(Date.now());
-      setLastRefreshed(new Date());
-      setIsSnapshot(true);
     } finally {
+      hasLoadedRef.current = true;
       setLoading(false);
       setIsRefreshing(false);
     }

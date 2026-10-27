@@ -197,7 +197,8 @@ export function nearestListings(listings, origin, { maxBudget = null, vibe = 'an
     const l = row.listing;
     const phone = String(l.phone || '').replace(/\D/g, '');
     const name = String(l.name || '').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
-    const keys = [l.canonicalKey, phone.length >= 9 ? `tel:${phone}` : null, name ? `name:${name}` : null].filter(Boolean);
+    const named = name && name !== 'unnamedvenue';
+    const keys = [l.canonicalKey, phone.length >= 9 ? `tel:${phone}` : null, named ? `name:${name}` : null].filter(Boolean);
     if (keys.some((k) => seen.has(k))) continue;
     keys.forEach((k) => seen.add(k));
     unique.push(row);

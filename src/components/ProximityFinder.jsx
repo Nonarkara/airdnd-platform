@@ -109,7 +109,7 @@ function ProximityFinder({ listings, onSelect }) {
         <div className="panel finder__panel">
           <div className="finder__head">
             <div>
-              <span className="sec-num">{tp.kicker || '// INSTANT RELAXATION CONCIERGE'}</span>
+              <span className="sec-num">{tp.kicker || 'Decide for me'}</span>
               <h2 className="h3 finder__title">
                 {tp.title || 'Find Verified Relaxation & Pleasure Right Now'}
               </h2>

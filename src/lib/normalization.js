@@ -173,8 +173,11 @@ export function cleanDisplayText(value) {
   return String(value || '')
     .replace(/https?:\/\/\S+/gi, ' ')
     .replace(/[\u200B-\u200D\uFEFF]/g, ' ')
-    .replace(/^[^\p{L}\p{N}@#]+/gu, '')
-    .replace(/[^\p{L}\p{N})]+$/gu, '')
+    // \p{M}: Thai vowel and tone marks are combining marks, not letters.
+    // Without it the trim ate them — "ร้านเปิดใหม่" printed as "ร้านเปิดใหม",
+    // "เซ็นเตอร์" as "เซ็นเตอร".
+    .replace(/^[^\p{L}\p{M}\p{N}@#]+/gu, '')
+    .replace(/[^\p{L}\p{M}\p{N})]+$/gu, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
