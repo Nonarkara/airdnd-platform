@@ -115,64 +115,65 @@ export default function Matchmaker({ onSelectProvince }) {
 
   return (
     <div className="mm-wrap">
+      {/* The masthead above already names this view and states the triangle.
+          This header used to say both AGAIN — the same sentence as its h2,
+          forty pixels under the page's own h1, and the same explanation as
+          the stake beside it — and the empty half of its first row left a
+          924x54px hole above the duplicate. What is left here is what the
+          reader does: the filters, and the summary of what they returned,
+          side by side, which is where the result should be met. */}
       <header className="mm-h">
-        <h2 className="mm-h-t">Where the supply is, where the money already is.</h2>
-        <p className="mm-h-sub">
-          Pick a category, a star floor, a reach strictness. The provinces on the right are ranked by the
-          triangle of supply × demand × routability — the same triangulation one³ does for everything.
-        </p>
-      </header>
-
-      <div className="mm-controls">
-        <div className="mm-ctrl-grp">
-          <span className="t-key">Category</span>
-          {CATS.map((c) => (
-            <button key={c.id} type="button" className="mm-btn" data-active={req.cat === c.id} onClick={() => setReq({ ...req, cat: c.id })}>
-              <span>{c.en}</span>
-              <span className="mm-btn-th">{c.th}</span>
+        <div className="mm-controls">
+          <div className="mm-ctrl-grp">
+            <span className="t-key">Category</span>
+            {CATS.map((c) => (
+              <button key={c.id} type="button" className="mm-btn" data-active={req.cat === c.id} onClick={() => setReq({ ...req, cat: c.id })}>
+                <span>{c.en}</span>
+                <span className="mm-btn-th">{c.th}</span>
+              </button>
+            ))}
+          </div>
+          <div className="mm-ctrl-grp">
+            <span className="t-key">Stars</span>
+            <button type="button" className="mm-btn" data-active={req.stars === 0} onClick={() => setReq({ ...req, stars: 0 })}>
+              <span>Any</span>
+              <span className="mm-btn-th">ไม่จำกัด</span>
             </button>
-          ))}
+            <button type="button" className="mm-btn" data-active={req.stars === 3} onClick={() => setReq({ ...req, stars: 3 })}>
+              <span>3★+</span>
+              <span className="mm-btn-th">3 ดาวขึ้นไป</span>
+            </button>
+            <button type="button" className="mm-btn" data-active={req.stars === 4} onClick={() => setReq({ ...req, stars: 4 })}>
+              <span>4★+</span>
+              <span className="mm-btn-th">4 ดาวขึ้นไป</span>
+            </button>
+            <button type="button" className="mm-btn" data-active={req.stars === 5} onClick={() => setReq({ ...req, stars: 5 })}>
+              <span>5★ only</span>
+              <span className="mm-btn-th">5 ดาว</span>
+            </button>
+          </div>
+          <div className="mm-ctrl-grp">
+            <span className="t-key">Reach</span>
+            <button type="button" className="mm-btn" data-active={req.reach === 'all'} onClick={() => setReq({ ...req, reach: 'all' })}>
+              <span>All</span>
+              <span className="mm-btn-th">ทั้งหมด</span>
+            </button>
+            <button type="button" className="mm-btn" data-active={req.reach === 'reachable'} onClick={() => setReq({ ...req, reach: 'reachable' })}>
+              <span>Reachable only</span>
+              <span className="mm-btn-th">เฉพาะที่ติดต่อได้</span>
+            </button>
+          </div>
         </div>
-        <div className="mm-ctrl-grp">
-          <span className="t-key">Stars</span>
-          <button type="button" className="mm-btn" data-active={req.stars === 0} onClick={() => setReq({ ...req, stars: 0 })}>
-            <span>Any</span>
-            <span className="mm-btn-th">ไม่จำกัด</span>
-          </button>
-          <button type="button" className="mm-btn" data-active={req.stars === 3} onClick={() => setReq({ ...req, stars: 3 })}>
-            <span>3★+</span>
-            <span className="mm-btn-th">3 ดาวขึ้นไป</span>
-          </button>
-          <button type="button" className="mm-btn" data-active={req.stars === 4} onClick={() => setReq({ ...req, stars: 4 })}>
-            <span>4★+</span>
-            <span className="mm-btn-th">4 ดาวขึ้นไป</span>
-          </button>
-          <button type="button" className="mm-btn" data-active={req.stars === 5} onClick={() => setReq({ ...req, stars: 5 })}>
-            <span>5★ only</span>
-            <span className="mm-btn-th">5 ดาว</span>
-          </button>
-        </div>
-        <div className="mm-ctrl-grp">
-          <span className="t-key">Reach</span>
-          <button type="button" className="mm-btn" data-active={req.reach === 'all'} onClick={() => setReq({ ...req, reach: 'all' })}>
-            <span>All</span>
-            <span className="mm-btn-th">ทั้งหมด</span>
-          </button>
-          <button type="button" className="mm-btn" data-active={req.reach === 'reachable'} onClick={() => setReq({ ...req, reach: 'reachable' })}>
-            <span>Reachable only</span>
-            <span className="mm-btn-th">เฉพาะที่ติดต่อได้</span>
-          </button>
-        </div>
-      </div>
 
-      <div className="mm-summary">
-        <div className="mm-summary-n">{ranked.length} provinces hold matching supply</div>
-        <div className="mm-summary-sub">
-          {catLabel}{req.stars > 0 && `, ${req.stars}★+`}{req.reach === 'reachable' && ', reachable'}.
-          {' '}Top 20 shown. The triangle is supply × online share × reach — a province with
-          deep supply, growing online, and a phone number outranks one with supply alone.
+        <div className="mm-summary">
+          <div className="mm-summary-n">{ranked.length} provinces hold matching supply</div>
+          <div className="mm-summary-sub">
+            {catLabel}{req.stars > 0 && `, ${req.stars}★+`}{req.reach === 'reachable' && ', reachable'}.
+            {' '}Top 20 shown. The triangle is supply × online share × reach — a province with
+            deep supply, growing online, and a phone number outranks one with supply alone.
+          </div>
         </div>
-      </div>
+      </header>
 
       <ol className="mm-list">
         {ranked.slice(0, 20).map((p, i) => {

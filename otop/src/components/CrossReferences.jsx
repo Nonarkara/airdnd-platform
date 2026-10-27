@@ -144,8 +144,13 @@ export default function CrossReferences() {
 
   return (
     <div className="xr-wrap">
+      {/* The masthead above already names this view: "OTOP against the
+          country it sits in." This heading said the same thing again, forty
+          pixels below it, in the same weight — and the half-empty row it
+          sat in left a 852x42px hole beside the anchors. One statement of
+          the title, and the row below it says what the view actually
+          does. */}
       <header className="xr-h">
-        <h2 className="xr-h-t">OTOP and the country the producers sit in.</h2>
         <p className="xr-h-sub">
           Five cross-reference questions, each one a join between the OTOP registry and
           the country the producers operate in. The cells read the public record;
