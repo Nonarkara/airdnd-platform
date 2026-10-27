@@ -193,8 +193,11 @@ test('maps resolver follows shortlink redirects before reading final HTML', asyn
 
   assert.equal(calls.length, 2);
   assert.equal(result.address, 'Lat Phrao 71, Bangkok');
-  assert.equal(result.latitude, 13.7527296);
-  assert.equal(result.longitude, 100.5453312);
+  // `center=` in the page body is the viewport Google happens to open on, not
+  // the place: pairing it with a shop pinned 14 different shops on one point.
+  // Only a place marker in the redirect chain is a coordinate.
+  assert.equal(result.latitude, null);
+  assert.equal(result.longitude, null);
 });
 
 test('maps resolver blocks non-Google URLs before fetching', async () => {
@@ -241,4 +244,28 @@ test('maps URL allowlist accepts known Google Maps share shapes', () => {
   assert.equal(isGoogleMapsUrl('https://example.com/maps/place/example'), false);
   assert.equal(isGoogleMapsUrl('https://maps.google.evil.com/maps/place/example'), false);
   assert.equal(isGoogleMapsUrl('file:///etc/passwd'), false);
+});
+
+test('maps resolver reads the place marker from the redirect URL, not the viewport', async () => {
+  const responses = [
+    {
+      status: 302,
+      headers: {
+        get: (name) => (name.toLowerCase() === 'location'
+          ? 'https://www.google.com/maps/place/Shop/@13.80,100.60,17z/data=!3m1!4b1!4m6!3m5!8m2!3d13.7952!4d100.6061'
+          : null),
+      },
+      text: async () => '',
+    },
+    { status: 200, headers: { get: () => null }, text: async () => '<html>13.95218835, 100.564992</html>' },
+  ];
+  const result = await resolveGoogleMapsData('https://maps.app.goo.gl/example', { fetchImpl: async () => responses.shift() });
+  assert.equal(result.latitude, 13.7952);
+  assert.equal(result.longitude, 100.6061);
+  assert.equal(result.coordinateSource, 'maps-url');
+});
+
+test('the Google page-chrome default is never accepted as a coordinate', () => {
+  assert.equal(extractCoordinatesFromText('https://google.com/maps/@13.95218835,100.564992,15z'), null);
+  assert.equal(extractCoordinatesFromText('<div>13.8805 100.6040 lorem 13.95 100.56</div>'), null);
 });

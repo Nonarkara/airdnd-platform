@@ -233,7 +233,9 @@ function ProximityFinder({ listings, onSelect }) {
                   {results.map(({ listing, distanceKm, price, askRate, precision, transit }, i) => {
                     const telHref = formatTelLink(listing.phone);
                     const lineHref = formatLineUrl(listing.lineUrl);
-                    const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude);
+                    const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude, {
+                      precision: listing.geoPrecision, name: listing.name, location: listing.location,
+                    });
 
                     return (
                       <div key={listing.id} className="finder__card">

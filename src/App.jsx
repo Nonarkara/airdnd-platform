@@ -13,6 +13,7 @@ import ProximityFinder from './components/ProximityFinder';
 import Footer from './components/Footer';
 import AdminGuard from './components/admin/AdminGuard';
 import { listings as backupListings } from './data/mockData';
+import { ensurePlacement } from './lib/placement_client';
 import { auth } from './lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { initSession } from './lib/tracker';
@@ -215,7 +216,9 @@ async function loadListingsWithFallback(mode = 'automatic') {
   const notes = DATA_SOURCE_NOTES[mode] || DATA_SOURCE_NOTES.automatic;
 
   try {
-    const snapshotListings = await fetchSnapshotListings();
+    // Every listing leaves here with a placement verdict (geoPrecision):
+    // a coordinate survives only if its own address confirms it.
+    const snapshotListings = await ensurePlacement(await fetchSnapshotListings());
     return {
       listings: snapshotListings,
       source: 'snapshot',
@@ -224,7 +227,7 @@ async function loadListingsWithFallback(mode = 'automatic') {
     };
   } catch (snapshotError) {
     return {
-      listings: normalizedBackupListings,
+      listings: await ensurePlacement(normalizedBackupListings),
       source: 'backup',
       note: notes.backup,
       warning: sanitizeLoadError(snapshotError, 'Snapshot unavailable.'),
@@ -365,7 +368,9 @@ function App() {
           const normalized = (data || []).map((card) => ({
             id: `feed-${card.id}`,
             name: card.displayName || card.name,
-            location: card.channel ? `${card.channel}` : '—',
+            // The post's own words are its only location evidence; the
+            // channel name is not a place.
+            location: card.city || null,
             city: card.city || 'Bangkok',
             description: card.displayDescription || card.description,
             sourceChannel: card.channel,
@@ -389,8 +394,9 @@ function App() {
             metrics: {},
             dataSource: 'feed',
           }));
-          setFeedListings(normalized);
+          return ensurePlacement(normalized);
         })
+        .then((placed) => { if (placed) setFeedListings(placed); })
         .catch((err) => console.error('Failed to load feed for map:', err));
     }
   }, [activeView, mapSource, feedListings.length]);
@@ -926,7 +932,9 @@ function App() {
                     setSelectedListing({
                       id: `feed-${card.id}`,
                       name: card.displayName || card.name,
-                      location: card.channel ? `${card.channel}` : '—',
+                      // The post's own words are its only location evidence; the
+            // channel name is not a place.
+            location: card.city || null,
                       city: 'Bangkok',
                       description: card.displayDescription || card.description,
                       sourceChannel: card.channel,

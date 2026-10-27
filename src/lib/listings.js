@@ -1,5 +1,6 @@
 import {
   canonicalizePublicListings,
+  isFlaggedUnsafe,
   hasMatchedPublicMedia,
   isBadPublicName,
   buildPhoneKey,
@@ -605,7 +606,7 @@ export function hasUnsafeVisualSignal(listing) {
 }
 
 export function isListingMediaSafe(listing) {
-  return listing?.isSafeImage !== false && !hasUnsafeVisualSignal(listing);
+  return !isFlaggedUnsafe(listing?.isSafeImage) && !isFlaggedUnsafe(listing?.is_safe_image) && !hasUnsafeVisualSignal(listing);
 }
 
 export function getSafeListingGalleryUrls(listing) {
@@ -739,7 +740,11 @@ export function getMapsStatus(listing) {
   }
   const lat = Number(listing?.latitude);
   const lng = Number(listing?.longitude);
-  if (lat && lng && Math.abs(lat) > 0.01 && Math.abs(lng) > 0.01) {
+  // Only an exact point is a destination. A subdistrict or district centre is
+  // a statement about uncertainty — linking to it sends a person to the middle
+  // of an area, not to the shop.
+  const exact = listing?.geoPrecision === undefined || listing?.geoPrecision === 'exact';
+  if (exact && lat && lng && Math.abs(lat) > 0.01 && Math.abs(lng) > 0.01) {
     return {
       status: 'coords',
       link: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,

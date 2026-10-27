@@ -162,7 +162,9 @@ function ListingModal({ listing, onClose, t }) {
   const telDisplay = formatTelDisplay(listing.phone) || listing.phone;
   const lineHref = formatLineUrl(listing.lineUrl);
   const telegramHref = formatTelegramUrl(listing.telegramUrl);
-  const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude);
+  const mapsHref = formatMapsUrl(listing.mapsUrl, listing.latitude, listing.longitude, {
+    precision: listing.geoPrecision, name: listing.name, location: listing.location,
+  });
 
   const grey = computeGreyScore(listing);
   const greyMeta = GREY_META[grey.level] || GREY_META.ambiguous;
