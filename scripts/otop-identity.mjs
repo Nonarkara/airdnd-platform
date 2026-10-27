@@ -9,7 +9,9 @@
  * Every instrument asserts the page identifies itself before it measures.
  */
 
+import { existsSync } from 'node:fs';
 import { chromium } from 'playwright';
+import { activeSite } from './msh/sites.mjs';
 
 /**
  * The identity of the site is its BRAND, not its strapline.
@@ -29,21 +31,40 @@ export const OTOP_TITLE = 'one³';
  * is a gate that never runs.
  */
 export async function launchBrowser() {
+  let browser;
   try {
-    return await chromium.launch({ channel: 'chrome' });
+    browser = await chromium.launch({ channel: 'chrome' });
   } catch {
-    return await chromium.launch();
+    // CHROMIUM_PATH, or a preinstalled Chromium when Playwright's own build
+    // is a different revision (as on the cloud sandboxes).
+    const path = process.env.CHROMIUM_PATH || (existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
+    browser = await chromium.launch(path ? { executablePath: path } : {});
   }
+  // MSH_OFFLINE=1: refuse every request that leaves the machine, so a page
+  // measured on a sandbox settles instead of waiting on hosts it cannot
+  // reach. The geometry measured is the page's own; tiles and analytics
+  // beacons are not part of it.
+  if (process.env.MSH_OFFLINE === '1') {
+    const open = browser.newContext.bind(browser);
+    browser.newContext = async (options) => {
+      const context = await open(options);
+      await context.route((url) => !/^https?:\/\/(localhost|127\.0\.0\.1)(:|\/)/.test(url.href), (route) => route.abort());
+      return context;
+    };
+  }
+  return browser;
 }
 
 export async function assertOtop(page, label = '') {
+  const site = activeSite();
+  const identity = site.key === 'otop' ? OTOP_TITLE : site.identity;
   const title = await page.title();
-  if (!title.startsWith(OTOP_TITLE)) {
+  if (!title.startsWith(identity)) {
     throw new Error(
       `REFUSING TO MEASURE${label ? ` (${label})` : ''}: the server answered ` +
-        `with "${title}", which does not begin with the one³ wordmark and so is ` +
-        `not the one³ app.\n` +
-        `Another process is holding the port. Start the one³ preview on a free ` +
+        `with "${title}", which does not begin with "${identity}" and so is ` +
+        `not the ${site.key} site.\n` +
+        `Another process is holding the port. Start the right preview on a free ` +
         `port and point the instrument at that.`
     );
   }

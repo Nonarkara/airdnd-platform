@@ -329,3 +329,16 @@
 .funnel-row.feedback .funnel-fill {
   background: var(--status);
 }
+
+/* MSH — charts: a wrapping row, not an auto-fit grid. With auto-fit the last
+   row kept the column count of the rows above and left the remainder empty
+   (1062x270px at 1440). In a wrapping row the last cards share the whole width. */
+.visual-charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s6);
+}
+.visual-charts-container > * {
+  flex: 1 1 300px;
+  min-width: 0;
+}

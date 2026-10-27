@@ -199,6 +199,12 @@
   .filter-field {
     min-width: 0;
   }
+
+  /* Five fields in three columns (or two, below 840px): the last one takes
+     the remaining cells instead of leaving a 300x60 void (MSH hole probe). */
+  .filter-bar > :nth-last-child(1 of .filter-field:not(.filter-search)):nth-child(3n + 2 of .filter-field:not(.filter-search)) {
+    grid-column: span 2;
+  }
 }
 
 /* Foldable open (≤840px) — two columns. */

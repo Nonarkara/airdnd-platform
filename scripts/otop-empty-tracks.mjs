@@ -15,9 +15,10 @@
  */
 
 import { assertOtop, launchBrowser } from './otop-identity.mjs';
+import { activeSite } from './msh/sites.mjs';
 
 const BASE = (process.argv[2] || 'https://otop.pages.dev').replace(/\/+$/, '');
-const ROUTES = [
+const OTOP_ROUTES = [
   '/?view=find',
   '/?view=method',
   '/?view=atlas',
@@ -26,6 +27,7 @@ const ROUTES = [
   '/?view=province&code=50',
   '/?view=champions',
 ];
+const ROUTES = activeSite().routes?.map(([, path]) => path) ?? OTOP_ROUTES;
 const WIDTHS = [390, 1024, 1440];
 
 /** Wait until the page stops changing. The registry streams 77 shards; a
@@ -126,11 +128,25 @@ for (const route of ROUTES) {
         // visible.
         const placed = kids
           .map((k) => k.getBoundingClientRect())
-          .filter((r) => r.width > 0 && r.height > 0)
-          .sort((a, b) => a.left - b.left);
-        for (let i = 0; i < placed.length - 1; i++) {
-          const a = placed[i];
-          const b = placed[i + 1];
+          .filter((r) => r.width > 0 && r.height > 0);
+        // Each item is paired with its NEAREST neighbour to the right among
+        // the items that share its rows. Pairing consecutive items of one
+        // left-sorted list compared across rows instead: in a 2x2 grid the
+        // order is top-left, bottom-left, top-right, bottom-right, so the
+        // top pair was never compared and the column gap between two whole,
+        // correctly placed items was reported as a void (Sabai's paper
+        // plates, 18x630px; its analytics cards, 12x1020px).
+        const pairs = [];
+        for (const a of placed) {
+          let b = null;
+          for (const c of placed) {
+            if (c === a || c.left < a.right - 1) continue;
+            if (Math.min(a.bottom, c.bottom) - Math.max(a.top, c.top) < 1) continue;
+            if (!b || c.left < b.left) b = c;
+          }
+          if (b) pairs.push([a, b]);
+        }
+        for (const [a, b] of pairs) {
           const left = a.right;
           const right = b.left;
           if (right - left < 1) continue;

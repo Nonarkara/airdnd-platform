@@ -54,7 +54,7 @@ function VenueWall({ index, t }) {
             venues: index.meta.totalVenues,
           })}
         </span>
-        <h2>{tp.title || 'Every place we have a photo of'}</h2>
+        <h1>{tp.title || 'Every place we have a photo of'}</h1>
         <p>
           {tp.intro
             || "The Telegram broadcast channels we monitor post a lot of photos. This page makes the full archive visible — what's in the build today, and the volume and date span of what's been collected over time."}

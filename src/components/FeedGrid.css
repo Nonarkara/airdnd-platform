@@ -105,8 +105,15 @@
    avatar at full card height, matching ListingCard's fallback treatment,
    so a load failure reads as "no photo right now" not "broken image." */
 .feed-card-photo-wrap.is-avatar {
-  display: grid;
-  place-items: center;
+  /* No photo: a slim band with the initial, not a 4:3 photo slot holding one
+     letter — that spent 230px of every photo-less card on a single glyph
+     (MSH: spatially expensive information). */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  aspect-ratio: auto;
+  height: 3.25rem;
+  padding-inline: 1rem;
 }
 .feed-card-glyph {
   font-family: var(--font-display);
