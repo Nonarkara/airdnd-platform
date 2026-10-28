@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import Composition, { categoryParts } from './atlas/Composition.jsx';
+import Composition from './atlas/Composition.jsx';
+import { categoryParts } from './atlas/categoryParts.js';
 import Sparkline from './charts/Sparkline.jsx';
 import { ZONES, rankOf, loadRevenue, baht, monthlyPoints } from '../lib/insights.js';
 import { loadShards } from '../lib/shards.js';
@@ -69,7 +70,13 @@ function CertCell({ cert, asOf }) {
   );
 }
 
-export default function ProvinceDossier({ insights, code, onSelectProvince, onOpenMatch }) {
+// Remounts per province, so every piece of per-province state starts clean
+// without effects that reset it by hand.
+export default function ProvinceDossier(props) {
+  return <ProvinceDossierBody key={props.code} {...props} />;
+}
+
+function ProvinceDossierBody({ insights, code, onSelectProvince, onOpenMatch }) {
   const [records, setRecords] = useState(null);
   const [revenue, setRevenue] = useState(null);
   const [error, setError] = useState(null);
@@ -90,7 +97,6 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
 
   useEffect(() => {
     let cancelled = false;
-    setRecords(null); setError(null);
     loadShards([code]).then((rows) => { if (!cancelled) setRecords(rows); })
       .catch((e) => { if (!cancelled) setError(e.message); });
     return () => { cancelled = true; };
@@ -114,8 +120,6 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
 
   useEffect(() => {
     let cancelled = false;
-    setMediaPhotos([]);
-    setMediaReady(false);
     loadPhotosForProvince(code).then((photos) => {
       if (!cancelled) {
         setMediaPhotos(photos);
@@ -127,7 +131,6 @@ export default function ProvinceDossier({ insights, code, onSelectProvince, onOp
 
   useEffect(() => {
     let cancelled = false;
-    setFace(null);
     loadProvinceFaces()
       .then((faces) => {
         if (cancelled) return;

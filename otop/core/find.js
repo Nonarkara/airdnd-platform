@@ -216,7 +216,7 @@ export function pushRecentSearch(state) {
       e.cert === entry.cert)
   );
   const next = [entry, ...prev].slice(0, RECENT_MAX);
-  try { sessionStorage.setItem(RECENT_KEY, JSON.stringify(next)); } catch {}
+  try { sessionStorage.setItem(RECENT_KEY, JSON.stringify(next)); } catch { /* storage unavailable: recents are best-effort */ }
 }
 
 /**

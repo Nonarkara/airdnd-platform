@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
-import { Chapter, n } from './fmt.jsx';
+import { Chapter } from './fmt.jsx';
+import { n } from './format.js';
 import { LAYERS, KIND_LAYER, filterUniverse, layoutUniverse, kindMaxima, edgeWidth, rankWithinKind } from '../../../core/universe.js';
 
 /**

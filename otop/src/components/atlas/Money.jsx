@@ -1,4 +1,5 @@
-import { Chapter, n, bnBaht } from './fmt.jsx';
+import { Chapter } from './fmt.jsx';
+import { n, bnBaht } from './format.js';
 import Sparkline from '../charts/Sparkline.jsx';
 import Bars from '../charts/Bars.jsx';
 import StackedBar from '../charts/StackedBar.jsx';

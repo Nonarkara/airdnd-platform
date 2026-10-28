@@ -167,7 +167,7 @@ export default function Find({ onOpenProvince }) {
         setTimeout(() => setShareState('idle'), 1800);
         return;
       }
-    } catch {}
+    } catch { /* fall through to the textarea fallback */ }
     // Fallback for browsers without async clipboard: a hidden textarea.
     try {
       const ta = document.createElement('textarea');
@@ -259,7 +259,7 @@ export default function Find({ onOpenProvince }) {
     const next = findToUrl({ query, provinceCode, stars, onlyContactable, cert, sort });
     const current = `${window.location.pathname}${window.location.search}`;
     if (next !== current) {
-      try { window.history.replaceState(null, '', next); } catch {}
+      try { window.history.replaceState(null, '', next); } catch { /* URL sync is best-effort */ }
     }
   }, [query, provinceCode, stars, onlyContactable, cert, sort]);
 

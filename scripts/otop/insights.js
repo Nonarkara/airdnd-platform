@@ -78,7 +78,7 @@ if (fs.existsSync(tambonsPath)) {
   try {
     const raw = JSON.parse(fs.readFileSync(tambonsPath, 'utf8'));
     tambonsList = Array.isArray(raw.tambons) ? raw.tambons : [];
-  } catch {}
+  } catch { /* optional input: absent or unreadable means no tambon list */ }
 }
 
 const standardsPath = path.join(PUB, 'otop_standards.json');
@@ -86,7 +86,7 @@ let standardsPayload = null;
 if (fs.existsSync(standardsPath)) {
   try {
     standardsPayload = JSON.parse(fs.readFileSync(standardsPath, 'utf8'));
-  } catch {}
+  } catch { /* optional input: absent or unreadable means no standards payload */ }
 }
 
 const pct = (n, d) => (d > 0 ? Math.round((n / d) * 1000) / 10 : null);

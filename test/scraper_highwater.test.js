@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
+import './helpers/scraper_env.js';
 import { extractListingsFromTarget } from '../scripts/telegram_scraper.js';
 
 const fakeTarget = (token = 'ch1') => ({

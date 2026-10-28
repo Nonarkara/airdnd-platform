@@ -29,7 +29,7 @@ function findStandardsSource() {
         if (d.datasetTitle && (d.datasetTitle.includes('มาตรฐานผลิตภัณฑ์ชุมชน') || d.datasetTitle.includes('มผช.')) && Array.isArray(d.rows) && d.rows.length > 500) {
           return path.join(RAW_DIR, f);
         }
-      } catch {}
+      } catch { /* skip files that are not the standards dataset */ }
     }
   }
 
