@@ -239,7 +239,7 @@
     },
     "peers": 1,
     "sideways": false,
-    "docH": 13963
+    "docH": 6437
   },
   {
     "view": "live",
@@ -273,7 +273,7 @@
     },
     "peers": 1,
     "sideways": false,
-    "docH": 3666
+    "docH": 3278
   },
   {
     "view": "live",
@@ -307,7 +307,7 @@
     },
     "peers": 1,
     "sideways": false,
-    "docH": 2642
+    "docH": 2406
   },
   {
     "view": "health",
@@ -443,7 +443,7 @@
     },
     "peers": 5,
     "sideways": false,
-    "docH": 32331
+    "docH": 32347
   },
   {
     "view": "analytics",

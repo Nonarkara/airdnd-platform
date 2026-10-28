@@ -37,7 +37,7 @@ try {
   console.warn('[GEO FEED] Could not load .maps_cache.json:', e.message);
 }
 
-const FEED_LIMIT = 800;        // pull recent N listing-classified messages
+const FEED_LIMIT = 1500;       // pull recent N listing-classified messages
 const PAGE = 1000;
 
 // Local Postgres on the M3 (DATABASE_URL); Supabase is retired.

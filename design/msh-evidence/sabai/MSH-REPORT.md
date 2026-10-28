@@ -82,3 +82,22 @@ With the shared instruments changed, one³ was built and measured in default mod
 ## Not measured here
 
 Map tiles, photos and anything else served from outside the machine — the sandbox cannot reach them, and the instruments refuse those requests on purpose. The geometry measured is the page's own. Screenshots are not committed for the same reason: offline, they would show blank tiles and placeholder photos that the live site does not have.
+
+---
+
+## Addendum — the Live view (28 Oct)
+
+Brief: keep the Live tab maximal — as many cards as possible, because the card count is the evidence that intake works — but make it read as a databank, not a mood board.
+
+| Finding | Change |
+|---|---|
+| One post filled a phone screen (a 4:3 photo plus badge, name, filler sentence, chips): **1 card per screen** | Dense ledger rows, a thumbnail plus one-line facts: **about 6 rows per phone screen**, 3 columns at 1440 |
+| "JUST IN" was stamped on the newest card regardless of age (6 days old in the field) | Removed. A "NEW" mark and amber edge appear only for posts under an hour old |
+| "Screened" repeated on every card; a filler sentence ("Screened source post with extracted contact details.") on most | Removed. Only the exception speaks: held posts say "Held" |
+| Photos masked with a radial gradient and desaturated | Shown as they are (the project's no-gradient rule) |
+| "Live intake" strip and a scrolling marquee over an 11 Oct post | Reads "Latest intake" and stops scrolling once the newest post is over 3 hours old |
+| No statement of how much the databank holds | A ledger counted from the rows: posts, photos, channels, newest, since. Snapshot limit raised from 800 to 1,500 posts |
+| No statement that intake had stalled | A plain notice when the newest post is over 3 hours old |
+| Hole probe on the first version of the rows: **13 empty tracks** (84 × 54px under each thumbnail; up to 360 × 78px inside rows stretched by neighbours) | Thumbnail fills the row's full height. **0** empty tracks across 1,270 grid containers |
+
+Re-measured: route sweep 13/13, line ruler clean at 390 / 1024 / 1440, hole probe 0, first-screen audit 0 of 18 flagged. Photos are blocked in the offline run, so the measured thumbnails are the letter fallback; the photo case fills the same box.
