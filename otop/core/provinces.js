@@ -127,7 +127,7 @@ export const PROVINCE_BY_CODE = new Map(PROVINCES.map((p) => [p.code, p]));
 export function normalizeAdminName(value) {
   if (value == null) return '';
   return String(value)
-    .replace(/[​-‍﻿ ]/g, ' ')
+    .replace(/[\u200B-\u200D\uFEFF\u00A0]/g, ' ')
     .replace(/^\s*(?:จ\.|จังหวัด|province\s+of|province)\s*/i, '')
     .replace(/\s+/g, '')
     .trim()

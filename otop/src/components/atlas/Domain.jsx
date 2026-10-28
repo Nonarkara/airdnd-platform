@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Chapter, n, pct } from './fmt.jsx';
-import Composition, { categoryParts } from './Composition.jsx';
+import { Chapter } from './fmt.jsx';
+import { n, pct } from './format.js';
+import Composition from './Composition.jsx';
+import { categoryParts } from './categoryParts.js';
 
 /** What is made where? Leads with the heatmap; everything else sits below it. */
 export default function Domain({ national, byRegion, byProvince = [], regionIdentity, matrix, byYear, specialization, qualityLeaders, topBasins, go }) {

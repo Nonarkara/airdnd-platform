@@ -139,3 +139,6 @@
     padding-inline: 0.75rem;
   }
 }
+
+/* Stale: nothing has arrived recently, so nothing should look like it is moving. */
+.live-intake-strip.is-stale .live-intake-track { animation: none; }

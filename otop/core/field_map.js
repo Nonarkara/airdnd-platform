@@ -13,7 +13,7 @@
 
 function normalizeHeader(value) {
   return String(value ?? '')
-    .replace(/[​-‍﻿]/g, '')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
     .replace(/[\s_\-.()[\]/]+/g, '')
     .trim()
     .toLowerCase();

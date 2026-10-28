@@ -180,6 +180,17 @@ test('findFromUrl: missing params fall back to defaults, not undefined', () => {
 
 import { recentSearches, pushRecentSearch } from '../otop/core/find.js';
 
+// Node has no sessionStorage (it is a browser global); a minimal stand-in.
+if (typeof globalThis.sessionStorage === 'undefined') {
+  const store = new Map();
+  globalThis.sessionStorage = {
+    getItem: (k) => (store.has(k) ? store.get(k) : null),
+    setItem: (k, v) => { store.set(k, String(v)); },
+    removeItem: (k) => { store.delete(k); },
+    clear: () => { store.clear(); },
+  };
+}
+
 test('recentSearches: empty session returns empty array', () => {
   sessionStorage.clear();
   const recents = recentSearches();

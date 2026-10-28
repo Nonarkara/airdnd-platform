@@ -435,8 +435,8 @@
       var el = all[mi];
       var cs2 = win.getComputedStyle(el);
       if (cs2.display === "none" || cs2.visibility === "hidden") continue;
-      var r2 = el.getBoundingClientRect();
-      if (!r2.width || !r2.height) continue;
+      var elRect = el.getBoundingClientRect();
+      if (!elRect.width || !elRect.height) continue;
       var own = "";
       for (var cn = 0; cn < el.childNodes.length; cn++) {
         if (el.childNodes[cn].nodeType === 3) own += el.childNodes[cn].nodeValue;
@@ -595,9 +595,9 @@
     var botH = 0;
     var botSel = null;
     for (var bb = 0; bb < bottomBands.length; bb++) {
-      var bandH = vh - bottomBands[bb].a;
-      if (bandH > botH) {
-        botH = bandH;
+      var pinH = vh - bottomBands[bb].a;
+      if (pinH > botH) {
+        botH = pinH;
         botSel = bottomBands[bb].sel;
       }
     }
@@ -611,7 +611,7 @@
       }
       return /^(IMG|VIDEO|CANVAS|PICTURE)$/.test(e.tagName);
     }
-    var worst = 0;
+    var worstOver = 0;
     var worstBand = null;
     var worstContent = null;
     for (var pi = 0; pi < coverers.length; pi++) {
@@ -620,10 +620,10 @@
       // `band(items)` call below throw. Fixed 2026-10-22.
       var pinBand = coverers[pi];
       for (var cj = 0; cj < all.length; cj++) {
-        var cont = all[cj];
-        if (pinBand.el.contains(cont) || cont.contains(pinBand.el)) continue;
-        if (!ownContent(cont)) continue;
-        var rr = cont.getBoundingClientRect();
+        var ctn = all[cj];
+        if (pinBand.el.contains(ctn) || ctn.contains(pinBand.el)) continue;
+        if (!ownContent(ctn)) continue;
+        var rr = ctn.getBoundingClientRect();
         if (rr.bottom <= pinBand.a || rr.top >= pinBand.b) continue;
         var oTop = Math.max(pinBand.a, rr.top);
         var oBottom = Math.min(pinBand.b, rr.bottom);
@@ -645,8 +645,8 @@
         var span = ix1 - ix0;
         var samples = span > 120 ? 5 : 3;
         var onTopAnywhere = false;
-        for (var si = 0; si < samples; si++) {
-          var px = Math.round(ix0 + (span * (si + 0.5)) / samples);
+        for (var sIx = 0; sIx < samples; sIx++) {
+          var px = Math.round(ix0 + (span * (sIx + 0.5)) / samples);
           var onTop = null;
           try {
             onTop = d.elementFromPoint(px, py);
@@ -661,16 +661,16 @@
         }
         if (!onTopAnywhere) continue;
         var oh = oBottom - oTop;
-        if (oh > worst) {
-          worst = oh;
+        if (oh > worstOver) {
+          worstOver = oh;
           worstBand = pinBand;
-          worstContent = cont;
+          worstContent = ctn;
         }
       }
     }
-    if (worst > 0 && worstBand) {
-      push(F, "overlap", worstBand.sel, worst,
-        worstBand.sel + " covers " + Math.round(worst) + "px of " + sel(worstContent));
+    if (worstOver > 0 && worstBand) {
+      push(F, "overlap", worstBand.sel, worstOver,
+        worstBand.sel + " covers " + Math.round(worstOver) + "px of " + sel(worstContent));
     }
 
     rec.chrome = {

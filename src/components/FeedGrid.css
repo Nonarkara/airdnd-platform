@@ -1,8 +1,7 @@
 /*
- * FeedGrid — abundance-first card flow. CSS columns deliver a Pinterest-style
- * masonry without JS. Card chrome is hairline-only, photos use the same
- * radial dissolve mask as ListingCard to keep them sitting in the dark
- * Tron grid bg.
+ * FeedGrid — the databank view. One dense row per Telegram post: a
+ * thumbnail and the extracted facts. Hairlines only; photos are shown as they
+ * are (no mask, no filter).
  */
 
 .feed-grid-section {
@@ -42,80 +41,65 @@
   text-transform: uppercase;
 }
 
-.feed-grid {
-  column-count: 4;
-  column-gap: 0.85rem;
+/* Dense ledger rows: a thumbnail and the facts, nothing else. Wrapping flex
+   (not columns, not auto-fit) so the last row's rows stretch to fill it and
+   leave no empty track. */
+.feed-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-@media (max-width: 1240px) { .feed-grid { column-count: 3; } }
-@media (max-width: 880px)  { .feed-grid { column-count: 2; } }
-@media (max-width: 560px)  { .feed-grid { column-count: 1; } }
-
-/* Each card lives inside a column, must avoid breaking. */
-.feed-card {
-  display: block;
-  width: 100%;
-  margin: 0 0 0.85rem;
-  padding: 0;
+.feed-row {
+  flex: 1 1 22rem;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+  padding: 0.5rem;
   border: 1px solid var(--color-line);
   background: var(--color-surface);
   color: var(--color-cream);
   cursor: pointer;
-  break-inside: avoid;
   transition: border-color var(--transition-fast), background-color var(--transition-fast);
 }
 
-.feed-card:hover,
-.feed-card:focus-visible {
+.feed-row:hover,
+.feed-row:focus-visible {
   border-color: var(--color-action);
   background-color: var(--color-surface-hover);
   outline: none;
 }
 
-.feed-card.is-fresh {
-  border-left: 2px solid var(--color-action);
-}
+/* Amber edge = arrived in the last hour. Real recency only. */
+.feed-row.is-fresh { border-left: 3px solid var(--color-action); }
+.feed-row.is-held { border-style: dashed; }
 
-.feed-card.is-freshest {
-  border-color: var(--color-action);
-  border-left: 3px solid var(--color-action);
-}
-
-/* Photo pane — square thumb when present, slim band when text-only. */
-.feed-card-photo-wrap {
+.feed-row-thumb {
+  /* Fills the row's full height: a fixed square beside taller text left a
+     void under it (MSH hole probe: 84x54 per row). */
   position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
+  min-height: 4.5rem;
   overflow: hidden;
   background: var(--color-bg-inset);
-}
-
-.feed-card-photo-wrap.is-textonly {
-  aspect-ratio: auto;
-  height: 8px;
-  background: var(--color-bg-inset);
-  border-top: 2px solid var(--color-action);
-}
-
-.feed-card-photo-wrap.is-review-held {
-  border-top-color: var(--color-cream-muted);
-}
-
-/* A photo was expected (the post had one) but the URL failed — a letter
-   avatar at full card height, matching ListingCard's fallback treatment,
-   so a load failure reads as "no photo right now" not "broken image." */
-.feed-card-photo-wrap.is-avatar {
-  /* No photo: a slim band with the initial, not a 4:3 photo slot holding one
-     letter — that spent 230px of every photo-less card on a single glyph
-     (MSH: spatially expensive information). */
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  aspect-ratio: auto;
-  height: 3.25rem;
-  padding-inline: 1rem;
+  justify-content: center;
 }
-.feed-card-glyph {
+
+.feed-row-thumb.is-glyph { border: 1px solid var(--color-line); }
+
+.feed-row-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.feed-row-glyph {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.5rem;
@@ -123,113 +107,14 @@
   color: var(--ink, #f2ecf4);
 }
 
-.feed-card-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.78) contrast(0.95) brightness(0.88);
-  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 45%, black 55%, rgba(0,0,0,0.85) 78%, transparent 100%);
-  mask-image: radial-gradient(ellipse 90% 90% at 50% 45%, black 55%, rgba(0,0,0,0.85) 78%, transparent 100%);
-  display: block;
-}
-
-.feed-card-photo-count {
-  position: absolute;
-  right: 6px;
-  bottom: 6px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 6px;
-  border: 1px solid var(--color-line);
-  background: rgba(10, 10, 10, 0.9);
-  color: var(--color-cream);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-}
-
-.feed-card-post-count {
-  position: absolute;
-  left: 6px;
-  bottom: 6px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 6px;
-  border: 1px solid var(--color-accent);
-  background: rgba(10, 10, 10, 0.88);
-  color: var(--color-accent);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-}
-
-.feed-card-fresh-stamp {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 7px;
-  background: var(--color-action);
-  color: #000;
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.feed-card-fresh-stamp.is-just-in {
-  background: var(--color-status);
-  animation: feed-fresh-blink 1.6s ease-in-out infinite;
-}
-
-@keyframes feed-fresh-blink {
-  0%, 40%, 100% { opacity: 1; }
-  60% { opacity: 0.55; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .feed-card-fresh-stamp.is-just-in { animation: none; }
-}
-
-.feed-card-body {
+.feed-row-main {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding: 0.6rem 0.7rem 0.7rem;
+  gap: 0.2rem;
+  min-width: 0;
 }
 
-.feed-card-review-row {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.feed-card-review-badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 1.35rem;
-  padding: 0 0.45rem;
-  border: 1px solid var(--color-status);
-  color: var(--color-status);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.feed-card-review-badge.is-held {
-  border-color: var(--color-cream-muted);
-  color: var(--color-cream-muted);
-}
-
-.feed-card-name {
+.feed-row-name {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 500;
@@ -237,56 +122,46 @@
   line-height: 1.25;
   color: var(--color-cream);
   letter-spacing: -0.01em;
-  /* Clamp 2 lines to keep card heights bounded */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.feed-card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 6px;
-  color: var(--color-cream-muted);
+.feed-row-meta,
+.feed-row-facts {
+  margin: 0;
   font-family: var(--font-mono);
   font-size: var(--text-micro);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
+  color: var(--color-cream-muted);
 }
 
-.feed-card-channel { color: var(--color-action); }
-.feed-card-sep    { color: var(--color-cream-muted); }
-.feed-card-ago    { color: var(--color-data); }
-
-.feed-card-desc {
-  margin: 0;
-  color: var(--color-cream-soft);
-  font-family: var(--font-body);
-  font-size: var(--text-body);
-  line-height: 1.45;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
+/* One line each: provenance is a scan, not a read. Cut at the end, never wrap. */
+.feed-row-meta,
+.feed-row-facts {
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.feed-card-actions {
+.feed-row-facts { color: var(--color-cream-soft); }
+.feed-row-new { color: var(--color-action); font-weight: 700; margin-right: 0.5em; }
+.feed-row-held { color: var(--color-cream-soft); }
+
+.feed-row-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-top: 0.25rem;
+  margin-top: 0.15rem;
 }
 
-.feed-card-chip {
+.feed-row-chip {
   display: inline-flex;
   align-items: center;
-  /* §11.8 — interactive chips must be at least 44 px tall on phone.
-   * Desktop can be slightly tighter but we keep the same height for
-   * touchpad / Voice Control / Switch Control accessibility. */
   min-height: 32px;
   padding: 0 10px;
   border: 1px solid var(--color-line);
-  background: transparent;
   color: var(--color-cream);
   font-family: var(--font-mono);
   font-size: var(--text-micro);
@@ -294,32 +169,35 @@
   letter-spacing: 0.06em;
   text-decoration: none;
   text-transform: uppercase;
-  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
 
+.feed-row-chip:hover { border-color: var(--color-action); color: var(--color-action); }
+
+/* Touch targets: 44px on phones, per the project's accessibility floor. */
 @media (max-width: 560px) {
-  .feed-card-chip { min-height: 44px; padding: 0 12px; }
+  .feed-row-chip { min-height: 44px; padding: 0 12px; }
 }
 
-.feed-card-chip:hover {
-  border-color: var(--color-action);
-  color: var(--color-action);
+/* Ledger: the size of the databank, counted from the rows. */
+.feed-ledger {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+  margin: 0.25rem 0 0;
+  font-family: var(--font-mono);
 }
-
-.feed-card-chip-tel  { border-color: var(--color-action); color: var(--color-action); }
-.feed-card-chip-line { border-color: var(--color-status); color: var(--color-status); }
-.feed-card-chip-map  { border-color: var(--color-data); color: var(--color-data); }
-.feed-card-chip-tel:hover  { background: var(--color-action); color: #000; }
-.feed-card-chip-line:hover { background: var(--color-status); color: #000; }
-.feed-card-chip-map:hover  { background: var(--color-data); color: #000; }
-
-.feed-card-chip-price,
-.feed-card-chip-hours {
-  border-color: var(--color-line);
-  color: var(--color-cream-soft);
-  text-transform: none;
-  letter-spacing: 0;
-  cursor: default;
+.feed-ledger > div { display: flex; flex-direction: column; gap: 2px; }
+.feed-ledger dt {
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-cream-muted);
+}
+.feed-ledger dd {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: var(--color-cream);
 }
 
 /* "More" button — large, square-cornered, mono. */
@@ -363,7 +241,6 @@
 }
 
 @media (max-width: 560px) {
-  .feed-card-photo-wrap { aspect-ratio: 16 / 11; }
   .feed-grid-header h2 { font-size: 26px; }
 }
 
@@ -378,4 +255,10 @@
   font-size: var(--fs-micro, 11px);
   line-height: 1.5;
   max-width: 68ch;
+}
+
+/* Phones: one-line names too, so a row is thumb + 3 short lines + actions. */
+@media (max-width: 560px) {
+  .feed-row-name { -webkit-line-clamp: 1; }
+  .feed-row { grid-template-columns: 4rem minmax(0, 1fr); gap: 0.6rem; }
 }

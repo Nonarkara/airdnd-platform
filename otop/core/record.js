@@ -49,7 +49,7 @@ export function normalizeText(value, fallback = '') {
   if (value == null) return fallback;
   const out = String(value)
     .replace(/[๐-๙]/g, (d) => THAI_DIGITS[d])
-    .replace(/[​-‍﻿ ]/g, ' ')
+    .replace(/[\u200B-\u200D\uFEFF ]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
   if (!out || /^(?:null|undefined|n\/?a|-|--|ไม่มี|ไม่ระบุ|ไม่มีข้อมูล)$/i.test(out)) return fallback;

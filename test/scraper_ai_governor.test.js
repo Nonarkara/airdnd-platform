@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
+import './helpers/scraper_env.js';
 
 // Regression fix #3 (2026-09-08): the AI governor's serialization guarantee
 // was false. waitAiTurn read aiLastCallAt, slept, then stamped Date.now() —

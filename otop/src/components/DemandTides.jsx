@@ -65,10 +65,14 @@ function growthOf(v22, v24) {
   return (v24 - v22) / v22;
 }
 
+// Stable fallbacks, so the memo below is not invalidated every render.
+const DEFAULT_YEARS = [2022, 2023, 2024];
+const NO_PROVINCES = {};
+
 export default function DemandTides({ revenue, onSelectProvince }) {
   const cats = revenue?.byCategory?.categories ?? CATS;
-  const years = revenue?.byCategory?.years ?? [2022, 2023, 2024];
-  const byProv = revenue?.byCategory?.provinces ?? {};
+  const years = revenue?.byCategory?.years ?? DEFAULT_YEARS;
+  const byProv = revenue?.byCategory?.provinces ?? NO_PROVINCES;
   const provinces = useMemo(() => {
     return Object.entries(byProv)
       .map(([code, yearMap]) => {

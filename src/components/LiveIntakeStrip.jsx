@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   createIntakeSummary,
   formatSourceChannelName,
@@ -15,6 +16,10 @@ const BAD_TICKER_NAMES = [
   /cracker/i,
 ];
 
+// A strip that says "live" over a six-day-old post is a false claim. Past this
+// age it says "latest" and stops scrolling.
+const STALE_AFTER_MS = 3 * 60 * 60 * 1000;
+
 function formatTickerName(listing, t) {
   const name = String(listing?.name || '').trim();
   if (!name || BAD_TICKER_NAMES.some((pattern) => pattern.test(name))) {
@@ -26,14 +31,17 @@ function formatTickerName(listing, t) {
 function LiveIntakeStrip({ t, listings, intakeSummary, lastLoadedAt }) {
   const intake = intakeSummary || createIntakeSummary(listings);
   const sourceTimestamp = intake.latestSourceTimestamp || intake.latestIngestTimestamp || lastLoadedAt;
+  const [now] = useState(() => Date.now());
+  const sourceMs = sourceTimestamp ? new Date(sourceTimestamp).getTime() : NaN;
+  const isStale = Number.isFinite(sourceMs) && now - sourceMs > STALE_AFTER_MS;
   const tickerItems = intake.newestListings.length > 0
     ? [...intake.newestListings, ...intake.newestListings]
     : [];
 
   return (
-    <section className="live-intake-strip" aria-label={t.intake.tickerLabel} aria-live="polite">
+    <section className={`live-intake-strip${isStale ? ' is-stale' : ''}`} aria-label={t.intake.tickerLabel} aria-live="polite">
       <div className="live-intake-label">
-        <span>{t.intake.kicker}</span>
+        <span>{isStale ? (t.intake.latestKicker || 'Latest intake') : t.intake.kicker}</span>
         <strong>{sourceTimestamp ? formatRelativeTimestamp(sourceTimestamp) : t.intake.pending}</strong>
       </div>
 

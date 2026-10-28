@@ -1,6 +1,6 @@
 import { isPlaceholderName } from '../lib/listing_contract';
 import { useEffect, useMemo, useState } from 'react';
-import { coverVariant, venueInitial } from '../lib/listings';
+import { venueInitial } from '../lib/listings';
 import { useCardPhoto } from '../lib/useCardPhoto';
 import { dedupeFeed } from '../lib/dedupeFeed';
 import { channelLabel } from '../lib/channel';
@@ -19,8 +19,8 @@ import './FeedGrid.css';
  * curated set. Both live on the home page.
  */
 
-const INITIAL_REVEAL = 36;
-const MORE_INCREMENT = 36;
+const INITIAL_REVEAL = 48;
+const MORE_INCREMENT = 48;
 const FEED_REFRESH_INTERVAL_MS = 60_000;
 const REVIEW_NAME = '__review__';
 
@@ -125,7 +125,7 @@ function isFreshlyIn(iso) {
   return (Date.now() - new Date(iso).getTime()) < FRESH_WINDOW_MIN * 60 * 1000;
 }
 
-function FeedCard({ card, onOpen, isFreshest, t }) {
+function FeedCard({ card, onOpen, t }) {
   const displayCard = getDisplayCard(card, t);
   const fresh = isFreshlyIn(card.messageDate);
   const channel = channelLabel(card.channel || '');
@@ -134,97 +134,94 @@ function FeedCard({ card, onOpen, isFreshest, t }) {
   const localFallback = primary ? `/images/${primary.split('/').pop()}` : null;
   const photoCandidates = [primary, localFallback].filter((u, i, arr) => u && arr.indexOf(u) === i);
   const photo = useCardPhoto(photoCandidates);
-  const extraCount = Math.max(0, photos.length - 1);
   const postCount = card.postCount || 1;
-  const variant = coverVariant(card.id || displayCard.displayName);
+  const hasPhoto = photo.src && !photo.isFailed;
+
+  // One line of provenance: who posted, how long ago, and only the counts that
+  // are real. No badge repeats on every row — only the exception (held) speaks.
+  // Ordered by what must survive truncation: age, then the exception (held),
+  // then counts; the channel name is the part that can be cut.
+  const meta = [
+    formatAgo(card.messageDate),
+    displayCard.requiresReview ? (t?.feed?.heldShort || 'Held') : null,
+    photos.length > 1 ? `${photos.length} photos` : null,
+    postCount > 1 ? `${postCount}×` : null,
+    `@${channel}`,
+  ].filter(Boolean);
 
   return (
     <article
-      className={`feed-card${fresh ? ' is-fresh' : ''}${isFreshest ? ' is-freshest' : ''}`}
+      className={`feed-row${fresh ? ' is-fresh' : ''}${displayCard.requiresReview ? ' is-held' : ''}`}
       onClick={() => onOpen(displayCard)}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(displayCard); } }}
       role="button"
       tabIndex={0}
     >
-      {photo.src && !photo.isFailed ? (
-        <div className={`feed-card-photo-wrap${photo.isLoading ? ' photo--pending' : ''}`}>
+      <div className={`feed-row-thumb${hasPhoto ? '' : ' is-glyph'}`}>
+        {hasPhoto ? (
           <img
             src={photo.src}
             alt=""
             loading="lazy"
-            className="feed-card-photo"
+            className="feed-row-photo"
             onLoad={photo.onLoad}
             onError={photo.onError}
           />
-          {extraCount > 0 && <span className="feed-card-photo-count">+{extraCount}</span>}
-          {postCount > 1 && <span className="feed-card-post-count">{postCount}×</span>}
-          {(fresh || isFreshest) && (
-            <span className={`feed-card-fresh-stamp${isFreshest ? ' is-just-in' : ''}`}>
-              {isFreshest ? 'JUST IN' : 'NEW'}
-            </span>
-          )}
-        </div>
-      ) : photo.isFailed && !displayCard.requiresReview ? (
-        // A photo was expected but failed to load — a full letter-avatar
-        // reads as "this venue, no photo right now," never as a broken image.
-        <div className={`feed-card-photo-wrap is-avatar ${variant}`}>
-          <span className="feed-card-glyph">{venueInitial(displayCard.displayName)}</span>
-          {postCount > 1 && <span className="feed-card-post-count">{postCount}×</span>}
-          {(fresh || isFreshest) && (
-            <span className={`feed-card-fresh-stamp${isFreshest ? ' is-just-in' : ''}`}>
-              {isFreshest ? 'JUST IN' : 'NEW'}
-            </span>
-          )}
-        </div>
-      ) : (
-        <div className={`feed-card-photo-wrap is-textonly${displayCard.requiresReview ? ' is-review-held' : ''}`}>
-          {postCount > 1 && <span className="feed-card-post-count">{postCount}×</span>}
-          {(fresh || isFreshest) && (
-            <span className={`feed-card-fresh-stamp${isFreshest ? ' is-just-in' : ''}`}>
-              {isFreshest ? 'JUST IN' : 'NEW'}
-            </span>
-          )}
-        </div>
-      )}
-
-      <div className="feed-card-body">
-        <div className="feed-card-review-row">
-          <span className={`feed-card-review-badge${displayCard.requiresReview ? ' is-held' : ''}`}>
-            {displayCard.requiresReview ? t?.feed?.heldBadge || 'Held for review' : t?.feed?.safeBadge || 'Screened'}
-          </span>
-        </div>
-        <h3 className="feed-card-name">{displayCard.displayName}</h3>
-        <div className="feed-card-meta">
-          <span className="feed-card-channel">@{channel}</span>
-          <span className="feed-card-sep">·</span>
-          <span className="feed-card-ago">{formatAgo(card.messageDate)}</span>
-        </div>
-        {displayCard.displayDescription && (
-          <p className="feed-card-desc">{displayCard.displayDescription}</p>
+        ) : (
+          <span className="feed-row-glyph">{venueInitial(displayCard.displayName)}</span>
         )}
-        <div className="feed-card-actions">
-          {card.telLink && (
-            <a href={card.telLink} className="feed-card-chip feed-card-chip-tel" onClick={(e) => e.stopPropagation()}>{t?.feed?.call || 'Call'}</a>
-          )}
-          {card.lineUrl && (
-            <a href={card.lineUrl} target="_blank" rel="noopener noreferrer" className="feed-card-chip feed-card-chip-line" onClick={(e) => e.stopPropagation()}>{t?.feed?.line || 'LINE'}</a>
-          )}
-          {card.mapsUrl && (
-            <a href={card.mapsUrl} target="_blank" rel="noopener noreferrer" className="feed-card-chip feed-card-chip-map" onClick={(e) => e.stopPropagation()}>{t?.feed?.map || 'Map'}</a>
-          )}
-          {card.priceLabel && <span className="feed-card-chip feed-card-chip-price">{card.priceLabel}</span>}
-          {card.hours && <span className="feed-card-chip feed-card-chip-hours">{card.hours}</span>}
-        </div>
+      </div>
+
+      <div className="feed-row-main">
+        <h3 className="feed-row-name">{displayCard.displayName}</h3>
+        <p className="feed-row-meta">
+          {fresh && <span className="feed-row-new">{t?.feed?.newStamp || 'NEW'}</span>}
+          {meta.join(' · ')}
+        </p>
+        {(card.hours || card.priceLabel) && (
+          <p className="feed-row-facts">{[card.hours, card.priceLabel].filter(Boolean).join(' · ')}</p>
+        )}
+        {(card.telLink || card.lineUrl || card.mapsUrl) && (
+          <div className="feed-row-actions">
+            {card.telLink && (
+              <a href={card.telLink} className="feed-row-chip" onClick={(e) => e.stopPropagation()}>{t?.feed?.call || 'Call'}</a>
+            )}
+            {card.lineUrl && (
+              <a href={card.lineUrl} target="_blank" rel="noopener noreferrer" className="feed-row-chip" onClick={(e) => e.stopPropagation()}>{t?.feed?.line || 'LINE'}</a>
+            )}
+            {card.mapsUrl && (
+              <a href={card.mapsUrl} target="_blank" rel="noopener noreferrer" className="feed-row-chip" onClick={(e) => e.stopPropagation()}>{t?.feed?.map || 'Map'}</a>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );
 }
+
+// What the snapshot actually holds, counted from the rows themselves — the
+// databank's size is the evidence, so it is never typed in by hand.
+function ledgerOf(rows) {
+  const times = rows.map((r) => new Date(r.messageDate).getTime()).filter(Number.isFinite);
+  const photoCount = rows.reduce((sum, r) => sum + (Array.isArray(r.photoUrls) ? r.photoUrls.length : 0), 0);
+  return {
+    posts: rows.length,
+    photos: photoCount,
+    channels: new Set(rows.map((r) => r.channel).filter(Boolean)).size,
+    newest: times.length ? Math.max(...times) : null,
+    oldest: times.length ? Math.min(...times) : null,
+  };
+}
+
+const STALE_AFTER_MS = 3 * 60 * 60 * 1000;
+const dayOf = (ms) => new Date(ms).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 
 export default function FeedGrid({ onOpen, t }) {
   const [feed, setFeed] = useState([]);
   const [visibleCount, setVisibleCount] = useState(INITIAL_REVEAL);
   const [loading, setLoading] = useState(true);
   const [feedMeta, setFeedMeta] = useState(null);
+  const [loadedAt, setLoadedAt] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -235,6 +232,7 @@ export default function FeedGrid({ onOpen, t }) {
         .then((rows) => {
           if (!cancelled) {
             setFeed(Array.isArray(rows) ? rows : []);
+            setLoadedAt(Date.now());
             setLoading(false);
           }
         })
@@ -260,7 +258,8 @@ export default function FeedGrid({ onOpen, t }) {
   const deduped = useMemo(() => dedupeFeed(feed), [feed]);
 
   const visible = useMemo(() => deduped.slice(0, visibleCount), [deduped, visibleCount]);
-  const freshestId = useMemo(() => deduped[0]?.id || null, [deduped]);
+  const ledger = useMemo(() => ledgerOf(feed), [feed]);
+  const behindMs = ledger.newest && loadedAt ? loadedAt - ledger.newest : null;
   const subtitle = (t?.feed?.subtitle || '{unique} businesses visible after screening · {total} source posts reviewed. Sensitive raw copy and photos are held back.')
     .replace('{unique}', deduped.length.toLocaleString())
     .replace('{total}', feed.length.toLocaleString());
@@ -275,6 +274,23 @@ export default function FeedGrid({ onOpen, t }) {
             ? subtitle
             : t?.feed?.empty || 'No screened source posts are available yet.'}
         </p>
+        {ledger.posts > 0 && (
+          <dl className="feed-ledger">
+            <div><dt>Posts</dt><dd>{ledger.posts.toLocaleString()}</dd></div>
+            <div><dt>Photos</dt><dd>{ledger.photos.toLocaleString()}</dd></div>
+            <div><dt>Channels</dt><dd>{ledger.channels}</dd></div>
+            <div><dt>Newest</dt><dd>{formatAgo(new Date(ledger.newest).toISOString())}</dd></div>
+            <div><dt>Since</dt><dd>{dayOf(ledger.oldest)}</dd></div>
+          </dl>
+        )}
+        {behindMs !== null && behindMs > STALE_AFTER_MS && (
+          // Said plainly: the page shows what the snapshot holds, and the
+          // snapshot has stopped growing. Silence here reads as a live claim.
+          <p className="feed-grid-degraded" role="status">
+            Intake is behind: the newest post is {formatAgo(new Date(ledger.newest).toISOString()).replace(' ago', '')} old
+            ({new Date(ledger.newest).toISOString().slice(0, 16).replace('T', ' ')} UTC). What follows is the archive.
+          </p>
+        )}
         {feedMeta?.degraded && (
           // The per-post stream is unavailable, so this list is the deduplicated
           // directory — one card per business. Saying so beats letting the tab
@@ -291,13 +307,12 @@ export default function FeedGrid({ onOpen, t }) {
         <div className="feed-grid-loading">{t?.feed?.loading || 'Loading screened intake...'}</div>
       ) : (
         <>
-          <div className="feed-grid">
+          <div className="feed-list">
             {visible.map((card) => (
               <FeedCard
                 key={card.id}
                 card={card}
                 onOpen={onOpen}
-                isFreshest={card.id === freshestId}
                 t={t}
               />
             ))}
