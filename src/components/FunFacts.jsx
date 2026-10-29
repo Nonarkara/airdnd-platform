@@ -19,7 +19,6 @@ export default function FunFacts({ listings, metrics }) {
     if (mostCredible && mostCredible.credibility > 0) {
       const tpl = tf.mostVerified || {};
       computed.push({
-        emoji: '🌟',
         title: tpl.title || 'Most Verified',
         text: tmpl(tpl.text || '{name} has the highest credibility score ({score}), backed by {count} independent mentions.', {
           name: mostCredible.name,
@@ -36,7 +35,6 @@ export default function FunFacts({ listings, metrics }) {
       const pct = Math.round((prices.length / listings.length) * 100);
       const tpl = tf.marketValue || {};
       computed.push({
-        emoji: '💸',
         title: tpl.title || 'Disclosed Rates',
         text: tmpl(tpl.text || 'Of the {percent}% of listings disclosing prices, the average is ฿{avg}, with the premium tier peaking at ฿{max}.', {
           percent: pct,
@@ -50,7 +48,6 @@ export default function FunFacts({ listings, metrics }) {
       const topService = metrics.popularServices[0];
       const tpl = tf.trending || {};
       computed.push({
-        emoji: '🔥',
         title: tpl.title || 'Trending',
         text: tmpl(tpl.text || '"{tag}" is the most requested service, appearing in {count} active listings.', {
           tag: topService.tag,
@@ -63,7 +60,6 @@ export default function FunFacts({ listings, metrics }) {
     if (nightOwls.length > 0) {
       const tpl = tf.alwaysOpen || {};
       computed.push({
-        emoji: '🌙',
         title: tpl.title || 'Always Open',
         text: tmpl(tpl.text || 'There are {count} spots operating 24/7 in the directory right now.', {
           count: nightOwls.length,
@@ -87,7 +83,6 @@ export default function FunFacts({ listings, metrics }) {
       <div className="fun-facts-grid">
         {facts.map((fact, index) => (
           <div key={index} className="fun-fact-card an-card" style={{ animationDelay: `${index * 0.1}s` }}>
-            <div className="fun-fact-emoji">{fact.emoji}</div>
             <div className="fun-fact-content">
               <h4>{fact.title}</h4>
               <p>{fact.text}</p>

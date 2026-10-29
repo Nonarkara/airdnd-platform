@@ -12,8 +12,9 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
-import { n, bnBaht } from './atlas/fmt.jsx';
-import Composition, { categoryParts } from './atlas/Composition.jsx';
+import { n, bnBaht } from './atlas/format.js';
+import Composition from './atlas/Composition.jsx';
+import { categoryParts } from './atlas/categoryParts.js';
 import Bars from './charts/Bars.jsx';
 import { loadInsights } from '../lib/insights.js';
 import { cardSvg } from '../../core/briefs.js';

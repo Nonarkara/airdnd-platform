@@ -135,7 +135,7 @@
 
   --text-display: var(--fs-h1);
   --text-title: var(--fs-h3);
-  --text-body: 15px;
+  --text-body: 14px; /* one body size (anti-slop type scale): was 15px beside a 14px --fs-body */
   --text-small: var(--fs-xs);
   --text-micro: var(--fs-2xs);
 
@@ -220,6 +220,24 @@ svg { display: block; }
 #root { min-height: 100vh; position: relative; }
 
 h1,h2,h3,h4,h5,h6 { font-family: var(--font-display); font-weight: 700; line-height: 1.1; letter-spacing: -.02em; color: var(--ink); }
+/* MSH — the reading measure. One token, in em so it moves with the type:
+   32em is about 65 Latin characters, inside the house 45–75. Running text
+   never sets wider than this, whatever container it sits in. Before this
+   rule the Sabai pages carried 183 blocks over the ceiling, the worst 200
+   characters a line (Methodology, FAQ answers, Analytics card notes).
+   Same token and value as one³ (design/msh-evidence/MSH-REPORT.md). */
+:root { --read: 32em; }
+#root p,
+#root li,
+#root blockquote,
+#root figcaption,
+#root dd,
+#root .soc-footer-note,
+#root .an-addon-legend-items .legend-item > span {
+  max-width: var(--read);
+}
+/* An inline span ignores max-width; the footer note is a line of its own. */
+#root .soc-footer-note { display: inline-block; }
 h1 { font-size: var(--fs-h1); }
 h2 { font-size: var(--fs-h2); }
 h3 { font-size: var(--fs-h3); font-weight: 600; }
@@ -366,7 +384,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 /* legacy utility kickers/pills used across existing components */
 .section-kicker { font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--mango); }
-.section-kicker::before { content: '// '; opacity: .6; }
+/* Section labels carry no '// ' prefix: a code comment is not a label. */
 .pill-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 0; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-2); font-family: var(--font-text); font-size: var(--fs-xs); font-weight: 600; }
 
 /* ============================================================================
@@ -422,9 +440,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .rating .icon { color: var(--gold); }
 
 /* Horizontal inventory ledger — flight-board row, not a photo card */
+/* One column set for the ledger header and every row. The last column has a
+   fixed width (Tel + LINE + save) so a row without LINE no longer shifts its
+   province, activity and rate columns out of line with the rows above. */
+:root { --ledger-cols: 56px minmax(0, 1.6fr) minmax(5rem, 0.7fr) minmax(4rem, 0.45fr) minmax(4.5rem, 0.55fr) minmax(3.5rem, 0.4fr) 9.25rem; }
 .lcard {
   display: grid;
-  grid-template-columns: 56px minmax(0, 1.6fr) minmax(5rem, 0.7fr) minmax(4rem, 0.45fr) minmax(4.5rem, 0.55fr) minmax(3.5rem, 0.4fr) auto;
+  grid-template-columns: var(--ledger-cols);
   align-items: center;
   gap: var(--s4);
   padding: 10px 12px;

@@ -18,7 +18,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Chapter, n, pct } from './atlas/fmt.jsx';
+import { Chapter } from './atlas/fmt.jsx';
+import { n, pct } from './atlas/format.js';
 import { loadInsights } from '../lib/insights.js';
 
 function Title({ en, th }) {

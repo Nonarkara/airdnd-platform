@@ -92,7 +92,7 @@ function ListingCard({ listing, onClick, priority = false }) {
       <div className="lcard__venue">
         <div className="lcard__name-row">
           <span className="lcard__name">{listing.name}</span>
-          {isAvailableNow && <span className="tag-available tag" style={{ background: '#059669', color: '#fff', fontSize: '10px', padding: '2px 6px', fontWeight: 700 }}>⚡ Ready</span>}
+          {isAvailableNow && <span className="tag-mango tag tag-available">{t.card?.readyBadge || 'Ready'}</span>}
           {isNew && !isAvailableNow && <span className="tag-mango tag">{t.card?.newBadge || 'New'}</span>}
         </div>
         <div className="lcard__meta">

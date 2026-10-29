@@ -102,7 +102,7 @@ export function sniffDelimiter(text) {
 export function csvToObjects(text) {
   const rows = parseCsv(text, sniffDelimiter(text));
   if (rows.length < 2) return [];
-  const header = rows[0].map((h) => h.replace(/^﻿/, '').trim());
+  const header = rows[0].map((h) => h.replace(/^\uFEFF/, '').trim());
   return rows.slice(1).map((cells) => {
     const obj = {};
     header.forEach((key, i) => { obj[key] = cells[i] ?? ''; });

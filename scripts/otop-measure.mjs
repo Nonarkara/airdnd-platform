@@ -28,11 +28,12 @@
  */
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { assertOtop, launchBrowser } from './otop-identity.mjs';
+import { activeSite } from './msh/sites.mjs';
 
 const BASE = (process.argv[2] || 'https://otop.nonarkara.org').replace(/\/+$/, '');
 const WIDTH = Number(process.argv[3] || 1440);
 
-const ROUTES = [
+const OTOP_ROUTES = [
   ['find', '/?view=find'],
   ['match', '/?view=match&lens=b2c'],
   ['atlas', '/?view=atlas'],
@@ -48,6 +49,7 @@ const ROUTES = [
   ['method', '/?view=method'],
   ['softpower', '/?view=softpower'],
 ];
+const ROUTES = activeSite().routes ?? OTOP_ROUTES;
 
 const MAX = 75;   // the house ceiling
 const MIN = 45;   // and the floor for a paragraph
@@ -174,6 +176,16 @@ for (const [name, route] of ROUTES) {
       // The word space, as a tolerance. A column gap is wider than this; a
       // word space is not.
       const tol = parseFloat(getComputedStyle(el).fontSize) * 0.35 || 5;
+      // …measured in the WORD's own type: a letter-spaced eyebrow inside a
+      // block (Sabai's paper masthead, 2.2px tracking) sets its word gaps
+      // wider than the block's 0.35em, and the ruler split every word into a
+      // one-word "line" — then called the block a ribbon. The tracking on
+      // both sides of the space is part of the space.
+      const tolFor = (node) => {
+        const pcs = getComputedStyle(node.parentElement || el);
+        const spacing = Math.max(0, parseFloat(pcs.letterSpacing) || 0);
+        return Math.max(tol, (parseFloat(pcs.fontSize) || 0) * 0.35 + 2 * spacing + 1);
+      };
       let m;
       while ((m = re.exec(full))) {
         const a = locate(m.index);
@@ -197,8 +209,9 @@ for (const [name, route] of ROUTES) {
         // contains it. A word that starts past the end of every line — by a
         // column gap, not a word space — opens a new line.
         let line = null;
+        const wordTol = tolFor(a.node);
         for (const ln of row) {
-          if (rect.left >= ln.left - tol && rect.left <= ln.right + tol) {
+          if (rect.left >= ln.left - wordTol && rect.left <= ln.right + wordTol) {
             if (!line || ln.right > line.right) line = ln;
           }
         }
@@ -428,9 +441,12 @@ for (const [name, route] of ROUTES) {
   await ctx.close();
 }
 
-mkdirSync('design/msh-evidence', { recursive: true });
+// Each site keeps its own receipts: one³'s stay at the folder root, where
+// MSH-REPORT.md cites them; any other site writes under its own name.
+const EVIDENCE = activeSite().key === 'otop' ? 'design/msh-evidence' : `design/msh-evidence/${activeSite().key}`;
+mkdirSync(EVIDENCE, { recursive: true });
 writeFileSync(
-  `design/msh-evidence/line-measure-${WIDTH}.json`,
+  `${EVIDENCE}/line-measure-${WIDTH}.json`,
   JSON.stringify(
     { base: BASE, width: WIDTH, max: MAX, min: MIN, headingMaxLines: HEADING_MAX_LINES, rows, selftest: selftestResults },
     null,

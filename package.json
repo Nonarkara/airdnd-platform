@@ -17,6 +17,7 @@
     "scrape:watch": "node scripts/telegram_scraper.js --watch",
     "repair:photos": "node scripts/repair_photo_urls.js",
     "verify:snapshot": "node scripts/verify_snapshot.js",
+    "geo:index": "node scripts/build_geo_index.js",
     "snapshot:refresh": "node scripts/refresh_public_snapshot.js",
     "feed:refresh": "node scripts/refresh_feed_snapshot.js",
     "patterns:compute": "node scripts/compute_patterns.js",

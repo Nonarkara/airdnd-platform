@@ -93,7 +93,9 @@
 
 .fi-bignum {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  /* Below the page title (40px): a figure is evidence, not the headline. At
+     2.8rem these dated July counts were the largest type on the page. */
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;

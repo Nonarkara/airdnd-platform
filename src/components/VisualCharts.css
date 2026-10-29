@@ -107,8 +107,13 @@
 /* Engagement Heatmap Hour */
 .heatmap-hour-grid {
   display: grid;
-  grid-template-columns: repeat(24, 1fr);
-  gap: var(--s2);
+  /* minmax(0, …): 24 columns must fit the width they are given; with plain
+     1fr each cell grew to its label and the grid pushed the page sideways. */
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  gap: 2px;
+}
+@media (max-width: 720px) {
+  .heatmap-hour-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); row-gap: var(--s2); }
 }
 
 .heatmap-hour-cell {
@@ -138,16 +143,14 @@
 }
 
 .heatmap-hour-level {
+  /* The level is the bar's shade; the word stays in the cell's title. */
+  display: none;
   font-size: var(--fs-xxs);
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 2px;
 }
 
-.heatmap-hour-emoji {
-  font-size: var(--fs-sm);
-  margin-top: 2px;
-}
 
 .heatmap-hour-label {
   font-size: var(--fs-xxs);
@@ -325,4 +328,17 @@
 
 .funnel-row.feedback .funnel-fill {
   background: var(--status);
+}
+
+/* MSH — charts: a wrapping row, not an auto-fit grid. With auto-fit the last
+   row kept the column count of the rows above and left the remainder empty
+   (1062x270px at 1440). In a wrapping row the last cards share the whole width. */
+.visual-charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s6);
+}
+.visual-charts-container > * {
+  flex: 1 1 300px;
+  min-width: 0;
 }

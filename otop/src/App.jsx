@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import ProvenanceBanner from './components/ProvenanceBanner.jsx';
 import Meters from './components/Meters.jsx';
 import RequirementPanel from './components/RequirementPanel.jsx';
@@ -57,9 +57,9 @@ const MORE_VIEWS = [
 ];
 
 export default function App() {
-  const initial = useRef(requirementFromUrl());
+  const [initial] = useState(requirementFromUrl);
   const [state, setState] = useState({ status: 'loading' });
-  const [lens, setLens] = useState(initial.current.lens);
+  const [lens, setLens] = useState(initial.lens);
   // Find is the home view: a search-first, phone-first landing. The most
   // useful single thing this site can do is end a session with a phone call
   // to a producer you can actually reach. The other views are deeper reads
@@ -75,7 +75,7 @@ export default function App() {
   }, []);
   const [insights, setInsights] = useState(null);
   const [insightsError, setInsightsError] = useState(null);
-  const [requirement, setRequirement] = useState(initial.current.requirement);
+  const [requirement, setRequirement] = useState(initial.requirement);
   const openMatchWithProvince = useCallback((selectedLens, code) => {
     if (selectedLens) setLens(selectedLens);
     setRequirement((r) => ({ ...r, provinceCodes: code ? [code] : [] }));
@@ -84,8 +84,9 @@ export default function App() {
   }, []);
   const [records, setRecords] = useState([]);
   const [plan, setPlan] = useState(null);
-  const [loadingShards, setLoadingShards] = useState(false);
-  const [shardError, setShardError] = useState(null);
+  // Loading is derived: a plan is wanted and neither its load nor its failure has landed yet.
+  const [loadedKey, setLoadedKey] = useState('');
+  const [failed, setFailed] = useState(null); // { key, message }
   const [forceAll, setForceAll] = useState(false);
   const [limit, setLimit] = useState(PAGE);
   // A phone screen pays for every pixel of scroll. A narrow viewport gets a
@@ -125,27 +126,26 @@ export default function App() {
   }, [index, requirement.categories, requirement.provinceCodes, requirement.regions, forceAll]);
 
   const wantedKey = wanted ? wanted.codes.join(',') : '';
-  const loadedKey = useRef('');
+  const loadingShards = Boolean(wanted) && wantedKey !== loadedKey && failed?.key !== wantedKey;
+  const shardError = failed && failed.key === wantedKey ? failed.message : null;
 
   useEffect(() => {
-    if (!wanted || wantedKey === loadedKey.current) return;
+    if (!wanted || wantedKey === loadedKey) return;
     let cancelled = false;
-    setLoadingShards(true);
-    setShardError(null);
     loadShards(wanted.codes)
       .then((rows) => {
         if (cancelled) return;
-        loadedKey.current = wantedKey;
+        setLoadedKey(wantedKey);
+        setFailed(null);
         setRecords(rows);
         setPlan(wanted);
       })
       // A shard that fails to load must not leave the previous province's
       // records on screen under the new heading — that is the silent-substitute
       // failure this project has shipped once already.
-      .catch((error) => { if (!cancelled) { setRecords([]); setPlan(null); setShardError(error.message); } })
-      .finally(() => { if (!cancelled) setLoadingShards(false); });
+      .catch((error) => { if (!cancelled) { setRecords([]); setPlan(null); setFailed({ key: wantedKey, message: error.message }); } });
     return () => { cancelled = true; };
-  }, [wanted, wantedKey]);
+  }, [wanted, wantedKey, loadedKey]);
 
   useEffect(() => {
     if (!['atlas', 'province', 'champions', 'critic'].includes(view) || insights || insightsError) return;
@@ -160,7 +160,12 @@ export default function App() {
     window.history.replaceState(null, '', requirementToUrl(view, lens, requirement, provinceCode));
   }, [view, lens, requirement, provinceCode]);
 
-  useEffect(() => { setLimit(pageSize); }, [lens, requirement, pageSize]);
+  // A new search, lens or page size starts the list from the top again.
+  const [limitBasis, setLimitBasis] = useState({ lens, requirement, pageSize });
+  if (limitBasis.lens !== lens || limitBasis.requirement !== requirement || limitBasis.pageSize !== pageSize) {
+    setLimitBasis({ lens, requirement, pageSize });
+    setLimit(pageSize);
+  }
 
   const result = useMemo(
     () => matchRequirement(records, { ...requirement, profile: lens }),

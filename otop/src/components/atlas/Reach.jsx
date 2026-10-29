@@ -1,4 +1,5 @@
-import { Chapter, n } from './fmt.jsx';
+import { Chapter } from './fmt.jsx';
+import { n } from './format.js';
 import Bars from '../charts/Bars.jsx';
 
 /** Who can be contacted? */

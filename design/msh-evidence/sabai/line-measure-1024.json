@@ -1,0 +1,9 @@
+{
+  "base": "http://localhost:4173",
+  "width": 1024,
+  "max": 75,
+  "min": 45,
+  "headingMaxLines": 5,
+  "rows": [],
+  "selftest": []
+}

@@ -9,6 +9,11 @@ function fmtCount(n) {
   return String(n);
 }
 
+// Fill {name} placeholders in a translated template.
+function fill(template, values) {
+  return Object.entries(values).reduce((out, [k, v]) => out.split(`{${k}}`).join(String(v)), template);
+}
+
 function formatDateRange(earliest, latest) {
   if (!earliest || !latest) return null;
   const same = earliest === latest;
@@ -16,7 +21,7 @@ function formatDateRange(earliest, latest) {
   return `${earliest} → ${latest}`;
 }
 
-function PhotoTile({ url, alt, isMissing }) {
+function PhotoTile({ url, alt, isMissing, tp = {} }) {
   const [errored, setErrored] = useState(false);
   const visible = !isMissing && !errored;
   return (
@@ -30,8 +35,8 @@ function PhotoTile({ url, alt, isMissing }) {
           onError={() => setErrored(true)}
         />
       ) : (
-        <div className="place-photo-missing" title="Photo not in current build — full archive on the source Telegram channel">
-          <span>archived</span>
+        <div className="place-photo-missing" title={tp.missingTitle || 'Photo not in current build — full archive on the source Telegram channel'}>
+          <span>{tp.archived || 'archived'}</span>
         </div>
       )}
     </div>
@@ -39,14 +44,20 @@ function PhotoTile({ url, alt, isMissing }) {
 }
 
 function VenueWall({ index, t }) {
+  const tp = t?.places || {};
   return (
-    <section className="place-venue-wall" aria-label="Photo archive venues">
+    <section className="place-venue-wall" aria-label={tp.wallLabel || 'Photo archive venues'}>
       <header className="place-section-header">
-        <span className="section-kicker">Photo archive · {fmtCount(index.meta.totalPhotos)} photos · {index.meta.totalVenues} venues</span>
-        <h2>Every place we have a photo of</h2>
+        <span className="section-kicker">
+          {fill(tp.kicker || 'Photo archive · {photos} photos · {venues} venues', {
+            photos: fmtCount(index.meta.totalPhotos),
+            venues: index.meta.totalVenues,
+          })}
+        </span>
+        <h1>{tp.title || 'Every place we have a photo of'}</h1>
         <p>
-          The Telegram broadcast channels we monitor post a lot of photos. This page makes the full archive visible —
-          what's in the build today, and the volume and date span of what's been collected over time.
+          {tp.intro
+            || "The Telegram broadcast channels we monitor post a lot of photos. This page makes the full archive visible — what's in the build today, and the volume and date span of what's been collected over time."}
         </p>
       </header>
 
@@ -61,7 +72,7 @@ function VenueWall({ index, t }) {
             >
               <div className="place-venue-collage">
                 {venue.sample.slice(0, 4).map((url, i) => (
-                  <PhotoTile key={url + i} url={url} alt={venue.name} />
+                  <PhotoTile key={url + i} url={url} alt={venue.name} tp={tp} />
                 ))}
               </div>
               <div className="place-venue-meta">
@@ -72,16 +83,16 @@ function VenueWall({ index, t }) {
                 <div className="place-venue-stats">
                   <span className="place-venue-stat place-venue-stat--count">
                     <strong>{fmtCount(total)}</strong>
-                    <small>photos</small>
+                    <small>{tp.photos || 'photos'}</small>
                   </span>
                   <span className="place-venue-stat">
                     <strong>{formatDateRange(venue.earliest, venue.latest) || '—'}</strong>
-                    <small>archive span</small>
+                    <small>{tp.archiveSpan || 'archive span'}</small>
                   </span>
                 </div>
                 {venue.matchedListingCount > 0 && (
                   <div className="place-venue-stat-row">
-                    <span className="place-venue-pill">{venue.matchedListingCount} listing match</span>
+                    <span className="place-venue-pill">{venue.matchedListingCount} {tp.listingMatch || 'listing match'}</span>
                   </div>
                 )}
               </div>
@@ -93,7 +104,8 @@ function VenueWall({ index, t }) {
   );
 }
 
-function VenueDetail({ index, t }) {
+function VenueDetail({ t }) {
+  const tp = t?.places || {};
   const { slug } = useParams();
   const navigate = useNavigate();
   const [venueData, setVenueData] = useState(null);
@@ -167,52 +179,58 @@ function VenueDetail({ index, t }) {
   if (loading) {
     return (
       <div className="place-venue-loading">
-        <span className="section-kicker">Loading photo archive…</span>
+        <span className="section-kicker">{tp.loading || 'Loading photo archive…'}</span>
       </div>
     );
   }
   if (error || !venueData) {
     return (
       <div className="place-venue-error" role="alert">
-        <h2>Photo archive not found</h2>
-        <p>{error || `No archive entry for "${slug}".`}</p>
+        <h2>{tp.notFound || 'Photo archive not found'}</h2>
+        <p>{error || fill(tp.noEntry || 'No archive entry for "{slug}".', { slug })}</p>
         <button type="button" onClick={() => navigate('/places')}>
-          ← All venues
+          ← {tp.allVenues || 'All venues'}
         </button>
       </div>
     );
   }
 
   return (
-    <section className="place-venue-detail" aria-label={`${venueData.displayName} photo archive`}>
-      <button type="button" className="place-back-btn" onClick={() => navigate('/places')}>
-        ← All venues
-      </button>
+    <section className="place-venue-detail" aria-label={`${venueData.displayName} — ${tp.photoArchive || 'photo archive'}`}>
       <header className="place-venue-hero">
+        <button type="button" className="place-back-btn" onClick={() => navigate('/places')}>
+          ← {tp.allVenues || 'All venues'}
+        </button>
         <h1>{venueData.displayName}</h1>
         <div className="place-venue-hero-meta">
-          <span><strong>{fmtCount(venueData.total)}</strong> photos</span>
-          <span><strong>{summary?.dateCount || 0}</strong> days with photos</span>
-          <span><strong>{formatDateRange(summary?.earliest, summary?.latest) || '—'}</strong> archive span</span>
+          <span><strong>{fmtCount(venueData.total)}</strong> {tp.photos || 'photos'}</span>
+          <span><strong>{summary?.dateCount || 0}</strong> {tp.daysWithPhotos || 'days with photos'}</span>
+          <span><strong>{formatDateRange(summary?.earliest, summary?.latest) || '—'}</strong> {tp.archiveSpan || 'archive span'}</span>
           {summary?.peak && (
             <span>
-              <strong>{summary.peak.n}</strong> photos on {summary.peak.date}
+              <strong>{summary.peak.n}</strong> {fill(tp.photosOn || 'photos on {date}', { date: summary.peak.date })}
             </span>
           )}
           <a className="place-venue-source" href={`https://t.me/${String(venueData.channel || venueData.slug || '').replace(/^@/, '')}`} target="_blank" rel="noreferrer">
-            {venueData.channel || venueData.slug} on Telegram ↗
+            {fill(tp.onTelegram || '{channel} on Telegram', { channel: venueData.channel || venueData.slug })} ↗
           </a>
         </div>
         {venueData.matchedListingIds?.length > 0 && (
           <p className="place-venue-listings">
-            Matched with {venueData.matchedListingIds.length} directory listing{venueData.matchedListingIds.length === 1 ? '' : 's'} — these are the same place, surfaced in the main directory.
+            {fill(
+              venueData.matchedListingIds.length === 1
+                ? (tp.matchedOne || 'Matched with {n} directory listing — these are the same place, surfaced in the main directory.')
+                : (tp.matchedMany || 'Matched with {n} directory listings — these are the same place, surfaced in the main directory.'),
+              { n: venueData.matchedListingIds.length },
+            )}
           </p>
         )}
       </header>
 
+      <div className="place-venue-toolbar">
       {summary && summary.dateCounts.length > 0 && (
         <div className="place-venue-dates">
-          <span className="place-venue-dates-label">Jump to date</span>
+          <span className="place-venue-dates-label">{tp.jumpToDate || 'Jump to date'}</span>
           <select
             value={dateFilter}
             onChange={(e) => {
@@ -220,10 +238,10 @@ function VenueDetail({ index, t }) {
               setPage(1);
             }}
           >
-            <option value="">All dates ({fmtCount(venueData.total)})</option>
+            <option value="">{tp.allDates || 'All dates'} ({fmtCount(venueData.total)})</option>
             {summary.dateCounts.map((d) => (
               <option key={d.date} value={d.date}>
-                {d.date} — {d.n} photo{d.n === 1 ? '' : 's'}
+                {d.date} — {d.n} {d.n === 1 ? (tp.photo || 'photo') : (tp.photos || 'photos')}
               </option>
             ))}
           </select>
@@ -231,25 +249,29 @@ function VenueDetail({ index, t }) {
       )}
 
       <p className="place-venue-archive-note">
-        Showing {fmtCount(pagedPhotos.length)} of {fmtCount(filteredPhotos.length)} photos in this build.{' '}
+        {fill(tp.showing || 'Showing {shown} of {total} photos in this build.', {
+          shown: fmtCount(pagedPhotos.length),
+          total: fmtCount(filteredPhotos.length),
+        })}{' '}
         {venueData.total > pagedPhotos.length && (
-          <>Photos not in the current deployment come back as a placeholder — the full archive is preserved on the source Telegram channel and in the project's photo backup.</>
+          <>{tp.placeholderNote || "Photos not in the current deployment come back as a placeholder — the full archive is preserved on the source Telegram channel and in the project's photo backup."}</>
         )}
       </p>
+      </div>
 
       <div className="place-photo-grid">
         {pagedPhotos.map((p, i) => (
-          <PhotoTile key={p.url + i} url={p.url} alt={venueData.displayName} />
+          <PhotoTile key={p.url + i} url={p.url} alt={venueData.displayName} tp={tp} />
         ))}
       </div>
 
       {pagedPhotos.length < filteredPhotos.length && (
         <div className="place-venue-loadmore">
           <button type="button" onClick={() => setPage((p) => p + 1)}>
-            Load {Math.min(PHOTO_PAGE_SIZE, filteredPhotos.length - pagedPhotos.length)} more
+            {fill(tp.loadMore || 'Load {n} more', { n: Math.min(PHOTO_PAGE_SIZE, filteredPhotos.length - pagedPhotos.length) })}
           </button>
           <span className="place-venue-loadmore-meta">
-            {fmtCount(pagedPhotos.length)} of {fmtCount(filteredPhotos.length)}
+            {fill(tp.ofCount || '{shown} of {total}', { shown: fmtCount(pagedPhotos.length), total: fmtCount(filteredPhotos.length) })}
           </span>
         </div>
       )}
@@ -280,7 +302,7 @@ export default function PlaceGallery({ t }) {
   if (error) {
     return (
       <div className="place-venue-error" role="alert">
-        <h2>Photo archive not available</h2>
+        <h2>{t?.places?.unavailable || 'Photo archive not available'}</h2>
         <p>{error}</p>
       </div>
     );
@@ -288,10 +310,10 @@ export default function PlaceGallery({ t }) {
   if (!index) {
     return (
       <div className="place-venue-loading">
-        <span className="section-kicker">Loading archive…</span>
+        <span className="section-kicker">{t?.places?.loadingArchive || 'Loading archive…'}</span>
       </div>
     );
   }
 
-  return slug ? <VenueDetail index={index} t={t} /> : <VenueWall index={index} t={t} />;
+  return slug ? <VenueDetail t={t} /> : <VenueWall index={index} t={t} />;
 }

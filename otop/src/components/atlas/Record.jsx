@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
-import { Chapter, n } from './fmt.jsx';
+import { Chapter } from './fmt.jsx';
+import { n } from './format.js';
 import Composition from './Composition.jsx';
 import { railOf, RAIL_LABEL, classifiedOf, ZONES } from '../../lib/insights.js';
 

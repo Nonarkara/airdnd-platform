@@ -8,8 +8,6 @@ import InsightNarrative from './InsightNarrative';
 import FieldIntelligence from './FieldIntelligence';
 import VisualCharts from './VisualCharts';
 import PageBanner from './PageBanner';
-import { db } from '../lib/firebase';
-import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { loadFormalization, loadStiScreeningRoiet } from '../lib/health';
 import './Analytics.css';
 
@@ -104,18 +102,7 @@ function listingHref(id) {
   return `/?listing=${encodeURIComponent(id)}`;
 }
 
-const ANALYTICS_TIMEOUT_MS = 6_000;
 const ANALYTICS_REFRESH_INTERVAL_MS = 60_000;
-
-function withTimeout(promise, ms, label) {
-  let timeoutId = null;
-  const timeoutPromise = new Promise((_, reject) => {
-    timeoutId = setTimeout(() => reject(new Error(`${label} timed out.`)), ms);
-  });
-  return Promise.race([promise, timeoutPromise]).finally(() => {
-    if (timeoutId) clearTimeout(timeoutId);
-  });
-}
 
 export default function Analytics() {
   const { t } = useLanguage();
@@ -126,7 +113,6 @@ export default function Analytics() {
   const [analysisNow, setAnalysisNow] = useState(() => Date.now());
   const [lastRefreshed, setLastRefreshed] = useState(null);
   const [healthSnap, setHealthSnap] = useState(null);
-  const [economyData, setEconomyData] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSnapshot, setIsSnapshot] = useState(false);
   const hasLoadedRef = useRef(false);
@@ -137,16 +123,6 @@ export default function Analytics() {
     fetch('/patterns.json')
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => { if (!cancelled) setPatterns(data); })
-      .catch(() => {});
-    return () => { cancelled = true; };
-  }, []);
-
-  // Pull macro-economy data
-  useEffect(() => {
-    let cancelled = false;
-    fetch('/data/economy.json')
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => { if (!cancelled) setEconomyData(data); })
       .catch(() => {});
     return () => { cancelled = true; };
   }, []);
@@ -164,70 +140,35 @@ export default function Analytics() {
     return () => { cancelled = true; };
   }, []);
 
+  // One source for every page: the published snapshot (public/data.json,
+  // rebuilt by the M3 publisher). Analytics used to query Firestore's raw
+  // companions collection instead — thousands of un-merged persona posts, so
+  // its totals disagreed with the directory, and when Firestore was
+  // unreachable it answered "no documents" and the page went blank.
   const load = async () => {
     setIsRefreshing(true);
     try {
-    // All three snapshot files start in parallel — data.json no longer waits
-    // behind patterns/feed before first paint.
-    const [patternData, feedRows, snapshotRows] = await Promise.all([
-      fetch('/patterns.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
-      fetch('/feed.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
-      hasLoadedRef.current
-        ? Promise.resolve(null)
-        : fetch('/data.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
-    ]);
-    if (patternData) setPatterns(patternData);
-
-    if (!hasLoadedRef.current) {
-      // First paint renders the cached snapshot immediately instead of
-      // holding the page behind "Loading industry data..." while the live
-      // query answers. The query below (bounded by ANALYTICS_TIMEOUT_MS)
-      // upgrades the page when it resolves; the badge names the tier.
+      const [patternData, feedRows, snapshotRows, funnel] = await Promise.all([
+        fetch('/patterns.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+        fetch('/feed.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
+        fetch('/data.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+        fetch('/funnel.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      ]);
+      if (patternData) setPatterns(patternData);
       if (Array.isArray(snapshotRows) && snapshotRows.length > 0) {
         setListings(snapshotRows.map(snapshotToAnalyticsListing));
-        setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
+        const stats = buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []);
+        // Archive totals from funnel.json — the same numbers the home page
+        // states — so the two pages never disagree about the archive's size.
+        if (funnel?.archive?.messages) stats.msgCount = Number(funnel.archive.messages);
+        if (funnel?.archive?.photos) stats.photoCount = Number(funnel.archive.photos);
+        setMsgStats(stats);
         setAnalysisNow(Date.now());
         setLastRefreshed(new Date());
         setIsSnapshot(true);
       }
-      hasLoadedRef.current = true;
-      setLoading(false);
-    }
-
-      console.log('Fetching live listings from Firestore for analytics...');
-      const q = query(collection(db, 'companions'), orderBy('updatedAt', 'desc'), limit(1200));
-      const querySnapshot = await withTimeout(getDocs(q), ANALYTICS_TIMEOUT_MS, 'Live listings query');
-      const liveListings = [];
-      querySnapshot.forEach((doc) => {
-        const docData = doc.data();
-        liveListings.push({
-          ...docData,
-          id: docData.id || doc.id,
-        });
-      });
-
-      setListings(liveListings.map(snapshotToAnalyticsListing));
-      setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
-      setAnalysisNow(Date.now());
-      setLastRefreshed(new Date());
-      setIsSnapshot(false);
-    } catch (error) {
-      console.warn('Live analytics failed, falling back to snapshots:', error);
-      const [snapshotResponse, patternResponse, feedResponse] = await Promise.all([
-        fetch('/data.json', { cache: 'no-store' }),
-        fetch('/patterns.json', { cache: 'no-store' }),
-        fetch('/feed.json', { cache: 'no-store' }),
-      ]);
-      const snapshotRows = snapshotResponse.ok ? await snapshotResponse.json() : [];
-      const patternData = patternResponse.ok ? await patternResponse.json() : null;
-      const feedRows = feedResponse.ok ? await feedResponse.json() : [];
-      if (patternData) setPatterns(patternData);
-      setListings((Array.isArray(snapshotRows) ? snapshotRows : []).map(snapshotToAnalyticsListing));
-      setMsgStats(buildFallbackMessageStats(patternData, Array.isArray(feedRows) ? feedRows : []));
-      setAnalysisNow(Date.now());
-      setLastRefreshed(new Date());
-      setIsSnapshot(true);
     } finally {
+      hasLoadedRef.current = true;
       setLoading(false);
       setIsRefreshing(false);
     }
@@ -771,7 +712,10 @@ export default function Analytics() {
           </div>
           <div className="an-corpus-notes">
             <p><strong>{data.corpusCounts.listingYield}%</strong> of all raw messages become listing candidates.</p>
-            <p><strong>{data.corpusCounts.mediaRate}%</strong> of raw messages carry media.</p>
+            {/* Was "{mediaRate}% of raw messages carry media" — 0.2%, because it
+                divided the feed snapshot's photo cards by the whole archive.
+                The archive records photos, not which messages carried them. */}
+            <p><strong>{data.corpusCounts.archivedPhotosPerBusiness} archived photos</strong> sit behind each current listing row on average.</p>
             <p><strong>{data.corpusCounts.messagesPerBusiness} raw messages</strong> sit behind each current listing row on average.</p>
           </div>
         </div>
@@ -900,40 +844,6 @@ export default function Analytics() {
             ))}
           </div>
         </section>
-
-        {/* Macro-Economy Lens */}
-        {economyData && (
-          <section className="an-card an-wide">
-            <h2>Macro-Economy Context</h2>
-            <p className="an-card-sub">
-              Contextualizing the grey economy against provincial GDP (GPP) and minimum wage.
-            </p>
-            <div className="an-table">
-              <div className="an-table-head">
-                <span>Province</span>
-                <span>GPP / Capita</span>
-                <span>Minimum Wage (Daily)</span>
-                <span>Avg Massage Price (Est.)</span>
-                <span>Wage-to-Service Gap</span>
-              </div>
-              {economyData.provinces.map((prov) => {
-                const estPrice = data.priceMean || 600; // Use overall mean or specific if mapped
-                const gap = prov.minimumWage > 0 ? (estPrice / prov.minimumWage).toFixed(1) : '—';
-                return (
-                  <div key={prov.code} className="an-table-row">
-                    <span>{prov.name}</span>
-                    <span>฿{prov.gppPerCapita.toLocaleString()}/yr</span>
-                    <span>฿{prov.minimumWage}/day</span>
-                    <span>฿{estPrice.toLocaleString()}</span>
-                    <strong style={{ color: gap > 1.5 ? 'var(--color-status)' : 'var(--color-data)' }}>
-                      {gap}x daily wage
-                    </strong>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
 
         <section className="an-card an-wide">
           <h2>Market Extremes · Outlier Board</h2>

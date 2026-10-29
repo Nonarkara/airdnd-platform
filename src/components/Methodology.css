@@ -120,23 +120,22 @@
   font-weight: 700;
 }
 
+/* One column. The section number used to own a 4rem gutter column, and
+   below the number that column stayed empty for the whole section — up to
+   78x1,686px of nothing per section (MSH hole probe). The number now labels
+   the heading from above, which is what it was for. */
 .meth-section {
-  display: grid;
-  grid-template-columns: 4rem minmax(0, 1fr);
-  gap: 1rem;
+  display: block;
   padding: clamp(1.7rem, 4vw, 3rem) 0;
   border-bottom: 1px solid var(--line);
 }
 
 .meth-num {
-  padding-top: 0.25rem;
+  display: block;
+  margin-bottom: 0.35rem;
 }
 
-/* Every block except the section number must sit in the content column.
-   Unlisted children (inline grids, resource lists) used to auto-place into
-   the 4rem gutter and spill across the page — that is the §14 overlap. */
-.meth-section > *:not(.meth-num) {
-  grid-column: 2;
+.meth-section > * {
   min-width: 0;
 }
 
@@ -183,13 +182,18 @@
 
 .meth-tier {
   display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr);
+  /* The measure is the column's, not the paragraph's: a capped paragraph in
+     a wider track left a 96px void beside it (MSH hole probe). */
+  grid-template-columns: 2.5rem minmax(0, 30em);
   gap: 0.35rem 1rem;
   padding: 1rem 0;
   border-bottom: 1px solid var(--line);
 }
 
 .meth-tier__num {
+  /* The number labels the whole card: it spans the card's rows instead of
+     leaving its column empty below it (MSH hole probe, 54x156px at 390). */
+  grid-row: 1 / span 3;
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.08em;
@@ -428,14 +432,6 @@
     text-align: left;
   }
 
-  .meth-section {
-    grid-template-columns: 1fr;
-  }
-
-  .meth-section > *:not(.meth-num) {
-    grid-column: 1;
-  }
-
   .meth-grid {
     grid-template-columns: 1fr;
   }
@@ -493,12 +489,14 @@
 }
 
 .meth-resource {
+  /* One column: tag and link on a line under the description. In two columns
+     they sat at the far right with a void beneath them (MSH hole probe) and
+     the link was half a page from the name it belongs to. */
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.5rem 1rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.35rem;
   border-bottom: 1px solid var(--meth-line);
   padding: 0.85rem 0;
-  align-items: start;
 }
 
 .meth-resource__org {
@@ -573,3 +571,15 @@
   margin-bottom: 0.25rem;
 }
 
+
+#root .meth-tier p { max-width: none; }
+.meth-resource__meta {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+}
+/* The tier table is as wide as its measured column, so no track ends short of
+   the table's edge. */
+.meth-tier-table { width: fit-content; max-width: 100%; }

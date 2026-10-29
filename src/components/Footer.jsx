@@ -30,9 +30,11 @@ function Footer({ t, lastLoadedAt, sourceLabel }) {
       <div className="footer-bottom">
         <p>{t.footer.rights}</p>
         <div className="footer-links">
-          <a href="#map">{t.footer.mapLink}</a>
-          <a href="#workflow">{t.footer.workflowLink}</a>
-          <a href="#live-listings">{t.footer.listingsLink}</a>
+          {/* Routes, not in-page anchors: #map and #workflow existed on only
+              some pages, so on most pages these links went nowhere. */}
+          <a href="/map">{t.footer.mapLink}</a>
+          <a href="/methodology">{t.footer.workflowLink}</a>
+          <a href="/">{t.footer.listingsLink}</a>
         </div>
       </div>
     </footer>

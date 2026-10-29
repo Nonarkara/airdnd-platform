@@ -199,6 +199,12 @@
   .filter-field {
     min-width: 0;
   }
+
+  /* Five fields in three columns (or two, below 840px): the last one takes
+     the remaining cells instead of leaving a 300x60 void (MSH hole probe). */
+  .filter-bar > :nth-last-child(1 of .filter-field:not(.filter-search)):nth-child(3n + 2 of .filter-field:not(.filter-search)) {
+    grid-column: span 2;
+  }
 }
 
 /* Foldable open (≤840px) — two columns. */
@@ -215,10 +221,11 @@
   padding: 0 0.85rem;
   height: 44px;
   min-height: 44px;
-  border: 1px solid rgba(255, 116, 64, 0.4);
+  /* A secondary action: outlined like Refresh, no second accent colour. */
+  border: 1px solid var(--line-strong, var(--line));
   border-radius: 0;
-  background: rgba(255, 116, 64, 0.12);
-  color: #ff7440;
+  background: transparent;
+  color: var(--ink);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 700;
@@ -230,6 +237,6 @@
 }
 
 .filter-district-matrix-btn:hover {
-  background: #ff7440;
-  color: #0a0a0c;
+  border-color: var(--color-action, #f59e0b);
+  color: var(--ink);
 }

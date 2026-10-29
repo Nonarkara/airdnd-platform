@@ -21,7 +21,7 @@
  */
 
 import { useMemo, useState } from 'react';
-import { n, pct } from './atlas/fmt.jsx';
+import { n, pct } from './atlas/format.js';
 
 const TIMELINE = [
   {
