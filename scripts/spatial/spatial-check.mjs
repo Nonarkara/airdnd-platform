@@ -118,6 +118,27 @@ const DEFAULT_LIMITS = {
   chromeTopPct: null,
   // The type sizes this project is allowed to set text at. null = any.
   allowedSizes: null,
+  // The number of VISIBLY DISTINCT type sizes one page may set text at.
+  //
+  // The exact set above cannot express a fluid type ramp: this project's
+  // titles are clamp(1.75rem, 3.6vw, 2.6rem), so the same rule renders at
+  // 28px on a phone and 41.6px on a desk, and a sweep across 43 widths
+  // samples 100 different sizes. A set of allowed sizes would have to
+  // contain every one of them, and then it would be a photograph of the
+  // site rather than a law — it would fail on every legitimate change and
+  // pass on every illegitimate one that happened to land on a listed size.
+  //
+  // What the law actually says is "use meaningful scale steps ... do not
+  // make every element shout", and that IS expressible: two sizes within a
+  // pixel of each other are the same step, because nobody can tell them
+  // apart on a screen. So the rule counts the steps a reader can actually
+  // distinguish, and a page that starts inventing new ones fails.
+  sizeSteps: null,
+  // How close two sizes must be to count as one step (px).
+  sizeStepTolerance: 1,
+  // The character count at which a size counts as a step. A size that
+  // carries four characters is a one-off, not a step of the ramp.
+  sizeStepChars: 40,
 };
 
 // The metric of each finding kind is compared with its own tolerance: px for
@@ -135,6 +156,8 @@ const KIND_TOLERANCE = {
 // ---------------------------------------------------------------- chrome
 const CHROME_CANDIDATES = [
   process.env.CHROME_PATH,
+  // Playwright's bundled Chromium first — a headless system Chrome steals Dock clicks.
+  await (async () => { try { return (await import("playwright")).chromium.executablePath(); } catch { return null; } })(),
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
   "/Applications/Chromium.app/Contents/MacOS/Chromium",
   "/usr/bin/google-chrome",
@@ -1382,6 +1405,32 @@ for (const r of results) {
           "allowedSizes",
           `${label} — text is set in ${off.join("px, ")}px, off the house ramp (${limits.allowedSizes.join(" / ")})`,
           `text is set in ${off.join("px, ")}px, off the house ramp (${limits.allowedSizes.join(" / ")})`,
+        );
+      }
+    }
+
+    // The type ramp, as a count of steps a reader can tell apart.
+    //
+    // Two sizes within a pixel of each other are the SAME step: nobody can
+    // tell 21.8px from 22px on a screen. So the rule counts the steps, not
+    // the samples, and a size carrying four characters is not a step of the
+    // ramp — it is a one-off.
+    if (limits.sizeSteps !== null && h.ramp) {
+      const sizes = Object.entries(h.ramp)
+        .map(([sz, n]) => ({ sz: Number(sz), n }))
+        .filter((e) => e.n >= limits.sizeStepChars)
+        .sort((a, b) => a.sz - b.sz);
+      let steps = 0;
+      let last = null;
+      for (const e of sizes) {
+        if (last === null || e.sz - last > limits.sizeStepTolerance) steps++;
+        last = e.sz;
+      }
+      if (steps > limits.sizeSteps) {
+        absolute(
+          "sizeSteps",
+          `${label} — the page sets text in ${steps} type steps (limit ${limits.sizeSteps})`,
+          `the page sets text in ${steps} type steps`,
         );
       }
     }

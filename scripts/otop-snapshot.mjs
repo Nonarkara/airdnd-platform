@@ -28,18 +28,23 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
+import { ROUTES, urlFor, assertRegisterCoversApp } from './otop/routes.mjs';
 
 const BASE = (process.argv[2] || 'https://otop.pages.dev/').replace(/\/+$/, '');
 const OUT = process.argv[3] || 'design/spatial-snapshots';
 
-const VIEWS = [
-  { name: '',         url: '/?view=find' },
-  { name: 'method',   url: '/?view=method' },
-  { name: 'atlas',    url: '/?view=atlas' },
-  { name: 'bank',     url: '/?view=bank' },
-  { name: 'match',    url: '/?view=match&lens=b2c' },
-  { name: 'province', url: '/?view=province&code=50' },
-];
+// The gate walks the snapshot tree, so a view that is not snapshotted is a
+// view nobody has a receipt for. The register is what keeps that from
+// happening by accident: it is checked against the app's own route table
+// before a single page is rendered.
+assertRegisterCoversApp();
+
+const VIEWS = ROUTES.map((r) => ({
+  // The landing view is written to the tree's root; every other view to its
+  // own directory.
+  name: r.landing ? '' : r.name,
+  url: urlFor(r),
+}));
 
 // The record count the build claims. The Find view streams 77 province
 // shards; a snapshot taken before they land is a snapshot of a fraction of
@@ -97,7 +102,7 @@ const css = rawCss
 // never runs.
 let browser;
 try {
-  browser = await chromium.launch({ channel: 'chrome' });
+  browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
 } catch {
   browser = await chromium.launch();
 }
@@ -111,23 +116,54 @@ for (const view of VIEWS) {
   if (view.name === '' && EXPECTED) {
     // Only the landing view streams the whole registry; the other views
     // load their own artefact and say so on the page.
-    await page.waitForFunction(
-      (expected) => {
-        const el = document.querySelector('.find-stats strong');
-        if (!el) return false;
-        return Number(el.textContent.replace(/[^\d]/g, '')) === expected;
-      },
-      EXPECTED,
-      { timeout: 120000 }
-    ).catch(() => {});
+    //
+    // This wait is HARD. It used to be `.catch(() => {})` — a silent
+    // timeout — and the selector it waited on, `.find-stats strong`, had
+    // been renamed to `.find-panel-stats dd` in an earlier commit. So for
+    // months the wait found nothing, timed out quietly, and the snapshot
+    // was written of a registry that had not finished arriving: "a snapshot
+    // taken before they land is a snapshot of a fraction of the registry",
+    // written by the script itself, and the receipt did not say so.
+    // A snapshot that is not the whole page must not be published as one.
+    const landed = await page
+      .waitForFunction(
+        (expected) => {
+          const el = document.querySelector('.find-panel-stats dd');
+          if (!el) return false;
+          return Number(el.textContent.replace(/[^\d]/g, '')) === expected;
+        },
+        EXPECTED,
+        { timeout: 120000 }
+      )
+      .then(() => true)
+      .catch(() => false);
+    if (!landed) {
+      console.error(
+        `\nFAIL — the landing view never reached ${EXPECTED.toLocaleString()} records.\n` +
+          `The snapshot would be a fraction of the registry, and a gate that measures\n` +
+          `a fraction reports the fraction as if it were the whole. Fix the wait, or\n` +
+          `fix the page, and take the snapshot again.\n`,
+      );
+      process.exit(1);
+    }
   } else {
-    await page.waitForFunction(
-      () => {
-        const h1 = document.querySelector('main h1, .state h1');
-        return Boolean(h1 && h1.textContent.trim().length);
-      },
-      { timeout: 60000 }
-    ).catch(() => {});
+    const titled = await page
+      .waitForFunction(
+        () => {
+          const h1 = document.querySelector('main h1, .state h1');
+          return Boolean(h1 && h1.textContent.trim().length);
+        },
+        { timeout: 60000 }
+      )
+      .then(() => true)
+      .catch(() => false);
+    if (!titled) {
+      console.error(
+        `\nFAIL — ${view.url} never painted an h1. The snapshot would be of a page\n` +
+          `that had not arrived, and a gate that measures that measures nothing.\n`,
+      );
+      process.exit(1);
+    }
   }
   await page.waitForLoadState('networkidle', { timeout: 60000 }).catch(() => {});
   await page.waitForTimeout(1200);

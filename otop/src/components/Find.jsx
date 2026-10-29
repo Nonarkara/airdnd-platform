@@ -443,7 +443,7 @@ export default function Find({ onOpenProvince }) {
               en={`${pct(totalWithPhone, totalLoaded)}% of registered producers carry a phone number. ${(totalLoaded - totalWithPhone).toLocaleString()} cannot be reached from this page.`}
               th={`มีเพียง ${pct(totalWithPhone, totalLoaded)}% ของผู้ผลิตที่จดทะเบียนที่มีเบอร์โทร ${(totalLoaded - totalWithPhone).toLocaleString()} รายติดต่อจากหน้านี้ไม่ได้`}
             />
-            <a className="callout-link" href="/?view=atlas&tab=reach">
+            <a className="callout-link" href="/atlas/?tab=reach">
               <Bi en="See the reach gap by province →" th="ดูช่องว่างการเข้าถึงรายจังหวัด →" />
             </a>
           </span>
@@ -574,7 +574,7 @@ export default function Find({ onOpenProvince }) {
 
               <a
                 className="find-row-name"
-                href={`/?view=province&code=${r.provinceCode}`}
+                href={`/province/${r.provinceCode}/`}
                 onClick={(e) => {
                   e.preventDefault();
                   onOpenProvince?.(r.provinceCode);

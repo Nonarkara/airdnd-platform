@@ -10,11 +10,13 @@ import DemandTides from './components/DemandTides.jsx';
 import Matchmaker from './components/Matchmaker.jsx';
 import History from './components/History.jsx';
 import CrossReferences from './components/CrossReferences.jsx';
+import Critic from './components/Critic.jsx';
 import DataBank from './components/DataBank.jsx';
 import ViewHero from './components/ViewHero.jsx';
 import Method from './components/Method.jsx';
 import SoftPower from './components/SoftPower.jsx';
 import Find from './components/Find.jsx';
+import NavLink from './components/NavLink.jsx';
 
 // Leaflet is ~150KB and only the B2B lens draws a map. Split it so the B2C
 // path never pays for it.
@@ -28,6 +30,7 @@ const Briefs = lazy(() => import('./components/Briefs.jsx'));
 import { loadIndex, loadShards, planShards } from './lib/shards.js';
 import { loadInsights, loadGraph } from './lib/insights.js';
 import { DEFAULTS, requirementFromUrl, requirementToUrl } from './lib/requirement.js';
+import { viewFromLocation, pathFor, canonicalFor, metaFor, SITE, SITE_NAME } from './lib/routes.js';
 import { completenessOf } from './lib/completeness.js';
 import { Bi } from './components/Bi.jsx';
 import { matchRequirement, sourcingBasins, toCsv, PROFILES } from '../core/matching.js';
@@ -49,6 +52,7 @@ const MORE_VIEWS = [
   { view: 'briefs', en: 'Briefs', th: 'สรุป' },
   { view: 'story', en: 'Story', th: 'เรื่องเล่า' },
   { view: 'history', en: '25 Years', th: '25 ปี' },
+  { view: 'critic', en: 'Criticism', th: 'ข้อวิจารณ์' },
   { view: 'crossrefs', en: 'Cross-references', th: 'เชื่อมโยงข้อมูล' },
 ];
 
@@ -61,15 +65,8 @@ export default function App() {
   // to a producer you can actually reach. The other views are deeper reads
   // of the same data; the difference is that a fresh visitor lands on the
   // thing they can use, not the thing they can read about.
-  const [view, setView] = useState(() => {
-    const urlView = new URLSearchParams(window.location.search).get('view');
-    if (['match', 'atlas', 'province', 'story', 'history', 'crossrefs', 'champions', 'tides', 'matchmaker', 'briefs', 'bank', 'find', 'method', 'softpower'].includes(urlView)) return urlView;
-    return 'find';
-  });
-  const [provinceCode, setProvinceCode] = useState(() => {
-    const c = Number(new URLSearchParams(window.location.search).get('code'));
-    return Number.isInteger(c) && c > 0 ? c : null;
-  });
+  const [view, setView] = useState(() => viewFromLocation().view);
+  const [provinceCode, setProvinceCode] = useState(() => viewFromLocation().code);
   // Every province row anywhere lands here: the dossier, not the B2B engine.
   const openProvince = useCallback((code) => {
     if (code == null) { setView('atlas'); setProvinceCode(null); }
@@ -151,7 +148,7 @@ export default function App() {
   }, [wanted, wantedKey]);
 
   useEffect(() => {
-    if (!['atlas', 'province', 'champions'].includes(view) || insights || insightsError) return;
+    if (!['atlas', 'province', 'champions', 'critic'].includes(view) || insights || insightsError) return;
     let cancelled = false;
     Promise.all([loadInsights(), loadGraph().catch(() => null)])
       .then(([data, graph]) => { if (!cancelled) setInsights(graph ? { ...data, graph } : data); })
@@ -207,6 +204,37 @@ export default function App() {
     setLimit(pageSize);
   }, [pageSize]);
 
+  // WHAT THIS PAGE CALLS ITSELF.
+  //
+  // The title, the description, the canonical address and the social card
+  // all change with the view. A site that keeps one title for fourteen
+  // different documents tells a search engine fourteen times that they are
+  // the same page, and tells a reader in a message the same thing.
+  //
+  // This hook sits ABOVE the loading and error returns on purpose. A hook
+  // that is called conditionally is a hook that is called a different number
+  // of times on the loading render and the ready render, and React refuses
+  // to render a component that changes its own hook count: the whole site
+  // came up blank with "rendered more hooks than during the previous
+  // render" and no page at all.
+  useEffect(() => {
+    if (state.status !== 'ready') return;
+    const p = index.provinces.find((x) => x.code === provinceCode);
+    const m = metaFor(view, provinceCode, p ? p.en : null);
+    document.title = m.title;
+    const set = (selector, attr, value) => {
+      const el = document.head.querySelector(selector);
+      if (el) el.setAttribute(attr, value);
+    };
+    set('meta[name="description"]', 'content', m.description);
+    set('meta[property="og:title"]', 'content', m.title);
+    set('meta[property="og:description"]', 'content', m.description);
+    set('meta[property="og:url"]', 'content', canonicalFor(view, provinceCode));
+    set('meta[name="twitter:title"]', 'content', m.title);
+    set('meta[name="twitter:description"]', 'content', m.description);
+    set('link[rel="canonical"]', 'href', canonicalFor(view, provinceCode));
+  }, [view, provinceCode, state.status, index]);
+
   if (state.status === 'loading') return <div className="state"><h1>Loading the registry index…</h1></div>;
 
   if (state.status === 'error') {
@@ -232,34 +260,34 @@ export default function App() {
           because the hero no longer carries a second one. */}
       <header className="hdr">
         <div className="wrap hdr-in">
-          <a className="brand" href="/?view=find" aria-label="one³ — home">
+          <a className="brand" href="/" aria-label="one³ — home">
             <span className="brand-mark">one<span className="mid">³</span></span>
           </a>
           <nav className="hdr-nav" aria-label="Sections">
-            <button type="button" aria-current={view === 'find'} onClick={() => setView('find')}>
+            <NavLink view="find" current={view === 'find'} onNavigate={() => setView('find')}>
               <span className="nav-en">Find</span>
               <span className="nav-th" lang="th">ค้นหา</span>
-            </button>
-            <button type="button" aria-current={view === 'match'} onClick={() => setView('match')}>
+            </NavLink>
+            <NavLink view="match" current={view === 'match'} onNavigate={() => setView('match')}>
               <span className="nav-en">Match</span>
               <span className="nav-th" lang="th">จับคู่</span>
-            </button>
-            <button type="button" aria-current={view === 'atlas'} onClick={() => openProvince(null)}>
+            </NavLink>
+            <NavLink view="atlas" current={view === 'atlas'} onNavigate={() => openProvince(null)}>
               <span className="nav-en">Atlas</span>
               <span className="nav-th" lang="th">แผนที่ข้อมูล</span>
-            </button>
-            <button type="button" aria-current={view === 'bank'} onClick={() => setView('bank')}>
+            </NavLink>
+            <NavLink view="bank" current={view === 'bank'} onNavigate={() => setView('bank')}>
               <span className="nav-en">Data Bank</span>
               <span className="nav-th" lang="th">คลังข้อมูล</span>
-            </button>
-            <button type="button" aria-current={view === 'softpower'} onClick={() => setView('softpower')}>
+            </NavLink>
+            <NavLink view="softpower" current={view === 'softpower'} onNavigate={() => setView('softpower')}>
               <span className="nav-en">Soft Power</span>
               <span className="nav-th" lang="th">พลังอ่อน</span>
-            </button>
-            <button type="button" aria-current={view === 'method'} onClick={() => setView('method')}>
+            </NavLink>
+            <NavLink view="method" current={view === 'method'} onNavigate={() => setView('method')}>
               <span className="nav-en">Method</span>
               <span className="nav-th" lang="th">วิธีการ</span>
-            </button>
+            </NavLink>
           </nav>
           <div className="hdr-status">
             <span className={`dot${meta.degraded ? ' warn' : ''}`} />
@@ -422,7 +450,14 @@ export default function App() {
                   en="All filters off — you are seeing the full province list, ranked by match score. For a contactability-first sort (callable producers at the top), Find is the right surface."
                   th="ตัวกรองทั้งหมดปิดอยู่ — กำลังดูรายการทั้งหมดในจังหวัด เรียงตามคะแนนการจับคู้ หากต้องการเรียงตามการติดต่อได้ก่อน (ผู้ที่โทรหาได้ขึ้นก่อน) Find คือเครื่องมือที่ใช่"
                 />{' '}
-                <a className="find-banner-cta" href={`/?view=find${requirement.provinceCodes.length === 1 ? `&p=${requirement.provinceCodes[0]}` : ''}${requirement.categories.length ? `&q=${encodeURIComponent(requirement.categories[0])}` : ''}`}>
+                {/* The parameters are the ones the app actually reads: `prov`
+                    is the province and `cat` is the category. This link used
+                    to carry `p=` and `q=`, which no reader of the URL has
+                    ever understood — so it opened Find with neither the
+                    province nor the category applied, and the reader landed
+                    on 154,050 records instead of the handful the banner
+                    promised. */}
+                <a className="find-banner-cta" href={`/${requirement.provinceCodes.length === 1 ? `?prov=${requirement.provinceCodes[0]}` : ''}${requirement.categories.length ? `${requirement.provinceCodes.length === 1 ? '&' : '?'}cat=${encodeURIComponent(requirement.categories[0])}` : ''}`}>
                   <Bi en="Open in Find →" th="เปิดใน Find →" />
                 </a>
               </p>
@@ -630,6 +665,26 @@ export default function App() {
           </section>
         )}
 
+        {view === 'critic' && (
+          <section className="sec" id="critic">
+            <div className="wrap">
+              <ViewHero
+                eyebrow={<Bi en="Criticism" th="ข้อวิจารณ์" />}
+                headline="What the record says about OTOP."
+                stake={<Bi
+                  en="Seven criticisms of the programme, each attributed, each answered by the register — or left unanswered, where the register cannot answer it."
+                  th="ข้อวิจารณ์โอทอปเจ็ดข้อ ระบุแหล่งที่มา และตอบด้วยข้อมูลทะเบียน — หรือบอกตรง ๆ ว่าตอบไม่ได้"
+                />}
+              />
+              {!insights && !insightsError && <p className="empty">Loading the national rollup…</p>}
+              {insightsError && (
+                <p className="empty">The national rollup could not be loaded — {insightsError}. The criticisms are still published; the registry's answers are not substituted with something else.</p>
+              )}
+              {insights && <Critic insights={insights} meta={meta} />}
+            </div>
+          </section>
+        )}
+
         {view === 'bank' && (
           <section className="sec" id="bank">
             <div className="wrap">
@@ -686,7 +741,7 @@ export default function App() {
             en={`Built ${meta.builtAt?.slice(0, 10)} from data.go.th · ${recordCount.toLocaleString()} producer records · ${meta.shardCount} province shards`}
             th={`สร้างเมื่อ ${meta.builtAt?.slice(0, 10)} จาก data.go.th · ${recordCount.toLocaleString()} รายการ · ${meta.shardCount} ไฟล์แยกรายจังหวัด`}
           />{' '}
-          <a href="/?view=method"><Bi en="What these numbers are →" th="ตัวเลขเหล่านี้คืออะไร →" /></a>
+          <a href="/method/"><Bi en="What these numbers are →" th="ตัวเลขเหล่านี้คืออะไร →" /></a>
         </p>
       </main>
 
@@ -720,7 +775,7 @@ export default function App() {
           <ul className="cr-views-list">
             {MORE_VIEWS.map((v) => (
               <li key={v.view}>
-                <a href={`/?view=${v.view}`}>
+                <a href={pathFor(v.view)}>
                   <span>{v.en}</span>
                   <span className="cr-views-th" lang="th">{v.th}</span>
                 </a>

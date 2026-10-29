@@ -1,5 +1,5 @@
 {
- "builtAt": "2026-10-23T18:42:37.507Z",
+ "builtAt": "2026-10-28T16:49:29.619Z",
  "portal": "https://data.go.th",
  "frame": {
   "en": "Soft power is measured abroad by polling. Its supply side is measured here: by the registers that record who makes what, where it goes, and what the state has certified. These are the instruments. One of them is OTOP.",
@@ -75,11 +75,11 @@
      "id": "cert",
      "en": "Certificates valid",
      "th": "ใบรับรองที่ใช้ได้",
-     "value": 9588,
+     "value": 9552,
      "unitEn": "certificates",
      "unitTh": "ใบรับรอง",
-     "scopeEn": "As of 2026-09-20",
-     "scopeTh": "ณ 2026-09-20"
+     "scopeEn": "As of 2026-10-28",
+     "scopeTh": "ณ 2026-10-28"
     },
     {
      "id": "contact",
@@ -97,7 +97,7 @@
     "dataset": "OTOP — ผลิตภัณฑ์ชุมชน (this site)",
     "org": "Department of Community Development and partners, via data.go.th",
     "url": "https://otop.nonarkara.org/?view=method",
-    "retrieved": "2026-09-20T17:12:01.983Z",
+    "retrieved": "2026-10-28T16:48:38.363Z",
     "rows": 154050
    },
    "route": "/?view=find"

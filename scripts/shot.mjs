@@ -40,7 +40,7 @@ fs.mkdirSync(OUT, { recursive: true });
 const metaRes = await fetch(new URL('/otop_meta.json', BASE));
 const EXPECTED = metaRes.ok ? (await metaRes.json())?.counts?.recordsAfterMerge ?? null : null;
 
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
 const report = [];
 
 for (const [name, route] of VIEWS) {

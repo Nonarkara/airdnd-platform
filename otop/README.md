@@ -24,10 +24,65 @@ npm run otop:fetch      # ① pull raw CKAN data from data.go.th   (NETWORK)
 npm run otop:build      # ② normalise → resolve → shard → aggregate  (PURE)
 npm run otop:dev        # ③ develop at http://localhost:5180
 npm run otop:site       # ③ build to dist-otop/
-npm test                # 34 unit tests, including the resolution and scoring traps
+npm test                # the unit tests, including the resolution and scoring traps
 ```
 
 `npm run otop:discover` lists what stage ① *would* pull without pulling it.
+
+### Shipping it
+
+```bash
+npm run otop:ship       # card → build → prerender → deploy → verify the live host
+```
+
+`otop:ship` is the whole release in one command, and it is ordered so that
+each step can only ship what the step before it proved:
+
+| Step | Command | What it produces |
+|---|---|---|
+| the card | `npm run otop:og` | `otop/public/og/otop.png` — the 1200×630 image a share shows |
+| the build | `npm run otop:site` | `dist-otop/` — the application and its data artefacts |
+| the documents | `npm run otop:prerender` | one static HTML file per path, plus `sitemap.xml` and `robots.txt` |
+| the deploy | wrangler | the live host |
+| the proof | `npm run otop:verify` | 22 checks against the live host, not against the local build |
+
+**The prerender is not optional.** The site is a single-page application, so
+a crawler that does not run JavaScript receives an empty `<div id="root">` —
+and most crawlers do not run JavaScript. The prerender writes each view out
+as a document at the path it lives on, so `/history/` is a document on the
+server rather than a route the client router invents. It also writes the
+`sitemap.xml` and `robots.txt` that say what exists.
+
+**The verification is against the live host.** `otop:verify` fetches the
+deployed URL and checks fifteen things: that the bundle served is the bundle
+last built here, that the lazy chunks resolve, that the published artefacts
+have the right shape rather than merely a 200, that the SPA fallback still
+catches deep links, that **every path is a document with its own title, its
+own canonical address and its own structured data**, that the sitemap is XML
+and the robots file is a robots file, and that the header's navigation is
+anchors in the served HTML — because a crawler follows links and cannot press
+buttons.
+
+### The gates
+
+```bash
+npm run otop:routes      # every path renders its own view, and its text has no holes
+npm run otop:preserve    # focus visibility, target sizes, text size, contrast
+npm run otop:msh         # chrome cost, task visibility, hierarchy — at 390/1024/1440
+npm run spatial:gate     # the spatial law, against a recorded baseline
+npm run spatial:check    # the falsifier: proves the gate above can actually fail
+```
+
+All five take a base URL as their first argument, and all five refuse to
+measure a page that is not this app — a probe that measures the wrong page
+and reports "clean" is worse than no probe.
+
+**One route register.** `scripts/otop/routes.mjs` is the single list of the
+site's views, and it reads the paths from the application's own route table
+(`otop/src/lib/routes.js`) rather than keeping a copy. Every instrument above
+reads it. If the application grows a view and the register does not, the
+register says so out loud and the run fails — because a gate that quietly
+measures a subset of the site reports that subset as the whole of it.
 
 Stage ① covers the **whole catalogue** — the "OTOP" search on data.go.th runs to
 roughly 28 pages of datasets, and `package_search` is paged through to
@@ -47,9 +102,25 @@ is resumed by running it again. Useful flags:
 **Stage ① is the only thing that touches the network.** It writes untouched CKAN
 responses into `otop/data/raw/` and transforms nothing. That buys two things:
 
-1. **Stage ② is reproducible.** Same files in, byte-identical output — so a
-   reviewer can rerun it and get your numbers, and CI can build without reaching
-   a government portal that is frequently slow or down.
+1. **Stage ② is reproducible.** Same files in, the same output — so a
+   reviewer can rerun it and get your numbers, and CI can build without
+   reaching a government portal that is frequently slow or down.
+
+   Two things move, and both are meant to:
+
+   - the **build timestamp**, which is the receipt of when the numbers were
+     computed;
+   - the **certification split** (`certValid` / `certExpired`), which is
+     computed *as of the build date*. A certificate that was valid last month
+     and lapses today moves from one column to the other — the record count
+     does not change, only the answer to "is it valid now?". That is the
+     honest behaviour for a registry that claims to be current, and it is why
+     the site prints the date its numbers are as of.
+
+   Everything else — all 154,050 records, every province shard, every
+   aggregate — is byte-identical between runs. The cache is read in sorted
+   order for exactly this reason: an unsorted directory read makes the merge
+   order, and therefore the bytes, depend on the filesystem's mood.
 2. **The raw cache is an archive.** If a publisher deletes or silently rewrites a
    dataset, the version this project analysed still exists on disk, and the
    finding drawn from it is still defensible.

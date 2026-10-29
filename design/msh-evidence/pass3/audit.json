@@ -1,0 +1,2618 @@
+[
+  {
+    "view": "find",
+    "task": "search a producer and call them",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Who can you call today?วันนี้คุณโทรหาใครได้บ้า",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 24,
+      "text": "154,050"
+    },
+    "peers": 1,
+    "ratio": 1.33,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Who can you call today?วันนี้คุณโทรหาใคร",
+        "fs": 32,
+        "y": 101
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 24,
+        "weight": 700,
+        "text": "154,050",
+        "sel": "strong",
+        "y": 1274
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 16.8,
+        "weight": 600,
+        "text": "0909053494",
+        "sel": "span.phone-num",
+        "y": 1412
+      }
+    ],
+    "sideways": false,
+    "docH": 7195
+  },
+  {
+    "view": "find",
+    "task": "search a producer and call them",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Who can you call today?วันนี้คุณโทรหาใครได้บ้า",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 28,
+      "text": "154,050"
+    },
+    "peers": 1,
+    "ratio": 1.14,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Who can you call today?วันนี้คุณโทรหาใคร",
+        "fs": 32,
+        "y": 101
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 28,
+        "weight": 700,
+        "text": "154,050",
+        "sel": "strong",
+        "y": 733
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 18.4,
+        "weight": 600,
+        "text": "0909053494",
+        "sel": "span.phone-num",
+        "y": 797
+      }
+    ],
+    "sideways": false,
+    "docH": 4312
+  },
+  {
+    "view": "find",
+    "task": "search a producer and call them",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Who can you call today?วันนี้คุณโทรหาใครได้บ้า",
+      "fs": 43.2
+    },
+    "titleSize": 43.2,
+    "largest": {
+      "fs": 28,
+      "text": "154,050"
+    },
+    "peers": 1,
+    "ratio": 1.54,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Who can you call today?วันนี้คุณโทรหาใคร",
+        "fs": 43.2,
+        "y": 101
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 28,
+        "weight": 700,
+        "text": "154,050",
+        "sel": "strong",
+        "y": 572
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 18.4,
+        "weight": 600,
+        "text": "0909053494",
+        "sel": "span.phone-num",
+        "y": 635
+      }
+    ],
+    "sideways": false,
+    "docH": 4012
+  },
+  {
+    "view": "match",
+    "task": "filter a shortlist of producers",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Discover · B2C",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 24,
+      "text": "97"
+    },
+    "peers": 21,
+    "ratio": 1.33,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Discover · B2C",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22,
+        "weight": 700,
+        "text": "Condition of the record",
+        "sel": "span.bi-en",
+        "y": 6461
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "2,653 matching producers",
+        "sel": "span.bi-en",
+        "y": 1168
+      }
+    ],
+    "sideways": false,
+    "docH": 8127
+  },
+  {
+    "view": "match",
+    "task": "filter a shortlist of producers",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Discover · B2C",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 24,
+      "text": "97"
+    },
+    "peers": 61,
+    "ratio": 1.54,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Discover · B2C",
+        "fs": 36.864,
+        "y": 176
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22,
+        "weight": 700,
+        "text": "Condition of the record",
+        "sel": "span.bi-en",
+        "y": 5823
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "2,653 matching producers",
+        "sel": "span.bi-en",
+        "y": 649
+      }
+    ],
+    "sideways": false,
+    "docH": 7038
+  },
+  {
+    "view": "match",
+    "task": "filter a shortlist of producers",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Discover · B2C",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 24,
+      "text": "97"
+    },
+    "peers": 61,
+    "ratio": 1.73,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Discover · B2C",
+        "fs": 41.6,
+        "y": 173
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22,
+        "weight": 700,
+        "text": "Condition of the record",
+        "sel": "span.bi-en",
+        "y": 5716
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "2,653 matching producers",
+        "sel": "span.bi-en",
+        "y": 651
+      }
+    ],
+    "sideways": false,
+    "docH": 6573
+  },
+  {
+    "view": "atlas",
+    "task": "read what the data says",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 55px @328 z5"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 55px @51 z5"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The whole registry as one package.",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 22,
+      "text": "What does the data say?"
+    },
+    "peers": 1,
+    "ratio": 1.45,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The whole registry as one package.",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22,
+        "weight": 600,
+        "text": "What does the data say?",
+        "sel": "h2.atlas-tab-h",
+        "y": 495
+      }
+    ],
+    "sideways": false,
+    "docH": 3085
+  },
+  {
+    "view": "atlas",
+    "task": "read what the data says",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 65px @269 z5"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 65px @51 z5"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The whole registry as one package.",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 28.672,
+      "text": "What does the data say?"
+    },
+    "peers": 1,
+    "ratio": 1.29,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The whole registry as one package.",
+        "fs": 36.864,
+        "y": 163
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 28.672,
+        "weight": 600,
+        "text": "What does the data say?",
+        "sel": "h2.atlas-tab-h",
+        "y": 430
+      }
+    ],
+    "sideways": false,
+    "docH": 2155
+  },
+  {
+    "view": "atlas",
+    "task": "read what the data says",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 65px @245 z5"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20",
+      "nav.atlas-tabs 65px @51 z5"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The whole registry as one package.",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 30,
+      "text": "What does the data say?"
+    },
+    "peers": 1,
+    "ratio": 1.39,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The whole registry as one package.",
+        "fs": 41.6,
+        "y": 173
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 30,
+        "weight": 600,
+        "text": "What does the data say?",
+        "sel": "h2.atlas-tab-h",
+        "y": 405
+      }
+    ],
+    "sideways": false,
+    "docH": 1884
+  },
+  {
+    "view": "province",
+    "task": "read one province whole",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Chiang Maiเชียงใหม่",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 28,
+      "text": "87.1%"
+    },
+    "peers": 7,
+    "ratio": 1.14,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Chiang Maiเชียงใหม่",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 24,
+        "weight": 800,
+        "text": "TH-50",
+        "sel": "p.t-dest",
+        "y": 295
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "Known for · จังหวัดนี้ขึ้นชื่อเรื่องอะไร",
+        "sel": "h3.sub-h",
+        "y": 1103
+      }
+    ],
+    "sideways": false,
+    "docH": 10277
+  },
+  {
+    "view": "province",
+    "task": "read one province whole",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Chiang Maiเชียงใหม่",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 28,
+      "text": "87.1%"
+    },
+    "peers": 7,
+    "ratio": 1.32,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Chiang Maiเชียงใหม่",
+        "fs": 36.864,
+        "y": 163
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 25.6,
+        "weight": 800,
+        "text": "TH-50",
+        "sel": "p.t-dest",
+        "y": 278
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "Known for · จังหวัดนี้ขึ้นชื่อเรื่องอะไร",
+        "sel": "h3.sub-h",
+        "y": 873
+      }
+    ],
+    "sideways": false,
+    "docH": 8593
+  },
+  {
+    "view": "province",
+    "task": "read one province whole",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Chiang Maiเชียงใหม่",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 28,
+      "text": "TH-50"
+    },
+    "peers": 8,
+    "ratio": 1.49,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Chiang Maiเชียงใหม่",
+        "fs": 41.6,
+        "y": 165
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 28,
+        "weight": 800,
+        "text": "TH-50",
+        "sel": "p.t-dest",
+        "y": 290
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "Known for · จังหวัดนี้ขึ้นชื่อเรื่องอะไร",
+        "sel": "h3.sub-h",
+        "y": 885
+      }
+    ],
+    "sideways": false,
+    "docH": 8174
+  },
+  {
+    "view": "matchmaker",
+    "task": "see where the supply is and where the money already is",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Where the supply is, where the money already i",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 24,
+      "text": "01"
+    },
+    "peers": 20,
+    "ratio": 1.33,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Where the supply is, where the money alr",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 24,
+        "weight": 700,
+        "text": "01",
+        "sel": "span.mm-row-rank",
+        "y": 775
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 24,
+        "weight": 700,
+        "text": "02",
+        "sel": "span.mm-row-rank",
+        "y": 1014
+      }
+    ],
+    "sideways": false,
+    "docH": 6859
+  },
+  {
+    "view": "matchmaker",
+    "task": "see where the supply is and where the money already is",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Where the supply is, where the money already i",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 24,
+      "text": "01"
+    },
+    "peers": 20,
+    "ratio": 1.54,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Where the supply is, where the money alr",
+        "fs": 36.864,
+        "y": 163
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 24,
+        "weight": 700,
+        "text": "01",
+        "sel": "span.mm-row-rank",
+        "y": 593
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 24,
+        "weight": 700,
+        "text": "02",
+        "sel": "span.mm-row-rank",
+        "y": 712
+      }
+    ],
+    "sideways": false,
+    "docH": 3868
+  },
+  {
+    "view": "matchmaker",
+    "task": "see where the supply is and where the money already is",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Where the supply is, where the money already i",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 24,
+      "text": "01"
+    },
+    "peers": 20,
+    "ratio": 1.73,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Where the supply is, where the money alr",
+        "fs": 41.6,
+        "y": 165
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 24,
+        "weight": 700,
+        "text": "01",
+        "sel": "span.mm-row-rank",
+        "y": 478
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 24,
+        "weight": 700,
+        "text": "02",
+        "sel": "span.mm-row-rank",
+        "y": 581
+      }
+    ],
+    "sideways": false,
+    "docH": 3314
+  },
+  {
+    "view": "briefs",
+    "task": "get a forwardable brief for one sector",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Six forwardable cards.",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 20.8,
+      "text": "154,050 producers"
+    },
+    "peers": 6,
+    "ratio": 1.54,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Six forwardable cards.",
+        "fs": 32,
+        "y": 141
+      }
+    ],
+    "sideways": true,
+    "docH": 5546
+  },
+  {
+    "view": "briefs",
+    "task": "get a forwardable brief for one sector",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Six forwardable cards.",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 28,
+      "text": "154,050 producers"
+    },
+    "peers": 6,
+    "ratio": 1.32,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Six forwardable cards.",
+        "fs": 36.864,
+        "y": 163
+      }
+    ],
+    "sideways": false,
+    "docH": 3418
+  },
+  {
+    "view": "briefs",
+    "task": "get a forwardable brief for one sector",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Six forwardable cards.",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 28,
+      "text": "154,050 producers"
+    },
+    "peers": 6,
+    "ratio": 1.49,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Six forwardable cards.",
+        "fs": 41.6,
+        "y": 165
+      }
+    ],
+    "sideways": false,
+    "docH": 3133
+  },
+  {
+    "view": "tides",
+    "task": "see where a category is moving and where it is stalling",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Where is your category moving — and where is i",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 16,
+      "text": "385 cells, each a 3-year reven"
+    },
+    "peers": 1,
+    "ratio": 2,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Where is your category moving — and wher",
+        "fs": 32,
+        "y": 141
+      }
+    ],
+    "sideways": false,
+    "docH": 1624
+  },
+  {
+    "view": "tides",
+    "task": "see where a category is moving and where it is stalling",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Where is your category moving — and where is i",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 16,
+      "text": "385 cells, each a 3-year reven"
+    },
+    "peers": 1,
+    "ratio": 2.3,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Where is your category moving — and wher",
+        "fs": 36.864,
+        "y": 163
+      }
+    ],
+    "sideways": false,
+    "docH": 1235
+  },
+  {
+    "view": "tides",
+    "task": "see where a category is moving and where it is stalling",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Where is your category moving — and where is i",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 16,
+      "text": "385 cells, each a 3-year reven"
+    },
+    "peers": 1,
+    "ratio": 2.6,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Where is your category moving — and wher",
+        "fs": 41.6,
+        "y": 165
+      }
+    ],
+    "sideways": false,
+    "docH": 1073
+  },
+  {
+    "view": "champions",
+    "task": "start from the buyer's list",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The buyer's starting list.",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 16,
+      "text": "4–5★ producers the registry sa"
+    },
+    "peers": 51,
+    "ratio": 2,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The buyer's starting list.",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 16,
+        "weight": 600,
+        "text": "กลุ่มเครื่องประดับพลอยงาม",
+        "sel": "h3.ch-card-name",
+        "y": 1261
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 16,
+        "weight": 600,
+        "text": "กลุ่มจักสานผักตบชวาบ้านโพธิ์รังนก",
+        "sel": "h3.ch-card-name",
+        "y": 1660
+      }
+    ],
+    "sideways": false,
+    "docH": 24445
+  },
+  {
+    "view": "champions",
+    "task": "start from the buyer's list",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The buyer's starting list.",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 16,
+      "text": "4–5★ producers the registry sa"
+    },
+    "peers": 51,
+    "ratio": 2.3,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The buyer's starting list.",
+        "fs": 36.864,
+        "y": 176
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 16,
+        "weight": 600,
+        "text": "กลุ่มเครื่องประดับพลอยงาม",
+        "sel": "h3.ch-card-name",
+        "y": 767
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 16,
+        "weight": 600,
+        "text": "กลุ่มจักสานผักตบชวาบ้านโพธิ์รังนก",
+        "sel": "h3.ch-card-name",
+        "y": 767
+      }
+    ],
+    "sideways": false,
+    "docH": 11813
+  },
+  {
+    "view": "champions",
+    "task": "start from the buyer's list",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The buyer's starting list.",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 16,
+      "text": "4–5★ producers the registry sa"
+    },
+    "peers": 51,
+    "ratio": 2.6,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The buyer's starting list.",
+        "fs": 41.6,
+        "y": 173
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 16,
+        "weight": 600,
+        "text": "กลุ่มเครื่องประดับพลอยงาม",
+        "sel": "h3.ch-card-name",
+        "y": 726
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 16,
+        "weight": 600,
+        "text": "กลุ่มจักสานผักตบชวาบ้านโพธิ์รังนก",
+        "sel": "h3.ch-card-name",
+        "y": 726
+      }
+    ],
+    "sideways": false,
+    "docH": 7656
+  },
+  {
+    "view": "story",
+    "task": "read how the registry came to be",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The map, the money, and the names no one can r",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 22.4,
+      "text": "Chapter 1 · The map"
+    },
+    "peers": 25,
+    "ratio": 1.43,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The map, the money, and the names no one",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "154,050",
+        "sel": "div.ns-stat-n",
+        "y": 1297
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "77/77",
+        "sel": "div.ns-stat-n",
+        "y": 1297
+      }
+    ],
+    "sideways": false,
+    "docH": 8676
+  },
+  {
+    "view": "story",
+    "task": "read how the registry came to be",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The map, the money, and the names no one can r",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 22.4,
+      "text": "Chapter 1 · The map"
+    },
+    "peers": 25,
+    "ratio": 1.65,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The map, the money, and the names no one",
+        "fs": 36.864,
+        "y": 163
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "154,050",
+        "sel": "div.ns-stat-n",
+        "y": 889
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "77/77",
+        "sel": "div.ns-stat-n",
+        "y": 889
+      }
+    ],
+    "sideways": false,
+    "docH": 5026
+  },
+  {
+    "view": "story",
+    "task": "read how the registry came to be",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The map, the money, and the names no one can r",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 22.4,
+      "text": "Chapter 1 · The map"
+    },
+    "peers": 25,
+    "ratio": 1.86,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The map, the money, and the names no one",
+        "fs": 41.6,
+        "y": 165
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "154,050",
+        "sel": "div.ns-stat-n",
+        "y": 811
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "77/77",
+        "sel": "div.ns-stat-n",
+        "y": 811
+      }
+    ],
+    "sideways": false,
+    "docH": 4594
+  },
+  {
+    "view": "history",
+    "task": "read the arc of the seed, the boom and the silence",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The seed, the boom, the silence, the platform.",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 22.4,
+      "text": "The seed"
+    },
+    "peers": 28,
+    "ratio": 1.43,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The seed, the boom, the silence, the pla",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "12",
+        "sel": "div.hs-score-v",
+        "y": 1804
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "9",
+        "sel": "div.hs-score-v",
+        "y": 1804
+      }
+    ],
+    "sideways": false,
+    "docH": 12745
+  },
+  {
+    "view": "history",
+    "task": "read the arc of the seed, the boom and the silence",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The seed, the boom, the silence, the platform.",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 22.4,
+      "text": "The seed"
+    },
+    "peers": 28,
+    "ratio": 1.65,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The seed, the boom, the silence, the pla",
+        "fs": 36.864,
+        "y": 163
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "12",
+        "sel": "div.hs-score-v",
+        "y": 1428
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "9",
+        "sel": "div.hs-score-v",
+        "y": 1428
+      }
+    ],
+    "sideways": false,
+    "docH": 8499
+  },
+  {
+    "view": "history",
+    "task": "read the arc of the seed, the boom and the silence",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "The seed, the boom, the silence, the platform.",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 22.4,
+      "text": "The seed"
+    },
+    "peers": 28,
+    "ratio": 1.86,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "The seed, the boom, the silence, the pla",
+        "fs": 41.6,
+        "y": 165
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "12",
+        "sel": "div.hs-score-v",
+        "y": 1440
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 22.4,
+        "weight": 700,
+        "text": "9",
+        "sel": "div.hs-score-v",
+        "y": 1440
+      }
+    ],
+    "sideways": false,
+    "docH": 8357
+  },
+  {
+    "view": "critic",
+    "task": "read the criticism of the programme, and what the record settles",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "What the record says about OTOP.",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 16,
+      "text": "Seven criticisms of the progra"
+    },
+    "peers": 1,
+    "ratio": 2,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "What the record says about OTOP.",
+        "fs": 32,
+        "y": 141
+      }
+    ],
+    "sideways": false,
+    "docH": 5724
+  },
+  {
+    "view": "critic",
+    "task": "read the criticism of the programme, and what the record settles",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "What the record says about OTOP.",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 16,
+      "text": "Seven criticisms of the progra"
+    },
+    "peers": 1,
+    "ratio": 2.3,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "What the record says about OTOP.",
+        "fs": 36.864,
+        "y": 163
+      }
+    ],
+    "sideways": false,
+    "docH": 3552
+  },
+  {
+    "view": "critic",
+    "task": "read the criticism of the programme, and what the record settles",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "What the record says about OTOP.",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 16,
+      "text": "Seven criticisms of the progra"
+    },
+    "peers": 1,
+    "ratio": 2.6,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "What the record says about OTOP.",
+        "fs": 41.6,
+        "y": 173
+      }
+    ],
+    "sideways": false,
+    "docH": 3225
+  },
+  {
+    "view": "crossrefs",
+    "task": "see OTOP against the country it sits in",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "OTOP against the country it sits in.",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 16,
+      "text": "Per-capita supply, tourist mon"
+    },
+    "peers": 1,
+    "ratio": 2,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "OTOP against the country it sits in.",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 15.2,
+        "weight": 700,
+        "text": "629",
+        "sel": "span.xr-row-v",
+        "y": 826
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 15.2,
+        "weight": 700,
+        "text": "563",
+        "sel": "span.xr-row-v",
+        "y": 894
+      }
+    ],
+    "sideways": false,
+    "docH": 5075
+  },
+  {
+    "view": "crossrefs",
+    "task": "see OTOP against the country it sits in",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "OTOP against the country it sits in.",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 16,
+      "text": "Per-capita supply, tourist mon"
+    },
+    "peers": 1,
+    "ratio": 2.3,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "OTOP against the country it sits in.",
+        "fs": 36.864,
+        "y": 163
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 15.2,
+        "weight": 700,
+        "text": "0.0",
+        "sel": "span.xr-row-v",
+        "y": 598
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 15.2,
+        "weight": 700,
+        "text": "629",
+        "sel": "span.xr-row-v",
+        "y": 621
+      }
+    ],
+    "sideways": false,
+    "docH": 3145
+  },
+  {
+    "view": "crossrefs",
+    "task": "see OTOP against the country it sits in",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "OTOP against the country it sits in.",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 16,
+      "text": "Per-capita supply, tourist mon"
+    },
+    "peers": 1,
+    "ratio": 2.6,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "OTOP against the country it sits in.",
+        "fs": 41.6,
+        "y": 173
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 15.2,
+        "weight": 700,
+        "text": "629",
+        "sel": "span.xr-row-v",
+        "y": 574
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 15.2,
+        "weight": 700,
+        "text": "0.0",
+        "sel": "span.xr-row-v",
+        "y": 574
+      }
+    ],
+    "sideways": false,
+    "docH": 2918
+  },
+  {
+    "view": "bank",
+    "task": "look up a dataset",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Every dataset the portal returned.",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 20,
+      "text": "152"
+    },
+    "peers": 7,
+    "ratio": 1.6,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Every dataset the portal returned.",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 20,
+        "weight": 700,
+        "text": "152",
+        "sel": "span.bank-shelf-n",
+        "y": 338
+      }
+    ],
+    "sideways": false,
+    "docH": 17397
+  },
+  {
+    "view": "bank",
+    "task": "look up a dataset",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Every dataset the portal returned.",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 20,
+      "text": "152"
+    },
+    "peers": 7,
+    "ratio": 1.84,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Every dataset the portal returned.",
+        "fs": 36.864,
+        "y": 163
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 20,
+        "weight": 700,
+        "text": "152",
+        "sel": "span.bank-shelf-n",
+        "y": 279
+      }
+    ],
+    "sideways": false,
+    "docH": 9860
+  },
+  {
+    "view": "bank",
+    "task": "look up a dataset",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Every dataset the portal returned.",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 20,
+      "text": "152"
+    },
+    "peers": 7,
+    "ratio": 2.08,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Every dataset the portal returned.",
+        "fs": 41.6,
+        "y": 173
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 20,
+        "weight": 700,
+        "text": "152",
+        "sel": "span.bank-shelf-n",
+        "y": 255
+      }
+    ],
+    "sideways": false,
+    "docH": 9408
+  },
+  {
+    "view": "method",
+    "task": "understand what the numbers mean",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "What these numbers are, and are not.",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 17,
+      "text": "Registry at a glance"
+    },
+    "peers": 2,
+    "ratio": 1.88,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "What these numbers are, and are not.",
+        "fs": 32,
+        "y": 141
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "Registry at a glance",
+        "sel": "span.bi-en",
+        "y": 1425
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "The build",
+        "sel": "span.bi-en",
+        "y": 1659
+      }
+    ],
+    "sideways": false,
+    "docH": 3142
+  },
+  {
+    "view": "method",
+    "task": "understand what the numbers mean",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "What these numbers are, and are not.",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 17,
+      "text": "Registry at a glance"
+    },
+    "peers": 2,
+    "ratio": 2.17,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "What these numbers are, and are not.",
+        "fs": 36.864,
+        "y": 163
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "Registry at a glance",
+        "sel": "span.bi-en",
+        "y": 459
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "The build",
+        "sel": "span.bi-en",
+        "y": 693
+      }
+    ],
+    "sideways": false,
+    "docH": 1860
+  },
+  {
+    "view": "method",
+    "task": "understand what the numbers mean",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "What these numbers are, and are not.",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 17,
+      "text": "Registry at a glance"
+    },
+    "peers": 2,
+    "ratio": 2.45,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "What these numbers are, and are not.",
+        "fs": 41.6,
+        "y": 165
+      },
+      {
+        "rank": 2,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "Registry at a glance",
+        "sel": "span.bi-en",
+        "y": 407
+      },
+      {
+        "rank": 3,
+        "what": "body",
+        "fs": 17,
+        "weight": 700,
+        "text": "The build",
+        "sel": "span.bi-en",
+        "y": 640
+      }
+    ],
+    "sideways": false,
+    "docH": 1671
+  },
+  {
+    "view": "softpower",
+    "task": "measure Thailand's soft power on the supply side",
+    "w": 390,
+    "h": 844,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Thailand's soft power, measured on the supply ",
+      "fs": 32
+    },
+    "titleSize": 32,
+    "largest": {
+      "fs": 16.72,
+      "text": "การผลิต"
+    },
+    "peers": 3,
+    "ratio": 1.91,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Thailand's soft power, measured on the s",
+        "fs": 32,
+        "y": 141
+      }
+    ],
+    "sideways": false,
+    "docH": 8837
+  },
+  {
+    "view": "softpower",
+    "task": "measure Thailand's soft power on the supply side",
+    "w": 1024,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Thailand's soft power, measured on the supply ",
+      "fs": 36.864
+    },
+    "titleSize": 36.864,
+    "largest": {
+      "fs": 16.72,
+      "text": "การผลิต"
+    },
+    "peers": 3,
+    "ratio": 2.2,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Thailand's soft power, measured on the s",
+        "fs": 36.864,
+        "y": 163
+      }
+    ],
+    "sideways": false,
+    "docH": 5675
+  },
+  {
+    "view": "softpower",
+    "task": "measure Thailand's soft power on the supply side",
+    "w": 1440,
+    "h": 900,
+    "chromeH": 51,
+    "chromePct": 6,
+    "chromeBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "scrolledChromeH": 51,
+    "scrolledChromePct": 6,
+    "scrolledBands": [
+      "header.hdr 51px @0 z20"
+    ],
+    "occluded": [],
+    "firstAction": {
+      "y": 0,
+      "sel": "a.brand",
+      "text": "one³"
+    },
+    "firstActionVisible": true,
+    "h1": {
+      "text": "Thailand's soft power, measured on the supply ",
+      "fs": 41.6
+    },
+    "titleSize": 41.6,
+    "largest": {
+      "fs": 16.72,
+      "text": "การผลิต"
+    },
+    "peers": 3,
+    "ratio": 2.49,
+    "priorities": [
+      {
+        "rank": 1,
+        "what": "title",
+        "sel": "h1",
+        "text": "Thailand's soft power, measured on the s",
+        "fs": 41.6,
+        "y": 165
+      }
+    ],
+    "sideways": false,
+    "docH": 5251
+  }
+]

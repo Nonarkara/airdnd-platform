@@ -109,6 +109,55 @@ const FIXTURES = [
     expect: "the title is only",
   },
   {
+    // The loud share. A page whose body is set in the loud voice from top to
+    // bottom has no hierarchy left: the reader cannot tell what is the point
+    // and what is the furniture, because everything is saying the same thing
+    // at the same volume. The house limit on the loud share is a ceiling, and
+    // this proves the ceiling bites.
+    //
+    // The threshold is 0.45, NOT the project's own limit, and the reason is
+    // that this falsifier measures the BUILD, not the project: the copy's own
+    // loud share is already 0.28 — this page is a directory of names and
+    // phone numbers, which is a legitimately loud product — so a threshold
+    // below that would fail the page whether or not the defect was injected,
+    // and a proof that fires on the clean page proves nothing. What matters
+    // here is the direction: the clean page sits BELOW the threshold and the
+    // fixture sits ABOVE it. Only the injected text can move it.
+    name: "the whole page is set in the loud voice",
+    mode: "false hierarchy",
+    at: "bottom",
+    html: `<div class="sl-loud">
+<p style="font-weight:700;font-size:20px;line-height:1.35">Everything on this page is saying the same thing at the same volume, and that is exactly the failure the law names: when the body shouts over the title, the reader is given no order to read in, so the loud share of the page climbs until the title is just one more voice among many.</p>
+<p style="font-weight:700;font-size:20px;line-height:1.35">The measurement counts characters, not elements, because characters are what the reader pays for: a long paragraph in a heavy weight is expensive in the same way whether it is one paragraph or forty labels, and the character count is the only honest way to say how much of the page is shouting.</p>
+<p style="font-weight:700;font-size:20px;line-height:1.35">So this fixture sets two thousand characters of bold text at twenty pixels, which is below the title and above the fifteen-pixel floor for a peer, and the ceiling has to move with it: the share of the page set in the loud voice rises from twenty-eight per cent to more than half, and a law that cannot see that difference is a law that has never failed.</p>
+<p style="font-weight:700;font-size:20px;line-height:1.35">Nothing else on the page changed. The title is the same size it was. The chrome is the same height. The geometry is untouched. And yet the page has become unreadable, because every line of it is competing with every other line of it, and the only thing that can fix that is a rule that counts the volume of the voice and refuses to let it pass a certain share of the page.</p>
+</div>`,
+    limits: { peerShare: 0.45 },
+    expect: "of the page is set in the loud voice",
+  },
+  {
+    // The type ramp. A page that sets text in eight sizes a reader can tell
+    // apart has no ramp at all — every element is one step louder than the
+    // one before it, which is the law's "do not make every element shout".
+    // The fixture sets eight sizes three pixels apart, each carrying enough
+    // characters to count as a step, and the house limit is six.
+    name: "a page with no type ramp at all",
+    mode: "false hierarchy",
+    at: "bottom",
+    html: `<div class="sl-ramp">
+      <p style="font-size:13px">thirteen thirteen thirteen thirteen thirteen thirteen thirteen</p>
+      <p style="font-size:16px">sixteen sixteen sixteen sixteen sixteen sixteen sixteen sixteen</p>
+      <p style="font-size:19px">nineteen nineteen nineteen nineteen nineteen nineteen nineteen</p>
+      <p style="font-size:22px">twenty two twenty two twenty two twenty two twenty two</p>
+      <p style="font-size:25px">twenty five twenty five twenty five twenty five twenty five</p>
+      <p style="font-size:28px">twenty eight twenty eight twenty eight twenty eight twenty</p>
+      <p style="font-size:31px">thirty one thirty one thirty one thirty one thirty one thirty</p>
+      <p style="font-size:34px">thirty four thirty four thirty four thirty four thirty four</p>
+    </div>`,
+    limits: { sizeSteps: 6 },
+    expect: "type steps",
+  },
+  {
     // The chrome of a page: the furniture that stands at the edge of the
     // screen. A band that grows takes height away from the work, and the
     // receipt records how tall the chrome is — so a chrome that grows must
@@ -447,6 +496,24 @@ const BASELINE_RULES = [
     },
   },
   {
+    // The chrome's SHARE of the first screen. The rule above proves the
+    // chrome can be seen to grow; this proves the ceiling on its share of
+    // the viewport fires on its own, with the page exactly as it is.
+    //
+    // The limit is set to zero, so ANY chrome fails it — and that is the
+    // point. The chrome of this page is a real, measured number: the header
+    // band and the door row under it. The rule has to report that number and
+    // the limit it broke, which is what the failure message carries. A rule
+    // that has never failed is a rule nobody should rely on, and a rule that
+    // is switched on but never bites is exactly that.
+    name: "the chrome takes more of the first screen than the law allows",
+    expect: "the chrome takes",
+    full: false,
+    mutate: (b) => {
+      b.limits = { ...b.limits, chromeTopPct: 0 };
+    },
+  },
+  {
     name: "a page the baseline has never seen, with a long scroll before the action",
     expect: "the first thing you can do is",
     also: ["sl-never-seen"],
@@ -483,6 +550,34 @@ const BASELINE_RULES = [
       b.exempt = [
         { route: "/", check: "firstAction", why: "a synthetic exemption, written down for falsification" },
       ];
+    },
+  },
+  {
+    // The OTHER direction of the wrap rule, and the one that keeps it honest.
+    //
+    // The rule was weakened on purpose: a row that breaks and leaves its last
+    // item alone is only an accident if the row it leaves behind is MOSTLY
+    // EMPTY. A register whose items grow fills the last band with one item
+    // that spans it, and that is a deliberate full-width row.
+    //
+    // A rule that has been weakened must be shown to still be quiet on the
+    // case it was weakened FOR. This mounts a row that breaks exactly that
+    // way — four items, three to a line, the fourth alone on the last line
+    // and grown to span it — and the gate must PASS. If it fails, the
+    // measurement is not measuring the void; it is measuring the count, and
+    // the change was cosmetic.
+    name: "a row that breaks and leaves its last item alone, but the last item fills the row",
+    expect: null,
+    note: "the filled last row was left alone",
+    full: false,
+    fixture: {
+      at: "bottom",
+      html: `<div class="sl-filled" style="display:flex;flex-wrap:wrap;gap:8px;width:300px">
+        <div style="flex:1 1 90px;height:24px;background:#d8d8d8"></div>
+        <div style="flex:1 1 90px;height:24px;background:#d8d8d8"></div>
+        <div style="flex:1 1 90px;height:24px;background:#d8d8d8"></div>
+        <div style="flex:1 1 90px;height:24px;background:#d8d8d8"></div>
+      </div>`,
     },
   },
   {

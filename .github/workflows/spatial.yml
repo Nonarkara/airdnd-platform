@@ -16,16 +16,18 @@ on:
     paths:
       - 'otop/src/**'
       - 'otop/index.html'
-      - 'otop/public/fonts/**'
+      - 'otop/public/**'
       - 'scripts/**'
+      - 'test/**'
       - 'design/spatial-baseline.json'
       - '.github/workflows/spatial.yml'
   pull_request:
     paths:
       - 'otop/src/**'
       - 'otop/index.html'
-      - 'otop/public/fonts/**'
+      - 'otop/public/**'
       - 'scripts/**'
+      - 'test/**'
       - 'design/spatial-baseline.json'
 
 jobs:

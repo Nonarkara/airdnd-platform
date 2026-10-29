@@ -102,10 +102,94 @@ check_json otop_province_faces.json "d.provinces && d.provinces.length === 77 ? 
 check_json media/provinces/index.json "d.counts && d.counts.provinces >= 1 ? \`\${d.counts.withPhotos}/\${d.counts.provinces} provinces with licensed photos\` : 'ERR province media index missing'" "province media index"
 check_json otop_datasets.json "d.totals && d.totals.discovered > 500 && d.groups.length >= 7 ? \`\${d.totals.discovered} discovered · \${d.totals.pulled} pulled · \${d.groups.length} shelves\` : 'ERR data bank missing — old build served'" "otop_datasets.json"
 
-# 4. The SPA fallback. Without it every deep link 404s and only the bare domain
+# 4. THE SPA fallback. Without it every deep link 404s and only the bare domain
 #    works — which nobody notices until someone shares a link.
 code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time "$TIMEOUT" "$BASE/deep/link/that/does/not/exist" || echo 000)
 [[ "$code" == "200" ]] && say "SPA fallback (_redirects)" "200" || bad "SPA fallback (_redirects)" "got $code"
+
+# 5. THE DOCUMENTS. The site is a register with fifteen documents in it, and
+#    each one has to BE a document: a path that serves 200 but hands back the
+#    SPA shell says nothing to a reader who does not run JavaScript — and
+#    most of the web's readers, and every crawler, do not.
+#
+#    This is where a deploy that shadows the prerendered files with the
+#    redirect rule shows up. It fails loudly rather than shipping a
+#    prerender that nothing ever sees.
+#
+#    The route list is read from the shared register, which reads the app's
+#    own route table — so this checks the documents the app actually has.
+routes_json=$(node scripts/otop/routes.mjs --json 2>/dev/null)
+if [[ -z "$routes_json" ]]; then
+  bad "document sweep" "the route register could not be read"
+else
+  doc_report=$(ROUTES_JSON="$routes_json" BASE="$BASE" TIMEOUT="$TIMEOUT" node --input-type=module -e '
+    const routes = JSON.parse(process.env.ROUTES_JSON);
+    const BASE = process.env.BASE;
+    let bad = 0, checked = 0, noTitle = 0, noContent = 0, noCanon = 0, noLd = 0;
+    for (const r of routes) {
+      const res = await fetch(BASE + r.path, { redirect: "follow" }).catch(() => null);
+      if (!res) { console.log(`  FAIL ${r.path} — no response`); bad++; continue; }
+      const html = await res.text();
+      checked++;
+      // A document that is only the SPA shell: the empty root div the
+      // application ships. (No apostrophes in here — an apostrophe inside a
+      // single-quoted shell string ends the string, and the whole verifier
+      // stops parsing. It did, once.)
+      const shellOnly = /<div id="root"><\/div>/.test(html);
+      // The heading the view is known to carry. Its absence means the path
+      // rendered something other than the document it claims to be.
+      const hasContent = !shellOnly && (r.h1 ? html.includes(r.h1) : html.length > 2000);
+      if (shellOnly || !hasContent) { noContent++; bad++; }
+      const t = (html.match(/<title>([^<]*)<\/title>/) || [])[1] || "";
+      if (!t || (r.title && !t.includes(r.title))) { noTitle++; bad++; }
+      const c = (html.match(/<link rel="canonical" href="([^"]*)"/) || [])[1] || "";
+      if (!c) { noCanon++; bad++; }
+      if (!/application\/ld\+json/.test(html)) { noLd++; bad++; }
+    }
+    console.log(`  ${checked} documents · ${noContent} without content · ${noTitle} without a subject title · ${noCanon} without a canonical · ${noLd} without structured data`);
+    process.exit(bad ? 1 : 0);
+  ' 2>&1)
+  if [[ $? -eq 0 ]]; then say "documents (15 paths)" "$doc_report"; else bad "documents (15 paths)" "$doc_report"; fi
+fi
+
+# 6. THE CARD. The site is shared in messages, and what appears there is one
+#    image. If it is missing the share shows a blank rectangle.
+og_code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time "$TIMEOUT" "$BASE/og/otop.png" || echo 000)
+[[ "$og_code" == "200" ]] && say "og:image" "200" || bad "og:image" "got $og_code"
+
+# 7. THE CRAWLER'S TWO FILES. Both were served as the SPA shell before the
+#    prerender wrote them — a sitemap that is an HTML page is not a sitemap,
+#    and a robots.txt that is an HTML page tells a crawler nothing.
+sm=$(curl -sS --max-time "$TIMEOUT" "$BASE/sitemap.xml" || true)
+if [[ "$sm" == \<?xml* && "$sm" == *"<urlset"* ]]; then
+  n=$(grep -c "<loc>" <<<"$sm")
+  say "sitemap.xml" "$n urls"
+else
+  bad "sitemap.xml" "not an XML urlset — the SPA shell is being served instead"
+fi
+rb=$(curl -sS --max-time "$TIMEOUT" "$BASE/robots.txt" || true)
+if [[ "$rb" == *"User-agent:"* && "$rb" == *"Sitemap:"* ]]; then
+  say "robots.txt" "ok"
+else
+  bad "robots.txt" "not a robots file — the SPA shell is being served instead"
+fi
+
+# 8. THE LINK GRAPH. A crawler follows links and cannot press buttons, so a
+#    header made of <button> elements is a header a crawler cannot use. The
+#    nav must be anchors in the SERVED HTML, not anchors the script builds.
+navlinks=$(grep -o 'class="hdr-nav"' <<<"$html" | wc -l | tr -d ' ')
+anchor_count=$(node -e '
+  let raw=""; process.stdin.on("data",(c)=>{raw+=c;});
+  process.stdin.on("end",()=>{
+    const m = raw.match(/<nav class="hdr-nav"[\s\S]*?<\/nav>/);
+    console.log(m ? (m[0].match(/<a /g)||[]).length : 0);
+  });
+' <<<"$html")
+if [[ "$anchor_count" -ge 6 ]]; then
+  say "nav link graph" "$anchor_count anchors in the served HTML"
+else
+  bad "nav link graph" "$anchor_count anchors in the served HTML (need 6) — the nav is not crawlable"
+fi
 
 echo
 if [[ $fail -eq 0 ]]; then echo "all checks passed"; else echo "$fail check(s) failed"; fi

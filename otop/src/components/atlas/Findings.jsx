@@ -11,25 +11,25 @@ const FIND_LINKS = {
   // 7,089 records carry a 4-5★ grade but no contact — Find shows them
   // sorted contactability-first so the reachable ones are at the top.
   'hidden-champions': {
-    href: '/?view=find&s=4-5',
+    href: '/?s=4-5',
     en: 'Open in Find →',
     th: 'เปิดใน Find →',
   },
   // 117 records have all three signals — the rarest, most useful slice.
   'commercial-ready': {
-    href: '/?view=find&s=4-5&c=1',
+    href: '/?s=4-5&c=1',
     en: 'Find the 117 →',
     th: 'ค้นหา 117 ราย →',
   },
   // Concentration finding: show the top province.
   'concentration': {
-    href: '/?view=find',
+    href: '/',
     en: 'Browse all provinces →',
     th: 'ดูทุกจังหวัด →',
   },
   // 5★ only — narrow the search to the top grade.
   'graded': {
-    href: '/?view=find&s=5',
+    href: '/?s=5',
     en: 'Find 5★ only →',
     th: 'ค้นหาเฉพาะ 5 ดาว →',
   },

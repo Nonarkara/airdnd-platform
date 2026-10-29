@@ -93,7 +93,13 @@
   border-bottom: 2px solid var(--tag-ink);
 }
 .t-face .t-dest {
-  font-size: clamp(1.375rem, 3.5vw, 2rem);
+  /* A label, and a label steps DOWN rather than scaling with the title.
+     It used to be clamp(1.375rem, 3.5vw, 2rem) — a ramp parallel to the
+     masthead's, so the two crossed: at 860px the code was 30.1px and the
+     title 30.9px, a ratio of 1.03. The code is now on the house's rank-2
+     scale (1.75rem) and the title has its own step above it, so the title
+     wins at every width by more than a tenth. */
+  font-size: clamp(1.5rem, 2.5vw, 1.75rem);
   display: flex;
   align-items: center;
   border-right: 2px solid var(--tag-ink);

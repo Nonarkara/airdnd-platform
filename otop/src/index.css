@@ -52,6 +52,16 @@
   --line:      #d8b87a;        /* warm gold-rule */
   --line-2:    #ad8c4d;        /* deep rule */
 
+  /* THE GROUND: the paper the page is printed on, and the colour a thing
+     takes when the ink goes under it.
+     This variable was never defined. Every use of it fell back —
+     `var(--ground, currentColor)` resolved to the INHERITED ink, so a
+     selected filter chip was painted `--ink` on `--ink` and its label
+     vanished: the reader could not see which filter was active, on the
+     champions, matchmaker and history views. Four different fallbacks
+     meant four different accidents; one defined value means one decision. */
+  --ground:    #fdf3df;
+
   --ink:       #1f0e0a;        /* banyan brown — warmer than near-black */
   --ink-2:     #5a3625;        /* warm walnut */
   --ink-3:     #8a6645;        /* sandalwood */
@@ -166,21 +176,21 @@ a { color: inherit; }
   min-width: 0; overflow-x: auto; scrollbar-width: none;
 }
 .hdr-nav::-webkit-scrollbar { display: none; }
-.hdr-nav button {
+.hdr-nav a {
   background: none; border: 0; border-bottom: 3px solid transparent;
   padding: 0 0.9rem;
   font: inherit; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--bg-2); cursor: pointer;
+  color: var(--bg-2); cursor: pointer; text-decoration: none;
   display: inline-flex; align-items: center; gap: .45rem;
   white-space: nowrap;
 }
-.hdr-nav button[aria-current='true'] { color: var(--bg); border-bottom-color: var(--accent); }
+.hdr-nav a[aria-current='true'] { color: var(--bg); border-bottom-color: var(--accent); }
 .hdr-nav .nav-en { font-weight: 600; }
 .hdr-nav .nav-th {
   font-family: var(--font-thai); font-size: .85em; letter-spacing: 0;
   text-transform: none; opacity: .55; font-weight: 400;
 }
-.hdr-nav button[aria-current='true'] .nav-th { opacity: .8; }
+.hdr-nav a[aria-current='true'] .nav-th { opacity: .8; }
 .hdr-status {
   font-family: var(--font-mono); font-size: 11px; color: var(--bg-2);
   display: flex; align-items: center; gap: .5rem;
@@ -242,7 +252,14 @@ a { color: inherit; }
 .vhero-h {
   grid-column: 1; grid-row: 2;
   font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(1.75rem, 3.6vw, 2.6rem);
+  /* The page's title is NOT a rank in the data scale. The house's biggest
+     data numeral is --t-rank2-lg (1.75rem) and the title's floor used to be
+     the same 1.75rem — so on a phone the title of the province view tied
+     exactly with a percentage in a data block two thousand pixels down the
+     page, and the title won nothing. The h1 has its own step now: 2rem at
+     the narrow end, the data numerals keep 1.75rem, and the title is
+     always at least a tenth larger than anything it shares the page with. */
+  font-size: clamp(2rem, 3.6vw, 2.6rem);
   line-height: 1.06; letter-spacing: -.02em;
   margin: 0; max-width: none;
   text-wrap: balance;
@@ -967,6 +984,13 @@ a { color: inherit; }
 @media (max-width: 900px) {
   .champions { grid-template-columns: minmax(0, 1fr); }
   .ch-lede, .ch-actions, .ch-controls, .ch-cards, .ch-foot { grid-column: 1; grid-row: auto; }
+  /* The filter groups stack on a phone, one register row each, so the
+     labels line up in a column down the left. */
+  .ch-controls { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
+  /* The footer note is three columns of prose. Three columns of a 358px
+     column is three 100px columns, and every number in it wrapped to three
+     lines: "50 / of / 90" stood in a column 40px wide. */
+  .t-note.ch-foot { columns: 1; }
 }
 .ch-actions {
   display: grid; align-content: start;
@@ -986,15 +1010,39 @@ a { color: inherit; }
   padding-block: 0.6rem; border-block: 1px solid var(--rule-2, currentColor);
   align-items: flex-start;
 }
-.ch-ctrl-grp { display: flex; gap: 0.25rem; flex-wrap: wrap; align-items: center; }
-.ch-ctrl-grp .t-key { margin-right: 0.5rem; }
+/* A FILTER GROUP IS A REGISTER ROW: the label in one column, the controls in
+   the next. The label used to sit inline with the controls, so the first row
+   of chips was pushed right by the width of a word and the chips that
+   wrapped started again at the left edge, under the label — a ragged
+   staircase with no column to read down. Now the label has its own column
+   and every group reads the same way: the labels line up, and the controls
+   start where the label ends. */
+.ch-ctrl-grp {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.25rem 0.75rem;
+  align-items: start;
+}
+.ch-ctrl-grp .t-key { grid-column: 1; margin-right: 0; }
+.ch-ctrl-chips { grid-column: 2; display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: center; }
 .ch-ctrl-grow { flex: 1 1 14rem; }
+.ch-ctrl-grp.ch-ctrl-grow { grid-template-columns: minmax(0, 1fr); }
+.ch-ctrl-grp.ch-ctrl-grow .ch-search { grid-column: 1; }
 .ch-btn {
   font: inherit; cursor: pointer;
   border: 1px solid currentColor;
   background: transparent; color: inherit;
   padding: 0.3rem 0.55rem; line-height: 1.1;
   display: inline-flex; flex-direction: column; align-items: flex-start; gap: 1px;
+  /* A CONTROL FILLS ITS ROW. The chip grows to take up the space on its
+     line and never shrinks below its label, so a filter group that breaks
+     leaves a full row behind it: the last chip on a wrapped line takes the
+     whole line rather than sitting alone at the left with a quarter of the
+     panel empty beside it. The alternative — the chip keeping its natural
+     width and the row breaking after it — is the defect the gate measured
+     on this page: the Category group left "Herbal" alone with 80% of the
+     row empty. */
+  flex: 1 0 auto;
 }
 .ch-btn[data-active="true"] { background: var(--ink, currentColor); color: var(--ground, currentColor); }
 .ch-btn-th { font-size: 0.7em; opacity: 0.75; }
@@ -1003,7 +1051,14 @@ a { color: inherit; }
   border: 1px solid currentColor; background: transparent; color: inherit;
   width: 100%;
 }
-.ch-actions { display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; }
+/* The state of the list and its two actions are a REGISTER: three rows, a
+   label on the left and the value on the right, stacked. This rule used to
+   be `display: flex` with `justify-content: space-between`, which laid the
+   three rows out SIDE BY SIDE in a 416px column — each one 130px wide, so
+   the value "50 of 90" broke into three lines and the export button into
+   four. Two rules for the same class, the second one winning, and the
+   composition nobody chose. */
+.ch-actions { display: grid; align-content: start; }
 .ch-cards { display: grid; grid-template-columns: repeat(var(--ch-cols, 4), minmax(0, 1fr)); gap: 0.75rem; }
 .ch-card {
   position: relative;
@@ -1198,18 +1253,36 @@ a { color: inherit; }
 }
 .mm-controls {
   grid-column: 1; grid-row: 1;
-  display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem 1.5rem;
+  align-items: start;
   padding-block: 0.7rem; border-block: 1px solid var(--rule-2, currentColor);
-  align-items: flex-start;
 }
-.mm-ctrl-grp { display: flex; gap: 0.25rem; flex-wrap: wrap; align-items: center; }
-.mm-ctrl-grp .t-key { margin-right: 0.5rem; }
+/* The three filter groups are three columns of one register, not three
+   things that happen to sit side by side. They used to be a wrapping flex
+   row, and at 1440px the third group — "Reach", two buttons — fell onto a
+   row of its own with 656px of empty panel beside it. A column cannot be
+   stranded: it is the same width as the others, and the controls inside it
+   fill it. */
+.mm-ctrl-grp {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.25rem 0.5rem;
+  align-items: start;
+}
+.mm-ctrl-grp .t-key { grid-column: 1; margin-right: 0; }
+.mm-ctrl-chips { grid-column: 2; display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: center; }
+.mm-ctrl-grp .t-key { flex: 0 0 auto; }
 .mm-btn {
   font: inherit; cursor: pointer;
   border: 1px solid currentColor;
   background: transparent; color: inherit;
   padding: 0.3rem 0.55rem; line-height: 1.1;
   display: inline-flex; flex-direction: column; align-items: flex-start; gap: 1px;
+  /* A control fills its row, for the reason the champions filters give:
+     a group that breaks must not leave its last control alone. */
+  flex: 1 0 auto;
 }
 .mm-btn[data-active="true"] { background: var(--ink, currentColor); color: var(--ground, currentColor); }
 .mm-btn-th { font-size: 0.7em; opacity: 0.75; }
@@ -1222,6 +1295,8 @@ a { color: inherit; }
   .mm-wrap { grid-template-columns: minmax(0, 1fr); }
   .mm-h { grid-template-columns: minmax(0, 1fr); }
   .mm-controls, .mm-summary, .mm-list, .mm-foot { grid-column: 1; grid-row: auto; }
+  /* One filter group per row on a phone, each a register row of its own. */
+  .mm-controls { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
 }
 .mm-row {
   display: grid; grid-template-columns: 2.5rem 1fr auto; gap: 0.75rem;
@@ -1231,7 +1306,7 @@ a { color: inherit; }
 }
 .mm-tier-first  { background: rgba(245,158,11,0.10); border-color: var(--accent, #f59e0b); }
 .mm-tier-second { background: rgba(245,158,11,0.04); }
-.mm-tier-third  { background: var(--ground, transparent); }
+.mm-tier-third  { background: transparent; }   /* the third tier is the page itself */
 .mm-row-rank { font: 700 1.5rem/1 var(--font-mono, monospace); opacity: 0.6; }
 .mm-row-h { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: baseline; margin-bottom: 0.4rem; }
 .mm-row-th { font: 600 1.1rem var(--font-thai, inherit); }
@@ -1244,6 +1319,32 @@ a { color: inherit; }
 .mm-meter-l { font-size: 0.72em; opacity: 0.7; }
 .mm-row-go { align-self: center; }
 .mm-foot { font-size: 0.85em; opacity: 0.85; }
+
+/* THE MATCHMAKER ROW ON A PHONE.
+   At 390px the row was three columns — the rank, a 152px measures column
+   and the dossier button — and six measures do not fit in 152px. They went
+   down one per line, the button floated beside the third one, and the row
+   came to 351px tall with 342px of empty column under the rank number.
+
+   On a phone the row becomes two rows: the rank and the name on the first,
+   the six measures as a two-column register beneath them, and the action on
+   its own line under that. The measures span the full width of the row, so
+   nothing is left stranded and nothing floats beside anything. */
+@media (max-width: 700px) {
+  .mm-row {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: 0.4rem 0.75rem;
+  }
+  .mm-row-rank { grid-column: 1; grid-row: 1; }
+  .mm-row-h { grid-column: 2; grid-row: 1; margin-bottom: 0; }
+  .mm-row-meters {
+    grid-column: 1 / -1; grid-row: 2;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem 1rem;
+  }
+  .mm-row-meters > * { flex: none; }
+  .mm-row-go { grid-column: 1 / -1; grid-row: 3; align-self: auto; justify-self: start; }
+}
 
 /* Footer — architect / data / mantra, then the deep views, then the law.
    The old footer gave the AI assistant a four-line paragraph of credit that
@@ -1486,8 +1587,16 @@ a { color: inherit; }
    Sharp edges, one accent, type does the work. Phone-first: one column
    at 390px, two at desktop. Print: one card per page, ink on white. */
 .bf-lede { max-width: var(--read); }
-.bf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-@media (max-width: 900px) { .bf-grid { grid-template-columns: 1fr; } }
+/* minmax(0, 1fr), not 1fr.
+   A `1fr` track is `minmax(auto, 1fr)`, and `auto` means the track may
+   not be smaller than its content's min-content width. At 390px this
+   grid was 358px wide and its single track resolved to 392px, so every
+   card was 18px wider than the screen and the whole page scrolled
+   sideways. `.bf-src` below already uses minmax(0, 1fr) for the same
+   reason — this is the same trap, in a sibling rule. */
+.bf-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; }
+.bf-grid > * { min-width: 0; }
+@media (max-width: 900px) { .bf-grid { grid-template-columns: minmax(0, 1fr); } }
 .bf-card {
   border: 1px solid var(--line-2);
   border-top: 4px solid var(--accent);
@@ -1504,7 +1613,7 @@ a { color: inherit; }
 .bf-th { font-family: var(--font-thai); font-size: 0.85em; font-weight: 500; color: var(--ink-3); }
 .bf-big {
   font-family: var(--font-mono); font-weight: 500;
-  font-size: clamp(1.3rem, 3vw, 1.8rem); line-height: 1.15;
+  font-size: clamp(1.3rem, 3vw, 1.75rem); line-height: 1.15;
   margin: 0.7rem 0 0.2rem; font-variant-numeric: tabular-nums;
 }
 .bf-sub { margin: 0 0 0.8rem; color: var(--ink-2); font-size: 13px; max-width: var(--read); }
@@ -1541,7 +1650,7 @@ a { color: inherit; }
 }
 @media print {
   .hdr, .hero, .atlas-tabs, .atlas-tab-banner, .bf-actions, .bf-prov-picker select, .cr { display: none; }
-  .bf-grid { grid-template-columns: 1fr; gap: 0; }
+  .bf-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .bf-card { border: 1px solid #000; break-after: page; }
 }
 
@@ -1700,8 +1809,16 @@ a { color: inherit; }
      the column gave it 478px, so it broke into two lines — and the broken
      headline made the question's column 47px taller than the register,
      which is the void the empty-track probe measured. 3vw fits the column
-     at 1024 and still reaches the 3rem ceiling on a wide screen. */
-  font-size: clamp(1.75rem, 3vw, 3rem);
+     at 1024 and still reaches the 3rem ceiling on a wide screen.
+
+     The FLOOR is 2rem, and it is the same floor every other title on this
+     site has. The question used to floor at 1.75rem — the house's rank-2 —
+     which is the same size as the `154,050` match count in the result
+     header. Between 641px and 901px the question and the number were
+     exactly the same size, so the reader could not tell the page's title
+     from one of its own figures. The title is not a rank in the data
+     scale; it has a step of its own, and the count keeps rank-2. */
+  font-size: clamp(2rem, 3vw, 3rem);
   font-weight: 700;
   margin: 0 0 .5rem;
   line-height: 1.04;
@@ -2431,3 +2548,81 @@ a { color: inherit; }
   margin-left: .5rem; padding-left: .5rem;
   border-left: 1px solid var(--line, currentColor);
 }
+
+/* ---------------------------------------------------------------------------
+   CRITIC — the register of criticisms.
+   A register, not a set of cards: one row per criticism, four columns, rules
+   between the rows and nothing between the cells. The right-hand column is
+   the widest because it is the part of the page nobody else can write.
+   --------------------------------------------------------------------------- */
+.critic { display: flex; flex-direction: column; gap: 1.5rem; }
+.critic-h {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+  gap: .4rem 3rem;
+  align-items: start;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--ink, currentColor);
+}
+.critic-h-sub { grid-column: 1; font-size: 0.95rem; opacity: 0.85; max-width: var(--read); margin: 0; }
+.critic-h-anchors {
+  grid-column: 2; grid-row: 1; align-self: start;
+  font-size: 0.82em; opacity: 0.7; margin: 0;
+  font-family: var(--font-mono, monospace);
+}
+@media (max-width: 900px) {
+  .critic-h { grid-template-columns: minmax(0, 1fr); }
+  .critic-h-sub, .critic-h-anchors { grid-column: 1; grid-row: auto; }
+}
+.critic-rows { display: flex; flex-direction: column; }
+.critic-row {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1.05fr) minmax(0, 0.75fr) minmax(0, 2.1fr);
+  gap: 0 1.5rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line, currentColor);
+  align-items: start;
+}
+.critic-row-h {
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--ink, currentColor);
+  font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-3, currentColor);
+}
+.critic-c-n { font-family: var(--font-mono, monospace); font-size: 0.85rem; opacity: 0.55; }
+.critic-c-claim { font-weight: 600; max-width: 32ch; }
+.critic-c-who { font-size: 0.85em; opacity: 0.8; }
+.critic-c-who .cr-src { color: var(--silk, currentColor); }
+.critic-c-answer { font-size: 0.92rem; line-height: 1.5; max-width: 58ch; }
+.critic-c-answer strong { font-weight: 700; }
+.critic-row-h .critic-c-claim,
+.critic-row-h .critic-c-who,
+.critic-row-h .critic-c-answer { font-weight: 400; }
+@media (max-width: 900px) {
+  .critic-row {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.3rem 0.75rem;
+  }
+  .critic-c-n { grid-column: 1; grid-row: 1; }
+  .critic-c-claim { grid-column: 2; grid-row: 1; max-width: none; }
+  .critic-c-who { grid-column: 2; grid-row: 2; }
+  .critic-c-answer { grid-column: 2; grid-row: 3; max-width: none; }
+  .critic-row-h { display: none; }
+}
+.critic-after { border-top: 1px solid var(--ink, currentColor); padding-top: 1rem; }
+.critic-after-h, .critic-srcs-h {
+  font-size: 1.375rem; font-weight: 700; margin: 0 0 0.6rem;
+  letter-spacing: -.015em;
+}
+.critic-after-th { font-family: var(--font-thai); font-size: 0.62em; opacity: 0.6; margin-left: 0.5rem; font-weight: 400; }
+.critic-after-list { margin: 0 0 1rem; padding-left: 1.2rem; max-width: var(--read); }
+.critic-after-list li { margin-bottom: 0.4rem; line-height: 1.5; }
+.critic-srcs { border-top: 1px solid var(--line, currentColor); padding-top: 1rem; }
+.critic-srcs-list { margin: 0 0 1rem; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem 2rem; }
+.critic-srcs-item { font-size: 0.85rem; line-height: 1.4; padding-bottom: 0.5rem; border-bottom: 1px solid var(--line, currentColor); }
+.critic-srcs-item a { color: var(--silk, currentColor); }
+.critic-srcs-what { display: block; opacity: 0.72; }
+@media (max-width: 900px) {
+  .critic-srcs-list { grid-template-columns: minmax(0, 1fr); }
+}
+.critic-note { max-width: var(--read); }
+.critic-note a { color: var(--silk, currentColor); }

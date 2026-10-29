@@ -67,7 +67,7 @@ async function copyLink(url) {
 
 function CardShell({ id, q, title, th, big, sub, lines, source, builtAt, cardParam, children, onCopy }) {
   const [copied, setCopied] = useState(false);
-  const share = `${window.location.origin}${window.location.pathname}?view=briefs&card=${id}${cardParam ?? ''}`;
+  const share = `${window.location.origin}/briefs/?card=${id}${cardParam ?? ''}`;
   const svg = cardSvg({ eyebrow: `one³ · OTOP BRIEF — ${q}`, title, th, big, sub, lines, source, builtAt });
   const stamp = (builtAt ?? '').slice(0, 10);
   return (
@@ -104,7 +104,7 @@ export default function Briefs({ insights: passed, onSelectProvince }) {
   const [briefs, setBriefs] = useState(null);
   const [error, setError] = useState(null);
   const [prov, setProv] = useState(() => Number(new URLSearchParams(window.location.search).get('prov')) || null);
-  const go = onSelectProvince ?? ((code) => { window.location.href = `/?view=province&code=${code}`; });
+  const go = onSelectProvince ?? ((code) => { window.location.href = `/province/${code}/`; });
 
   useEffect(() => {
     let cancelled = false;

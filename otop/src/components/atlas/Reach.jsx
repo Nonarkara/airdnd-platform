@@ -20,7 +20,7 @@ export default function Reach({ national, reachGap, corroborationQuadrant, hidde
             reader of this chapter can go do the call in one click.
           */}
           <p className="t-cta">
-            <a className="cta-btn" href="/?view=find&c=1">
+            <a className="cta-btn" href="/?c=1">
               <span className="cta-en">Find a producer to call now →</span>
               <span className="cta-th" lang="th">ค้นหาผู้ผลิตที่โทรหาได้ทันที →</span>
             </a>

@@ -126,42 +126,48 @@ export default function Matchmaker({ onSelectProvince }) {
         <div className="mm-controls">
           <div className="mm-ctrl-grp">
             <span className="t-key">Category</span>
-            {CATS.map((c) => (
-              <button key={c.id} type="button" className="mm-btn" data-active={req.cat === c.id} onClick={() => setReq({ ...req, cat: c.id })}>
-                <span>{c.en}</span>
-                <span className="mm-btn-th">{c.th}</span>
-              </button>
-            ))}
+            <div className="mm-ctrl-chips">
+              {CATS.map((c) => (
+                <button key={c.id} type="button" className="mm-btn" data-active={req.cat === c.id} onClick={() => setReq({ ...req, cat: c.id })}>
+                  <span>{c.en}</span>
+                  <span className="mm-btn-th">{c.th}</span>
+                </button>
+              ))}
+            </div>
           </div>
           <div className="mm-ctrl-grp">
             <span className="t-key">Stars</span>
-            <button type="button" className="mm-btn" data-active={req.stars === 0} onClick={() => setReq({ ...req, stars: 0 })}>
-              <span>Any</span>
-              <span className="mm-btn-th">ไม่จำกัด</span>
-            </button>
-            <button type="button" className="mm-btn" data-active={req.stars === 3} onClick={() => setReq({ ...req, stars: 3 })}>
-              <span>3★+</span>
-              <span className="mm-btn-th">3 ดาวขึ้นไป</span>
-            </button>
-            <button type="button" className="mm-btn" data-active={req.stars === 4} onClick={() => setReq({ ...req, stars: 4 })}>
-              <span>4★+</span>
-              <span className="mm-btn-th">4 ดาวขึ้นไป</span>
-            </button>
-            <button type="button" className="mm-btn" data-active={req.stars === 5} onClick={() => setReq({ ...req, stars: 5 })}>
-              <span>5★ only</span>
-              <span className="mm-btn-th">5 ดาว</span>
-            </button>
+            <div className="mm-ctrl-chips">
+              <button type="button" className="mm-btn" data-active={req.stars === 0} onClick={() => setReq({ ...req, stars: 0 })}>
+                <span>Any</span>
+                <span className="mm-btn-th">ไม่จำกัด</span>
+              </button>
+              <button type="button" className="mm-btn" data-active={req.stars === 3} onClick={() => setReq({ ...req, stars: 3 })}>
+                <span>3★+</span>
+                <span className="mm-btn-th">3 ดาวขึ้นไป</span>
+              </button>
+              <button type="button" className="mm-btn" data-active={req.stars === 4} onClick={() => setReq({ ...req, stars: 4 })}>
+                <span>4★+</span>
+                <span className="mm-btn-th">4 ดาวขึ้นไป</span>
+              </button>
+              <button type="button" className="mm-btn" data-active={req.stars === 5} onClick={() => setReq({ ...req, stars: 5 })}>
+                <span>5★ only</span>
+                <span className="mm-btn-th">5 ดาว</span>
+              </button>
+            </div>
           </div>
           <div className="mm-ctrl-grp">
             <span className="t-key">Reach</span>
-            <button type="button" className="mm-btn" data-active={req.reach === 'all'} onClick={() => setReq({ ...req, reach: 'all' })}>
-              <span>All</span>
-              <span className="mm-btn-th">ทั้งหมด</span>
-            </button>
-            <button type="button" className="mm-btn" data-active={req.reach === 'reachable'} onClick={() => setReq({ ...req, reach: 'reachable' })}>
-              <span>Reachable only</span>
-              <span className="mm-btn-th">เฉพาะที่ติดต่อได้</span>
-            </button>
+            <div className="mm-ctrl-chips">
+              <button type="button" className="mm-btn" data-active={req.reach === 'all'} onClick={() => setReq({ ...req, reach: 'all' })}>
+                <span>All</span>
+                <span className="mm-btn-th">ทั้งหมด</span>
+              </button>
+              <button type="button" className="mm-btn" data-active={req.reach === 'reachable'} onClick={() => setReq({ ...req, reach: 'reachable' })}>
+                <span>Reachable only</span>
+                <span className="mm-btn-th">เฉพาะที่ติดต่อได้</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -224,7 +230,7 @@ export default function Matchmaker({ onSelectProvince }) {
                   Open dossier →
                 </button>
               ) : (
-                <a className="reset mm-row-go" href={`/?view=province&code=${p.code}`}>Open dossier →</a>
+                <a className="reset mm-row-go" href={`/province/${p.code}/`}>Open dossier →</a>
               )}
             </li>
           );

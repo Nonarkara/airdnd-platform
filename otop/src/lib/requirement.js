@@ -6,6 +6,8 @@
  * format every shared province dossier depends on.
  */
 
+import { pathFor } from './routes.js';
+
 export const EMPTY = {
   categories: [], provinceCodes: [], regions: [],
   minStars: null, maxFilingAge: null,
@@ -54,21 +56,8 @@ export function requirementFromUrl() {
 
 export function requirementToUrl(view, lens, r, code) {
   const p = new URLSearchParams();
-  if (view === 'find') p.set('view', 'find');
-  if (view === 'atlas') p.set('view', 'atlas');
-  if (view === 'story') p.set('view', 'story');
-  if (view === 'history') p.set('view', 'history');
-  if (view === 'crossrefs') p.set('view', 'crossrefs');
-  if (view === 'champions') p.set('view', 'champions');
-  if (view === 'tides') p.set('view', 'tides');
-  if (view === 'matchmaker') p.set('view', 'matchmaker');
-  if (view === 'briefs') p.set('view', 'briefs');
-  if (view === 'bank') p.set('view', 'bank');
-  if (view === 'method') p.set('view', 'method');
-  if (view === 'province' && code != null) { p.set('view', 'province'); p.set('code', String(code)); }
-  // Preserve the active Atlas tab across requirement/lens changes so a user
-  // who lands on `?view=atlas&tab=reach` and then changes a filter does
-  // not get bounced back to the findings tab.
+  // The view itself is the PATH now, not a parameter: /atlas/, /history/,
+  // /province/50/. Only the state a reader can change lives in the query.
   const currentTab = new URLSearchParams(window.location.search).get('tab');
   if (view === 'atlas' && currentTab) p.set('tab', currentTab);
   // Preserve the active brief card + province across filter changes so a
@@ -94,5 +83,5 @@ export function requirementToUrl(view, lens, r, code) {
   if (r.requireSignal && !defaults.requireSignal) p.set('signal', '1');
   if (!r.requireSignal && defaults.requireSignal) p.set('signal', '0');
   if (r.query) p.set('q', r.query);
-  return `${window.location.pathname}?${p.toString()}`;
+  return `${pathFor(view, code)}?${p.toString()}`;
 }

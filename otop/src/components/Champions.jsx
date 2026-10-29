@@ -170,51 +170,59 @@ export default function Champions({ onSelectProvince, national, records }) {
       <div className="ch-controls">
         <div className="ch-ctrl-grp">
           <span className="t-key">Stars</span>
-          <button type="button" className="ch-btn" data-active={filterStar === 5} onClick={() => setFilterStar(5)}>
-            <span>5★ only</span>
-            <span className="ch-btn-th">5 ดาว</span>
-          </button>
-          <button type="button" className="ch-btn" data-active={filterStar === 4} onClick={() => setFilterStar(4)}>
-            <span>4-5★</span>
-            <span className="ch-btn-th">4-5 ดาว</span>
-          </button>
+          <div className="ch-ctrl-chips">
+            <button type="button" className="ch-btn" data-active={filterStar === 5} onClick={() => setFilterStar(5)}>
+              <span>5★ only</span>
+              <span className="ch-btn-th">5 ดาว</span>
+            </button>
+            <button type="button" className="ch-btn" data-active={filterStar === 4} onClick={() => setFilterStar(4)}>
+              <span>4-5★</span>
+              <span className="ch-btn-th">4-5 ดาว</span>
+            </button>
+          </div>
         </div>
         <div className="ch-ctrl-grp">
           <span className="t-key">Category</span>
-          {cats.map((c) => (
-            <button type="button" key={c} className="ch-btn" data-active={filterCat === c} onClick={() => setFilterCat(c)}>
-              <span>{c === 'all' ? 'All' : (CAT_EN[c] ?? c)}</span>
-              <span className="ch-btn-th">{c === 'all' ? 'ทั้งหมด' : (CAT_TH[c] ?? '')}</span>
-            </button>
-          ))}
+          <div className="ch-ctrl-chips">
+            {cats.map((c) => (
+              <button type="button" key={c} className="ch-btn" data-active={filterCat === c} onClick={() => setFilterCat(c)}>
+                <span>{c === 'all' ? 'All' : (CAT_EN[c] ?? c)}</span>
+                <span className="ch-btn-th">{c === 'all' ? 'ทั้งหมด' : (CAT_TH[c] ?? '')}</span>
+              </button>
+            ))}
+          </div>
         </div>
         <div className="ch-ctrl-grp">
           <span className="t-key">Reach</span>
-          {reaches.map((r) => (
-            <button type="button" key={r} className="ch-btn" data-active={filterReach === r} onClick={() => setFilterReach(r)}>
-              <span>{r === 'all' ? 'Any' : (REACH_LABEL[r]?.en ?? r)}</span>
-              <span className="ch-btn-th">{r === 'all' ? 'ทุกช่องทาง' : (REACH_LABEL[r]?.th ?? '')}</span>
-            </button>
-          ))}
+          <div className="ch-ctrl-chips">
+            {reaches.map((r) => (
+              <button type="button" key={r} className="ch-btn" data-active={filterReach === r} onClick={() => setFilterReach(r)}>
+                <span>{r === 'all' ? 'Any' : (REACH_LABEL[r]?.en ?? r)}</span>
+                <span className="ch-btn-th">{r === 'all' ? 'ทุกช่องทาง' : (REACH_LABEL[r]?.th ?? '')}</span>
+              </button>
+            ))}
+          </div>
         </div>
         <div className="ch-ctrl-grp">
           <span className="t-key">Province</span>
-          <button type="button" className="ch-btn" data-active={filterProv === 'all'} onClick={() => setFilterProv('all')}>
-            <span>All ({totalChampions})</span>
-            <span className="ch-btn-th">ทั้งหมด</span>
-          </button>
-          {data.provinces.map((p) => (
-            <button
-              type="button"
-              key={p.code}
-              className="ch-btn"
-              data-active={filterProv === String(p.code)}
-              onClick={() => setFilterProv(String(p.code))}
-            >
-              <span>{p.name_en}</span>
-              <span className="ch-btn-th">{p.name_th} ({p.count})</span>
+          <div className="ch-ctrl-chips">
+            <button type="button" className="ch-btn" data-active={filterProv === 'all'} onClick={() => setFilterProv('all')}>
+              <span>All ({totalChampions})</span>
+              <span className="ch-btn-th">ทั้งหมด</span>
             </button>
-          ))}
+            {data.provinces.map((p) => (
+              <button
+                type="button"
+                key={p.code}
+                className="ch-btn"
+                data-active={filterProv === String(p.code)}
+                onClick={() => setFilterProv(String(p.code))}
+              >
+                <span>{p.name_en}</span>
+                <span className="ch-btn-th">{p.name_th} ({p.count})</span>
+              </button>
+            ))}
+          </div>
         </div>
         <div className="ch-ctrl-grp ch-ctrl-grow">
           <input

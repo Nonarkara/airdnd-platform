@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-09-20T17:12:01.983Z",
+  "builtAt": "2026-10-28T16:48:38.363Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -19,10 +19,10 @@
     "duplicatesCollapsed": 273050,
     "tambonPlaced": 135100,
     "certified": 17235,
-    "certValid": 9588,
-    "certExpired": 7523,
+    "certValid": 9552,
+    "certExpired": 7559,
     "certUnknown": 124,
-    "certAsOf": "2026-09-20"
+    "certAsOf": "2026-10-28"
   },
   "geo": {
     "records": 154050,

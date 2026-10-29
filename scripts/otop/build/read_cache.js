@@ -20,6 +20,20 @@ function readCache(dir) {
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)
+    // SORTED, so the order the cache is read in does not depend on the
+    // filesystem's directory order.
+    //
+    // The README claimed stage ② was pure — same files in, byte-identical
+    // output. It was not quite true: the merge order, and therefore the
+    // order of the certificates inside each record, followed whatever order
+    // readdirSync happened to return. The certificate VALUES were
+    // order-independent (the first non-empty value for each field wins), so
+    // the numbers never moved — but the bytes did, and two builds of the
+    // same cache could disagree on disk.
+    //
+    // A build that is claimed to be reproducible has to be reproducible in
+    // its bytes, not only in its conclusions.
+    .sort()
     .filter((f) => f.endsWith('.json') && f !== 'manifest.json')
     .map((f) => {
       try {

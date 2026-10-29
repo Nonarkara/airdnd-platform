@@ -39,6 +39,8 @@ const PROBE = path.join(HERE, "spatial-probe.js");
 
 const CHROME_CANDIDATES = [
   process.env.CHROME_PATH,
+  // Playwright's bundled Chromium first — a headless system Chrome steals Dock clicks.
+  await (async () => { try { return (await import("playwright")).chromium.executablePath(); } catch { return null; } })(),
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
   "/Applications/Chromium.app/Contents/MacOS/Chromium",
   "/usr/bin/google-chrome",

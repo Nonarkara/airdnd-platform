@@ -1,17 +1,118 @@
 <!doctype html>
-<html lang="th">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#fdf3df" />
+
+    <!-- WHAT THIS PAGE IS, FOR A MACHINE.
+         The title names OTOP, because OTOP is what the site is about and
+         what somebody typing "OTOP" into a search engine is looking for.
+         The brand comes second: the brand identifies the site, the subject
+         is what makes it worth reading. Every view replaces this title and
+         description with its own — see src/lib/routes.js. -->
+    <title>OTOP Thailand — the One Tambon One Product registry, complete | one³</title>
     <meta
       name="description"
-      content="one³ — One Tambon, One Product, One Platform. Thailand's soft-power monitor, read from seven national registers. OTOP is one of its instruments; every number carries its source, its scope, and what it does not measure."
+      content="The whole OTOP registry in one place: producers with names, products, provinces, OPC star grades and contact channels, plus the history, the criticism, the numbers and the raw data behind all of it."
     />
+    <meta name="author" content="Dr Non Arkaraprasertkul" />
+    <meta name="keywords" content="OTOP, One Tambon One Product, Thailand, อตป, ทศญ, OTOP products, OTOP registry, OTOP history, OTOP criticism, soft power Thailand, Thai handicraft, Thai food, product champion" />
+    <link rel="canonical" href="https://otop.nonarkara.org/" />
+
+    <!-- The card that appears when the page is shared or listed. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="one³" />
+    <meta property="og:locale" content="en_TH" />
+    <meta property="og:title" content="OTOP Thailand — the One Tambon One Product registry, complete | one³" />
+    <meta
+      property="og:description"
+      content="The whole OTOP registry in one place: producers with names, products, provinces, OPC star grades and contact channels, plus the history, the criticism, the numbers and the raw data behind all of it."
+    />
+    <meta property="og:url" content="https://otop.nonarkara.org/" />
+    <meta property="og:image" content="https://otop.nonarkara.org/og/otop.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="one³ — Thailand's soft-power monitor: the OTOP registry as a data row." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="OTOP Thailand — the One Tambon One Product registry, complete | one³" />
+    <meta
+      name="twitter:description"
+      content="The whole OTOP registry in one place: producers with names, products, provinces, OPC star grades and contact channels, plus the history, the criticism, the numbers and the raw data behind all of it."
+    />
+    <meta name="twitter:image" content="https://otop.nonarkara.org/og/otop.png" />
+
+    <!-- WHAT THIS IS, IN A FORM A MACHINE CAN READ.
+         The site is a register, not a page of prose: the registry IS the
+         product, and a search engine should be able to say so. The counts
+         are written by the prerender step from the build that actually
+         produced them — a number in a metadata block that no one keeps in
+         step with the data is a lie with a URL on it. -->
+    <script type="application/ld+json" id="__otop_ld__">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://otop.nonarkara.org/#website",
+            "url": "https://otop.nonarkara.org/",
+            "name": "one³",
+            "alternateName": "one³ — Thailand's soft-power monitor",
+            "description": "Thailand's soft-power monitor, read from seven national registers. OTOP is one of its instruments.",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://otop.nonarkara.org/#publisher" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://otop.nonarkara.org/#publisher",
+            "name": "one³",
+            "url": "https://otop.nonarkara.org/",
+            "description": "One Tambon, One Product, One Platform — a zero-cost monitoring system for Thailand's soft power.",
+            "founder": { "@type": "Person", "name": "Dr Non Arkaraprasertkul" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://otop.nonarkara.org/#webpage",
+            "url": "https://otop.nonarkara.org/",
+            "name": "OTOP Thailand — the One Tambon One Product registry, complete",
+            "isPartOf": { "@id": "https://otop.nonarkara.org/#website" },
+            "about": { "@id": "https://otop.nonarkara.org/#otop" },
+            "inLanguage": "en"
+          },
+          {
+            "@type": "GovernmentProgram",
+            "@id": "https://otop.nonarkara.org/#otop",
+            "name": "One Tambon One Product (OTOP)",
+            "alternateName": ["OTOP", "อตป", "OTOP products", "One Tambon One Product Programme"],
+            "description": "Thailand's One Tambon One Product programme: a national scheme, run by the Department of Community Development since 2001, for villages to develop one signature product. Its registry is the largest open dataset on Thai community manufacturing.",
+            "startDate": "2001-04-30",
+            "inLanguage": ["en", "th"],
+            "areaServed": { "@type": "Country", "name": "Thailand" },
+            "provider": { "@type": "GovernmentOrganization", "name": "Department of Community Development (กรมพัฒนาชุมชน)" }
+          },
+          {
+            "@type": "Dataset",
+            "@id": "https://otop.nonarkara.org/#registry",
+            "name": "OTOP registry — Thailand's One Tambon One Product records",
+            "description": "The national OTOP filing registry, merged across all province shards and de-duplicated on the registration number: one row per registered producer, with product, category, province, filing year, OPC star grade, certification and contact channels.",
+            "license": "https://otop.nonarkara.org/legal/provenance/",
+            "creator": { "@id": "https://otop.nonarkara.org/#publisher" },
+            "isBasedOn": { "@id": "https://otop.nonarkara.org/#otop" },
+            "inLanguage": ["en", "th"],
+            "keywords": ["OTOP", "Thailand", "registry", "producers", "OPC", "handicraft", "community enterprise"],
+            "distribution": {
+              "@type": "DataDownload",
+              "contentUrl": "https://otop.nonarkara.org/bank/",
+              "encodingFormat": "application/json"
+            }
+          }
+        ]
+      }
+    </script>
+
     <!-- Sao Chingcha is served locally from /fonts/ as OTF, declared in
          index.css with @font-face. No third-party font request. -->
-    <title>one³ — Thailand's soft-power monitor</title>
   </head>
   <body>
     <a href="#main" class="skip-link">ข้ามไปยังเนื้อหา / Skip to content</a>

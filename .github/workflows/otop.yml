@@ -1,0 +1,132 @@
+# The one³ gates — the tests, and the checks that can only be made in a browser.
+#
+# THE GAP THIS CLOSES
+#
+# The repository had a spatial-law gate that ran on every push, and 154 unit
+# tests that ran on nobody's push. A test that never runs is not a test; it is
+# a file. The production doctrine is explicit — Law 1: "Tests run in CI on
+# every push. A red gate blocks deploy." So the tests run here, and they are
+# blocking.
+#
+# A NOTE ON WHETHER THIS FILE WILL RUN
+#
+# The GitHub Actions budget for this repository is exhausted. Every push
+# currently produces a run that fails in four seconds with "The job was not
+# started because an Actions budget is preventing further use." That is not a
+# failure of the gates; it is the gates never being given a runner.
+#
+# So this workflow is written and committed, but it is UNVERIFIED, and it
+# will stay unverified until the budget allows. The gates it describes are
+# not waiting for CI, though — they run locally, today, with one command:
+#
+#   npm run otop:gates
+#
+# which builds the site, serves it, and runs every gate in this file against
+# a real browser. That is the receipt; this workflow is the wish.
+#
+# WHAT RUNS, AND WHY EACH ONE IS HERE
+#
+#   1. THE UNIT TESTS. The merge, the dedup, the quality gate, the ranking,
+#      the correction contracts. A regression in the pipeline changes a
+#      number, and a changed number on a register is a changed claim.
+#
+#   2. THE ROUTE SWEEP, IN A REAL BROWSER. A view can build, deploy, answer
+#      200 and render nothing. Two did — Champions tore down its own tree with
+#      a hook after a guard return, and Matchmaker mapped a property of an
+#      envelope nobody unwrapped. Neither showed up in a build or a status
+#      code.
+#
+#   3. THE HOLE DETECTOR, which is part of the sweep. It reads the rendered
+#      text of every view and looks for the fingerprints of a value that is
+#      not there. The Critic view shipped quoting a finding's `.count` where
+#      the build writes `.value`, so a sentence about 7,089 unreachable
+#      producers rendered with no number in it at all — and the page looked
+#      perfectly fine, because an absent number and a zero look the same in
+#      a screenshot. This is Law 5 — "malformed upstream fails loud, never
+#      renders undefined" — checked at the last boundary, the screen.
+#
+#   4. THE LINK CHECK, which is also part of the sweep. Six links on this
+#      site were broken by a find-and-replace that turned "/atlas/" into
+#      "//atlas/" — a protocol-relative URL, which a browser resolves as a
+#      HOST named "atlas". They rendered fine and would have sent a reader
+#      off to a domain that does not exist.
+#
+# The spatial-law gate lives in its own workflow (spatial.yml) because it
+# needs the snapshot machinery and takes twenty minutes; this one is the
+# fast gate, and it is the one that has to be green before anything ships.
+
+name: one³ gates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'otop/**'
+      - 'scripts/otop/**'
+      - 'scripts/otop-*.mjs'
+      - 'test/**'
+      - 'package.json'
+      - '.github/workflows/otop.yml'
+  pull_request:
+    paths:
+      - 'otop/**'
+      - 'scripts/otop/**'
+      - 'scripts/otop-*.mjs'
+      - 'test/**'
+      - 'package.json'
+      - '.github/workflows/otop.yml'
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 1. THE UNIT TESTS.
+      #
+      # The whole otop suite, plus the tests that guard the shared engine.
+      # These are blocking: a red test stops the deploy.
+      - name: Unit tests
+        run: node --test test/otop_*.test.js test/listing_contract.test.js test/publicWorks.test.js
+
+      - name: Install the browser the sweep drives
+        run: npx playwright install --with-deps chromium
+
+      - name: Build the site
+        run: npx vite build --config vite.otop.config.js
+
+      - name: Serve the build
+        run: |
+          npx vite preview --config vite.otop.config.js --port 8080 --strictPort &
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8080/otop_index.json > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -sf http://localhost:8080/otop_index.json > /dev/null
+
+      # 2 and 3. EVERY VIEW, IN A BROWSER, WITH ITS TEXT READ.
+      #
+      # The sweep loads each of the fifteen paths, checks that the view
+      # painted, that it named itself, that it carried a canonical address,
+      # and that its text carried no fingerprint of a missing value.
+      - name: Sweep every view and read its text
+        run: node scripts/otop-routes-check.mjs http://localhost:8080
+
+      # The route register is the single source of truth for the site's
+      # routes. If the application grows a view and the register does not,
+      # every gate above quietly measures a subset and reports it as the
+      # whole. This fails loudly instead.
+      - name: The route register covers the application
+        run: node scripts/otop/routes.mjs --json > /dev/null

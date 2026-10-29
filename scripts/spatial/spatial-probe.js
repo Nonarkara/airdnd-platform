@@ -48,6 +48,11 @@
   // Two loud controls further apart than this fraction of their container
   // are "scattered".
   var EDGE = 0.55;
+  // A row that breaks and leaves its last item alone is only an accident if
+  // the row it leaves behind is MOSTLY empty. A last band that fills at least
+  // this fraction of the row is a deliberate full-width row, not a stranded
+  // item — the same fraction the orphan rule uses for a short cell.
+  var FILL = 0.5;
   // Colour distance at which a surface counts as loud against its backdrop.
   var CONTRAST = 60;
 
@@ -369,9 +374,32 @@
       if (widest < 2) continue;
       var lastBand = hbands[hbands.length - 1];
       if (lastBand.items.length !== 1) continue;
+      // A ROW THAT BREAKS AND LEAVES ITS LAST ITEM ALONE IS AN ACCIDENT ONLY
+      // WHEN THE ROW IT LEAVES BEHIND IS MOSTLY EMPTY.
+      //
+      // The rule used to count the items in the last band and nothing else,
+      // so a register whose items GROW — the ones that fill their row — was
+      // reported as a broken row even though its last item spanned the whole
+      // width. Seven of the fifteen findings on this site were exactly that:
+      // a last band at 90%, 92% and 100% of the row, each one a deliberate
+      // full-width row, each one named as an accident. A gate that cries
+      // wolf on every correct composition is a gate nobody reads.
+      //
+      // So the rule measures the VOID, the way the dead-space rule measures
+      // the empty region of a cell. If the last band fills at least half the
+      // row, the break was deliberate and there is nothing to fix. If it
+      // leaves most of the row empty, the item is stranded beside a void and
+      // that is the defect the law names.
+      var hcs = win.getComputedStyle(host.el);
+      var hostW = host.el.clientWidth - (parseFloat(hcs.paddingLeft) || 0) - (parseFloat(hcs.paddingRight) || 0);
+      var lastW = 0;
+      for (var lw = 0; lw < lastBand.items.length; lw++) lastW += lastBand.items[lw].r.width;
+      var fill = hostW > 0 ? lastW / hostW : 1;
+      if (fill >= FILL) continue;
       push(F, "wrap", sel(host.el), hbands.length,
         sel(host.el) + " breaks into " + hbands.length + " rows and leaves " +
-        sel(lastBand.items[0].el) + " alone on the last one");
+        sel(lastBand.items[0].el) + " alone on the last one, with " +
+        Math.round((1 - fill) * 100) + "% of the row empty");
     }
 
     // ---- 5c. a row that is clipped rather than wrapped ---------------------
@@ -734,25 +762,47 @@
     // ---- 6. spatially expensive information --------------------------------
     // How far down the page the first thing you can DO is. A reader who must
     // scroll before they can act is paying for the layout.
-    var acts = main.querySelectorAll("a, button, input, select, textarea");
+    //
+    // THE ACTION IS ANY CONTROL THE READER CAN OPERATE. The old measurement
+    // counted only a LOUD one — a control with a contrasting fill or a heavy
+    // border. On six of the fourteen views there is no loud control at all,
+    // so the instrument reported "no action" and the gate's limit quietly did
+    // nothing on half the site. A page whose only action is a plain link
+    // still has an action, and the reader still has to scroll to reach it.
+    // What the measurement now reports is whether that action is loud, so the
+    // distinction is kept without being used to hide the action.
+    //
+    // What it does NOT count is the furniture: the skip link is parked at
+    // left:-9999px and becomes visible only when it takes focus, so arriving
+    // on the page cannot reach it. That is the same exclusion the MSH audit
+    // makes, and both instruments have to make it or one of them is wrong.
+    var acts = main.querySelectorAll("a[href], button, input, select, textarea");
     var firstY = null;
     var firstSel = null;
+    var firstLoud = null;
     for (var ai = 0; ai < acts.length; ai++) {
       var ae = acts[ai];
       if (!visible(ae, win)) continue;
       var ar = ae.getBoundingClientRect();
+      // Off-canvas: parked to the left or to the right of the viewport. A
+      // control nobody can see is not an action a person can take.
+      if (ar.right <= 0 || ar.left >= vw) continue;
       var actable = /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName) || loudControl(ae, win);
-      if (!actable) continue;
       var y = ar.top + (win.scrollY || 0);
       if (firstY === null || y < firstY) {
         firstY = y;
         firstSel = sel(ae);
+        firstLoud = actable;
       }
     }
-    rec.firstAction = { y: firstY === null ? null : Math.round(firstY), sel: firstSel };
+    rec.firstAction = {
+      y: firstY === null ? null : Math.round(firstY),
+      sel: firstSel,
+      loud: firstLoud,
+    };
     return rec;
   }
 
   window.__SPATIAL_MEASURE__ = measure;
-  window.__SPATIAL_DEFAULTS__ = { DEAD: DEAD, SHORT: SHORT, EDGE: EDGE, CONTRAST: CONTRAST };
+  window.__SPATIAL_DEFAULTS__ = { DEAD: DEAD, SHORT: SHORT, EDGE: EDGE, CONTRAST: CONTRAST, FILL: FILL };
 })();

@@ -44,7 +44,7 @@ export default function Atlas({ insights, onSelectProvince }) {
   } = insights;
   const [tab, setTab] = useState(tabFromUrl);
   // Province clicks open the dossier; the dossier holds the B2B link.
-  const go = onSelectProvince ?? ((code) => { window.location.href = `/?view=province&code=${code}`; });
+  const go = onSelectProvince ?? ((code) => { window.location.href = `/province/${code}/`; });
 
   // Keep the URL in sync so a tab can be shared as a link.
   useEffect(() => {

@@ -6,7 +6,7 @@ import Composition, { categoryParts } from './Composition.jsx';
 export default function Domain({ national, byRegion, byProvince = [], regionIdentity, matrix, byYear, specialization, qualityLeaders, topBasins, go }) {
   const unclassified = national.categories?.find((c) => c.id === 'unclassified');
   const classifiedCount = national.records - (unclassified?.count ?? 0);
-  const href = (code) => `/?view=province&code=${code}`;
+  const href = (code) => `/province/${code}/`;
   const catOptions = (matrix?.categories?.length ? matrix.categories : (national.categories || []).filter((c) => c.id !== 'unclassified'));
   const [exploreCat, setExploreCat] = useState(catOptions[0]?.id ?? 'textile');
 

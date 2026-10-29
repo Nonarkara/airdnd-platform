@@ -123,7 +123,7 @@ export default function NationalStory() {
         <P>
           The categories are the official five: food, beverage, textile, craft, and herbal. National breakdown:
           {' '}{national.categories?.filter((c) => c.id !== 'unclassified').map((c) => `${c.en} ${pct(c.share)}%`).join(' · ')}.
-          <Source href="/?view=atlas&tab=domain">See the Domain chapter in the Atlas</Source>.
+          <Source href="/atlas/?tab=domain">See the Domain chapter in the Atlas</Source>.
         </P>
         <div className="ns-stats">
           <Stat label="Producers" th="ผู้ผลิต" value={n(national.records)} sub={`${n(national.records)} registered`} />
@@ -175,7 +175,7 @@ export default function NationalStory() {
             Online sales — same department, same year, by channel — were {onlineShareLatest.toFixed(1)}%
             of the national annual total. The category with the highest online share was{' '}
             {biggestOnlineCat ? `${biggestOnlineCat[0]} (${(biggestOnlineCat[1].online / Math.max(biggestOnlineCat[1].total, 1) * 100).toFixed(1)}%)` : '—'}.
-            <Source href="/?view=atlas&tab=money">See the Money chapter in the Atlas</Source>.
+            <Source href="/atlas/?tab=money">See the Money chapter in the Atlas</Source>.
           </P>
         )}
         <div className="ns-stats">
@@ -201,7 +201,7 @@ export default function NationalStory() {
           most are not the ones with the most producers — {hiddenChampions[0]?.th} has {n(hiddenChampions[0]?.hiddenChampions ?? 0)}
           {' '}4-5★ producers with no phone, against {n(hiddenChampions[0]?.highStars ?? 0)} 4-5★ total.
           A contact drive that reached the first one would clear the gap; a drive that reached the
-          hundredth would still be working in the same province. <Source href="/?view=atlas&tab=reach">See the Reach chapter in the Atlas</Source>.
+          hundredth would still be working in the same province. <Source href="/atlas/?tab=reach">See the Reach chapter in the Atlas</Source>.
         </P>
         <div className="ns-stats">
           <Stat label="Hidden champions" th="แชมป์ที่ซ่อนอยู่" value={n(totalChampions)} sub={`${hiddenProvinceCount} provinces hold at least one`} />
