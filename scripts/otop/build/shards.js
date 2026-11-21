@@ -41,6 +41,12 @@ export function writeShards(OUT_DIR, SHARD_DIR, merged) {
       stars: Object.fromEntries([0, 1, 2, 3, 4, 5].map((s) => [s, items.filter((r) => r.stars === s).length])),
       graded: items.filter((r) => r.stars != null).length,
       reachable: items.filter((r) => r.phone || r.email || r.website).length,
+      // The count of records that carry a PHONE NUMBER, as distinct from
+      // `reachable` (which also counts an email or a web address). The
+      // landing page states "X of Y producers can be called", and that
+      // number has to be available from the INDEX — before the 77 province
+      // shards are fetched, which is when the page needs it.
+      withPhone: items.filter((r) => r.phone).length,
       corroborated: items.filter((r) => r.sourceCount > 1).length,
       certified: items.filter((r) => r.certs.length > 0).length,
       certValid: items.filter((r) => r.certStatus === 'valid').length,

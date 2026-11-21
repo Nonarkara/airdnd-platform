@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-28T16:49:05.118Z",
+  "builtAt": "2026-11-21T03:40:15.491Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -12508,7 +12508,7 @@
     {
       "id": "certified",
       "th": "ได้รับการรับรอง มผช.",
-      "text": "17,235 records (11.2%) carry a Community Product Standard (มผช.) certificate: 9,552 still valid as of 2026-10-28, 7,559 lapsed, 124 undated. 5 are buyer-ready — valid certificate, 4-5★ grade, and a contact channel.",
+      "text": "17,235 records (11.2%) carry a Community Product Standard (มผช.) certificate: 9,552 still valid as of 2026-11-21, 7,559 lapsed, 124 undated. 5 are buyer-ready — valid certificate, 4-5★ grade, and a contact channel.",
       "value": 17235
     }
   ],
@@ -16366,7 +16366,7 @@
     }
   ],
   "certification": {
-    "asOf": "2026-10-28",
+    "asOf": "2026-11-21",
     "certified": 17235,
     "certifiedShare": 11.2,
     "valid": 9552,
@@ -17199,7 +17199,7 @@
     ]
   },
   "standards": {
-    "builtAt": "2026-10-28T16:48:40.587Z",
+    "builtAt": "2026-11-21T03:40:12.743Z",
     "source": "Thai Industrial Standards Institute (TISI / สมอ.)",
     "total": 1489,
     "byCategory": {
@@ -17759,7 +17759,7 @@
     ]
   },
   "revenue": {
-    "builtAt": "2026-10-28T16:48:41.712Z",
+    "builtAt": "2026-11-21T03:40:12.849Z",
     "unit": "บาท",
     "seriesSource": "กรมพัฒนาชุมชน",
     "resourceId": "c1c39e6a-c6ab-4d31-a911-44517db7f2eb",

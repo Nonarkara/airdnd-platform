@@ -107,7 +107,22 @@ export default function Find({ onOpenProvince }) {
   const initial = useMemo(() => findFromUrl(), []);
   const [index, setIndex] = useState(null);
   const [meta, setMeta] = useState(null);
-  const [records, setRecords] = useState(null); // null = still loading
+  const [records, setRecords] = useState(null); // null = not fetched yet
+  // The reader has asked for the register. Until they do, the page states
+  // the national picture from the 29KB index and fetches nothing: the 77
+  // province shards are 261MB, and the front door of a site should not weigh
+  // that before the reader has typed a letter.
+  const [recordsRequested, setRecordsRequested] = useState(
+    () =>
+      Boolean(
+        initial.query ||
+          initial.provinceCode !== ALL_PROVINCES ||
+          initial.stars !== STAR_ANY ||
+          initial.onlyContactable ||
+          initial.cert !== CERT_ANY,
+      ),
+  );
+  const requestRecords = () => setRecordsRequested(true);
   const [loadProgress, setLoadProgress] = useState({ done: 0, total: 0 });
   const [query, setQuery] = useState(initial.query);
   const [provinceCode, setProvinceCode] = useState(initial.provinceCode);
@@ -215,9 +230,18 @@ export default function Find({ onOpenProvince }) {
     return () => { cancelled = true; };
   }, []);
 
-  // Load all 77 shards. Stream progress so the loading state is honest.
+  // Load all 77 shards — when the reader asks for them. Stream progress so
+  // the loading state is honest.
+  //
+  // They used to be fetched on mount, which made the front door of the site
+  // weigh 261MB before anyone had typed: the page could not paint inside the
+  // instrument's budget, and a reader on a phone paid for the whole registry
+  // before they could search it. The index carries the national picture in
+  // 29KB, and that is enough for the page to arrive and to state its own
+  // numbers.
   useEffect(() => {
     if (!index) return;
+    if (!recordsRequested) return;
     if (records) return;
     let cancelled = false;
     const codes = index.provinces.map((p) => p.code);
@@ -250,7 +274,7 @@ export default function Find({ onOpenProvince }) {
     })();
 
     return () => { cancelled = true; };
-  }, [index, records]);
+  }, [index, records, recordsRequested]);
 
   // Sync the URL with the live filter state. replaceState, not pushState —
   // a search is a search; each keystroke is not a separate history entry.
@@ -270,13 +294,36 @@ export default function Find({ onOpenProvince }) {
 
   const shown = results.slice(0, limit);
   const hasMore = results.length > limit;
-  const loading = records === null;
+  const loading = recordsRequested && records === null;
+  // The reader has not asked for the register yet. The page is not empty
+  // and it is not broken — it is waiting, and it says so.
+  const idle = !recordsRequested;
 
-  // Headline numbers for the loading state.
-  const totalLoaded = records ? records.length : 0;
-  const totalWithPhone = records ? records.filter((r) => r.phone).length : 0;
-  const totalFiveStar = records ? records.filter((r) => r.stars === 5).length : 0;
-  const totalCertValid = records ? records.filter((r) => r.certStatus === 'valid').length : 0;
+  // THE NATIONAL PICTURE. The four numbers the panel states are the same
+  // before and after the shards land: the index carries the totals per
+  // province, so the page can state them the moment it arrives, and the
+  // shards only add the rows themselves.
+  const totals = useMemo(() => {
+    if (records) {
+      return {
+        producers: records.length,
+        withPhone: records.filter((r) => r.phone).length,
+        fiveStar: records.filter((r) => r.stars === 5).length,
+        certValid: records.filter((r) => r.certStatus === 'valid').length,
+      };
+    }
+    const provs = index?.provinces || [];
+    return {
+      producers: index?.totals?.producers ?? 0,
+      withPhone: provs.reduce((n, p) => n + (p.withPhone || 0), 0),
+      fiveStar: provs.reduce((n, p) => n + (p.stars?.['5'] || 0), 0),
+      certValid: provs.reduce((n, p) => n + (p.certValid || 0), 0),
+    };
+  }, [records, index]);
+  const totalLoaded = totals.producers;
+  const totalWithPhone = totals.withPhone;
+  const totalFiveStar = totals.fiveStar;
+  const totalCertValid = totals.certValid;
   // The province in words, not in a code — the reader needs to know the
   // scope of the number they are looking at.
   const provinceName =
@@ -312,7 +359,13 @@ export default function Find({ onOpenProvince }) {
             192px tall against a 239px question, and the void under it was
             the largest hole on the page. */}
         <div className="find-panel">
-          {loading ? (
+          <dl className="find-panel-stats">
+            <div><dt><Bi en="producers" th="ผู้ผลิต" /></dt><dd>{totalLoaded.toLocaleString()}</dd></div>
+            <div><dt><Bi en="with a phone" th="ที่มีเบอร์" /></dt><dd>{totalWithPhone.toLocaleString()}</dd></div>
+            <div><dt><Bi en="rated 5★" th="ระดับ 5 ดาว" /></dt><dd>{totalFiveStar.toLocaleString()}</dd></div>
+            <div><dt><Bi en="valid cert" th="ใบรับรองใช้ได้" /></dt><dd>{totalCertValid.toLocaleString()}</dd></div>
+          </dl>
+          {loading && (
             <p className="find-panel-load">
               <Bi
                 en={`Loading ${loadProgress.done} of ${loadProgress.total} provinces…`}
@@ -320,13 +373,6 @@ export default function Find({ onOpenProvince }) {
               />
               <progress className="find-bar" value={loadProgress.done} max={loadProgress.total || 1} />
             </p>
-          ) : (
-            <dl className="find-panel-stats">
-              <div><dt><Bi en="producers" th="ผู้ผลิต" /></dt><dd>{totalLoaded.toLocaleString()}</dd></div>
-              <div><dt><Bi en="with a phone" th="ที่มีเบอร์" /></dt><dd>{totalWithPhone.toLocaleString()}</dd></div>
-              <div><dt><Bi en="rated 5★" th="ระดับ 5 ดาว" /></dt><dd>{totalFiveStar.toLocaleString()}</dd></div>
-              <div><dt><Bi en="valid cert" th="ใบรับรองใช้ได้" /></dt><dd>{totalCertValid.toLocaleString()}</dd></div>
-            </dl>
           )}
           {meta?.builtAt && (
             <p className="find-stamp">
@@ -353,8 +399,8 @@ export default function Find({ onOpenProvince }) {
             spellCheck="false"
             placeholder={loading ? 'Loading records…' : 'silk · น้ำผึ้ง · 5★ · Chiang Mai · ผ้าไหม'}
             value={query}
-            onChange={(e) => { setQuery(e.target.value); setLimit(PAGE); }}
-            disabled={loading}
+            onChange={(e) => { setQuery(e.target.value); setLimit(PAGE); requestRecords(); }}
+            onFocus={requestRecords}
             aria-label="Search producers"
           />
         </label>
@@ -365,7 +411,7 @@ export default function Find({ onOpenProvince }) {
           </span>
           <select
             value={provinceCode}
-            onChange={(e) => { setProvinceCode(e.target.value); setLimit(PAGE); }}
+            onChange={(e) => { setProvinceCode(e.target.value); setLimit(PAGE); requestRecords(); }}
             disabled={!index}
           >
             <option value={ALL_PROVINCES}>All Thailand · ทั้งประเทศ</option>
@@ -383,7 +429,7 @@ export default function Find({ onOpenProvince }) {
           </span>
           <select
             value={stars}
-            onChange={(e) => { setStars(e.target.value); setLimit(PAGE); }}
+            onChange={(e) => { setStars(e.target.value); setLimit(PAGE); requestRecords(); }}
             disabled={loading}
           >
             <option value={STAR_ANY}>Any · ใด ๆ</option>
@@ -398,7 +444,7 @@ export default function Find({ onOpenProvince }) {
           </span>
           <select
             value={sort}
-            onChange={(e) => { setSort(e.target.value); setLimit(PAGE); }}
+            onChange={(e) => { setSort(e.target.value); setLimit(PAGE); requestRecords(); }}
             disabled={loading}
           >
             <option value={SORT_CONTACT}>Callable first · โทรหาได้ก่อน</option>
@@ -414,7 +460,7 @@ export default function Find({ onOpenProvince }) {
             <input
               type="checkbox"
               checked={onlyContactable}
-              onChange={(e) => { setOnlyContactable(e.target.checked); setLimit(PAGE); }}
+              onChange={(e) => { setOnlyContactable(e.target.checked); setLimit(PAGE); requestRecords(); }}
               disabled={loading}
             />
             <span><Bi en="Phone only" th="เฉพาะที่มีเบอร์" /></span>
@@ -423,7 +469,7 @@ export default function Find({ onOpenProvince }) {
             <input
               type="checkbox"
               checked={cert === CERT_VALID}
-              onChange={(e) => { setCert(e.target.checked ? CERT_VALID : CERT_ANY); setLimit(PAGE); }}
+              onChange={(e) => { setCert(e.target.checked ? CERT_VALID : CERT_ANY); setLimit(PAGE); requestRecords(); }}
               disabled={loading}
             />
             <span><Bi en="Valid cert" th="ใบรับรองใช้ได้" /></span>
@@ -433,7 +479,7 @@ export default function Find({ onOpenProvince }) {
 
       {/* The featured finding: the one number every visitor should walk away
           knowing. The contactability gap is the reason this site exists. */}
-      {!loading && records && (
+      {totals.producers > 0 && (
         <p className="find-callout">
           <span className="callout-key">
             <Bi en="Today's number" th="ตัวเลขวันนี้" />
@@ -514,12 +560,25 @@ export default function Find({ onOpenProvince }) {
           cluster — the actions belong to the list, not to the page edge. */}
       <div className="find-results-h">
         <span className="find-count">
-          <strong>{results.length.toLocaleString()}</strong>
-          <Bi en={results.length === 1 ? 'match' : 'matches'} th="รายการ" />
+          {idle ? (
+            <>
+              <strong>{totalLoaded.toLocaleString()}</strong>
+              <Bi en="producers in the register" th="รายการในทะเบียน" />
+            </>
+          ) : (
+            <>
+              <strong>{results.length.toLocaleString()}</strong>
+              <Bi en={results.length === 1 ? 'match' : 'matches'} th="รายการ" />
+            </>
+          )}
           {provinceName ? <span className="find-count-scope">in {provinceName}</span> : null}
           {query.trim() ? <span className="find-count-scope">for “{query.trim()}”</span> : null}
           <span className="find-count-hint">
-            <Bi en="tap a number to call it" th="แตะเบอร์เพื่อโทร" />
+            {idle ? (
+              <Bi en="search to load the list" th="ค้นหาเพื่อโหลดรายชื่อ" />
+            ) : (
+              <Bi en="tap a number to call it" th="แตะเบอร์เพื่อโทร" />
+            )}
           </span>
         </span>
         <div className="find-actions">
@@ -554,6 +613,16 @@ export default function Find({ onOpenProvince }) {
       </div>
 
       <ul className="find-list">
+        {idle && (
+          <li className="find-row find-row-idle">
+            <span className="find-row-idle-text">
+              <Bi
+                en="The register loads when you search — 77 province files, 261MB, fetched only if you ask for them."
+                th="ทะเบียนจะโหลดเมื่อคุณค้นหา — 77 ไฟล์จังหวัด 261MB โหลดเฉพาะเมื่อคุณร้องขอ"
+              />
+            </span>
+          </li>
+        )}
         {shown.map((r, i) => {
           const provName = r.provinceEn || r.province;
           const district = r.district || '—';

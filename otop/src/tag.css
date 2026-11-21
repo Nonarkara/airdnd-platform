@@ -55,7 +55,7 @@
   display: block;
   font-size: var(--tag-size-meta); font-weight: 700;
   letter-spacing: var(--tag-track-meta); text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
 }
 
 /* Reversal. The cheapest hierarchy in print: type knocked out of solid ink
@@ -233,14 +233,19 @@
 /* Ink for the filled part, ground for the hole. One accent only, and it is a
    fill — amber on cream measures 2.04:1 and never carries a glyph here. */
 .t-bar > .is-ink { background: var(--tag-reverse-ground); color: var(--tag-reverse-ink); }
-.t-bar > .is-hole { background: var(--tag-ground); color: var(--ink-3); }
+.t-bar > .is-hole { background: var(--tag-ground); color: var(--ink-2); }
 .t-bar > .is-mark { background: var(--accent); color: var(--tag-ink); }
 .t-legend {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: var(--tag-space-2) var(--tag-space-4);
   margin-top: var(--tag-space-2);
-  font-size: var(--tag-size-meta); letter-spacing: var(--tag-track-meta);
+  /* The legend's entries are CATEGORY NAMES — "Household, Decorative &
+     Souvenir · 167" — and a thirty-character name in a 10px uppercase
+     register is not a label, it is a sentence set too small to read. The
+     legend carries the reading floor now, like everything else that holds
+     words rather than a value. */
+  font-size: max(var(--tag-size-meta), 12px); letter-spacing: var(--tag-track-meta);
   text-transform: uppercase; color: var(--ink-2);
 }
 @media (max-width: 900px) { .t-legend { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -260,7 +265,7 @@
   border-left: 0; border-right: 0; border-top: 0; cursor: pointer;
 }
 .t-row:hover, .t-row:focus-visible { background: var(--bg-2); }
-.t-row-hd { background: var(--bg-2); cursor: default; font-size: var(--tag-size-meta); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; color: var(--ink-3); padding-block: var(--tag-space-2); }
+.t-row-hd { background: var(--bg-2); cursor: default; font-size: var(--tag-size-meta); font-weight: 700; letter-spacing: var(--tag-track-meta); text-transform: uppercase; color: var(--ink-2); padding-block: var(--tag-space-2); }
 .t-row-hd:hover { background: var(--bg-2); }
 /* Full-bleed rail, not a 1px accent border — it resolves at a distance where
    the province code has not yet resolved. */
@@ -273,7 +278,7 @@
   font-family: var(--font-text); font-size: var(--t-rank1-row);
   font-weight: 600; letter-spacing: -.01em; line-height: 1.1;
 }
-.t-row-en { color: var(--ink-3); font-size: var(--tag-size-stub); letter-spacing: .08em; text-transform: uppercase; }
+.t-row-en { color: var(--ink-2); font-size: var(--tag-size-stub); letter-spacing: .08em; text-transform: uppercase; }
 /* Rank 2 — the machine key. Mono, tracked, copyable, deliberately quieter. */
 .t-row .t-dest {
   font-family: var(--font-mono); font-size: var(--tag-size-lpn);
@@ -296,12 +301,12 @@
 
 /* ── vintage rule: one axis, tick per year the registry actually holds ────── */
 .t-vintage { border-top: 2px solid var(--tag-ink); display: flex; margin-top: var(--tag-space-4); }
-.t-vintage > span { flex: 1; padding-top: var(--tag-space-2); font-family: var(--font-mono); font-size: var(--tag-size-meta); color: var(--ink-3); border-right: 1px solid var(--line-2); text-align: center; }
+.t-vintage > span { flex: 1; padding-top: var(--tag-space-2); font-family: var(--font-mono); font-size: var(--tag-size-meta); color: var(--ink-2); border-right: 1px solid var(--line-2); text-align: center; }
 .t-vintage > span:last-child { border-right: 0; }
 .t-vintage > span[data-median='true'] { background: var(--accent); color: var(--tag-ink); font-weight: 700; }
 
 #atlas .sub-h { margin-top: clamp(2rem, 5vw, 3rem); }
-.t-note { font-size: var(--tag-size-context); color: var(--ink-2); max-width: var(--read); margin: var(--tag-space-3) 0 0; }
+.t-note { font-size: max(var(--tag-size-context), 12px); color: var(--ink-2); max-width: var(--read); margin: var(--tag-space-3) 0 0; }
 .t-note code { font-family: var(--font-mono); font-size: var(--tag-size-context); }
 
 /* §11.8 — every interactive target ≥ 44×44 on a phone, with 8px between. */
@@ -314,7 +319,7 @@
 .t-legend button[aria-current='true'] { background: var(--tag-reverse-ground); color: var(--tag-reverse-ink); border-color: var(--tag-ink); }
 
 /* ── reach gap: highlight unreachable rows ───────────────────────────────── */
-.t-row[data-high='true'] .t-row-num:last-child { color: var(--accent); font-weight: 700; }
+.t-row[data-high='true'] .t-row-num:last-child { color: var(--accent-text); font-weight: 700; }
 
 /* ── corroboration quadrant: 2×2 grid ───────────────────────────────────── */
 .t-quadrant { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--tag-ink); border: 1px solid var(--tag-ink); }
@@ -419,7 +424,7 @@
 .t-spec-h { display: flex; flex-direction: column; margin-bottom: var(--tag-space-2); }
 .t-spec-th { font-size: var(--tag-size-context); color: var(--ink-2); }
 .t-spec-row { display: grid; grid-template-columns: 1.5rem 1fr auto; gap: var(--tag-space-2); align-items: baseline; }
-.t-spec-rank { font-family: var(--font-mono); font-size: var(--tag-size-context); color: var(--ink-3); text-align: right; }
+.t-spec-rank { font-family: var(--font-mono); font-size: var(--tag-size-context); color: var(--ink-2); text-align: right; }
 .t-spec-name { text-decoration: none; color: inherit; display: flex; flex-direction: column; min-height: 44px; align-items: flex-start; justify-content: center; }
 .t-spec-name:hover { color: var(--accent); }
 
@@ -432,7 +437,7 @@
 .t-matrix-th-cat { text-align: center; }
 .t-matrix-province { padding: var(--tag-space-2); text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-height: 44px; }
 .t-matrix-province:hover { color: var(--accent); }
-.t-matrix-province .t-row-en { font-size: var(--tag-size-meta); color: var(--ink-3); }
+.t-matrix-province .t-row-en { font-size: var(--tag-size-meta); color: var(--ink-2); }
 .t-matrix-total { padding: var(--tag-space-2); font-family: var(--font-mono); font-variant-numeric: var(--tag-tabular); text-align: right; border-left: 1px solid var(--line-2); }
 .t-matrix-cell { padding: var(--tag-space-2); text-align: center; font-family: var(--font-mono); font-variant-numeric: var(--tag-tabular); border-left: 1px solid var(--line-2); display: flex; align-items: center; justify-content: center; min-height: 2.4rem; }
 
@@ -441,7 +446,7 @@
 .t-ts-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--tag-space-1); min-width: 0; }
 .t-ts-stack { display: flex; flex-direction: column-reverse; width: 100%; min-height: 1px; overflow: hidden; }
 .t-ts-seg { width: 100%; min-height: 0; }
-.t-ts-year { font-family: var(--font-mono); font-size: var(--tag-size-meta); color: var(--ink-3); }
+.t-ts-year { font-family: var(--font-mono); font-size: var(--tag-size-meta); color: var(--ink-2); }
 .t-ts-num { font-family: var(--font-mono); font-size: var(--tag-size-meta); font-variant-numeric: var(--tag-tabular); color: var(--ink-2); }
 .t-ts-legend { display: flex; flex-wrap: wrap; gap: var(--tag-space-3); align-items: center; font-size: var(--tag-size-meta); }
 .t-ts-legend-item { display: inline-flex; align-items: center; color: var(--ink-2); }
@@ -497,7 +502,7 @@
 .t-cert-cell { display: block; text-align: left; font-size: var(--tag-size-context); color: var(--ink-2); line-height: 1.45; overflow-wrap: anywhere; }
 .t-cert-std { color: var(--ink); }
 .t-cert-num { font-family: var(--font-mono); font-size: var(--tag-size-context); }
-.t-cert-state { color: var(--ink-3); }
+.t-cert-state { color: var(--ink-2); }
 @media (max-width: 1000px) {
   .t-grid-cert { columns: 1; }
 }

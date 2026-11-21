@@ -237,6 +237,25 @@ export function attributionLine(photo) {
   return [who, photo.source, lic].filter(Boolean).join(' · ');
 }
 
+/**
+ * The same credit, with the two words that carry no information taken out.
+ *
+ * "Photo: Chainwit. · Wikimedia Commons · License: CC BY 4.0" says the same
+ * thing as "Chainwit. · Wikimedia Commons · CC BY 4.0" — the picture is
+ * above it, and "CC BY 4.0" is a licence token. On a card a few hundred
+ * pixels wide the two words cost a whole extra line of scroll, repeated on
+ * every card, for nothing. Nothing is dropped: the photographer, the source
+ * and the licence are all still there.
+ */
+export function attributionLineCompact(photo) {
+  if (!photo) return '';
+  if (photo.isExactProducer) {
+    return `Source: ${photo.source}`;
+  }
+  const who = photo.author || 'unknown author';
+  return [who, photo.source, photo.license].filter(Boolean).join(' · ');
+}
+
 // Re-export empty maps so older imports of CATEGORY_PHOTOS / PROVINCIAL_CRAFT_PHOTOS
 // do not crash; they are intentionally empty — use manifests instead.
 export const CATEGORY_PHOTOS = {};

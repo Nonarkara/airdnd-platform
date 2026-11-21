@@ -594,6 +594,7 @@ function ProvinceDossierBody({ insights, code, onSelectProvince, onOpenMatch }) 
                         href={s.pdfUrl}
                         target="_blank"
                         rel="noreferrer"
+                        className="t-doc-link"
                         style={{ color: 'var(--tag-ink)', textDecoration: 'underline' }}
                         title={`TISI Standard ${s.code}: ${s.titleEn}`}
                       >

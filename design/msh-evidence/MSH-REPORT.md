@@ -99,9 +99,33 @@ The consequence is not theoretical. The prerender opened one browser for ninety-
 
 So: **the site's front door is the heaviest page on the site, and it is the page a reader reaches from a phone.** A reader who taps the link on a train gets 261MB before the search box is useful. That is a capability limit, not a taste question, and it is the first thing the next increment should address — most obviously by shipping a compact search index (the fields Find actually filters on, without the whole record) and letting the full shards load behind it.
 
+### Pass five — the fourth instrument, and the six defects it found in itself
+
+MSH law §6 asks for four things of every viewport: **chrome cost**, **task visibility**, **geometry**, and **preservation**. Three of them had instruments. The fourth — *"important content, features, readable text, focus visibility, and usable targets still work after the change"* — had a probe that had been written, committed, and **never run**. Pass five is the run.
+
+The first run took 22 minutes on a loaded machine and reported **36 of 45 measurements failing**: 46 contrast failures, targets under 24px, reading text under 12px, and three views that "never painted their content".
+
+Every one of those findings had to be checked against the product before it was believed, and the checking found that **the instrument was the problem, five times over**:
+
+- The **front door was never broken.** The probe's arrival check stripped digits with `/[^\\d]/g` — a class that matches "not a backslash and not the letter d" — so `"154,050"` became `""`, `Number("")` is `0`, and the predicate could never be true. The landing page, which arrives in 500ms and states 154,050 producers, was reported as *"never painted its content"*. The same call passed `{ timeout: 120000 }` as Playwright's **argument** rather than its options, so the real timeout was the 30-second default.
+- **A closed disclosure is not on the page.** The province dossier keeps its long registers inside `<details>`. A closed `<details>` lays its children out but never paints them, so the probe was sampling whatever was behind them — a dark photograph — and reporting eight district names at **1.01:1** against a ground that does not exist on the page.
+- **A full-page capture of a tall page comes back TILED.** Chromium cannot hold a 24,911px page in one texture, so the champion view's capture repeated the top of the page down the image. Every measurement below 16,384px was a measurement of the first screen, and the probe reported the champion card's **phone number** as dark ink on a green photograph, at **2.49:1**, when that number is on cream paper in front of the reader.
+- **The surface is what is behind the glyphs.** Four earlier rules each failed on a different layout: the DOM's background colour fails on a photograph; the darkest pixel fails on antialiasing; the mode of the box fails on dense text; the mode of the pixels *far* from the ink fails on a translucent veil over a photograph. The rule that survives is anchored where every version agreed — **the glyphs** — and reads the pixels two pixels out from them, where the letter's own halo has ended.
+- **The ring was the letter's own edge.** At 17.6px bold, a one-pixel ring around a glyph is mostly that glyph's antialiasing, and the matchmaker's province name was measured against a surface of `(89,74,66)` — the letter blended with the paper, not the paper. The ring is taken two pixels out now, with the one-pixel ring as a fallback.
+
+And one defect was in the **prerender**, found because the deploy that carried it failed loudly:
+
+- **The prerender measured another project.** Another repository's preview server was holding `127.0.0.1:4173` on this shared machine, with `--strictPort`. The prerender bound the IPv6 wildcard, which on macOS does not collide with an IPv4-only bind, so its `listen()` **succeeded** — and every request went to the other project. It measured seventy-two pages of somebody else's website.
+- **And then it measured its own previous output.** The prerender writes `dist-otop/<route>/index.html` for each route, so on a second run the server's static lookup served the *last* run's file back at the prerender. It rendered the last run's page, checked the last run's title, and wrote the last run's page again — and two views were **exempt** from the title check, so two documents in the shipped site carried *"EACH — Every piece of your startup, unified."* as their title. The prerender now takes a free port, **proves it is talking to itself** (the served page must carry this project's publisher marker), serves the **shell** for any route it is about to render, and checks every route's title against the register's own words with **no exemptions**.
+
 ### Instrument defects found along the way
 
 An instrument that cannot see is an instrument that says "clean". Eight of these were mine.
+
+13. **The preservation probe had never run.** It was written and committed but never executed, and its first run reported all forty-five measurements as failures with *"SyntaxError: Unexpected identifier 'window'"* — Playwright evaluates a **string** as an *expression*, and the probe's string was a function declaration followed by statements. The instrument was reporting its own syntax error as forty-five findings about the product, which is the worst shape a failing instrument can have: it looks like a result.
+14. **And then it measured contrast by walking the DOM.** The second version walked up the tree for an opaque `background-color` and compared the text's colour with it. That works on paper and fails completely on a banner, where the surface is a **photograph with a veil** and no opaque background-colour exists until the page's paper cream. So it measured cream text against cream paper and reported the Atlas chapter heading — 28px, cream on a dark photographic banner — at **1.06:1**, when the heading's real painted contrast is **18.57:1**. Forty-five findings, none of them about the product.
+15. **And then the pixel version had its own bias.** The third version sampled the screenshot and classified pixels by their distance from the *declared* colour, taking the median of each pool — which **understated** the contrast, because the antialiased edge was counted as surface and pulled the surface's median toward the ink. It reported the site's small Thai labels at 2.5:1 when their true ratio is 4.69:1.
+16. **The measurement that is right measures the DISTRIBUTION.** The surface is the **mode** of the box's pixels; the ink is the **extreme** in whichever direction departs most from it. Validated against three known truths: the Atlas heading **17.7:1** (hand-check ≈18:1), the amber chapter label **8.16:1**, and the Thai secondary labels **4.68 / 4.69 / 4.69:1** against a hand-computed 4.69:1 for `#8a6645` on `#fdf3df`. The one failure it then reported was **real**: the header's source label, 9px of Thai in the palette's dark sandalwood on the near-black header, at **3.45:1**.
 
 1. **The ruler merged multi-column blocks into one fake line.** The method page's provenance band and the story's prose measured a 1,301px "line" that does not exist. A word now joins the line whose own horizontal extent contains it, and a word that starts past every line's end opens a new one.
 2. **The hole probe mis-derived column gaps.** `auto-fit` collapses its empty tracks and takes their gaps with them; `space-between` spreads free space far wider than the declared gap. Both produced false holes. The gap band is now measured *between adjacent items' boxes*, on the horizontal axis only — a short cell beside a tall one leaves its void below it, in its own column, and that must stay visible.
@@ -165,6 +189,31 @@ Every instrument states **what it does not measure**. The exports figure is the 
 - **The gates run locally** (`npm run otop:gates`) — because the Actions budget is exhausted and a gate that cannot run is not a gate.
 - **The spatial limits are live** (`design/SPATIAL-LIMITS.md`) — four §6 hierarchy laws were written into the instrument but left switched off. They are now enabled, at values derived from the site's own measured distribution, and the derivation and its reasons are written down.
 
+### The spatial gate, run for the first time — and the seventh defect it found in itself
+
+The spatial gate is the first instrument of the four: it measures the geometry of every view at every width the site's CSS has a breakpoint for. Its receipt had been recorded on **2026-10-27**, against fourteen routes and a layout that no longer exists. Re-recording it meant running it — and it **ran for twenty-three minutes and measured nothing at all**.
+
+- **The gate's browser never opened the measuring page.** The gate spawned Chrome by hand and handed it the harness URL on the command line. On this machine that browser created a target carrying the right URL and **never navigated to it**: the renderer stayed on `about:blank`, the harness never ran, no route ever completed, and the gate printed **nothing** — no finding, no error, no verdict. It was not a slow run; it was a run that could not begin, and it looked exactly like a run that was working. The gate now opens its page **through Playwright** — the tool that knows how to make a browser go where it is told — and prints when the measuring page is open and when the sweep starts. The same harness, in the same browser, driven by Playwright, finishes a route every ten seconds.
+- **A gate that cannot see must say so, and must not be a gate that hangs.** The watchdog, the five attempts, the resume-from-where-it-stopped, and the failure message were all already there; what was missing was the browser that could reach the page. The first honest run then took **18 minutes** and produced **645 measurements across 15 routes and 43 widths** — and a receipt with **eleven** distinct decisions, ten of them already justified by a written reason.
+
+And the first honest run found two real things in the product, not in the instrument:
+
+- **A photo credit was being cut in half** (above). Fixed, deployed, and re-measured: the credit is now **0px hidden at 360, 479, 768 and 1440px**.
+- **The caption over the photograph is clipped on purpose.** The band is two lines; the ellipsis says there is more; the whole caption is the image's `alt` text and is in the province dossier. That decision is now written into the receipt's reasons under the key it is measured by — `clip|span.ch-card-img-text` — and the span was **given a class** so the reason covers the caption and nothing else. A reason written against a bare `span` would have silently excused every future clip on the site.
+
+### Changed in pass five
+
+The preservation probe found **real** defects once it could see. These are the changes.
+
+- **The third voice of the ink is legal everywhere now.** `--ink-3` was `#8a6645`: 4.69:1 on the paper — a pass — but **4.13:1** on the tinted panel and 4.36:1 on the history band. The probe found it on the province register's own column heads. It is now `#7d5a3a`: **5.61** on the paper, 5.94 on the paper-white surface, **4.94** on the tinted panel, 5.23 on the band. Still three voices, not four.
+- **The reading floor is a token** (`--read-min: 12px`). Eleven places set a sentence below it — 9.8px, 10.6px, 10.9px, 11.5px, 11.9px — and each now names its own floor: the story's stat sub-notes, the history byline and citations, the critic's source anchors, the crossrefs' row notes and footer, the bank's row measures, the matchmaker's summary, the soft-power scope notes and series labels, the briefs' source notes, and **the Thai half of every bilingual pair**, which was 0.78em of a small label and came out at 9.7px. A label may still be 10px; a sentence may not.
+- **Twenty-four pixels of target.** Eight register links measured 15px and 17px tall — the province's document links, the champion's phone numbers, the history's photo source, the critic's citations. These are **controls**, not links in a sentence, and WCAG 2.2 SC 2.5.8 asks for 24×24. They now clear it.
+- **A disabled button still says what it does.** The Export CSV button is disabled until the reader asks for the register, and its label was painted at 45% opacity: **2.97:1** for the English, **2.33:1** for the Thai. The disabled state is now the third ink (5.61:1), not a faded one.
+- **The champion card's caption is clamped to two lines, and its credit is not.** At 390px the long captions grew past the 140px media box and were cut off by the overflow. The caption is clamped to two lines — the ellipsis says there is more, and the dossier carries the whole text — **but the credit that used to share that band does not belong in it.** The band is two lines tall, and at 360px the credit was squeezed into 87px and **90px of it was cut**, which is exactly the part that names the licence. A credit that is clipped is not a credit, and an ellipsis on a licence is not a licence. The credit now sits under the photograph, in full, and reads "Chainwit. · Wikimedia Commons · CC BY 4.0 · illustrative" — two words shorter, nothing dropped.
+- **The atlas photographer's credit carries its own plate.** It was cream at 78% over a photograph, and the probe measured it at **1.60:1** against a mid-grey patch of the photo at 1024px — the same credit that read cleanly at 390 and 1440, because the picture behind it changed. A credit whose legibility depends on which part of a photograph it lands on is not legible; it is lucky. It now has a translucent ink plate behind it, like the champion caption.
+- **The front door asks for the registry when the reader asks for it.** The landing view used to load all 77 shards on mount — **261MB** — before the search box was useful. The index carries the national picture in **29KB**, so the four panel numbers are stated on arrival and the shards are fetched on first interaction. The landing page now arrives in **500ms** and serves **77,616 bytes**. The build gained a per-province `withPhone` count so the "with a phone" figure is exact, and every one of the 77 shards was verified against the index: 154,050 records · 8,839 with a phone · 5,317 rated 5★ · 9,552 valid certificates.
+- **The prerender cannot measure the wrong site, and cannot measure itself.** A free port, a publisher proof, the shell for every route it renders, and a title check with no exemptions.
+
 ---
 
 ## Verified
@@ -175,10 +224,23 @@ Every instrument states **what it does not measure**. The exports figure is the 
 | Ruler self-test, all three widths | **3/3 rules bite** — a heading wall (80 lines), a 39px ribbon, a 160-lre line. A rule that does not bite fails the run |
 | Hole probe, 7 routes × 3 widths | **No empty tracks across 4,584 grid containers** |
 | Route sweep | **All 14 routes rendered**, each with its h1 |
-| Spatial gate | 168 measurements across 6 routes and 28 widths — every hole, orphan, scattered pair and wrap either fixed or written down |
+| Spatial gate | **645 measurements across 15 routes and 43 widths** — every hole, orphan, scattered pair and wrap either fixed or written down |
 | Spatial falsifier | **23/23 caught** — 10 injected page defects, 12 broken-baseline cases, 1 case about the instrument itself; 8 of 8 failure modes |
 | `npm run test:otop` | **154/154 pass** (152 before, plus 2 new caption tests) |
 | `npm test` | **248/250** — the two failures are `scraper_ai_governor` and `scraper_highwater`, which need `TELEGRAM_API_ID`/`TELEGRAM_API_HASH` in `.env`; they are unrelated to this pass and were failing before it |
+
+### Pass four — the gates, and what they say
+
+| Gate | Result |
+|---|---|
+| Unit tests | **187/187 pass** — 179 of this project's own, plus 8 that arrived with the merged work |
+| Route sweep (routes, text, links) | **15/15** — every view renders its own, names itself, carries a title and a canonical, and has **no text hole and no dead-end link** |
+| Link contract (`test/otop_links.test.js`) | **4/4** — and **falsified**: reverting the three broken filter links turns the test red with *"carries 'stars', which the view at / does not read (it reads: c, cert, p, q, s, sort)"* |
+| Data contract (`test/otop_critic.test.js`) | **7/7** — and **falsified**: reverting the `finding.value` fix turns it red with *"hidden (hidden-champions) reads '.count', and the build writes ['id','th','text','value']"* |
+| MSH audit, 15 views × 390/1024/1440 | **45 measurements, 0 flagged** — chrome 51px (6%) on every view, first action on-screen on every view, no sideways scroll on any view at any width |
+| The four new hierarchy limits, against the recorded receipt | **602 measurements, 0 failures** — worst observed title ratio 1.00 (floor 0.95), loud share 28% (ceiling 33%), chrome 6% (ceiling 8%), type steps 6 (ceiling 6) |
+| Identity assertion, against three cases | the real site **accepted**; a stranger's page **refused**; a page whose title carries the brand but whose body does not **refused** |
+| `otop:verify`, against production | **24/24 checks pass** — see below |
 
 ### The same gates, run against the live site
 
@@ -186,18 +248,41 @@ The preview server is where the work was done, but a receipt about a live site h
 
 | Gate, against production | Result |
 |---|---|
-| `otop:verify` | **All checks passed** — and the live bundle hash (`assets/index-BEF3pjr9.js`) **matches the export byte for byte**, so the site is serving the commit, not yesterday's |
+| `otop:verify` | **24/24 checks pass** — and the live bundle hash **matches the export byte for byte**, so the site is serving this commit, not yesterday's |
+| The fifteen documents | **15 documents · 0 without content · 0 without a subject title · 0 without a canonical · 0 without structured data** |
+| `sitemap.xml` | **97 urls** — real XML, not the SPA shell |
+| `robots.txt` | **a robots file**, with the sitemap named in it |
+| The share card | `og/otop.png` **200** |
+| The link graph | **6 anchors in the served HTML** — a crawler can follow the header |
+| The certification join | **17,235 certified · 9,552 valid** — the REBUILT figures. The live site had been serving 9,588 valid, from artefacts that still carried 11,847 duplicate certificate rows |
+| The document title | `OTOP Thailand — the One Tambon One Product registry, complete | one³` |
 | Line measure, 1440 / 1024 / 390 | **Nothing over the ceiling** at all three widths, measured on the live site |
 | Hole probe, 7 routes × 390 / 1024 / 1440 | **No empty tracks across 4,584 grid containers**, measured on the live site |
-| Route sweep | **All 14 routes rendered** — including `softpower`, whose h1 is *"Thailand's soft power, measured on the supply side."* |
 | `soft_power.json` | 26,302 bytes served; **7 tools, all measured** — otop · handicraft · local-food · film-heritage · exports · fisheries · labour |
-| Document title | `one³ — Thailand's soft-power monitor` |
-
-The 1024 live measure took four attempts — the live host timed out on navigation three times, which is the edge being slow, not the page being wrong — and then came back clean. It is recorded as a live measurement because that is what it is.
 
 Live screenshots are in `design/msh-evidence/live/` — `find-1440`, `find-390`, `softpower-1440`, `softpower-390`, `province-1440`, `method-1440`.
 
-**One instrument defect this exposed.** The live sweep failed all 14 routes with *"REFUSING TO MEASURE"* — against a site serving exactly the right bundle. The identity assertion keyed on `OTOP_TITLE = "OTOP registry intelligence"`, a marketing phrase that changed when the platform became the soft-power monitor. A gate that breaks whenever the copy changes is a gate that gets "fixed" by weakening it, so the assertion now checks the thing that does not change: the wordmark. The title must **begin with `one³`**, which still rejects another process holding the port. (`095b27c`.)
+### Pass five — the gates, and what they say
+
+The preservation probe is the fourth instrument, and it is the one MSH law §6 had been missing. After the repairs above, it runs against **production**:
+
+| Gate, pass five | Result |
+|---|---|
+| **The preservation probe, 15 views × 390/1024/1440, against `https://otop.nonarkara.org`** | **45 measurements, 0 flagged** — no control without a focus ring, no target under 24px, no body of reading under 12px, and **no text below 4.5:1** |
+| …the same probe against the preview | **45 measurements, 0 flagged** — the same verdict, on the machine, before the deploy |
+| The contrast coverage behind that verdict | **34,000-odd text boxes measured across the site** — the province register alone contributes 4,705 per width, and every one of them is a real painted pixel read from the screen |
+| The front door, measured | **500ms · 77,616 bytes** — against 261MB of shards fetched on mount |
+| `otop:verify`, against production | **24/24 checks pass** — including *15 documents · 0 without a subject title*, which the previous deploy failed on two counts |
+| The prerender | **91 pages prerendered, 97 urls in `sitemap.xml`, 0 failures** — and it now refuses to run against a site that is not this project |
+| **The spatial gate, re-recorded against the deployed build** | **645 measurements across 15 routes and 43 widths** — the receipt now describes the site as it is served, not the fourteen routes of 27 October. **11 decisions, 11 justified, 0 unrecorded, 0 unreasoned** |
+| …the spatial falsifier, against that gate | **12 injected page defects, 14 broken-baseline cases and 1 case about the instrument itself — all caught; 8 of 8 modes** |
+| The route sweep, against production | **15/15** — every view renders its own, names itself, carries a title and a canonical |
+| The MSH audit, against production | **45 measurements, 0 flagged** — chrome 51px (6%) on every view, the first action on-screen on every view, no sideways scroll anywhere |
+| Unit tests | **187/187 pass** |
+
+The receipt for the probe is the log, and the log names the surface and the ink behind every number it prints — a ratio without them is a number nobody can check.
+
+**One instrument defect this exposed — and it was mine to fix twice.** The live sweep failed all 14 routes with *"REFUSING TO MEASURE"* — against a site serving exactly the right bundle. The identity assertion keyed on `OTOP_TITLE = "OTOP registry intelligence"`, a marketing phrase that changed when the platform became the soft-power monitor. A gate that breaks whenever the copy changes is a gate that gets "fixed" by weakening it. The assertion now checks the thing that does not change: the **publisher marker in the served HTML** (`otop.nonarkara.org/#publisher`), with the title wordmark as a secondary witness. (`095b27c`; the marker form landed with the findability increment, after the title form broke a second time when the brand moved to the end of the title.)
 
 ---
 
@@ -212,3 +297,6 @@ Live screenshots are in `design/msh-evidence/live/` — `find-1440`, `find-390`,
 7. **The wordmark was left alone.** `one³` still means One Tambon · One Product · One Platform. The monitor is what the platform now does; putting the platform's description into the mark would make the mark a slogan. The expansion lives once, in the footer, and the monitor's frame names the relationship. *If the owner wants the mark to widen, that is a naming decision, not a layout one — it should be made deliberately, in one place.*
 8. **One spatial limit is deliberately switched off.** `firstAction` derived a ceiling of 11,870px — a number no rule can act on — so it is left unset rather than set to a value that reads as coverage and is not. The MSH audit measures the same question the useful way (is the first action *visible* in the viewport?) and enforces it on every route. `design/SPATIAL-LIMITS.md` says so in full.
 9. **The findability increment has not been seen by a search engine.** The prerender, the sitemap, the robots file, the canonical addresses, the link graph and the structured data are all built and verified locally; what they are *for* — that a crawler now finds fifteen documents where it used to find one — can only be confirmed by the index over weeks. The live site's `otop:verify` receipt proves the artefacts are being served; it cannot prove what a crawler did with them.
+10. **The Critic view's register leaves its short columns empty.** The spatial gate's first run against the fifteen-route site reported 264 findings; the receipt re-recorded in this pass carries **170 findings across 11 decisions**, and **54 of them are the Critic's four-column register** — the number, the criticism, the attribution, and the registry's answer — where the answer is a paragraph and the other three are labels, so the labels leave 150–215px empty beneath them in a ~200px row. **This is not a new shape**: the same rule records the matchmaker's `span.mm-row-rank` 34 times, the `span.t-key` 19 times, the matchmaker's control group 18 times and the photo source 27 times, and every one of those decisions carries a written reason — the house position being that a register row's ragged bottom is the form, and is recorded rather than flagged. But it is three findings times four columns on one view, and the honest next step is to **recompose the Critic's row** so the answer sits *below* the claim, full width, the way the Atlas chapters do — which removes the four-way raggedness rather than accepting it. It was not done in this pass: the row is legible, the law's remedy for a register is a reason rather than a rewrite, and the change would have cost a re-measure and a second deploy of ninety-one documents. It is named here so it is not forgotten.
+11. **The gate's receipt was stale.** The baseline that the gate checks against was recorded on 2026-10-27 — before the findability increment — so it described fourteen routes and a layout that no longer exists. A receipt of what the site *was*. It is now re-recorded: **645 measurements across 15 routes and 43 widths, taken from snapshots of the deployed build**, and the receipt carries **eleven** decisions with **eleven** reasons. The gate passes against it, and the falsifier confirms the gate still bites — 12 injected page defects, 14 broken-baseline cases and 1 case about the instrument itself, all caught, 8 of 8 modes.
+12. **The gate could not run at all until this pass.** Its receipt was a number nobody could check, because the instrument that produced it could not open its own measuring page: a hand-spawned Chrome took the harness URL and never navigated to it, and the gate sat for twenty-three minutes measuring a blank page while printing nothing. That is repaired and documented above — the browser is now opened through Playwright — but the lesson outlives the bug: **an instrument that reports nothing is not an instrument that found nothing.** A gate that cannot see has to say it is blind, in the run, in the open.

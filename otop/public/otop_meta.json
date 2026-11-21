@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-28T16:48:38.363Z",
+  "builtAt": "2026-11-21T03:40:12.558Z",
   "source": "data.go.th",
   "degraded": false,
   "reason": null,
@@ -22,7 +22,7 @@
     "certValid": 9552,
     "certExpired": 7559,
     "certUnknown": 124,
-    "certAsOf": "2026-10-28"
+    "certAsOf": "2026-11-21"
   },
   "geo": {
     "records": 154050,

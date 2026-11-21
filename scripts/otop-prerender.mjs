@@ -46,7 +46,7 @@ function arg(name, fallback) {
 }
 
 const DIST = path.resolve(arg('dir', 'dist-otop'));
-const PORT = Number(arg('port', 4173));
+const PORT_WANTED = Number(arg('port', 4173));
 const WITH_PROVINCES = !argv.includes('--no-provinces');
 const ORIGIN = `https://otop.nonarkara.org`;
 
@@ -69,6 +69,7 @@ const VIEW_ROUTES = ROUTES.filter((r) => r.name !== 'province').map((r) => ({
   path: r.path,
   view: r.name,
   label: r.name,
+  title: r.title,
 }));
 
 // The legal pages are already static documents on disk; they are listed in
@@ -99,6 +100,21 @@ const MIME = {
   '.txt': 'text/plain; charset=utf-8',
 };
 
+// THE SHELL IS SERVED FOR THE ROUTES BEING RENDERED.
+//
+// The prerender writes dist-otop/<route>/index.html for every route. On a
+// SECOND run, the server's static lookup found those files and served the
+// PREVIOUS prerender's output back at the prerender — so it rendered the
+// last run's page, checked the last run's title, and wrote the last run's
+// page again. A run that measures its own output is a run that cannot
+// fail: two files in the shipped site carried another project's title
+// because of it.
+//
+// So: a request for a route that is about to be rendered is served the
+// SHELL, whatever is on disk for that route. The prerender measures the
+// application, which is what the reader gets.
+const SHELL = path.join(DIST, 'index.html');
+
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   let file = path.join(DIST, decodeURIComponent(url.pathname));
@@ -107,20 +123,86 @@ const server = http.createServer((req, res) => {
     return;
   }
   if (fs.existsSync(file) && fs.statSync(file).isDirectory()) file = path.join(file, 'index.html');
+  // A path with no file extension is a ROUTE, not an asset — and a route is
+  // rendered by the application, so the route is served the SHELL. What is on
+  // disk for that route is the LAST prerender's output, and rendering that
+  // would be measuring the instrument's own memory.
+  if (!path.extname(url.pathname)) file = SHELL;
   if (!fs.existsSync(file)) {
     // The SPA fallback: any unknown path is the application, which then
     // reads the path and decides what it is. That is exactly how the live
     // host behaves, so the prerender measures the same thing the reader
     // gets.
-    file = path.join(DIST, 'index.html');
+    file = SHELL;
   }
   const ext = path.extname(file);
   res.writeHead(200, { 'content-type': MIME[ext] || 'application/octet-stream' });
   fs.createReadStream(file).pipe(res);
 });
-await new Promise((resolve) => server.listen(PORT, resolve));
+// THE PORT IS NOT PROOF OF ANYTHING.
+//
+// This machine is shared, and another project's preview server was already
+// holding 127.0.0.1:4173 — with --strictPort, so it would not give it up.
+// This server binds the IPv6 wildcard, which on macOS does NOT collide with
+// an IPv4-only bind, so the listen() SUCCEEDED — and every request to
+// 127.0.0.1:4173 went to the OTHER project. The prerender then measured
+// seventy-two pages of somebody else's website and reported them as this
+// project's documents, because their title did not name this project's
+// subject.
+//
+// So the port is chosen freely, and — this is the part that matters — the
+// prerender PROVES IT IS TALKING TO ITSELF before it measures anything. If
+// the page it fetches does not carry this project's publisher marker, the
+// run stops. A gate that can measure the wrong site is not a gate.
+let PORT = PORT_WANTED;
+const listen = (port) =>
+  new Promise((resolve, reject) => {
+    const onError = (err) => {
+      server.removeListener('listening', onListening);
+      reject(err);
+    };
+    const onListening = () => {
+      server.removeListener('error', onError);
+      resolve();
+    };
+    server.once('error', onError);
+    server.once('listening', onListening);
+    server.listen(port, '127.0.0.1');
+  });
+
+try {
+  await listen(PORT);
+} catch (err) {
+  if (err.code !== 'EADDRINUSE') throw err;
+  // The port is taken. Take a free one rather than fail: the port was never
+  // the point.
+  for (let p = PORT + 1; p < PORT + 40; p++) {
+    try {
+      await listen(p);
+      PORT = p;
+      break;
+    } catch (e2) {
+      if (e2.code !== 'EADDRINUSE') throw e2;
+    }
+  }
+}
 const BASE = `http://127.0.0.1:${PORT}`;
 console.log(`serving ${DIST} on ${BASE}`);
+
+// THE PROOF. The served HTML must carry this project's publisher marker.
+// If it does not, this server is not the thing answering, and every
+// measurement below would be about somebody else's site.
+{
+  const probe = await fetch(`${BASE}/`);
+  const html = await probe.text();
+  if (!html.includes('otop.nonarkara.org/#publisher')) {
+    console.error(
+      `\nFAIL — ${BASE} is not serving this project. The served page carries no publisher marker,\n` +
+        '       so the prerender would be measuring another site. Refusing to continue.\n',
+    );
+    process.exit(1);
+  }
+}
 
 // ---------------------------------------------------------------- the routes
 const index = JSON.parse(fs.readFileSync(path.join(DIST, 'otop_index.json'), 'utf8'));
@@ -134,6 +216,7 @@ const routes = [
     view: 'province',
     code: p.code,
     label: `OTOP in ${p.en || p.code}`,
+    title: 'OTOP',
   })),
 ];
 
@@ -247,8 +330,28 @@ for (const route of routes) {
     });
 
     if (!title) throw new Error('the page has no title — a document without a title is not findable');
-    if (!/OTOP|otop/i.test(title) && route.view !== 'softpower' && route.view !== 'match') {
-      throw new Error(`the title does not name the subject: "${title}"`);
+    // The title must name THIS DOCUMENT'S SUBJECT, from the route register.
+    //
+    // The check used to be "the title contains OTOP, unless the view is the
+    // soft-power monitor or the matchmaker" — and those two exemptions were
+    // a hole exactly the size of the failure: the prerender served a stale
+    // file from another project for /match/ and /softpower/, the title came
+    // back as "EACH — Every piece of your startup, unified.", the two
+    // exempt views passed the check, and two documents in the shipped site
+    // carried somebody else's title.
+    //
+    // So the check is now the register's own words for the route, and no
+    // view is exempt. The soft-power monitor's title carries "soft power";
+    // every other view's carries "OTOP".
+    const want = route.title || 'OTOP';
+    if (!title.toLowerCase().includes(String(want).toLowerCase())) {
+      throw new Error(`the title does not name the subject: "${title}" (expected "${want}")`);
+    }
+    // AND THE PAGE MUST BE THIS PROJECT'S. The publisher marker is in the
+    // shell and in every rendered document; a page without it came from
+    // somewhere else.
+    if (!html.includes('otop.nonarkara.org/#publisher')) {
+      throw new Error('the rendered page carries no publisher marker — this is not this project\'s document');
     }
 
     // Per-page structured data. The site-level graph stays in index.html.

@@ -15,7 +15,7 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Bi } from './Bi.jsx';
-import { photoForRecord, loadPhotosForProvince, attributionLine } from '../../core/photos.js';
+import { photoForRecord, loadPhotosForProvince, attributionLineCompact } from '../../core/photos.js';
 import { matchStandardForProduct } from '../../core/standards.js';
 import { dedupeCerts } from '../../core/certs.js';
 
@@ -291,10 +291,14 @@ export default function Champions({ onSelectProvince, national, records }) {
                       className="ch-card-img"
                     />
                     <div className="ch-card-img-cap">
-                      <span>{photo.caption || photo.title}</span>
-                      <span className="ch-card-img-attr">{attributionLine(photo)}{photo.isExactProducer ? '' : ' · illustrative'}</span>
+                      <span className="ch-card-img-text">{photo.caption || photo.title}</span>
                     </div>
                   </div>
+                )}
+                {photo && (
+                  <p className="ch-card-img-attr">
+                    {attributionLineCompact(photo)}{photo.isExactProducer ? '' : ' · illustrative'}
+                  </p>
                 )}
                 <header className="ch-card-h">
                   <div className="ch-card-stars">{'★'.repeat(c.stars)}<span className="ch-card-stars-e">{'★'.repeat(5 - c.stars)}</span></div>
@@ -354,6 +358,7 @@ export default function Champions({ onSelectProvince, national, records }) {
                       href={std.pdfUrl}
                       target="_blank"
                       rel="noreferrer"
+                      className="t-doc-link"
                       style={{ color: 'var(--tag-ink)', borderBottom: '1px solid var(--border-subtle)', textDecoration: 'none' }}
                       title={`TISI Standard: ${std.titleEn}`}
                     >
@@ -362,7 +367,7 @@ export default function Champions({ onSelectProvince, national, records }) {
                   </div>
                 )}
                 <dl className="ch-card-contact">
-                  {c.phone && <><dt>Phone</dt><dd><a href={`tel:${c.phone}`}>{c.phone}</a></dd></>}
+                  {c.phone && <><dt>Phone</dt><dd><a className="t-doc-link" href={`tel:${c.phone}`}>{c.phone}</a></dd></>}
                   {c.email && <><dt>Email</dt><dd><a href={`mailto:${c.email}`}>{c.email}</a></dd></>}
                   {c.website && <><dt>Web</dt><dd><a href={c.website} target="_blank" rel="noreferrer">{c.website}</a></dd></>}
                   {c.address && <><dt>Address</dt><dd>{c.address}</dd></>}

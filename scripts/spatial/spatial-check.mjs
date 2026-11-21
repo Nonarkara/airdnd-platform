@@ -66,7 +66,7 @@
 import { createServer } from "node:http";
 import { readdir } from "node:fs/promises";
 import { existsSync, readFileSync, writeFileSync, mkdirSync, statSync, rmSync, readdirSync } from "node:fs";
-import { execFileSync, spawn } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { tmpdir, homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -154,25 +154,41 @@ const KIND_TOLERANCE = {
 };
 
 // ---------------------------------------------------------------- chrome
-const CHROME_CANDIDATES = [
-  process.env.CHROME_PATH,
-  // Playwright's bundled Chromium first — a headless system Chrome steals Dock clicks.
-  await (async () => { try { return (await import("playwright")).chromium.executablePath(); } catch { return null; } })(),
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-  "/Applications/Chromium.app/Contents/MacOS/Chromium",
-  "/usr/bin/google-chrome",
-  "/usr/bin/chromium",
-  "/usr/bin/chromium-browser",
-  "C:/Program Files/Google/Chrome/Application/chrome.exe",
-].filter(Boolean);
-const CHROME = CHROME_CANDIDATES.find((c) => existsSync(c));
+//
+// The browser is launched, and navigated, THROUGH PLAYWRIGHT.
+//
+// The gate used to spawn Chrome by hand and hand it the harness URL on the
+// command line. That is how a browser is normally started, and it is how this
+// gate sat for twenty-three minutes measuring nothing at all.
+//
+// The page never opened. The spawned browser created the target with the
+// right URL and never navigated to it: the renderer stayed on about:blank, so
+// the harness never ran, so no route ever completed, so the gate had nothing
+// to report and no error to raise — it simply waited, at 0.3% CPU, until its
+// watchdog rescued it. The same harness, in a browser opened by Playwright,
+// finished a route every ten seconds.
+//
+// A gate that cannot open its own page is not a slow gate. It is a gate that
+// reports nothing while looking like it is working, and "nothing" is the one
+// answer a spatial verdict must never give.
+//
+// Playwright also brings the flags a hand-launched browser lacks — the
+// anti-throttling set, the anti-IPC-flood set, the renderer kept alive — and
+// it brings its own Chromium, so the binary is never a thing to guess at.
+let PW = null;
+try {
+  PW = await import("playwright");
+} catch {
+  PW = null;
+}
 
-if (!CHROME) {
+if (!PW) {
   console.error(
     "\nFAIL — the spatial gate could not measure.\n" +
-      "  No Chrome binary found. Tried:\n" +
-      CHROME_CANDIDATES.map((c) => `    ${c}\n`).join("") +
-      "  Set CHROME_PATH=/path/to/chrome.\n",
+      "  Playwright is required: the gate opens its measuring page through it,\n" +
+      "  because a hand-launched browser was found to leave that page on\n" +
+      "  about:blank and to report nothing for as long as it was left alone.\n" +
+      "  Install it with:  npm i -D playwright && npx playwright install chromium\n",
   );
   process.exit(1);
 }
@@ -1006,69 +1022,85 @@ let chromeError = null;
 for (let attempt = 1; attempt <= 5; attempt++) {
   // Pick up where the last attempt stopped.
   if (attempt > 1) console.error(`  · resuming after ${completedRoutes} route(s)`);
-  // A FRESH profile per attempt: a browser that was killed leaves a dirty
-  // profile behind, and the next attempt would fail for the wrong reason.
-  const attemptProf = attempt === 1 ? prof : `${prof}-${attempt}`;
   const waiting = newResultsPromise();
-  const child = spawn(
-    CHROME,
-    [
-      "--headless=new",
-      "--disable-gpu",
-      "--hide-scrollbars",
-      "--no-sandbox",
-      "--disable-dev-shm-usage",
-      "--no-first-run",
-      "--no-default-browser-check",
-      "--disable-extensions",
-      `--user-data-dir=${attemptProf}`,
-      `http://127.0.0.1:${port}/__spatial-harness`,
-    ],
-    { stdio: ["ignore", "pipe", "pipe"] },
-  );
-  let out = "";
-  let err = "";
-  child.stdout.on("data", (d) => {
-    out += d;
-    if (out.length > 64 * 1024 * 1024) child.kill("SIGKILL");
-  });
-  child.stderr.on("data", (d) => {
-    err += d;
-  });
-  // The browser POSTs its measurements back when it is done. The watchdog is
-  // LONGER than the job that runs this gate, or the browser is taken down
-  // mid-sweep and the gate reports a failure that is really a timeout — the
-  // measurement was fine.
-  //
-  // A browser that DIES is not a browser that is slow. Waiting out the whole
-  // watchdog for a process that has already exited is how a sweep turns into
-  // an hour of nothing: another agent on the same machine running
-  // `pkill -f "Google Chrome"` took this gate's browser out from under it,
-  // and the gate sat there for 45 minutes waiting for measurements that were
-  // never coming. So the browser's exit is a result, and it is a fast one.
   const timeout = Symbol("timeout");
   const died = Symbol("died");
-  const gone = new Promise((r) => child.on("close", () => r(died)));
-  // The watchdog is a TIMER, and a live timer holds the event loop open. The
-  // browser usually wins the race, and the losing timer then kept the process
-  // alive for 45 minutes after the verdict had been printed: a PASSING run
-  // never exited, while a failing one exited at once. The gate that runs
-  // this timed out waiting for a verdict it had already been given, and the
-  // falsifier's clean-build check read that timeout as "the gate did not
-  // pass". The timer is cleared the moment the race is decided.
+  let diedResolve = () => {};
+  const gone = new Promise((r) => {
+    diedResolve = r;
+  });
   let watchdog = null;
-  const got = await Promise.race([
-    waiting,
-    gone,
-    new Promise((r) => {
-      watchdog = setTimeout(() => r(timeout), RUN_TIMEOUT_MS);
-    }),
-  ]);
-  if (watchdog) clearTimeout(watchdog);
+  let got = null;
+  let sweepFinished = false;
+  let launchError = null;
+  const browserErrors = [];
   try {
-    child.kill("SIGKILL");
-  } catch {
-    /* already gone */
+    // A FRESH browser per attempt: a browser that was killed leaves a dirty
+    // profile behind, and the next attempt would fail for the wrong reason.
+    // Playwright gives each launch its own throwaway profile.
+    const browser = await PW.chromium.launch({ headless: true });
+    // The browser's exit is a result, not a hang: see the watchdog below.
+    // The message is only printed when the browser left on its own — the
+    // gate closes the browser itself once the sweep has reported, and that
+    // close is not a failure.
+    browser.on("disconnected", () => {
+      if (!sweepFinished) console.error("  · the browser disconnected while the sweep was running");
+      diedResolve(died);
+    });
+    const context = await browser.newContext({
+      // The harness measures inside an iframe of its own size, so the
+      // window's size does not decide what is measured. It is set wide
+      // anyway, so the browser never has to scroll a frame it is reading.
+      viewport: { width: 1600, height: 1000 },
+    });
+    const page = await context.newPage();
+    page.on("pageerror", (e) => browserErrors.push(String(e).slice(0, 300)));
+    page.on("console", (m) => {
+      if (m.type() === "error") browserErrors.push(m.text().slice(0, 300));
+    });
+    // The page is opened THROUGH Playwright, not through the command line.
+    // This is the repair: the hand-launched browser took the URL and never
+    // went there, and the gate spent twenty-three minutes measuring a blank
+    // page without saying so.
+    await page.goto(`http://127.0.0.1:${port}/__spatial-harness`, {
+      waitUntil: "domcontentloaded",
+      timeout: 60000,
+    });
+    console.error("  · the measuring page is open — the sweep is running");
+
+    // The browser POSTs its measurements back when it is done. The watchdog is
+    // LONGER than the job that runs this gate, or the browser is taken down
+    // mid-sweep and the gate reports a failure that is really a timeout — the
+    // measurement was fine.
+    //
+    // A browser that DIES is not a browser that is slow. Waiting out the whole
+    // watchdog for a process that has already exited is how a sweep turns into
+    // an hour of nothing: another agent on the same machine running
+    // `pkill -f "Google Chrome"` took this gate's browser out from under it,
+    // and the gate sat there for 45 minutes waiting for measurements that were
+    // never coming. So the browser's exit is a result, and it is a fast one.
+    got = await Promise.race([
+      waiting,
+      gone,
+      new Promise((r) => {
+        watchdog = setTimeout(() => r(timeout), RUN_TIMEOUT_MS);
+      }),
+    ]);
+    if (watchdog) clearTimeout(watchdog);
+    sweepFinished = true;
+    await browser.close().catch(() => {});
+  } catch (e) {
+    if (watchdog) clearTimeout(watchdog);
+    launchError = e;
+  }
+  if (launchError) {
+    chromeError = new Error(
+      `the browser could not open the measuring page: ${launchError.message}` +
+        (browserErrors.length ? `\n    · ${browserErrors.slice(0, 3).join("\n    · ")}` : ""),
+    );
+    console.error(`  · Chrome attempt ${attempt}/5 could not start — retrying`);
+    await new Promise((r) => setTimeout(r, 3000));
+    continue;
   }
   if (got !== timeout && got !== died) {
     payload = got;
@@ -1080,11 +1112,6 @@ for (let attempt = 1; attempt <= 5; attempt++) {
       ? new Error("the browser exited before it reported its measurements")
       : new Error(`the browser did not finish within ${Math.round(RUN_TIMEOUT_MS / 60000)} minutes`);
   console.error(`  · Chrome attempt ${attempt}/5 ${got === died ? "exited early" : "did not finish"} — retrying`);
-  try {
-    rmSync(attemptProf, { recursive: true, force: true });
-  } catch {
-    /* best effort */
-  }
   await new Promise((r) => setTimeout(r, 3000));
 }
 if (chromeError || !payload) {
