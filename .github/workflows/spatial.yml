@@ -45,7 +45,13 @@ on:
 jobs:
   gate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # The gate alone takes twenty-four minutes on a hosted runner — it
+    # measures 645 pages, each a FRESH load at its own width, on a real
+    # clock — and the sweep and the falsifier follow it. A thirty-minute
+    # job killed the gate at minute twenty-four and never reached the
+    # falsifier, which is the part that proves the gate bites. The budget
+    # is set for the work, not for the hope that it is faster today.
+    timeout-minutes: 75
 
     steps:
       - name: Checkout repository
