@@ -23,6 +23,28 @@ name: Spatial law gate
 # static page, which is what the gate then measures.
 
 on:
+  # ONE RECEIPT PER PLATFORM.
+  #
+  # The gate compares the geometry it measures with a recorded receipt. A
+  # receipt belongs to the platform it was measured on: the same page on two
+  # platforms is two pages, because text metrics differ. The receipt kept in
+  # design/spatial-baseline.json was measured on the machine the product is
+  # composed on; this workflow runs on a hosted runner, and comparing the two
+  # produced findings that were the platform and not the product — the history
+  # view's first action "moved up 181px", and the matchmaker's key label had
+  # become a hole the receipt recorded no numbers for.
+  #
+  # So the runner has its own receipt — design/spatial-baseline-ci.json —
+  # measured on the runner, and the gate checks the runner against it. When
+  # the product changes on purpose, the receipt is re-recorded with the
+  # `record` input below, and the diff is read before it is committed.
+  workflow_dispatch:
+    inputs:
+      record:
+        description: 'Re-record the CI receipt on this runner instead of checking against it'
+        type: boolean
+        default: false
+
   push:
     branches: [main]
     paths:
@@ -88,7 +110,25 @@ jobs:
         run: node scripts/otop-snapshot.mjs http://localhost:8080 design/spatial-snapshots
 
       - name: Run the spatial gate
-        run: npm run spatial:gate
+        if: ${{ !inputs.record }}
+        run: node scripts/spatial/spatial-check.mjs --dir design/spatial-snapshots --baseline design/spatial-baseline-ci.json
+
+      # Re-recording is a deliberate act with a diff to read, so it is a
+      # separate, explicitly asked-for run — never something a push does.
+      - name: Record the receipt on this runner
+        if: ${{ inputs.record }}
+        run: node scripts/spatial/spatial-check.mjs --dir design/spatial-snapshots --baseline design/spatial-baseline-ci.json --update
+
+      # The receipt belongs with the run that measured it, whatever the run
+      # concluded. A receipt that only exists on someone's laptop is a
+      # receipt nobody can check.
+      - name: Keep the receipt with the run
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: spatial-receipt
+          path: design/spatial-baseline-ci.json
+          if-no-files-found: ignore
 
       # A view can build, deploy, return 200 and render nothing. Two did:
       # Champions tore its own tree down with a hook after a guard return,

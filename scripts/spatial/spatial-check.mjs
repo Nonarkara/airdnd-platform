@@ -947,6 +947,24 @@ async function remoteBreakpoints(base) {
 }
 
 // ---------------------------------------------------------------- measure
+//
+// WHAT THIS RECEIPT IS A RECEIPT OF.
+//
+// A geometry receipt belongs to the machine it was measured on. The same
+// page, on two platforms, is two pages: text metrics differ, so a line
+// takes a different height, so a register's ragged bottom moves, so the
+// first action sits 181px higher on one and not on the other. The gate
+// found exactly that when it first ran on a hosted runner: the history
+// view's first action had "moved up 181px", and the matchmaker's key
+// label had become a hole that the receipt recorded no numbers for.
+//
+// Neither was a change to the product. Both were the gate comparing a
+// receipt from one platform with a measurement from another. So the
+// receipt now says which platform it belongs to, and says so out loud
+// when it is asked to compare across one.
+const HOST_PLATFORM = `${process.platform} ${process.arch} · node ${process.version}`;
+let BROWSER_VERSION = "";
+
 const baseline = loadBaseline();
 const projectWidths =
   baseline && Array.isArray(baseline.widths) && baseline.widths.length
@@ -1039,6 +1057,11 @@ for (let attempt = 1; attempt <= 5; attempt++) {
     // profile behind, and the next attempt would fail for the wrong reason.
     // Playwright gives each launch its own throwaway profile.
     const browser = await PW.chromium.launch({ headless: true });
+    try {
+      BROWSER_VERSION = await browser.version();
+    } catch {
+      BROWSER_VERSION = "";
+    }
     // The browser's exit is a result, not a hang: see the watchdog below.
     // The message is only printed when the browser left on its own — the
     // gate closes the browser itself once the sweep has reported, and that
@@ -1218,6 +1241,15 @@ if (provenance && Array.isArray(provenance.carriedOver) && provenance.carriedOve
   for (const r of provenance.carriedOver.slice(0, 60)) {
     notes.push(`  · carried over from the earlier sweep: ${r}`);
   }
+}
+if (provenance && provenance.platform && provenance.platform !== HOST_PLATFORM) {
+  notes.push(
+    `this receipt was measured on ${provenance.platform} and this run measured ${HOST_PLATFORM} — ` +
+      `the two are not the same page: text metrics differ, so geometry differs, and a difference ` +
+      `here is the platform and not the product. A receipt belongs to its platform; keep one receipt ` +
+      `per platform (design/spatial-baseline.json for the machine the product is composed on, ` +
+      `design/spatial-baseline-ci.json for the CI runner), and compare each with its own.`,
+  );
 }
 if (cssNotFound) {
   notes.push(
@@ -1742,6 +1774,10 @@ if (UPDATE) {  // A reason for a decision that is no longer there is not recorde
     // receipt with a false claim in it.
     provenance: {
       measuredAt: new Date().toISOString(),
+      // The platform the numbers belong to. A receipt without this cannot
+      // say whether it is being compared like with like.
+      platform: HOST_PLATFORM,
+      browser: BROWSER_VERSION,
       measurements: results.length,
       routes: new Set(results.map((r) => r.route)).size,
       widths: widths.length,
