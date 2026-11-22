@@ -10,19 +10,19 @@
 #
 # A NOTE ON WHETHER THIS FILE WILL RUN
 #
-# The GitHub Actions budget for this repository is exhausted. Every push
-# currently produces a run that fails in four seconds with "The job was not
-# started because an Actions budget is preventing further use." That is not a
-# failure of the gates; it is the gates never being given a runner.
+# It runs. The repository is PUBLIC, and GitHub gives a public repository
+# free minutes on its hosted runners, so the budget that stopped every job
+# in four seconds ("The job was not started because an Actions budget is
+# preventing further use") can never bite again. The budget is no longer a
+# reason for the gates to wait.
 #
-# So this workflow is written and committed, but it is UNVERIFIED, and it
-# will stay unverified until the budget allows. The gates it describes are
-# not waiting for CI, though — they run locally, today, with one command:
+# The gates also run locally, today, with one command:
 #
 #   npm run otop:gates
 #
 # which builds the site, serves it, and runs every gate in this file against
-# a real browser. That is the receipt; this workflow is the wish.
+# a real browser. That is the receipt; this workflow is the same receipt,
+# taken by someone else's machine on every push.
 #
 # WHAT RUNS, AND WHY EACH ONE IS HERE
 #
