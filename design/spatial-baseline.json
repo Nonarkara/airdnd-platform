@@ -85,7 +85,9 @@
   },
   "exempt": [],
   "provenance": {
-    "measuredAt": "2026-11-21T17:04:30.620Z",
+    "measuredAt": "2026-11-22T03:48:30.077Z",
+    "platform": "darwin arm64 · node v26.0.0",
+    "browser": "149.0.7827.55",
     "measurements": 645,
     "routes": 15,
     "widths": 43,
