@@ -1,8 +1,20 @@
 name: Spatial law gate
 
 # The gate measures the layout of the built site and compares it with a
-# recorded baseline. It runs the VENDORED instrument, byte for byte — the
-# point of a gate is that nobody can quietly soften it.
+# recorded baseline. It runs the VENDORED instrument — the point of a gate is
+# that nobody can quietly soften it.
+#
+# ONE PLACE WHERE THE VENDORED COPY NOW DIFFERS FROM UPSTREAM, and it is
+# recorded here rather than left to be discovered: the gate used to spawn
+# Chrome by hand and hand it the harness URL on the command line. On this
+# machine that browser took the URL and never navigated to it — the renderer
+# stayed on about:blank, the harness never ran, no route ever completed, and
+# the gate printed nothing at all: no finding, no error, no verdict. It was
+# not a slow run; it was a run that could not begin, and it looked exactly
+# like a run that was working. The gate now opens its measuring page through
+# Playwright, and says when the page is open and when the sweep starts.
+# Nothing else in the instrument was touched — no threshold, no tolerance,
+# no rule, and no finding's meaning. The fix belongs upstream too.
 #
 # The site is a single-page app, so the gate cannot load it and wait: an
 # iframe fires `load` before React has painted, and the instrument would
